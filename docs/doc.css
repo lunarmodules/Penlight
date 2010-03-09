@@ -1,0 +1,9 @@
+body {
+	padding-left: 2em;
+	}
+pre {
+	background-color: #eeeeff
+	}
+a:link { font-weight:bold; color: #004080; text-decoration: none; }
+a:visited { font-weight:bold; color: #006699; text-decoration: none; }
+a:link:hover { text-decoration:underline; }

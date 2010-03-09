@@ -1,0 +1,554 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="../luadoc.css" type="text/css" />
+	<!--meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/-->
+</head>
+
+<body>
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+<div id="main">
+
+<div id="navigation">
+
+
+<h1>LuaDoc</h1>
+<ul>
+	
+	<li><a href="../index.html">Index</a></li>
+	
+</ul>
+
+
+<!-- Module list -->
+
+<h1>Modules</h1>
+<ul>
+
+	<li>
+		<a href="../modules/pl.app.html">pl.app</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.array2d.html">pl.array2d</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.class.html">pl.class</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.classx.html">pl.classx</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.config.html">pl.config</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.data.html">pl.data</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.dir.html">pl.dir</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.file.html">pl.file</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.func.html">pl.func</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.input.html">pl.input</a>
+	</li>
+
+	<li><strong>pl.lexer</strong></li>
+	
+	<li>
+		<a href="../modules/pl.list.html">pl.list</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.operator.html">pl.operator</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.path.html">pl.path</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.permute.html">pl.permute</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.pretty.html">pl.pretty</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.seq.html">pl.seq</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.sip.html">pl.sip</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.stringio.html">pl.stringio</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.stringx.html">pl.stringx</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.tablex.html">pl.tablex</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.test.html">pl.test</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.text.html">pl.text</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.utils.html">pl.utils</a>
+	</li>
+
+</ul>
+
+
+
+<!-- File list -->
+
+
+
+
+
+
+</div><!-- id="navigation" -->
+
+<div id="content">
+
+<h1>Module <code>pl.lexer</code></h1>
+
+<p>Lexical scanner for creating a sequence of tokens from text. <br> See the Guide for further <a href="../../index.html#lexer">discussion</a></p>
+
+
+
+
+
+
+<h2>Functions</h2>
+<table class="function_list">
+
+	<tr>
+	<td class="name" nowrap><a href="#cpp">cpp</a>&nbsp;(s, filter, options)</td>
+	<td class="summary">create a C/C++ token iterator from a string.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#expecting">expecting</a>&nbsp;(tok, expected_type, no_skip_ws)</td>
+	<td class="summary">get the next token, which must be of the expected type.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#get_keywords">get_keywords</a>&nbsp;()</td>
+	<td class="summary">get the Lua keywords as a set-like table.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#get_separated_list">get_separated_list</a>&nbsp;(tok, endtoken, delim)</td>
+	<td class="summary">get a list of parameters separated by a delimiter from a stream.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#getline">getline</a>&nbsp;(tok)</td>
+	<td class="summary">get everything in a stream upto a newline.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#getrest">getrest</a>&nbsp;(tok)</td>
+	<td class="summary">get the rest of the stream.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#insert">insert</a>&nbsp;(tok, a1, a2)</td>
+	<td class="summary">insert tokens into a stream.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#lua">lua</a>&nbsp;(s, filter, options)</td>
+	<td class="summary">create a Lua token iterator from a string.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#scan">scan</a>&nbsp;(s, matches, filter, options)</td>
+	<td class="summary">create a plain token iterator from a string.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#skipws">skipws</a>&nbsp;(tok)</td>
+	<td class="summary">get the next non-space token from the stream.</td>
+	</tr>
+
+</table>
+
+
+
+
+
+<br/>
+<br/>
+
+
+
+<h2><a name="functions"></a>Functions</h2>
+<dl class="function">
+
+
+
+<dt><a name="cpp"></a><strong>cpp</strong>&nbsp;(s, filter, options)</dt>
+<dd>
+create a C/C++ token iterator from a string. Will return the token type type and value.
+
+
+<h3>Parameters:</h3>
+<ul>
+	
+	<li>
+	  <code><em>s</em></code>: the string
+	</li>
+	
+	<li>
+	  <code><em>filter</em></code>: a table of token types to exclude, by default {space=true,comments=true}
+	</li>
+	
+	<li>
+	  <code><em>options</em></code>: a table of options; by default, {number=true,string=true}, which means convert numbers and strip string quotes.
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+
+</dd>
+
+
+
+
+<dt><a name="expecting"></a><strong>expecting</strong>&nbsp;(tok, expected_type, no_skip_ws)</dt>
+<dd>
+get the next token, which must be of the expected type. Throws an error if this type does not match!
+
+
+<h3>Parameters:</h3>
+<ul>
+	
+	<li>
+	  <code><em>tok</em></code>: the token stream
+	</li>
+	
+	<li>
+	  <code><em>expected_type</em></code>: the token type
+	</li>
+	
+	<li>
+	  <code><em>no_skip_ws</em></code>: whether we should skip whitespace
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+
+</dd>
+
+
+
+
+<dt><a name="get_keywords"></a><strong>get_keywords</strong>&nbsp;()</dt>
+<dd>
+get the Lua keywords as a set-like table. So <code>res["and"]</code> etc would be <code>true</code>.
+
+
+
+
+
+
+
+<h3>Return value:</h3>
+<ul>a table</ul>
+
+
+
+</dd>
+
+
+
+
+<dt><a name="get_separated_list"></a><strong>get_separated_list</strong>&nbsp;(tok, endtoken, delim)</dt>
+<dd>
+get a list of parameters separated by a delimiter from a stream.
+
+
+<h3>Parameters:</h3>
+<ul>
+	
+	<li>
+	  <code><em>tok</em></code>: the token stream
+	</li>
+	
+	<li>
+	  <code><em>endtoken</em></code>: end of list (default ')'). Can be '\n'
+	</li>
+	
+	<li>
+	  <code><em>delim</em></code>: separator (default ',')
+	</li>
+	
+</ul>
+
+
+
+
+
+
+<h3>Return value:</h3>
+<ul>a list of token lists.</ul>
+
+
+
+</dd>
+
+
+
+
+<dt><a name="getline"></a><strong>getline</strong>&nbsp;(tok)</dt>
+<dd>
+get everything in a stream upto a newline.
+
+
+<h3>Parameters:</h3>
+<ul>
+	
+	<li>
+	  <code><em>tok</em></code>: a token stream
+	</li>
+	
+</ul>
+
+
+
+
+
+
+<h3>Return value:</h3>
+<ul>a string</ul>
+
+
+
+</dd>
+
+
+
+
+<dt><a name="getrest"></a><strong>getrest</strong>&nbsp;(tok)</dt>
+<dd>
+get the rest of the stream.
+
+
+<h3>Parameters:</h3>
+<ul>
+	
+	<li>
+	  <code><em>tok</em></code>: a token stream
+	</li>
+	
+</ul>
+
+
+
+
+
+
+<h3>Return value:</h3>
+<ul>a string</ul>
+
+
+
+</dd>
+
+
+
+
+<dt><a name="insert"></a><strong>insert</strong>&nbsp;(tok, a1, a2)</dt>
+<dd>
+insert tokens into a stream.
+
+
+<h3>Parameters:</h3>
+<ul>
+	
+	<li>
+	  <code><em>tok</em></code>: a token stream
+	</li>
+	
+	<li>
+	  <code><em>a1</em></code>: a string is the type, a table is a token list and a function is assumed to be a token-like iterator (returns type & value)
+	</li>
+	
+	<li>
+	  <code><em>a2</em></code>: a string is the value
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+
+</dd>
+
+
+
+
+<dt><a name="lua"></a><strong>lua</strong>&nbsp;(s, filter, options)</dt>
+<dd>
+create a Lua token iterator from a string. Will return the token type and value.
+
+
+<h3>Parameters:</h3>
+<ul>
+	
+	<li>
+	  <code><em>s</em></code>: the string
+	</li>
+	
+	<li>
+	  <code><em>filter</em></code>: a table of token types to exclude, by default {space=true,comments=true}
+	</li>
+	
+	<li>
+	  <code><em>options</em></code>: a table of options; by default, {number=true,string=true}, which means convert numbers and strip string quotes.
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+
+</dd>
+
+
+
+
+<dt><a name="scan"></a><strong>scan</strong>&nbsp;(s, matches, filter, options)</dt>
+<dd>
+create a plain token iterator from a string.
+
+
+<h3>Parameters:</h3>
+<ul>
+	
+	<li>
+	  <code><em>s</em></code>: the string
+	</li>
+	
+	<li>
+	  <code><em>matches</em></code>: an optional match table (set of pattern-action pairs)
+	</li>
+	
+	<li>
+	  <code><em>filter</em></code>: a table of token types to exclude, by default {space=true}
+	</li>
+	
+	<li>
+	  <code><em>options</em></code>: a table of options; by default, {number=true,string=true}, which means convert numbers and strip string quotes.
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+
+</dd>
+
+
+
+
+<dt><a name="skipws"></a><strong>skipws</strong>&nbsp;(tok)</dt>
+<dd>
+get the next non-space token from the stream.
+
+
+<h3>Parameters:</h3>
+<ul>
+	
+	<li>
+	  <code><em>tok</em></code>: the token stream.
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+
+</dd>
+
+
+</dl>
+
+
+
+
+
+
+</div> <!-- id="content" -->
+
+</div> <!-- id="main" -->
+
+<div id="about">
+	<p><a href="http://validator.w3.org/check?uri=referer"><img src="http://www.w3.org/Icons/valid-xhtml10" alt="Valid XHTML 1.0!" height="31" width="88" /></a></p>
+</div> <!-- id="about" -->
+
+</div> <!-- id="container" -->	
+</body>
+</html>

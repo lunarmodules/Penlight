@@ -1,0 +1,872 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="../luadoc.css" type="text/css" />
+	<!--meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/-->
+</head>
+
+<body>
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+<div id="main">
+
+<div id="navigation">
+
+
+<h1>LuaDoc</h1>
+<ul>
+	
+	<li><a href="../index.html">Index</a></li>
+	
+</ul>
+
+
+<!-- Module list -->
+
+<h1>Modules</h1>
+<ul>
+
+	<li>
+		<a href="../modules/pl.app.html">pl.app</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.array2d.html">pl.array2d</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.class.html">pl.class</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.classx.html">pl.classx</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.config.html">pl.config</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.data.html">pl.data</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.dir.html">pl.dir</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.file.html">pl.file</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.func.html">pl.func</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.input.html">pl.input</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.lexer.html">pl.lexer</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.list.html">pl.list</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.operator.html">pl.operator</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.path.html">pl.path</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.permute.html">pl.permute</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.pretty.html">pl.pretty</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.seq.html">pl.seq</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.sip.html">pl.sip</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.stringio.html">pl.stringio</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.stringx.html">pl.stringx</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.tablex.html">pl.tablex</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.test.html">pl.test</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.text.html">pl.text</a>
+	</li>
+
+	<li><strong>pl.utils</strong></li>
+	
+</ul>
+
+
+
+<!-- File list -->
+
+
+
+
+
+
+</div><!-- id="navigation" -->
+
+<div id="content">
+
+<h1>Module <code>pl.utils</code></h1>
+
+<p>Generally useful routines.</p>
+
+
+
+
+
+
+<h2>Functions</h2>
+<table class="function_list">
+
+	<tr>
+	<td class="name" nowrap><a href="#args">args</a>&nbsp;(...)</td>
+	<td class="summary">take an arbitrary set of arguments and make into a table.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#bind1">bind1</a>&nbsp;(fn, p)</td>
+	<td class="summary">bind the first argument of the function to a value.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#choose">choose</a>&nbsp;(cond, value1, value2)</td>
+	<td class="summary">return either of two values, depending on a condition.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#escape">escape</a>&nbsp;(s)</td>
+	<td class="summary">escape any 'magic' characters in a string </td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#fprintf">fprintf</a>&nbsp;(f, fmt, ...)</td>
+	<td class="summary">write an arbitrary number of arguments to a file using a format.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#function_arg">function_arg</a>&nbsp;(f)</td>
+	<td class="summary">process a function argument.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#import">import</a>&nbsp;(t, T)</td>
+	<td class="summary">take a table and 'inject' it into the local namespace.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#is_callable">is_callable</a>&nbsp;(obj)</td>
+	<td class="summary">is the object either a function or a callable object?.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#is_type">is_type</a>&nbsp;(obj, tp)</td>
+	<td class="summary">is the object of the specified type?.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#memoize">memoize</a>&nbsp;(func)</td>
+	<td class="summary">'memoize' a function (cache returned value for next call).</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#printf">printf</a>&nbsp;(fmt, ...)</td>
+	<td class="summary">print an arbitrary number of arguments using a format.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#quit">quit</a>&nbsp;(code, msg, ...)</td>
+	<td class="summary">end this program gracefully.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#readfile">readfile</a>&nbsp;(filename, is_bin)</td>
+	<td class="summary">return the contents of a file as a string </td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#readlines">readlines</a>&nbsp;(filename)</td>
+	<td class="summary">return the contents of a file as a list of lines </td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#split">split</a>&nbsp;(s, re)</td>
+	<td class="summary">split a string into a list of strings separated by a delimiter.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#splitl">splitl</a>&nbsp;(s)</td>
+	<td class="summary">split a string into a list of strings separated by either spaces or commas.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#splitv">splitv</a>&nbsp;(s, re)</td>
+	<td class="summary">split a string into a number of values.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#writefile">writefile</a>&nbsp;(filename, str)</td>
+	<td class="summary">write a string to a file </td>
+	</tr>
+
+</table>
+
+
+
+
+
+<br/>
+<br/>
+
+
+
+<h2><a name="functions"></a>Functions</h2>
+<dl class="function">
+
+
+
+<dt><a name="args"></a><strong>args</strong>&nbsp;(...)</dt>
+<dd>
+take an arbitrary set of arguments and make into a table. This returns the table and the size; works fine for nil arguments
+
+
+<h3>Parameters:</h3>
+<ul>
+	
+	<li>
+	  <code><em>...</em></code>: arguments
+	</li>
+	
+</ul>
+
+
+
+
+<h3>Usage:</h3>
+<ul><pre class=example>local t,n = utils.args(...)</pre></ul>
+
+
+
+<h3>Return values:</h3>
+<ol>
+	
+	<li>table</li>
+	
+	<li>table size</li>
+	
+</ol>
+
+
+
+</dd>
+
+
+
+
+<dt><a name="bind1"></a><strong>bind1</strong>&nbsp;(fn, p)</dt>
+<dd>
+bind the first argument of the function to a value.
+
+
+<h3>Parameters:</h3>
+<ul>
+	
+	<li>
+	  <code><em>fn</em></code>: a function of at least two values (may be an operator string)
+	</li>
+	
+	<li>
+	  <code><em>p</em></code>: a value
+	</li>
+	
+</ul>
+
+
+
+
+
+
+<h3>Return value:</h3>
+<ul>a function such that f(x) is fn(p,x)</ul>
+
+
+
+<h3>See also:</h3>
+<ul>
+	
+	<!-- <li><a href="#../modules/pl.func.html#currypl.func.curry"> -->
+	<li><a href="#pl.func.curry">
+		pl.func.curry</li>
+	</a>
+	
+</ul>
+
+</dd>
+
+
+
+
+<dt><a name="choose"></a><strong>choose</strong>&nbsp;(cond, value1, value2)</dt>
+<dd>
+return either of two values, depending on a condition.
+
+
+<h3>Parameters:</h3>
+<ul>
+	
+	<li>
+	  <code><em>cond</em></code>: A condition
+	</li>
+	
+	<li>
+	  <code><em>value1</em></code>: Value returned if cond is true
+	</li>
+	
+	<li>
+	  <code><em>value2</em></code>: Value returned if cond is false (can be optional)
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+
+</dd>
+
+
+
+
+<dt><a name="escape"></a><strong>escape</strong>&nbsp;(s)</dt>
+<dd>
+escape any 'magic' characters in a string
+
+
+<h3>Parameters:</h3>
+<ul>
+	
+	<li>
+	  <code><em>s</em></code>: The input string
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+
+</dd>
+
+
+
+
+<dt><a name="fprintf"></a><strong>fprintf</strong>&nbsp;(f, fmt, ...)</dt>
+<dd>
+write an arbitrary number of arguments to a file using a format.
+
+
+<h3>Parameters:</h3>
+<ul>
+	
+	<li>
+	  <code><em>f</em></code>: 
+	</li>
+	
+	<li>
+	  <code><em>fmt</em></code>: The format (see string.format)
+	</li>
+	
+	<li>
+	  <code><em>...</em></code>: 
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+
+</dd>
+
+
+
+
+<dt><a name="function_arg"></a><strong>function_arg</strong>&nbsp;(f)</dt>
+<dd>
+process a function argument. <br> This is used throughout Penlight and defines what is meant by a function: <br> Something that is_callable, or an operator string as defined by pl.operator, <br> such as '>' or '#'.
+
+
+<h3>Parameters:</h3>
+<ul>
+	
+	<li>
+	  <code><em>f</em></code>: a function, operator string, or callable object
+	</li>
+	
+</ul>
+
+
+
+
+
+
+<h3>Return value:</h3>
+<ul>a callable</ul>
+
+
+
+</dd>
+
+
+
+
+<dt><a name="import"></a><strong>import</strong>&nbsp;(t, T)</dt>
+<dd>
+take a table and 'inject' it into the local namespace.
+
+
+<h3>Parameters:</h3>
+<ul>
+	
+	<li>
+	  <code><em>t</em></code>: The Table
+	</li>
+	
+	<li>
+	  <code><em>T</em></code>: An optional destination table (defaults to callers environment)
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+
+</dd>
+
+
+
+
+<dt><a name="is_callable"></a><strong>is_callable</strong>&nbsp;(obj)</dt>
+<dd>
+is the object either a function or a callable object?.
+
+
+<h3>Parameters:</h3>
+<ul>
+	
+	<li>
+	  <code><em>obj</em></code>: 
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+
+</dd>
+
+
+
+
+<dt><a name="is_type"></a><strong>is_type</strong>&nbsp;(obj, tp)</dt>
+<dd>
+is the object of the specified type?. If the type is a string, then use type, otherwise compare with metatable
+
+
+<h3>Parameters:</h3>
+<ul>
+	
+	<li>
+	  <code><em>obj</em></code>: an object
+	</li>
+	
+	<li>
+	  <code><em>tp</em></code>: a type
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+
+</dd>
+
+
+
+
+<dt><a name="memoize"></a><strong>memoize</strong>&nbsp;(func)</dt>
+<dd>
+'memoize' a function (cache returned value for next call). This is useful if you have a function which is relatively expensive, but you don't know in advance what values will be required, so building a table upfront is wasteful/impossible.
+
+
+<h3>Parameters:</h3>
+<ul>
+	
+	<li>
+	  <code><em>func</em></code>: a function of at least one argument
+	</li>
+	
+</ul>
+
+
+
+
+
+
+<h3>Return value:</h3>
+<ul>a function with at least one argument, which is used as the key.</ul>
+
+
+
+</dd>
+
+
+
+
+<dt><a name="printf"></a><strong>printf</strong>&nbsp;(fmt, ...)</dt>
+<dd>
+print an arbitrary number of arguments using a format.
+
+
+<h3>Parameters:</h3>
+<ul>
+	
+	<li>
+	  <code><em>fmt</em></code>: The format (see string.format)
+	</li>
+	
+	<li>
+	  <code><em>...</em></code>: 
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+
+</dd>
+
+
+
+
+<dt><a name="quit"></a><strong>quit</strong>&nbsp;(code, msg, ...)</dt>
+<dd>
+end this program gracefully.
+
+
+<h3>Parameters:</h3>
+<ul>
+	
+	<li>
+	  <code><em>code</em></code>: The exit code
+	</li>
+	
+	<li>
+	  <code><em>msg</em></code>: A message to be printed
+	</li>
+	
+	<li>
+	  <code><em>...</em></code>: extra arguments for fprintf
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+
+<h3>See also:</h3>
+<ul>
+	
+	<!-- <li><a href="#../modules/pl.utils.html#fprintfpl.utils.fprintf"> -->
+	<li><a href="#pl.utils.fprintf">
+		pl.utils.fprintf</li>
+	</a>
+	
+</ul>
+
+</dd>
+
+
+
+
+<dt><a name="readfile"></a><strong>readfile</strong>&nbsp;(filename, is_bin)</dt>
+<dd>
+return the contents of a file as a string
+
+
+<h3>Parameters:</h3>
+<ul>
+	
+	<li>
+	  <code><em>filename</em></code>: The file path
+	</li>
+	
+	<li>
+	  <code><em>is_bin</em></code>: 
+	</li>
+	
+</ul>
+
+
+
+
+
+
+<h3>Return value:</h3>
+<ul>file contents</ul>
+
+
+
+</dd>
+
+
+
+
+<dt><a name="readlines"></a><strong>readlines</strong>&nbsp;(filename)</dt>
+<dd>
+return the contents of a file as a list of lines
+
+
+<h3>Parameters:</h3>
+<ul>
+	
+	<li>
+	  <code><em>filename</em></code>: The file path
+	</li>
+	
+</ul>
+
+
+
+
+
+
+<h3>Return value:</h3>
+<ul>file contents as a table</ul>
+
+
+
+</dd>
+
+
+
+
+<dt><a name="split"></a><strong>split</strong>&nbsp;(s, re)</dt>
+<dd>
+split a string into a list of strings separated by a delimiter.
+
+
+<h3>Parameters:</h3>
+<ul>
+	
+	<li>
+	  <code><em>s</em></code>: The input string
+	</li>
+	
+	<li>
+	  <code><em>re</em></code>: A regular expression; defaults to spaces
+	</li>
+	
+</ul>
+
+
+
+
+
+
+<h3>Return value:</h3>
+<ul>a list-like table</ul>
+
+
+
+</dd>
+
+
+
+
+<dt><a name="splitl"></a><strong>splitl</strong>&nbsp;(s)</dt>
+<dd>
+split a string into a list of strings separated by either spaces or commas.
+
+
+<h3>Parameters:</h3>
+<ul>
+	
+	<li>
+	  <code><em>s</em></code>: The input string
+	</li>
+	
+</ul>
+
+
+
+
+
+
+<h3>Return value:</h3>
+<ul>a list-like table</ul>
+
+
+
+</dd>
+
+
+
+
+<dt><a name="splitv"></a><strong>splitv</strong>&nbsp;(s, re)</dt>
+<dd>
+split a string into a number of values.
+
+
+<h3>Parameters:</h3>
+<ul>
+	
+	<li>
+	  <code><em>s</em></code>: the string
+	</li>
+	
+	<li>
+	  <code><em>re</em></code>: the delimiter, default space
+	</li>
+	
+</ul>
+
+
+
+
+<h3>Usage:</h3>
+<ul><pre class=example>first,next = splitv('jane:doe',':')</pre></ul>
+
+
+
+<h3>Return value:</h3>
+<ul>n values</ul>
+
+
+
+<h3>See also:</h3>
+<ul>
+	
+	<!-- <li><a href="#../modules/pl.utils.html#splitsplit"> -->
+	<li><a href="#split">
+		split</li>
+	</a>
+	
+</ul>
+
+</dd>
+
+
+
+
+<dt><a name="writefile"></a><strong>writefile</strong>&nbsp;(filename, str)</dt>
+<dd>
+write a string to a file
+
+
+<h3>Parameters:</h3>
+<ul>
+	
+	<li>
+	  <code><em>filename</em></code>: The file path
+	</li>
+	
+	<li>
+	  <code><em>str</em></code>: The string
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+
+</dd>
+
+
+</dl>
+
+
+
+
+
+
+</div> <!-- id="content" -->
+
+</div> <!-- id="main" -->
+
+<div id="about">
+	<p><a href="http://validator.w3.org/check?uri=referer"><img src="http://www.w3.org/Icons/valid-xhtml10" alt="Valid XHTML 1.0!" height="31" width="88" /></a></p>
+</div> <!-- id="about" -->
+
+</div> <!-- id="container" -->	
+</body>
+</html>

@@ -1,0 +1,275 @@
+#Penlight Function Index
+
+-	[I](api/modules/pl.func.html#I)(pl.func)	instantiate a PE unless it has already been done
+-	[List.range](api/modules/pl.list.html#List.range)(pl.list)	Emulate Python's range(x) function
+-	[List.split](api/modules/pl.list.html#List.split)(pl.list)	split a string using a delimiter
+-	[List:__call](api/modules/pl.list.html#List:__call)(pl.list)	can iterate over a list directly
+-	[List:__concat](api/modules/pl.list.html#List:__concat)(pl.list)	concatenation operator 
+-	[List:__eq](api/modules/pl.list.html#List:__eq)(pl.list)	equality operator ==
+-	[List:__tostring](api/modules/pl.list.html#List:__tostring)(pl.list)	how our list should be rendered as a string
+-	[List:append](api/modules/pl.list.html#List:append)(pl.list)	Add an item to the end of the list
+-	[List:chop](api/modules/pl.list.html#List:chop)(pl.list)	Remove a subrange of elements
+-	[List:clear](api/modules/pl.list.html#List:clear)(pl.list)	empty the list
+-	[List:concat](api/modules/pl.list.html#List:concat)(pl.list)	join a list of strings
+-	[List:contains](api/modules/pl.list.html#List:contains)(pl.list)	does this list contain the value?
+-	[List:count](api/modules/pl.list.html#List:count)(pl.list)	Return the number of times value appears in the list
+-	[List:extend](api/modules/pl.list.html#List:extend)(pl.list)	Extend the list by appending all the items in the given list
+-	[List:filter](api/modules/pl.list.html#List:filter)(pl.list)	create a list of all elements which match a function
+-	[List:foreach](api/modules/pl.list.html#List:foreach)(pl.list)	call the function for each element of the list
+-	[List:index](api/modules/pl.list.html#List:index)(pl.list)	Return the index in the list of the first item whose value is given
+-	[List:insert](api/modules/pl.list.html#List:insert)(pl.list)	Insert an item at a given position
+-	[List:iter](api/modules/pl.list.html#List:iter)(pl.list)	return an iterator over all values
+-	[List:join](api/modules/pl.list.html#List:join)(pl.list)	join the elements of a list using a delimiter
+-	[List:len](api/modules/pl.list.html#List:len)(pl.list)	list:len() is the same as #list
+-	[List:map](api/modules/pl.list.html#List:map)(pl.list)	apply a function to all elements
+-	[List:map2](api/modules/pl.list.html#List:map2)(pl.list)	apply a function to elements of two lists
+-	[List:mapm](api/modules/pl.list.html#List:mapm)(pl.list)	apply a named meethod to all elements
+-	[List:new](api/modules/pl.list.html#List:new)(pl.list)	Create a new list
+-	[List:partition](api/modules/pl.list.html#List:partition)(pl.list)	partition a list using a classifier function
+-	[List:pop](api/modules/pl.list.html#List:pop)(pl.list)	Remove the item at the given position in the list, and return it
+-	[List:put](api/modules/pl.list.html#List:put)(pl.list)	Insert an item at the begining of the list
+-	[List:reduce](api/modules/pl.list.html#List:reduce)(pl.list)	'reduce' a list using a binary function
+-	[List:remove](api/modules/pl.list.html#List:remove)(pl.list)	Remove an element given its index
+-	[List:remove_value](api/modules/pl.list.html#List:remove_value)(pl.list)	Remove the first item from the list whose value is given
+-	[List:reverse](api/modules/pl.list.html#List:reverse)(pl.list)	Reverse the elements of the list, in place
+-	[List:slice](api/modules/pl.list.html#List:slice)(pl.list)	Emulate list slicing
+-	[List:slice_assign](api/modules/pl.list.html#List:slice_assign)(pl.list)	general slice assignment s[i1:i2] = seq
+-	[List:sort](api/modules/pl.list.html#List:sort)(pl.list)	Sort the items of the list, in place
+-	[List:splice](api/modules/pl.list.html#List:splice)(pl.list)	Insert a sublist into a list
+-	[List:transform](api/modules/pl.list.html#List:transform)(pl.list)	apply a function to all elements, in-place
+-	[Map:get](api/modules/pl.class.html#Map:get)(pl.class)	get a value from the map
+-	[Map:iter](api/modules/pl.class.html#Map:iter)(pl.class)	return an iterator over all key-value pairs
+-	[Map:keys](api/modules/pl.class.html#Map:keys)(pl.class)	list of keys
+-	[Map:len](api/modules/pl.class.html#Map:len)(pl.class)	size of map
+-	[Map:set](api/modules/pl.class.html#Map:set)(pl.class)	put a value into the map
+-	[Map:values](api/modules/pl.class.html#Map:values)(pl.class)	list of values
+-	[MultiMap:set](api/modules/pl.classx.html#MultiMap:set)(pl.classx)	add a new value to a key
+-	[MultiMap:update](api/modules/pl.classx.html#MultiMap:update)(pl.classx)	update a MultiMap using a table
+-	[OrderedMap:iter](api/modules/pl.classx.html#OrderedMap:iter)(pl.classx)	iterate over key-value pairs in order
+-	[OrderedMap:keys](api/modules/pl.classx.html#OrderedMap:keys)(pl.classx)	return the keys in order
+-	[OrderedMap:set](api/modules/pl.classx.html#OrderedMap:set)(pl.classx)	set the key's value
+-	[OrderedMap:sort](api/modules/pl.classx.html#OrderedMap:sort)(pl.classx)	sort the keys
+-	[OrderedMap:update](api/modules/pl.classx.html#OrderedMap:update)(pl.classx)	update an OrderedMap using a table
+-	[OrderedMap:values](api/modules/pl.classx.html#OrderedMap:values)(pl.classx)	return the values in order
+-	[Set:difference](api/modules/pl.class.html#Set:difference)(pl.class)	new set with elements in the set that are not in the other (also -)
+-	[Set:intersection](api/modules/pl.class.html#Set:intersection)(pl.class)	intersection of two sets (also *)
+-	[Set:isdisjoint](api/modules/pl.class.html#Set:isdisjoint)(pl.class)	are the sets disjoint? (no elements in common)
+-	[Set:issempty](api/modules/pl.class.html#Set:issempty)(pl.class)	is the set empty?
+-	[Set:issubset](api/modules/pl.class.html#Set:issubset)(pl.class)	is the first set a subset of the second?
+-	[Set:map](api/modules/pl.class.html#Set:map)(pl.class)	map a function over the values of a set
+-	[Set:set](api/modules/pl.class.html#Set:set)(pl.class)	add a value to a set
+-	[Set:union](api/modules/pl.class.html#Set:union)(pl.class)	union of two sets (also +)
+-	[Set:unset](api/modules/pl.class.html#Set:unset)(pl.class)	remove a value from a set
+-	[Set:values](api/modules/pl.class.html#Set:values)(pl.class)	get a list of the values in a set
+-	[Template:indent_substitute](api/modules/pl.text.html#Template:indent_substitute)(pl.text)	substitute values into a template, preserving indentation
+-	[Template:safe_substitute](api/modules/pl.text.html#Template:safe_substitute)(pl.text)	substitute values into a template
+-	[Template:substitute](api/modules/pl.text.html#Template:substitute)(pl.text)	substitute values into a template, throwing an error
+-	[TypedList:append](api/modules/TypedList.html#TypedList:append)(TypedList)	append a value to the list
+-	[TypedList:extend](api/modules/TypedList.html#TypedList:extend)(TypedList)	extend the list using another list
+-	[TypedList:slice](api/modules/TypedList.html#TypedList:slice)(TypedList)	return a slice of the list
+-	[Var](api/modules/pl.func.html#Var)(pl.func)	Functional helpers like composition,binding and placeholder expressions
+-	[_makepath](api/modules/pl.dir.html#_makepath)(pl.dir)	create a directory path
+-	[abspath](api/modules/pl.path.html#abspath)(pl.path)	return an absolute path
+-	[add](api/modules/pl.operator.html#add)(pl.operator)	add two values +
+-	[alltokens](api/modules/pl.input.html#alltokens)(pl.input)	create an iterator over all tokens
+-	[appfile](api/modules/pl.path.html#appfile)(pl.path)	return a suitable path for files private to this application
+-	[args](api/modules/pl.utils.html#args)(pl.utils)	take an arbitrary set of arguments and make into a table
+-	[asserteq](api/modules/pl.test.html#asserteq)(pl.test)	like assert, except takes two arguments that must be equal
+-	[asserteq2](api/modules/pl.test.html#asserteq2)(pl.test)	a version of asserteq that takes two pairs of values
+-	[at](api/modules/pl.stringx.html#at)(pl.stringx)	return the 'character' at the index
+-	[basename](api/modules/pl.path.html#basename)(pl.path)	return the file part of a path
+-	[bind](api/modules/pl.func.html#bind)(pl.func)	bind the arguments of a function to given values
+-	[bind1](api/modules/pl.utils.html#bind1)(pl.utils)	bind the first argument of the function to a value
+-	[call](api/modules/pl.operator.html#call)(pl.operator)	apply function to some arguments ()
+-	[center](api/modules/pl.stringx.html#center)(pl.stringx)	center-justify s with width w
+-	[choose](api/modules/pl.utils.html#choose)(pl.utils)	return either of two values, depending on a condition
+-	[class](api/modules/pl.class.html#class)(pl.class)	create a new class, derived from a given base class
+-	[clear](api/modules/pl.tablex.html#clear)(pl.tablex)	clear out the contents of a table
+-	[clonetree](api/modules/pl.dir.html#clonetree)(pl.dir)	clone a directory tree
+-	[column](api/modules/pl.array2d.html#column)(pl.array2d)	extract a column from the 2D array
+-	[common_prefix](api/modules/pl.path.html#common_prefix)(pl.path)	return the largest common prefix path of two paths
+-	[compare](api/modules/pl.tablex.html#compare)(pl.tablex)	compare two list-like tables using a predicate
+-	[compare_no_order](api/modules/pl.tablex.html#compare_no_order)(pl.tablex)	compare two tables using a predicate, without regard for element order
+-	[compile](api/modules/pl.sip.html#compile)(pl.sip)	convert a SIP pattern into a matching function
+-	[compose](api/modules/pl.func.html#compose)(pl.func)	create a function which chains two functions
+-	[concat](api/modules/pl.operator.html#concat)(pl.operator)	concatenate two values (either strings or __concat defined) 
+-	[copy](api/modules/pl.tablex.html#copy)(pl.tablex)	make a shallow copy of a table
+-	[copyfile](api/modules/pl.dir.html#copyfile)(pl.dir)	copy a file
+-	[count](api/modules/pl.stringx.html#count)(pl.stringx)	count all instances of substring in string
+-	[count_map](api/modules/pl.tablex.html#count_map)(pl.tablex)	A table where the key/values are the values and value counts of the table
+-	[cpp](api/modules/pl.lexer.html#cpp)(pl.lexer)	create a C/C++ token iterator from a string
+-	[create](api/modules/pl.stringio.html#create)(pl.stringio)	create a file object which can be used to construct a string
+-	[create_getter](api/modules/pl.input.html#create_getter)(pl.input)	create a function which grabs the next value from a source
+-	[create_pattern](api/modules/pl.sip.html#create_pattern)(pl.sip)	convert a SIP pattern into the equivalent Lua regular expression
+-	[curry](api/modules/pl.func.html#curry)(pl.func)	bind the first parameter of the function to a value
+-	[dedent](api/modules/pl.text.html#dedent)(pl.text)	dedent a multiline string by removing any initial indent
+-	[deepcompare](api/modules/pl.tablex.html#deepcompare)(pl.tablex)	compare two values
+-	[deepcopy](api/modules/pl.tablex.html#deepcopy)(pl.tablex)	make a deep copy of a table, recursively copying all the keys and fields
+-	[difference](api/modules/pl.tablex.html#difference)(pl.tablex)	a new table which is the difference of two tables
+-	[dirname](api/modules/pl.path.html#dirname)(pl.path)	return the directory part of a path
+-	[div](api/modules/pl.operator.html#div)(pl.operator)	divide first value by second /
+-	[endswith](api/modules/pl.stringx.html#endswith)(pl.stringx)	does string end with the given substring?
+-	[eq](api/modules/pl.operator.html#eq)(pl.operator)	returns true if arguments are equal ==
+-	[escape](api/modules/pl.utils.html#escape)(pl.utils)	escape any 'magic' characters in a string
+-	[exists](api/modules/pl.path.html#exists)(pl.path)	does a path exist?
+-	[expandtabs](api/modules/pl.stringx.html#expandtabs)(pl.stringx)	replace all tabs in s with n spaces
+-	[expanduser](api/modules/pl.path.html#expanduser)(pl.path)	Replace a starting '~' with the user's home directory
+-	[expecting](api/modules/pl.lexer.html#expecting)(pl.lexer)	get the next token, which must be of the expected type
+-	[extension](api/modules/pl.path.html#extension)(pl.path)	get the extension part of a path
+-	[extract_cols](api/modules/pl.array2d.html#extract_cols)(pl.array2d)	extract the specified columns
+-	[extract_rows](api/modules/pl.array2d.html#extract_rows)(pl.array2d)	extract the specified rows
+-	[fields](api/modules/pl.sip.html#fields)(pl.sip)	given a pattern and a file object, return an iterator over the results
+-	[fields](api/modules/pl.input.html#fields)(pl.input)	parse an input source into fields
+-	[fill](api/modules/pl.text.html#fill)(pl.text)	format a paragraph so that it fits into a line width
+-	[filter](api/modules/pl.data.html#filter)(pl.data)	Filter input using a query
+-	[filter](api/modules/pl.tablex.html#filter)(pl.tablex)	filter a table's values using a predicate function
+-	[filter](api/modules/pl.dir.html#filter)(pl.dir)	return a list of all files in a list of files which match the pattern
+-	[find](api/modules/pl.tablex.html#find)(pl.tablex)	return the index of a value in a list
+-	[find_if](api/modules/pl.tablex.html#find_if)(pl.tablex)	return the index (or key) of a value in a table using a comparison function
+-	[fnmatch](api/modules/pl.dir.html#fnmatch)(pl.dir)	does the filename match the shell pattern?
+-	[forall](api/modules/pl.array2d.html#forall)(pl.array2d)	perform an operation for all values in a 2D array
+-	[foreach](api/modules/pl.tablex.html#foreach)(pl.tablex)	apply a function to all elements of a table
+-	[foreachi](api/modules/pl.tablex.html#foreachi)(pl.tablex)	apply a function to all elements of a list-like table in order
+-	[fprintf](api/modules/pl.utils.html#fprintf)(pl.utils)	write an arbitrary number of arguments to a file using a format
+-	[function_arg](api/modules/pl.utils.html#function_arg)(pl.utils)	process a function argument
+-	[ge](api/modules/pl.operator.html#ge)(pl.operator)	returns true if a is greater or equal to b >=
+-	[get_separated_list](api/modules/pl.lexer.html#get_separated_list)(pl.lexer)	get a list of parameters separated by a delimiter from a stream
+-	[getatime](api/modules/pl.path.html#getatime)(pl.path)	Return the time of last access as the number of seconds since the epoch
+-	[getctime](api/modules/pl.path.html#getctime)(pl.path)	Return the system's ctime
+-	[getdirectories](api/modules/pl.dir.html#getdirectories)(pl.dir)	return a list of all subdirectories of the directory
+-	[getfiles](api/modules/pl.dir.html#getfiles)(pl.dir)	return a list of all files in a directory which match the a shell pattern
+-	[getline](api/modules/pl.lexer.html#getline)(pl.lexer)	get everything in a stream upto a newline
+-	[getmtime](api/modules/pl.path.html#getmtime)(pl.path)	Return the time of last modification
+-	[getrest](api/modules/pl.lexer.html#getrest)(pl.lexer)	get the rest of the stream
+-	[getsize](api/modules/pl.path.html#getsize)(pl.path)	return size of a file
+-	[gt](api/modules/pl.operator.html#gt)(pl.operator)	returns true if a is greater than b >
+-	[icopy](api/modules/pl.tablex.html#icopy)(pl.tablex)	copy an array into another one, resizing the destination if necessary
+-	[imap](api/modules/pl.tablex.html#imap)(pl.tablex)	apply a function to all values of a list
+-	[imap2](api/modules/pl.tablex.html#imap2)(pl.tablex)	apply a function to values from two arrays
+-	[import](api/modules/pl.func.html#import)(pl.func)	wrap a table of functions
+-	[import](api/modules/pl.utils.html#import)(pl.utils)	take a table and 'inject' it into the local namespace
+-	[indent](api/modules/pl.text.html#indent)(pl.text)	indent a multiline string
+-	[index](api/modules/pl.operator.html#index)(pl.operator)	get the indexed value from a table []
+-	[index_by](api/modules/pl.tablex.html#index_by)(pl.tablex)	return a list of all values in a table indexed by another list
+-	[index_map](api/modules/pl.tablex.html#index_map)(pl.tablex)	create an index map from a list-like table
+-	[insert](api/modules/pl.lexer.html#insert)(pl.lexer)	insert tokens into a stream
+-	[insertvalues](api/modules/pl.tablex.html#insertvalues)(pl.tablex)	insert values into a table
+-	[instantiate](api/modules/pl.func.html#instantiate)(pl.func)	instantiate a PE into an actual function
+-	[is_callable](api/modules/pl.utils.html#is_callable)(pl.utils)	is the object either a function or a callable object?
+-	[is_type](api/modules/pl.utils.html#is_type)(pl.utils)	is the object of the specified type?
+-	[isabs](api/modules/pl.path.html#isabs)(pl.path)	is this an absolute path?
+-	[isalnum](api/modules/pl.stringx.html#isalnum)(pl.stringx)	does s only contain alphanumeric characters?
+-	[isalpha](api/modules/pl.stringx.html#isalpha)(pl.stringx)	does s only contain alphabetic characters?
+-	[isdigit](api/modules/pl.stringx.html#isdigit)(pl.stringx)	does s only contain digits?
+-	[isdir](api/modules/pl.path.html#isdir)(pl.path)	is this a directory?
+-	[isfile](api/modules/pl.path.html#isfile)(pl.path)	is this a file?
+-	[islower](api/modules/pl.stringx.html#islower)(pl.stringx)	does s only contain lower case characters?
+-	[isspace](api/modules/pl.stringx.html#isspace)(pl.stringx)	does s only contain spaces?
+-	[isupper](api/modules/pl.stringx.html#isupper)(pl.stringx)	does s only contain upper case characters?
+-	[iter](api/modules/pl.array2d.html#iter)(pl.array2d)	iterate over all elements in a 2D array, with optional indices
+-	[iter](api/modules/pl.permute.html#iter)(pl.permute)	an iterator over all permutations of the elements of a list
+-	[iter](api/modules/pl.list.html#iter)(pl.list)	Create an iterator over a seqence
+-	[join](api/modules/pl.stringx.html#join)(pl.stringx)	concatenate the strings using this string as a delimiter
+-	[join](api/modules/pl.path.html#join)(pl.path)	return the path resulting from combining the two paths
+-	[keys](api/modules/pl.tablex.html#keys)(pl.tablex)	return all the keys of a table in arbitrary order
+-	[land](api/modules/pl.operator.html#land)(pl.operator)	true if both values evaluate as true (i
+-	[le](api/modules/pl.operator.html#le)(pl.operator)	returns true if a is less or equal to b <=
+-	[len](api/modules/pl.operator.html#len)(pl.operator)	returns length of string or table #
+-	[lfind](api/modules/pl.stringx.html#lfind)(pl.stringx)	find index of first instance of sub in s from the left
+-	[lines](api/modules/pl.stringx.html#lines)(pl.stringx)	return an interator over all lines in a string
+-	[lines](api/modules/pl.config.html#lines)(pl.config)	like io
+-	[ljust](api/modules/pl.stringx.html#ljust)(pl.stringx)	left-justify s with width w
+-	[lnot](api/modules/pl.operator.html#lnot)(pl.operator)	false if value evaluates as true (i
+-	[lor](api/modules/pl.operator.html#lor)(pl.operator)	true if either value evaluate as true (i
+-	[lstrip](api/modules/pl.stringx.html#lstrip)(pl.stringx)	trim any whitespace on the left of s
+-	[lt](api/modules/pl.operator.html#lt)(pl.operator)	returns true if a is less than b <
+-	[lua](api/modules/pl.lexer.html#lua)(pl.lexer)	create a Lua token iterator from a string
+-	[makeset](api/modules/pl.tablex.html#makeset)(pl.tablex)	create a set from a list-like table
+-	[map](api/modules/pl.array2d.html#map)(pl.array2d)	map a function over a 2D array
+-	[map](api/modules/pl.tablex.html#map)(pl.tablex)	apply a function to all values of a table
+-	[map2](api/modules/pl.tablex.html#map2)(pl.tablex)	apply a function to values from two tables
+-	[map2](api/modules/pl.array2d.html#map2)(pl.array2d)	map a function over two arrays
+-	[map_named_method](api/modules/pl.tablex.html#map_named_method)(pl.tablex)	apply a named method to values from a table
+-	[mapn](api/modules/pl.tablex.html#mapn)(pl.tablex)	Apply a function to a number of tables
+-	[match](api/modules/pl.sip.html#match)(pl.sip)	match a SIP pattern against a string
+-	[match_at_start](api/modules/pl.sip.html#match_at_start)(pl.sip)	match a SIP pattern against the start of a string
+-	[memoize](api/modules/pl.utils.html#memoize)(pl.utils)	'memoize' a function (cache returned value for next call)
+-	[merge](api/modules/pl.tablex.html#merge)(pl.tablex)	combine two tables, either as union or intersection
+-	[mod](api/modules/pl.operator.html#mod)(pl.operator)	modulo; remainder of a divided by b %
+-	[move](api/modules/pl.tablex.html#move)(pl.tablex)	copy an array into another one
+-	[movefile](api/modules/pl.dir.html#movefile)(pl.dir)	move a file
+-	[mul](api/modules/pl.operator.html#mul)(pl.operator)	multiply two values *
+-	[neq](api/modules/pl.operator.html#neq)(pl.operator)	returns true if arguments are not equal ~=
+-	[new](api/modules/pl.tablex.html#new)(pl.tablex)	create a new array of specified size with initial value
+-	[new](api/modules/pl.data.html#new)(pl.data)	create a new dataset from a table of rows
+-	[nop](api/modules/pl.operator.html#nop)(pl.operator)	the null operation
+-	[normcase](api/modules/pl.path.html#normcase)(pl.path)	Normalize the case of a pathname
+-	[numbers](api/modules/pl.input.html#numbers)(pl.input)	generate a sequence of numbers from a source
+-	[open](api/modules/pl.stringio.html#open)(pl.stringio)	create a file object for reading from a given string
+-	[package_path](api/modules/pl.path.html#package_path)(pl.path)	return the full path where a particular Lua module would be found
+-	[pairmap](api/modules/pl.tablex.html#pairmap)(pl.tablex)	call the function with the key and value pairs from a table
+-	[parse_args](api/modules/pl.utils.html#parse_args)(pl.utils)	parse command-line arguments into flags and parameters
+-	[partition](api/modules/pl.stringx.html#partition)(pl.stringx)	partition the string using first occurance of a delimiter
+-	[pattern](api/modules/pl.sip.html#pattern)(pl.sip)	register a match which will be used in the read function
+-	[pow](api/modules/pl.operator.html#pow)(pl.operator)	raise first to the power of second ^
+-	[printf](api/modules/pl.utils.html#printf)(pl.utils)	print an arbitrary number of arguments using a format
+-	[product](api/modules/pl.array2d.html#product)(pl.array2d)	cartesian product of two 1d arrays
+-	[query](api/modules/pl.data.html#query)(pl.data)	create a query iterator from a select string
+-	[quit](api/modules/pl.utils.html#quit)(pl.utils)	end this program gracefully
+-	[range](api/modules/pl.tablex.html#range)(pl.tablex)	generate a table of all numbers in a range
+-	[range](api/modules/pl.array2d.html#range)(pl.array2d)	get a slice of a 2D array using spreadsheet range notation
+-	[read](api/modules/pl.sip.html#read)(pl.sip)	enter a loop which applies all registered matches to the input file
+-	[read](api/modules/pl.data.html#read)(pl.data)	read a delimited file in a Lua table
+-	[read](api/modules/pl.config.html#read)(pl.config)	read a configuration file into a table
+-	[readfile](api/modules/pl.utils.html#readfile)(pl.utils)	return the contents of a file as a string
+-	[readlines](api/modules/pl.utils.html#readlines)(pl.utils)	return the contents of a file as a list of lines
+-	[reduce](api/modules/pl.tablex.html#reduce)(pl.tablex)	'reduce' a list using a binary function
+-	[reduce2](api/modules/pl.array2d.html#reduce2)(pl.array2d)	reduce a 2D array into a scalar, using two operations
+-	[reduce_cols](api/modules/pl.array2d.html#reduce_cols)(pl.array2d)	reduce the columns using a function
+-	[reduce_rows](api/modules/pl.array2d.html#reduce_rows)(pl.array2d)	reduce the rows using a function
+-	[register](api/modules/pl.func.html#register)(pl.func)	register a function for use in placeholder expressions
+-	[remove_col](api/modules/pl.array2d.html#remove_col)(pl.array2d)	remove a column from an array
+-	[remove_row](api/modules/pl.array2d.html#remove_row)(pl.array2d)	remove a row from an array
+-	[removevalues](api/modules/pl.tablex.html#removevalues)(pl.tablex)	remove a range of values from a table
+-	[replace](api/modules/pl.stringx.html#replace)(pl.stringx)	replace up to n instances of old by new in the string s
+-	[repr](api/modules/pl.func.html#repr)(pl.func)	create a string representation of a placeholder expression
+-	[require_here](api/modules/pl.path.html#require_here)(pl.path)	add the current script's path to the Lua module path
+-	[rfind](api/modules/pl.stringx.html#rfind)(pl.stringx)	find index of first instance of sub in s from the right
+-	[rfind](api/modules/pl.tablex.html#rfind)(pl.tablex)	return the index of a value in a list, searching from the end
+-	[rjust](api/modules/pl.stringx.html#rjust)(pl.stringx)	right-justify s with width w
+-	[rmtree](api/modules/pl.dir.html#rmtree)(pl.dir)	remove a whole directory tree
+-	[rpartition](api/modules/pl.stringx.html#rpartition)(pl.stringx)	partition the string p using last occurance of a delimiter
+-	[rstrip](api/modules/pl.stringx.html#rstrip)(pl.stringx)	trim any whitespace on the right of s
+-	[scan](api/modules/pl.lexer.html#scan)(pl.lexer)	create a plain token iterator from a string
+-	[search](api/modules/pl.tablex.html#search)(pl.tablex)	find a value in a table by recursive search
+-	[set](api/modules/pl.tablex.html#set)(pl.tablex)	set an array range to a value
+-	[set](api/modules/pl.array2d.html#set)(pl.array2d)	set a specified range of an array to a value
+-	[size](api/modules/pl.tablex.html#size)(pl.tablex)	total number of elements in this table
+-	[skipws](api/modules/pl.lexer.html#skipws)(pl.lexer)	get the next non-space token from the stream
+-	[slice](api/modules/pl.array2d.html#slice)(pl.array2d)	get a slice of a 2D array
+-	[split](api/modules/pl.stringx.html#split)(pl.stringx)	split a string into a list of strings using a pattern
+-	[split](api/modules/pl.utils.html#split)(pl.utils)	- split a string into a list of strings separated by a delimiter
+-	[splitext](api/modules/pl.path.html#splitext)(pl.path)	given a path, return the root part and the extension part
+-	[splitl](api/modules/pl.utils.html#splitl)(pl.utils)	split a string into a list of strings separated by either spaces or commas
+-	[splitpath](api/modules/pl.path.html#splitpath)(pl.path)	given a path, return the directory part and a file part
+-	[splitv](api/modules/pl.stringx.html#splitv)(pl.stringx)	split a string using a pattern
+-	[splitv](api/modules/pl.utils.html#splitv)(pl.utils)	split a string into a number of values
+-	[startswith](api/modules/pl.stringx.html#startswith)(pl.stringx)	does string start with the substring?
+-	[strip](api/modules/pl.stringx.html#strip)(pl.stringx)	trim any whitespace on both left and right of s
+-	[sub](api/modules/pl.operator.html#sub)(pl.operator)	subtract b from a -
+-	[swap_cols](api/modules/pl.array2d.html#swap_cols)(pl.array2d)	swap two columns of an array
+-	[swap_rows](api/modules/pl.array2d.html#swap_rows)(pl.array2d)	swap two rows of an array
+-	[table](api/modules/pl.operator.html#table)(pl.operator)	make a table from the arguments
+-	[table](api/modules/pl.permute.html#table)(pl.permute)	construct a table containing all the permutations of a list
+-	[tail](api/modules/pl.func.html#tail)(pl.func)	all elements of a table except the first
+-	[timer](api/modules/pl.test.html#timer)(pl.test)	Time a function
+-	[tmpname](api/modules/pl.path.html#tmpname)(pl.path)	Return a suitable full path to a new temporary file name
+-	[transform](api/modules/pl.tablex.html#transform)(pl.tablex)	apply a function to all values of a table, in-place
+-	[unm](api/modules/pl.operator.html#unm)(pl.operator)	return the negative of a value -
+-	[update](api/modules/pl.tablex.html#update)(pl.tablex)	copy a table into another, in-place
+-	[values](api/modules/pl.tablex.html#values)(pl.tablex)	return all the values of the table in arbitrary order
+-	[words](api/modules/pl.input.html#words)(pl.input)	generate a sequence of words from a source
+-	[wrap](api/modules/pl.text.html#wrap)(pl.text)	format a paragraph into lines so that they fit into a line width
+-	[write](api/modules/pl.array2d.html#write)(pl.array2d)	write a 2D array to a file
+-	[writefile](api/modules/pl.utils.html#writefile)(pl.utils)	write a string to a file
+-	[zip](api/modules/pl.tablex.html#zip)(pl.tablex)	return a table where each element is a table of the ith values of an arbitrary

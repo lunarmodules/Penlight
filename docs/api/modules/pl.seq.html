@@ -1,0 +1,1053 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="../luadoc.css" type="text/css" />
+	<!--meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/-->
+</head>
+
+<body>
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+<div id="main">
+
+<div id="navigation">
+
+
+<h1>LuaDoc</h1>
+<ul>
+	
+	<li><a href="../index.html">Index</a></li>
+	
+</ul>
+
+
+<!-- Module list -->
+
+<h1>Modules</h1>
+<ul>
+
+	<li>
+		<a href="../modules/pl.app.html">pl.app</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.array2d.html">pl.array2d</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.class.html">pl.class</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.classx.html">pl.classx</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.config.html">pl.config</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.data.html">pl.data</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.dir.html">pl.dir</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.file.html">pl.file</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.func.html">pl.func</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.input.html">pl.input</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.lexer.html">pl.lexer</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.list.html">pl.list</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.operator.html">pl.operator</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.path.html">pl.path</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.permute.html">pl.permute</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.pretty.html">pl.pretty</a>
+	</li>
+
+	<li><strong>pl.seq</strong></li>
+	
+	<li>
+		<a href="../modules/pl.sip.html">pl.sip</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.stringio.html">pl.stringio</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.stringx.html">pl.stringx</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.tablex.html">pl.tablex</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.test.html">pl.test</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.text.html">pl.text</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.utils.html">pl.utils</a>
+	</li>
+
+</ul>
+
+
+
+<!-- File list -->
+
+
+
+
+
+
+</div><!-- id="navigation" -->
+
+<div id="content">
+
+<h1>Module <code>pl.seq</code></h1>
+
+<p>Manipulating sequences as iterators.</p>
+
+
+
+
+
+
+<h2>Functions</h2>
+<table class="function_list">
+
+	<tr>
+	<td class="name" nowrap><a href="#copy">copy</a>&nbsp;(iter)</td>
+	<td class="summary">create a table from the sequence.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#copy2">copy2</a>&nbsp;(iter, i1, i2)</td>
+	<td class="summary">create a table of pairs from the double-valued sequence.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#copy_tuples">copy_tuples</a>&nbsp;(iter)</td>
+	<td class="summary">create a table of 'tuples' from a multi-valued sequence.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#count_map">count_map</a>&nbsp;(iter)</td>
+	<td class="summary">A table where the key/values are the values and value counts of the sequence.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#enum">enum</a>&nbsp;(iter)</td>
+	<td class="summary">a sequence with a sequence count and the original value.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#filter">filter</a>&nbsp;(iter, pred, arg)</td>
+	<td class="summary">filter a sequence using a predicate function </td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#foreach">foreach</a>&nbsp;(iter, fn)</td>
+	<td class="summary">call the function on each element of the sequence.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#keys">keys</a>&nbsp;(t)</td>
+	<td class="summary">return the keys of the table.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#last">last</a>&nbsp;(iter)</td>
+	<td class="summary">a sequence of (last,current) values from another sequence.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#lines">lines</a>&nbsp;(f)</td>
+	<td class="summary">create a wrapped iterator over all lines in the file.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#list">list</a>&nbsp;(t)</td>
+	<td class="summary">sequence adaptor for a table.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#map">map</a>&nbsp;(fn, iter, arg)</td>
+	<td class="summary">return a sequence where every element of a sequence has been transformed by a function.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#mapmethod">mapmethod</a>&nbsp;(iter, name, arg1, arg2)</td>
+	<td class="summary">map using a named method over a sequence.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#matching">matching</a>&nbsp;(s, a)</td>
+	<td class="summary">given a string, return a function(y) which matches y against the string.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#minmax">minmax</a>&nbsp;(iter)</td>
+	<td class="summary">return the minimum and the maximum value of the sequence.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#random">random</a>&nbsp;(n, l, u)</td>
+	<td class="summary">return an iterator of random numbers.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#range">range</a>&nbsp;(start, finish)</td>
+	<td class="summary">create an iterator over a numerical range.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#reduce">reduce</a>&nbsp;(fun, seq, oldval)</td>
+	<td class="summary">'reduce' a sequence using a binary function.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#skip">skip</a>&nbsp;(iter, n)</td>
+	<td class="summary">skip the first n values of a sequence </td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#sort">sort</a>&nbsp;(iter, comp)</td>
+	<td class="summary">return an iterator to the sorted elements of a sequence.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#sum">sum</a>&nbsp;(iter, fn)</td>
+	<td class="summary">return the sum and element count of the sequence.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#take">take</a>&nbsp;(iter, n)</td>
+	<td class="summary">take the first n values from the sequence.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#zip">zip</a>&nbsp;(iter1, iter2)</td>
+	<td class="summary">return an iterator which returns elements of two sequences.</td>
+	</tr>
+
+</table>
+
+
+
+
+
+<br/>
+<br/>
+
+
+
+<h2><a name="functions"></a>Functions</h2>
+<dl class="function">
+
+
+
+<dt><a name="copy"></a><strong>copy</strong>&nbsp;(iter)</dt>
+<dd>
+create a table from the sequence. (This will make the result a List.)
+
+
+<h3>Parameters:</h3>
+<ul>
+	
+	<li>
+	  <code><em>iter</em></code>: a sequence
+	</li>
+	
+</ul>
+
+
+
+
+<h3>Usage:</h3>
+<ul>
+	
+	<li><pre class=example>copy(list(ls)) is equal to ls</pre></li>
+	
+	<li><pre class=example>copy(list {1,2,3},List) == List{1,2,3}</pre></li>
+	
+</ul>
+
+
+
+<h3>Return value:</h3>
+<ul>a List</ul>
+
+
+
+</dd>
+
+
+
+
+<dt><a name="copy2"></a><strong>copy2</strong>&nbsp;(iter, i1, i2)</dt>
+<dd>
+create a table of pairs from the double-valued sequence.
+
+
+<h3>Parameters:</h3>
+<ul>
+	
+	<li>
+	  <code><em>iter</em></code>: a double-valued sequence
+	</li>
+	
+	<li>
+	  <code><em>i1</em></code>: 
+	</li>
+	
+	<li>
+	  <code><em>i2</em></code>: 
+	</li>
+	
+</ul>
+
+
+
+
+
+
+<h3>Return value:</h3>
+<ul>a list-like table</ul>
+
+
+
+</dd>
+
+
+
+
+<dt><a name="copy_tuples"></a><strong>copy_tuples</strong>&nbsp;(iter)</dt>
+<dd>
+create a table of 'tuples' from a multi-valued sequence. A generalization of copy2 above
+
+
+<h3>Parameters:</h3>
+<ul>
+	
+	<li>
+	  <code><em>iter</em></code>: a multiple-valued sequence
+	</li>
+	
+</ul>
+
+
+
+
+
+
+<h3>Return value:</h3>
+<ul>a list-like table</ul>
+
+
+
+</dd>
+
+
+
+
+<dt><a name="count_map"></a><strong>count_map</strong>&nbsp;(iter)</dt>
+<dd>
+A table where the key/values are the values and value counts of the sequence. This version works with 'hashable' values like strings and numbers. <br> pl.tablex.count_map is more general.
+
+
+<h3>Parameters:</h3>
+<ul>
+	
+	<li>
+	  <code><em>iter</em></code>: 
+	</li>
+	
+</ul>
+
+
+
+
+
+
+<h3>Return values:</h3>
+<ol>
+	
+	<li>a map-like table</li>
+	
+	<li>a table</li>
+	
+</ol>
+
+
+
+<h3>See also:</h3>
+<ul>
+	
+	<!-- <li><a href="#../modules/pl.tablex.html#count_mappl.tablex.count_map"> -->
+	<li><a href="#pl.tablex.count_map">
+		pl.tablex.count_map</li>
+	</a>
+	
+</ul>
+
+</dd>
+
+
+
+
+<dt><a name="enum"></a><strong>enum</strong>&nbsp;(iter)</dt>
+<dd>
+a sequence with a sequence count and the original value. <br> enum(copy(ls)) is a roundabout way of saying ipairs(ls).
+
+
+<h3>Parameters:</h3>
+<ul>
+	
+	<li>
+	  <code><em>iter</em></code>: a single or double valued sequence
+	</li>
+	
+</ul>
+
+
+
+
+
+
+<h3>Return value:</h3>
+<ul>sequence of (i,v), i = 1..n and v is from iter.</ul>
+
+
+
+</dd>
+
+
+
+
+<dt><a name="filter"></a><strong>filter</strong>&nbsp;(iter, pred, arg)</dt>
+<dd>
+filter a sequence using a predicate function
+
+
+<h3>Parameters:</h3>
+<ul>
+	
+	<li>
+	  <code><em>iter</em></code>: a sequence of one or two values
+	</li>
+	
+	<li>
+	  <code><em>pred</em></code>: a boolean function; may take two arguments
+	</li>
+	
+	<li>
+	  <code><em>arg</em></code>: optional argument to pass to function.
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+
+</dd>
+
+
+
+
+<dt><a name="foreach"></a><strong>foreach</strong>&nbsp;(iter, fn)</dt>
+<dd>
+call the function on each element of the sequence.
+
+
+<h3>Parameters:</h3>
+<ul>
+	
+	<li>
+	  <code><em>iter</em></code>: a sequence with up to 3 values
+	</li>
+	
+	<li>
+	  <code><em>fn</em></code>: a function
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+
+</dd>
+
+
+
+
+<dt><a name="keys"></a><strong>keys</strong>&nbsp;(t)</dt>
+<dd>
+return the keys of the table.
+
+
+<h3>Parameters:</h3>
+<ul>
+	
+	<li>
+	  <code><em>t</em></code>: a list-like table
+	</li>
+	
+</ul>
+
+
+
+
+
+
+<h3>Return value:</h3>
+<ul>iterator over keys</ul>
+
+
+
+</dd>
+
+
+
+
+<dt><a name="last"></a><strong>last</strong>&nbsp;(iter)</dt>
+<dd>
+a sequence of (last,current) values from another sequence. This will return S(i-1),S(i) if given S(i)
+
+
+<h3>Parameters:</h3>
+<ul>
+	
+	<li>
+	  <code><em>iter</em></code>: a sequence
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+
+</dd>
+
+
+
+
+<dt><a name="lines"></a><strong>lines</strong>&nbsp;(f)</dt>
+<dd>
+create a wrapped iterator over all lines in the file.
+
+
+<h3>Parameters:</h3>
+<ul>
+	
+	<li>
+	  <code><em>f</em></code>: either a filename or nil (for standard input)
+	</li>
+	
+</ul>
+
+
+
+
+
+
+<h3>Return value:</h3>
+<ul>a sequence wrapper</ul>
+
+
+
+</dd>
+
+
+
+
+<dt><a name="list"></a><strong>list</strong>&nbsp;(t)</dt>
+<dd>
+sequence adaptor for a table.   Note that if any generic function is passed a table, it will automatically use seq.list()
+
+
+<h3>Parameters:</h3>
+<ul>
+	
+	<li>
+	  <code><em>t</em></code>: a list-like table
+	</li>
+	
+</ul>
+
+
+
+
+<h3>Usage:</h3>
+<ul>
+	
+	<li><pre class=example>sum(list(t)) is the sum of all elements of t</pre></li>
+	
+	<li><pre class=example>for x in list(t) do...end</pre></li>
+	
+</ul>
+
+
+
+
+
+</dd>
+
+
+
+
+<dt><a name="map"></a><strong>map</strong>&nbsp;(fn, iter, arg)</dt>
+<dd>
+return a sequence where every element of a sequence has been transformed by a function. If you don't supply an argument, then the function will receive both values of a double-valued sequence, otherwise behaves rather like tablex.map.
+
+
+<h3>Parameters:</h3>
+<ul>
+	
+	<li>
+	  <code><em>fn</em></code>: a function to apply to elements; may take two arguments
+	</li>
+	
+	<li>
+	  <code><em>iter</em></code>: a sequence of one or two values
+	</li>
+	
+	<li>
+	  <code><em>arg</em></code>: optional argument to pass to function.
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+
+</dd>
+
+
+
+
+<dt><a name="mapmethod"></a><strong>mapmethod</strong>&nbsp;(iter, name, arg1, arg2)</dt>
+<dd>
+map using a named method over a sequence.
+
+
+<h3>Parameters:</h3>
+<ul>
+	
+	<li>
+	  <code><em>iter</em></code>: a sequence
+	</li>
+	
+	<li>
+	  <code><em>name</em></code>: the method name
+	</li>
+	
+	<li>
+	  <code><em>arg1</em></code>: optional second extra argument
+	</li>
+	
+	<li>
+	  <code><em>arg2</em></code>: 
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+
+</dd>
+
+
+
+
+<dt><a name="matching"></a><strong>matching</strong>&nbsp;(s, a)</dt>
+<dd>
+given a string, return a function(y) which matches y against the string.
+
+
+<h3>Parameters:</h3>
+<ul>
+	
+	<li>
+	  <code><em>s</em></code>: 
+	</li>
+	
+	<li>
+	  <code><em>a</em></code>: string
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+
+</dd>
+
+
+
+
+<dt><a name="minmax"></a><strong>minmax</strong>&nbsp;(iter)</dt>
+<dd>
+return the minimum and the maximum value of the sequence.
+
+
+<h3>Parameters:</h3>
+<ul>
+	
+	<li>
+	  <code><em>iter</em></code>: a sequence
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+
+</dd>
+
+
+
+
+<dt><a name="random"></a><strong>random</strong>&nbsp;(n, l, u)</dt>
+<dd>
+return an iterator of random numbers.
+
+
+<h3>Parameters:</h3>
+<ul>
+	
+	<li>
+	  <code><em>n</em></code>: the length of the sequence
+	</li>
+	
+	<li>
+	  <code><em>l</em></code>: same as the first optional argument to math.random
+	</li>
+	
+	<li>
+	  <code><em>u</em></code>: same as the second optional argument to math.random
+	</li>
+	
+</ul>
+
+
+
+
+
+
+<h3>Return value:</h3>
+<ul>a sequnce</ul>
+
+
+
+</dd>
+
+
+
+
+<dt><a name="range"></a><strong>range</strong>&nbsp;(start, finish)</dt>
+<dd>
+create an iterator over a numerical range. Like the standard Python function xrange.
+
+
+<h3>Parameters:</h3>
+<ul>
+	
+	<li>
+	  <code><em>start</em></code>: a number
+	</li>
+	
+	<li>
+	  <code><em>finish</em></code>: a number greater than start
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+
+</dd>
+
+
+
+
+<dt><a name="reduce"></a><strong>reduce</strong>&nbsp;(fun, seq, oldval)</dt>
+<dd>
+'reduce' a sequence using a binary function.
+
+
+<h3>Parameters:</h3>
+<ul>
+	
+	<li>
+	  <code><em>fun</em></code>: a function of two arguments
+	</li>
+	
+	<li>
+	  <code><em>seq</em></code>: a sequence
+	</li>
+	
+	<li>
+	  <code><em>oldval</em></code>: 
+	</li>
+	
+</ul>
+
+
+
+
+<h3>Usage:</h3>
+<ul><pre class=example>seq.reduce(operator.add,seq.list{1,2,3,4}) == 10</pre></ul>
+
+
+
+
+
+</dd>
+
+
+
+
+<dt><a name="skip"></a><strong>skip</strong>&nbsp;(iter, n)</dt>
+<dd>
+skip the first n values of a sequence
+
+
+<h3>Parameters:</h3>
+<ul>
+	
+	<li>
+	  <code><em>iter</em></code>: a sequence of one or more values
+	</li>
+	
+	<li>
+	  <code><em>n</em></code>: number of items to skip
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+
+</dd>
+
+
+
+
+<dt><a name="sort"></a><strong>sort</strong>&nbsp;(iter, comp)</dt>
+<dd>
+return an iterator to the sorted elements of a sequence.
+
+
+<h3>Parameters:</h3>
+<ul>
+	
+	<li>
+	  <code><em>iter</em></code>: a sequence
+	</li>
+	
+	<li>
+	  <code><em>comp</em></code>: an optional comparison function (comp(x,y) is true if x < y)
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+
+</dd>
+
+
+
+
+<dt><a name="sum"></a><strong>sum</strong>&nbsp;(iter, fn)</dt>
+<dd>
+return the sum and element count of the sequence.
+
+
+<h3>Parameters:</h3>
+<ul>
+	
+	<li>
+	  <code><em>iter</em></code>: a sequence
+	</li>
+	
+	<li>
+	  <code><em>fn</em></code>: an optional function to apply to the values
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+
+</dd>
+
+
+
+
+<dt><a name="take"></a><strong>take</strong>&nbsp;(iter, n)</dt>
+<dd>
+take the first n values from the sequence.
+
+
+<h3>Parameters:</h3>
+<ul>
+	
+	<li>
+	  <code><em>iter</em></code>: a sequence of one or two values
+	</li>
+	
+	<li>
+	  <code><em>n</em></code>: number of items to take
+	</li>
+	
+</ul>
+
+
+
+
+
+
+<h3>Return value:</h3>
+<ul>a sequence of at most n items</ul>
+
+
+
+</dd>
+
+
+
+
+<dt><a name="zip"></a><strong>zip</strong>&nbsp;(iter1, iter2)</dt>
+<dd>
+return an iterator which returns elements of two sequences.
+
+
+<h3>Parameters:</h3>
+<ul>
+	
+	<li>
+	  <code><em>iter1</em></code>: a sequence
+	</li>
+	
+	<li>
+	  <code><em>iter2</em></code>: a sequence
+	</li>
+	
+</ul>
+
+
+
+
+<h3>Usage:</h3>
+<ul><pre class=example>for x,y in seq.zip(ls1,ls2) do....end</pre></ul>
+
+
+
+
+
+</dd>
+
+
+</dl>
+
+
+
+
+
+
+</div> <!-- id="content" -->
+
+</div> <!-- id="main" -->
+
+<div id="about">
+	<p><a href="http://validator.w3.org/check?uri=referer"><img src="http://www.w3.org/Icons/valid-xhtml10" alt="Valid XHTML 1.0!" height="31" width="88" /></a></p>
+</div> <!-- id="about" -->
+
+</div> <!-- id="container" -->	
+</body>
+</html>
