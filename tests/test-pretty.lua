@@ -33,4 +33,6 @@ res,err = pretty.read [[
 ]]
 assert(err == 'cannot have Lua keywords in table definition')
 
-
+-- Check to make sure that no spaces exist when write is told not to
+local tbl = { "a", 2, "c", false, 23, 453, "poot", 34 }
+asserteq( pl.pretty.write( tbl, "" ), [[{"a",2,"c",false,23,453,"poot",34}]] )

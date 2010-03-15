@@ -104,7 +104,7 @@ function write (tbl,space,not_clever)
             if t:find('\n') then
                 putln('[[\n'..t..']],')
             else
-                putln(quote(t)..', ')
+                putln(quote(t)..',')
             end
         elseif tp == 'table' then
             if tables[t] then
