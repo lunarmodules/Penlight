@@ -11,10 +11,13 @@ local ldir = lfs.dir
 local chdir = lfs.chdir
 local mkdir = lfs.mkdir
 local escape = utils.escape
+local sub = string.sub
 local os,pcall,ipairs,pairs,require,setmetatable,_G = os,pcall,ipairs,pairs,require,setmetatable,_G
 local remove = os.remove
 local append = table.insert
 local print = print
+local assert = assert
+local type = type
 local wrap = coroutine.wrap
 local yield = coroutine.yield
 local assert_arg,assert_string,raise = utils.assert_arg,utils.assert_string,utils.raise
@@ -349,4 +352,52 @@ function clonetree (path1,path2,file_fun,verbose)
         end
     end
     return true,faildirs,failfiles
+end
+
+---	Recursively returns all the file starting at <i>path</i>. It can optionally take a shell pattern and
+--	only returns files that match <i>pattern</i>. If a pattern is given it will do a case insensitive search.
+--	@param path {string} A directory. If not given, all files in current directory are returned.
+--	@param pattern {string} A shell pattern. If not given, all files are returned.
+--	@return Table containing all the files found recursively starting at <i>path</i> and filtered by <i>pattern</i>.
+function getallfiles( path, pattern )
+	assert( type( path ) == "string", "bad argument #1 to 'GetAllFiles' (Expected string but recieved " .. type( path ) .. ")" )
+	pattern = pattern or ""
+	
+	function dirtree( dir )
+		assert( dir and dir ~= "", "directory parameter is missing or empty" )
+		if sub( dir, -1 ) == "/" then
+			dir = sub( dir, 1, -2 )
+		end
+
+		local function yieldtree( dir )
+			for entry in ldir( dir ) do
+				if entry ~= "." and entry ~= ".." then
+					entry = dir .. "/" .. entry
+					local attr = attrib( entry )
+					if attr then  -- Just in case a symlink is broken.
+						yield( entry, attr )
+					
+						if attr.mode == "directory" then
+							yieldtree( entry )
+						end
+					end
+				end
+			end
+		end
+
+		return wrap( function() yieldtree( dir ) end )
+	end
+	
+	local files = {}
+	for filename, attr in dirtree( path ) do
+		if "file" == attr.mode then
+			local mask = filemask( pattern ):lower()
+			
+			if filename:lower():find( mask ) then
+				files[#files + 1] = filename
+			end
+		end
+	end
+	
+	return files
 end
