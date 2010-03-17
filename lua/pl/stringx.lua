@@ -16,6 +16,7 @@ local sub = string.sub
 local concat = table.concat
 local utils = require 'pl.utils'
 local escape = utils.escape
+local ceil = math.ceil
 local _G = _G
 local assert_arg,usplit,list_MT = utils.assert_arg,utils.split,utils.stdmt.List
 
@@ -202,7 +203,7 @@ function _just(s,w,ch,left,right)
         if not ch then ch = ' ' end
         local f1,f2
         if left and right then
-            f1 = rep(ch,(w-n)/2)
+            f1 = rep(ch,ceil((w-n)/2))
             f2 = f1
         elseif left then
             f1 = rep(ch,w-n)
