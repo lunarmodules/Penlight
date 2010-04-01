@@ -151,7 +151,6 @@
 
 
 
-
 <h2>Functions</h2>
 <table class="function_list">
 
@@ -251,6 +250,7 @@
 
 
 
+
 <br/>
 <br/>
 
@@ -266,11 +266,11 @@
 get a value from the map.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>key</em></code>: the key
+	  key: the key
 	</li>
 	
 </ul>
@@ -281,7 +281,7 @@ get a value from the map.
 
 
 <h3>Return value:</h3>
-<ul>the value, or nil if not found.</ul>
+the value, or nil if not found.
 
 
 
@@ -363,15 +363,15 @@ size of map. note: this is a relatively expensive operation!
 put a value into the map.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>key</em></code>: the key
+	  key: the key
 	</li>
 	
 	<li>
-	  <code><em>val</em></code>: the value
+	  val: the value
 	</li>
 	
 </ul>
@@ -410,11 +410,11 @@ list of values.
 new set with elements in the set that are not in the other (also -).
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>set</em></code>: another set
+	  set: another set
 	</li>
 	
 </ul>
@@ -425,7 +425,7 @@ new set with elements in the set that are not in the other (also -).
 
 
 <h3>Return value:</h3>
-<ul>a new set</ul>
+a new set
 
 
 
@@ -439,11 +439,11 @@ new set with elements in the set that are not in the other (also -).
 intersection of two sets (also *).
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>set</em></code>: another set
+	  set: another set
 	</li>
 	
 </ul>
@@ -454,7 +454,7 @@ intersection of two sets (also *).
 
 
 <h3>Return value:</h3>
-<ul>a new set</ul>
+a new set
 
 
 
@@ -468,11 +468,11 @@ intersection of two sets (also *).
 are the sets disjoint? (no elements in common). Uses naive definition, i.e. that intersection is empty
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>set</em></code>: another set
+	  set: another set
 	</li>
 	
 </ul>
@@ -483,7 +483,7 @@ are the sets disjoint? (no elements in common). Uses naive definition, i.e. that
 
 
 <h3>Return value:</h3>
-<ul>true or false</ul>
+true or false
 
 
 
@@ -503,7 +503,7 @@ is the set empty?.
 
 
 <h3>Return value:</h3>
-<ul>true or false</ul>
+true or false
 
 
 
@@ -517,11 +517,11 @@ is the set empty?.
 is the first set a subset of the second?.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>set</em></code>: 
+	  set: 
 	</li>
 	
 </ul>
@@ -532,7 +532,7 @@ is the first set a subset of the second?.
 
 
 <h3>Return value:</h3>
-<ul>true or false</ul>
+true or false
 
 
 
@@ -546,15 +546,15 @@ is the first set a subset of the second?.
 map a function over the values of a set.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>fn</em></code>: a function
+	  fn: a function
 	</li>
 	
 	<li>
-	  <code><em>...</em></code>: extra arguments to pass to the function.
+	  ...: extra arguments to pass to the function.
 	</li>
 	
 </ul>
@@ -565,7 +565,7 @@ map a function over the values of a set.
 
 
 <h3>Return value:</h3>
-<ul>a new set</ul>
+a new set
 
 
 
@@ -579,11 +579,11 @@ map a function over the values of a set.
 add a value to a set.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>key</em></code>: a value
+	  key: a value
 	</li>
 	
 </ul>
@@ -605,11 +605,11 @@ add a value to a set.
 union of two sets (also +).
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>set</em></code>: another set
+	  set: another set
 	</li>
 	
 </ul>
@@ -620,7 +620,7 @@ union of two sets (also +).
 
 
 <h3>Return value:</h3>
-<ul>a new set</ul>
+a new set
 
 
 
@@ -634,11 +634,11 @@ union of two sets (also +).
 remove a value from a set.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>key</em></code>: a value
+	  key: a value
 	</li>
 	
 </ul>
@@ -677,19 +677,19 @@ get a list of the values in a set.
 create a new class, derived from a given base class. supporting two class creation syntaxes: either 'Name = class()' or'class.Name()'
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>base</em></code>: optional base class
+	  base: optional base class
 	</li>
 	
 	<li>
-	  <code><em>c_arg</em></code>: optional parameter to class ctor
+	  c_arg: optional parameter to class ctor
 	</li>
 	
 	<li>
-	  <code><em>c</em></code>: optional table to be used as class
+	  c: optional table to be used as class
 	</li>
 	
 </ul>

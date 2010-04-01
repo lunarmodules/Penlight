@@ -151,7 +151,6 @@
 
 
 
-
 <h2>Functions</h2>
 <table class="function_list">
 
@@ -206,6 +205,7 @@
 
 
 
+
 <br/>
 <br/>
 
@@ -221,11 +221,11 @@
 instantiate a PE unless it has already been done.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>e</em></code>: a placeholder expression
+	  e: a placeholder expression
 	</li>
 	
 </ul>
@@ -236,7 +236,7 @@ instantiate a PE unless it has already been done.
 
 
 <h3>Return value:</h3>
-<ul>the function</ul>
+the function
 
 
 
@@ -250,15 +250,15 @@ instantiate a PE unless it has already been done.
 bind the arguments of a function to given values. bind(fn,v,_2) is equivalent to curry(fn,v).
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>fn</em></code>: a function of at least one argument
+	  fn: a function of at least one argument
 	</li>
 	
 	<li>
-	  <code><em>...</em></code>: values or placeholder variables
+	  ...: values or placeholder variables
 	</li>
 	
 </ul>
@@ -266,19 +266,19 @@ bind the arguments of a function to given values. bind(fn,v,_2) is equivalent to
 
 
 
-<h3>Usage:</h3>
+<h3>Usage</h3>
 <ul>
 	
-	<li><pre class=example>(bind(f,_1,a))(b) == f(a,b)</pre></li>
+	<li>(bind(f,_1,a))(b) == f(a,b)
 	
-	<li><pre class=example>(bind(f,_2,_1))(a,b) == f(b,a)</pre></li>
+	<li>(bind(f,_2,_1))(a,b) == f(b,a)
 	
 </ul>
 
 
 
 <h3>Return value:</h3>
-<ul>a function</ul>
+a function
 
 
 
@@ -292,15 +292,15 @@ bind the arguments of a function to given values. bind(fn,v,_2) is equivalent to
 create a function which chains two functions.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>f</em></code>: a function of at least one argument
+	  f: a function of at least one argument
 	</li>
 	
 	<li>
-	  <code><em>g</em></code>: a function of at least one argument
+	  g: a function of at least one argument
 	</li>
 	
 </ul>
@@ -309,12 +309,12 @@ create a function which chains two functions.
 
 
 <h3>Usage:</h3>
-<ul><pre class=example>printf = compose(io.write,string.format)</pre></ul>
+printf = compose(io.write,string.format)
 
 
 
 <h3>Return value:</h3>
-<ul>a function</ul>
+a function
 
 
 
@@ -328,15 +328,15 @@ create a function which chains two functions.
 bind the first parameter of the function to a value.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>fn</em></code>: a function of one or more arguments
+	  fn: a function of one or more arguments
 	</li>
 	
 	<li>
-	  <code><em>p</em></code>: a value
+	  p: a value
 	</li>
 	
 </ul>
@@ -345,12 +345,12 @@ bind the first parameter of the function to a value.
 
 
 <h3>Usage:</h3>
-<ul><pre class=example>(curry(math.max,10))(20) == math.max(10,20)</pre></ul>
+(curry(math.max,10))(20) == math.max(10,20)
 
 
 
 <h3>Return value:</h3>
-<ul>a function of one less argument</ul>
+a function of one less argument
 
 
 
@@ -364,15 +364,15 @@ bind the first parameter of the function to a value.
 wrap a table of functions. This makes them available for use in placeholder expressions.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>tname</em></code>: a table name
+	  tname: a table name
 	</li>
 	
 	<li>
-	  <code><em>context</em></code>: context to put results, defaults to environment of caller
+	  context: context to put results, defaults to environment of caller
 	</li>
 	
 </ul>
@@ -394,11 +394,11 @@ wrap a table of functions. This makes them available for use in placeholder expr
 instantiate a PE into an actual function. First we find the largest placeholder used, e.g. _2; from this a list of the formal parameters can be build. Then we collect and replace any non-PE values from the PE, and build up a constant binding list. Finally, the expression can be compiled, and e.__PE_function is set.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>e</em></code>: a placeholder expression
+	  e: a placeholder expression
 	</li>
 	
 </ul>
@@ -409,7 +409,7 @@ instantiate a PE into an actual function. First we find the largest placeholder 
 
 
 <h3>Return value:</h3>
-<ul>a function</ul>
+a function
 
 
 
@@ -423,19 +423,19 @@ instantiate a PE into an actual function. First we find the largest placeholder 
 register a function for use in placeholder expressions.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>fun</em></code>: a function
+	  fun: a function
 	</li>
 	
 	<li>
-	  <code><em>name</em></code>: 
+	  name: 
 	</li>
 	
 	<li>
-	  <code><em>an</em></code>: optional name
+	  an: optional name
 	</li>
 	
 </ul>
@@ -446,7 +446,7 @@ register a function for use in placeholder expressions.
 
 
 <h3>Return value:</h3>
-<ul>a placeholder functiond</ul>
+a placeholder functiond
 
 
 
@@ -460,15 +460,15 @@ register a function for use in placeholder expressions.
 create a string representation of a placeholder expression.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>e</em></code>: a placeholder expression
+	  e: a placeholder expression
 	</li>
 	
 	<li>
-	  <code><em>lastpred</em></code>: 
+	  lastpred: 
 	</li>
 	
 </ul>
@@ -490,11 +490,11 @@ create a string representation of a placeholder expression.
 all elements of a table except the first.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>ls</em></code>: a list-like table.
+	  ls: a list-like table.
 	</li>
 	
 </ul>

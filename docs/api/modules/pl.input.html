@@ -151,7 +151,6 @@
 
 
 
-
 <h2>Functions</h2>
 <table class="function_list">
 
@@ -186,6 +185,7 @@
 
 
 
+
 <br/>
 <br/>
 
@@ -201,19 +201,19 @@
 create an iterator over all tokens. based on allwords from PiL, 7.1
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>getter</em></code>: any function that returns a line of text
+	  getter: any function that returns a line of text
 	</li>
 	
 	<li>
-	  <code><em>pattern</em></code>: 
+	  pattern: 
 	</li>
 	
 	<li>
-	  <code><em>fn</em></code>: Optionally can pass a function to process each token as it/s found.
+	  fn: Optionally can pass a function to process each token as it/s found.
 	</li>
 	
 </ul>
@@ -224,7 +224,7 @@ create an iterator over all tokens. based on allwords from PiL, 7.1
 
 
 <h3>Return value:</h3>
-<ul>an iterator</ul>
+an iterator
 
 
 
@@ -238,11 +238,11 @@ create an iterator over all tokens. based on allwords from PiL, 7.1
 create a function which grabs the next value from a source. If the source is a string, then the getter will return the string and thereafter return nil. If not specified then the source is assumed to be stdin.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>f</em></code>: a string or a file-like object (i.e. has a read() method which returns the next line)
+	  f: a string or a file-like object (i.e. has a read() method which returns the next line)
 	</li>
 	
 </ul>
@@ -253,7 +253,7 @@ create a function which grabs the next value from a source. If the source is a s
 
 
 <h3>Return value:</h3>
-<ul>a getter function</ul>
+a getter function
 
 
 
@@ -267,23 +267,23 @@ create a function which grabs the next value from a source. If the source is a s
 parse an input source into fields. By default, will fail if it cannot convert a field to a number.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>ids</em></code>: a list of field indices, or a maximum field index
+	  ids: a list of field indices, or a maximum field index
 	</li>
 	
 	<li>
-	  <code><em>delim</em></code>: delimiter to parse fields (default space)
+	  delim: delimiter to parse fields (default space)
 	</li>
 	
 	<li>
-	  <code><em>f</em></code>: a source (@see create_getter)
+	  f: a source (@see create_getter)
 	</li>
 	
 	<li>
-	  <code><em>opts</em></code>: option table, {no_fail=true}
+	  opts: option table, {no_fail=true}
 	</li>
 	
 </ul>
@@ -292,12 +292,12 @@ parse an input source into fields. By default, will fail if it cannot convert a 
 
 
 <h3>Usage:</h3>
-<ul><pre class=example>for x,y in fields {2,3} do print(x,y) end -- 2nd and 3rd fields from stdin</pre></ul>
+for x,y in fields {2,3} do print(x,y) end -- 2nd and 3rd fields from stdin
 
 
 
 <h3>Return value:</h3>
-<ul>an iterator with the field values</ul>
+an iterator with the field values
 
 
 
@@ -311,11 +311,11 @@ parse an input source into fields. By default, will fail if it cannot convert a 
 generate a sequence of numbers from a source.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>f</em></code>: A source
+	  f: A source
 	</li>
 	
 </ul>
@@ -326,7 +326,7 @@ generate a sequence of numbers from a source.
 
 
 <h3>Return value:</h3>
-<ul>An iterator</ul>
+An iterator
 
 
 
@@ -340,11 +340,11 @@ generate a sequence of numbers from a source.
 generate a sequence of words from a source.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>f</em></code>: A source
+	  f: A source
 	</li>
 	
 </ul>
@@ -355,7 +355,7 @@ generate a sequence of words from a source.
 
 
 <h3>Return value:</h3>
-<ul>An iterator</ul>
+An iterator
 
 
 

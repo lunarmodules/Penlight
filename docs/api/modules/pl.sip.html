@@ -151,7 +151,6 @@
 
 
 
-
 <h2>Functions</h2>
 <table class="function_list">
 
@@ -196,6 +195,7 @@
 
 
 
+
 <br/>
 <br/>
 
@@ -211,15 +211,15 @@
 convert a SIP pattern into a matching function. The returned function takes two arguments, the line and an empty table. If the line matched the pattern, then this function return true and the table is filled with field-value pairs.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>spec</em></code>: a SIP pattern
+	  spec: a SIP pattern
 	</li>
 	
 	<li>
-	  <code><em>options</em></code>: optional table; {anywhere=true} will stop pattern anchoring at start
+	  options: optional table; {anywhere=true} will stop pattern anchoring at start
 	</li>
 	
 </ul>
@@ -230,7 +230,7 @@ convert a SIP pattern into a matching function. The returned function takes two 
 
 
 <h3>Return value:</h3>
-<ul>a function if successful, or nil,<error></ul>
+a function if successful, or nil,<error>
 
 
 
@@ -244,23 +244,23 @@ convert a SIP pattern into a matching function. The returned function takes two 
 convert a SIP pattern into the equivalent Lua regular expression.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>spec</em></code>: a SIP pattern
+	  spec: a SIP pattern
 	</li>
 	
 	<li>
-	  <code><em>options</em></code>: 
+	  options: 
 	</li>
 	
 	<li>
-	  <code><em>fieldnames</em></code>: an optional table which is to be filled with fieldnames
+	  fieldnames: an optional table which is to be filled with fieldnames
 	</li>
 	
 	<li>
-	  <code><em>fieldtypes</em></code>: an optional table which maps the names to their types
+	  fieldtypes: an optional table which maps the names to their types
 	</li>
 	
 </ul>
@@ -282,15 +282,15 @@ convert a SIP pattern into the equivalent Lua regular expression.
 given a pattern and a file object, return an iterator over the results
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>spec</em></code>: a SIP pattern
+	  spec: a SIP pattern
 	</li>
 	
 	<li>
-	  <code><em>f</em></code>: a file - use standard input if not specified.
+	  f: a file - use standard input if not specified.
 	</li>
 	
 </ul>
@@ -312,23 +312,23 @@ given a pattern and a file object, return an iterator over the results
 match a SIP pattern against a string.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>spec</em></code>: a SIP pattern
+	  spec: a SIP pattern
 	</li>
 	
 	<li>
-	  <code><em>line</em></code>: a string
+	  line: a string
 	</li>
 	
 	<li>
-	  <code><em>res</em></code>: a table to receive values
+	  res: a table to receive values
 	</li>
 	
 	<li>
-	  <code><em>options</em></code>: (optional) option table
+	  options: (optional) option table
 	</li>
 	
 </ul>
@@ -339,7 +339,7 @@ match a SIP pattern against a string.
 
 
 <h3>Return value:</h3>
-<ul>true or false</ul>
+true or false
 
 
 
@@ -353,19 +353,19 @@ match a SIP pattern against a string.
 match a SIP pattern against the start of a string.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>spec</em></code>: a SIP pattern
+	  spec: a SIP pattern
 	</li>
 	
 	<li>
-	  <code><em>line</em></code>: a string
+	  line: a string
 	</li>
 	
 	<li>
-	  <code><em>res</em></code>: a table to receive values
+	  res: a table to receive values
 	</li>
 	
 </ul>
@@ -376,7 +376,7 @@ match a SIP pattern against the start of a string.
 
 
 <h3>Return value:</h3>
-<ul>true or false</ul>
+true or false
 
 
 
@@ -390,15 +390,15 @@ match a SIP pattern against the start of a string.
 register a match which will be used in the read function.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>spec</em></code>: a SIP pattern
+	  spec: a SIP pattern
 	</li>
 	
 	<li>
-	  <code><em>fun</em></code>: a function to be called with the results of the match
+	  fun: a function to be called with the results of the match
 	</li>
 	
 </ul>
@@ -413,9 +413,8 @@ register a match which will be used in the read function.
 <h3>See also:</h3>
 <ul>
 	
-	<!-- <li><a href="#../modules/pl.sip.html#readread"> -->
-	<li><a href="#read">
-		read</li>
+	<li><a href="../modules/pl.sip.html#read">
+		read
 	</a>
 	
 </ul>
@@ -430,11 +429,11 @@ register a match which will be used in the read function.
 enter a loop which applies all registered matches to the input file.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>f</em></code>: a file object; if nil, then io.stdin is assumed.
+	  f: a file object; if nil, then io.stdin is assumed.
 	</li>
 	
 </ul>

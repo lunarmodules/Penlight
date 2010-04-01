@@ -151,7 +151,6 @@
 
 
 
-
 <h2>Functions</h2>
 <table class="function_list">
 
@@ -196,6 +195,7 @@
 
 
 
+
 <br/>
 <br/>
 
@@ -211,11 +211,11 @@
 substitute values into a template, preserving indentation. <br> If the value is a multiline string _or_ a template, it will insert the lines at the correct indentation. <br> Furthermore, if a template, then that template will be subsituted using the same table.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>tbl</em></code>: a table of name-value pairs.
+	  tbl: a table of name-value pairs.
 	</li>
 	
 </ul>
@@ -237,11 +237,11 @@ substitute values into a template, preserving indentation. <br> If the value is 
 substitute values into a template. This version just passes unknown names through.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>tbl</em></code>: a table of name-value pairs.
+	  tbl: a table of name-value pairs.
 	</li>
 	
 </ul>
@@ -263,11 +263,11 @@ substitute values into a template. This version just passes unknown names throug
 substitute values into a template, throwing an error. This will throw an error if no name is found.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>tbl</em></code>: a table of name-value pairs.
+	  tbl: a table of name-value pairs.
 	</li>
 	
 </ul>
@@ -289,11 +289,11 @@ substitute values into a template, throwing an error. This will throw an error i
 dedent a multiline string by removing any initial indent. useful when working with [[..]] strings.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>s</em></code>: the string
+	  s: the string
 	</li>
 	
 </ul>
@@ -304,7 +304,7 @@ dedent a multiline string by removing any initial indent. useful when working wi
 
 
 <h3>Return value:</h3>
-<ul>a string with initial indent zero.</ul>
+a string with initial indent zero.
 
 
 
@@ -318,15 +318,15 @@ dedent a multiline string by removing any initial indent. useful when working wi
 format a paragraph so that it fits into a line width.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>s</em></code>: the string
+	  s: the string
 	</li>
 	
 	<li>
-	  <code><em>width</em></code>: the margin width, default 70
+	  width: the margin width, default 70
 	</li>
 	
 </ul>
@@ -337,16 +337,15 @@ format a paragraph so that it fits into a line width.
 
 
 <h3>Return value:</h3>
-<ul>a string</ul>
+a string
 
 
 
 <h3>See also:</h3>
 <ul>
 	
-	<!-- <li><a href="#../modules/pl.text.html#wrapwrap"> -->
-	<li><a href="#wrap">
-		wrap</li>
+	<li><a href="../modules/pl.text.html#wrap">
+		wrap
 	</a>
 	
 </ul>
@@ -361,19 +360,19 @@ format a paragraph so that it fits into a line width.
 indent a multiline string.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>s</em></code>: the string
+	  s: the string
 	</li>
 	
 	<li>
-	  <code><em>n</em></code>: the size of the indent
+	  n: the size of the indent
 	</li>
 	
 	<li>
-	  <code><em>ch</em></code>: the character to use when indenting (default ' ')
+	  ch: the character to use when indenting (default ' ')
 	</li>
 	
 </ul>
@@ -384,7 +383,7 @@ indent a multiline string.
 
 
 <h3>Return value:</h3>
-<ul>indented string</ul>
+indented string
 
 
 
@@ -398,15 +397,15 @@ indent a multiline string.
 format a paragraph into lines so that they fit into a line width. It will not break long words, so lines can be over the length to that extent.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>s</em></code>: the string
+	  s: the string
 	</li>
 	
 	<li>
-	  <code><em>width</em></code>: the margin width, default 70
+	  width: the margin width, default 70
 	</li>
 	
 </ul>
@@ -417,7 +416,7 @@ format a paragraph into lines so that they fit into a line width. It will not br
 
 
 <h3>Return value:</h3>
-<ul>a list of lines</ul>
+a list of lines
 
 
 

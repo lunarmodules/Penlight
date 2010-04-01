@@ -1,5 +1,7 @@
---------------------------------------------
 --- Useful test utilities.
+-- @class module
+-- @name pl.test
+
 local tablex = require 'pl.tablex'
 local utils = require 'pl.utils'
 local pretty = require 'pl.pretty'

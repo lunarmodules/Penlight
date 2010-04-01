@@ -151,7 +151,6 @@
 
 
 
-
 <h2>Functions</h2>
 <table class="function_list">
 
@@ -276,6 +275,7 @@
 
 
 
+
 <br/>
 <br/>
 
@@ -291,11 +291,11 @@
 create a table from the sequence. (This will make the result a List.)
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>iter</em></code>: a sequence
+	  iter: a sequence
 	</li>
 	
 </ul>
@@ -303,19 +303,19 @@ create a table from the sequence. (This will make the result a List.)
 
 
 
-<h3>Usage:</h3>
+<h3>Usage</h3>
 <ul>
 	
-	<li><pre class=example>copy(list(ls)) is equal to ls</pre></li>
+	<li>copy(list(ls)) is equal to ls
 	
-	<li><pre class=example>copy(list {1,2,3},List) == List{1,2,3}</pre></li>
+	<li>copy(list {1,2,3},List) == List{1,2,3}
 	
 </ul>
 
 
 
 <h3>Return value:</h3>
-<ul>a List</ul>
+a List
 
 
 
@@ -329,19 +329,19 @@ create a table from the sequence. (This will make the result a List.)
 create a table of pairs from the double-valued sequence.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>iter</em></code>: a double-valued sequence
+	  iter: a double-valued sequence
 	</li>
 	
 	<li>
-	  <code><em>i1</em></code>: 
+	  i1: 
 	</li>
 	
 	<li>
-	  <code><em>i2</em></code>: 
+	  i2: 
 	</li>
 	
 </ul>
@@ -352,7 +352,7 @@ create a table of pairs from the double-valued sequence.
 
 
 <h3>Return value:</h3>
-<ul>a list-like table</ul>
+a list-like table
 
 
 
@@ -366,11 +366,11 @@ create a table of pairs from the double-valued sequence.
 create a table of 'tuples' from a multi-valued sequence. A generalization of copy2 above
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>iter</em></code>: a multiple-valued sequence
+	  iter: a multiple-valued sequence
 	</li>
 	
 </ul>
@@ -381,7 +381,7 @@ create a table of 'tuples' from a multi-valued sequence. A generalization of cop
 
 
 <h3>Return value:</h3>
-<ul>a list-like table</ul>
+a list-like table
 
 
 
@@ -395,11 +395,11 @@ create a table of 'tuples' from a multi-valued sequence. A generalization of cop
 A table where the key/values are the values and value counts of the sequence. This version works with 'hashable' values like strings and numbers. <br> pl.tablex.count_map is more general.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>iter</em></code>: 
+	  iter: 
 	</li>
 	
 </ul>
@@ -412,9 +412,9 @@ A table where the key/values are the values and value counts of the sequence. Th
 <h3>Return values:</h3>
 <ol>
 	
-	<li>a map-like table</li>
+	<li>a map-like table
 	
-	<li>a table</li>
+	<li>a table
 	
 </ol>
 
@@ -423,9 +423,8 @@ A table where the key/values are the values and value counts of the sequence. Th
 <h3>See also:</h3>
 <ul>
 	
-	<!-- <li><a href="#../modules/pl.tablex.html#count_mappl.tablex.count_map"> -->
-	<li><a href="#pl.tablex.count_map">
-		pl.tablex.count_map</li>
+	<li><a href="../modules/pl.tablex.html#count_map">
+		pl.tablex.count_map
 	</a>
 	
 </ul>
@@ -440,11 +439,11 @@ A table where the key/values are the values and value counts of the sequence. Th
 a sequence with a sequence count and the original value. <br> enum(copy(ls)) is a roundabout way of saying ipairs(ls).
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>iter</em></code>: a single or double valued sequence
+	  iter: a single or double valued sequence
 	</li>
 	
 </ul>
@@ -455,7 +454,7 @@ a sequence with a sequence count and the original value. <br> enum(copy(ls)) is 
 
 
 <h3>Return value:</h3>
-<ul>sequence of (i,v), i = 1..n and v is from iter.</ul>
+sequence of (i,v), i = 1..n and v is from iter.
 
 
 
@@ -469,19 +468,19 @@ a sequence with a sequence count and the original value. <br> enum(copy(ls)) is 
 filter a sequence using a predicate function
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>iter</em></code>: a sequence of one or two values
+	  iter: a sequence of one or two values
 	</li>
 	
 	<li>
-	  <code><em>pred</em></code>: a boolean function; may take two arguments
+	  pred: a boolean function; may take two arguments
 	</li>
 	
 	<li>
-	  <code><em>arg</em></code>: optional argument to pass to function.
+	  arg: optional argument to pass to function.
 	</li>
 	
 </ul>
@@ -503,15 +502,15 @@ filter a sequence using a predicate function
 call the function on each element of the sequence.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>iter</em></code>: a sequence with up to 3 values
+	  iter: a sequence with up to 3 values
 	</li>
 	
 	<li>
-	  <code><em>fn</em></code>: a function
+	  fn: a function
 	</li>
 	
 </ul>
@@ -533,11 +532,11 @@ call the function on each element of the sequence.
 return the keys of the table.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>t</em></code>: a list-like table
+	  t: a list-like table
 	</li>
 	
 </ul>
@@ -548,7 +547,7 @@ return the keys of the table.
 
 
 <h3>Return value:</h3>
-<ul>iterator over keys</ul>
+iterator over keys
 
 
 
@@ -562,11 +561,11 @@ return the keys of the table.
 a sequence of (last,current) values from another sequence. This will return S(i-1),S(i) if given S(i)
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>iter</em></code>: a sequence
+	  iter: a sequence
 	</li>
 	
 </ul>
@@ -588,11 +587,11 @@ a sequence of (last,current) values from another sequence. This will return S(i-
 create a wrapped iterator over all lines in the file.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>f</em></code>: either a filename or nil (for standard input)
+	  f: either a filename or nil (for standard input)
 	</li>
 	
 </ul>
@@ -603,7 +602,7 @@ create a wrapped iterator over all lines in the file.
 
 
 <h3>Return value:</h3>
-<ul>a sequence wrapper</ul>
+a sequence wrapper
 
 
 
@@ -617,11 +616,11 @@ create a wrapped iterator over all lines in the file.
 sequence adaptor for a table.   Note that if any generic function is passed a table, it will automatically use seq.list()
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>t</em></code>: a list-like table
+	  t: a list-like table
 	</li>
 	
 </ul>
@@ -629,12 +628,12 @@ sequence adaptor for a table.   Note that if any generic function is passed a ta
 
 
 
-<h3>Usage:</h3>
+<h3>Usage</h3>
 <ul>
 	
-	<li><pre class=example>sum(list(t)) is the sum of all elements of t</pre></li>
+	<li>sum(list(t)) is the sum of all elements of t
 	
-	<li><pre class=example>for x in list(t) do...end</pre></li>
+	<li>for x in list(t) do...end
 	
 </ul>
 
@@ -652,19 +651,19 @@ sequence adaptor for a table.   Note that if any generic function is passed a ta
 return a sequence where every element of a sequence has been transformed by a function. If you don't supply an argument, then the function will receive both values of a double-valued sequence, otherwise behaves rather like tablex.map.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>fn</em></code>: a function to apply to elements; may take two arguments
+	  fn: a function to apply to elements; may take two arguments
 	</li>
 	
 	<li>
-	  <code><em>iter</em></code>: a sequence of one or two values
+	  iter: a sequence of one or two values
 	</li>
 	
 	<li>
-	  <code><em>arg</em></code>: optional argument to pass to function.
+	  arg: optional argument to pass to function.
 	</li>
 	
 </ul>
@@ -686,23 +685,23 @@ return a sequence where every element of a sequence has been transformed by a fu
 map using a named method over a sequence.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>iter</em></code>: a sequence
+	  iter: a sequence
 	</li>
 	
 	<li>
-	  <code><em>name</em></code>: the method name
+	  name: the method name
 	</li>
 	
 	<li>
-	  <code><em>arg1</em></code>: optional second extra argument
+	  arg1: optional second extra argument
 	</li>
 	
 	<li>
-	  <code><em>arg2</em></code>: 
+	  arg2: 
 	</li>
 	
 </ul>
@@ -724,15 +723,15 @@ map using a named method over a sequence.
 given a string, return a function(y) which matches y against the string.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>s</em></code>: 
+	  s: 
 	</li>
 	
 	<li>
-	  <code><em>a</em></code>: string
+	  a: string
 	</li>
 	
 </ul>
@@ -754,11 +753,11 @@ given a string, return a function(y) which matches y against the string.
 return the minimum and the maximum value of the sequence.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>iter</em></code>: a sequence
+	  iter: a sequence
 	</li>
 	
 </ul>
@@ -780,19 +779,19 @@ return the minimum and the maximum value of the sequence.
 return an iterator of random numbers.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>n</em></code>: the length of the sequence
+	  n: the length of the sequence
 	</li>
 	
 	<li>
-	  <code><em>l</em></code>: same as the first optional argument to math.random
+	  l: same as the first optional argument to math.random
 	</li>
 	
 	<li>
-	  <code><em>u</em></code>: same as the second optional argument to math.random
+	  u: same as the second optional argument to math.random
 	</li>
 	
 </ul>
@@ -803,7 +802,7 @@ return an iterator of random numbers.
 
 
 <h3>Return value:</h3>
-<ul>a sequnce</ul>
+a sequnce
 
 
 
@@ -817,15 +816,15 @@ return an iterator of random numbers.
 create an iterator over a numerical range. Like the standard Python function xrange.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>start</em></code>: a number
+	  start: a number
 	</li>
 	
 	<li>
-	  <code><em>finish</em></code>: a number greater than start
+	  finish: a number greater than start
 	</li>
 	
 </ul>
@@ -847,19 +846,19 @@ create an iterator over a numerical range. Like the standard Python function xra
 'reduce' a sequence using a binary function.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>fun</em></code>: a function of two arguments
+	  fun: a function of two arguments
 	</li>
 	
 	<li>
-	  <code><em>seq</em></code>: a sequence
+	  seq: a sequence
 	</li>
 	
 	<li>
-	  <code><em>oldval</em></code>: 
+	  oldval: 
 	</li>
 	
 </ul>
@@ -868,7 +867,7 @@ create an iterator over a numerical range. Like the standard Python function xra
 
 
 <h3>Usage:</h3>
-<ul><pre class=example>seq.reduce(operator.add,seq.list{1,2,3,4}) == 10</pre></ul>
+seq.reduce(operator.add,seq.list{1,2,3,4}) == 10
 
 
 
@@ -884,15 +883,15 @@ create an iterator over a numerical range. Like the standard Python function xra
 skip the first n values of a sequence
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>iter</em></code>: a sequence of one or more values
+	  iter: a sequence of one or more values
 	</li>
 	
 	<li>
-	  <code><em>n</em></code>: number of items to skip
+	  n: number of items to skip
 	</li>
 	
 </ul>
@@ -914,15 +913,15 @@ skip the first n values of a sequence
 return an iterator to the sorted elements of a sequence.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>iter</em></code>: a sequence
+	  iter: a sequence
 	</li>
 	
 	<li>
-	  <code><em>comp</em></code>: an optional comparison function (comp(x,y) is true if x < y)
+	  comp: an optional comparison function (comp(x,y) is true if x < y)
 	</li>
 	
 </ul>
@@ -944,15 +943,15 @@ return an iterator to the sorted elements of a sequence.
 return the sum and element count of the sequence.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>iter</em></code>: a sequence
+	  iter: a sequence
 	</li>
 	
 	<li>
-	  <code><em>fn</em></code>: an optional function to apply to the values
+	  fn: an optional function to apply to the values
 	</li>
 	
 </ul>
@@ -974,15 +973,15 @@ return the sum and element count of the sequence.
 take the first n values from the sequence.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>iter</em></code>: a sequence of one or two values
+	  iter: a sequence of one or two values
 	</li>
 	
 	<li>
-	  <code><em>n</em></code>: number of items to take
+	  n: number of items to take
 	</li>
 	
 </ul>
@@ -993,7 +992,7 @@ take the first n values from the sequence.
 
 
 <h3>Return value:</h3>
-<ul>a sequence of at most n items</ul>
+a sequence of at most n items
 
 
 
@@ -1007,15 +1006,15 @@ take the first n values from the sequence.
 return an iterator which returns elements of two sequences.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>iter1</em></code>: a sequence
+	  iter1: a sequence
 	</li>
 	
 	<li>
-	  <code><em>iter2</em></code>: a sequence
+	  iter2: a sequence
 	</li>
 	
 </ul>
@@ -1024,7 +1023,7 @@ return an iterator which returns elements of two sequences.
 
 
 <h3>Usage:</h3>
-<ul><pre class=example>for x,y in seq.zip(ls1,ls2) do....end</pre></ul>
+for x,y in seq.zip(ls1,ls2) do....end
 
 
 

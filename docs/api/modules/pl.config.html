@@ -151,7 +151,6 @@
 
 
 
-
 <h2>Functions</h2>
 <table class="function_list">
 
@@ -166,6 +165,7 @@
 	</tr>
 
 </table>
+
 
 
 
@@ -186,11 +186,11 @@
 like io.lines(), but allows for lines to be continued with '\'.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>file</em></code>: a file-like object (anything where read() returns the next line) or a filename. Defaults to stardard input.
+	  file: a file-like object (anything where read() returns the next line) or a filename. Defaults to stardard input.
 	</li>
 	
 </ul>
@@ -201,7 +201,7 @@ like io.lines(), but allows for lines to be continued with '\'.
 
 
 <h3>Return value:</h3>
-<ul>an iterator over the lines</ul>
+an iterator over the lines
 
 
 
@@ -215,15 +215,15 @@ like io.lines(), but allows for lines to be continued with '\'.
 read a configuration file into a table
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>file</em></code>: either a file-like object or a string, which must be a filename
+	  file: either a file-like object or a string, which must be a filename
 	</li>
 	
 	<li>
-	  <code><em>cnfg</em></code>: a configuration table
+	  cnfg: a configuration table
 	</li>
 	
 </ul>
@@ -234,7 +234,7 @@ read a configuration file into a table
 
 
 <h3>Return value:</h3>
-<ul>nil,error_msg in case of an error, otherwise a table containing items</ul>
+nil,error_msg in case of an error, otherwise a table containing items
 
 
 

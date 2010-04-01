@@ -297,9 +297,9 @@ end
 --- create a directory path.
 -- This will create subdirectories as necessary!
 -- @param path A directory path
-function makepath (p)
-    assert_string(1,p)
-    return _makepath(path.normcase(path.abspath(p)))
+function makepath (path)
+    assert_string(1,path)
+    return _makepath(path.normcase(path.abspath(path)))
 end
 
 

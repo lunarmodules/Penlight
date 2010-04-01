@@ -151,7 +151,6 @@
 
 
 
-
 <h2>Functions</h2>
 <table class="function_list">
 
@@ -251,6 +250,7 @@
 
 
 
+
 <br/>
 <br/>
 
@@ -266,11 +266,11 @@
 take an arbitrary set of arguments and make into a table. This returns the table and the size; works fine for nil arguments
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>...</em></code>: arguments
+	  ...: arguments
 	</li>
 	
 </ul>
@@ -279,16 +279,16 @@ take an arbitrary set of arguments and make into a table. This returns the table
 
 
 <h3>Usage:</h3>
-<ul><pre class=example>local t,n = utils.args(...)</pre></ul>
+local t,n = utils.args(...)
 
 
 
 <h3>Return values:</h3>
 <ol>
 	
-	<li>table</li>
+	<li>table
 	
-	<li>table size</li>
+	<li>table size
 	
 </ol>
 
@@ -304,15 +304,15 @@ take an arbitrary set of arguments and make into a table. This returns the table
 bind the first argument of the function to a value.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>fn</em></code>: a function of at least two values (may be an operator string)
+	  fn: a function of at least two values (may be an operator string)
 	</li>
 	
 	<li>
-	  <code><em>p</em></code>: a value
+	  p: a value
 	</li>
 	
 </ul>
@@ -323,16 +323,15 @@ bind the first argument of the function to a value.
 
 
 <h3>Return value:</h3>
-<ul>a function such that f(x) is fn(p,x)</ul>
+a function such that f(x) is fn(p,x)
 
 
 
 <h3>See also:</h3>
 <ul>
 	
-	<!-- <li><a href="#../modules/pl.func.html#currypl.func.curry"> -->
-	<li><a href="#pl.func.curry">
-		pl.func.curry</li>
+	<li><a href="../modules/pl.func.html#curry">
+		pl.func.curry
 	</a>
 	
 </ul>
@@ -347,19 +346,19 @@ bind the first argument of the function to a value.
 return either of two values, depending on a condition.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>cond</em></code>: A condition
+	  cond: A condition
 	</li>
 	
 	<li>
-	  <code><em>value1</em></code>: Value returned if cond is true
+	  value1: Value returned if cond is true
 	</li>
 	
 	<li>
-	  <code><em>value2</em></code>: Value returned if cond is false (can be optional)
+	  value2: Value returned if cond is false (can be optional)
 	</li>
 	
 </ul>
@@ -381,11 +380,11 @@ return either of two values, depending on a condition.
 escape any 'magic' characters in a string
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>s</em></code>: The input string
+	  s: The input string
 	</li>
 	
 </ul>
@@ -407,19 +406,19 @@ escape any 'magic' characters in a string
 write an arbitrary number of arguments to a file using a format.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>f</em></code>: 
+	  f: 
 	</li>
 	
 	<li>
-	  <code><em>fmt</em></code>: The format (see string.format)
+	  fmt: The format (see string.format)
 	</li>
 	
 	<li>
-	  <code><em>...</em></code>: 
+	  ...: 
 	</li>
 	
 </ul>
@@ -441,11 +440,11 @@ write an arbitrary number of arguments to a file using a format.
 process a function argument. <br> This is used throughout Penlight and defines what is meant by a function: <br> Something that is_callable, or an operator string as defined by pl.operator, <br> such as '>' or '#'.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>f</em></code>: a function, operator string, or callable object
+	  f: a function, operator string, or callable object
 	</li>
 	
 </ul>
@@ -456,7 +455,7 @@ process a function argument. <br> This is used throughout Penlight and defines w
 
 
 <h3>Return value:</h3>
-<ul>a callable</ul>
+a callable
 
 
 
@@ -470,15 +469,15 @@ process a function argument. <br> This is used throughout Penlight and defines w
 take a table and 'inject' it into the local namespace.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>t</em></code>: The Table
+	  t: The Table
 	</li>
 	
 	<li>
-	  <code><em>T</em></code>: An optional destination table (defaults to callers environment)
+	  T: An optional destination table (defaults to callers environment)
 	</li>
 	
 </ul>
@@ -500,11 +499,11 @@ take a table and 'inject' it into the local namespace.
 is the object either a function or a callable object?.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>obj</em></code>: 
+	  obj: 
 	</li>
 	
 </ul>
@@ -526,15 +525,15 @@ is the object either a function or a callable object?.
 is the object of the specified type?. If the type is a string, then use type, otherwise compare with metatable
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>obj</em></code>: an object
+	  obj: an object
 	</li>
 	
 	<li>
-	  <code><em>tp</em></code>: a type
+	  tp: a type
 	</li>
 	
 </ul>
@@ -556,11 +555,11 @@ is the object of the specified type?. If the type is a string, then use type, ot
 'memoize' a function (cache returned value for next call). This is useful if you have a function which is relatively expensive, but you don't know in advance what values will be required, so building a table upfront is wasteful/impossible.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>func</em></code>: a function of at least one argument
+	  func: a function of at least one argument
 	</li>
 	
 </ul>
@@ -571,7 +570,7 @@ is the object of the specified type?. If the type is a string, then use type, ot
 
 
 <h3>Return value:</h3>
-<ul>a function with at least one argument, which is used as the key.</ul>
+a function with at least one argument, which is used as the key.
 
 
 
@@ -585,15 +584,15 @@ is the object of the specified type?. If the type is a string, then use type, ot
 print an arbitrary number of arguments using a format.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>fmt</em></code>: The format (see string.format)
+	  fmt: The format (see string.format)
 	</li>
 	
 	<li>
-	  <code><em>...</em></code>: 
+	  ...: 
 	</li>
 	
 </ul>
@@ -615,19 +614,19 @@ print an arbitrary number of arguments using a format.
 end this program gracefully.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>code</em></code>: The exit code
+	  code: The exit code
 	</li>
 	
 	<li>
-	  <code><em>msg</em></code>: A message to be printed
+	  msg: A message to be printed
 	</li>
 	
 	<li>
-	  <code><em>...</em></code>: extra arguments for fprintf
+	  ...: extra arguments for fprintf
 	</li>
 	
 </ul>
@@ -642,9 +641,8 @@ end this program gracefully.
 <h3>See also:</h3>
 <ul>
 	
-	<!-- <li><a href="#../modules/pl.utils.html#fprintfpl.utils.fprintf"> -->
-	<li><a href="#pl.utils.fprintf">
-		pl.utils.fprintf</li>
+	<li><a href="../modules/pl.utils.html#fprintf">
+		pl.utils.fprintf
 	</a>
 	
 </ul>
@@ -659,15 +657,15 @@ end this program gracefully.
 return the contents of a file as a string
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>filename</em></code>: The file path
+	  filename: The file path
 	</li>
 	
 	<li>
-	  <code><em>is_bin</em></code>: 
+	  is_bin: 
 	</li>
 	
 </ul>
@@ -678,7 +676,7 @@ return the contents of a file as a string
 
 
 <h3>Return value:</h3>
-<ul>file contents</ul>
+file contents
 
 
 
@@ -692,11 +690,11 @@ return the contents of a file as a string
 return the contents of a file as a list of lines
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>filename</em></code>: The file path
+	  filename: The file path
 	</li>
 	
 </ul>
@@ -707,7 +705,7 @@ return the contents of a file as a list of lines
 
 
 <h3>Return value:</h3>
-<ul>file contents as a table</ul>
+file contents as a table
 
 
 
@@ -721,15 +719,15 @@ return the contents of a file as a list of lines
 split a string into a list of strings separated by a delimiter.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>s</em></code>: The input string
+	  s: The input string
 	</li>
 	
 	<li>
-	  <code><em>re</em></code>: A regular expression; defaults to spaces
+	  re: A regular expression; defaults to spaces
 	</li>
 	
 </ul>
@@ -740,7 +738,7 @@ split a string into a list of strings separated by a delimiter.
 
 
 <h3>Return value:</h3>
-<ul>a list-like table</ul>
+a list-like table
 
 
 
@@ -754,11 +752,11 @@ split a string into a list of strings separated by a delimiter.
 split a string into a list of strings separated by either spaces or commas.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>s</em></code>: The input string
+	  s: The input string
 	</li>
 	
 </ul>
@@ -769,7 +767,7 @@ split a string into a list of strings separated by either spaces or commas.
 
 
 <h3>Return value:</h3>
-<ul>a list-like table</ul>
+a list-like table
 
 
 
@@ -783,15 +781,15 @@ split a string into a list of strings separated by either spaces or commas.
 split a string into a number of values.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>s</em></code>: the string
+	  s: the string
 	</li>
 	
 	<li>
-	  <code><em>re</em></code>: the delimiter, default space
+	  re: the delimiter, default space
 	</li>
 	
 </ul>
@@ -800,21 +798,20 @@ split a string into a number of values.
 
 
 <h3>Usage:</h3>
-<ul><pre class=example>first,next = splitv('jane:doe',':')</pre></ul>
+first,next = splitv('jane:doe',':')
 
 
 
 <h3>Return value:</h3>
-<ul>n values</ul>
+n values
 
 
 
 <h3>See also:</h3>
 <ul>
 	
-	<!-- <li><a href="#../modules/pl.utils.html#splitsplit"> -->
-	<li><a href="#split">
-		split</li>
+	<li><a href="../modules/pl.utils.html#split">
+		split
 	</a>
 	
 </ul>
@@ -829,15 +826,15 @@ split a string into a number of values.
 write a string to a file
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>filename</em></code>: The file path
+	  filename: The file path
 	</li>
 	
 	<li>
-	  <code><em>str</em></code>: The string
+	  str: The string
 	</li>
 	
 </ul>

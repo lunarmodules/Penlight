@@ -151,7 +151,6 @@
 
 
 
-
 <h2>Functions</h2>
 <table class="function_list">
 
@@ -261,6 +260,7 @@
 
 
 
+
 <br/>
 <br/>
 
@@ -276,15 +276,15 @@
 extract a column from the 2D array.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>a</em></code>: 2d array
+	  a: 2d array
 	</li>
 	
 	<li>
-	  <code><em>key</em></code>: an index or key
+	  key: an index or key
 	</li>
 	
 </ul>
@@ -295,7 +295,7 @@ extract a column from the 2D array.
 
 
 <h3>Return value:</h3>
-<ul>1d array</ul>
+1d array
 
 
 
@@ -309,19 +309,19 @@ extract a column from the 2D array.
 extract the specified columns.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>t</em></code>: 
+	  t: 
 	</li>
 	
 	<li>
-	  <code><em>cidx</em></code>: a table of column indices
+	  cidx: a table of column indices
 	</li>
 	
 	<li>
-	  <code><em>a</em></code>: 2d array
+	  a: 2d array
 	</li>
 	
 </ul>
@@ -343,19 +343,19 @@ extract the specified columns.
 extract the specified rows.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>t</em></code>: 
+	  t: 
 	</li>
 	
 	<li>
-	  <code><em>ridx</em></code>: a table of row indices
+	  ridx: a table of row indices
 	</li>
 	
 	<li>
-	  <code><em>a</em></code>: 2d array
+	  a: 2d array
 	</li>
 	
 </ul>
@@ -377,39 +377,39 @@ extract the specified rows.
 perform an operation for all values in a 2D array.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>t</em></code>: 
+	  t: 
 	</li>
 	
 	<li>
-	  <code><em>row_op</em></code>: function to call on each value
+	  row_op: function to call on each value
 	</li>
 	
 	<li>
-	  <code><em>end_row_op</em></code>: function to call at end of each row
+	  end_row_op: function to call at end of each row
 	</li>
 	
 	<li>
-	  <code><em>i1</em></code>: start row (default 1)
+	  i1: start row (default 1)
 	</li>
 	
 	<li>
-	  <code><em>j1</em></code>: end col   (default M)
+	  j1: end col   (default M)
 	</li>
 	
 	<li>
-	  <code><em>i2</em></code>: end row   (default N)
+	  i2: end row   (default N)
 	</li>
 	
 	<li>
-	  <code><em>j2</em></code>: 
+	  j2: 
 	</li>
 	
 	<li>
-	  <code><em>a</em></code>: 2D array
+	  a: 2D array
 	</li>
 	
 </ul>
@@ -431,31 +431,31 @@ perform an operation for all values in a 2D array.
 iterate over all elements in a 2D array, with optional indices.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>a</em></code>: 2D array
+	  a: 2D array
 	</li>
 	
 	<li>
-	  <code><em>indices</em></code>: with indices (default false)
+	  indices: with indices (default false)
 	</li>
 	
 	<li>
-	  <code><em>i1</em></code>: start row (default 1)
+	  i1: start row (default 1)
 	</li>
 	
 	<li>
-	  <code><em>j1</em></code>: end col   (default M)
+	  j1: end col   (default M)
 	</li>
 	
 	<li>
-	  <code><em>i2</em></code>: end row   (default N)
+	  i2: end row   (default N)
 	</li>
 	
 	<li>
-	  <code><em>j2</em></code>: 
+	  j2: 
 	</li>
 	
 </ul>
@@ -466,7 +466,7 @@ iterate over all elements in a 2D array, with optional indices.
 
 
 <h3>Return value:</h3>
-<ul>either value or i,j,value depending on indices</ul>
+either value or i,j,value depending on indices
 
 
 
@@ -480,19 +480,19 @@ iterate over all elements in a 2D array, with optional indices.
 map a function over a 2D array
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>f</em></code>: a function of at least one argument
+	  f: a function of at least one argument
 	</li>
 	
 	<li>
-	  <code><em>a</em></code>: 2d array
+	  a: 2d array
 	</li>
 	
 	<li>
-	  <code><em>arg</em></code>: an optional extra argument to be passed to the function.
+	  arg: an optional extra argument to be passed to the function.
 	</li>
 	
 </ul>
@@ -503,7 +503,7 @@ map a function over a 2D array
 
 
 <h3>Return value:</h3>
-<ul>2d array</ul>
+2d array
 
 
 
@@ -517,31 +517,31 @@ map a function over a 2D array
 map a function over two arrays. They can be both or either 2D arrays
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>f</em></code>: function of at least two arguments
+	  f: function of at least two arguments
 	</li>
 	
 	<li>
-	  <code><em>ad</em></code>: order of first array
+	  ad: order of first array
 	</li>
 	
 	<li>
-	  <code><em>bd</em></code>: order of second array
+	  bd: order of second array
 	</li>
 	
 	<li>
-	  <code><em>a</em></code>: 1d or 2d array
+	  a: 1d or 2d array
 	</li>
 	
 	<li>
-	  <code><em>b</em></code>: 1d or 2d array
+	  b: 1d or 2d array
 	</li>
 	
 	<li>
-	  <code><em>arg</em></code>: optional extra argument to pass to function
+	  arg: optional extra argument to pass to function
 	</li>
 	
 </ul>
@@ -552,7 +552,7 @@ map a function over two arrays. They can be both or either 2D arrays
 
 
 <h3>Return value:</h3>
-<ul>2D array, unless both arrays are 1D</ul>
+2D array, unless both arrays are 1D
 
 
 
@@ -566,11 +566,11 @@ map a function over two arrays. They can be both or either 2D arrays
 parse a spreadsheet range. The range can be specified either as 'A1:B2' or 'R1C1:R2C2'; a special case is a single element (e.g 'A1' or 'R1C1')
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>s</em></code>: a range.
+	  s: a range.
 	</li>
 	
 </ul>
@@ -583,13 +583,13 @@ parse a spreadsheet range. The range can be specified either as 'A1:B2' or 'R1C1
 <h3>Return values:</h3>
 <ol>
 	
-	<li>start col</li>
+	<li>start col
 	
-	<li>start row</li>
+	<li>start row
 	
-	<li>end col</li>
+	<li>end col
 	
-	<li>end row</li>
+	<li>end row
 	
 </ol>
 
@@ -605,19 +605,19 @@ parse a spreadsheet range. The range can be specified either as 'A1:B2' or 'R1C1
 cartesian product of two 1d arrays.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>f</em></code>: a function of 2 arguments
+	  f: a function of 2 arguments
 	</li>
 	
 	<li>
-	  <code><em>t1</em></code>: a 1d table
+	  t1: a 1d table
 	</li>
 	
 	<li>
-	  <code><em>t2</em></code>: a 1d table
+	  t2: a 1d table
 	</li>
 	
 </ul>
@@ -628,7 +628,7 @@ cartesian product of two 1d arrays.
 
 
 <h3>Return value:</h3>
-<ul>2d table</ul>
+2d table
 
 
 
@@ -642,15 +642,15 @@ cartesian product of two 1d arrays.
 get a slice of a 2D array using spreadsheet range notation (see <a href="#parse_range">parse_range</a>).
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>t</em></code>: a 2D array
+	  t: a 2D array
 	</li>
 	
 	<li>
-	  <code><em>rstr</em></code>: range expression
+	  rstr: range expression
 	</li>
 	
 </ul>
@@ -661,21 +661,19 @@ get a slice of a 2D array using spreadsheet range notation (see <a href="#parse_
 
 
 <h3>Return value:</h3>
-<ul>a slice</ul>
+a slice
 
 
 
 <h3>See also:</h3>
 <ul>
 	
-	<!-- <li><a href="#../modules/pl.array2d.html#parse_rangeparse_range"> -->
-	<li><a href="#parse_range">
-		parse_range</li>
+	<li><a href="../modules/pl.array2d.html#parse_range">
+		parse_range
 	</a>
 	
-	<!-- <li><a href="#../modules/pl.array2d.html#sliceslice"> -->
-	<li><a href="#slice">
-		slice</li>
+	<li><a href="../modules/pl.array2d.html#slice">
+		slice
 	</a>
 	
 </ul>
@@ -690,19 +688,19 @@ get a slice of a 2D array using spreadsheet range notation (see <a href="#parse_
 reduce a 2D array into a scalar, using two operations.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>opc</em></code>: operation to reduce the final result
+	  opc: operation to reduce the final result
 	</li>
 	
 	<li>
-	  <code><em>opr</em></code>: operation to reduce the rows
+	  opr: operation to reduce the rows
 	</li>
 	
 	<li>
-	  <code><em>a</em></code>: 2D array
+	  a: 2D array
 	</li>
 	
 </ul>
@@ -724,15 +722,15 @@ reduce a 2D array into a scalar, using two operations.
 reduce the columns using a function.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>f</em></code>: a binary function
+	  f: a binary function
 	</li>
 	
 	<li>
-	  <code><em>a</em></code>: 2d array
+	  a: 2d array
 	</li>
 	
 </ul>
@@ -743,16 +741,15 @@ reduce the columns using a function.
 
 
 <h3>Return value:</h3>
-<ul>1d array</ul>
+1d array
 
 
 
 <h3>See also:</h3>
 <ul>
 	
-	<!-- <li><a href="#../modules/pl.tablex.html#reducepl.tablex.reduce"> -->
-	<li><a href="#pl.tablex.reduce">
-		pl.tablex.reduce</li>
+	<li><a href="../modules/pl.tablex.html#reduce">
+		pl.tablex.reduce
 	</a>
 	
 </ul>
@@ -767,15 +764,15 @@ reduce the columns using a function.
 reduce the rows using a function.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>f</em></code>: a binary function
+	  f: a binary function
 	</li>
 	
 	<li>
-	  <code><em>a</em></code>: 2d array
+	  a: 2d array
 	</li>
 	
 </ul>
@@ -786,16 +783,15 @@ reduce the rows using a function.
 
 
 <h3>Return value:</h3>
-<ul>1d array</ul>
+1d array
 
 
 
 <h3>See also:</h3>
 <ul>
 	
-	<!-- <li><a href="#../modules/pl.tablex.html#reducepl.tablex.reduce"> -->
-	<li><a href="#pl.tablex.reduce">
-		pl.tablex.reduce</li>
+	<li><a href="../modules/pl.tablex.html#reduce">
+		pl.tablex.reduce
 	</a>
 	
 </ul>
@@ -810,15 +806,15 @@ reduce the rows using a function.
 remove a column from an array.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>t</em></code>: a 2d array
+	  t: a 2d array
 	</li>
 	
 	<li>
-	  <code><em>j</em></code>: a column index
+	  j: a column index
 	</li>
 	
 </ul>
@@ -840,15 +836,15 @@ remove a column from an array.
 remove a row from an array.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>t</em></code>: a 2d array
+	  t: a 2d array
 	</li>
 	
 	<li>
-	  <code><em>i</em></code>: a row index
+	  i: a row index
 	</li>
 	
 </ul>
@@ -870,31 +866,31 @@ remove a row from an array.
 set a specified range of an array to a value.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>t</em></code>: a 2D array
+	  t: a 2D array
 	</li>
 	
 	<li>
-	  <code><em>value</em></code>: the value
+	  value: the value
 	</li>
 	
 	<li>
-	  <code><em>i1</em></code>: start row (default 1)
+	  i1: start row (default 1)
 	</li>
 	
 	<li>
-	  <code><em>j1</em></code>: end col   (default M)
+	  j1: end col   (default M)
 	</li>
 	
 	<li>
-	  <code><em>i2</em></code>: end row   (default N)
+	  i2: end row   (default N)
 	</li>
 	
 	<li>
-	  <code><em>j2</em></code>: 
+	  j2: 
 	</li>
 	
 </ul>
@@ -916,27 +912,27 @@ set a specified range of an array to a value.
 get a slice of a 2D array. Note that if the specified range has a 1D result, the rank of the result will be 1.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>t</em></code>: a 2D array
+	  t: a 2D array
 	</li>
 	
 	<li>
-	  <code><em>i1</em></code>: start row (default 1)
+	  i1: start row (default 1)
 	</li>
 	
 	<li>
-	  <code><em>j1</em></code>: end col   (default M)
+	  j1: end col   (default M)
 	</li>
 	
 	<li>
-	  <code><em>i2</em></code>: end row   (default N)
+	  i2: end row   (default N)
 	</li>
 	
 	<li>
-	  <code><em>j2</em></code>: 
+	  j2: 
 	</li>
 	
 </ul>
@@ -947,7 +943,7 @@ get a slice of a 2D array. Note that if the specified range has a 1D result, the
 
 
 <h3>Return value:</h3>
-<ul>an array, 2D in general but 1D in special cases.</ul>
+an array, 2D in general but 1D in special cases.
 
 
 
@@ -961,27 +957,27 @@ get a slice of a 2D array. Note that if the specified range has a 1D result, the
 swap two columns of an array.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>t</em></code>: a 2d array
+	  t: a 2d array
 	</li>
 	
 	<li>
-	  <code><em>j1</em></code>: 
+	  j1: 
 	</li>
 	
 	<li>
-	  <code><em>j2</em></code>: 
+	  j2: 
 	</li>
 	
 	<li>
-	  <code><em>i1</em></code>: a column index
+	  i1: a column index
 	</li>
 	
 	<li>
-	  <code><em>i2</em></code>: a column index
+	  i2: a column index
 	</li>
 	
 </ul>
@@ -1003,19 +999,19 @@ swap two columns of an array.
 swap two rows of an array.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>t</em></code>: a 2d array
+	  t: a 2d array
 	</li>
 	
 	<li>
-	  <code><em>i1</em></code>: a row index
+	  i1: a row index
 	</li>
 	
 	<li>
-	  <code><em>i2</em></code>: a row index
+	  i2: a row index
 	</li>
 	
 </ul>
@@ -1037,35 +1033,35 @@ swap two rows of an array.
 write a 2D array to a file.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>t</em></code>: a 2D array
+	  t: a 2D array
 	</li>
 	
 	<li>
-	  <code><em>f</em></code>: a file object (default stdout)
+	  f: a file object (default stdout)
 	</li>
 	
 	<li>
-	  <code><em>fmt</em></code>: a format string (default is just to use tostring)
+	  fmt: a format string (default is just to use tostring)
 	</li>
 	
 	<li>
-	  <code><em>i1</em></code>: start row (default 1)
+	  i1: start row (default 1)
 	</li>
 	
 	<li>
-	  <code><em>j1</em></code>: end col   (default M)
+	  j1: end col   (default M)
 	</li>
 	
 	<li>
-	  <code><em>i2</em></code>: end row   (default N)
+	  i2: end row   (default N)
 	</li>
 	
 	<li>
-	  <code><em>j2</em></code>: 
+	  j2: 
 	</li>
 	
 </ul>

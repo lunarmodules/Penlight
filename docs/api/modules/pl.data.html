@@ -151,7 +151,6 @@
 
 
 
-
 <h2>Functions</h2>
 <table class="function_list">
 
@@ -171,11 +170,12 @@
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#read">read</a>&nbsp;(file, cnfg, cnfig)</td>
+	<td class="name" nowrap><a href="#read">read</a>&nbsp;(file, cnfg)</td>
 	<td class="summary">read a delimited file in a Lua table.</td>
 	</tr>
 
 </table>
+
 
 
 
@@ -196,19 +196,19 @@
 Filter input using a query.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>Q</em></code>: a query string
+	  Q: a query string
 	</li>
 	
 	<li>
-	  <code><em>file</em></code>: a file-like object
+	  file: a file-like object
 	</li>
 	
 	<li>
-	  <code><em>dont_fail</em></code>: true if you want to return an error, not just fail
+	  dont_fail: true if you want to return an error, not just fail
 	</li>
 	
 </ul>
@@ -230,15 +230,15 @@ Filter input using a query.
 create a new dataset from a table of rows. <br> Can specify the fieldnames, else the table must have a field called 'fieldnames', which is either a string of comma-separated names, or a table of names.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>data</em></code>: the table.
+	  data: the table.
 	</li>
 	
 	<li>
-	  <code><em>fieldnames</em></code>: optional fieldnames
+	  fieldnames: optional fieldnames
 	</li>
 	
 </ul>
@@ -249,7 +249,7 @@ create a new dataset from a table of rows. <br> Can specify the fieldnames, else
 
 
 <h3>Return value:</h3>
-<ul>the table.</ul>
+the table.
 
 
 
@@ -263,23 +263,23 @@ create a new dataset from a table of rows. <br> Can specify the fieldnames, else
 create a query iterator from a select string. Select string has this format: <br> FIELDLIST [ where LUA-CONDN [ sort by FIELD] ]<br> FIELDLISt is a comma-separated list of valid fields, or '*'. <br> <br> The condition can also be a table, with fields 'fields' (comma-sep string or table), 'sort_by' (string) and 'where' (Lua expression string or function)
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>data</em></code>: table produced by read
+	  data: table produced by read
 	</li>
 	
 	<li>
-	  <code><em>condn</em></code>: select string or table
+	  condn: select string or table
 	</li>
 	
 	<li>
-	  <code><em>context</em></code>: a list of tables to be searched when resolving functions
+	  context: a list of tables to be searched when resolving functions
 	</li>
 	
 	<li>
-	  <code><em>return_row</em></code>: if true, wrap the results in a row table
+	  return_row: if true, wrap the results in a row table
 	</li>
 	
 </ul>
@@ -290,7 +290,7 @@ create a query iterator from a select string. Select string has this format: <br
 
 
 <h3>Return value:</h3>
-<ul>an iterator over the specified fields</ul>
+an iterator over the specified fields
 
 
 
@@ -299,24 +299,20 @@ create a query iterator from a select string. Select string has this format: <br
 
 
 
-<dt><a name="read"></a><strong>read</strong>&nbsp;(file, cnfg, cnfig)</dt>
+<dt><a name="read"></a><strong>read</strong>&nbsp;(file, cnfg)</dt>
 <dd>
 read a delimited file in a Lua table. By default, attempts to treat first line as separated list of fieldnames.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>file</em></code>: a filename or a file-like object (default stdin)
+	  file: a filename or a file-like object (default stdin)
 	</li>
 	
 	<li>
-	  <code><em>cnfg</em></code>: 
-	</li>
-	
-	<li>
-	  <code><em>cnfig</em></code>: options: can override delim (a string pattern), fieldnames (a list), specify no_convert (default is to convert), numfields (indices of columns known to be numbers) and thousands_dot (thousands separator in Excel CSV is '.')
+	  cnfg: options table: can override delim (a string pattern), fieldnames (a list), specify no_convert (default is to convert), numfields (indices of columns known to be numbers) and thousands_dot (thousands separator in Excel CSV is '.')
 	</li>
 	
 </ul>

@@ -151,7 +151,6 @@
 
 
 
-
 <h2>Functions</h2>
 <table class="function_list">
 
@@ -211,6 +210,7 @@
 
 
 
+
 <br/>
 <br/>
 
@@ -226,19 +226,19 @@
 create a C/C++ token iterator from a string. Will return the token type type and value.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>s</em></code>: the string
+	  s: the string
 	</li>
 	
 	<li>
-	  <code><em>filter</em></code>: a table of token types to exclude, by default {space=true,comments=true}
+	  filter: a table of token types to exclude, by default {space=true,comments=true}
 	</li>
 	
 	<li>
-	  <code><em>options</em></code>: a table of options; by default, {number=true,string=true}, which means convert numbers and strip string quotes.
+	  options: a table of options; by default, {number=true,string=true}, which means convert numbers and strip string quotes.
 	</li>
 	
 </ul>
@@ -260,19 +260,19 @@ create a C/C++ token iterator from a string. Will return the token type type and
 get the next token, which must be of the expected type. Throws an error if this type does not match!
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>tok</em></code>: the token stream
+	  tok: the token stream
 	</li>
 	
 	<li>
-	  <code><em>expected_type</em></code>: the token type
+	  expected_type: the token type
 	</li>
 	
 	<li>
-	  <code><em>no_skip_ws</em></code>: whether we should skip whitespace
+	  no_skip_ws: whether we should skip whitespace
 	</li>
 	
 </ul>
@@ -300,7 +300,7 @@ get the Lua keywords as a set-like table. So <code>res["and"]</code> etc would b
 
 
 <h3>Return value:</h3>
-<ul>a table</ul>
+a table
 
 
 
@@ -314,19 +314,19 @@ get the Lua keywords as a set-like table. So <code>res["and"]</code> etc would b
 get a list of parameters separated by a delimiter from a stream.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>tok</em></code>: the token stream
+	  tok: the token stream
 	</li>
 	
 	<li>
-	  <code><em>endtoken</em></code>: end of list (default ')'). Can be '\n'
+	  endtoken: end of list (default ')'). Can be '\n'
 	</li>
 	
 	<li>
-	  <code><em>delim</em></code>: separator (default ',')
+	  delim: separator (default ',')
 	</li>
 	
 </ul>
@@ -337,7 +337,7 @@ get a list of parameters separated by a delimiter from a stream.
 
 
 <h3>Return value:</h3>
-<ul>a list of token lists.</ul>
+a list of token lists.
 
 
 
@@ -351,11 +351,11 @@ get a list of parameters separated by a delimiter from a stream.
 get everything in a stream upto a newline.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>tok</em></code>: a token stream
+	  tok: a token stream
 	</li>
 	
 </ul>
@@ -366,7 +366,7 @@ get everything in a stream upto a newline.
 
 
 <h3>Return value:</h3>
-<ul>a string</ul>
+a string
 
 
 
@@ -380,11 +380,11 @@ get everything in a stream upto a newline.
 get the rest of the stream.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>tok</em></code>: a token stream
+	  tok: a token stream
 	</li>
 	
 </ul>
@@ -395,7 +395,7 @@ get the rest of the stream.
 
 
 <h3>Return value:</h3>
-<ul>a string</ul>
+a string
 
 
 
@@ -409,19 +409,19 @@ get the rest of the stream.
 insert tokens into a stream.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>tok</em></code>: a token stream
+	  tok: a token stream
 	</li>
 	
 	<li>
-	  <code><em>a1</em></code>: a string is the type, a table is a token list and a function is assumed to be a token-like iterator (returns type & value)
+	  a1: a string is the type, a table is a token list and a function is assumed to be a token-like iterator (returns type & value)
 	</li>
 	
 	<li>
-	  <code><em>a2</em></code>: a string is the value
+	  a2: a string is the value
 	</li>
 	
 </ul>
@@ -443,19 +443,19 @@ insert tokens into a stream.
 create a Lua token iterator from a string. Will return the token type and value.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>s</em></code>: the string
+	  s: the string
 	</li>
 	
 	<li>
-	  <code><em>filter</em></code>: a table of token types to exclude, by default {space=true,comments=true}
+	  filter: a table of token types to exclude, by default {space=true,comments=true}
 	</li>
 	
 	<li>
-	  <code><em>options</em></code>: a table of options; by default, {number=true,string=true}, which means convert numbers and strip string quotes.
+	  options: a table of options; by default, {number=true,string=true}, which means convert numbers and strip string quotes.
 	</li>
 	
 </ul>
@@ -477,23 +477,23 @@ create a Lua token iterator from a string. Will return the token type and value.
 create a plain token iterator from a string.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>s</em></code>: the string
+	  s: the string
 	</li>
 	
 	<li>
-	  <code><em>matches</em></code>: an optional match table (set of pattern-action pairs)
+	  matches: an optional match table (set of pattern-action pairs)
 	</li>
 	
 	<li>
-	  <code><em>filter</em></code>: a table of token types to exclude, by default {space=true}
+	  filter: a table of token types to exclude, by default {space=true}
 	</li>
 	
 	<li>
-	  <code><em>options</em></code>: a table of options; by default, {number=true,string=true}, which means convert numbers and strip string quotes.
+	  options: a table of options; by default, {number=true,string=true}, which means convert numbers and strip string quotes.
 	</li>
 	
 </ul>
@@ -515,11 +515,11 @@ create a plain token iterator from a string.
 get the next non-space token from the stream.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>tok</em></code>: the token stream.
+	  tok: the token stream.
 	</li>
 	
 </ul>

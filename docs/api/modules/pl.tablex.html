@@ -151,7 +151,6 @@
 
 
 
-
 <h2>Functions</h2>
 <table class="function_list">
 
@@ -366,6 +365,7 @@
 
 
 
+
 <br/>
 <br/>
 
@@ -381,15 +381,15 @@
 clear out the contents of a table.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>t</em></code>: a table
+	  t: a table
 	</li>
 	
 	<li>
-	  <code><em>istart</em></code>: 
+	  istart: 
 	</li>
 	
 </ul>
@@ -411,19 +411,19 @@ clear out the contents of a table.
 compare two list-like tables using a predicate.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>t1</em></code>: a table
+	  t1: a table
 	</li>
 	
 	<li>
-	  <code><em>t2</em></code>: a table
+	  t2: a table
 	</li>
 	
 	<li>
-	  <code><em>cmp</em></code>: A comparison function
+	  cmp: A comparison function
 	</li>
 	
 </ul>
@@ -445,19 +445,19 @@ compare two list-like tables using a predicate.
 compare two list-like tables using an optional predicate, without regard for element order.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>t1</em></code>: a list-like table
+	  t1: a list-like table
 	</li>
 	
 	<li>
-	  <code><em>t2</em></code>: a list-like table
+	  t2: a list-like table
 	</li>
 	
 	<li>
-	  <code><em>cmp</em></code>: A comparison function (may be nil)
+	  cmp: A comparison function (may be nil)
 	</li>
 	
 </ul>
@@ -479,11 +479,11 @@ compare two list-like tables using an optional predicate, without regard for ele
 make a shallow copy of a table
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>t</em></code>: source table
+	  t: source table
 	</li>
 	
 </ul>
@@ -494,7 +494,7 @@ make a shallow copy of a table
 
 
 <h3>Return value:</h3>
-<ul>new table</ul>
+new table
 
 
 
@@ -508,15 +508,15 @@ make a shallow copy of a table
 A table where the key/values are the values and value counts of the table.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>t</em></code>: a list-like table
+	  t: a list-like table
 	</li>
 	
 	<li>
-	  <code><em>cmp</em></code>: a function that defines equality (otherwise uses ==)
+	  cmp: a function that defines equality (otherwise uses ==)
 	</li>
 	
 </ul>
@@ -527,16 +527,15 @@ A table where the key/values are the values and value counts of the table.
 
 
 <h3>Return value:</h3>
-<ul>a map-like table</ul>
+a map-like table
 
 
 
 <h3>See also:</h3>
 <ul>
 	
-	<!-- <li><a href="#../modules/pl.seq.html#count_mappl.seq.count_map"> -->
-	<li><a href="#pl.seq.count_map">
-		pl.seq.count_map</li>
+	<li><a href="../modules/pl.seq.html#count_map">
+		pl.seq.count_map
 	</a>
 	
 </ul>
@@ -551,19 +550,19 @@ A table where the key/values are the values and value counts of the table.
 compare two values. if they are tables, then compare their keys and fields recursively.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>t1</em></code>: A value
+	  t1: A value
 	</li>
 	
 	<li>
-	  <code><em>t2</em></code>: A value
+	  t2: A value
 	</li>
 	
 	<li>
-	  <code><em>ignore_mt</em></code>: if true, ignore __eq metamethod (default false)
+	  ignore_mt: if true, ignore __eq metamethod (default false)
 	</li>
 	
 </ul>
@@ -574,7 +573,7 @@ compare two values. if they are tables, then compare their keys and fields recur
 
 
 <h3>Return value:</h3>
-<ul>true or false</ul>
+true or false
 
 
 
@@ -588,11 +587,11 @@ compare two values. if they are tables, then compare their keys and fields recur
 make a deep copy of a table, recursively copying all the keys and fields. This will also set the copied table's metatable to that of the original.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>t</em></code>: A table
+	  t: A table
 	</li>
 	
 </ul>
@@ -603,7 +602,7 @@ make a deep copy of a table, recursively copying all the keys and fields. This w
 
 
 <h3>Return value:</h3>
-<ul>new table</ul>
+new table
 
 
 
@@ -617,19 +616,19 @@ make a deep copy of a table, recursively copying all the keys and fields. This w
 a new table which is the difference of two tables. With sets (where the values are all true) this is set difference and symmetric difference depending on the third parameter.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>s1</em></code>: a map-like table or set
+	  s1: a map-like table or set
 	</li>
 	
 	<li>
-	  <code><em>s2</em></code>: a map-like table or set
+	  s2: a map-like table or set
 	</li>
 	
 	<li>
-	  <code><em>symm</em></code>: symmetric difference (default false)
+	  symm: symmetric difference (default false)
 	</li>
 	
 </ul>
@@ -640,7 +639,7 @@ a new table which is the difference of two tables. With sets (where the values a
 
 
 <h3>Return value:</h3>
-<ul>a map-like table or set</ul>
+a map-like table or set
 
 
 
@@ -654,23 +653,23 @@ a new table which is the difference of two tables. With sets (where the values a
 filter a table's values using a predicate function
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>t</em></code>: a list-like table
+	  t: a list-like table
 	</li>
 	
 	<li>
-	  <code><em>pred</em></code>: a boolean function
+	  pred: a boolean function
 	</li>
 	
 	<li>
-	  <code><em>arg</em></code>: 
+	  arg: 
 	</li>
 	
 	<li>
-	  <code><em>optional</em></code>: argument to be passed as second argument of the predicate
+	  optional: argument to be passed as second argument of the predicate
 	</li>
 	
 </ul>
@@ -692,19 +691,19 @@ filter a table's values using a predicate function
 return the index of a value in a list. Like string.find, there is an optional index to start searching, which can be negative.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>t</em></code>: A list-like table (i.e. with numerical indices)
+	  t: A list-like table (i.e. with numerical indices)
 	</li>
 	
 	<li>
-	  <code><em>val</em></code>: A value
+	  val: A value
 	</li>
 	
 	<li>
-	  <code><em>idx</em></code>: index to start; -1 means last element,etc (default 1)
+	  idx: index to start; -1 means last element,etc (default 1)
 	</li>
 	
 </ul>
@@ -712,19 +711,19 @@ return the index of a value in a list. Like string.find, there is an optional in
 
 
 
-<h3>Usage:</h3>
+<h3>Usage</h3>
 <ul>
 	
-	<li><pre class=example>find({10,20,30},20) == 2</pre></li>
+	<li>find({10,20,30},20) == 2
 	
-	<li><pre class=example>find({'a','b','a','c'},'a',2) == 3</pre></li>
+	<li>find({'a','b','a','c'},'a',2) == 3
 	
 </ul>
 
 
 
 <h3>Return value:</h3>
-<ul>index of value or nil if not found</ul>
+index of value or nil if not found
 
 
 
@@ -738,19 +737,19 @@ return the index of a value in a list. Like string.find, there is an optional in
 return the index (or key) of a value in a table using a comparison function.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>t</em></code>: A table
+	  t: A table
 	</li>
 	
 	<li>
-	  <code><em>cmp</em></code>: A comparison function
+	  cmp: A comparison function
 	</li>
 	
 	<li>
-	  <code><em>arg</em></code>: an optional second argument to the function
+	  arg: an optional second argument to the function
 	</li>
 	
 </ul>
@@ -763,9 +762,9 @@ return the index (or key) of a value in a table using a comparison function.
 <h3>Return values:</h3>
 <ol>
 	
-	<li>index of value, or nil if not found</li>
+	<li>index of value, or nil if not found
 	
-	<li>value returned by comparison function</li>
+	<li>value returned by comparison function
 	
 </ol>
 
@@ -781,19 +780,19 @@ return the index (or key) of a value in a table using a comparison function.
 apply a function to all elements of a table. The arguments to the function will be the value, the key and <i>finally</i> any extra arguments passed to this function. Note that the Lua 5.0 function table.foreach passed the <i>key</i> first.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>t</em></code>: a table
+	  t: a table
 	</li>
 	
 	<li>
-	  <code><em>fun</em></code>: a function with at least one argument
+	  fun: a function with at least one argument
 	</li>
 	
 	<li>
-	  <code><em>...</em></code>: extra arguments
+	  ...: extra arguments
 	</li>
 	
 </ul>
@@ -815,19 +814,19 @@ apply a function to all elements of a table. The arguments to the function will 
 apply a function to all elements of a list-like table in order. The arguments to the function will be the value, the index and <i>finally</i> any extra arguments passed to this function
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>t</em></code>: a table
+	  t: a table
 	</li>
 	
 	<li>
-	  <code><em>fun</em></code>: a function with at least one argument
+	  fun: a function with at least one argument
 	</li>
 	
 	<li>
-	  <code><em>...</em></code>: 
+	  ...: 
 	</li>
 	
 </ul>
@@ -849,31 +848,31 @@ apply a function to all elements of a list-like table in order. The arguments to
 copy an array into another one, resizing the destination if necessary. <br>
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>dest</em></code>: a list-like table
+	  dest: a list-like table
 	</li>
 	
 	<li>
-	  <code><em>src</em></code>: a list-like table
+	  src: a list-like table
 	</li>
 	
 	<li>
-	  <code><em>idest</em></code>: where to start copying values from source (default 1)
+	  idest: where to start copying values from source (default 1)
 	</li>
 	
 	<li>
-	  <code><em>isrc</em></code>: where to start copying values into destination (default 1)
+	  isrc: where to start copying values into destination (default 1)
 	</li>
 	
 	<li>
-	  <code><em>nsrc</em></code>: 
+	  nsrc: 
 	</li>
 	
 	<li>
-	  <code><em>n</em></code>: number of elements to copy from source (default source size)
+	  n: number of elements to copy from source (default source size)
 	</li>
 	
 </ul>
@@ -895,19 +894,19 @@ copy an array into another one, resizing the destination if necessary. <br>
 apply a function to all values of a list. This returns a table of the results. Any extra arguments are passed to the function.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>fun</em></code>: A function that takes at least one argument
+	  fun: A function that takes at least one argument
 	</li>
 	
 	<li>
-	  <code><em>t</em></code>: a table (applies to array part)
+	  t: a table (applies to array part)
 	</li>
 	
 	<li>
-	  <code><em>...</em></code>: 
+	  ...: 
 	</li>
 	
 </ul>
@@ -916,12 +915,12 @@ apply a function to all values of a list. This returns a table of the results. A
 
 
 <h3>Usage:</h3>
-<ul><pre class=example>imap(function(v) return v*v end, {10,20,30,fred=2}) is {100,400,900}</pre></ul>
+imap(function(v) return v*v end, {10,20,30,fred=2}) is {100,400,900}
 
 
 
 <h3>Return value:</h3>
-<ul>a list-like table</ul>
+a list-like table
 
 
 
@@ -935,23 +934,23 @@ apply a function to all values of a list. This returns a table of the results. A
 apply a function to values from two arrays.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>fun</em></code>: a function of at least two arguments
+	  fun: a function of at least two arguments
 	</li>
 	
 	<li>
-	  <code><em>t1</em></code>: a list-like table
+	  t1: a list-like table
 	</li>
 	
 	<li>
-	  <code><em>t2</em></code>: a list-like table
+	  t2: a list-like table
 	</li>
 	
 	<li>
-	  <code><em>...</em></code>: extra arguments
+	  ...: extra arguments
 	</li>
 	
 </ul>
@@ -960,7 +959,7 @@ apply a function to values from two arrays.
 
 
 <h3>Usage:</h3>
-<ul><pre class=example>imap2('+',{1,2,3,m=4},{10,20,30,m=40}) is {11,22,23}</pre></ul>
+imap2('+',{1,2,3,m=4},{10,20,30,m=40}) is {11,22,23}
 
 
 
@@ -976,15 +975,15 @@ apply a function to values from two arrays.
 return a list of all values in a table indexed by another list.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>tbl</em></code>: a table
+	  tbl: a table
 	</li>
 	
 	<li>
-	  <code><em>idx</em></code>: an index table (a list of keys)
+	  idx: an index table (a list of keys)
 	</li>
 	
 </ul>
@@ -992,19 +991,19 @@ return a list of all values in a table indexed by another list.
 
 
 
-<h3>Usage:</h3>
+<h3>Usage</h3>
 <ul>
 	
-	<li><pre class=example>index_by({10,20,30,40},{2,4}) == {20,40}</pre></li>
+	<li>index_by({10,20,30,40},{2,4}) == {20,40}
 	
-	<li><pre class=example>index_by({one=1,two=2,three=3},{'one','three'}) == {1,3}</pre></li>
+	<li>index_by({one=1,two=2,three=3},{'one','three'}) == {1,3}
 	
 </ul>
 
 
 
 <h3>Return value:</h3>
-<ul>a list-like table</ul>
+a list-like table
 
 
 
@@ -1018,11 +1017,11 @@ return a list of all values in a table indexed by another list.
 create an index map from a list-like table. The original values become keys, and the associated values are the indices into the original list.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>t</em></code>: a list-like table
+	  t: a list-like table
 	</li>
 	
 </ul>
@@ -1033,7 +1032,7 @@ create an index map from a list-like table. The original values become keys, and
 
 
 <h3>Return value:</h3>
-<ul>a map-like table</ul>
+a map-like table
 
 
 
@@ -1047,15 +1046,15 @@ create an index map from a list-like table. The original values become keys, and
 insert values into a table. <br> insertvalues(t, [pos,] values) <br> similar to table.insert but inserts values from given table "values", not the object itself, into table "t" at position "pos".
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>t</em></code>: 
+	  t: 
 	</li>
 	
 	<li>
-	  <code><em>...</em></code>: 
+	  ...: 
 	</li>
 	
 </ul>
@@ -1077,11 +1076,11 @@ insert values into a table. <br> insertvalues(t, [pos,] values) <br> similar to 
 return all the keys of a table in arbitrary order.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>t</em></code>: A table
+	  t: A table
 	</li>
 	
 </ul>
@@ -1103,11 +1102,11 @@ return all the keys of a table in arbitrary order.
 create a set from a list-like table. A set is a table where the original values become keys, and the associated values are all true.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>t</em></code>: a list-like table
+	  t: a list-like table
 	</li>
 	
 </ul>
@@ -1118,7 +1117,7 @@ create a set from a list-like table. A set is a table where the original values 
 
 
 <h3>Return value:</h3>
-<ul>a set (a map-like table)</ul>
+a set (a map-like table)
 
 
 
@@ -1132,19 +1131,19 @@ create a set from a list-like table. A set is a table where the original values 
 apply a function to all values of a table. This returns a table of the results. Any extra arguments are passed to the function.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>fun</em></code>: A function that takes at least one argument
+	  fun: A function that takes at least one argument
 	</li>
 	
 	<li>
-	  <code><em>t</em></code>: A table
+	  t: A table
 	</li>
 	
 	<li>
-	  <code><em>...</em></code>: 
+	  ...: 
 	</li>
 	
 </ul>
@@ -1153,7 +1152,7 @@ apply a function to all values of a table. This returns a table of the results. 
 
 
 <h3>Usage:</h3>
-<ul><pre class=example>map(function(v) return v*v end, {10,20,30,fred=2}) is {100,400,900,fred=4}</pre></ul>
+map(function(v) return v*v end, {10,20,30,fred=2}) is {100,400,900,fred=4}
 
 
 
@@ -1169,23 +1168,23 @@ apply a function to all values of a table. This returns a table of the results. 
 apply a function to values from two tables.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>fun</em></code>: a function of at least two arguments
+	  fun: a function of at least two arguments
 	</li>
 	
 	<li>
-	  <code><em>t1</em></code>: a table
+	  t1: a table
 	</li>
 	
 	<li>
-	  <code><em>t2</em></code>: a table
+	  t2: a table
 	</li>
 	
 	<li>
-	  <code><em>...</em></code>: extra arguments
+	  ...: extra arguments
 	</li>
 	
 </ul>
@@ -1194,12 +1193,12 @@ apply a function to values from two tables.
 
 
 <h3>Usage:</h3>
-<ul><pre class=example>map2('+',{1,2,3,m=4},{10,20,30,m=40}) is {11,22,23,m=44}</pre></ul>
+map2('+',{1,2,3,m=4},{10,20,30,m=40}) is {11,22,23,m=44}
 
 
 
 <h3>Return value:</h3>
-<ul>a table</ul>
+a table
 
 
 
@@ -1213,19 +1212,19 @@ apply a function to values from two tables.
 apply a named method to values from a table.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>name</em></code>: the method name
+	  name: the method name
 	</li>
 	
 	<li>
-	  <code><em>t</em></code>: a list-like table
+	  t: a list-like table
 	</li>
 	
 	<li>
-	  <code><em>...</em></code>: any extra arguments to the method
+	  ...: any extra arguments to the method
 	</li>
 	
 </ul>
@@ -1247,15 +1246,15 @@ apply a named method to values from a table.
 Apply a function to a number of tables. A more general version of map The result is a table containing the result of applying that function to the ith value of each table. Length of output list is the minimum length of all the lists
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>fun</em></code>: A function that takes as many arguments as there are tables
+	  fun: A function that takes as many arguments as there are tables
 	</li>
 	
 	<li>
-	  <code><em>...</em></code>: 
+	  ...: 
 	</li>
 	
 </ul>
@@ -1263,12 +1262,12 @@ Apply a function to a number of tables. A more general version of map The result
 
 
 
-<h3>Usage:</h3>
+<h3>Usage</h3>
 <ul>
 	
-	<li><pre class=example>mapn(function(x,y,z) return x+y+z end, {1,2,3},{10,20,30},{100,200,300}) is {111,222,333}</pre></li>
+	<li>mapn(function(x,y,z) return x+y+z end, {1,2,3},{10,20,30},{100,200,300}) is {111,222,333}
 	
-	<li><pre class=example>mapn(math.max, {1,20,300},{10,2,3},{100,200,100}) is	{100,200,300}</pre></li>
+	<li>mapn(math.max, {1,20,300},{10,2,3},{100,200,100}) is	{100,200,300}
 	
 </ul>
 
@@ -1286,19 +1285,19 @@ Apply a function to a number of tables. A more general version of map The result
 combine two tables, either as union or intersection. Corresponds to set operations for sets () but more general. Not particularly useful for list-like tables.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>t1</em></code>: a table
+	  t1: a table
 	</li>
 	
 	<li>
-	  <code><em>t2</em></code>: a table
+	  t2: a table
 	</li>
 	
 	<li>
-	  <code><em>dup</em></code>: true for a union, false for an intersection.
+	  dup: true for a union, false for an intersection.
 	</li>
 	
 </ul>
@@ -1306,12 +1305,12 @@ combine two tables, either as union or intersection. Corresponds to set operatio
 
 
 
-<h3>Usage:</h3>
+<h3>Usage</h3>
 <ul>
 	
-	<li><pre class=example>merge({alice=23,fred=34},{bob=25,fred=34}) is {fred=34}</pre></li>
+	<li>merge({alice=23,fred=34},{bob=25,fred=34}) is {fred=34}
 	
-	<li><pre class=example>merge({alice=23,fred=34},{bob=25,fred=34},true) is {bob=25,fred=34,alice=23}</pre></li>
+	<li>merge({alice=23,fred=34},{bob=25,fred=34},true) is {bob=25,fred=34,alice=23}
 	
 </ul>
 
@@ -1322,9 +1321,8 @@ combine two tables, either as union or intersection. Corresponds to set operatio
 <h3>See also:</h3>
 <ul>
 	
-	<!-- <li><a href="#../modules/pl.tablex.html#index_mapindex_map"> -->
-	<li><a href="#index_map">
-		index_map</li>
+	<li><a href="../modules/pl.tablex.html#index_map">
+		index_map
 	</a>
 	
 </ul>
@@ -1339,31 +1337,31 @@ combine two tables, either as union or intersection. Corresponds to set operatio
 copy an array into another one. <br>
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>dest</em></code>: a list-like table
+	  dest: a list-like table
 	</li>
 	
 	<li>
-	  <code><em>src</em></code>: a list-like table
+	  src: a list-like table
 	</li>
 	
 	<li>
-	  <code><em>idest</em></code>: where to start copying values from source (default 1)
+	  idest: where to start copying values from source (default 1)
 	</li>
 	
 	<li>
-	  <code><em>isrc</em></code>: where to start copying values into destination (default 1)
+	  isrc: where to start copying values into destination (default 1)
 	</li>
 	
 	<li>
-	  <code><em>nsrc</em></code>: 
+	  nsrc: 
 	</li>
 	
 	<li>
-	  <code><em>n</em></code>: number of elements to copy from source (default source size)
+	  n: number of elements to copy from source (default source size)
 	</li>
 	
 </ul>
@@ -1385,15 +1383,15 @@ copy an array into another one. <br>
 create a new array of specified size with initial value.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>n</em></code>: size
+	  n: size
 	</li>
 	
 	<li>
-	  <code><em>val</em></code>: initial value (can be nil, but don't expect # to work!)
+	  val: initial value (can be nil, but don't expect # to work!)
 	</li>
 	
 </ul>
@@ -1404,7 +1402,7 @@ create a new array of specified size with initial value.
 
 
 <h3>Return value:</h3>
-<ul>the table</ul>
+the table
 
 
 
@@ -1418,19 +1416,19 @@ create a new array of specified size with initial value.
 call the function with the key and value pairs from a table. The function can return a value and a key (note the order!). If both are not nil, then this pair is inserted into the result. If only value is not nil, then it is appended to the result.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>fun</em></code>: A function which will be passed each key and value as arguments, plus any extra arguments to pairmap.
+	  fun: A function which will be passed each key and value as arguments, plus any extra arguments to pairmap.
 	</li>
 	
 	<li>
-	  <code><em>t</em></code>: A table
+	  t: A table
 	</li>
 	
 	<li>
-	  <code><em>...</em></code>: 
+	  ...: 
 	</li>
 	
 </ul>
@@ -1438,12 +1436,12 @@ call the function with the key and value pairs from a table. The function can re
 
 
 
-<h3>Usage:</h3>
+<h3>Usage</h3>
 <ul>
 	
-	<li><pre class=example>pairmap({fred=10,bonzo=20},function(k,v) return v end) is {10,20}</pre></li>
+	<li>pairmap({fred=10,bonzo=20},function(k,v) return v end) is {10,20}
 	
-	<li><pre class=example>pairmap({one=1,two=2},function(k,v) return {k,v},k end) is {one={'one',1},two={'two',2}}</pre></li>
+	<li>pairmap({one=1,two=2},function(k,v) return {k,v},k end) is {one={'one',1},two={'two',2}}
 	
 </ul>
 
@@ -1461,19 +1459,19 @@ call the function with the key and value pairs from a table. The function can re
 generate a table of all numbers in a range
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>start</em></code>: number
+	  start: number
 	</li>
 	
 	<li>
-	  <code><em>finish</em></code>: number
+	  finish: number
 	</li>
 	
 	<li>
-	  <code><em>step</em></code>: optional increment (default 1 for increasing, -1 for decreasing)
+	  step: optional increment (default 1 for increasing, -1 for decreasing)
 	</li>
 	
 </ul>
@@ -1495,15 +1493,15 @@ generate a table of all numbers in a range
 'reduce' a list using a binary function.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>fun</em></code>: a function of two arguments
+	  fun: a function of two arguments
 	</li>
 	
 	<li>
-	  <code><em>t</em></code>: a list-like table
+	  t: a list-like table
 	</li>
 	
 </ul>
@@ -1512,12 +1510,12 @@ generate a table of all numbers in a range
 
 
 <h3>Usage:</h3>
-<ul><pre class=example>reduce('+',{1,2,3,4}) == 10</pre></ul>
+reduce('+',{1,2,3,4}) == 10
 
 
 
 <h3>Return value:</h3>
-<ul>the result of the function</ul>
+the result of the function
 
 
 
@@ -1531,19 +1529,19 @@ generate a table of all numbers in a range
 remove a range of values from a table.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>t</em></code>: a list-like table
+	  t: a list-like table
 	</li>
 	
 	<li>
-	  <code><em>i1</em></code>: start index
+	  i1: start index
 	</li>
 	
 	<li>
-	  <code><em>i2</em></code>: end index
+	  i2: end index
 	</li>
 	
 </ul>
@@ -1554,7 +1552,7 @@ remove a range of values from a table.
 
 
 <h3>Return value:</h3>
-<ul>the table</ul>
+the table
 
 
 
@@ -1568,19 +1566,19 @@ remove a range of values from a table.
 return the index of a value in a list, searching from the end. Like string.find, there is an optional index to start searching, which can be negative.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>t</em></code>: A list-like table (i.e. with numerical indices)
+	  t: A list-like table (i.e. with numerical indices)
 	</li>
 	
 	<li>
-	  <code><em>val</em></code>: A value
+	  val: A value
 	</li>
 	
 	<li>
-	  <code><em>idx</em></code>: index to start; -1 means last element,etc (default 1)
+	  idx: index to start; -1 means last element,etc (default 1)
 	</li>
 	
 </ul>
@@ -1589,12 +1587,12 @@ return the index of a value in a list, searching from the end. Like string.find,
 
 
 <h3>Usage:</h3>
-<ul><pre class=example>rfind({10,10,10},10) == 3</pre></ul>
+rfind({10,10,10},10) == 3
 
 
 
 <h3>Return value:</h3>
-<ul>index of value or nil if not found</ul>
+index of value or nil if not found
 
 
 
@@ -1608,19 +1606,19 @@ return the index of a value in a list, searching from the end. Like string.find,
 find a value in a table by recursive search.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>t</em></code>: the table
+	  t: the table
 	</li>
 	
 	<li>
-	  <code><em>value</em></code>: the value
+	  value: the value
 	</li>
 	
 	<li>
-	  <code><em>exclude</em></code>: any tables to avoid searching
+	  exclude: any tables to avoid searching
 	</li>
 	
 </ul>
@@ -1629,12 +1627,12 @@ find a value in a table by recursive search.
 
 
 <h3>Usage:</h3>
-<ul><pre class=example>search(_G,math.sin,{package.path}) == 'math.sin'</pre></ul>
+search(_G,math.sin,{package.path}) == 'math.sin'
 
 
 
 <h3>Return value:</h3>
-<ul>a fieldspec, e.g. 'a.b' or 'math.sin'</ul>
+a fieldspec, e.g. 'a.b' or 'math.sin'
 
 
 
@@ -1648,23 +1646,23 @@ find a value in a table by recursive search.
 set an array range to a value. If it's a function we use the result of applying it to the indices.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>t</em></code>: a list-like table
+	  t: a list-like table
 	</li>
 	
 	<li>
-	  <code><em>val</em></code>: a value
+	  val: a value
 	</li>
 	
 	<li>
-	  <code><em>i1</em></code>: start range (default 1)
+	  i1: start range (default 1)
 	</li>
 	
 	<li>
-	  <code><em>i2</em></code>: end range (default table size)
+	  i2: end range (default table size)
 	</li>
 	
 </ul>
@@ -1686,11 +1684,11 @@ set an array range to a value. If it's a function we use the result of applying 
 total number of elements in this table. <br> Note that this is distinct from #t, which is the number of values in the array part; this value will always be greater or equal. The difference gives the size of the hash part, for practical purposes.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>t</em></code>: a table
+	  t: a table
 	</li>
 	
 </ul>
@@ -1701,7 +1699,7 @@ total number of elements in this table. <br> Note that this is distinct from #t,
 
 
 <h3>Return value:</h3>
-<ul>the size</ul>
+the size
 
 
 
@@ -1715,19 +1713,19 @@ total number of elements in this table. <br> Note that this is distinct from #t,
 Extract a range from a table, like  'string.sub'. If first or last are negative then they are relative to the end of the list eg. sub(t,-2) gives last 2 entries in a list, and sub(t,-4,-2) gives from -4th to -2nd
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>t</em></code>: a list-like table
+	  t: a list-like table
 	</li>
 	
 	<li>
-	  <code><em>first</em></code>: An index
+	  first: An index
 	</li>
 	
 	<li>
-	  <code><em>last</em></code>: An index
+	  last: An index
 	</li>
 	
 </ul>
@@ -1738,7 +1736,7 @@ Extract a range from a table, like  'string.sub'. If first or last are negative 
 
 
 <h3>Return value:</h3>
-<ul>a new List</ul>
+a new List
 
 
 
@@ -1752,19 +1750,19 @@ Extract a range from a table, like  'string.sub'. If first or last are negative 
 apply a function to all values of a table, in-place. Any extra arguments are passed to the function.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>fun</em></code>: A function that takes at least one argument
+	  fun: A function that takes at least one argument
 	</li>
 	
 	<li>
-	  <code><em>t</em></code>: a table
+	  t: a table
 	</li>
 	
 	<li>
-	  <code><em>...</em></code>: extra arguments
+	  ...: extra arguments
 	</li>
 	
 </ul>
@@ -1786,15 +1784,15 @@ apply a function to all values of a table, in-place. Any extra arguments are pas
 copy a table into another, in-place.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>t1</em></code>: destination table
+	  t1: destination table
 	</li>
 	
 	<li>
-	  <code><em>t2</em></code>: source table
+	  t2: source table
 	</li>
 	
 </ul>
@@ -1805,7 +1803,7 @@ copy a table into another, in-place.
 
 
 <h3>Return value:</h3>
-<ul>first table</ul>
+first table
 
 
 
@@ -1819,11 +1817,11 @@ copy a table into another, in-place.
 return all the values of the table in arbitrary order
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>t</em></code>: A table
+	  t: A table
 	</li>
 	
 </ul>
@@ -1845,11 +1843,11 @@ return all the values of the table in arbitrary order
 return a table where each element is a table of the ith values of an arbitrary number of tables. It is equivalent to a matrix transpose.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>...</em></code>: 
+	  ...: 
 	</li>
 	
 </ul>
@@ -1858,7 +1856,7 @@ return a table where each element is a table of the ith values of an arbitrary n
 
 
 <h3>Usage:</h3>
-<ul><pre class=example>zip({10,20,30},{100,200,300}) is {{10,100},{20,200},{30,300}}</pre></ul>
+zip({10,20,30},{100,200,300}) is {{10,100},{20,200},{30,300}}
 
 
 

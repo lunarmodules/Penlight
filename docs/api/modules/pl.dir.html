@@ -151,7 +151,6 @@
 
 
 
-
 <h2>Functions</h2>
 <table class="function_list">
 
@@ -176,6 +175,11 @@
 	</tr>
 
 	<tr>
+	<td class="name" nowrap><a href="#getallfiles">getallfiles</a>&nbsp;(path, pattern)</td>
+	<td class="summary">Recursively returns all the file starting at <i>path</i>.</td>
+	</tr>
+
+	<tr>
 	<td class="name" nowrap><a href="#getdirectories">getdirectories</a>&nbsp;(dir)</td>
 	<td class="summary">return a list of all subdirectories of the directory.</td>
 	</tr>
@@ -186,7 +190,7 @@
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#makepath">makepath</a>&nbsp;(p, path)</td>
+	<td class="name" nowrap><a href="#makepath">makepath</a>&nbsp;(path)</td>
 	<td class="summary">create a directory path.</td>
 	</tr>
 
@@ -211,6 +215,7 @@
 
 
 
+
 <br/>
 <br/>
 
@@ -226,23 +231,23 @@
 clone a directory tree. Will always try to create a new directory structure if necessary.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>path1</em></code>: the base path of the source tree
+	  path1: the base path of the source tree
 	</li>
 	
 	<li>
-	  <code><em>path2</em></code>: the new base path for the destination
+	  path2: the new base path for the destination
 	</li>
 	
 	<li>
-	  <code><em>file_fun</em></code>: an optional function to apply on all files
+	  file_fun: an optional function to apply on all files
 	</li>
 	
 	<li>
-	  <code><em>verbose</em></code>: 
+	  verbose: 
 	</li>
 	
 </ul>
@@ -251,12 +256,12 @@ clone a directory tree. Will always try to create a new directory structure if n
 
 
 <h3>Usage:</h3>
-<ul><pre class=example>clonetree('.','../backup',copyfile)</pre></ul>
+clonetree('.','../backup',copyfile)
 
 
 
 <h3>Return value:</h3>
-<ul>if failed, false plus an error message. If completed the traverse, true, a list of failed directory creations and a list of failed file operations.</ul>
+if failed, false plus an error message. If completed the traverse, true, a list of failed directory creations and a list of failed file operations.
 
 
 
@@ -270,19 +275,19 @@ clone a directory tree. Will always try to create a new directory structure if n
 copy a file.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>src</em></code>: source file
+	  src: source file
 	</li>
 	
 	<li>
-	  <code><em>dest</em></code>: destination file
+	  dest: destination file
 	</li>
 	
 	<li>
-	  <code><em>flag</em></code>: true if you want to force the copy (default)
+	  flag: true if you want to force the copy (default)
 	</li>
 	
 </ul>
@@ -293,7 +298,7 @@ copy a file.
 
 
 <h3>Return value:</h3>
-<ul>true if operation succeeded</ul>
+true if operation succeeded
 
 
 
@@ -307,15 +312,15 @@ copy a file.
 return a list of all files in a list of files which match the pattern. (cf. fnmatch.filter in Python, 11.8)
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>files</em></code>: A table containing file names
+	  files: A table containing file names
 	</li>
 	
 	<li>
-	  <code><em>pattern</em></code>: A shell pattern.
+	  pattern: A shell pattern.
 	</li>
 	
 </ul>
@@ -337,15 +342,15 @@ return a list of all files in a list of files which match the pattern. (cf. fnma
 does the filename match the shell pattern?. (cf. fnmatch.fnmatch in Python, 11.8)
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>file</em></code>: A file name
+	  file: A file name
 	</li>
 	
 	<li>
-	  <code><em>pattern</em></code>: A shell pattern
+	  pattern: A shell pattern
 	</li>
 	
 </ul>
@@ -362,16 +367,49 @@ does the filename match the shell pattern?. (cf. fnmatch.fnmatch in Python, 11.8
 
 
 
+<dt><a name="getallfiles"></a><strong>getallfiles</strong>&nbsp;(path, pattern)</dt>
+<dd>
+Recursively returns all the file starting at <i>path</i>. It can optionally take a shell pattern and only returns files that match <i>pattern</i>. If a pattern is given it will do a case insensitive search.
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  path: {string} A directory. If not given, all files in current directory are returned.
+	</li>
+	
+	<li>
+	  pattern: {string} A shell pattern. If not given, all files are returned.
+	</li>
+	
+</ul>
+
+
+
+
+
+
+<h3>Return value:</h3>
+Table containing all the files found recursively starting at <i>path</i> and filtered by <i>pattern</i>.
+
+
+
+</dd>
+
+
+
+
 <dt><a name="getdirectories"></a><strong>getdirectories</strong>&nbsp;(dir)</dt>
 <dd>
 return a list of all subdirectories of the directory.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>dir</em></code>: A directory
+	  dir: A directory
 	</li>
 	
 </ul>
@@ -393,15 +431,15 @@ return a list of all subdirectories of the directory.
 return a list of all files in a directory which match the a shell pattern.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>dir</em></code>: A directory. If not given, all files in current directory are returned.
+	  dir: A directory. If not given, all files in current directory are returned.
 	</li>
 	
 	<li>
-	  <code><em>mask</em></code>: A shell pattern. If  not given, all files are returned.
+	  mask: A shell pattern. If  not given, all files are returned.
 	</li>
 	
 </ul>
@@ -418,20 +456,16 @@ return a list of all files in a directory which match the a shell pattern.
 
 
 
-<dt><a name="makepath"></a><strong>makepath</strong>&nbsp;(p, path)</dt>
+<dt><a name="makepath"></a><strong>makepath</strong>&nbsp;(path)</dt>
 <dd>
 create a directory path. This will create subdirectories as necessary!
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>p</em></code>: 
-	</li>
-	
-	<li>
-	  <code><em>path</em></code>: A directory path
+	  path: A directory path
 	</li>
 	
 </ul>
@@ -453,15 +487,15 @@ create a directory path. This will create subdirectories as necessary!
 move a file.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>src</em></code>: source file
+	  src: source file
 	</li>
 	
 	<li>
-	  <code><em>dest</em></code>: destination file
+	  dest: destination file
 	</li>
 	
 </ul>
@@ -472,7 +506,7 @@ move a file.
 
 
 <h3>Return value:</h3>
-<ul>true if operation succeeded</ul>
+true if operation succeeded
 
 
 
@@ -486,15 +520,15 @@ move a file.
 remove a whole directory tree.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>fullpath</em></code>: 
+	  fullpath: 
 	</li>
 	
 	<li>
-	  <code><em>path</em></code>: A directory path
+	  path: A directory path
 	</li>
 	
 </ul>
@@ -516,15 +550,15 @@ remove a whole directory tree.
 return an iterator which walks through a directory tree starting at root. The iterator returns (root,dirs,files) Note that dirs and files are lists of names (i.e. you must say _path.join(root,d)_ to get the actual full path) If bottom_up is false (or not present), then the entries at the current level are returned before we go deeper. This means that you can modify the returned list of directories before continuing. This is a clone of os.walk from the Python libraries.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>root</em></code>: A starting directory
+	  root: A starting directory
 	</li>
 	
 	<li>
-	  <code><em>bottom_up</em></code>: False if we start listing entries immediately.
+	  bottom_up: False if we start listing entries immediately.
 	</li>
 	
 </ul>

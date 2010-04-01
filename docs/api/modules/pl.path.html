@@ -151,7 +151,6 @@
 
 
 
-
 <h2>Functions</h2>
 <table class="function_list">
 
@@ -261,6 +260,7 @@
 
 
 
+
 <br/>
 <br/>
 
@@ -276,11 +276,11 @@
 return an absolute path.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>path</em></code>: A file path
+	  path: A file path
 	</li>
 	
 </ul>
@@ -302,11 +302,11 @@ return an absolute path.
 return the file part of a path
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>path</em></code>: A file path
+	  path: A file path
 	</li>
 	
 </ul>
@@ -328,15 +328,15 @@ return the file part of a path
 return the largest common prefix path of two paths.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>path1</em></code>: a file path
+	  path1: a file path
 	</li>
 	
 	<li>
-	  <code><em>path2</em></code>: a file path
+	  path2: a file path
 	</li>
 	
 </ul>
@@ -358,11 +358,11 @@ return the largest common prefix path of two paths.
 return the directory part of a path
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>path</em></code>: A file path
+	  path: A file path
 	</li>
 	
 </ul>
@@ -384,11 +384,11 @@ return the directory part of a path
 does a path exist?.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>path</em></code>: A file path
+	  path: A file path
 	</li>
 	
 </ul>
@@ -410,11 +410,11 @@ does a path exist?.
 Replace a starting '~' with the user's home directory. In windows, if HOME isn't set, then USERPROFILE is used in preference to HOMEDRIVE HOMEPATH. This is guaranteed to be writeable on all versions of Windows.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>path</em></code>: A file path
+	  path: A file path
 	</li>
 	
 </ul>
@@ -436,11 +436,11 @@ Replace a starting '~' with the user's home directory. In windows, if HOME isn't
 get the extension part of a path.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>path</em></code>: A file path
+	  path: A file path
 	</li>
 	
 </ul>
@@ -462,11 +462,11 @@ get the extension part of a path.
 Return the time of last access as the number of seconds since the epoch.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>path</em></code>: A file path
+	  path: A file path
 	</li>
 	
 </ul>
@@ -488,11 +488,11 @@ Return the time of last access as the number of seconds since the epoch.
 Return the system's ctime.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>path</em></code>: A file path
+	  path: A file path
 	</li>
 	
 </ul>
@@ -514,11 +514,11 @@ Return the system's ctime.
 Return the time of last modification
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>path</em></code>: A file path
+	  path: A file path
 	</li>
 	
 </ul>
@@ -540,11 +540,11 @@ Return the time of last modification
 return size of a file.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>path</em></code>: A file path
+	  path: A file path
 	</li>
 	
 </ul>
@@ -566,11 +566,11 @@ return size of a file.
 is this an absolute path?.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>path</em></code>: A file path
+	  path: A file path
 	</li>
 	
 </ul>
@@ -592,11 +592,11 @@ is this an absolute path?.
 is this a directory?
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>path</em></code>: A file path
+	  path: A file path
 	</li>
 	
 </ul>
@@ -618,11 +618,11 @@ is this a directory?
 is this a file?.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>path</em></code>: A file path
+	  path: A file path
 	</li>
 	
 </ul>
@@ -644,15 +644,15 @@ is this a file?.
 return the path resulting from combining the two paths. if the second is already an absolute path, then it returns it.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>p1</em></code>: A file path
+	  p1: A file path
 	</li>
 	
 	<li>
-	  <code><em>p2</em></code>: A file path
+	  p2: A file path
 	</li>
 	
 </ul>
@@ -674,11 +674,11 @@ return the path resulting from combining the two paths. if the second is already
 Normalize the case of a pathname. On Unix, this returns the path unchanged; for Windows, it converts the path to lowercase, and it also converts forward slashes to backward slashes. Will also replace '\dir\..\' by '\' (PL extension!)
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>path</em></code>: A file path
+	  path: A file path
 	</li>
 	
 </ul>
@@ -700,11 +700,11 @@ Normalize the case of a pathname. On Unix, this returns the path unchanged; for 
 return the full path where a particular Lua module would be found. Both package.path and package.cpath is searched, so the result may either be a Lua file or a shared libarary.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>mod</em></code>: name of the module
+	  mod: name of the module
 	</li>
 	
 </ul>
@@ -717,9 +717,9 @@ return the full path where a particular Lua module would be found. Both package.
 <h3>Return values:</h3>
 <ol>
 	
-	<li>on success: path of module, lua or binary</li>
+	<li>on success: path of module, lua or binary
 	
-	<li>on error: nil,error string</li>
+	<li>on error: nil,error string
 	
 </ol>
 
@@ -735,11 +735,11 @@ return the full path where a particular Lua module would be found. Both package.
 given a path, return the root part and the extension part. if there's no extension part, the second value will be empty
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>path</em></code>: A file path
+	  path: A file path
 	</li>
 	
 </ul>
@@ -761,11 +761,11 @@ given a path, return the root part and the extension part. if there's no extensi
 given a path, return the directory part and a file part. if there's no directory part, the first value will be empty
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>path</em></code>: A file path
+	  path: A file path
 	</li>
 	
 </ul>

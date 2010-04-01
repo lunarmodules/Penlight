@@ -151,7 +151,6 @@
 
 
 
-
 <h2>Functions</h2>
 <table class="function_list">
 
@@ -176,6 +175,7 @@
 
 
 
+
 <br/>
 <br/>
 
@@ -191,19 +191,19 @@
 dump a Lua table out to a file or stdout
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>t</em></code>: a table
+	  t: a table
 	</li>
 	
 	<li>
-	  <code><em>...</em></code>: 
+	  ...: 
 	</li>
 	
 	<li>
-	  <code><em>file</em></code>: (optional) file name
+	  file: (optional) file name
 	</li>
 	
 </ul>
@@ -225,11 +225,11 @@ dump a Lua table out to a file or stdout
 read a string representation of a Lua table. Uses loadstring, but tries to be cautious about loading arbitrary code! It is expecting a string of the form '{...}', with perhaps some whitespace before or after the curly braces. An empty environment is used, and any occurance of the keyword 'function' will be considered a problem.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>s</em></code>: 
+	  s: 
 	</li>
 	
 </ul>
@@ -251,23 +251,23 @@ read a string representation of a Lua table. Uses loadstring, but tries to be ca
 create a string representation of a Lua table.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>tbl</em></code>: 
+	  tbl: 
 	</li>
 	
 	<li>
-	  <code><em>space</em></code>: the indent to use (defaults to two spaces)
+	  space: the indent to use (defaults to two spaces)
 	</li>
 	
 	<li>
-	  <code><em>not_clever</em></code>: (defaults to false) use for plain output, e.g {['key']=1}
+	  not_clever: (defaults to false) use for plain output, e.g {['key']=1}
 	</li>
 	
 	<li>
-	  <code><em>a</em></code>: table
+	  a: table
 	</li>
 	
 </ul>
@@ -278,7 +278,7 @@ create a string representation of a Lua table.
 
 
 <h3>Return value:</h3>
-<ul>a string</ul>
+a string
 
 
 

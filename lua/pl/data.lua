@@ -79,7 +79,7 @@ end
 --- read a delimited file in a Lua table.
 -- By default, attempts to treat first line as separated list of fieldnames.
 -- @param file a filename or a file-like object (default stdin)
--- @param cnfig options: can override delim (a string pattern), fieldnames (a list),
+-- @param cnfg options table: can override delim (a string pattern), fieldnames (a list),
 -- specify no_convert (default is to convert), numfields (indices of columns known
 -- to be numbers) and thousands_dot (thousands separator in Excel CSV is '.')
 function read(file,cnfg)

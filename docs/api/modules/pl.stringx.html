@@ -151,7 +151,6 @@
 
 
 
-
 <h2>Functions</h2>
 <table class="function_list">
 
@@ -291,6 +290,7 @@
 
 
 
+
 <br/>
 <br/>
 
@@ -306,15 +306,15 @@
 return the 'character' at the index.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>self</em></code>: the string
+	  self: the string
 	</li>
 	
 	<li>
-	  <code><em>idx</em></code>: an index (can be negative)
+	  idx: an index (can be negative)
 	</li>
 	
 </ul>
@@ -325,7 +325,7 @@ return the 'character' at the index.
 
 
 <h3>Return value:</h3>
-<ul>a substring of length 1 if successful, empty string otherwise.</ul>
+a substring of length 1 if successful, empty string otherwise.
 
 
 
@@ -339,19 +339,19 @@ return the 'character' at the index.
 center-justify s with width w.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>s</em></code>: 
+	  s: 
 	</li>
 	
 	<li>
-	  <code><em>w</em></code>: width of justification
+	  w: width of justification
 	</li>
 	
 	<li>
-	  <code><em>ch</em></code>: padding character, default ' '
+	  ch: padding character, default ' '
 	</li>
 	
 </ul>
@@ -373,15 +373,15 @@ center-justify s with width w.
 count all instances of substring in string.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>self</em></code>: 
+	  self: 
 	</li>
 	
 	<li>
-	  <code><em>sub</em></code>: substring
+	  sub: substring
 	</li>
 	
 </ul>
@@ -403,23 +403,23 @@ count all instances of substring in string.
 does string end with the given substring?.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>self</em></code>: 
+	  self: 
 	</li>
 	
 	<li>
-	  <code><em>s</em></code>: a substring or a table of suffixes
+	  s: a substring or a table of suffixes
 	</li>
 	
 	<li>
-	  <code><em>first</em></code>: 
+	  first: 
 	</li>
 	
 	<li>
-	  <code><em>last</em></code>: 
+	  last: 
 	</li>
 	
 </ul>
@@ -441,15 +441,15 @@ does string end with the given substring?.
 replace all tabs in s with n spaces. If not specified, n defaults to 8.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>self</em></code>: 
+	  self: 
 	</li>
 	
 	<li>
-	  <code><em>n</em></code>: number of spaces to expand each tab
+	  n: number of spaces to expand each tab
 	</li>
 	
 </ul>
@@ -471,11 +471,11 @@ replace all tabs in s with n spaces. If not specified, n defaults to 8.
 does s only contain alphanumeric characters?.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>s</em></code>: 
+	  s: 
 	</li>
 	
 </ul>
@@ -497,11 +497,11 @@ does s only contain alphanumeric characters?.
 does s only contain alphabetic characters?.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>s</em></code>: 
+	  s: 
 	</li>
 	
 </ul>
@@ -523,11 +523,11 @@ does s only contain alphabetic characters?.
 does s only contain digits?.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>s</em></code>: 
+	  s: 
 	</li>
 	
 </ul>
@@ -549,11 +549,11 @@ does s only contain digits?.
 does s only contain lower case characters?.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>s</em></code>: 
+	  s: 
 	</li>
 	
 </ul>
@@ -575,11 +575,11 @@ does s only contain lower case characters?.
 does s only contain spaces?.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>s</em></code>: 
+	  s: 
 	</li>
 	
 </ul>
@@ -601,11 +601,11 @@ does s only contain spaces?.
 does s only contain upper case characters?.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>s</em></code>: 
+	  s: 
 	</li>
 	
 </ul>
@@ -627,15 +627,15 @@ does s only contain upper case characters?.
 concatenate the strings using this string as a delimiter.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>self</em></code>: 
+	  self: 
 	</li>
 	
 	<li>
-	  <code><em>seq</em></code>: a table of strings or numbers
+	  seq: a table of strings or numbers
 	</li>
 	
 </ul>
@@ -644,7 +644,7 @@ concatenate the strings using this string as a delimiter.
 
 
 <h3>Usage:</h3>
-<ul><pre class=example>(' '):join {1,2,3} == '1 2 3'</pre></ul>
+(' '):join {1,2,3} == '1 2 3'
 
 
 
@@ -660,19 +660,19 @@ concatenate the strings using this string as a delimiter.
 find index of first instance of sub in s from the left.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>self</em></code>: 
+	  self: 
 	</li>
 	
 	<li>
-	  <code><em>sub</em></code>: substring
+	  sub: substring
 	</li>
 	
 	<li>
-	  <code><em>i1</em></code>: start index
+	  i1: start index
 	</li>
 	
 </ul>
@@ -694,11 +694,11 @@ find index of first instance of sub in s from the left.
 return an interator over all lines in a string
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>self</em></code>: the string
+	  self: the string
 	</li>
 	
 </ul>
@@ -709,7 +709,7 @@ return an interator over all lines in a string
 
 
 <h3>Return value:</h3>
-<ul>an iterator</ul>
+an iterator
 
 
 
@@ -723,19 +723,19 @@ return an interator over all lines in a string
 left-justify s with width w.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>self</em></code>: 
+	  self: 
 	</li>
 	
 	<li>
-	  <code><em>w</em></code>: width of justification
+	  w: width of justification
 	</li>
 	
 	<li>
-	  <code><em>ch</em></code>: padding character, default ' '
+	  ch: padding character, default ' '
 	</li>
 	
 </ul>
@@ -757,15 +757,15 @@ left-justify s with width w.
 trim any whitespace on the left of s.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>self</em></code>: 
+	  self: 
 	</li>
 	
 	<li>
-	  <code><em>chrs</em></code>: 
+	  chrs: 
 	</li>
 	
 </ul>
@@ -787,15 +787,15 @@ trim any whitespace on the left of s.
 partition the string using first occurance of a delimiter
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>self</em></code>: 
+	  self: 
 	</li>
 	
 	<li>
-	  <code><em>ch</em></code>: delimiter
+	  ch: delimiter
 	</li>
 	
 </ul>
@@ -806,7 +806,7 @@ partition the string using first occurance of a delimiter
 
 
 <h3>Return value:</h3>
-<ul>part before ch, ch, part after ch</ul>
+part before ch, ch, part after ch
 
 
 
@@ -820,23 +820,23 @@ partition the string using first occurance of a delimiter
 replace up to n instances of old by new in the string s. if n is not present, replace all instances.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>s</em></code>: the string
+	  s: the string
 	</li>
 	
 	<li>
-	  <code><em>old</em></code>: the target substring
+	  old: the target substring
 	</li>
 	
 	<li>
-	  <code><em>new</em></code>: the substitution
+	  new: the substitution
 	</li>
 	
 	<li>
-	  <code><em>n</em></code>: optional maximum number of substitutions
+	  n: optional maximum number of substitutions
 	</li>
 	
 </ul>
@@ -849,9 +849,9 @@ replace up to n instances of old by new in the string s. if n is not present, re
 <h3>Return values:</h3>
 <ol>
 	
-	<li>result string</li>
+	<li>result string
 	
-	<li>the number of substitutions</li>
+	<li>the number of substitutions
 	
 </ol>
 
@@ -867,23 +867,23 @@ replace up to n instances of old by new in the string s. if n is not present, re
 find index of first instance of sub in s from the right.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>self</em></code>: 
+	  self: 
 	</li>
 	
 	<li>
-	  <code><em>sub</em></code>: substring
+	  sub: substring
 	</li>
 	
 	<li>
-	  <code><em>first</em></code>: first index
+	  first: first index
 	</li>
 	
 	<li>
-	  <code><em>last</em></code>: last index
+	  last: last index
 	</li>
 	
 </ul>
@@ -905,19 +905,19 @@ find index of first instance of sub in s from the right.
 right-justify s with width w.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>s</em></code>: 
+	  s: 
 	</li>
 	
 	<li>
-	  <code><em>w</em></code>: width of justification
+	  w: width of justification
 	</li>
 	
 	<li>
-	  <code><em>ch</em></code>: padding character, default ' '
+	  ch: padding character, default ' '
 	</li>
 	
 </ul>
@@ -939,15 +939,15 @@ right-justify s with width w.
 partition the string p using last occurance of a delimiter
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>self</em></code>: 
+	  self: 
 	</li>
 	
 	<li>
-	  <code><em>ch</em></code>: delimiter
+	  ch: delimiter
 	</li>
 	
 </ul>
@@ -958,7 +958,7 @@ partition the string p using last occurance of a delimiter
 
 
 <h3>Return value:</h3>
-<ul>part before ch, ch, part after ch</ul>
+part before ch, ch, part after ch
 
 
 
@@ -972,15 +972,15 @@ partition the string p using last occurance of a delimiter
 trim any whitespace on the right of s.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>s</em></code>: 
+	  s: 
 	</li>
 	
 	<li>
-	  <code><em>chrs</em></code>: 
+	  chrs: 
 	</li>
 	
 </ul>
@@ -1002,15 +1002,15 @@ trim any whitespace on the right of s.
 split a string into a list of strings using a pattern.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>self</em></code>: the string
+	  self: the string
 	</li>
 	
 	<li>
-	  <code><em>re</em></code>: a Lua string pattern (defaults to whitespace)
+	  re: a Lua string pattern (defaults to whitespace)
 	</li>
 	
 </ul>
@@ -1019,7 +1019,7 @@ split a string into a list of strings using a pattern.
 
 
 <h3>Usage:</h3>
-<ul><pre class=example>#(('one two'):split()) == 2</pre></ul>
+#(('one two'):split()) == 2
 
 
 
@@ -1035,15 +1035,15 @@ split a string into a list of strings using a pattern.
 split a string using a pattern. Note that at least one value will be returned!
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>self</em></code>: the string
+	  self: the string
 	</li>
 	
 	<li>
-	  <code><em>re</em></code>: a Lua string pattern (defaults to whitespace)
+	  re: a Lua string pattern (defaults to whitespace)
 	</li>
 	
 </ul>
@@ -1052,12 +1052,12 @@ split a string using a pattern. Note that at least one value will be returned!
 
 
 <h3>Usage:</h3>
-<ul><pre class=example>a,b = line:splitv('=')</pre></ul>
+a,b = line:splitv('=')
 
 
 
 <h3>Return value:</h3>
-<ul>the parts of the string</ul>
+the parts of the string
 
 
 
@@ -1071,15 +1071,15 @@ split a string using a pattern. Note that at least one value will be returned!
 does string start with the substring?.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>self</em></code>: 
+	  self: 
 	</li>
 	
 	<li>
-	  <code><em>s2</em></code>: a string
+	  s2: a string
 	</li>
 	
 </ul>
@@ -1101,15 +1101,15 @@ does string start with the substring?.
 trim any whitespace on both left and right of s.
 
 
-<h3>Parameters:</h3>
+<h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  <code><em>self</em></code>: 
+	  self: 
 	</li>
 	
 	<li>
-	  <code><em>chrs</em></code>: 
+	  chrs: 
 	</li>
 	
 </ul>
