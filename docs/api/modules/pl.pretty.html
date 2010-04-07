@@ -155,8 +155,8 @@
 <table class="function_list">
 
 	<tr>
-	<td class="name" nowrap><a href="#dump">dump</a>&nbsp;(t, ..., file)</td>
-	<td class="summary">dump a Lua table out to a file or stdout </td>
+	<td class="name" nowrap><a href="#dump">dump</a>&nbsp;(t, ...)</td>
+	<td class="summary">Dump a Lua table out to a file or stdout.</td>
 	</tr>
 
 	<tr>
@@ -165,8 +165,8 @@
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#write">write</a>&nbsp;(tbl, space, not_clever, a)</td>
-	<td class="summary">create a string representation of a Lua table.</td>
+	<td class="name" nowrap><a href="#write">write</a>&nbsp;(tbl, space, not_clever)</td>
+	<td class="summary">Create a string representation of a Lua table.</td>
 	</tr>
 
 </table>
@@ -186,24 +186,20 @@
 
 
 
-<dt><a name="dump"></a><strong>dump</strong>&nbsp;(t, ..., file)</dt>
+<dt><a name="dump"></a><strong>dump</strong>&nbsp;(t, ...)</dt>
 <dd>
-dump a Lua table out to a file or stdout
+Dump a Lua table out to a file or stdout.
 
 
 <h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  t: a table
+	  t: {table} The table to write to a file or stdout.
 	</li>
 	
 	<li>
-	  ...: 
-	</li>
-	
-	<li>
-	  file: (optional) file name
+	  ...: {string} (optional) File name to write too. Defaults to writing to stdout.
 	</li>
 	
 </ul>
@@ -229,7 +225,7 @@ read a string representation of a Lua table. Uses loadstring, but tries to be ca
 <ul>
 	
 	<li>
-	  s: 
+	  s: {string} string of the form '{...}', with perhaps some whitespace before or after the curly braces.
 	</li>
 	
 </ul>
@@ -246,28 +242,24 @@ read a string representation of a Lua table. Uses loadstring, but tries to be ca
 
 
 
-<dt><a name="write"></a><strong>write</strong>&nbsp;(tbl, space, not_clever, a)</dt>
+<dt><a name="write"></a><strong>write</strong>&nbsp;(tbl, space, not_clever)</dt>
 <dd>
-create a string representation of a Lua table.
+Create a string representation of a Lua table.
 
 
 <h3>Parameters</h3>
 <ul>
 	
 	<li>
-	  tbl: 
+	  tbl: {table} Table to serialize to a string.
 	</li>
 	
 	<li>
-	  space: the indent to use (defaults to two spaces)
+	  space: {string} (optional) The indent to use. Defaults to two spaces.
 	</li>
 	
 	<li>
-	  not_clever: (defaults to false) use for plain output, e.g {['key']=1}
-	</li>
-	
-	<li>
-	  a: table
+	  not_clever: {bool} (optional) Use for plain output, e.g {['key']=1}. Defaults to false.
 	</li>
 	
 </ul>
@@ -276,9 +268,6 @@ create a string representation of a Lua table.
 
 
 
-
-<h3>Return value:</h3>
-a string
 
 
 

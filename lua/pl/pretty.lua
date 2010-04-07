@@ -15,6 +15,8 @@ module('pl.pretty',utils._module)
 -- It is expecting a string of the form '{...}', with perhaps some whitespace
 -- before or after the curly braces. An empty environment is used, and
 -- any occurance of the keyword 'function' will be considered a problem.
+-- @param s {string} string of the form '{...}', with perhaps some whitespace
+--		before or after the curly braces.
 function read(s)
     assert_arg(1,s,'string')
     if not s:find '^%s*%b{}%s*$' then return nil,"not a Lua table" end
@@ -43,11 +45,12 @@ end
 local keywords
 
 
---- create a string representation of a Lua table.
--- @param a table
--- @param space the indent to use (defaults to two spaces)
--- @param not_clever (defaults to false) use for plain output, e.g {['key']=1}
--- @return a string
+---	Create a string representation of a Lua table.
+--	@param tbl {table} Table to serialize to a string.
+--	@param space {string} (optional) The indent to use.
+--		Defaults to two spaces.
+--	@param not_clever {bool} (optional) Use for plain output, e.g {['key']=1}.
+--		Defaults to false.
 function write (tbl,space,not_clever)
     assert_arg(1,tbl,'table')
     if not keywords then
@@ -149,9 +152,10 @@ function write (tbl,space,not_clever)
     return concat(lines,#space > 0 and '\n' or '')
 end
 
---- dump a Lua table out to a file or stdout
--- @param t a table
--- @param file (optional) file name
+---	Dump a Lua table out to a file or stdout.
+--	@param t {table} The table to write to a file or stdout.
+--	@param ... {string} (optional) File name to write too. Defaults to writing
+--		to stdout.
 function dump (t,...)
     if select('#',...) == 0 then
         print(write(t))
