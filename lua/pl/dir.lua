@@ -123,12 +123,13 @@ local function file_op (is_copy,src,dest,flag)
             if no_alien then alien = nil end
             if alien then
                 -- register the Win32 CopyFile and MoveFile functions
-                local spec = {'string','string','int',ret='int',abi='stdcall'}
+                local copySpec = {'string','string','int',ret='int',abi='stdcall'}
                 kernel = alien.load('kernel32.dll')
                 CopyFile = kernel.CopyFileA
-                CopyFile:types(spec)
+                CopyFile:types(copySpec)
+				local moveSpec = {'string','string',ret='int',abi='stdcall'}
                 MoveFile = kernel.MoveFileA
-                MoveFile:types(spec)
+                MoveFile:types(moveSpec)
 				GetLastError = kernel.GetLastError
 				GetLastError:types{ret ='int', abi='stdcall'}
 				win32_errors = {
@@ -362,7 +363,7 @@ end
 function getallfiles( path, pattern )
 	assert( type( path ) == "string", "bad argument #1 to 'GetAllFiles' (Expected string but recieved " .. type( path ) .. ")" )
 	pattern = pattern or ""
-	
+
 	function dirtree( dir )
 		assert( dir and dir ~= "", "directory parameter is missing or empty" )
 		if sub( dir, -1 ) == "/" then
@@ -376,7 +377,7 @@ function getallfiles( path, pattern )
 					local attr = attrib( entry )
 					if attr then  -- Just in case a symlink is broken.
 						yield( entry, attr )
-					
+
 						if attr.mode == "directory" then
 							yieldtree( entry )
 						end
@@ -387,17 +388,17 @@ function getallfiles( path, pattern )
 
 		return wrap( function() yieldtree( dir ) end )
 	end
-	
+
 	local files = {}
 	for filename, attr in dirtree( path ) do
 		if "file" == attr.mode then
 			local mask = filemask( pattern ):lower()
-			
+
 			if filename:lower():find( mask ) then
 				files[#files + 1] = filename
 			end
 		end
 	end
-	
+
 	return files
 end

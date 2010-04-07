@@ -35,7 +35,7 @@ copy = dir.copyfile
 -- @name move
 -- @param src source file
 -- @param dest destination file
--- @return true if operation succeeded
+-- @return true if operation succeeded, else false and the reason for the error.
 move = dir.movefile
 
 --- Return the time of last access as the number of seconds since the epoch.
