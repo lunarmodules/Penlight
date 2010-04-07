@@ -261,7 +261,7 @@ function walk(root,bottom_up)
 end
 
 --- remove a whole directory tree.
--- @param path A directory path
+-- @param fullpath A directory path
 function rmtree(fullpath)
     assert_string(1,fullpath)
 	if not path.isdir(fullpath) then return raise 'not a directory' end
@@ -309,6 +309,7 @@ end
 -- @param path1 the base path of the source tree
 -- @param path2 the new base path for the destination
 -- @param file_fun an optional function to apply on all files
+-- @param verbose an optional boolean to control the verbosity of the output.
 -- @return if failed, false plus an error message. If completed the traverse,
 --  true, a list of failed directory creations and a list of failed file operations.
 -- @usage clonetree('.','../backup',copyfile)
