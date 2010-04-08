@@ -17,7 +17,7 @@ local collisions = {}
 
 module ('pl.utils')
 
-_VERSION = "0.8.2"
+_VERSION = "0.8.3"
 
 dir_separator = _G.package.config:sub(1,1)
 

@@ -297,10 +297,10 @@ end
 
 --- create a directory path.
 -- This will create subdirectories as necessary!
--- @param path A directory path
-function makepath (path)
-    assert_string(1,path)
-    return _makepath(path.normcase(path.abspath(path)))
+-- @param p A directory path
+function makepath (p)
+    assert_string(1,p)
+    return _makepath(path.normcase(path.abspath(p)))
 end
 
 
@@ -358,11 +358,11 @@ end
 
 ---	Recursively returns all the file starting at <i>path</i>. It can optionally take a shell pattern and
 --	only returns files that match <i>pattern</i>. If a pattern is given it will do a case insensitive search.
---	@param path {string} A directory. If not given, all files in current directory are returned.
+--	@param start_path {string} A directory. If not given, all files in current directory are returned.
 --	@param pattern {string} A shell pattern. If not given, all files are returned.
 --	@return Table containing all the files found recursively starting at <i>path</i> and filtered by <i>pattern</i>.
-function getallfiles( path, pattern )
-	assert( type( path ) == "string", "bad argument #1 to 'GetAllFiles' (Expected string but recieved " .. type( path ) .. ")" )
+function getallfiles( start_path, pattern )
+	assert( type( start_path ) == "string", "bad argument #1 to 'GetAllFiles' (Expected string but recieved " .. type( start_path ) .. ")" )
 	pattern = pattern or ""
 
 	function dirtree( dir )
@@ -391,7 +391,7 @@ function getallfiles( path, pattern )
 	end
 
 	local files = {}
-	for filename, attr in dirtree( path ) do
+	for filename, attr in dirtree( start_path ) do
 		if "file" == attr.mode then
 			local mask = filemask( pattern ):lower()
 

@@ -175,7 +175,7 @@
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#getallfiles">getallfiles</a>&nbsp;(path, pattern)</td>
+	<td class="name" nowrap><a href="#getallfiles">getallfiles</a>&nbsp;(start_path, pattern)</td>
 	<td class="summary">Recursively returns all the file starting at <i>path</i>.</td>
 	</tr>
 
@@ -190,7 +190,7 @@
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#makepath">makepath</a>&nbsp;(path)</td>
+	<td class="name" nowrap><a href="#makepath">makepath</a>&nbsp;(p)</td>
 	<td class="summary">create a directory path.</td>
 	</tr>
 
@@ -200,7 +200,7 @@
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#rmtree">rmtree</a>&nbsp;(fullpath, path)</td>
+	<td class="name" nowrap><a href="#rmtree">rmtree</a>&nbsp;(fullpath)</td>
 	<td class="summary">remove a whole directory tree.</td>
 	</tr>
 
@@ -247,7 +247,7 @@ clone a directory tree. Will always try to create a new directory structure if n
 	</li>
 	
 	<li>
-	  verbose: 
+	  verbose: an optional boolean to control the verbosity of the output.
 	</li>
 	
 </ul>
@@ -367,7 +367,7 @@ does the filename match the shell pattern?. (cf. fnmatch.fnmatch in Python, 11.8
 
 
 
-<dt><a name="getallfiles"></a><strong>getallfiles</strong>&nbsp;(path, pattern)</dt>
+<dt><a name="getallfiles"></a><strong>getallfiles</strong>&nbsp;(start_path, pattern)</dt>
 <dd>
 Recursively returns all the file starting at <i>path</i>. It can optionally take a shell pattern and only returns files that match <i>pattern</i>. If a pattern is given it will do a case insensitive search.
 
@@ -376,7 +376,7 @@ Recursively returns all the file starting at <i>path</i>. It can optionally take
 <ul>
 	
 	<li>
-	  path: {string} A directory. If not given, all files in current directory are returned.
+	  start_path: {string} A directory. If not given, all files in current directory are returned.
 	</li>
 	
 	<li>
@@ -456,7 +456,7 @@ return a list of all files in a directory which match the a shell pattern.
 
 
 
-<dt><a name="makepath"></a><strong>makepath</strong>&nbsp;(path)</dt>
+<dt><a name="makepath"></a><strong>makepath</strong>&nbsp;(p)</dt>
 <dd>
 create a directory path. This will create subdirectories as necessary!
 
@@ -465,7 +465,7 @@ create a directory path. This will create subdirectories as necessary!
 <ul>
 	
 	<li>
-	  path: A directory path
+	  p: A directory path
 	</li>
 	
 </ul>
@@ -515,7 +515,7 @@ true if operation succeeded
 
 
 
-<dt><a name="rmtree"></a><strong>rmtree</strong>&nbsp;(fullpath, path)</dt>
+<dt><a name="rmtree"></a><strong>rmtree</strong>&nbsp;(fullpath)</dt>
 <dd>
 remove a whole directory tree.
 
@@ -524,11 +524,7 @@ remove a whole directory tree.
 <ul>
 	
 	<li>
-	  fullpath: 
-	</li>
-	
-	<li>
-	  path: A directory path
+	  fullpath: A directory path
 	</li>
 	
 </ul>
