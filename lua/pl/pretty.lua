@@ -161,6 +161,6 @@ function dump (t,...)
         print(write(t))
         return true
     else
-        return utils.raise(utils.writefile((select(1,...)),t))
+        return utils.raise(utils.writefile((select(1,...)),write(t)))
     end
 end

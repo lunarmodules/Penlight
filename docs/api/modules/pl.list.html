@@ -3,7 +3,7 @@
 <html>
 <head>
     <title>Reference</title>
-    <link rel="stylesheet" href="../../../../../../../luadoc.css" type="text/css" />
+    <link rel="stylesheet" href="../luadoc.css" type="text/css" />
 	<!--meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/-->
 </head>
 
@@ -24,7 +24,7 @@
 <h1>LuaDoc</h1>
 <ul>
 	
-	<li><a href="../../../../../../../index.html">Index</a></li>
+	<li><a href="../index.html">Index</a></li>
 	
 </ul>
 
@@ -35,99 +35,97 @@
 <ul>
 
 	<li>
-		<a href="../../../../../../../modules/pl.app.html">pl.app</a>
+		<a href="../modules/pl.app.html">pl.app</a>
 	</li>
 
 	<li>
-		<a href="../../../../../../../modules/pl.array2d.html">pl.array2d</a>
+		<a href="../modules/pl.array2d.html">pl.array2d</a>
 	</li>
 
 	<li>
-		<a href="../../../../../../../modules/pl.class.html">pl.class</a>
+		<a href="../modules/pl.class.html">pl.class</a>
 	</li>
 
 	<li>
-		<a href="../../../../../../../modules/pl.classx.html">pl.classx</a>
+		<a href="../modules/pl.classx.html">pl.classx</a>
 	</li>
 
 	<li>
-		<a href="../../../../../../../modules/pl.config.html">pl.config</a>
+		<a href="../modules/pl.config.html">pl.config</a>
 	</li>
 
 	<li>
-		<a href="../../../../../../../modules/pl.data.html">pl.data</a>
+		<a href="../modules/pl.data.html">pl.data</a>
 	</li>
 
 	<li>
-		<a href="../../../../../../../modules/pl.dir.html">pl.dir</a>
+		<a href="../modules/pl.dir.html">pl.dir</a>
 	</li>
 
 	<li>
-		<a href="../../../../../../../modules/pl.file.html">pl.file</a>
+		<a href="../modules/pl.file.html">pl.file</a>
 	</li>
 
 	<li>
-		<a href="../../../../../../../modules/pl.func.html">pl.func</a>
+		<a href="../modules/pl.func.html">pl.func</a>
 	</li>
 
 	<li>
-		<a href="../../../../../../../modules/pl.input.html">pl.input</a>
+		<a href="../modules/pl.input.html">pl.input</a>
 	</li>
 
 	<li>
-		<a href="../../../../../../../modules/pl.lexer.html">pl.lexer</a>
+		<a href="../modules/pl.lexer.html">pl.lexer</a>
+	</li>
+
+	<li><strong>pl.list</strong></li>
+	
+	<li>
+		<a href="../modules/pl.operator.html">pl.operator</a>
 	</li>
 
 	<li>
-		<a href="../../../../../../../modules/pl.list.html">pl.list</a>
+		<a href="../modules/pl.path.html">pl.path</a>
 	</li>
 
 	<li>
-		<a href="../../../../../../../modules/pl.operator.html">pl.operator</a>
+		<a href="../modules/pl.permute.html">pl.permute</a>
 	</li>
 
 	<li>
-		<a href="../../../../../../../modules/pl.path.html">pl.path</a>
+		<a href="../modules/pl.pretty.html">pl.pretty</a>
 	</li>
 
 	<li>
-		<a href="../../../../../../../modules/pl.permute.html">pl.permute</a>
+		<a href="../modules/pl.seq.html">pl.seq</a>
 	</li>
 
 	<li>
-		<a href="../../../../../../../modules/pl.pretty.html">pl.pretty</a>
+		<a href="../modules/pl.sip.html">pl.sip</a>
 	</li>
 
 	<li>
-		<a href="../../../../../../../modules/pl.seq.html">pl.seq</a>
+		<a href="../modules/pl.stringio.html">pl.stringio</a>
 	</li>
 
 	<li>
-		<a href="../../../../../../../modules/pl.sip.html">pl.sip</a>
+		<a href="../modules/pl.stringx.html">pl.stringx</a>
 	</li>
 
 	<li>
-		<a href="../../../../../../../modules/pl.stringio.html">pl.stringio</a>
+		<a href="../modules/pl.tablex.html">pl.tablex</a>
 	</li>
 
 	<li>
-		<a href="../../../../../../../modules/pl.stringx.html">pl.stringx</a>
+		<a href="../modules/pl.test.html">pl.test</a>
 	</li>
 
 	<li>
-		<a href="../../../../../../../modules/pl.tablex.html">pl.tablex</a>
+		<a href="../modules/pl.text.html">pl.text</a>
 	</li>
 
 	<li>
-		<a href="../../../../../../../modules/pl.test.html">pl.test</a>
-	</li>
-
-	<li>
-		<a href="../../../../../../../modules/pl.text.html">pl.text</a>
-	</li>
-
-	<li>
-		<a href="../../../../../../../modules/pl.utils.html">pl.utils</a>
+		<a href="../modules/pl.utils.html">pl.utils</a>
 	</li>
 
 </ul>
@@ -145,9 +143,9 @@
 
 <div id="content">
 
-<h1>Module <code>pl.list See http://www.python.org/doc/current/tut/tut.html, section 5.1 Note:The comments before some of the functions are from the Python docs and contain Python code. Written for Lua version 4.0 Redone for Lua 5.1, Steve Donovan.</code></h1>
+<h1>Module <code>pl.list</code></h1>
 
-<p>Python-style list class. Based on original code by Nick Trout. <br> Please note: methods that change the list will return the list. <br> This is to allow for method chaining, but please note that ls = ls:sort() <br> does not mean that a new copy of the list is made. In-place (mutable) methods <br> are marked as returning 'the list' in this documentation. See the Guide for further <a href="../../index.html#list">discussion</a></p>
+<p>Python-style list class. Based on original code by Nick Trout. <br /><br /> <b>Please Note</b>: methods that change the list will return the list. This is to allow for method chaining, but please note that <tt>ls = ls:sort()</tt> does not mean that a new copy of the list is made. In-place (mutable) methods are marked as returning 'the list' in this documentation. <br /><br /> See the Guide for further <a href="../../index.html#list">discussion</a> <br /><br /> See <a href="http://www.python.org/doc/current/tut/tut.html">http://www.python.org/doc/current/tut/tut.html</a>, section 5.1 <br /><br /> <b>Note</b>: The comments before some of the functions are from the Python docs and contain Python code. <br /><br /> Written for Lua version 4.0 <br /> Redone for Lua 5.1, Steve Donovan.</p>
 
 
 
@@ -422,7 +420,7 @@ a List of strings
 <h3>See also:</h3>
 <ul>
 	
-	<li><a href="../../../../../../../modules/pl.utils.html#split">
+	<li><a href="../modules/pl.utils.html#split">
 		pl.utils.split
 	</a>
 	
@@ -966,7 +964,7 @@ a new list: {f(x) for x in self}
 <h3>See also:</h3>
 <ul>
 	
-	<li><a href="../../../../../../../modules/pl.tablex.html#imap">
+	<li><a href="../modules/pl.tablex.html#imap">
 		pl.tablex.imap
 	</a>
 	
@@ -1012,7 +1010,7 @@ a new list: {f(x,y) for x in self, for x in arg1}
 <h3>See also:</h3>
 <ul>
 	
-	<li><a href="../../../../../../../modules/pl.tablex.html#imap2">
+	<li><a href="../modules/pl.tablex.html#imap2">
 		pl.tablex.imap2
 	</a>
 	
@@ -1054,7 +1052,7 @@ a new list of the results
 <h3>See also:</h3>
 <ul>
 	
-	<li><a href="../../../../../../../modules/pl.seq.html#mapmethod">
+	<li><a href="../modules/pl.seq.html#mapmethod">
 		pl.seq.mapmethod
 	</a>
 	
@@ -1095,7 +1093,7 @@ a new List
 <h3>See also:</h3>
 <ul>
 	
-	<li><a href="">
+	<li><a href="../modules/pl.list.html#iter">
 		iter
 	</a>
 	
@@ -1233,7 +1231,7 @@ result of the function
 <h3>See also:</h3>
 <ul>
 	
-	<li><a href="../../../../../../../modules/pl.tablex.html#reduce">
+	<li><a href="../modules/pl.tablex.html#reduce">
 		pl.tablex.reduce
 	</a>
 	

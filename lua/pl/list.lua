@@ -1,16 +1,19 @@
 --- Python-style list class.
--- Based on original code by Nick Trout. <br>
--- Please note: methods that change the list will return the list. <br>
--- This is to allow for method chaining, but please note that ls = ls:sort() <br>
--- does not mean that a new copy of the list is made. In-place (mutable) methods <br>
+-- Based on original code by Nick Trout.
+-- <br /><br />
+-- <b>Please Note</b>: methods that change the list will return the list.
+-- This is to allow for method chaining, but please note that <tt>ls = ls:sort()</tt>
+-- does not mean that a new copy of the list is made. In-place (mutable) methods
 -- are marked as returning 'the list' in this documentation.
+-- <br /><br />
 -- See the Guide for further <a href="../../index.html#list">discussion</a>
--- @class module
--- @name pl.list
--- See http://www.python.org/doc/current/tut/tut.html, section 5.1
--- Note:The comments before some of the functions are from the Python docs
+-- <br /><br />
+-- See <a href="http://www.python.org/doc/current/tut/tut.html">http://www.python.org/doc/current/tut/tut.html</a>, section 5.1
+-- <br /><br />
+-- <b>Note</b>: The comments before some of the functions are from the Python docs
 -- and contain Python code.
--- Written for Lua version 4.0
+-- <br /><br />
+-- Written for Lua version 4.0 <br />
 -- Redone for Lua 5.1, Steve Donovan.
 
 local tinsert,tremove,concat,tsort = table.insert,table.remove,table.concat,table.sort
