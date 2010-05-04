@@ -1,4 +1,5 @@
 local path = require 'pl.path'
+asserteq = require 'pl.test'.asserteq
 
 function quote(s)
 	return '"'..s..'"'
@@ -18,3 +19,11 @@ testpath [[/bonzo/dog/cat/fred.stuff]]
 testpath [[../../alice/jones]]
 testpath [[alice]]
 testpath [[/path-to\dog\]]
+
+asserteq( path.isdir( "..\\docs\\" ), true )
+asserteq( path.isdir( "..\\docs" ), true )
+asserteq( path.isdir( "..\\docs\\penlight.jpg" ), false )
+
+asserteq( path.isfile( "..\\docs\\" ), false )
+asserteq( path.isfile( "..\\docs" ), false )
+asserteq( path.isfile( "..\\docs\\penlight.jpg" ), true )

@@ -170,12 +170,18 @@ end
 --- is this a directory?
 -- @param path A file path
 function isdir(path)
+    if path:match("\\$") then
+        path = path:sub(1,-2)
+    end
     return attrib(path,'mode') == 'directory'
 end
 
 --- is this a file?.
 -- @param path A file path
 function isfile(path)
+	if path:match("\\$") then
+        path = path:sub(1,-2)
+    end
     return attrib(path,'mode') == 'file'
 end
 
