@@ -9,7 +9,7 @@ local strsub = string.sub
 local append = table.insert
 local utils = require 'pl.utils'
 local assert_arg = utils.assert_arg
-
+local print = print
 module ('pl.lexer',utils._module)
 
 local lexer = _G.pl.lexer
@@ -111,17 +111,21 @@ function scan (s,matches,filter,options)
 	function lex ()
 		local i1,i2,idx,res1,res2,tok,pat,fun
 		local sz = #s
+        local idx = 1
         --print('sz',sz)
 		while true do
 			for _,m in ipairs(matches) do
                 pat = m[1]
                 fun = m[2]
 				i1,i2 = strfind(s,pat,idx)
+--~                 if s:sub(idx,idx) == '/' then
+--~                     print(i1,pat,s:sub(idx))
+--~                 end
 				if i1 then
 					tok = strsub(s,i1,i2)
 					idx = i2 + 1
+                    --print(s,pat,idx,tok,filter,filter[fun])
                     if not (filter and filter[fun]) then
-                        --print(s,pat,idx,tok)
                         lexer.finished = idx > sz
                         res1,res2 = fun(tok,options)
                         --print(res1,res2)
@@ -282,7 +286,7 @@ function cpp(s,filter,options)
             {STRING1,chdump},
             {STRING2,sdump},
             {'^//.-\n',cdump},
-            {'^/%*.-%*/]',cdump},
+            {'^/%*.-%*/',cdump},
             {'^==',tdump},
             {'^!=',tdump},
             {'^<=',tdump},
