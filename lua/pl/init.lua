@@ -41,5 +41,4 @@ setmetatable(_G,{
     end
 })
 
--- remove the comment if you want Penlight to always run in strict mode
-require 'pl.strict'
+if PENLIGHT_STRICT then require 'pl.strict' end
