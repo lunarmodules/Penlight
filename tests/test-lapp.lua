@@ -38,8 +38,8 @@ check(simple,
     {quiet=false,p=false,o='in',input='<file>'})
 
 check(simple,
-    {'-o','help','-q','tests/test-lapp.lua'},
-    {quiet=true,p=false,o='help',input='<file>',input_name='tests/test-lapp.lua'})
+    {'-o','help','-q','test-lapp.lua'},
+    {quiet=true,p=false,o='help',input='<file>',input_name='test-lapp.lua'})
 
 
 

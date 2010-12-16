@@ -22,6 +22,7 @@ local WSPACE = '^%s+'
 local STRING1 = "^'.-[^\\]'"
 local STRING2 = '^".-[^\\]"'
 local STRING3 = '^[\'"][\'"]'
+local PREPRO = '^#.-[^\\]\n'
 
 local plain_matches,lua_matches,cpp_matches,lua_keyword,cpp_keyword
 
@@ -56,6 +57,10 @@ end
 
 local function wsdump (tok)
     return yield("space",tok)
+end
+
+local function pdump (tok)
+    return yield('prepro',tok)
 end
 
 local function plain_vdump(tok)
@@ -278,6 +283,7 @@ function cpp(s,filter,options)
     if not cpp_matches then
         cpp_matches = {
             {WSPACE,wsdump},
+            {PREPRO,pdump},
             {NUMBER3,ndump},
             {IDEN,cpp_vdump},
             {NUMBER1,ndump},

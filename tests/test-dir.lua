@@ -6,9 +6,9 @@ local path = require( "pl.path" )
 local asserteq = require( "pl.test" ).asserteq
 local pretty = require( "pl.pretty" )
 
-local expected = {"docs/function_index.txt"}
+local expected = {"../docs/function_index.txt"}
 
-local files = dir.getallfiles( "docs/", "*.txt" )
+local files = dir.getallfiles( "../docs/", "*.txt" )
 
 asserteq( files, expected )
 
