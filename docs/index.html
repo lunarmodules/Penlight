@@ -276,7 +276,7 @@ s = sum(1e8) --returned saved value!
 
 <p>Penlight makes it convenient to save application data in Lua format. You can use <code>pretty.dump(t,file)</code> to write a Lua table in a human-readable form to a file, and <code>pretty.read(file.read(file))</code> to generate the table again.</p>
 
-<p>(<a href="modules/pl.app.html">see app</a>, <a href="modules/pl.pretty.html">see pretty</a>)</p>
+<p>(<a href="api/modules/pl.app.html">see app</a>, <a href="api/modules/pl.pretty.html">see pretty</a>)</p>
 
 
 <p><a id="class"/></p>
@@ -367,7 +367,7 @@ Alice: 00459AE8
 
 <h3  id="T11">Python-style Lists</h3>
 
-<p>One of the elegant things about Lua is that tables do the job of both lists and dicts (as called in Python) or vectors and maps, (as called in C++), and they do it efficiently.  However, if we are dealing with 'tables with numerical indices' we may as well call them lists and look for operations which particularly make sense for lists. The Penlight <code>List</code> class was originally written by Nick Trout for Lua 5.0, and translated to 5.1 and extended by myself.  It seemed that borrowing from Python was a good idea, and this eventually grew into Penlight. (<a href="modules/pl.list.html">see list</a>)</p>
+<p>One of the elegant things about Lua is that tables do the job of both lists and dicts (as called in Python) or vectors and maps, (as called in C++), and they do it efficiently.  However, if we are dealing with 'tables with numerical indices' we may as well call them lists and look for operations which particularly make sense for lists. The Penlight <code>List</code> class was originally written by Nick Trout for Lua 5.0, and translated to 5.1 and extended by myself.  It seemed that borrowing from Python was a good idea, and this eventually grew into Penlight. (<a href="api/modules/pl.list.html">see list</a>)</p>
 
 <p>Here is an example showing <code>List</code> in action; it redefines <code>__tostring</code>, so that it can print itself out more sensibly:</p>
 
@@ -540,7 +540,7 @@ end
 </code></pre>
 
 
-<p>(<a href="modules/pl.class.html">see class</a>, <a href="modules/pl.classx.html">see classx</a>)</p>
+<p>(<a href="api/modules/pl.class.html">see class</a>, <a href="api/modules/pl.classx.html">see classx</a>)</p>
 
 <h3  id="T13">Tablex. Useful Operations on Tables</h3>
 
@@ -555,7 +555,7 @@ end
 return res
 </code></pre>
 
-<p>The <code>tablex</code> module (<a href="modules/pl.tablex.html">see tablex</a>) provides this as <code>copy</code>, which does a <em>shallow</em> copy of a table. There is also <code>deepcopy</code> which goes further than a simple loop in two ways; first, it also gives the copy the same metatable as the original (so it can copy objects like <code>List</code> above) and any nested tables will also be copied, to arbitrary depth. There is also <code>icopy</code> which operates on list-like tables, where you can set optionally set the start index of the source and destination as well. It ensures that any left-over elements will be deleted:</p>
+<p>The <code>tablex</code> module (<a href="api/modules/pl.tablex.html">see tablex</a>) provides this as <code>copy</code>, which does a <em>shallow</em> copy of a table. There is also <code>deepcopy</code> which goes further than a simple loop in two ways; first, it also gives the copy the same metatable as the original (so it can copy objects like <code>List</code> above) and any nested tables will also be copied, to arbitrary depth. There is also <code>icopy</code> which operates on list-like tables, where you can set optionally set the start index of the source and destination as well. It ensures that any left-over elements will be deleted:</p>
 
 <pre><code>asserteq(icopy({1,2,3,4,5,6},{20,30}),{20,30})   -- start at 1
 asserteq(icopy({1,2,3,4,5,6},{20,30},2),{1,20,30}) -- start at 2
@@ -849,7 +849,7 @@ lines = map2(string.rjust,2,1,lines,maxlens)
 3       3       9
 </code></pre>
 
-<p>(<a href="modules/pl.array.html">see array</a>2d)</p>
+<p>(<a href="api/modules/pl.array.html">see array</a>2d)</p>
 
 <h2  id="T15">Strings. Higher-level operations on strings.</h2>
 
@@ -880,7 +880,7 @@ three
 
 <p>Most of these can be fairly easily implemented using the Lua string library, which is more general and powerful. But they are convenient operations to have easily at hand. Note that can be injected into the <code>string</code> table if you use <code>require 'pl'</code> and then <code>stringx.import()</code>, or explicitly call <code>pl.stringx.import()</code>, but a simple alias like 'stringx = require 'pl.string'` can be used. This is the recommended practice when writing modules for consumption by other people, since it is bad manners to change the global state of the rest of the system.</p>
 
-<p>(<a href="modules/pl.stringx.html">see stringx</a>)</p>
+<p>(<a href="api/modules/pl.stringx.html">see stringx</a>)</p>
 
 <h3  id="T17">String Templates</h3>
 
@@ -931,7 +931,7 @@ print(t:indent_substitute {body=body,t='tbl'})
 
 <p><code>pl.text</code> also has a number of useful functions like <code>dedent</code>, which strips all the initial indentation from a multiline string. As in Python, this is useful for preprocessing multiline strings if you like indenting them with your code. The function <code>wrap</code> is passed a long string (a <em>paragraph</em>) and returns a list of lines that fit into a desired line width. As an extension, there is also <code>indent</code> for indenting multiline strings.</p>
 
-<p>(<a href="modules/pl.text.html">see text</a>)</p>
+<p>(<a href="api/modules/pl.text.html">see text</a>)</p>
 
 
 <h2  id="T18">Paths and Directories</h2>
@@ -1116,7 +1116,7 @@ end
 
 <p><a id="input"/></p>
 
-<p>Text data is sometimes unstructured, for example a file containing words. The 'pl.input` module has a number of functions which makes processing such files easier. For example, a script to count the number of words in standard input (<a href="modules/pl.input.html#input.words">see input.words</a>):</p>
+<p>Text data is sometimes unstructured, for example a file containing words. The 'pl.input` module has a number of functions which makes processing such files easier. For example, a script to count the number of words in standard input (<a href="api/modules/pl.input.html#input.words">see input.words</a>):</p>
 
 <pre><code>-- countwords.lua
 require 'pl'
@@ -1127,7 +1127,7 @@ end
 print('count',k)
 </code></pre>
 
-<p>Or this script to calculate the average of a set of numbers (<a href="modules/pl.input.html#input.numbers">see input.numbers</a>):</p>
+<p>Or this script to calculate the average of a set of numbers (<a href="api/modules/pl.input.html#input.numbers">see input.numbers</a>):</p>
 
 <pre><code>-- average.lua
 require 'pl'
@@ -1194,7 +1194,7 @@ end
 
 <p>The second parameter is a delimiter, by default spaces. ' ' is understood to mean 'any number of spaces', i.e. '%s+'. Any Lua string pattern can be used.</p>
 
-<p>The third parameter is a <em>data source</em>, by default standard input (<a href="modules/pl.input.html#input.create">see input.create</a>_getter) It assumes that the data source has a <code>read</code> method which brings in the next line, i.e. it is a 'file-like' object. As a special case, a string will be split into its lines:</p>
+<p>The third parameter is a <em>data source</em>, by default standard input (<a href="api/modules/pl.input.html#input.create">see input.create</a>_getter) It assumes that the data source has a <code>read</code> method which brings in the next line, i.e. it is a 'file-like' object. As a special case, a string will be split into its lines:</p>
 
 <pre><code>&gt; for x,y in input.fields(2,' ','10 20\n30 40\n') do print(x,y) end
 10      20
@@ -1212,7 +1212,7 @@ line 2: cannot convert '40x' to number
 
 <p><a id="data"/></p>
 
-<p>Sometimes it is useful to bring a whole dataset into memory, for operations such as extracting columns. Penlight provides a flexible reader specifically for reading this kind of data (<a href="modules/pl.data.html#data.read">see data.read</a>). Given a file looking like this:</p>
+<p>Sometimes it is useful to bring a whole dataset into memory, for operations such as extracting columns. Penlight provides a flexible reader specifically for reading this kind of data (<a href="api/modules/pl.data.html#data.read">see data.read</a>). Given a file looking like this:</p>
 
 <pre><code>x,y
 10,20
@@ -1306,7 +1306,7 @@ end
 </code></pre>
 
 
-<p>I've always been an admirer of the AWK programming language; with <code>filter</code> (<a href="modules/pl.data.html#data.filter">see data.filter</a>) you can get Lua programs which are just as compact:</p>
+<p>I've always been an admirer of the AWK programming language; with <code>filter</code> (<a href="api/modules/pl.data.html#data.filter">see data.filter</a>) you can get Lua programs which are just as compact:</p>
 
 <pre><code>-- printxy.lua
 require 'pl'
@@ -1360,7 +1360,7 @@ write.timeout=5
 ports = 1002,1003,1004
 </code></pre>
 
-<p>This can be easily brought in using <code>config.read</code> and the result shown using <code>pl.pretty.write</code> (<a href="modules/pl.pretty.html#pretty.write">see pretty.write</a>)</p>
+<p>This can be easily brought in using <code>config.read</code> and the result shown using <code>pl.pretty.write</code> (<a href="api/modules/pl.pretty.html#pretty.write">see pretty.write</a>)</p>
 
 <pre><code>-- readconfig.lua
 local config = require 'pl.config'
@@ -1685,7 +1685,7 @@ print(pretty.write(seq.count_map(globals)))
 3
 </code></pre>
 
-<p><code>seq.printall</code> is useful for printing out single-valued sequences, and provides some finer control over formating, such as a delimiter, the number of fields per line, and a format string to use (<a href="modules/pl.string.html#string.format">see string.format</a>)</p>
+<p><code>seq.printall</code> is useful for printing out single-valued sequences, and provides some finer control over formating, such as a delimiter, the number of fields per line, and a format string to use (<a href="api/modules/pl.string.html#string.format">see string.format</a>)</p>
 
 <pre><code>&gt; seq.printall(seq.random(10))
 0.0012512588885159 0.56358531449324 0.19330423902097 ....
@@ -1800,7 +1800,7 @@ ONE TWO
 <pre><code>seq.lines():take(10):upper():enum():map('..'):printall '\n'
 </code></pre>
 
-<p>Note the method <code>upper</code>, which is not a <code>seq</code> function. if an unknown method is called, sequence wrappers apply that method to all the values in the sequence (this is implicit use of <code>mapmethod</code> - <a href="modules/pl.seq.html#seq.mapmethod">see seq.mapmethod</a>)</p>
+<p>Note the method <code>upper</code>, which is not a <code>seq</code> function. if an unknown method is called, sequence wrappers apply that method to all the values in the sequence (this is implicit use of <code>mapmethod</code> - <a href="api/modules/pl.seq.html#seq.mapmethod">see seq.mapmethod</a>)</p>
 
 <p>It is straightforward to create custom sequences that can be used in this way. On Unix, <code>/dev/random</code> gives you an <em>endless</em> sequence of random bytes, so we use <code>take</code> to limit the sequence, and then <code>map</code> to scale the result into the desired range. The key step is to use <code>seq</code> to wrap the iterator function:</p>
 
@@ -2241,7 +2241,7 @@ true
 {first='jan',rest='and a string',last='smit'}
 </code></pre>
 
-<p>(<a href="modules/pl.sip.html">see sip</a>)</p>
+<p>(<a href="api/modules/pl.sip.html">see sip</a>)</p>
 
 <p><a id="lapp"/></p>
 
