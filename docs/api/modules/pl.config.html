@@ -2,7 +2,7 @@
    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 <head>
-    <title>Reference</title>
+    <title>pl.config: Module Index</title>
     <link rel="stylesheet" href="../luadoc.css" type="text/css" />
 	<!--meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/-->
 </head>
@@ -21,7 +21,7 @@
 <div id="navigation">
 
 
-<h1>LuaDoc</h1>
+<h2>LuaDoc</h2>
 <ul>
 	
 	<li><a href="../index.html">Index</a></li>
@@ -31,7 +31,7 @@
 
 <!-- Module list -->
 
-<h1>Modules</h1>
+<h2>Modules</h2>
 <ul>
 
 	<li>
@@ -70,6 +70,10 @@
 
 	<li>
 		<a href="../modules/pl.input.html">pl.input</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.lapp.html">pl.lapp</a>
 	</li>
 
 	<li>
@@ -143,9 +147,37 @@
 
 <div id="content">
 
-<h1>Module <code>pl.config</code></h1>
+<h1>Module "pl.config"</h1>
 
-<p>reads configuration files into a Lua table. <br> Understands INI files, classic Unix config files, and simple delimited columns of values. <br> See the Guide for further <a href="../../index.html#config">discussion</a></p>
+<p>reads configuration files into a Lua table. <p>
+ Understands INI files, classic Unix config files, and simple
+delimited columns of values. <p>
+<pre class=example>
+   # test.config
+   # Read timeout in seconds
+   read.timeout=10
+   # Write timeout in seconds
+   write.timeout=5
+   #acceptable ports
+   ports = 1002,1003,1004
+
+       -- readconfig.lua
+   require 'pl'
+   local t = config.read 'test.config'
+   print(pretty.write(t))
+
+   ### output #####
+  {
+     ports = {
+       1002,
+       1003,
+       1004
+     },
+     write_timeout = 5,
+     read_timeout = 10
+   }
+</pre>
+See the Guide for further <a href="../../index.html#config">discussion</a></p>
 
 
 
@@ -155,12 +187,12 @@
 <table class="function_list">
 
 	<tr>
-	<td class="name" nowrap><a href="#lines">lines</a>&nbsp;(file)</td>
+	<td class="name" nowrap><a href="#config.lines">config.lines</a>&nbsp;(file)</td>
 	<td class="summary">like io.lines(), but allows for lines to be continued with '\'.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#read">read</a>&nbsp;(file, cnfg)</td>
+	<td class="name" nowrap><a href="#config.read">config.read</a>&nbsp;(file, cnfg)</td>
 	<td class="summary">read a configuration file into a table </td>
 	</tr>
 
@@ -181,19 +213,22 @@
 
 
 
-<dt><a name="lines"></a><strong>lines</strong>&nbsp;(file)</dt>
+<dt><a name="config.lines"></a><strong>config.lines</strong>&nbsp;(file)</dt>
 <dd>
 like io.lines(), but allows for lines to be continued with '\'.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
-	  file: a file-like object (anything where read() returns the next line) or a filename. Defaults to stardard input.
+	  file: a file-like object (anything where read() returns the next line) or a filename.
+Defaults to stardard input.
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -210,12 +245,12 @@ an iterator over the lines
 
 
 
-<dt><a name="read"></a><strong>read</strong>&nbsp;(file, cnfg)</dt>
+<dt><a name="config.read"></a><strong>config.read</strong>&nbsp;(file, cnfg)</dt>
 <dd>
 read a configuration file into a table
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -227,6 +262,8 @@ read a configuration file into a table
 	</li>
 	
 </ul>
+
+
 
 
 

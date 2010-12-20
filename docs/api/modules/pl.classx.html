@@ -2,7 +2,7 @@
    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 <head>
-    <title>Reference</title>
+    <title>pl.classx: Module Index</title>
     <link rel="stylesheet" href="../luadoc.css" type="text/css" />
 	<!--meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/-->
 </head>
@@ -21,7 +21,7 @@
 <div id="navigation">
 
 
-<h1>LuaDoc</h1>
+<h2>LuaDoc</h2>
 <ul>
 	
 	<li><a href="../index.html">Index</a></li>
@@ -31,7 +31,7 @@
 
 <!-- Module list -->
 
-<h1>Modules</h1>
+<h2>Modules</h2>
 <ul>
 
 	<li>
@@ -70,6 +70,10 @@
 
 	<li>
 		<a href="../modules/pl.input.html">pl.input</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.lapp.html">pl.lapp</a>
 	</li>
 
 	<li>
@@ -143,7 +147,7 @@
 
 <div id="content">
 
-<h1>Module <code>pl.classx</code></h1>
+<h1>Module "pl.classx"</h1>
 
 <p>extra classes: MultiMap, OrderedMap and Typed List.</p>
 
@@ -238,10 +242,10 @@
 
 <dt><a name="MultiMap:set"></a><strong>MultiMap:set</strong>&nbsp;(key, val)</dt>
 <dd>
-add a new value to a key.
+add a new value to a key.  Setting a nil value removes the key.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -261,6 +265,8 @@ add a new value to a key.
 
 
 
+
+
 </dd>
 
 
@@ -271,7 +277,7 @@ add a new value to a key.
 update a MultiMap using a table.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -279,6 +285,8 @@ update a MultiMap using a table.
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -304,6 +312,8 @@ iterate over key-value pairs in order.
 
 
 
+
+
 </dd>
 
 
@@ -311,7 +321,10 @@ iterate over key-value pairs in order.
 
 <dt><a name="OrderedMap:keys"></a><strong>OrderedMap:keys</strong>&nbsp;()</dt>
 <dd>
-return the keys in order. (Not a copy!)
+return the keys in order.
+(Not a copy!)
+
+
 
 
 
@@ -328,10 +341,11 @@ return the keys in order. (Not a copy!)
 
 <dt><a name="OrderedMap:set"></a><strong>OrderedMap:set</strong>&nbsp;(key, val)</dt>
 <dd>
-set the key's value.
+set the key's value.   This key will be appended at the end of the map. <br>
+If the value is nil, then the key is removed.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -351,6 +365,8 @@ set the key's value.
 
 
 
+
+
 </dd>
 
 
@@ -361,7 +377,7 @@ set the key's value.
 sort the keys.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -369,6 +385,8 @@ sort the keys.
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -385,16 +403,21 @@ sort the keys.
 <dt><a name="OrderedMap:update"></a><strong>OrderedMap:update</strong>&nbsp;(t)</dt>
 <dd>
 update an OrderedMap using a table.
+If the table is itself an OrderedMap, then its entries will be appended. <br>
+if it s a table of the form {{key1=val1},{key2=val2},...} these will be appended. <br>
+Otherwise, it is assumed to be a map-like table, and order of extra entries is arbitrary.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
-	  t: map-like table.
+	  t: a table.
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -410,7 +433,10 @@ update an OrderedMap using a table.
 
 <dt><a name="OrderedMap:values"></a><strong>OrderedMap:values</strong>&nbsp;()</dt>
 <dd>
-return the values in order. this is relatively expensive.
+return the values in order.
+this is relatively expensive.
+
+
 
 
 
@@ -427,10 +453,11 @@ return the values in order. this is relatively expensive.
 
 <dt><a name="TypedList:append"></a><strong>TypedList:append</strong>&nbsp;(val)</dt>
 <dd>
-append a value to the list. Will throw an error if the value is not of the correct type.
+append a value to the list.
+Will throw an error if the value is not of the correct type.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -438,6 +465,8 @@ append a value to the list. Will throw an error if the value is not of the corre
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -459,7 +488,7 @@ the list
 extend the list using another list.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -467,6 +496,8 @@ extend the list using another list.
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -488,7 +519,7 @@ the list
 return a slice of the list
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -500,6 +531,8 @@ return a slice of the list
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -532,7 +565,8 @@ a new typed list
 <dl class="table">
 
 <dt><a name="TypedList"></a><strong>TypedList</strong></dt>
-<dd>construct a specific TypedList. For example, class.StringList(TypedList,'string')
+<dd>construct a specific TypedList.
+For example, class.StringList(TypedList,'string')
 
 
 

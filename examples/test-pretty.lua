@@ -1,4 +1,4 @@
-require 'pl.pretty'
+local pretty = require 'pl.pretty'
 
 tb = {
     'one','two','three',{1,2,3},
@@ -10,4 +10,4 @@ you're so fine
 ]]
 }
 
-print(pl.pretty.write(tb))
+print(pretty.write(tb))

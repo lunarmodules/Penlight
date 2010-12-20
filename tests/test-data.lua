@@ -4,7 +4,8 @@ List = require 'pl.list' . List
 array = require 'pl.array2d'
 seq = require 'pl.seq'
 utils = require 'pl.utils'
-open = require 'pl.stringio'. open
+stringio = require 'pl.stringio'
+open = stringio. open
 asserteq = require 'pl.test' . asserteq
 
 -- tab-separated data, explicit column names
@@ -51,7 +52,8 @@ t2 = data.read(t2f,{last_field_collect=true})
 
 -- the last_field_collect option is useful with space-delimited data where the last
 -- field may contain spaces. Otherwise, a record count mismatch should be an error!
-asserteq(List(t2[2]):join ',','root,2332,0.4,0.2,fred --start=yes')
+lt2 = List(t2[2])
+asserteq(lt2:join ',','root,2332,0.4,0.2,fred --start=yes')
 
 -- fieldnames are converted into valid identifiers by substituting _
 -- (we do this to make select queries parseable by Lua)
@@ -94,7 +96,7 @@ asserteq(seq.copy2(q),{{1501,5},{1501,3},{1433,10}})
 
 utils.import 'pl.func'
 
-outf = pl.stringio.create()
+outf = stringio.create()
 
 names = {[1501]='don',[1433]='dilbert'}
 

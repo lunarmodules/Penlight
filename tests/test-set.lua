@@ -94,3 +94,17 @@ fn = m:iter()
 asserteq2 ('one',1,fn())
 asserteq2 ('two',2,fn())
 asserteq2 ('three',3,fn())
+
+o1 = OrderedMap  {{z=2},{beta=1},{name='fred'}}
+asserteq(tostring(o1),'{z=2,beta=1,name="fred"}')
+
+-- order of keys is not preserved here!
+o2 = OrderedMap   {z=4,beta=1.1,name='alice',extra='dolly'}
+
+o1:update(o2)
+asserteq(tostring(o1),'{z=4,beta=1.1,name="alice",extra="dolly"}')
+
+o1:set('beta',nil)
+
+asserteq(o1,OrderedMap{{z=4},{name='alice'},{extra='dolly'}})
+

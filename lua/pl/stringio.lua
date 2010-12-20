@@ -1,11 +1,16 @@
-------------------------------------------
---- reading and writing strings using Lua IO
+--- reading and writing strings using Lua IO.
+-- @class module
+-- @name pl.stringio
 local tmpname = require('pl.path').tmpname
 local getmetatable,fopen,remove = getmetatable,io.open,os.remove
 local utils = require 'pl.utils'
 local assert_arg = utils.assert_arg
 
+--[[
 module ('pl.stringio',utils._module)
+]]
+
+local stringio = {}
 
 local files = {}
 
@@ -24,7 +29,7 @@ end
 -- The resulting file object will have an extra value() method for
 -- retrieving the string value.
 --  @usage f = create(); f:write('hello, dolly\n'); print(f:value())
-function create()
+function stringio.create()
     local file = tmpname()
     local f = fopen(file,'w')
     files[f] = file
@@ -34,7 +39,7 @@ end
 
 --- create a file object for reading from a given string.
 -- @param s The input string.
-function open(s)
+function stringio.open(s)
     assert_arg(1,s,'string')
     local file = tmpname()
     local f = fopen(file,'w')
@@ -44,9 +49,12 @@ function open(s)
     return fopen(file,'r')
 end
 
-function cleanup ()
+function stringio.cleanup ()
     for _,file in pairs(files) do
         remove(file)
     end
 end
+
+return stringio
+
 

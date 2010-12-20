@@ -1,5 +1,6 @@
--------------------------------------------------------------------------------
--- Useful functions for getting directory contents and matching them against wildcards
+--- Useful functions for getting directory contents and matching them against wildcards.
+-- @class module
+-- @name pl.dir
 
 local lfs = require 'lfs'
 local utils = require 'pl.utils'
@@ -10,20 +11,20 @@ local attrib = lfs.attributes
 local ldir = lfs.dir
 local chdir = lfs.chdir
 local mkdir = lfs.mkdir
-local escape = utils.escape
 local sub = string.sub
 local os,pcall,ipairs,pairs,require,setmetatable,_G = os,pcall,ipairs,pairs,require,setmetatable,_G
 local remove = os.remove
 local append = table.insert
-local print = print
-local assert = assert
-local type = type
 local wrap = coroutine.wrap
 local yield = coroutine.yield
 local assert_arg,assert_string,raise = utils.assert_arg,utils.assert_string,utils.raise
 local List = utils.stdmt.List
 
+--[[
 module ('pl.dir',utils._module)
+]]
+
+local dir = {}
 
 local function assert_dir (n,val)
     assert_arg(n,val,'string',path.isdir,'not a directory')
@@ -34,7 +35,7 @@ local function assert_file (n,val)
 end
 
 local function filemask(mask)
-    mask = escape(mask)
+    mask = utils.escape(mask)
     return mask:gsub('%%%*','.+'):gsub('%%%?','.')..'$'
 end
 
@@ -42,7 +43,7 @@ end
 -- (cf. fnmatch.fnmatch in Python, 11.8)
 -- @param file A file name
 -- @param pattern A shell pattern
-function fnmatch(file,pattern)
+function dir.fnmatch(file,pattern)
     assert_string(1,file)
     assert_string(2,pattern)
     return path.normcase(file):find(filemask(pattern)) ~= nil
@@ -52,7 +53,7 @@ end
 -- (cf. fnmatch.filter in Python, 11.8)
 -- @param files A table containing file names
 -- @param pattern A shell pattern.
-function filter(files,pattern)
+function dir.filter(files,pattern)
     assert_arg(1,files,'table')
     assert_string(2,pattern)
     local res = {}
@@ -63,7 +64,7 @@ function filter(files,pattern)
     return setmetatable(res,List)
 end
 
-function _listfiles(dir,filemode,match)
+local function _listfiles(dir,filemode,match)
     local res = {}
     if not dir then dir = '.' end
     for f in ldir(dir) do
@@ -81,7 +82,7 @@ end
 --- return a list of all files in a directory which match the a shell pattern.
 -- @param dir A directory. If not given, all files in current directory are returned.
 -- @param mask  A shell pattern. If  not given, all files are returned.
-function getfiles(dir,mask)
+function dir.getfiles(dir,mask)
     assert_dir(1,dir)
     assert_string(2,mask)
     local match
@@ -96,7 +97,7 @@ end
 
 --- return a list of all subdirectories of the directory.
 -- @param dir A directory
-function getdirectories(dir)
+function dir.getdirectories(dir)
     assert_dir(1,dir)
     return _listfiles(dir,'directory')
 end
@@ -200,7 +201,7 @@ end
 -- @param dest destination file
 -- @param flag true if you want to force the copy (default)
 -- @return true if operation succeeded
-function copyfile (src,dest,flag)
+function dir.copyfile (src,dest,flag)
     assert_string(1,src)
     assert_string(2,dest)
     flag = flag==nil or flag
@@ -211,7 +212,7 @@ end
 -- @param src source file
 -- @param dest destination file
 -- @return true if operation succeeded
-function movefile (src,dest)
+function dir.movefile (src,dest)
     assert_string(1,src)
     assert_string(2,dest)
     return file_op(false,src,dest,0)
@@ -254,7 +255,7 @@ end
 -- This is a clone of os.walk from the Python libraries.
 -- @param root A starting directory
 -- @param bottom_up False if we start listing entries immediately.
-function walk(root,bottom_up)
+function dir.walk(root,bottom_up)
     assert_string(1,root)
 	if not path.isdir(root) then return raise 'not a directory' end
     return wrap(function () _walker(root,bottom_up) end)
@@ -262,7 +263,7 @@ end
 
 --- remove a whole directory tree.
 -- @param fullpath A directory path
-function rmtree(fullpath)
+function dir.rmtree(fullpath)
     assert_string(1,fullpath)
 	if not path.isdir(fullpath) then return raise 'not a directory' end
     for root,dirs,files in walk(fullpath,true) do
@@ -280,6 +281,7 @@ else
     dirpat = '(.+)/[^/]+$'
 end
 
+local _makepath
 function _makepath(p)
 	-- windows root drive case
 	if p:find '^%a:$' then
@@ -298,7 +300,7 @@ end
 --- create a directory path.
 -- This will create subdirectories as necessary!
 -- @param p A directory path
-function makepath (p)
+function dir.makepath (p)
     assert_string(1,p)
     return _makepath(path.normcase(path.abspath(p)))
 end
@@ -313,7 +315,7 @@ end
 -- @return if failed, false plus an error message. If completed the traverse,
 --  true, a list of failed directory creations and a list of failed file operations.
 -- @usage clonetree('.','../backup',copyfile)
-function clonetree (path1,path2,file_fun,verbose)
+function dir.clonetree (path1,path2,file_fun,verbose)
     assert_string(1,path1)
     assert_string(2,path2)
     local abspath,normcase,isdir,join = path.abspath,path.normcase,path.isdir,path.join
@@ -333,11 +335,11 @@ function clonetree (path1,path2,file_fun,verbose)
     if idx == 0 then -- no common path, but watch out for Windows paths!
         if path1:sub(2,2) == ':' then idx = 3 end
     end
-    for root,dirs,files in walk(path1) do
+    for root,dirs,files in dir.walk(path1) do
         local opath = path2..root:sub(idx)
         if verbose then verbose('paths:',opath,root) end
         if not isdir(opath) then
-            local ret = makepath(opath)
+            local ret = dir.makepath(opath)
             if not ret then append(faildirs,opath) end
             if verbose then verbose('creating:',opath,ret) end
         end
@@ -361,11 +363,11 @@ end
 --	@param start_path {string} A directory. If not given, all files in current directory are returned.
 --	@param pattern {string} A shell pattern. If not given, all files are returned.
 --	@return Table containing all the files found recursively starting at <i>path</i> and filtered by <i>pattern</i>.
-function getallfiles( start_path, pattern )
+function dir.getallfiles( start_path, pattern )
 	assert( type( start_path ) == "string", "bad argument #1 to 'GetAllFiles' (Expected string but recieved " .. type( start_path ) .. ")" )
 	pattern = pattern or ""
 
-	function dirtree( dir )
+	local function dirtree( dir )
 		assert( dir and dir ~= "", "directory parameter is missing or empty" )
 		if sub( dir, -1 ) == "/" then
 			dir = sub( dir, 1, -2 )
@@ -393,7 +395,7 @@ function getallfiles( start_path, pattern )
 	local files = {}
 	for filename, attr in dirtree( start_path ) do
 		if "file" == attr.mode then
-			local mask = filemask( pattern ):lower()
+            local mask = filemask( pattern ):lower()
 
 			if filename:lower():find( mask ) then
 				files[#files + 1] = filename
@@ -403,3 +405,5 @@ function getallfiles( start_path, pattern )
 
 	return files
 end
+
+return dir

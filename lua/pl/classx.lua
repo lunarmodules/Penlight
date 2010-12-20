@@ -3,7 +3,9 @@
 -- @name pl.classx
 
 local function module(...) end
-module 'pl.classx'
+--[[
+module ('pl.classx')
+]]
 
 local classes = require 'pl.class'
 local tablex = require 'pl.tablex'
@@ -15,7 +17,7 @@ local append,extend,slice = List.append,List.extend,List.slice
 local append = table.insert
 local is_type = utils.is_type
 
-pl.classx = {}
+local classx = {}
 
 -- MultiMap is a standard MT
 local MultiMap = utils.stdmt.MultiMap
@@ -43,14 +45,18 @@ function MultiMap:update (t)
     end
 end
 
---- add a new value to a key.
+--- add a new value to a key.  Setting a nil value removes the key.
 -- @param key the key
 -- @param val the value
 function MultiMap:set (key,val)
-    if not self[key] then
-        self[key] = List()
+    if val == nil then
+        self[key] = nil
+    else
+        if not self[key] then
+            self[key] = List()
+        end
+        self[key]:append(val)
     end
-    self[key]:append(val)
 end
 
 local OrderedMap = class(Map)
@@ -61,21 +67,46 @@ function OrderedMap:_init (t)
     if t then self:update(t) end
 end
 
+local assert_arg,raise = utils.assert_arg,utils.raise
+
 --- update an OrderedMap using a table.
--- @param t map-like table.
+-- If the table is itself an OrderedMap, then its entries will be appended. <br>
+-- if it s a table of the form {{key1=val1},{key2=val2},...} these will be appended. <br>
+-- Otherwise, it is assumed to be a map-like table, and order of extra entries is arbitrary.
+-- @param t a table.
 function OrderedMap:update (t)
-    local keys = self._keys
-    for k,v in pairs(t) do
-        keys:append(k)
-        self[k] = v
-    end
+   assert_arg(1,t,'table')
+   if OrderedMap:class_of(t) then
+       for k,v in t:iter() do
+           self:set(k,v)
+       end
+   elseif #t > 0 then -- an array must contain {key=val} tables
+       if type(t[1]) == 'table' then
+           for _,pair in ipairs(t) do
+               local key,value = next(pair)
+               if not key then return raise 'empty pair initialization table' end
+               self:set(key,value)
+           end
+       else
+           return raise 'cannot use an array to initialize an OrderedMap'
+       end
+   else
+       for k,v in pairs(t) do
+           self:set(k,v)
+       end
+   end
 end
 
---- set the key's value.
+--- set the key's value.   This key will be appended at the end of the map. <br>
+-- If the value is nil, then the key is removed.
 -- @param key the key
 -- @param val the value
 function OrderedMap:set (key,val)
-    self._keys:append(key)
+   if not self[key] then -- ensure that keys are unique
+       self._keys:append(key)
+   elseif val == nil then -- removing a key-value pair
+       self._keys:remove_value(key)
+   end
     self[key] = val
 end
 
@@ -112,7 +143,12 @@ end
 function OrderedMap:__tostring ()
     local res = {}
     for i,v in ipairs(self._keys) do
-        res[i] = tostring(v)..'='..tostring(self[v])
+        local val = self[v]
+        local vs = tostring(val)
+        if type(val) ~= 'number' then
+            vs = '"'..vs..'"'
+        end
+        res[i] = tostring(v)..'='..vs
     end
     return '{'..concat(res,',')..'}'
 end
@@ -169,9 +205,9 @@ function TypedList:slice (i1,i2)
     return setmetatable(slice(self,i1,i2),self._class)
 end
 
-pl.classx.OrderedMap = OrderedMap
-pl.classx.MultiMap = MultiMap
-pl.classx.TypedList = TypedList
+classx.OrderedMap = OrderedMap
+classx.MultiMap = MultiMap
+classx.TypedList = TypedList
 
-return pl.classx
+return classx
 

@@ -1,6 +1,6 @@
 -- running the tests and examples
 require 'pl'
-require 'lfs'
+local lfs = require 'lfs'
 
 -- get the Lua executable used to invoke this script
 cmd = arg[-1]

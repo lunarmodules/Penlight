@@ -2,7 +2,7 @@
    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 <head>
-    <title>pl.input: Module Index</title>
+    <title>pl.lapp: Module Index</title>
     <link rel="stylesheet" href="../luadoc.css" type="text/css" />
 	<!--meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/-->
 </head>
@@ -70,12 +70,12 @@
 		<a href="../modules/pl.func.html">pl.func</a>
 	</li>
 
-	<li><strong>pl.input</strong></li>
-	
 	<li>
-		<a href="../modules/pl.lapp.html">pl.lapp</a>
+		<a href="../modules/pl.input.html">pl.input</a>
 	</li>
 
+	<li><strong>pl.lapp</strong></li>
+	
 	<li>
 		<a href="../modules/pl.lexer.html">pl.lexer</a>
 	</li>
@@ -147,15 +147,25 @@
 
 <div id="content">
 
-<h1>Module "pl.input"</h1>
+<h1>Module "pl.lapp"</h1>
 
-<p>Iterators for extracting words or numbers from an input source.
+<p>Simple command-line parsing using human-readable specification.
+Supports GNU-style parameters.
 <pre class=example>
-   require 'pl'
-   local total,n = <a href="pl.seq.html#seq.sum">seq.sum</a>(input.numbers())
-   print('average',total/n)
+     lapp = require 'pl.lapp'
+     local args = lapp [[
+     Does some calculations
+       -o,--offset (default 0.0)  Offset to add to scaled number
+       -s,--scale  (number)  Scaling factor
+        &lt;number&gt; (number )  Number to be scaled
+     ]]
+
+     print(args.offset + args.scale * args.number)
 </pre>
-<p> See <a href="../../index.html#lexer">here</a></p>
+Lines begining with '-' are flags; there may be a short and a long name;
+lines begining wih '&lt;var&gt;' are arguments.  Anything in parens after
+the flag/argument is either a default, a type name or a range constraint.
+<p>See <a href="../../index.html#lapp">the Guide</a></p>
 
 
 
@@ -165,28 +175,33 @@
 <table class="function_list">
 
 	<tr>
-	<td class="name" nowrap><a href="#input.alltokens">input.alltokens</a>&nbsp;(getter, pattern, fn)</td>
-	<td class="summary">create an iterator over all tokens.</td>
+	<td class="name" nowrap><a href="#lapp.add_type">lapp.add_type</a>&nbsp;(name, converter, constraint)</td>
+	<td class="summary">add a new type to Lapp.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#input.create_getter">input.create_getter</a>&nbsp;(f)</td>
-	<td class="summary">create a function which grabs the next value from a source.</td>
+	<td class="name" nowrap><a href="#lapp.assert">lapp.assert</a>&nbsp;(condn, msg)</td>
+	<td class="summary">quit if the condition is false.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#input.fields">input.fields</a>&nbsp;(ids, delim, f, opts)</td>
-	<td class="summary">parse an input source into fields.</td>
+	<td class="name" nowrap><a href="#lapp.error">lapp.error</a>&nbsp;(msg, no_usage)</td>
+	<td class="summary">print an error to stderr and quit.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#input.numbers">input.numbers</a>&nbsp;(f)</td>
-	<td class="summary">generate a sequence of numbers from a source.</td>
+	<td class="name" nowrap><a href="#lapp.open">lapp.open</a>&nbsp;(file, opt)</td>
+	<td class="summary">open a file.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#input.words">input.words</a>&nbsp;(f)</td>
-	<td class="summary">generate a sequence of words from a source.</td>
+	<td class="name" nowrap><a href="#lapp.process_options_string">lapp.process_options_string</a>&nbsp;(str)</td>
+	<td class="summary">process a Lapp options string.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#lapp.quit">lapp.quit</a>&nbsp;(msg, no_usage)</td>
+	<td class="summary">quit this script immediately.</td>
 	</tr>
 
 </table>
@@ -206,25 +221,26 @@
 
 
 
-<dt><a name="input.alltokens"></a><strong>input.alltokens</strong>&nbsp;(getter, pattern, fn)</dt>
+<dt><a name="lapp.add_type"></a><strong>lapp.add_type</strong>&nbsp;(name, converter, constraint)</dt>
 <dd>
-create an iterator over all tokens.
-based on allwords from PiL, 7.1
+add a new type to Lapp. These appear in parens after the value like
+a range constraint, e.g. '<ival> (integer) Process PID'
 
 
 <h3>Parameters:</h3>
 <ul>
 	
 	<li>
-	  getter: any function that returns a line of text
+	  name: name of type
 	</li>
 	
 	<li>
-	  pattern: 
+	  converter: either a function to convert values, or a Lua type name.
 	</li>
 	
 	<li>
-	  fn: Optionally can pass a function to process each token as it/s found.
+	  constraint: optional function to verify values, should use lapp.error
+if failed.
 	</li>
 	
 </ul>
@@ -235,9 +251,6 @@ based on allwords from PiL, 7.1
 
 
 
-
-<h3>Return value:</h3>
-an iterator
 
 
 
@@ -246,17 +259,20 @@ an iterator
 
 
 
-<dt><a name="input.create_getter"></a><strong>input.create_getter</strong>&nbsp;(f)</dt>
+<dt><a name="lapp.assert"></a><strong>lapp.assert</strong>&nbsp;(condn, msg)</dt>
 <dd>
-create a function which grabs the next value from a source. If the source is a string, then the getter
-will return the string and thereafter return nil. If not specified then the source is assumed to be stdin.
+quit if the condition is false.
 
 
 <h3>Parameters:</h3>
 <ul>
 	
 	<li>
-	  f: a string or a file-like object (i.e. has a read() method which returns the next line)
+	  condn: a condition
+	</li>
+	
+	<li>
+	  msg: an optional message
 	</li>
 	
 </ul>
@@ -267,9 +283,6 @@ will return the string and thereafter return nil. If not specified then the sour
 
 
 
-
-<h3>Return value:</h3>
-a getter function
 
 
 
@@ -278,29 +291,20 @@ a getter function
 
 
 
-<dt><a name="input.fields"></a><strong>input.fields</strong>&nbsp;(ids, delim, f, opts)</dt>
+<dt><a name="lapp.error"></a><strong>lapp.error</strong>&nbsp;(msg, no_usage)</dt>
 <dd>
-parse an input source into fields.
-By default, will fail if it cannot convert a field to a number.
+print an error to stderr and quit.
 
 
 <h3>Parameters:</h3>
 <ul>
 	
 	<li>
-	  ids: a list of field indices, or a maximum field index
+	  msg: a message
 	</li>
 	
 	<li>
-	  delim: delimiter to parse fields (default space)
-	</li>
-	
-	<li>
-	  f: a source (@see create_getter)
-	</li>
-	
-	<li>
-	  opts: option table, {no_fail=true}
+	  no_usage: suppress 'usage' display
 	</li>
 	
 </ul>
@@ -308,15 +312,9 @@ By default, will fail if it cannot convert a field to a number.
 
 
 
-<h3>Usage:</h3>
-for x,y in fields {2,3} do print(x,y) end -- 2nd and 3rd fields from stdin
 
 
 
-
-
-<h3>Return value:</h3>
-an iterator with the field values
 
 
 
@@ -325,16 +323,21 @@ an iterator with the field values
 
 
 
-<dt><a name="input.numbers"></a><strong>input.numbers</strong>&nbsp;(f)</dt>
+<dt><a name="lapp.open"></a><strong>lapp.open</strong>&nbsp;(file, opt)</dt>
 <dd>
-generate a sequence of numbers from a source.
+open a file.
+This will quit on error, and keep a list of file objects for later cleanup.
 
 
 <h3>Parameters:</h3>
 <ul>
 	
 	<li>
-	  f: A source
+	  file: filename
+	</li>
+	
+	<li>
+	  opt: same as second parameter of <code>io.open</code>
 	</li>
 	
 </ul>
@@ -345,9 +348,6 @@ generate a sequence of numbers from a source.
 
 
 
-
-<h3>Return value:</h3>
-An iterator
 
 
 
@@ -356,16 +356,17 @@ An iterator
 
 
 
-<dt><a name="input.words"></a><strong>input.words</strong>&nbsp;(f)</dt>
+<dt><a name="lapp.process_options_string"></a><strong>lapp.process_options_string</strong>&nbsp;(str)</dt>
 <dd>
-generate a sequence of words from a source.
+process a Lapp options string.
+Usually called as lapp().
 
 
 <h3>Parameters:</h3>
 <ul>
 	
 	<li>
-	  f: A source
+	  str: the options text
 	</li>
 	
 </ul>
@@ -378,7 +379,39 @@ generate a sequence of words from a source.
 
 
 <h3>Return value:</h3>
-An iterator
+a table with parameter-value pairs
+
+
+
+</dd>
+
+
+
+
+<dt><a name="lapp.quit"></a><strong>lapp.quit</strong>&nbsp;(msg, no_usage)</dt>
+<dd>
+quit this script immediately.
+
+
+<h3>Parameters:</h3>
+<ul>
+	
+	<li>
+	  msg: optional message
+	</li>
+	
+	<li>
+	  no_usage: suppress 'usage' display
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
 
 
 

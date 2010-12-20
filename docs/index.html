@@ -26,18 +26,18 @@ a:link:hover { text-decoration:underline; }
         <li><a href="#T4">To Inject or not to Inject?</a></li>
         <li><a href="#T5">What are function arguments in Penlight?</a></li>
         <li><a href="#T6">Pros and Cons of Loopless Programming</a></li>
-        <li><a href="#T.">Utilities. Generally useful functions.</a></li>
+        <li><a href="#T7">Utilities. Generally useful functions.</a></li>
         <li><a href="#T8">Application Support</a></li>
-        <li><a href="#T.">Classes. Simplifying Object-Oriented Programming in Lua</a></li>
+        <li><a href="#T9">Classes. Simplifying Object-Oriented Programming in Lua</a></li>
     </ul></li>
     <li><a href="#T10">Tables and Arrays</a>
     <ul>
         <li><a href="#T11">Python-style Lists</a></li>
         <li><a href="#T12">Map and Set classes</a></li>
-        <li><a href="#T.">Tablex. Useful Operations on Tables</a></li>
+        <li><a href="#T13">Tablex. Useful Operations on Tables</a></li>
         <li><a href="#T14">Operations on two-dimensional tables</a></li>
     </ul></li>
-    <li><a href="#T.">Strings. Higher-level operations on strings.</a>
+    <li><a href="#T15">Strings. Higher-level operations on strings.</a>
     <ul>
         <li><a href="#T16">Extra String Methods</a></li>
         <li><a href="#T17">String Templates</a></li>
@@ -73,11 +73,11 @@ a:link:hover { text-decoration:underline; }
             <li><a href="#T38">'varargs' Parameter Arrays</a></li>
             <li><a href="#T39">Defining a Parameter Callback</a></li>
         </ul></li>
-    </ul></li>
-    <li><a href="#T40">Technical Choices</a>
-    <ul>
-        <li><a href="#T41">Modularity and Granularity</a></li>
-        <li><a href="#T42">Defining what is Callable</a></li>
+        <li><a href="#T40">Technical Choices</a>
+        <ul>
+            <li><a href="#T41">Modularity and Granularity</a></li>
+            <li><a href="#T42">Defining what is Callable</a></li>
+        </ul></li>
     </ul></li>
 </ul>
 
@@ -86,7 +86,7 @@ a:link:hover { text-decoration:underline; }
 
 <p>The module documentation is available <a href="api/index.html">here</a>; and there is an alphabetical <a href="function_index.html">function index</a>.</p>
 
-<p>The latest vesion is available at <a href="http://github.com/stevedonovan/Penlight/downloads">GitHub</a>.</p>
+<p>The latest vesion is available at <a href="http://github.com/stevedonovan/Penlight">Github</a>.</p>
 
 <h2  id="T2">Introduction</h2>
 
@@ -175,11 +175,9 @@ nil
 
 <h3  id="T5">What are function arguments in Penlight?</h3>
 
-<p>Many functions in Penlight themselves take function arguments, like <code>map</code> which applies a function to a list, element by element.  You can use existing functions, like <code>math.max</code>, anonymous functions (like <code>function(x,y) return x &gt; y end</code>), operations by name (e.g '*' or '..') or <em>string lambdas</em> like '|x,y| x > y'.  The module <code>pl.operator</code> exports all the standard Lua operations, like the Python module of the same name. Penlight allows these to be refered to by name, so <code>operator.gt</code> can be more concisely expressed as '>'.</p>
+<p>Many functions in Penlight themselves take function arguments, like <code>map</code> which applies a function to a list, element by element.  You can use existing functions, like <code>math.max</code>, anonymous functions (like <code>function(x,y) return x &gt; y end</code>), or operations by name (e.g '*' or '..').  The module <code>pl.operator</code> exports all the standard Lua operations, like the Python module of the same name. Penlight allows these to be refered to by name, so <code>operator.gt</code> can be more concisely expressed as '>'.</p>
 
 <p>Note that the <code>map</code> functions pass any extra arguments to the function, so we can have <code>ls:filter('&gt;',0)</code>, which is effectively <code>ls:filter(function(x) return x &gt; 0 end)</code>.</p>
-
-<p>String lambdas provide a convenient way to express simple anonymous functions, without the 'keyword noise' of the usual syntax. This is not to everyone's taste, which is why it is not part of the language itself, but these forms can make code that is both more compact and readable.</p>
 
 <p>Finally, <code>pl.func</code> supports <em>placeholder expressions</em> in the Boost style, so that an anonymous function to multiply the two arguments can be expressed as <code>_1*_2</code>.</p>
 
@@ -212,7 +210,7 @@ end
 <p>Writing loops is 'error-prone and tedious', as Stroustrup says. But any half-decent editor can be taught to do much of that typing for you. The question should actually be: is it tedious to <em>read</em> loops?  As with natural language, programmers tend to read chunks at a time. A for-loop causes no suprise, and probably little brain activity. One argument for loopless programming is the loops that you <em>do</em> write stand out more, and signal 'something different happening here'.  It should not be an all-or-nothing thing, since most programs require a mixture of idioms that suit the problem.  Some languages (like APL) do nearly everything with map and reduce operations on arrays, and so solutions can sometimes seem forced. Wisdom is knowing when a particular idiom makes a particular problem easy to <em>solve</em> and the solution easy to <em>explain</em> afterwards.</p>
 
 
-<h3  id="T.">Utilities. Generally useful functions.</h3>
+<h3  id="T7">Utilities. Generally useful functions.</h3>
 
 <p>The function <code>printf</code> discussed earlier is included in <code>pl.utils</code> because it makes properly formatted output easier. (There is an equivalent <code>fprintf</code> which also takes a file object parameter, just like the C function.)</p>
 
@@ -226,10 +224,10 @@ end
 end
 </code></pre>
 
-<p>But this will bite you someday when <code>nil</code> is one of the arguments, since this will put a 'hole' in your table. In particular, <code>#ls</code> will only give you the size upto the <code>nil</code> value.  Hence the need for <code>utils.args</code>:</p>
+<p>But this will bite you someday when <code>nil</code> is one of the arguments, since this will put a 'hole' in your table. In particular, <code>#ls</code> will only give you the size upto the <code>nil</code> value.  Hence the need for <code>table.pack</code> - this is a new Lua 5.2 function which Penlight defines also for Lua 5.1.</p>
 
 <pre><code>function t(...)
-    local args,n = utils.args(...)
+    local args,n = table.pack(...)
     for i = 1,n do
       ...
     end
@@ -249,6 +247,7 @@ s = sum(1e8) --takes time!
 s = sum(1e8) --returned saved value!
 </code></pre>
 
+<p><a id="app"/></p>
 <h3  id="T8">Application Support</h3>
 
 <p><code>app.parse_args</code> is a simple command-line argument parser. If called without any arguments, it tries to use the global <code>arg</code> array.  It returns the <em>flags</em> (options begining with '-') as a table of name/value pairs, and the <em>arguments</em> as an array.  It knows about long GNU-style flag names, e.g. <code>--value</code>, and groups of short flags are understood, so that <code>-ab</code> is short for <code>-a -b</code>. The flags result would then look like <code>{value=true,a=true,b=true}</code>.</p>
@@ -277,12 +276,12 @@ s = sum(1e8) --returned saved value!
 
 <p>Penlight makes it convenient to save application data in Lua format. You can use <code>pretty.dump(t,file)</code> to write a Lua table in a human-readable form to a file, and <code>pretty.read(file.read(file))</code> to generate the table again.</p>
 
-<p>(<a href="modules/pl.app.html">see pl.app</a>, <a href="modules/pl.pretty.html">see pl.pretty</a>)</p>
+<p>(<a href="modules/pl.app.html">see app</a>, <a href="modules/pl.pretty.html">see pretty</a>)</p>
 
 
 <p><a id="class"/></p>
 
-<h3  id="T.">Classes. Simplifying Object-Oriented Programming in Lua</h3>
+<h3  id="T9">Classes. Simplifying Object-Oriented Programming in Lua</h3>
 
 <p>Lua is similar to JavaScript in that the concept of class is not directly supported by the language. In fact, Lua has a very general mechanism for extending the behaviour of tables which makes it straightforward to implement classes. A table's behaviour is controlled by its metatable. If that metatable has a <code>__index</code> function or table, this will handle looking up anything which is not found in the original table. A class is just a table with an <code>__index</code> key pointing to itself. Creating an object involves making a table and setting its metatable to the class; then when handling <code>obj.fun</code>, Lua first looks up <code>fun</code> in the table <code>obj</code>, and if not found it looks it up in the class. <code>obj:fun(a)</code> is just short for <code>obj.fun(obj,a)</code>. So with the metatable mechanism and this bit of syntactic sugar, it is straightforward to implement classic object orientation.</p>
 
@@ -368,7 +367,7 @@ Alice: 00459AE8
 
 <h3  id="T11">Python-style Lists</h3>
 
-<p>One of the elegant things about Lua is that tables do the job of both lists and dicts (as called in Python) or vectors and maps, (as called in C++), and they do it efficiently.  However, if we are dealing with 'tables with numerical indices' we may as well call them lists and look for operations which particularly make sense for lists. The Penlight <code>List</code> class was originally written by Nick Trout for Lua 5.0, and translated to 5.1 and extended by myself.  It seemed that borrowing from Python was a good idea, and this eventually grew into Penlight. (<a href="modules/pl.list.html">see pl.list</a>)</p>
+<p>One of the elegant things about Lua is that tables do the job of both lists and dicts (as called in Python) or vectors and maps, (as called in C++), and they do it efficiently.  However, if we are dealing with 'tables with numerical indices' we may as well call them lists and look for operations which particularly make sense for lists. The Penlight <code>List</code> class was originally written by Nick Trout for Lua 5.0, and translated to 5.1 and extended by myself.  It seemed that borrowing from Python was a good idea, and this eventually grew into Penlight. (<a href="modules/pl.list.html">see list</a>)</p>
 
 <p>Here is an example showing <code>List</code> in action; it redefines <code>__tostring</code>, so that it can print itself out more sensibly:</p>
 
@@ -541,9 +540,9 @@ end
 </code></pre>
 
 
-<p>(<a href="modules/pl.class.html">see pl.class</a>, <a href="modules/pl.classx.html">see pl.classx</a>)</p>
+<p>(<a href="modules/pl.class.html">see class</a>, <a href="modules/pl.classx.html">see classx</a>)</p>
 
-<h3  id="T.">Tablex. Useful Operations on Tables</h3>
+<h3  id="T13">Tablex. Useful Operations on Tables</h3>
 
 <p>Some notes on terminology: Lua tables are usually <em>list-like</em> (like an array) or <em>map-like</em> (like an associative array or dict); they can of course have a list-like and a map-like part. Some of the table operations only make sense for list-like tables, and some only for map-like tables. (The usual Lua terminology is the array part and the hash part of the table, which reflects the actual implementation used.)</p>
 
@@ -556,7 +555,7 @@ end
 return res
 </code></pre>
 
-<p>The <code>tablex</code> module (<a href="modules/pl.tablex.html">see pl.tablex</a>) provides this as <code>copy</code>, which does a <em>shallow</em> copy of a table. There is also <code>deepcopy</code> which goes further than a simple loop in two ways; first, it also gives the copy the same metatable as the original (so it can copy objects like <code>List</code> above) and any nested tables will also be copied, to arbitrary depth. There is also <code>icopy</code> which operates on list-like tables, where you can set optionally set the start index of the source and destination as well. It ensures that any left-over elements will be deleted:</p>
+<p>The <code>tablex</code> module (<a href="modules/pl.tablex.html">see tablex</a>) provides this as <code>copy</code>, which does a <em>shallow</em> copy of a table. There is also <code>deepcopy</code> which goes further than a simple loop in two ways; first, it also gives the copy the same metatable as the original (so it can copy objects like <code>List</code> above) and any nested tables will also be copied, to arbitrary depth. There is also <code>icopy</code> which operates on list-like tables, where you can set optionally set the start index of the source and destination as well. It ensures that any left-over elements will be deleted:</p>
 
 <pre><code>asserteq(icopy({1,2,3,4,5,6},{20,30}),{20,30})   -- start at 1
 asserteq(icopy({1,2,3,4,5,6},{20,30},2),{1,20,30}) -- start at 2
@@ -850,9 +849,9 @@ lines = map2(string.rjust,2,1,lines,maxlens)
 3       3       9
 </code></pre>
 
-<p>(<a href="modules/pl.array.html">see pl.array</a>2d)</p>
+<p>(<a href="modules/pl.array.html">see array</a>2d)</p>
 
-<h2  id="T.">Strings. Higher-level operations on strings.</h2>
+<h2  id="T15">Strings. Higher-level operations on strings.</h2>
 
 <h3  id="T16">Extra String Methods</h3>
 
@@ -881,7 +880,7 @@ three
 
 <p>Most of these can be fairly easily implemented using the Lua string library, which is more general and powerful. But they are convenient operations to have easily at hand. Note that can be injected into the <code>string</code> table if you use <code>require 'pl'</code> and then <code>stringx.import()</code>, or explicitly call <code>pl.stringx.import()</code>, but a simple alias like 'stringx = require 'pl.string'` can be used. This is the recommended practice when writing modules for consumption by other people, since it is bad manners to change the global state of the rest of the system.</p>
 
-<p>(<a href="modules/pl.stringx.html">see pl.stringx</a>)</p>
+<p>(<a href="modules/pl.stringx.html">see stringx</a>)</p>
 
 <h3  id="T17">String Templates</h3>
 
@@ -932,7 +931,7 @@ print(t:indent_substitute {body=body,t='tbl'})
 
 <p><code>pl.text</code> also has a number of useful functions like <code>dedent</code>, which strips all the initial indentation from a multiline string. As in Python, this is useful for preprocessing multiline strings if you like indenting them with your code. The function <code>wrap</code> is passed a long string (a <em>paragraph</em>) and returns a list of lines that fit into a desired line width. As an extension, there is also <code>indent</code> for indenting multiline strings.</p>
 
-<p>(<a href="modules/pl.text.html">see pl.text</a>)</p>
+<p>(<a href="modules/pl.text.html">see text</a>)</p>
 
 
 <h2  id="T18">Paths and Directories</h2>
@@ -1115,7 +1114,9 @@ end
 
 <h3  id="T24">Reading Unstructured Text Data</h3>
 
-<p>Text data is sometimes unstructured, for example a file containing words. The 'pl.input` module has a number of functions which makes processing such files easier. For example, a script to count the number of words in standard input (<a href="modules/pl.input.html#words">see pl.input.words</a>):</p>
+<p><a id="input"/></p>
+
+<p>Text data is sometimes unstructured, for example a file containing words. The 'pl.input` module has a number of functions which makes processing such files easier. For example, a script to count the number of words in standard input (<a href="modules/pl.input.html#input.words">see input.words</a>):</p>
 
 <pre><code>-- countwords.lua
 require 'pl'
@@ -1126,7 +1127,7 @@ end
 print('count',k)
 </code></pre>
 
-<p>Or this script to calculate the average of a set of numbers (<a href="modules/pl.input.html#numbers">see pl.input.numbers</a>):</p>
+<p>Or this script to calculate the average of a set of numbers (<a href="modules/pl.input.html#input.numbers">see input.numbers</a>):</p>
 
 <pre><code>-- average.lua
 require 'pl'
@@ -1162,8 +1163,6 @@ for line in io.lines() do
 end
 </code></pre>
 
-<p><a id="data"/></p>
-
 <h3  id="T25">Reading Columnar Data</h3>
 
 <p>It is very common to find data in columnar form, either space or comma-separated, perhaps with an initial set of column headers. Here is a typical example:</p>
@@ -1195,7 +1194,7 @@ end
 
 <p>The second parameter is a delimiter, by default spaces. ' ' is understood to mean 'any number of spaces', i.e. '%s+'. Any Lua string pattern can be used.</p>
 
-<p>The third parameter is a <em>data source</em>, by default standard input (<a href="modules/pl.input.html#create">see pl.input.create</a>_getter) It assumes that the data source has a <code>read</code> method which brings in the next line, i.e. it is a 'file-like' object. As a special case, a string will be split into its lines:</p>
+<p>The third parameter is a <em>data source</em>, by default standard input (<a href="modules/pl.input.html#input.create">see input.create</a>_getter) It assumes that the data source has a <code>read</code> method which brings in the next line, i.e. it is a 'file-like' object. As a special case, a string will be split into its lines:</p>
 
 <pre><code>&gt; for x,y in input.fields(2,' ','10 20\n30 40\n') do print(x,y) end
 10      20
@@ -1211,7 +1210,9 @@ line 2: cannot convert '40x' to number
 
 <p>This behaviour of <code>input.fields</code> is appropriate for a script which you want to fail immediately with an appropriate <em>user</em> error message if conversion fails. The fourth optional parameter is an options table: <code>{no_fail=true}</code> means that conversion is attempted but if it fails it just returns the string, rather as AWK would operate. You are then responsible for checking the type of the returned field. <code>{no_convert=true}</code> switches off conversion altogether and all fields are returned as strings.</p>
 
-<p>Sometimes it is useful to bring a whole dataset into memory, for operations such as extracting columns. Penlight provides a flexible reader specifically for reading this kind of data (<a href="modules/pl.data.html#read">see pl.data.read</a>). Given a file looking like this:</p>
+<p><a id="data"/></p>
+
+<p>Sometimes it is useful to bring a whole dataset into memory, for operations such as extracting columns. Penlight provides a flexible reader specifically for reading this kind of data (<a href="modules/pl.data.html#data.read">see data.read</a>). Given a file looking like this:</p>
 
 <pre><code>x,y
 10,20
@@ -1305,7 +1306,7 @@ end
 </code></pre>
 
 
-<p>I've always been an admirer of the AWK programming language; with <code>filter</code> (<a href="modules/pl.data.html#filter">see pl.data.filter</a>) you can get Lua programs which are just as compact:</p>
+<p>I've always been an admirer of the AWK programming language; with <code>filter</code> (<a href="modules/pl.data.html#data.filter">see data.filter</a>) you can get Lua programs which are just as compact:</p>
 
 <pre><code>-- printxy.lua
 require 'pl'
@@ -1359,7 +1360,7 @@ write.timeout=5
 ports = 1002,1003,1004
 </code></pre>
 
-<p>This can be easily brought in using <code>config.read</code> and the result shown using <code>pl.pretty.write</code> (<a href="modules/pl.pretty.html#write">see pl.pretty.write</a>)</p>
+<p>This can be easily brought in using <code>config.read</code> and the result shown using <code>pl.pretty.write</code> (<a href="modules/pl.pretty.html#pretty.write">see pretty.write</a>)</p>
 
 <pre><code>-- readconfig.lua
 local config = require 'pl.config'
@@ -1684,7 +1685,7 @@ print(pretty.write(seq.count_map(globals)))
 3
 </code></pre>
 
-<p><code>seq.printall</code> is useful for printing out single-valued sequences, and provides some finer control over formating, such as a delimiter, the number of fields per line, and a format string to use (<a href="modules/string.format.html">see string.format</a>)</p>
+<p><code>seq.printall</code> is useful for printing out single-valued sequences, and provides some finer control over formating, such as a delimiter, the number of fields per line, and a format string to use (<a href="modules/pl.string.html#string.format">see string.format</a>)</p>
 
 <pre><code>&gt; seq.printall(seq.random(10))
 0.0012512588885159 0.56358531449324 0.19330423902097 ....
@@ -1799,7 +1800,7 @@ ONE TWO
 <pre><code>seq.lines():take(10):upper():enum():map('..'):printall '\n'
 </code></pre>
 
-<p>Note the method <code>upper</code>, which is not a <code>seq</code> function. if an unknown method is called, sequence wrappers apply that method to all the values in the sequence (this is implicit use of <code>mapmethod</code> - <a href="modules/pl.seq.html#mapmethod.">see pl.seq.mapmethod.</a>)</p>
+<p>Note the method <code>upper</code>, which is not a <code>seq</code> function. if an unknown method is called, sequence wrappers apply that method to all the values in the sequence (this is implicit use of <code>mapmethod</code> - <a href="modules/pl.seq.html#seq.mapmethod">see seq.mapmethod</a>)</p>
 
 <p>It is straightforward to create custom sequences that can be used in this way. On Unix, <code>/dev/random</code> gives you an <em>endless</em> sequence of random bytes, so we use <code>take</code> to limit the sequence, and then <code>map</code> to scale the result into the desired range. The key step is to use <code>seq</code> to wrap the iterator function:</p>
 
@@ -1820,11 +1821,6 @@ end
 dev_random():take(10):map('%',100):map('/',100):printall ','
 </code></pre>
 
-
-<p>You may prefer this form, which uses the new 'string lambda' notation:</p>
-
-<pre><code>dev_random():take(10):map '|n| (n % 100)/100':printall ','
-</code></pre>
 
 <p>Another Linux one-liner depends on the <code>/proc</code> filesystem and makes a list of all the currently running processes:</p>
 
@@ -2102,7 +2098,6 @@ for i = 1,n do
 end
 </code></pre>
 
-<p>Another option now supported by Penlight is the use of <em>string lambdas</em>. These use the 'short-form' for anonymous functions.  So any Penlight function can accept strings like '|x,y| x+y', which is equivalent to <code>function(x,y) return x+y end</code>. Please note that these functions are effectively compiled in the global context and they cannot have references to locals.  They do not suffer from the quoting problem, so that we can say '|f| f:read()', and they can be efficiently memoized.</p>
 
 <h2  id="T34">Additional Libraries</h2>
 
@@ -2246,7 +2241,7 @@ true
 {first='jan',rest='and a string',last='smit'}
 </code></pre>
 
-<p>(<a href="modules/pl.sip.html">see pl.sip</a>)</p>
+<p>(<a href="modules/pl.sip.html">see sip</a>)</p>
 
 <p><a id="lapp"/></p>
 

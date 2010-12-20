@@ -1,12 +1,14 @@
---- Wrapper classes: Map and Set.
--- Provides a reuseable and convenient framework for creating classes in Lua.
+--- Provides a reuseable and convenient framework for creating classes in Lua.
+-- Two possible notations: <code> B = class(A) </code> or <code> class.B(A) </code>.
+-- The latter form creates a named class.
+-- This module also provides Map and Set classes.
 -- See the Guide for further <a href="../../index.html#class">discussion</a>
 -- @class module
 -- @name pl.class
 
-local function module(...) end
-module 'pl.class'
-
+--[[
+module ('pl.class')
+]]
 
 -- utils keeps the predefined metatables for these useful interfaces,
 -- so that other modules (such as tablex) can tag their output accordingly.
@@ -14,8 +16,6 @@ module 'pl.class'
 local tablex = require 'pl.tablex'
 local utils = require 'pl.utils'
 local stdmt = utils.stdmt
-local List = require 'pl.list' . List
-local rawset = rawset
 local is_callable = utils.is_callable
 local tmakeset,deepcompare,merge,keys,difference,tupdate = tablex.makeset,tablex.deepcompare,tablex.merge,tablex.keys,tablex.difference,tablex.update
 local pretty_write = require 'pl.pretty' . write
@@ -23,8 +23,7 @@ local Map = stdmt.Map
 local Set = stdmt.Set
 local List = stdmt.List
 
-pl.class = {Set = Set, Map = Map}
-
+local class = {Set = Set, Map = Map}
 
 -- this trickery is necessary to prevent the inheritance of 'super' and
 -- the resulting recursive call problems.
@@ -143,12 +142,12 @@ end
 -- @param base optional base class
 -- @param c_arg optional parameter to class ctor
 -- @param c optional table to be used as class
-local class = setmetatable({},{
+class.class = setmetatable({},{
     __call = function(fun,...)
         return _class(...)
     end,
     __index = function(tbl,key)
-        local env = getfenv(2)
+        local env = _G
         return function(...)
             local c = _class(...)
             c._name = key
@@ -158,11 +157,9 @@ local class = setmetatable({},{
     end
 })
 
-pl.class.class = class
-
-
+ 
 -- the Map class ---------------------
-class(nil,nil,Map)
+class.class(nil,nil,Map)
 
 local function makemap (m)
     return setmetatable(m,Map)
@@ -177,17 +174,16 @@ function Map:_init (t)
     end
 end
 
-local values,keys = tablex.values,tablex.keys
+
+local function makelist(t)
+    return setmetatable(t,List)
+end
 
 --- list of keys.
-function Map:keys ()
-    return List(keys(self))
-end
+Map.keys = tablex.keys
 
 --- list of values.
-function Map:values ()
-    return List(values(self))
-end
+Map.values = tablex.values
 
 --- return an iterator over all key-value pairs.
 function Map:iter ()
@@ -196,7 +192,7 @@ end
 
 --- return a List of all key-value pairs, sorted by the keys.
 function Map:items()
-    local ls = List (tablex.pairmap (function (k,v) return List {k,v} end, self))
+    local ls = makelist(tablex.pairmap (function (k,v) return makelist {k,v} end, self))
 	ls:sort(function(t1,t2) return t1[1] < t2[1] end)
 	return ls
 end
@@ -233,7 +229,7 @@ local index_by = tablex.index_by
 -- @param keys a list-like table of keys
 -- @return a new list
 function Map:getvalues (keys)
-    return List(index_by(self,keys))
+    return makelist(index_by(self,keys))
 end
 
 Map.iter = pairs
@@ -250,7 +246,7 @@ function Map:__tostring ()
 end
 
 -- the Set class --------------------
-class(Map,nil,Set)
+class.class(Map,nil,Set)
 
 local function makeset (t)
     return setmetatable(t,Set)
@@ -291,7 +287,7 @@ Set.values = Map.keys
 -- @param ... extra arguments to pass to the function.
 -- @return a new set
 function Set:map (fn,...)
-    fn = utils.function_arg(fn)
+    fn = utils.function_arg(1,fn)
     local res = {}
     for k in pairs(self) do
         res[fn(k,...)] = true
@@ -355,5 +351,4 @@ function Set:isdisjoint (set)
     return self:intersection(set):isempty()
 end
 
-
-return pl.class
+return class

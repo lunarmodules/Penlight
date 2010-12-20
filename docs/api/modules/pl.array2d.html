@@ -2,7 +2,7 @@
    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 <head>
-    <title>Reference</title>
+    <title>pl.array2d: Module Index</title>
     <link rel="stylesheet" href="../luadoc.css" type="text/css" />
 	<!--meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/-->
 </head>
@@ -21,7 +21,7 @@
 <div id="navigation">
 
 
-<h1>LuaDoc</h1>
+<h2>LuaDoc</h2>
 <ul>
 	
 	<li><a href="../index.html">Index</a></li>
@@ -31,7 +31,7 @@
 
 <!-- Module list -->
 
-<h1>Modules</h1>
+<h2>Modules</h2>
 <ul>
 
 	<li>
@@ -70,6 +70,10 @@
 
 	<li>
 		<a href="../modules/pl.input.html">pl.input</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.lapp.html">pl.lapp</a>
 	</li>
 
 	<li>
@@ -143,7 +147,7 @@
 
 <div id="content">
 
-<h1>Module <code>pl.array2d</code></h1>
+<h1>Module "pl.array2d"</h1>
 
 <p>Operations on two-dimensional arrays.</p>
 
@@ -155,102 +159,102 @@
 <table class="function_list">
 
 	<tr>
-	<td class="name" nowrap><a href="#column">column</a>&nbsp;(a, key)</td>
+	<td class="name" nowrap><a href="#array2d.column">array2d.column</a>&nbsp;(a, key)</td>
 	<td class="summary">extract a column from the 2D array.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#extract_cols">extract_cols</a>&nbsp;(t, cidx, a)</td>
+	<td class="name" nowrap><a href="#array2d.extract_cols">array2d.extract_cols</a>&nbsp;(t, cidx, a)</td>
 	<td class="summary">extract the specified columns.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#extract_rows">extract_rows</a>&nbsp;(t, ridx, a)</td>
+	<td class="name" nowrap><a href="#array2d.extract_rows">array2d.extract_rows</a>&nbsp;(t, ridx, a)</td>
 	<td class="summary">extract the specified rows.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#forall">forall</a>&nbsp;(t, row_op, end_row_op, i1, j1, i2, j2, a)</td>
+	<td class="name" nowrap><a href="#array2d.forall">array2d.forall</a>&nbsp;(t, row_op, end_row_op, i1, j1, i2, j2, a)</td>
 	<td class="summary">perform an operation for all values in a 2D array.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#iter">iter</a>&nbsp;(a, indices, i1, j1, i2, j2)</td>
+	<td class="name" nowrap><a href="#array2d.iter">array2d.iter</a>&nbsp;(a, indices, i1, j1, i2, j2)</td>
 	<td class="summary">iterate over all elements in a 2D array, with optional indices.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#map">map</a>&nbsp;(f, a, arg)</td>
+	<td class="name" nowrap><a href="#array2d.map">array2d.map</a>&nbsp;(f, a, arg)</td>
 	<td class="summary">map a function over a 2D array </td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#map2">map2</a>&nbsp;(f, ad, bd, a, b, arg)</td>
+	<td class="name" nowrap><a href="#array2d.map2">array2d.map2</a>&nbsp;(f, ad, bd, a, b, arg)</td>
 	<td class="summary">map a function over two arrays.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#parse_range">parse_range</a>&nbsp;(s)</td>
+	<td class="name" nowrap><a href="#array2d.parse_range">array2d.parse_range</a>&nbsp;(s)</td>
 	<td class="summary">parse a spreadsheet range.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#product">product</a>&nbsp;(f, t1, t2)</td>
+	<td class="name" nowrap><a href="#array2d.product">array2d.product</a>&nbsp;(f, t1, t2)</td>
 	<td class="summary">cartesian product of two 1d arrays.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#range">range</a>&nbsp;(t, rstr)</td>
-	<td class="summary">get a slice of a 2D array using spreadsheet range notation (see <a href="#parse_range">parse_range</a>).</td>
+	<td class="name" nowrap><a href="#array2d.range">array2d.range</a>&nbsp;(t, rstr)</td>
+	<td class="summary">get a slice of a 2D array using spreadsheet range notation (see <a href="#array2d.parse_range">parse_range</a>).</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#reduce2">reduce2</a>&nbsp;(opc, opr, a)</td>
+	<td class="name" nowrap><a href="#array2d.reduce2">array2d.reduce2</a>&nbsp;(opc, opr, a)</td>
 	<td class="summary">reduce a 2D array into a scalar, using two operations.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#reduce_cols">reduce_cols</a>&nbsp;(f, a)</td>
+	<td class="name" nowrap><a href="#array2d.reduce_cols">array2d.reduce_cols</a>&nbsp;(f, a)</td>
 	<td class="summary">reduce the columns using a function.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#reduce_rows">reduce_rows</a>&nbsp;(f, a)</td>
+	<td class="name" nowrap><a href="#array2d.reduce_rows">array2d.reduce_rows</a>&nbsp;(f, a)</td>
 	<td class="summary">reduce the rows using a function.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#remove_col">remove_col</a>&nbsp;(t, j)</td>
+	<td class="name" nowrap><a href="#array2d.remove_col">array2d.remove_col</a>&nbsp;(t, j)</td>
 	<td class="summary">remove a column from an array.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#remove_row">remove_row</a>&nbsp;(t, i)</td>
+	<td class="name" nowrap><a href="#array2d.remove_row">array2d.remove_row</a>&nbsp;(t, i)</td>
 	<td class="summary">remove a row from an array.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#set">set</a>&nbsp;(t, value, i1, j1, i2, j2)</td>
+	<td class="name" nowrap><a href="#array2d.set">array2d.set</a>&nbsp;(t, value, i1, j1, i2, j2)</td>
 	<td class="summary">set a specified range of an array to a value.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#slice">slice</a>&nbsp;(t, i1, j1, i2, j2)</td>
+	<td class="name" nowrap><a href="#array2d.slice">array2d.slice</a>&nbsp;(t, i1, j1, i2, j2)</td>
 	<td class="summary">get a slice of a 2D array.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#swap_cols">swap_cols</a>&nbsp;(t, j1, j2, i1, i2)</td>
+	<td class="name" nowrap><a href="#array2d.swap_cols">array2d.swap_cols</a>&nbsp;(t, j1, j2, i1, i2)</td>
 	<td class="summary">swap two columns of an array.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#swap_rows">swap_rows</a>&nbsp;(t, i1, i2)</td>
+	<td class="name" nowrap><a href="#array2d.swap_rows">array2d.swap_rows</a>&nbsp;(t, i1, i2)</td>
 	<td class="summary">swap two rows of an array.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#write">write</a>&nbsp;(t, f, fmt, i1, j1, i2, j2)</td>
+	<td class="name" nowrap><a href="#array2d.write">array2d.write</a>&nbsp;(t, f, fmt, i1, j1, i2, j2)</td>
 	<td class="summary">write a 2D array to a file.</td>
 	</tr>
 
@@ -271,12 +275,12 @@
 
 
 
-<dt><a name="column"></a><strong>column</strong>&nbsp;(a, key)</dt>
+<dt><a name="array2d.column"></a><strong>array2d.column</strong>&nbsp;(a, key)</dt>
 <dd>
 extract a column from the 2D array.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -294,6 +298,8 @@ extract a column from the 2D array.
 
 
 
+
+
 <h3>Return value:</h3>
 1d array
 
@@ -304,12 +310,12 @@ extract a column from the 2D array.
 
 
 
-<dt><a name="extract_cols"></a><strong>extract_cols</strong>&nbsp;(t, cidx, a)</dt>
+<dt><a name="array2d.extract_cols"></a><strong>array2d.extract_cols</strong>&nbsp;(t, cidx, a)</dt>
 <dd>
 extract the specified columns.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -333,17 +339,19 @@ extract the specified columns.
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="extract_rows"></a><strong>extract_rows</strong>&nbsp;(t, ridx, a)</dt>
+<dt><a name="array2d.extract_rows"></a><strong>array2d.extract_rows</strong>&nbsp;(t, ridx, a)</dt>
 <dd>
 extract the specified rows.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -367,17 +375,19 @@ extract the specified rows.
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="forall"></a><strong>forall</strong>&nbsp;(t, row_op, end_row_op, i1, j1, i2, j2, a)</dt>
+<dt><a name="array2d.forall"></a><strong>array2d.forall</strong>&nbsp;(t, row_op, end_row_op, i1, j1, i2, j2, a)</dt>
 <dd>
 perform an operation for all values in a 2D array.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -421,17 +431,19 @@ perform an operation for all values in a 2D array.
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="iter"></a><strong>iter</strong>&nbsp;(a, indices, i1, j1, i2, j2)</dt>
+<dt><a name="array2d.iter"></a><strong>array2d.iter</strong>&nbsp;(a, indices, i1, j1, i2, j2)</dt>
 <dd>
 iterate over all elements in a 2D array, with optional indices.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -465,6 +477,8 @@ iterate over all elements in a 2D array, with optional indices.
 
 
 
+
+
 <h3>Return value:</h3>
 either value or i,j,value depending on indices
 
@@ -475,12 +489,12 @@ either value or i,j,value depending on indices
 
 
 
-<dt><a name="map"></a><strong>map</strong>&nbsp;(f, a, arg)</dt>
+<dt><a name="array2d.map"></a><strong>array2d.map</strong>&nbsp;(f, a, arg)</dt>
 <dd>
 map a function over a 2D array
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -502,6 +516,8 @@ map a function over a 2D array
 
 
 
+
+
 <h3>Return value:</h3>
 2d array
 
@@ -512,12 +528,13 @@ map a function over a 2D array
 
 
 
-<dt><a name="map2"></a><strong>map2</strong>&nbsp;(f, ad, bd, a, b, arg)</dt>
+<dt><a name="array2d.map2"></a><strong>array2d.map2</strong>&nbsp;(f, ad, bd, a, b, arg)</dt>
 <dd>
-map a function over two arrays. They can be both or either 2D arrays
+map a function over two arrays.
+They can be both or either 2D arrays
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -551,6 +568,8 @@ map a function over two arrays. They can be both or either 2D arrays
 
 
 
+
+
 <h3>Return value:</h3>
 2D array, unless both arrays are 1D
 
@@ -561,12 +580,14 @@ map a function over two arrays. They can be both or either 2D arrays
 
 
 
-<dt><a name="parse_range"></a><strong>parse_range</strong>&nbsp;(s)</dt>
+<dt><a name="array2d.parse_range"></a><strong>array2d.parse_range</strong>&nbsp;(s)</dt>
 <dd>
-parse a spreadsheet range. The range can be specified either as 'A1:B2' or 'R1C1:R2C2'; a special case is a single element (e.g 'A1' or 'R1C1')
+parse a spreadsheet range.
+The range can be specified either as 'A1:B2' or 'R1C1:R2C2';
+a special case is a single element (e.g 'A1' or 'R1C1')
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -574,6 +595,8 @@ parse a spreadsheet range. The range can be specified either as 'A1:B2' or 'R1C1
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -600,12 +623,12 @@ parse a spreadsheet range. The range can be specified either as 'A1:B2' or 'R1C1
 
 
 
-<dt><a name="product"></a><strong>product</strong>&nbsp;(f, t1, t2)</dt>
+<dt><a name="array2d.product"></a><strong>array2d.product</strong>&nbsp;(f, t1, t2)</dt>
 <dd>
 cartesian product of two 1d arrays.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -627,6 +650,8 @@ cartesian product of two 1d arrays.
 
 
 
+
+
 <h3>Return value:</h3>
 2d table
 
@@ -637,12 +662,12 @@ cartesian product of two 1d arrays.
 
 
 
-<dt><a name="range"></a><strong>range</strong>&nbsp;(t, rstr)</dt>
+<dt><a name="array2d.range"></a><strong>array2d.range</strong>&nbsp;(t, rstr)</dt>
 <dd>
-get a slice of a 2D array using spreadsheet range notation (see <a href="#parse_range">parse_range</a>).
+get a slice of a 2D array using spreadsheet range notation (see <a href="#array2d.parse_range">parse_range</a>).
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -660,6 +685,8 @@ get a slice of a 2D array using spreadsheet range notation (see <a href="#parse_
 
 
 
+
+
 <h3>Return value:</h3>
 a slice
 
@@ -668,12 +695,12 @@ a slice
 <h3>See also:</h3>
 <ul>
 	
-	<li><a href="../modules/pl.array2d.html#parse_range">
-		parse_range
+	<li><a href="">
+		array2d.parse_range
 	</a>
 	
-	<li><a href="../modules/pl.array2d.html#slice">
-		slice
+	<li><a href="">
+		array2d.slice
 	</a>
 	
 </ul>
@@ -683,12 +710,12 @@ a slice
 
 
 
-<dt><a name="reduce2"></a><strong>reduce2</strong>&nbsp;(opc, opr, a)</dt>
+<dt><a name="array2d.reduce2"></a><strong>array2d.reduce2</strong>&nbsp;(opc, opr, a)</dt>
 <dd>
 reduce a 2D array into a scalar, using two operations.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -712,17 +739,19 @@ reduce a 2D array into a scalar, using two operations.
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="reduce_cols"></a><strong>reduce_cols</strong>&nbsp;(f, a)</dt>
+<dt><a name="array2d.reduce_cols"></a><strong>array2d.reduce_cols</strong>&nbsp;(f, a)</dt>
 <dd>
 reduce the columns using a function.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -740,6 +769,8 @@ reduce the columns using a function.
 
 
 
+
+
 <h3>Return value:</h3>
 1d array
 
@@ -748,7 +779,7 @@ reduce the columns using a function.
 <h3>See also:</h3>
 <ul>
 	
-	<li><a href="../modules/pl.tablex.html#reduce">
+	<li><a href="">
 		pl.tablex.reduce
 	</a>
 	
@@ -759,12 +790,12 @@ reduce the columns using a function.
 
 
 
-<dt><a name="reduce_rows"></a><strong>reduce_rows</strong>&nbsp;(f, a)</dt>
+<dt><a name="array2d.reduce_rows"></a><strong>array2d.reduce_rows</strong>&nbsp;(f, a)</dt>
 <dd>
 reduce the rows using a function.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -782,6 +813,8 @@ reduce the rows using a function.
 
 
 
+
+
 <h3>Return value:</h3>
 1d array
 
@@ -790,7 +823,7 @@ reduce the rows using a function.
 <h3>See also:</h3>
 <ul>
 	
-	<li><a href="../modules/pl.tablex.html#reduce">
+	<li><a href="">
 		pl.tablex.reduce
 	</a>
 	
@@ -801,12 +834,12 @@ reduce the rows using a function.
 
 
 
-<dt><a name="remove_col"></a><strong>remove_col</strong>&nbsp;(t, j)</dt>
+<dt><a name="array2d.remove_col"></a><strong>array2d.remove_col</strong>&nbsp;(t, j)</dt>
 <dd>
 remove a column from an array.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -826,17 +859,19 @@ remove a column from an array.
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="remove_row"></a><strong>remove_row</strong>&nbsp;(t, i)</dt>
+<dt><a name="array2d.remove_row"></a><strong>array2d.remove_row</strong>&nbsp;(t, i)</dt>
 <dd>
 remove a row from an array.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -856,17 +891,19 @@ remove a row from an array.
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="set"></a><strong>set</strong>&nbsp;(t, value, i1, j1, i2, j2)</dt>
+<dt><a name="array2d.set"></a><strong>array2d.set</strong>&nbsp;(t, value, i1, j1, i2, j2)</dt>
 <dd>
 set a specified range of an array to a value.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -902,17 +939,20 @@ set a specified range of an array to a value.
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="slice"></a><strong>slice</strong>&nbsp;(t, i1, j1, i2, j2)</dt>
+<dt><a name="array2d.slice"></a><strong>array2d.slice</strong>&nbsp;(t, i1, j1, i2, j2)</dt>
 <dd>
-get a slice of a 2D array. Note that if the specified range has a 1D result, the rank of the result will be 1.
+get a slice of a 2D array. Note that if the specified range has
+a 1D result, the rank of the result will be 1.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -942,6 +982,8 @@ get a slice of a 2D array. Note that if the specified range has a 1D result, the
 
 
 
+
+
 <h3>Return value:</h3>
 an array, 2D in general but 1D in special cases.
 
@@ -952,12 +994,12 @@ an array, 2D in general but 1D in special cases.
 
 
 
-<dt><a name="swap_cols"></a><strong>swap_cols</strong>&nbsp;(t, j1, j2, i1, i2)</dt>
+<dt><a name="array2d.swap_cols"></a><strong>array2d.swap_cols</strong>&nbsp;(t, j1, j2, i1, i2)</dt>
 <dd>
 swap two columns of an array.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -989,17 +1031,19 @@ swap two columns of an array.
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="swap_rows"></a><strong>swap_rows</strong>&nbsp;(t, i1, i2)</dt>
+<dt><a name="array2d.swap_rows"></a><strong>array2d.swap_rows</strong>&nbsp;(t, i1, i2)</dt>
 <dd>
 swap two rows of an array.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -1023,17 +1067,19 @@ swap two rows of an array.
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="write"></a><strong>write</strong>&nbsp;(t, f, fmt, i1, j1, i2, j2)</dt>
+<dt><a name="array2d.write"></a><strong>array2d.write</strong>&nbsp;(t, f, fmt, i1, j1, i2, j2)</dt>
 <dd>
 write a 2D array to a file.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -1065,6 +1111,8 @@ write a 2D array to a file.
 	</li>
 	
 </ul>
+
+
 
 
 

@@ -2,7 +2,7 @@
    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 <head>
-    <title>Reference</title>
+    <title>pl.lexer: Module Index</title>
     <link rel="stylesheet" href="../luadoc.css" type="text/css" />
 	<!--meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/-->
 </head>
@@ -21,7 +21,7 @@
 <div id="navigation">
 
 
-<h1>LuaDoc</h1>
+<h2>LuaDoc</h2>
 <ul>
 	
 	<li><a href="../index.html">Index</a></li>
@@ -31,7 +31,7 @@
 
 <!-- Module list -->
 
-<h1>Modules</h1>
+<h2>Modules</h2>
 <ul>
 
 	<li>
@@ -72,6 +72,10 @@
 
 	<li>
 		<a href="../modules/pl.input.html">pl.input</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.lapp.html">pl.lapp</a>
 	</li>
 
 	<li><strong>pl.lexer</strong></li>
@@ -143,9 +147,28 @@
 
 <div id="content">
 
-<h1>Module <code>pl.lexer</code></h1>
+<h1>Module "pl.lexer"</h1>
 
-<p>Lexical scanner for creating a sequence of tokens from text. <br> See the Guide for further <a href="../../index.html#lexer">discussion</a></p>
+<p>Lexical scanner for creating a sequence of tokens from text. <br>
+<p><code>lexer.scan(s)</code> returns an iterator over all tokens found in the
+string <code>s</code>. This iterator returns two values, a token type string
+(such as 'string' for quoted string, 'iden' for identifier) and the value of the
+token.
+<p>
+Versions specialized for Lua and C are available; these also handle block comments
+and classify keywords as 'keyword' tokens. For example:
+<pre class=example>
+> s = 'for i=1,n do'
+> for t,v in lexer.lua(s)  do print(t,v) end
+keyword for
+iden    i
+=       =
+number  1
+,       ,
+iden    n
+keyword do
+</pre>
+See the Guide for further <a href="../../index.html#lexer">discussion</a> <br></p>
 
 
 
@@ -155,52 +178,52 @@
 <table class="function_list">
 
 	<tr>
-	<td class="name" nowrap><a href="#cpp">cpp</a>&nbsp;(s, filter, options)</td>
+	<td class="name" nowrap><a href="#lexer.cpp">lexer.cpp</a>&nbsp;(s, filter, options)</td>
 	<td class="summary">create a C/C++ token iterator from a string.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#expecting">expecting</a>&nbsp;(tok, expected_type, no_skip_ws)</td>
+	<td class="name" nowrap><a href="#lexer.expecting">lexer.expecting</a>&nbsp;(tok, expected_type, no_skip_ws)</td>
 	<td class="summary">get the next token, which must be of the expected type.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#get_keywords">get_keywords</a>&nbsp;()</td>
+	<td class="name" nowrap><a href="#lexer.get_keywords">lexer.get_keywords</a>&nbsp;()</td>
 	<td class="summary">get the Lua keywords as a set-like table.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#get_separated_list">get_separated_list</a>&nbsp;(tok, endtoken, delim)</td>
+	<td class="name" nowrap><a href="#lexer.get_separated_list">lexer.get_separated_list</a>&nbsp;(tok, endtoken, delim)</td>
 	<td class="summary">get a list of parameters separated by a delimiter from a stream.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#getline">getline</a>&nbsp;(tok)</td>
+	<td class="name" nowrap><a href="#lexer.getline">lexer.getline</a>&nbsp;(tok)</td>
 	<td class="summary">get everything in a stream upto a newline.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#getrest">getrest</a>&nbsp;(tok)</td>
+	<td class="name" nowrap><a href="#lexer.getrest">lexer.getrest</a>&nbsp;(tok)</td>
 	<td class="summary">get the rest of the stream.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#insert">insert</a>&nbsp;(tok, a1, a2)</td>
+	<td class="name" nowrap><a href="#lexer.insert">lexer.insert</a>&nbsp;(tok, a1, a2)</td>
 	<td class="summary">insert tokens into a stream.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#lua">lua</a>&nbsp;(s, filter, options)</td>
+	<td class="name" nowrap><a href="#lexer.lua">lexer.lua</a>&nbsp;(s, filter, options)</td>
 	<td class="summary">create a Lua token iterator from a string.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#scan">scan</a>&nbsp;(s, matches, filter, options)</td>
+	<td class="name" nowrap><a href="#lexer.scan">lexer.scan</a>&nbsp;(s, matches, filter, options)</td>
 	<td class="summary">create a plain token iterator from a string.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#skipws">skipws</a>&nbsp;(tok)</td>
+	<td class="name" nowrap><a href="#lexer.skipws">lexer.skipws</a>&nbsp;(tok)</td>
 	<td class="summary">get the next non-space token from the stream.</td>
 	</tr>
 
@@ -221,12 +244,12 @@
 
 
 
-<dt><a name="cpp"></a><strong>cpp</strong>&nbsp;(s, filter, options)</dt>
+<dt><a name="lexer.cpp"></a><strong>lexer.cpp</strong>&nbsp;(s, filter, options)</dt>
 <dd>
 create a C/C++ token iterator from a string. Will return the token type type and value.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -238,10 +261,13 @@ create a C/C++ token iterator from a string. Will return the token type type and
 	</li>
 	
 	<li>
-	  options: a table of options; by default, {number=true,string=true}, which means convert numbers and strip string quotes.
+	  options: a table of options; by default, {number=true,string=true},
+which means convert numbers and strip string quotes.
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -255,12 +281,13 @@ create a C/C++ token iterator from a string. Will return the token type type and
 
 
 
-<dt><a name="expecting"></a><strong>expecting</strong>&nbsp;(tok, expected_type, no_skip_ws)</dt>
+<dt><a name="lexer.expecting"></a><strong>lexer.expecting</strong>&nbsp;(tok, expected_type, no_skip_ws)</dt>
 <dd>
-get the next token, which must be of the expected type. Throws an error if this type does not match!
+get the next token, which must be of the expected type.
+Throws an error if this type does not match!
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -284,14 +311,19 @@ get the next token, which must be of the expected type. Throws an error if this 
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="get_keywords"></a><strong>get_keywords</strong>&nbsp;()</dt>
+<dt><a name="lexer.get_keywords"></a><strong>lexer.get_keywords</strong>&nbsp;()</dt>
 <dd>
-get the Lua keywords as a set-like table. So <code>res["and"]</code> etc would be <code>true</code>.
+get the Lua keywords as a set-like table.
+So <code>res["and"]</code> etc would be <code>true</code>.
+
+
 
 
 
@@ -309,12 +341,12 @@ a table
 
 
 
-<dt><a name="get_separated_list"></a><strong>get_separated_list</strong>&nbsp;(tok, endtoken, delim)</dt>
+<dt><a name="lexer.get_separated_list"></a><strong>lexer.get_separated_list</strong>&nbsp;(tok, endtoken, delim)</dt>
 <dd>
 get a list of parameters separated by a delimiter from a stream.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -336,6 +368,8 @@ get a list of parameters separated by a delimiter from a stream.
 
 
 
+
+
 <h3>Return value:</h3>
 a list of token lists.
 
@@ -346,12 +380,12 @@ a list of token lists.
 
 
 
-<dt><a name="getline"></a><strong>getline</strong>&nbsp;(tok)</dt>
+<dt><a name="lexer.getline"></a><strong>lexer.getline</strong>&nbsp;(tok)</dt>
 <dd>
 get everything in a stream upto a newline.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -359,6 +393,8 @@ get everything in a stream upto a newline.
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -375,12 +411,12 @@ a string
 
 
 
-<dt><a name="getrest"></a><strong>getrest</strong>&nbsp;(tok)</dt>
+<dt><a name="lexer.getrest"></a><strong>lexer.getrest</strong>&nbsp;(tok)</dt>
 <dd>
 get the rest of the stream.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -388,6 +424,8 @@ get the rest of the stream.
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -404,12 +442,12 @@ a string
 
 
 
-<dt><a name="insert"></a><strong>insert</strong>&nbsp;(tok, a1, a2)</dt>
+<dt><a name="lexer.insert"></a><strong>lexer.insert</strong>&nbsp;(tok, a1, a2)</dt>
 <dd>
 insert tokens into a stream.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -417,7 +455,8 @@ insert tokens into a stream.
 	</li>
 	
 	<li>
-	  a1: a string is the type, a table is a token list and a function is assumed to be a token-like iterator (returns type & value)
+	  a1: a string is the type, a table is a token list and
+a function is assumed to be a token-like iterator (returns type & value)
 	</li>
 	
 	<li>
@@ -433,17 +472,19 @@ insert tokens into a stream.
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="lua"></a><strong>lua</strong>&nbsp;(s, filter, options)</dt>
+<dt><a name="lexer.lua"></a><strong>lexer.lua</strong>&nbsp;(s, filter, options)</dt>
 <dd>
 create a Lua token iterator from a string. Will return the token type and value.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -455,10 +496,13 @@ create a Lua token iterator from a string. Will return the token type and value.
 	</li>
 	
 	<li>
-	  options: a table of options; by default, {number=true,string=true}, which means convert numbers and strip string quotes.
+	  options: a table of options; by default, {number=true,string=true},
+which means convert numbers and strip string quotes.
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -472,12 +516,12 @@ create a Lua token iterator from a string. Will return the token type and value.
 
 
 
-<dt><a name="scan"></a><strong>scan</strong>&nbsp;(s, matches, filter, options)</dt>
+<dt><a name="lexer.scan"></a><strong>lexer.scan</strong>&nbsp;(s, matches, filter, options)</dt>
 <dd>
 create a plain token iterator from a string.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -493,10 +537,13 @@ create a plain token iterator from a string.
 	</li>
 	
 	<li>
-	  options: a table of options; by default, {number=true,string=true}, which means convert numbers and strip string quotes.
+	  options: a table of options; by default, {number=true,string=true},
+which means convert numbers and strip string quotes.
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -510,12 +557,12 @@ create a plain token iterator from a string.
 
 
 
-<dt><a name="skipws"></a><strong>skipws</strong>&nbsp;(tok)</dt>
+<dt><a name="lexer.skipws"></a><strong>lexer.skipws</strong>&nbsp;(tok)</dt>
 <dd>
 get the next non-space token from the stream.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -523,6 +570,8 @@ get the next non-space token from the stream.
 	</li>
 	
 </ul>
+
+
 
 
 

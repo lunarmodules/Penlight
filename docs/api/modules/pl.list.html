@@ -2,7 +2,7 @@
    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 <head>
-    <title>Reference</title>
+    <title>pl.list: Module Index</title>
     <link rel="stylesheet" href="../luadoc.css" type="text/css" />
 	<!--meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/-->
 </head>
@@ -21,7 +21,7 @@
 <div id="navigation">
 
 
-<h1>LuaDoc</h1>
+<h2>LuaDoc</h2>
 <ul>
 	
 	<li><a href="../index.html">Index</a></li>
@@ -31,7 +31,7 @@
 
 <!-- Module list -->
 
-<h1>Modules</h1>
+<h2>Modules</h2>
 <ul>
 
 	<li>
@@ -72,6 +72,10 @@
 
 	<li>
 		<a href="../modules/pl.input.html">pl.input</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.lapp.html">pl.lapp</a>
 	</li>
 
 	<li>
@@ -143,9 +147,25 @@
 
 <div id="content">
 
-<h1>Module <code>pl.list</code></h1>
+<h1>Module "pl.list"</h1>
 
-<p>Python-style list class. Based on original code by Nick Trout. <br /><br /> <b>Please Note</b>: methods that change the list will return the list. This is to allow for method chaining, but please note that <tt>ls = ls:sort()</tt> does not mean that a new copy of the list is made. In-place (mutable) methods are marked as returning 'the list' in this documentation. <br /><br /> See the Guide for further <a href="../../index.html#list">discussion</a> <br /><br /> See <a href="http://www.python.org/doc/current/tut/tut.html">http://www.python.org/doc/current/tut/tut.html</a>, section 5.1 <br /><br /> <b>Note</b>: The comments before some of the functions are from the Python docs and contain Python code. <br /><br /> Written for Lua version 4.0 <br /> Redone for Lua 5.1, Steve Donovan.</p>
+<p>Python-style list class. <p>
+Based on original code by Nick Trout.
+<p>
+<b>Please Note</b>: methods that change the list will return the list.
+This is to allow for method chaining, but please note that <tt>ls = ls:sort()</tt>
+does not mean that a new copy of the list is made. In-place (mutable) methods
+are marked as returning 'the list' in this documentation.
+<p>
+See the Guide for further <a href="../../index.html#list">discussion</a>
+<p>
+See <a href="http://www.python.org/doc/current/tut/tut.html">http://www.python.org/doc/current/tut/tut.html</a>, section 5.1
+<p>
+<b>Note</b>: The comments before some of the functions are from the Python docs
+and contain Python code.
+<p>
+Written for Lua version 4.0 <br />
+Redone for Lua 5.1, Steve Donovan.</p>
 
 
 
@@ -245,8 +265,9 @@
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#List:join">List:join</a>&nbsp;(delim)</td>
-	<td class="summary">join the elements of a list using a delimiter.<br> This method uses tostring on all elements.</td>
+	<td class="name" nowrap><a href="#List:join">List:join</a>&nbsp;(delim, v2s)</td>
+	<td class="summary">join the elements of a list using a delimiter.<br>
+This method uses tostring on all elements.</td>
 	</tr>
 
 	<tr>
@@ -326,7 +347,8 @@
 
 	<tr>
 	<td class="name" nowrap><a href="#List:splice">List:splice</a>&nbsp;(idx, list)</td>
-	<td class="summary">Insert a sublist into a list equivalent to 's[idx:idx] = list' in Python </td>
+	<td class="summary">Insert a sublist into a list
+equivalent to 's[idx:idx] = list' in Python </td>
 	</tr>
 
 	<tr>
@@ -358,10 +380,11 @@
 
 <dt><a name="List.range"></a><strong>List.range</strong>&nbsp;(start, finish)</dt>
 <dd>
-Emulate Python's range(x) function. Include it in List table for tidiness
+Emulate Python's range(x) function.
+Include it in List table for tidiness
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -384,6 +407,8 @@ List.range(0,3) == List {0,1,2,3}
 
 
 
+
+
 </dd>
 
 
@@ -394,7 +419,7 @@ List.range(0,3) == List {0,1,2,3}
 split a string using a delimiter.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -412,6 +437,8 @@ split a string using a delimiter.
 
 
 
+
+
 <h3>Return value:</h3>
 a List of strings
 
@@ -420,7 +447,7 @@ a List of strings
 <h3>See also:</h3>
 <ul>
 	
-	<li><a href="../modules/pl.utils.html#split">
+	<li><a href="">
 		pl.utils.split
 	</a>
 	
@@ -446,6 +473,8 @@ for v in ls do print(v) end
 
 
 
+
+
 </dd>
 
 
@@ -456,7 +485,7 @@ for v in ls do print(v) end
 concatenation operator .. .
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -464,6 +493,8 @@ concatenation operator .. .
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -485,7 +516,7 @@ a new list consisting of the list with the elements of the new list appended
 equality operator ==.  True iff all elements of two lists are equal.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -493,6 +524,8 @@ equality operator ==.  True iff all elements of two lists are equal.
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -521,6 +554,8 @@ how our list should be rendered as a string. Uses join().
 
 
 
+
+
 <h3>See also:</h3>
 <ul>
 	
@@ -540,7 +575,7 @@ how our list should be rendered as a string. Uses join().
 Add an item to the end of the list.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -548,6 +583,8 @@ Add an item to the end of the list.
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -566,10 +603,11 @@ the list
 
 <dt><a name="List:chop"></a><strong>List:chop</strong>&nbsp;(i1, i2)</dt>
 <dd>
-Remove a subrange of elements. equivalent to 'del s[i1:i2]' in Python.
+Remove a subrange of elements.
+equivalent to 'del s[i1:i2]' in Python.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -581,6 +619,8 @@ Remove a subrange of elements. equivalent to 'del s[i1:i2]' in Python.
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -607,6 +647,8 @@ empty the list.
 
 
 
+
+
 <h3>Return value:</h3>
 the list
 
@@ -619,10 +661,11 @@ the list
 
 <dt><a name="List:concat"></a><strong>List:concat</strong>&nbsp;(delim)</dt>
 <dd>
-join a list of strings. <br> Uses table.concat directly.
+join a list of strings. <br>
+Uses table.concat directly.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -630,6 +673,8 @@ join a list of strings. <br> Uses table.concat directly.
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -651,7 +696,7 @@ a string
 does this list contain the value?.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -659,6 +704,8 @@ does this list contain the value?.
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -680,7 +727,7 @@ true or false
 Return the number of times value appears in the list.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -688,6 +735,8 @@ Return the number of times value appears in the list.
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -706,10 +755,11 @@ number of times x appears
 
 <dt><a name="List:extend"></a><strong>List:extend</strong>&nbsp;(L)</dt>
 <dd>
-Extend the list by appending all the items in the given list. equivalent to 'a[len(a):] = L'.
+Extend the list by appending all the items in the given list.
+equivalent to 'a[len(a):] = L'.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -717,6 +767,8 @@ Extend the list by appending all the items in the given list. equivalent to 'a[l
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -738,7 +790,7 @@ the list
 create a list of all elements which match a function.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -760,6 +812,8 @@ create a list of all elements which match a function.
 
 
 
+
+
 <h3>Return value:</h3>
 a new filtered list.
 
@@ -775,7 +829,7 @@ a new filtered list.
 call the function for each element of the list.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -795,6 +849,8 @@ call the function for each element of the list.
 
 
 
+
+
 </dd>
 
 
@@ -802,10 +858,11 @@ call the function for each element of the list.
 
 <dt><a name="List:index"></a><strong>List:index</strong>&nbsp;(x, idx)</dt>
 <dd>
-Return the index in the list of the first item whose value is given. Return nil if there is no such item.
+Return the index in the list of the first item whose value is given.
+Return nil if there is no such item.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -817,6 +874,8 @@ Return the index in the list of the first item whose value is given. Return nil 
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -835,10 +894,11 @@ the index, or nil if not found.
 
 <dt><a name="List:insert"></a><strong>List:insert</strong>&nbsp;(i, x)</dt>
 <dd>
-Insert an item at a given position. i is the index of the element before which to insert.
+Insert an item at a given position. i is the index of the
+element before which to insert.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -850,6 +910,8 @@ Insert an item at a given position. i is the index of the element before which t
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -878,24 +940,33 @@ return an iterator over all values.
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="List:join"></a><strong>List:join</strong>&nbsp;(delim)</dt>
+<dt><a name="List:join"></a><strong>List:join</strong>&nbsp;(delim, v2s)</dt>
 <dd>
-join the elements of a list using a delimiter.<br> This method uses tostring on all elements.
+join the elements of a list using a delimiter.<br>
+This method uses tostring on all elements.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
 	  delim: a delimiter string, can be empty.
 	</li>
 	
+	<li>
+	  v2s: 
+	</li>
+	
 </ul>
+
+
 
 
 
@@ -924,6 +995,8 @@ list:len() is the same as #list.
 
 
 
+
+
 </dd>
 
 
@@ -931,10 +1004,11 @@ list:len() is the same as #list.
 
 <dt><a name="List:map"></a><strong>List:map</strong>&nbsp;(fun, ..., arg1)</dt>
 <dd>
-apply a function to all elements. Any extra arguments will be passed to the function
+apply a function to all elements.
+Any extra arguments will be passed to the function
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -956,6 +1030,8 @@ apply a function to all elements. Any extra arguments will be passed to the func
 
 
 
+
+
 <h3>Return value:</h3>
 a new list: {f(x) for x in self}
 
@@ -964,7 +1040,7 @@ a new list: {f(x) for x in self}
 <h3>See also:</h3>
 <ul>
 	
-	<li><a href="../modules/pl.tablex.html#imap">
+	<li><a href="">
 		pl.tablex.imap
 	</a>
 	
@@ -977,10 +1053,11 @@ a new list: {f(x) for x in self}
 
 <dt><a name="List:map2"></a><strong>List:map2</strong>&nbsp;(fun, ls, ...)</dt>
 <dd>
-apply a function to elements of two lists. Any extra arguments will be passed to the function
+apply a function to elements of two lists.
+Any extra arguments will be passed to the function
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -1002,6 +1079,8 @@ apply a function to elements of two lists. Any extra arguments will be passed to
 
 
 
+
+
 <h3>Return value:</h3>
 a new list: {f(x,y) for x in self, for x in arg1}
 
@@ -1010,7 +1089,7 @@ a new list: {f(x,y) for x in self, for x in arg1}
 <h3>See also:</h3>
 <ul>
 	
-	<li><a href="../modules/pl.tablex.html#imap2">
+	<li><a href="">
 		pl.tablex.imap2
 	</a>
 	
@@ -1023,10 +1102,11 @@ a new list: {f(x,y) for x in self, for x in arg1}
 
 <dt><a name="List:mapm"></a><strong>List:mapm</strong>&nbsp;(name, ...)</dt>
 <dd>
-apply a named meethod to all elements. Any extra arguments will be passed to the method.
+apply a named meethod to all elements.
+Any extra arguments will be passed to the method.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -1044,6 +1124,8 @@ apply a named meethod to all elements. Any extra arguments will be passed to the
 
 
 
+
+
 <h3>Return value:</h3>
 a new list of the results
 
@@ -1052,7 +1134,7 @@ a new list of the results
 <h3>See also:</h3>
 <ul>
 	
-	<li><a href="../modules/pl.seq.html#mapmethod">
+	<li><a href="">
 		pl.seq.mapmethod
 	</a>
 	
@@ -1065,10 +1147,12 @@ a new list of the results
 
 <dt><a name="List:new"></a><strong>List:new</strong>&nbsp;(t)</dt>
 <dd>
-Create a new list. Can optionally pass a table; passing another instance of List will cause a copy to be created we pass anything which isn't a simple table to iter() to work out
+Create a new list. Can optionally pass a table;
+passing another instance of List will cause a copy to be created
+we pass anything which isn't a simple table to iter() to work out
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -1082,6 +1166,8 @@ Create a new list. Can optionally pass a table; passing another instance of List
 
 <h3>Usage:</h3>
 ls = List();  ls = List {1,2,3,4}
+
+
 
 
 
@@ -1106,10 +1192,11 @@ a new List
 
 <dt><a name="List:partition"></a><strong>List:partition</strong>&nbsp;(fun, ...)</dt>
 <dd>
-partition a list using a classifier function. The function may return nil, but this will be converted to the string key '<nil>'.
+partition a list using a classifier function.
+The function may return nil, but this will be converted to the string key '<nil>'.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -1127,8 +1214,11 @@ partition a list using a classifier function. The function may return nil, but t
 
 
 
+
+
 <h3>Return value:</h3>
-a table where the keys are the returned values, and the values are Lists of values where the function returned that key. It is given the type of Multimap.
+a table where the keys are the returned values, and the values are Lists
+of values where the function returned that key. It is given the type of Multimap.
 
 
 
@@ -1148,10 +1238,12 @@ a table where the keys are the returned values, and the values are Lists of valu
 
 <dt><a name="List:pop"></a><strong>List:pop</strong>&nbsp;(i)</dt>
 <dd>
-Remove the item at the given position in the list, and return it. If no index is specified, a:pop() returns the last item in the list. The item is also removed from the list.
+Remove the item at the given position in the list, and return it.
+If no index is specified, a:pop() returns the last item in the list.
+The item is also removed from the list.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -1159,6 +1251,8 @@ Remove the item at the given position in the list, and return it. If no index is
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -1180,7 +1274,7 @@ the item
 Insert an item at the begining of the list.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -1188,6 +1282,8 @@ Insert an item at the begining of the list.
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -1209,7 +1305,7 @@ the list
 'reduce' a list using a binary function.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -1217,6 +1313,8 @@ the list
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -1231,7 +1329,7 @@ result of the function
 <h3>See also:</h3>
 <ul>
 	
-	<li><a href="../modules/pl.tablex.html#reduce">
+	<li><a href="">
 		pl.tablex.reduce
 	</a>
 	
@@ -1244,10 +1342,11 @@ result of the function
 
 <dt><a name="List:remove"></a><strong>List:remove</strong>&nbsp;(i)</dt>
 <dd>
-Remove an element given its index. (equivalent of Python's del s[i])
+Remove an element given its index.
+(equivalent of Python's del s[i])
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -1255,6 +1354,8 @@ Remove an element given its index. (equivalent of Python's del s[i])
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -1273,10 +1374,13 @@ the list
 
 <dt><a name="List:remove_value"></a><strong>List:remove_value</strong>&nbsp;(x)</dt>
 <dd>
-Remove the first item from the list whose value is given. (This is called 'remove' in Python; renamed to avoid confusion with table.remove) Return nil if there is no such item.
+Remove the first item from the list whose value is given.
+(This is called 'remove' in Python; renamed to avoid confusion
+with table.remove)
+Return nil if there is no such item.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -1284,6 +1388,8 @@ Remove the first item from the list whose value is given. (This is called 'remov
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -1310,6 +1416,8 @@ Reverse the elements of the list, in place.
 
 
 
+
+
 <h3>Return value:</h3>
 the list
 
@@ -1322,10 +1430,13 @@ the list
 
 <dt><a name="List:slice"></a><strong>List:slice</strong>&nbsp;(first, last)</dt>
 <dd>
-Emulate list slicing.  like  'list[first:last]' in Python. If first or last are negative then they are relative to the end of the list eg. slice(-2) gives last 2 entries in a list, and slice(-4,-2) gives from -4th to -2nd
+Emulate list slicing.  like  'list[first:last]' in Python.
+If first or last are negative then they are relative to the end of the list
+eg. slice(-2) gives last 2 entries in a list, and
+slice(-4,-2) gives from -4th to -2nd
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -1337,6 +1448,8 @@ Emulate list slicing.  like  'list[first:last]' in Python. If first or last are 
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -1358,7 +1471,7 @@ a new List
 general slice assignment s[i1:i2] = seq.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -1380,6 +1493,8 @@ general slice assignment s[i1:i2] = seq.
 
 
 
+
+
 <h3>Return value:</h3>
 the list
 
@@ -1395,7 +1510,7 @@ the list
 Sort the items of the list, in place.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -1403,6 +1518,8 @@ Sort the items of the list, in place.
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -1421,10 +1538,11 @@ the list
 
 <dt><a name="List:splice"></a><strong>List:splice</strong>&nbsp;(idx, list)</dt>
 <dd>
-Insert a sublist into a list equivalent to 's[idx:idx] = list' in Python
+Insert a sublist into a list
+equivalent to 's[idx:idx] = list' in Python
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -1441,7 +1559,9 @@ Insert a sublist into a list equivalent to 's[idx:idx] = list' in Python
 
 
 <h3>Usage:</h3>
-l = List{10,20}; l:splice(2,{21,22});  assert(l == List{10,21,22,20})
+ l = List{10,20}; l:splice(2,{21,22});  assert(l == List{10,21,22,20})
+
+
 
 
 
@@ -1457,10 +1577,11 @@ the list
 
 <dt><a name="List:transform"></a><strong>List:transform</strong>&nbsp;(fun, t, ...)</dt>
 <dd>
-apply a function to all elements, in-place. Any extra arguments are passed to the function.
+apply a function to all elements, in-place.
+Any extra arguments are passed to the function.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -1484,6 +1605,8 @@ apply a function to all elements, in-place. Any extra arguments are passed to th
 
 
 
+
+
 </dd>
 
 
@@ -1491,10 +1614,12 @@ apply a function to all elements, in-place. Any extra arguments are passed to th
 
 <dt><a name="iter"></a><strong>iter</strong>&nbsp;(seq)</dt>
 <dd>
-Create an iterator over a seqence. This captures the Python concept of 'sequence'. For tables, iterates over all values with integer indices.
+Create an iterator over a seqence.
+This captures the Python concept of 'sequence'.
+For tables, iterates over all values with integer indices.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -1506,7 +1631,7 @@ Create an iterator over a seqence. This captures the Python concept of 'sequence
 
 
 
-<h3>Usage</h3>
+<h3>Usage:</h3>
 <ul>
 	
 	<li>for x in iter {1,10,22,55} do io.write(x,',') end ==> 1,10,22,55
@@ -1514,6 +1639,8 @@ Create an iterator over a seqence. This captures the Python concept of 'sequence
 	<li>for ch in iter 'help' do do io.write(ch,' ') end ==> h e l p
 	
 </ul>
+
+
 
 
 

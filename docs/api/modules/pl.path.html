@@ -2,7 +2,7 @@
    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 <head>
-    <title>Reference</title>
+    <title>pl.path: Module Index</title>
     <link rel="stylesheet" href="../luadoc.css" type="text/css" />
 	<!--meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/-->
 </head>
@@ -21,7 +21,7 @@
 <div id="navigation">
 
 
-<h1>LuaDoc</h1>
+<h2>LuaDoc</h2>
 <ul>
 	
 	<li><a href="../index.html">Index</a></li>
@@ -31,7 +31,7 @@
 
 <!-- Module list -->
 
-<h1>Modules</h1>
+<h2>Modules</h2>
 <ul>
 
 	<li>
@@ -72,6 +72,10 @@
 
 	<li>
 		<a href="../modules/pl.input.html">pl.input</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.lapp.html">pl.lapp</a>
 	</li>
 
 	<li>
@@ -143,9 +147,10 @@
 
 <div id="content">
 
-<h1>Module <code>pl.path</code></h1>
+<h1>Module "pl.path"</h1>
 
-<p>path manipulation and file queries. <br> This is modelled after Python's os.path library (11.1)</p>
+<p>path manipulation and file queries. <br>
+This is modelled after Python's os.path library (11.1)</p>
 
 
 
@@ -155,102 +160,102 @@
 <table class="function_list">
 
 	<tr>
-	<td class="name" nowrap><a href="#abspath">abspath</a>&nbsp;(path)</td>
+	<td class="name" nowrap><a href="#path.abspath">path.abspath</a>&nbsp;(P, PP)</td>
 	<td class="summary">return an absolute path.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#basename">basename</a>&nbsp;(path)</td>
+	<td class="name" nowrap><a href="#path.basename">path.basename</a>&nbsp;(P)</td>
 	<td class="summary">return the file part of a path </td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#common_prefix">common_prefix</a>&nbsp;(path1, path2)</td>
+	<td class="name" nowrap><a href="#path.common_prefix">path.common_prefix</a>&nbsp;(path1, path2)</td>
 	<td class="summary">return the largest common prefix path of two paths.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#dirname">dirname</a>&nbsp;(path)</td>
+	<td class="name" nowrap><a href="#path.dirname">path.dirname</a>&nbsp;(P)</td>
 	<td class="summary">return the directory part of a path </td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#exists">exists</a>&nbsp;(path)</td>
+	<td class="name" nowrap><a href="#path.exists">path.exists</a>&nbsp;(P)</td>
 	<td class="summary">does a path exist?.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#expanduser">expanduser</a>&nbsp;(path)</td>
+	<td class="name" nowrap><a href="#path.expanduser">path.expanduser</a>&nbsp;(P)</td>
 	<td class="summary">Replace a starting '~' with the user's home directory.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#extension">extension</a>&nbsp;(path)</td>
+	<td class="name" nowrap><a href="#path.extension">path.extension</a>&nbsp;(P)</td>
 	<td class="summary">get the extension part of a path.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#getatime">getatime</a>&nbsp;(path)</td>
+	<td class="name" nowrap><a href="#path.getatime">path.getatime</a>&nbsp;(P)</td>
 	<td class="summary">Return the time of last access as the number of seconds since the epoch.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#getctime">getctime</a>&nbsp;(path)</td>
+	<td class="name" nowrap><a href="#path.getctime">path.getctime</a>&nbsp;(P)</td>
 	<td class="summary">Return the system's ctime.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#getmtime">getmtime</a>&nbsp;(path)</td>
+	<td class="name" nowrap><a href="#path.getmtime">path.getmtime</a>&nbsp;(P)</td>
 	<td class="summary">Return the time of last modification </td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#getsize">getsize</a>&nbsp;(path)</td>
+	<td class="name" nowrap><a href="#path.getsize">path.getsize</a>&nbsp;(P)</td>
 	<td class="summary">return size of a file.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#isabs">isabs</a>&nbsp;(path)</td>
+	<td class="name" nowrap><a href="#path.isabs">path.isabs</a>&nbsp;(P)</td>
 	<td class="summary">is this an absolute path?.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#isdir">isdir</a>&nbsp;(path)</td>
+	<td class="name" nowrap><a href="#path.isdir">path.isdir</a>&nbsp;(P)</td>
 	<td class="summary">is this a directory? </td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#isfile">isfile</a>&nbsp;(path)</td>
+	<td class="name" nowrap><a href="#path.isfile">path.isfile</a>&nbsp;(P)</td>
 	<td class="summary">is this a file?.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#join">join</a>&nbsp;(p1, p2)</td>
-	<td class="summary">return the path resulting from combining the two paths.</td>
+	<td class="name" nowrap><a href="#path.join">path.join</a>&nbsp;(p1, p2)</td>
+	<td class="summary">return the P resulting from combining the two paths.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#normcase">normcase</a>&nbsp;(path)</td>
+	<td class="name" nowrap><a href="#path.normcase">path.normcase</a>&nbsp;(P)</td>
 	<td class="summary">Normalize the case of a pathname.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#package_path">package_path</a>&nbsp;(mod)</td>
+	<td class="name" nowrap><a href="#path.package_path">path.package_path</a>&nbsp;(mod)</td>
 	<td class="summary">return the full path where a particular Lua module would be found.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#splitext">splitext</a>&nbsp;(path)</td>
+	<td class="name" nowrap><a href="#path.splitext">path.splitext</a>&nbsp;(P)</td>
 	<td class="summary">given a path, return the root part and the extension part.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#splitpath">splitpath</a>&nbsp;(path)</td>
+	<td class="name" nowrap><a href="#path.splitpath">path.splitpath</a>&nbsp;(P)</td>
 	<td class="summary">given a path, return the directory part and a file part.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#tmpname">tmpname</a>&nbsp;()</td>
+	<td class="name" nowrap><a href="#path.tmpname">path.tmpname</a>&nbsp;()</td>
 	<td class="summary">Return a suitable full path to a new temporary file name.</td>
 	</tr>
 
@@ -271,19 +276,25 @@
 
 
 
-<dt><a name="abspath"></a><strong>abspath</strong>&nbsp;(path)</dt>
+<dt><a name="path.abspath"></a><strong>path.abspath</strong>&nbsp;(P, PP)</dt>
 <dd>
 return an absolute path.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
-	  path: A file path
+	  P: 
+	</li>
+	
+	<li>
+	  PP: A A file path
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -297,19 +308,21 @@ return an absolute path.
 
 
 
-<dt><a name="basename"></a><strong>basename</strong>&nbsp;(path)</dt>
+<dt><a name="path.basename"></a><strong>path.basename</strong>&nbsp;(P)</dt>
 <dd>
 return the file part of a path
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
-	  path: A file path
+	  P: A file path
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -323,12 +336,12 @@ return the file part of a path
 
 
 
-<dt><a name="common_prefix"></a><strong>common_prefix</strong>&nbsp;(path1, path2)</dt>
+<dt><a name="path.common_prefix"></a><strong>path.common_prefix</strong>&nbsp;(path1, path2)</dt>
 <dd>
 return the largest common prefix path of two paths.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -348,24 +361,28 @@ return the largest common prefix path of two paths.
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="dirname"></a><strong>dirname</strong>&nbsp;(path)</dt>
+<dt><a name="path.dirname"></a><strong>path.dirname</strong>&nbsp;(P)</dt>
 <dd>
 return the directory part of a path
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
-	  path: A file path
+	  P: A file path
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -379,16 +396,16 @@ return the directory part of a path
 
 
 
-<dt><a name="exists"></a><strong>exists</strong>&nbsp;(path)</dt>
+<dt><a name="path.exists"></a><strong>path.exists</strong>&nbsp;(P)</dt>
 <dd>
 does a path exist?.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
-	  path: A file path
+	  P: A file path
 	</li>
 	
 </ul>
@@ -400,24 +417,33 @@ does a path exist?.
 
 
 
+<h3>Return value:</h3>
+the file path if it exists, nil otherwise
+
+
+
 </dd>
 
 
 
 
-<dt><a name="expanduser"></a><strong>expanduser</strong>&nbsp;(path)</dt>
+<dt><a name="path.expanduser"></a><strong>path.expanduser</strong>&nbsp;(P)</dt>
 <dd>
-Replace a starting '~' with the user's home directory. In windows, if HOME isn't set, then USERPROFILE is used in preference to HOMEDRIVE HOMEPATH. This is guaranteed to be writeable on all versions of Windows.
+Replace a starting '~' with the user's home directory.
+In windows, if HOME isn't set, then USERPROFILE is used in preference to
+HOMEDRIVE HOMEPATH. This is guaranteed to be writeable on all versions of Windows.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
-	  path: A file path
+	  P: A file path
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -431,19 +457,21 @@ Replace a starting '~' with the user's home directory. In windows, if HOME isn't
 
 
 
-<dt><a name="extension"></a><strong>extension</strong>&nbsp;(path)</dt>
+<dt><a name="path.extension"></a><strong>path.extension</strong>&nbsp;(P)</dt>
 <dd>
 get the extension part of a path.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
-	  path: A file path
+	  P: A file path
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -457,19 +485,21 @@ get the extension part of a path.
 
 
 
-<dt><a name="getatime"></a><strong>getatime</strong>&nbsp;(path)</dt>
+<dt><a name="path.getatime"></a><strong>path.getatime</strong>&nbsp;(P)</dt>
 <dd>
 Return the time of last access as the number of seconds since the epoch.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
-	  path: A file path
+	  P: A file path
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -483,19 +513,21 @@ Return the time of last access as the number of seconds since the epoch.
 
 
 
-<dt><a name="getctime"></a><strong>getctime</strong>&nbsp;(path)</dt>
+<dt><a name="path.getctime"></a><strong>path.getctime</strong>&nbsp;(P)</dt>
 <dd>
 Return the system's ctime.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
-	  path: A file path
+	  P: A file path
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -509,19 +541,21 @@ Return the system's ctime.
 
 
 
-<dt><a name="getmtime"></a><strong>getmtime</strong>&nbsp;(path)</dt>
+<dt><a name="path.getmtime"></a><strong>path.getmtime</strong>&nbsp;(P)</dt>
 <dd>
 Return the time of last modification
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
-	  path: A file path
+	  P: A file path
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -535,19 +569,21 @@ Return the time of last modification
 
 
 
-<dt><a name="getsize"></a><strong>getsize</strong>&nbsp;(path)</dt>
+<dt><a name="path.getsize"></a><strong>path.getsize</strong>&nbsp;(P)</dt>
 <dd>
 return size of a file.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
-	  path: A file path
+	  P: A file path
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -561,19 +597,21 @@ return size of a file.
 
 
 
-<dt><a name="isabs"></a><strong>isabs</strong>&nbsp;(path)</dt>
+<dt><a name="path.isabs"></a><strong>path.isabs</strong>&nbsp;(P)</dt>
 <dd>
 is this an absolute path?.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
-	  path: A file path
+	  P: A file path
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -587,19 +625,21 @@ is this an absolute path?.
 
 
 
-<dt><a name="isdir"></a><strong>isdir</strong>&nbsp;(path)</dt>
+<dt><a name="path.isdir"></a><strong>path.isdir</strong>&nbsp;(P)</dt>
 <dd>
 is this a directory?
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
-	  path: A file path
+	  P: A file path
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -613,19 +653,21 @@ is this a directory?
 
 
 
-<dt><a name="isfile"></a><strong>isfile</strong>&nbsp;(path)</dt>
+<dt><a name="path.isfile"></a><strong>path.isfile</strong>&nbsp;(P)</dt>
 <dd>
 is this a file?.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
-	  path: A file path
+	  P: A file path
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -639,12 +681,13 @@ is this a file?.
 
 
 
-<dt><a name="join"></a><strong>join</strong>&nbsp;(p1, p2)</dt>
+<dt><a name="path.join"></a><strong>path.join</strong>&nbsp;(p1, p2)</dt>
 <dd>
-return the path resulting from combining the two paths. if the second is already an absolute path, then it returns it.
+return the P resulting from combining the two paths.
+if the second is already an absolute path, then it returns it.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -664,21 +707,25 @@ return the path resulting from combining the two paths. if the second is already
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="normcase"></a><strong>normcase</strong>&nbsp;(path)</dt>
+<dt><a name="path.normcase"></a><strong>path.normcase</strong>&nbsp;(P)</dt>
 <dd>
-Normalize the case of a pathname. On Unix, this returns the path unchanged; for Windows, it converts the path to lowercase, and it also converts forward slashes to backward slashes. Will also replace '\dir\..\' by '\' (PL extension!)
+Normalize the case of a pathname. On Unix, this returns the path unchanged;
+ for Windows, it converts the path to lowercase, and it also converts forward slashes
+to backward slashes. Will also replace '\dir\..\' by '\' (PL extension!)
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
-	  path: A file path
+	  P: A file path
 	</li>
 	
 </ul>
@@ -690,17 +737,21 @@ Normalize the case of a pathname. On Unix, this returns the path unchanged; for 
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="package_path"></a><strong>package_path</strong>&nbsp;(mod)</dt>
+<dt><a name="path.package_path"></a><strong>path.package_path</strong>&nbsp;(mod)</dt>
 <dd>
-return the full path where a particular Lua module would be found. Both package.path and package.cpath is searched, so the result may either be a Lua file or a shared libarary.
+return the full path where a particular Lua module would be found.
+Both package.path and package.cpath is searched, so the result may
+either be a Lua file or a shared libarary.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -708,6 +759,8 @@ return the full path where a particular Lua module would be found. Both package.
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -730,19 +783,22 @@ return the full path where a particular Lua module would be found. Both package.
 
 
 
-<dt><a name="splitext"></a><strong>splitext</strong>&nbsp;(path)</dt>
+<dt><a name="path.splitext"></a><strong>path.splitext</strong>&nbsp;(P)</dt>
 <dd>
-given a path, return the root part and the extension part. if there's no extension part, the second value will be empty
+given a path, return the root part and the extension part.
+if there's no extension part, the second value will be empty
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
-	  path: A file path
+	  P: A file path
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -756,19 +812,22 @@ given a path, return the root part and the extension part. if there's no extensi
 
 
 
-<dt><a name="splitpath"></a><strong>splitpath</strong>&nbsp;(path)</dt>
+<dt><a name="path.splitpath"></a><strong>path.splitpath</strong>&nbsp;(P)</dt>
 <dd>
-given a path, return the directory part and a file part. if there's no directory part, the first value will be empty
+given a path, return the directory part and a file part.
+if there's no directory part, the first value will be empty
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
-	  path: A file path
+	  P: A file path
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -782,9 +841,12 @@ given a path, return the directory part and a file part. if there's no directory
 
 
 
-<dt><a name="tmpname"></a><strong>tmpname</strong>&nbsp;()</dt>
+<dt><a name="path.tmpname"></a><strong>path.tmpname</strong>&nbsp;()</dt>
 <dd>
-Return a suitable full path to a new temporary file name. unlike os.tmpnam(), it always gives you a writeable path (uses %TMP% on Windows)
+Return a suitable full path to a new temporary file name.
+unlike os.tmpnam(), it always gives you a writeable path (uses %TMP% on Windows)
+
+
 
 
 

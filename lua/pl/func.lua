@@ -1,11 +1,12 @@
------------------------------------------------------
 --- Functional helpers like composition,binding and placeholder expressions. <br>
 -- See <a href="../../index.html#func">the Guide</a>
+-- @class module
+-- @name pl.func
 local type,select,setmetatable,getmetatable,rawset = type,select,setmetatable,getmetatable,rawset
 local concat,append = table.concat,table.insert
 local max = math.max
 local print,tostring = print,tostring
-local pairs,getfenv,ipairs,loadstring,rawget,unpack  = pairs,getfenv,ipairs,loadstring,rawget,unpack
+local pairs,ipairs,loadstring,rawget,unpack  = pairs,ipairs,loadstring,rawget,unpack
 local _G = _G
 local utils = require 'pl.utils'
 local tablex = require 'pl.tablex'
@@ -13,9 +14,11 @@ local map = tablex.map
 local _DEBUG = rawget(_G,'_DEBUG')
 local assert_arg = utils.assert_arg
 
+--[[
 module ('pl.func',utils._module)
+]]
 
-local mod = _G.pl.func
+local func = {}
 
 -- metatable for Placeholder Expressions (PE)
 local _PEMT = {}
@@ -25,13 +28,13 @@ local function P (t)
     return t
 end
 
-mod.PE = P
+func.PE = P
 
 local function isPE (obj)
     return getmetatable(obj) == _PEMT
 end
 
-mod.isPE = isPE
+func.isPE = isPE
 
 -- construct a placeholder variable (e.g _1 and _2)
 local function PH (idx)
@@ -46,7 +49,7 @@ end
 _1,_2,_3,_4,_5 = PH(1),PH(2),PH(3),PH(4),PH(5)
 _0 = P{op='X',repr='...',index=0}
 
-function Var (name)
+function func.Var (name)
     local ls = utils.split(name,',')
     local res = {}
     for _,n in ipairs(ls) do
@@ -55,11 +58,11 @@ function Var (name)
     return unpack(res)
 end
 
-function _ (value)
+function func._ (value)
     return P{op='X',repr=value,index='wrap'}
 end
 
-Nil = Var 'nil'
+Nil = func.Var 'nil'
 
 function _PEMT.__index(obj,key)
     return P{op='[]',obj,key}
@@ -77,11 +80,11 @@ function _PEMT.__unm(arg)
     return P{op='-',arg}
 end
 
-function Not (arg)
+function func.Not (arg)
     return P{op='not',arg}
 end
 
-function Len (arg)
+function func.Len (arg)
     return P{op='#',arg}
 end
 
@@ -109,10 +112,10 @@ end
 -- placeholder expressions.
 -- @param tname a table name
 -- @param context context to put results, defaults to environment of caller
-function import(tname,context)
+function func.import(tname,context)
     assert_arg(1,tname,'string',is_global_table,'arg# 1: not a name of a global table')
     local t = _G[tname]
-    context = context or getfenv(2)
+    context = context or _G
     for name,fun in pairs(t) do
         import_name(name,fun,context)
         imported_functions[fun] = name
@@ -123,7 +126,7 @@ end
 -- @param fun a function
 -- @param an optional name
 -- @return a placeholder functiond
-function register (fun,name)
+function func.register (fun,name)
     assert_arg(1,fun,'function')
     if name then
         assert_arg(2,name,'string')
@@ -134,13 +137,13 @@ function register (fun,name)
     end
 end
 
-function lookup_imported_name (fun)
+function func.lookup_imported_name (fun)
     return imported_functions[fun]
 end
 
 local function _arg(...) return ... end
 
-function Args (...)
+function func.Args (...)
     return P{op='()',_arg,...}
 end
 
@@ -157,7 +160,7 @@ local operators = {
 }
 
 -- comparisons (as prefix functions)
-binreg (mod,{And='and',Or='or',Eq='==',Lt='<',Gt='>',Le='<=',Ge='>='})
+binreg (func,{And='and',Or='or',Eq='==',Lt='<',Gt='>',Le='<=',Ge='>='})
 
 -- standard binary operators (as metamethods)
 binreg (_PEMT,{__add='+',__sub='-',__mul='*',__div='/',__mod='%',__pow='^',__concat='..'})
@@ -166,7 +169,7 @@ binreg (_PEMT,{__eq='=='})
 
 --- all elements of a table except the first.
 -- @param ls a list-like table.
-function tail (ls)
+function func.tail (ls)
     assert_arg(1,ls,'table')
     local res = {}
     for i = 2,#ls do
@@ -177,7 +180,7 @@ end
 
 --- create a string representation of a placeholder expression.
 -- @param e a placeholder expression
-function repr (e,lastpred)
+function func.repr (e,lastpred)
     if isPE(e) then
         local pred = operators[e.op]
         local ls = map(repr,e,pred)
@@ -218,7 +221,7 @@ end
 
 -- collect all the non-PE values in this PE into vlist, and replace each occurence
 -- with a constant PH (_C1, etc). Return the maximum placeholder index found.
-function collect_values (e,vlist)
+function func.collect_values (e,vlist)
     if isPE(e) then
         if e.op ~= 'X' then
             local m = 0
@@ -252,10 +255,10 @@ end
 -- Finally, the expression can be compiled, and e.__PE_function is set.
 -- @param e a placeholder expression
 -- @return a function
-function instantiate (e)
+function func.instantiate (e)
     local consts,values,parms = {},{},{}
     local rep
-    local n = collect_values(e,values)
+    local n = func.collect_values(e,values)
     for i = 1,#values do
         append(consts,'_C'..i)
         if _DEBUG then print(i,values[i]) end
@@ -279,30 +282,30 @@ end
 --- instantiate a PE unless it has already been done.
 -- @param e a placeholder expression
 -- @return the function
-function I(e)
+function func.I(e)
     if rawget(e,'__PE_function')  then
         return e.__PE_function
-    else return instantiate(e)
+    else return func.instantiate(e)
     end
 end
 
-utils.add_function_factory(_PEMT,I)
+utils.add_function_factory(_PEMT,func.I)
 
 --- bind the first parameter of the function to a value.
 -- @class function
--- @name curry
+-- @name func.curry
 -- @param fn a function of one or more arguments
 -- @param p a value
 -- @return a function of one less argument
 -- @usage (curry(math.max,10))(20) == math.max(10,20)
-curry = utils.bind1
+func.curry = utils.bind1
 
 --- create a function which chains two functions.
 -- @param f a function of at least one argument
 -- @param g a function of at least one argument
 -- @return a function
 -- @usage printf = compose(io.write,string.format)
-function compose (f,g)
+function func.compose (f,g)
     return function(...) return f(g(...)) end
 end
 
@@ -313,11 +316,11 @@ end
 -- @return a function
 -- @usage (bind(f,_1,a))(b) == f(a,b)
 -- @usage (bind(f,_2,_1))(a,b) == f(b,a)
-function bind(fn,...)
-    local args,n = utils.args(...)
+function func.bind(fn,...)
+    local args = table.pack(...)
     local holders,parms,bvalues,values = {},{},{'fn'},{}
     local nv,maxplace,varargs = 1,0,false
-    for i = 1,n do
+    for i = 1,args.n do
         local a = args[i]
         if isPE(a) and a.op == 'X' then
             append(holders,a.repr)
@@ -349,5 +352,6 @@ end
     return res(fn,unpack(values))
 end
 
+return func
 
 

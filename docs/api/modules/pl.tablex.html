@@ -2,7 +2,7 @@
    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 <head>
-    <title>Reference</title>
+    <title>pl.tablex: Module Index</title>
     <link rel="stylesheet" href="../luadoc.css" type="text/css" />
 	<!--meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/-->
 </head>
@@ -21,7 +21,7 @@
 <div id="navigation">
 
 
-<h1>LuaDoc</h1>
+<h2>LuaDoc</h2>
 <ul>
 	
 	<li><a href="../index.html">Index</a></li>
@@ -31,7 +31,7 @@
 
 <!-- Module list -->
 
-<h1>Modules</h1>
+<h2>Modules</h2>
 <ul>
 
 	<li>
@@ -72,6 +72,10 @@
 
 	<li>
 		<a href="../modules/pl.input.html">pl.input</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.lapp.html">pl.lapp</a>
 	</li>
 
 	<li>
@@ -143,9 +147,9 @@
 
 <div id="content">
 
-<h1>Module <code>pl.tablex</code></h1>
+<h1>Module "pl.tablex"</h1>
 
-<p>Extended operations on Lua tables</p>
+<p>Extended operations on Lua tables.</p>
 
 
 
@@ -155,208 +159,209 @@
 <table class="function_list">
 
 	<tr>
-	<td class="name" nowrap><a href="#clear">clear</a>&nbsp;(t, istart)</td>
+	<td class="name" nowrap><a href="#tablex.clear">tablex.clear</a>&nbsp;(t, istart)</td>
 	<td class="summary">clear out the contents of a table.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#compare">compare</a>&nbsp;(t1, t2, cmp)</td>
+	<td class="name" nowrap><a href="#tablex.compare">tablex.compare</a>&nbsp;(t1, t2, cmp)</td>
 	<td class="summary">compare two list-like tables using a predicate.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#compare_no_order">compare_no_order</a>&nbsp;(t1, t2, cmp)</td>
+	<td class="name" nowrap><a href="#tablex.compare_no_order">tablex.compare_no_order</a>&nbsp;(t1, t2, cmp)</td>
 	<td class="summary">compare two list-like tables using an optional predicate, without regard for element order.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#copy">copy</a>&nbsp;(t)</td>
+	<td class="name" nowrap><a href="#tablex.copy">tablex.copy</a>&nbsp;(t)</td>
 	<td class="summary">make a shallow copy of a table </td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#count_map">count_map</a>&nbsp;(t, cmp)</td>
+	<td class="name" nowrap><a href="#tablex.count_map">tablex.count_map</a>&nbsp;(t, cmp)</td>
 	<td class="summary">A table where the key/values are the values and value counts of the table.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#deepcompare">deepcompare</a>&nbsp;(t1, t2, ignore_mt)</td>
+	<td class="name" nowrap><a href="#tablex.deepcompare">tablex.deepcompare</a>&nbsp;(t1, t2, ignore_mt)</td>
 	<td class="summary">compare two values.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#deepcopy">deepcopy</a>&nbsp;(t)</td>
+	<td class="name" nowrap><a href="#tablex.deepcopy">tablex.deepcopy</a>&nbsp;(t)</td>
 	<td class="summary">make a deep copy of a table, recursively copying all the keys and fields.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#difference">difference</a>&nbsp;(s1, s2, symm)</td>
+	<td class="name" nowrap><a href="#tablex.difference">tablex.difference</a>&nbsp;(s1, s2, symm)</td>
 	<td class="summary">a new table which is the difference of two tables.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#filter">filter</a>&nbsp;(t, pred, arg, optional)</td>
+	<td class="name" nowrap><a href="#tablex.filter">tablex.filter</a>&nbsp;(t, pred, arg, optional)</td>
 	<td class="summary">filter a table's values using a predicate function </td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#find">find</a>&nbsp;(t, val, idx)</td>
+	<td class="name" nowrap><a href="#tablex.find">tablex.find</a>&nbsp;(t, val, idx)</td>
 	<td class="summary">return the index of a value in a list.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#find_if">find_if</a>&nbsp;(t, cmp, arg)</td>
+	<td class="name" nowrap><a href="#tablex.find_if">tablex.find_if</a>&nbsp;(t, cmp, arg)</td>
 	<td class="summary">return the index (or key) of a value in a table using a comparison function.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#foreach">foreach</a>&nbsp;(t, fun, ...)</td>
+	<td class="name" nowrap><a href="#tablex.foreach">tablex.foreach</a>&nbsp;(t, fun, ...)</td>
 	<td class="summary">apply a function to all elements of a table.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#foreachi">foreachi</a>&nbsp;(t, fun, ...)</td>
+	<td class="name" nowrap><a href="#tablex.foreachi">tablex.foreachi</a>&nbsp;(t, fun, ...)</td>
 	<td class="summary">apply a function to all elements of a list-like table in order.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#icopy">icopy</a>&nbsp;(dest, src, idest, isrc, nsrc, n)</td>
+	<td class="name" nowrap><a href="#tablex.icopy">tablex.icopy</a>&nbsp;(dest, src, idest, isrc, nsrc, n)</td>
 	<td class="summary">copy an array into another one, resizing the destination if necessary.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#imap">imap</a>&nbsp;(fun, t, ...)</td>
+	<td class="name" nowrap><a href="#tablex.imap">tablex.imap</a>&nbsp;(fun, t, ...)</td>
 	<td class="summary">apply a function to all values of a list.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#imap2">imap2</a>&nbsp;(fun, t1, t2, ...)</td>
+	<td class="name" nowrap><a href="#tablex.imap2">tablex.imap2</a>&nbsp;(fun, t1, t2, ...)</td>
 	<td class="summary">apply a function to values from two arrays.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#index_by">index_by</a>&nbsp;(tbl, idx)</td>
+	<td class="name" nowrap><a href="#tablex.index_by">tablex.index_by</a>&nbsp;(tbl, idx)</td>
 	<td class="summary">return a list of all values in a table indexed by another list.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#index_map">index_map</a>&nbsp;(t)</td>
+	<td class="name" nowrap><a href="#tablex.index_map">tablex.index_map</a>&nbsp;(t)</td>
 	<td class="summary">create an index map from a list-like table.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#insertvalues">insertvalues</a>&nbsp;(t, ...)</td>
+	<td class="name" nowrap><a href="#tablex.insertvalues">tablex.insertvalues</a>&nbsp;(t, ...)</td>
 	<td class="summary">insert values into a table.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#keys">keys</a>&nbsp;(t)</td>
+	<td class="name" nowrap><a href="#tablex.keys">tablex.keys</a>&nbsp;(t)</td>
 	<td class="summary">return all the keys of a table in arbitrary order.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#makeset">makeset</a>&nbsp;(t)</td>
+	<td class="name" nowrap><a href="#tablex.makeset">tablex.makeset</a>&nbsp;(t)</td>
 	<td class="summary">create a set from a list-like table.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#map">map</a>&nbsp;(fun, t, ...)</td>
+	<td class="name" nowrap><a href="#tablex.map">tablex.map</a>&nbsp;(fun, t, ...)</td>
 	<td class="summary">apply a function to all values of a table.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#map2">map2</a>&nbsp;(fun, t1, t2, ...)</td>
+	<td class="name" nowrap><a href="#tablex.map2">tablex.map2</a>&nbsp;(fun, t1, t2, ...)</td>
 	<td class="summary">apply a function to values from two tables.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#map_named_method">map_named_method</a>&nbsp;(name, t, ...)</td>
+	<td class="name" nowrap><a href="#tablex.map_named_method">tablex.map_named_method</a>&nbsp;(name, t, ...)</td>
 	<td class="summary">apply a named method to values from a table.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#mapn">mapn</a>&nbsp;(fun, ...)</td>
+	<td class="name" nowrap><a href="#tablex.mapn">tablex.mapn</a>&nbsp;(fun, ...)</td>
 	<td class="summary">Apply a function to a number of tables.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#merge">merge</a>&nbsp;(t1, t2, dup)</td>
+	<td class="name" nowrap><a href="#tablex.merge">tablex.merge</a>&nbsp;(t1, t2, dup)</td>
 	<td class="summary">combine two tables, either as union or intersection.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#move">move</a>&nbsp;(dest, src, idest, isrc, nsrc, n)</td>
+	<td class="name" nowrap><a href="#tablex.move">tablex.move</a>&nbsp;(dest, src, idest, isrc, nsrc, n)</td>
 	<td class="summary">copy an array into another one.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#new">new</a>&nbsp;(n, val)</td>
+	<td class="name" nowrap><a href="#tablex.new">tablex.new</a>&nbsp;(n, val)</td>
 	<td class="summary">create a new array of specified size with initial value.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#pairmap">pairmap</a>&nbsp;(fun, t, ...)</td>
+	<td class="name" nowrap><a href="#tablex.pairmap">tablex.pairmap</a>&nbsp;(fun, t, ...)</td>
 	<td class="summary">call the function with the key and value pairs from a table.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#range">range</a>&nbsp;(start, finish, step)</td>
+	<td class="name" nowrap><a href="#tablex.range">tablex.range</a>&nbsp;(start, finish, step)</td>
 	<td class="summary">generate a table of all numbers in a range </td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#reduce">reduce</a>&nbsp;(fun, t)</td>
+	<td class="name" nowrap><a href="#tablex.reduce">tablex.reduce</a>&nbsp;(fun, t)</td>
 	<td class="summary">'reduce' a list using a binary function.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#removevalues">removevalues</a>&nbsp;(t, i1, i2)</td>
+	<td class="name" nowrap><a href="#tablex.removevalues">tablex.removevalues</a>&nbsp;(t, i1, i2)</td>
 	<td class="summary">remove a range of values from a table.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#rfind">rfind</a>&nbsp;(t, val, idx)</td>
+	<td class="name" nowrap><a href="#tablex.rfind">tablex.rfind</a>&nbsp;(t, val, idx)</td>
 	<td class="summary">return the index of a value in a list, searching from the end.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#search">search</a>&nbsp;(t, value, exclude)</td>
+	<td class="name" nowrap><a href="#tablex.search">tablex.search</a>&nbsp;(t, value, exclude)</td>
 	<td class="summary">find a value in a table by recursive search.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#set">set</a>&nbsp;(t, val, i1, i2)</td>
+	<td class="name" nowrap><a href="#tablex.set">tablex.set</a>&nbsp;(t, val, i1, i2)</td>
 	<td class="summary">set an array range to a value.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#size">size</a>&nbsp;(t)</td>
+	<td class="name" nowrap><a href="#tablex.size">tablex.size</a>&nbsp;(t)</td>
 	<td class="summary">total number of elements in this table.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#sub">sub</a>&nbsp;(t, first, last)</td>
+	<td class="name" nowrap><a href="#tablex.sub">tablex.sub</a>&nbsp;(t, first, last)</td>
 	<td class="summary">Extract a range from a table, like  'string.sub'.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#transform">transform</a>&nbsp;(fun, t, ...)</td>
+	<td class="name" nowrap><a href="#tablex.transform">tablex.transform</a>&nbsp;(fun, t, ...)</td>
 	<td class="summary">apply a function to all values of a table, in-place.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#update">update</a>&nbsp;(t1, t2)</td>
+	<td class="name" nowrap><a href="#tablex.update">tablex.update</a>&nbsp;(t1, t2)</td>
 	<td class="summary">copy a table into another, in-place.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#values">values</a>&nbsp;(t)</td>
+	<td class="name" nowrap><a href="#tablex.values">tablex.values</a>&nbsp;(t)</td>
 	<td class="summary">return all the values of the table in arbitrary order </td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#zip">zip</a>&nbsp;(...)</td>
-	<td class="summary">return a table where each element is a table of the ith values of an arbitrary number of tables.</td>
+	<td class="name" nowrap><a href="#tablex.zip">tablex.zip</a>&nbsp;(...)</td>
+	<td class="summary">return a table where each element is a table of the ith values of an arbitrary
+number of tables.</td>
 	</tr>
 
 </table>
@@ -376,12 +381,12 @@
 
 
 
-<dt><a name="clear"></a><strong>clear</strong>&nbsp;(t, istart)</dt>
+<dt><a name="tablex.clear"></a><strong>tablex.clear</strong>&nbsp;(t, istart)</dt>
 <dd>
 clear out the contents of a table.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -401,17 +406,19 @@ clear out the contents of a table.
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="compare"></a><strong>compare</strong>&nbsp;(t1, t2, cmp)</dt>
+<dt><a name="tablex.compare"></a><strong>tablex.compare</strong>&nbsp;(t1, t2, cmp)</dt>
 <dd>
 compare two list-like tables using a predicate.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -435,17 +442,19 @@ compare two list-like tables using a predicate.
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="compare_no_order"></a><strong>compare_no_order</strong>&nbsp;(t1, t2, cmp)</dt>
+<dt><a name="tablex.compare_no_order"></a><strong>tablex.compare_no_order</strong>&nbsp;(t1, t2, cmp)</dt>
 <dd>
 compare two list-like tables using an optional predicate, without regard for element order.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -469,17 +478,19 @@ compare two list-like tables using an optional predicate, without regard for ele
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="copy"></a><strong>copy</strong>&nbsp;(t)</dt>
+<dt><a name="tablex.copy"></a><strong>tablex.copy</strong>&nbsp;(t)</dt>
 <dd>
 make a shallow copy of a table
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -487,6 +498,8 @@ make a shallow copy of a table
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -503,12 +516,12 @@ new table
 
 
 
-<dt><a name="count_map"></a><strong>count_map</strong>&nbsp;(t, cmp)</dt>
+<dt><a name="tablex.count_map"></a><strong>tablex.count_map</strong>&nbsp;(t, cmp)</dt>
 <dd>
 A table where the key/values are the values and value counts of the table.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -526,6 +539,8 @@ A table where the key/values are the values and value counts of the table.
 
 
 
+
+
 <h3>Return value:</h3>
 a map-like table
 
@@ -534,8 +549,8 @@ a map-like table
 <h3>See also:</h3>
 <ul>
 	
-	<li><a href="../modules/pl.seq.html#count_map">
-		pl.seq.count_map
+	<li><a href="">
+		seq.count_map
 	</a>
 	
 </ul>
@@ -545,12 +560,13 @@ a map-like table
 
 
 
-<dt><a name="deepcompare"></a><strong>deepcompare</strong>&nbsp;(t1, t2, ignore_mt)</dt>
+<dt><a name="tablex.deepcompare"></a><strong>tablex.deepcompare</strong>&nbsp;(t1, t2, ignore_mt)</dt>
 <dd>
-compare two values. if they are tables, then compare their keys and fields recursively.
+compare two values.
+if they are tables, then compare their keys and fields recursively.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -572,6 +588,8 @@ compare two values. if they are tables, then compare their keys and fields recur
 
 
 
+
+
 <h3>Return value:</h3>
 true or false
 
@@ -582,12 +600,13 @@ true or false
 
 
 
-<dt><a name="deepcopy"></a><strong>deepcopy</strong>&nbsp;(t)</dt>
+<dt><a name="tablex.deepcopy"></a><strong>tablex.deepcopy</strong>&nbsp;(t)</dt>
 <dd>
-make a deep copy of a table, recursively copying all the keys and fields. This will also set the copied table's metatable to that of the original.
+make a deep copy of a table, recursively copying all the keys and fields.
+This will also set the copied table's metatable to that of the original.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -595,6 +614,8 @@ make a deep copy of a table, recursively copying all the keys and fields. This w
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -611,12 +632,14 @@ new table
 
 
 
-<dt><a name="difference"></a><strong>difference</strong>&nbsp;(s1, s2, symm)</dt>
+<dt><a name="tablex.difference"></a><strong>tablex.difference</strong>&nbsp;(s1, s2, symm)</dt>
 <dd>
-a new table which is the difference of two tables. With sets (where the values are all true) this is set difference and symmetric difference depending on the third parameter.
+a new table which is the difference of two tables.
+With sets (where the values are all true) this is set difference and
+symmetric difference depending on the third parameter.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -638,6 +661,8 @@ a new table which is the difference of two tables. With sets (where the values a
 
 
 
+
+
 <h3>Return value:</h3>
 a map-like table or set
 
@@ -648,12 +673,12 @@ a map-like table or set
 
 
 
-<dt><a name="filter"></a><strong>filter</strong>&nbsp;(t, pred, arg, optional)</dt>
+<dt><a name="tablex.filter"></a><strong>tablex.filter</strong>&nbsp;(t, pred, arg, optional)</dt>
 <dd>
 filter a table's values using a predicate function
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -681,17 +706,21 @@ filter a table's values using a predicate function
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="find"></a><strong>find</strong>&nbsp;(t, val, idx)</dt>
+<dt><a name="tablex.find"></a><strong>tablex.find</strong>&nbsp;(t, val, idx)</dt>
 <dd>
-return the index of a value in a list. Like string.find, there is an optional index to start searching, which can be negative.
+return the index of a value in a list.
+Like string.find, there is an optional index to start searching,
+which can be negative.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -711,7 +740,7 @@ return the index of a value in a list. Like string.find, there is an optional in
 
 
 
-<h3>Usage</h3>
+<h3>Usage:</h3>
 <ul>
 	
 	<li>find({10,20,30},20) == 2
@@ -719,6 +748,8 @@ return the index of a value in a list. Like string.find, there is an optional in
 	<li>find({'a','b','a','c'},'a',2) == 3
 	
 </ul>
+
+
 
 
 
@@ -732,12 +763,12 @@ index of value or nil if not found
 
 
 
-<dt><a name="find_if"></a><strong>find_if</strong>&nbsp;(t, cmp, arg)</dt>
+<dt><a name="tablex.find_if"></a><strong>tablex.find_if</strong>&nbsp;(t, cmp, arg)</dt>
 <dd>
 return the index (or key) of a value in a table using a comparison function.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -753,6 +784,8 @@ return the index (or key) of a value in a table using a comparison function.
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -775,12 +808,15 @@ return the index (or key) of a value in a table using a comparison function.
 
 
 
-<dt><a name="foreach"></a><strong>foreach</strong>&nbsp;(t, fun, ...)</dt>
+<dt><a name="tablex.foreach"></a><strong>tablex.foreach</strong>&nbsp;(t, fun, ...)</dt>
 <dd>
-apply a function to all elements of a table. The arguments to the function will be the value, the key and <i>finally</i> any extra arguments passed to this function. Note that the Lua 5.0 function table.foreach passed the <i>key</i> first.
+apply a function to all elements of a table.
+The arguments to the function will be the value,
+the key and <i>finally</i> any extra arguments passed to this function.
+Note that the Lua 5.0 function table.foreach passed the <i>key</i> first.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -804,17 +840,21 @@ apply a function to all elements of a table. The arguments to the function will 
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="foreachi"></a><strong>foreachi</strong>&nbsp;(t, fun, ...)</dt>
+<dt><a name="tablex.foreachi"></a><strong>tablex.foreachi</strong>&nbsp;(t, fun, ...)</dt>
 <dd>
-apply a function to all elements of a list-like table in order. The arguments to the function will be the value, the index and <i>finally</i> any extra arguments passed to this function
+apply a function to all elements of a list-like table in order.
+The arguments to the function will be the value,
+the index and <i>finally</i> any extra arguments passed to this function
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -838,17 +878,19 @@ apply a function to all elements of a list-like table in order. The arguments to
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="icopy"></a><strong>icopy</strong>&nbsp;(dest, src, idest, isrc, nsrc, n)</dt>
+<dt><a name="tablex.icopy"></a><strong>tablex.icopy</strong>&nbsp;(dest, src, idest, isrc, nsrc, n)</dt>
 <dd>
 copy an array into another one, resizing the destination if necessary. <br>
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -884,17 +926,21 @@ copy an array into another one, resizing the destination if necessary. <br>
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="imap"></a><strong>imap</strong>&nbsp;(fun, t, ...)</dt>
+<dt><a name="tablex.imap"></a><strong>tablex.imap</strong>&nbsp;(fun, t, ...)</dt>
 <dd>
-apply a function to all values of a list. This returns a table of the results. Any extra arguments are passed to the function.
+apply a function to all values of a list.
+This returns a table of the results.
+Any extra arguments are passed to the function.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -919,6 +965,8 @@ imap(function(v) return v*v end, {10,20,30,fred=2}) is {100,400,900}
 
 
 
+
+
 <h3>Return value:</h3>
 a list-like table
 
@@ -929,12 +977,12 @@ a list-like table
 
 
 
-<dt><a name="imap2"></a><strong>imap2</strong>&nbsp;(fun, t1, t2, ...)</dt>
+<dt><a name="tablex.imap2"></a><strong>tablex.imap2</strong>&nbsp;(fun, t1, t2, ...)</dt>
 <dd>
 apply a function to values from two arrays.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -965,17 +1013,19 @@ imap2('+',{1,2,3,m=4},{10,20,30,m=40}) is {11,22,23}
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="index_by"></a><strong>index_by</strong>&nbsp;(tbl, idx)</dt>
+<dt><a name="tablex.index_by"></a><strong>tablex.index_by</strong>&nbsp;(tbl, idx)</dt>
 <dd>
 return a list of all values in a table indexed by another list.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -991,7 +1041,7 @@ return a list of all values in a table indexed by another list.
 
 
 
-<h3>Usage</h3>
+<h3>Usage:</h3>
 <ul>
 	
 	<li>index_by({10,20,30,40},{2,4}) == {20,40}
@@ -999,6 +1049,8 @@ return a list of all values in a table indexed by another list.
 	<li>index_by({one=1,two=2,three=3},{'one','three'}) == {1,3}
 	
 </ul>
+
+
 
 
 
@@ -1012,12 +1064,13 @@ a list-like table
 
 
 
-<dt><a name="index_map"></a><strong>index_map</strong>&nbsp;(t)</dt>
+<dt><a name="tablex.index_map"></a><strong>tablex.index_map</strong>&nbsp;(t)</dt>
 <dd>
-create an index map from a list-like table. The original values become keys, and the associated values are the indices into the original list.
+create an index map from a list-like table. The original values become keys,
+and the associated values are the indices into the original list.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -1025,6 +1078,8 @@ create an index map from a list-like table. The original values become keys, and
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -1041,12 +1096,15 @@ a map-like table
 
 
 
-<dt><a name="insertvalues"></a><strong>insertvalues</strong>&nbsp;(t, ...)</dt>
+<dt><a name="tablex.insertvalues"></a><strong>tablex.insertvalues</strong>&nbsp;(t, ...)</dt>
 <dd>
-insert values into a table. <br> insertvalues(t, [pos,] values) <br> similar to table.insert but inserts values from given table "values", not the object itself, into table "t" at position "pos".
+insert values into a table. <br>
+insertvalues(t, [pos,] values) <br>
+similar to table.insert but inserts values from given table "values",
+not the object itself, into table "t" at position "pos".
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -1066,17 +1124,19 @@ insert values into a table. <br> insertvalues(t, [pos,] values) <br> similar to 
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="keys"></a><strong>keys</strong>&nbsp;(t)</dt>
+<dt><a name="tablex.keys"></a><strong>tablex.keys</strong>&nbsp;(t)</dt>
 <dd>
 return all the keys of a table in arbitrary order.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -1092,17 +1152,20 @@ return all the keys of a table in arbitrary order.
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="makeset"></a><strong>makeset</strong>&nbsp;(t)</dt>
+<dt><a name="tablex.makeset"></a><strong>tablex.makeset</strong>&nbsp;(t)</dt>
 <dd>
-create a set from a list-like table. A set is a table where the original values become keys, and the associated values are all true.
+create a set from a list-like table. A set is a table where the original values
+become keys, and the associated values are all true.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -1110,6 +1173,8 @@ create a set from a list-like table. A set is a table where the original values 
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -1126,12 +1191,14 @@ a set (a map-like table)
 
 
 
-<dt><a name="map"></a><strong>map</strong>&nbsp;(fun, t, ...)</dt>
+<dt><a name="tablex.map"></a><strong>tablex.map</strong>&nbsp;(fun, t, ...)</dt>
 <dd>
-apply a function to all values of a table. This returns a table of the results. Any extra arguments are passed to the function.
+apply a function to all values of a table.
+This returns a table of the results.
+Any extra arguments are passed to the function.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -1158,17 +1225,19 @@ map(function(v) return v*v end, {10,20,30,fred=2}) is {100,400,900,fred=4}
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="map2"></a><strong>map2</strong>&nbsp;(fun, t1, t2, ...)</dt>
+<dt><a name="tablex.map2"></a><strong>tablex.map2</strong>&nbsp;(fun, t1, t2, ...)</dt>
 <dd>
 apply a function to values from two tables.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -1197,6 +1266,8 @@ map2('+',{1,2,3,m=4},{10,20,30,m=40}) is {11,22,23,m=44}
 
 
 
+
+
 <h3>Return value:</h3>
 a table
 
@@ -1207,12 +1278,12 @@ a table
 
 
 
-<dt><a name="map_named_method"></a><strong>map_named_method</strong>&nbsp;(name, t, ...)</dt>
+<dt><a name="tablex.map_named_method"></a><strong>tablex.map_named_method</strong>&nbsp;(name, t, ...)</dt>
 <dd>
 apply a named method to values from a table.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -1236,17 +1307,22 @@ apply a named method to values from a table.
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="mapn"></a><strong>mapn</strong>&nbsp;(fun, ...)</dt>
+<dt><a name="tablex.mapn"></a><strong>tablex.mapn</strong>&nbsp;(fun, ...)</dt>
 <dd>
-Apply a function to a number of tables. A more general version of map The result is a table containing the result of applying that function to the ith value of each table. Length of output list is the minimum length of all the lists
+Apply a function to a number of tables.
+A more general version of map
+The result is a table containing the result of applying that function to the
+ith value of each table. Length of output list is the minimum length of all the lists
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -1262,7 +1338,7 @@ Apply a function to a number of tables. A more general version of map The result
 
 
 
-<h3>Usage</h3>
+<h3>Usage:</h3>
 <ul>
 	
 	<li>mapn(function(x,y,z) return x+y+z end, {1,2,3},{10,20,30},{100,200,300}) is {111,222,333}
@@ -1275,17 +1351,21 @@ Apply a function to a number of tables. A more general version of map The result
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="merge"></a><strong>merge</strong>&nbsp;(t1, t2, dup)</dt>
+<dt><a name="tablex.merge"></a><strong>tablex.merge</strong>&nbsp;(t1, t2, dup)</dt>
 <dd>
-combine two tables, either as union or intersection. Corresponds to set operations for sets () but more general. Not particularly useful for list-like tables.
+combine two tables, either as union or intersection. Corresponds to
+set operations for sets () but more general. Not particularly
+useful for list-like tables.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -1305,7 +1385,7 @@ combine two tables, either as union or intersection. Corresponds to set operatio
 
 
 
-<h3>Usage</h3>
+<h3>Usage:</h3>
 <ul>
 	
 	<li>merge({alice=23,fred=34},{bob=25,fred=34}) is {fred=34}
@@ -1318,11 +1398,13 @@ combine two tables, either as union or intersection. Corresponds to set operatio
 
 
 
+
+
 <h3>See also:</h3>
 <ul>
 	
-	<li><a href="../modules/pl.tablex.html#index_map">
-		index_map
+	<li><a href="">
+		tablex.index_map
 	</a>
 	
 </ul>
@@ -1332,12 +1414,12 @@ combine two tables, either as union or intersection. Corresponds to set operatio
 
 
 
-<dt><a name="move"></a><strong>move</strong>&nbsp;(dest, src, idest, isrc, nsrc, n)</dt>
+<dt><a name="tablex.move"></a><strong>tablex.move</strong>&nbsp;(dest, src, idest, isrc, nsrc, n)</dt>
 <dd>
 copy an array into another one. <br>
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -1373,17 +1455,19 @@ copy an array into another one. <br>
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="new"></a><strong>new</strong>&nbsp;(n, val)</dt>
+<dt><a name="tablex.new"></a><strong>tablex.new</strong>&nbsp;(n, val)</dt>
 <dd>
 create a new array of specified size with initial value.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -1401,6 +1485,8 @@ create a new array of specified size with initial value.
 
 
 
+
+
 <h3>Return value:</h3>
 the table
 
@@ -1411,12 +1497,15 @@ the table
 
 
 
-<dt><a name="pairmap"></a><strong>pairmap</strong>&nbsp;(fun, t, ...)</dt>
+<dt><a name="tablex.pairmap"></a><strong>tablex.pairmap</strong>&nbsp;(fun, t, ...)</dt>
 <dd>
-call the function with the key and value pairs from a table. The function can return a value and a key (note the order!). If both are not nil, then this pair is inserted into the result. If only value is not nil, then it is appended to the result.
+call the function with the key and value pairs from a table.
+The function can return a value and a key (note the order!). If both
+are not nil, then this pair is inserted into the result. If only value is not nil, then
+it is appended to the result.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -1436,7 +1525,7 @@ call the function with the key and value pairs from a table. The function can re
 
 
 
-<h3>Usage</h3>
+<h3>Usage:</h3>
 <ul>
 	
 	<li>pairmap({fred=10,bonzo=20},function(k,v) return v end) is {10,20}
@@ -1449,17 +1538,19 @@ call the function with the key and value pairs from a table. The function can re
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="range"></a><strong>range</strong>&nbsp;(start, finish, step)</dt>
+<dt><a name="tablex.range"></a><strong>tablex.range</strong>&nbsp;(start, finish, step)</dt>
 <dd>
 generate a table of all numbers in a range
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -1483,17 +1574,19 @@ generate a table of all numbers in a range
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="reduce"></a><strong>reduce</strong>&nbsp;(fun, t)</dt>
+<dt><a name="tablex.reduce"></a><strong>tablex.reduce</strong>&nbsp;(fun, t)</dt>
 <dd>
 'reduce' a list using a binary function.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -1514,6 +1607,8 @@ reduce('+',{1,2,3,4}) == 10
 
 
 
+
+
 <h3>Return value:</h3>
 the result of the function
 
@@ -1524,12 +1619,12 @@ the result of the function
 
 
 
-<dt><a name="removevalues"></a><strong>removevalues</strong>&nbsp;(t, i1, i2)</dt>
+<dt><a name="tablex.removevalues"></a><strong>tablex.removevalues</strong>&nbsp;(t, i1, i2)</dt>
 <dd>
 remove a range of values from a table.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -1551,6 +1646,8 @@ remove a range of values from a table.
 
 
 
+
+
 <h3>Return value:</h3>
 the table
 
@@ -1561,12 +1658,14 @@ the table
 
 
 
-<dt><a name="rfind"></a><strong>rfind</strong>&nbsp;(t, val, idx)</dt>
+<dt><a name="tablex.rfind"></a><strong>tablex.rfind</strong>&nbsp;(t, val, idx)</dt>
 <dd>
-return the index of a value in a list, searching from the end. Like string.find, there is an optional index to start searching, which can be negative.
+return the index of a value in a list, searching from the end.
+Like string.find, there is an optional index to start searching,
+which can be negative.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -1591,6 +1690,8 @@ rfind({10,10,10},10) == 3
 
 
 
+
+
 <h3>Return value:</h3>
 index of value or nil if not found
 
@@ -1601,12 +1702,12 @@ index of value or nil if not found
 
 
 
-<dt><a name="search"></a><strong>search</strong>&nbsp;(t, value, exclude)</dt>
+<dt><a name="tablex.search"></a><strong>tablex.search</strong>&nbsp;(t, value, exclude)</dt>
 <dd>
 find a value in a table by recursive search.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -1631,6 +1732,8 @@ search(_G,math.sin,{package.path}) == 'math.sin'
 
 
 
+
+
 <h3>Return value:</h3>
 a fieldspec, e.g. 'a.b' or 'math.sin'
 
@@ -1641,12 +1744,13 @@ a fieldspec, e.g. 'a.b' or 'math.sin'
 
 
 
-<dt><a name="set"></a><strong>set</strong>&nbsp;(t, val, i1, i2)</dt>
+<dt><a name="tablex.set"></a><strong>tablex.set</strong>&nbsp;(t, val, i1, i2)</dt>
 <dd>
-set an array range to a value. If it's a function we use the result of applying it to the indices.
+set an array range to a value. If it's a function we use the result
+of applying it to the indices.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -1674,17 +1778,23 @@ set an array range to a value. If it's a function we use the result of applying 
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="size"></a><strong>size</strong>&nbsp;(t)</dt>
+<dt><a name="tablex.size"></a><strong>tablex.size</strong>&nbsp;(t)</dt>
 <dd>
-total number of elements in this table. <br> Note that this is distinct from #t, which is the number of values in the array part; this value will always be greater or equal. The difference gives the size of the hash part, for practical purposes.
+total number of elements in this table. <br>
+Note that this is distinct from #t, which is the number
+of values in the array part; this value will always
+be greater or equal. The difference gives the size of
+the hash part, for practical purposes.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -1692,6 +1802,8 @@ total number of elements in this table. <br> Note that this is distinct from #t,
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -1708,12 +1820,15 @@ the size
 
 
 
-<dt><a name="sub"></a><strong>sub</strong>&nbsp;(t, first, last)</dt>
+<dt><a name="tablex.sub"></a><strong>tablex.sub</strong>&nbsp;(t, first, last)</dt>
 <dd>
-Extract a range from a table, like  'string.sub'. If first or last are negative then they are relative to the end of the list eg. sub(t,-2) gives last 2 entries in a list, and sub(t,-4,-2) gives from -4th to -2nd
+Extract a range from a table, like  'string.sub'.
+If first or last are negative then they are relative to the end of the list
+eg. sub(t,-2) gives last 2 entries in a list, and
+sub(t,-4,-2) gives from -4th to -2nd
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -1735,6 +1850,8 @@ Extract a range from a table, like  'string.sub'. If first or last are negative 
 
 
 
+
+
 <h3>Return value:</h3>
 a new List
 
@@ -1745,12 +1862,13 @@ a new List
 
 
 
-<dt><a name="transform"></a><strong>transform</strong>&nbsp;(fun, t, ...)</dt>
+<dt><a name="tablex.transform"></a><strong>tablex.transform</strong>&nbsp;(fun, t, ...)</dt>
 <dd>
-apply a function to all values of a table, in-place. Any extra arguments are passed to the function.
+apply a function to all values of a table, in-place.
+Any extra arguments are passed to the function.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -1774,17 +1892,19 @@ apply a function to all values of a table, in-place. Any extra arguments are pas
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="update"></a><strong>update</strong>&nbsp;(t1, t2)</dt>
+<dt><a name="tablex.update"></a><strong>tablex.update</strong>&nbsp;(t1, t2)</dt>
 <dd>
 copy a table into another, in-place.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -1802,6 +1922,8 @@ copy a table into another, in-place.
 
 
 
+
+
 <h3>Return value:</h3>
 first table
 
@@ -1812,12 +1934,12 @@ first table
 
 
 
-<dt><a name="values"></a><strong>values</strong>&nbsp;(t)</dt>
+<dt><a name="tablex.values"></a><strong>tablex.values</strong>&nbsp;(t)</dt>
 <dd>
 return all the values of the table in arbitrary order
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -1833,17 +1955,20 @@ return all the values of the table in arbitrary order
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="zip"></a><strong>zip</strong>&nbsp;(...)</dt>
+<dt><a name="tablex.zip"></a><strong>tablex.zip</strong>&nbsp;(...)</dt>
 <dd>
-return a table where each element is a table of the ith values of an arbitrary number of tables. It is equivalent to a matrix transpose.
+return a table where each element is a table of the ith values of an arbitrary
+number of tables. It is equivalent to a matrix transpose.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -1857,6 +1982,8 @@ return a table where each element is a table of the ith values of an arbitrary n
 
 <h3>Usage:</h3>
 zip({10,20,30},{100,200,300}) is {{10,100},{20,200},{30,300}}
+
+
 
 
 

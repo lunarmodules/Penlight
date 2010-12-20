@@ -1,64 +1,69 @@
--------------------------------------------------------------------
--- File Operations: copy,move,reading,writing
-
+--- File manipulation functions: reading, writing, moving and copying.
+-- @class module
+-- @name pl.file
 local os = os
 local utils = require 'pl.utils'
 local dir = require 'pl.dir'
 local path = require 'pl.path'
+
+--[[
 module ('pl.file',utils._module)
+]]
+local file = {}
 
 --- return the contents of a file as a string
 -- @class function
--- @name read
+-- @name file.read
 -- @param filename The file path
 -- @return file contents
-read = utils.readfile
+file.read = utils.readfile
 
 --- write a string to a file
 -- @class function
--- @name write
+-- @name file.write
 -- @param filename The file path
 -- @param str The string
-write = utils.writefile
+file.write = utils.writefile
 
 --- copy a file.
 -- @class function
--- @name copy
+-- @name file.copy
 -- @param src source file
 -- @param dest destination file
 -- @param flag true if you want to force the copy (default)
 -- @return true if operation succeeded
-copy = dir.copyfile
+file.copy = dir.copyfile
 
 --- move a file.
 -- @class function
--- @name move
+-- @name file.move
 -- @param src source file
 -- @param dest destination file
 -- @return true if operation succeeded, else false and the reason for the error.
-move = dir.movefile
+file.move = dir.movefile
 
 --- Return the time of last access as the number of seconds since the epoch.
 -- @class function
--- @name access_time
+-- @name file.access_time
 -- @param path A file path
-access_time = path.getatime
+file.access_time = path.getatime
 
 ---Return when the file was created.
 -- @class function
--- @name creation_time
+-- @name file.creation_time
 -- @param path A file path
-creation_time = path.getctime
+file.creation_time = path.getctime
 
 --- Return the time of last modification
 -- @class function
--- @name modified_time
+-- @name file.modified_time
 -- @param path A file path
-modified_time = path.getmtime
+file.modified_time = path.getmtime
 
 --- Delete a file
 -- @class function
--- @name delete
+-- @name file.delete
 -- @param path A file path
-delete = os.remove
+file.delete = os.remove
 
+return file

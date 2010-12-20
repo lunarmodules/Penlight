@@ -5,6 +5,7 @@
 -- @class module
 -- @name pl.strict
 
+require 'debug'
 local getinfo, error, rawset, rawget = debug.getinfo, error, rawset, rawget
 local handler,hooked
 

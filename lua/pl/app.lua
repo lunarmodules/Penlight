@@ -1,11 +1,17 @@
 --- Application support functions.
+-- <p>See <a href="../../index.html#app">the Guide</a>
+-- @class module
+-- @name pl.app
 
 local utils = require 'pl.utils'
-local raise = utils.raise
 local path = require 'pl.path'
-local package,_G,lfs = package,_G,lfs
+local lfs = require 'lfs'
 
+--[[
 module ('pl.app',utils._module)
+]]
+
+local app = {}
 
 local function check_script_name ()
     if _G.arg == nil then utils.error('no command line args available\nWas this run from a main script?') end
@@ -16,7 +22,7 @@ end
 -- Applies to both the source and the binary module paths. It makes it easy for
 -- the main file of a multi-file program to access its modules in the same directory.
 -- @return the current script's path with a trailing slash
-function require_here ()
+function app.require_here ()
     local p = path.dirname(check_script_name())
     if not path.isabs(p) then
         p = path.join(lfs.currentdir(),p)
@@ -37,13 +43,13 @@ end
 -- SNAME is the name of the script without .lua extension.
 -- @param file a filename (w/out path)
 -- @return a full pathname
-function appfile (file)
+function app.appfile (file)
     local sname = path.basename(check_script_name())
     local name,ext = path.splitext(sname)
     local dir = path.join(path.expanduser('~'),'.'..name)
     if not path.isdir(dir) then
         local ret = lfs.mkdir(dir)
-        if not ret then raise ('cannot create '..dir) end
+        if not ret then return utils.raise ('cannot create '..dir) end
     end
     return path.join(dir,file)
 end
@@ -58,10 +64,10 @@ end
 -- @param flags_with_values any flags that take values, e.g. <code>{out=true}</code>
 -- @return a table of flags (flag=value pairs)
 -- @return an array of parameters
-function parse_args (args,flags_with_values)
+function app.parse_args (args,flags_with_values)
 	if not args then
 		args = _G.arg
-		if not _args then utils.error "Not in a main program: 'arg' not found" end
+		if not args then utils.error "Not in a main program: 'arg' not found" end
 	end
 	flags_with_values = flags_with_values or {}
     local _args = {}
@@ -78,7 +84,7 @@ function parse_args (args,flags_with_values)
 			end
 			if flags_with_values[v] then
                 if i == #_args or args[i+1]:find '^-' then
-                    return raise ("no value for '"..v.."'")
+                    return utils.raise ("no value for '"..v.."'")
                 end
 				flags[v] = args[i+1]
 				i = i + 1
@@ -113,3 +119,5 @@ function parse_args (args,flags_with_values)
     end
     return flags,_args
 end
+
+return app

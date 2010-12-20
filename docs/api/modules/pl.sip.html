@@ -2,7 +2,7 @@
    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 <head>
-    <title>Reference</title>
+    <title>pl.sip: Module Index</title>
     <link rel="stylesheet" href="../luadoc.css" type="text/css" />
 	<!--meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/-->
 </head>
@@ -21,7 +21,7 @@
 <div id="navigation">
 
 
-<h1>LuaDoc</h1>
+<h2>LuaDoc</h2>
 <ul>
 	
 	<li><a href="../index.html">Index</a></li>
@@ -31,7 +31,7 @@
 
 <!-- Module list -->
 
-<h1>Modules</h1>
+<h2>Modules</h2>
 <ul>
 
 	<li>
@@ -72,6 +72,10 @@
 
 	<li>
 		<a href="../modules/pl.input.html">pl.input</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.lapp.html">pl.lapp</a>
 	</li>
 
 	<li>
@@ -143,9 +147,28 @@
 
 <div id="content">
 
-<h1>Module <code>pl.sip</code></h1>
+<h1>Module "pl.sip"</h1>
 
-<p>Simple Input Patterns (SIP). SIP patterns start with '$', then a one-letter type, and then an optional variable in curly braces. <br> Example: <pre class=example>sip.match('($q{first},$q{second})','("john","smith")',res)</pre> <pre class=example>result is true and 'res' is: {second='smith',first='john'} </pre> See <a href="../../index.html#sip">the Guide</a></p>
+<p>Simple Input Patterns (SIP). <p>
+SIP patterns start with '$', then a
+one-letter type, and then an optional variable in curly braces. <p>
+Example:
+<pre class=example>
+ sip.match('$v=$q','name="dolly"',res)
+ ==> res=={'name','dolly'}
+ sip.match('($q{first},$q{second})','("john","smith")',res)
+ ==> res=={second='smith',first='john'}
+</pre>
+<pre>
+<b>Type names</b>
+v    identifier
+i     integer
+f     floating-point
+q    quoted string
+([{&lt;  match up to closing bracket
+</pre>
+<p>
+See <a href="../../index.html#sip">the Guide</a></p>
 
 
 
@@ -155,37 +178,37 @@
 <table class="function_list">
 
 	<tr>
-	<td class="name" nowrap><a href="#compile">compile</a>&nbsp;(spec, options)</td>
+	<td class="name" nowrap><a href="#sip.compile">sip.compile</a>&nbsp;(spec, options)</td>
 	<td class="summary">convert a SIP pattern into a matching function.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#create_pattern">create_pattern</a>&nbsp;(spec, options, fieldnames, fieldtypes)</td>
+	<td class="name" nowrap><a href="#sip.create_pattern">sip.create_pattern</a>&nbsp;(spec, options, fieldnames, fieldtypes)</td>
 	<td class="summary">convert a SIP pattern into the equivalent Lua regular expression.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#fields">fields</a>&nbsp;(spec, f)</td>
+	<td class="name" nowrap><a href="#sip.fields">sip.fields</a>&nbsp;(spec, f)</td>
 	<td class="summary">given a pattern and a file object, return an iterator over the results </td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#match">match</a>&nbsp;(spec, line, res, options)</td>
+	<td class="name" nowrap><a href="#sip.match">sip.match</a>&nbsp;(spec, line, res, options)</td>
 	<td class="summary">match a SIP pattern against a string.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#match_at_start">match_at_start</a>&nbsp;(spec, line, res)</td>
+	<td class="name" nowrap><a href="#sip.match_at_start">sip.match_at_start</a>&nbsp;(spec, line, res)</td>
 	<td class="summary">match a SIP pattern against the start of a string.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#pattern">pattern</a>&nbsp;(spec, fun)</td>
+	<td class="name" nowrap><a href="#sip.pattern">sip.pattern</a>&nbsp;(spec, fun)</td>
 	<td class="summary">register a match which will be used in the read function.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#read">read</a>&nbsp;(f)</td>
+	<td class="name" nowrap><a href="#sip.read">sip.read</a>&nbsp;(f)</td>
 	<td class="summary">enter a loop which applies all registered matches to the input file.</td>
 	</tr>
 
@@ -206,12 +229,15 @@
 
 
 
-<dt><a name="compile"></a><strong>compile</strong>&nbsp;(spec, options)</dt>
+<dt><a name="sip.compile"></a><strong>sip.compile</strong>&nbsp;(spec, options)</dt>
 <dd>
-convert a SIP pattern into a matching function. The returned function takes two arguments, the line and an empty table. If the line matched the pattern, then this function return true and the table is filled with field-value pairs.
+convert a SIP pattern into a matching function.
+The returned function takes two arguments, the line and an empty table.
+If the line matched the pattern, then this function return true
+and the table is filled with field-value pairs.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -229,6 +255,8 @@ convert a SIP pattern into a matching function. The returned function takes two 
 
 
 
+
+
 <h3>Return value:</h3>
 a function if successful, or nil,<error>
 
@@ -239,12 +267,12 @@ a function if successful, or nil,<error>
 
 
 
-<dt><a name="create_pattern"></a><strong>create_pattern</strong>&nbsp;(spec, options, fieldnames, fieldtypes)</dt>
+<dt><a name="sip.create_pattern"></a><strong>sip.create_pattern</strong>&nbsp;(spec, options, fieldnames, fieldtypes)</dt>
 <dd>
 convert a SIP pattern into the equivalent Lua regular expression.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -272,17 +300,19 @@ convert a SIP pattern into the equivalent Lua regular expression.
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="fields"></a><strong>fields</strong>&nbsp;(spec, f)</dt>
+<dt><a name="sip.fields"></a><strong>sip.fields</strong>&nbsp;(spec, f)</dt>
 <dd>
 given a pattern and a file object, return an iterator over the results
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -302,17 +332,19 @@ given a pattern and a file object, return an iterator over the results
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="match"></a><strong>match</strong>&nbsp;(spec, line, res, options)</dt>
+<dt><a name="sip.match"></a><strong>sip.match</strong>&nbsp;(spec, line, res, options)</dt>
 <dd>
 match a SIP pattern against a string.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -338,6 +370,8 @@ match a SIP pattern against a string.
 
 
 
+
+
 <h3>Return value:</h3>
 true or false
 
@@ -348,12 +382,12 @@ true or false
 
 
 
-<dt><a name="match_at_start"></a><strong>match_at_start</strong>&nbsp;(spec, line, res)</dt>
+<dt><a name="sip.match_at_start"></a><strong>sip.match_at_start</strong>&nbsp;(spec, line, res)</dt>
 <dd>
 match a SIP pattern against the start of a string.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -375,6 +409,8 @@ match a SIP pattern against the start of a string.
 
 
 
+
+
 <h3>Return value:</h3>
 true or false
 
@@ -385,12 +421,12 @@ true or false
 
 
 
-<dt><a name="pattern"></a><strong>pattern</strong>&nbsp;(spec, fun)</dt>
+<dt><a name="sip.pattern"></a><strong>sip.pattern</strong>&nbsp;(spec, fun)</dt>
 <dd>
 register a match which will be used in the read function.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -410,10 +446,12 @@ register a match which will be used in the read function.
 
 
 
+
+
 <h3>See also:</h3>
 <ul>
 	
-	<li><a href="../modules/pl.sip.html#read">
+	<li><a href="">
 		read
 	</a>
 	
@@ -424,12 +462,12 @@ register a match which will be used in the read function.
 
 
 
-<dt><a name="read"></a><strong>read</strong>&nbsp;(f)</dt>
+<dt><a name="sip.read"></a><strong>sip.read</strong>&nbsp;(f)</dt>
 <dd>
 enter a loop which applies all registered matches to the input file.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -437,6 +475,8 @@ enter a loop which applies all registered matches to the input file.
 	</li>
 	
 </ul>
+
+
 
 
 

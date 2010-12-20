@@ -2,7 +2,7 @@
    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 <head>
-    <title>Reference</title>
+    <title>pl.class: Module Index</title>
     <link rel="stylesheet" href="../luadoc.css" type="text/css" />
 	<!--meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/-->
 </head>
@@ -21,7 +21,7 @@
 <div id="navigation">
 
 
-<h1>LuaDoc</h1>
+<h2>LuaDoc</h2>
 <ul>
 	
 	<li><a href="../index.html">Index</a></li>
@@ -31,7 +31,7 @@
 
 <!-- Module list -->
 
-<h1>Modules</h1>
+<h2>Modules</h2>
 <ul>
 
 	<li>
@@ -70,6 +70,10 @@
 
 	<li>
 		<a href="../modules/pl.input.html">pl.input</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.lapp.html">pl.lapp</a>
 	</li>
 
 	<li>
@@ -143,9 +147,13 @@
 
 <div id="content">
 
-<h1>Module <code>pl.class</code></h1>
+<h1>Module "pl.class"</h1>
 
-<p>Wrapper classes: Map and Set. Provides a reuseable and convenient framework for creating classes in Lua. See the Guide for further <a href="../../index.html#class">discussion</a></p>
+<p>Provides a reuseable and convenient framework for creating classes in Lua.
+Two possible notations: <code> B = class(A) </code> or <code> class.B(A) </code>.
+The latter form creates a named class.
+This module also provides Map and Set classes.
+See the Guide for further <a href="../../index.html#class">discussion</a></p>
 
 
 
@@ -170,11 +178,6 @@
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#Map:keys">Map:keys</a>&nbsp;()</td>
-	<td class="summary">list of keys.</td>
-	</tr>
-
-	<tr>
 	<td class="name" nowrap><a href="#Map:len">Map:len</a>&nbsp;()</td>
 	<td class="summary">size of map.</td>
 	</tr>
@@ -182,11 +185,6 @@
 	<tr>
 	<td class="name" nowrap><a href="#Map:set">Map:set</a>&nbsp;(key, val)</td>
 	<td class="summary">put a value into the map.</td>
-	</tr>
-
-	<tr>
-	<td class="name" nowrap><a href="#Map:values">Map:values</a>&nbsp;()</td>
-	<td class="summary">list of values.</td>
 	</tr>
 
 	<tr>
@@ -266,7 +264,7 @@
 get a value from the map.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -274,6 +272,8 @@ get a value from the map.
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -302,6 +302,8 @@ return a List of all key-value pairs, sorted by the keys.
 
 
 
+
+
 </dd>
 
 
@@ -319,21 +321,6 @@ return an iterator over all key-value pairs.
 
 
 
-</dd>
-
-
-
-
-<dt><a name="Map:keys"></a><strong>Map:keys</strong>&nbsp;()</dt>
-<dd>
-list of keys.
-
-
-
-
-
-
-
 
 
 </dd>
@@ -343,7 +330,10 @@ list of keys.
 
 <dt><a name="Map:len"></a><strong>Map:len</strong>&nbsp;()</dt>
 <dd>
-size of map. note: this is a relatively expensive operation!
+size of map.
+note: this is a relatively expensive operation!
+
+
 
 
 
@@ -363,7 +353,7 @@ size of map. note: this is a relatively expensive operation!
 put a value into the map.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -383,21 +373,6 @@ put a value into the map.
 
 
 
-</dd>
-
-
-
-
-<dt><a name="Map:values"></a><strong>Map:values</strong>&nbsp;()</dt>
-<dd>
-list of values.
-
-
-
-
-
-
-
 
 
 </dd>
@@ -410,7 +385,7 @@ list of values.
 new set with elements in the set that are not in the other (also -).
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -418,6 +393,8 @@ new set with elements in the set that are not in the other (also -).
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -439,7 +416,7 @@ a new set
 intersection of two sets (also *).
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -447,6 +424,8 @@ intersection of two sets (also *).
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -465,10 +444,11 @@ a new set
 
 <dt><a name="Set:isdisjoint"></a><strong>Set:isdisjoint</strong>&nbsp;(set)</dt>
 <dd>
-are the sets disjoint? (no elements in common). Uses naive definition, i.e. that intersection is empty
+are the sets disjoint? (no elements in common).
+Uses naive definition, i.e. that intersection is empty
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -476,6 +456,8 @@ are the sets disjoint? (no elements in common). Uses naive definition, i.e. that
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -502,6 +484,8 @@ is the set empty?.
 
 
 
+
+
 <h3>Return value:</h3>
 true or false
 
@@ -517,7 +501,7 @@ true or false
 is the first set a subset of the second?.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -525,6 +509,8 @@ is the first set a subset of the second?.
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -546,7 +532,7 @@ true or false
 map a function over the values of a set.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -558,6 +544,8 @@ map a function over the values of a set.
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -579,7 +567,7 @@ a new set
 add a value to a set.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -587,6 +575,8 @@ add a value to a set.
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -605,7 +595,7 @@ add a value to a set.
 union of two sets (also +).
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -613,6 +603,8 @@ union of two sets (also +).
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -634,7 +626,7 @@ a new set
 remove a value from a set.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -642,6 +634,8 @@ remove a value from a set.
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -667,6 +661,8 @@ get a list of the values in a set.
 
 
 
+
+
 </dd>
 
 
@@ -674,10 +670,12 @@ get a list of the values in a set.
 
 <dt><a name="class"></a><strong>class</strong>&nbsp;(base, c_arg, c)</dt>
 <dd>
-create a new class, derived from a given base class. supporting two class creation syntaxes: either 'Name = class()' or'class.Name()'
+create a new class, derived from a given base class.
+supporting two class creation syntaxes:
+either 'Name = class()' or'class.Name()'
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -693,6 +691,8 @@ create a new class, derived from a given base class. supporting two class creati
 	</li>
 	
 </ul>
+
+
 
 
 

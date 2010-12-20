@@ -2,7 +2,7 @@
    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 <head>
-    <title>Reference</title>
+    <title>pl.operator: Module Index</title>
     <link rel="stylesheet" href="../luadoc.css" type="text/css" />
 	<!--meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/-->
 </head>
@@ -21,7 +21,7 @@
 <div id="navigation">
 
 
-<h1>LuaDoc</h1>
+<h2>LuaDoc</h2>
 <ul>
 	
 	<li><a href="../index.html">Index</a></li>
@@ -31,7 +31,7 @@
 
 <!-- Module list -->
 
-<h1>Modules</h1>
+<h2>Modules</h2>
 <ul>
 
 	<li>
@@ -72,6 +72,10 @@
 
 	<li>
 		<a href="../modules/pl.input.html">pl.input</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.lapp.html">pl.lapp</a>
 	</li>
 
 	<li>
@@ -143,9 +147,12 @@
 
 <div id="content">
 
-<h1>Module <code>pl.operator</code></h1>
+<h1>Module "pl.operator"</h1>
 
-<p>Lua operators available as functions. (similar to the Python module of the same name)<br> There is a module field <code>optable</code> which maps the operator strings onto these functions, e.g. <pre class=example>operator.optable['()']==operator.call</pre></p>
+<p>Lua operators available as functions.
+(similar to the Python module of the same name)<br>
+There is a module field <code>optable</code> which maps the operator strings
+onto these functions, e.g. <pre class=example>operator.optable['()']==operator.call</pre></p>
 
 
 
@@ -155,112 +162,112 @@
 <table class="function_list">
 
 	<tr>
-	<td class="name" nowrap><a href="#add">add</a>&nbsp;(a, b)</td>
+	<td class="name" nowrap><a href="#operator.add">operator.add</a>&nbsp;(a, b)</td>
 	<td class="summary">add two values + </td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#call">call</a>&nbsp;(fn, ...)</td>
+	<td class="name" nowrap><a href="#operator.call">operator.call</a>&nbsp;(fn, ...)</td>
 	<td class="summary">apply function to some arguments () </td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#concat">concat</a>&nbsp;(a, b)</td>
+	<td class="name" nowrap><a href="#operator.concat">operator.concat</a>&nbsp;(a, b)</td>
 	<td class="summary">concatenate two values (either strings or __concat defined) ..</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#div">div</a>&nbsp;(a, b)</td>
+	<td class="name" nowrap><a href="#operator.div">operator.div</a>&nbsp;(a, b)</td>
 	<td class="summary">divide first value by second / </td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#eq">eq</a>&nbsp;(a, b)</td>
+	<td class="name" nowrap><a href="#operator.eq">operator.eq</a>&nbsp;(a, b)</td>
 	<td class="summary">returns true if arguments are equal == </td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#ge">ge</a>&nbsp;(a, b)</td>
+	<td class="name" nowrap><a href="#operator.ge">operator.ge</a>&nbsp;(a, b)</td>
 	<td class="summary">returns true if a is greater or equal to b >= </td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#gt">gt</a>&nbsp;(a, b)</td>
+	<td class="name" nowrap><a href="#operator.gt">operator.gt</a>&nbsp;(a, b)</td>
 	<td class="summary">returns true if a is greater than b > </td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#index">index</a>&nbsp;(t, k)</td>
+	<td class="name" nowrap><a href="#operator.index">operator.index</a>&nbsp;(t, k)</td>
 	<td class="summary">get the indexed value from a table [] </td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#land">land</a>&nbsp;(a, b)</td>
+	<td class="name" nowrap><a href="#operator.land">operator.land</a>&nbsp;(a, b)</td>
 	<td class="summary">true if both values evaluate as true (i.e.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#le">le</a>&nbsp;(a, b)</td>
+	<td class="name" nowrap><a href="#operator.le">operator.le</a>&nbsp;(a, b)</td>
 	<td class="summary">returns true if a is less or equal to b <= </td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#len">len</a>&nbsp;(a)</td>
+	<td class="name" nowrap><a href="#operator.len">operator.len</a>&nbsp;(a)</td>
 	<td class="summary">returns length of string or table # </td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#lnot">lnot</a>&nbsp;(a)</td>
+	<td class="name" nowrap><a href="#operator.lnot">operator.lnot</a>&nbsp;(a)</td>
 	<td class="summary">false if value evaluates as true (i.e.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#lor">lor</a>&nbsp;(a, b)</td>
+	<td class="name" nowrap><a href="#operator.lor">operator.lor</a>&nbsp;(a, b)</td>
 	<td class="summary">true if either value evaluate as true (i.e.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#lt">lt</a>&nbsp;(a, b)</td>
+	<td class="name" nowrap><a href="#operator.lt">operator.lt</a>&nbsp;(a, b)</td>
 	<td class="summary">returns true if a is less than b < </td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#mod">mod</a>&nbsp;(a, b)</td>
+	<td class="name" nowrap><a href="#operator.mod">operator.mod</a>&nbsp;(a, b)</td>
 	<td class="summary">modulo; remainder of a divided by b % </td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#mul">mul</a>&nbsp;(a, b)</td>
+	<td class="name" nowrap><a href="#operator.mul">operator.mul</a>&nbsp;(a, b)</td>
 	<td class="summary">multiply two values * </td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#neq">neq</a>&nbsp;(a, b)</td>
+	<td class="name" nowrap><a href="#operator.neq">operator.neq</a>&nbsp;(a, b)</td>
 	<td class="summary">returns true if arguments are not equal ~= </td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#nop">nop</a>&nbsp;(...)</td>
+	<td class="name" nowrap><a href="#operator.nop">operator.nop</a>&nbsp;(...)</td>
 	<td class="summary">the null operation.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#pow">pow</a>&nbsp;(a, b)</td>
+	<td class="name" nowrap><a href="#operator.pow">operator.pow</a>&nbsp;(a, b)</td>
 	<td class="summary">raise first to the power of second ^ </td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#sub">sub</a>&nbsp;(a, b)</td>
+	<td class="name" nowrap><a href="#operator.sub">operator.sub</a>&nbsp;(a, b)</td>
 	<td class="summary">subtract b from a - </td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#table">table</a>&nbsp;(...)</td>
+	<td class="name" nowrap><a href="#operator.table">operator.table</a>&nbsp;(...)</td>
 	<td class="summary">make a table from the arguments.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#unm">unm</a>&nbsp;(a)</td>
+	<td class="name" nowrap><a href="#operator.unm">operator.unm</a>&nbsp;(a)</td>
 	<td class="summary">return the negative of a value - </td>
 	</tr>
 
@@ -281,12 +288,12 @@
 
 
 
-<dt><a name="add"></a><strong>add</strong>&nbsp;(a, b)</dt>
+<dt><a name="operator.add"></a><strong>operator.add</strong>&nbsp;(a, b)</dt>
 <dd>
 add two values +
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -306,17 +313,19 @@ add two values +
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="call"></a><strong>call</strong>&nbsp;(fn, ...)</dt>
+<dt><a name="operator.call"></a><strong>operator.call</strong>&nbsp;(fn, ...)</dt>
 <dd>
 apply function to some arguments ()
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -336,17 +345,19 @@ apply function to some arguments ()
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="concat"></a><strong>concat</strong>&nbsp;(a, b)</dt>
+<dt><a name="operator.concat"></a><strong>operator.concat</strong>&nbsp;(a, b)</dt>
 <dd>
 concatenate two values (either strings or __concat defined) ..
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -366,17 +377,19 @@ concatenate two values (either strings or __concat defined) ..
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="div"></a><strong>div</strong>&nbsp;(a, b)</dt>
+<dt><a name="operator.div"></a><strong>operator.div</strong>&nbsp;(a, b)</dt>
 <dd>
 divide first value by second /
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -396,17 +409,19 @@ divide first value by second /
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="eq"></a><strong>eq</strong>&nbsp;(a, b)</dt>
+<dt><a name="operator.eq"></a><strong>operator.eq</strong>&nbsp;(a, b)</dt>
 <dd>
 returns true if arguments are equal ==
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -426,17 +441,19 @@ returns true if arguments are equal ==
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="ge"></a><strong>ge</strong>&nbsp;(a, b)</dt>
+<dt><a name="operator.ge"></a><strong>operator.ge</strong>&nbsp;(a, b)</dt>
 <dd>
 returns true if a is greater or equal to b >=
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -456,17 +473,19 @@ returns true if a is greater or equal to b >=
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="gt"></a><strong>gt</strong>&nbsp;(a, b)</dt>
+<dt><a name="operator.gt"></a><strong>operator.gt</strong>&nbsp;(a, b)</dt>
 <dd>
 returns true if a is greater than b >
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -486,17 +505,19 @@ returns true if a is greater than b >
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="index"></a><strong>index</strong>&nbsp;(t, k)</dt>
+<dt><a name="operator.index"></a><strong>operator.index</strong>&nbsp;(t, k)</dt>
 <dd>
 get the indexed value from a table []
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -516,17 +537,19 @@ get the indexed value from a table []
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="land"></a><strong>land</strong>&nbsp;(a, b)</dt>
+<dt><a name="operator.land"></a><strong>operator.land</strong>&nbsp;(a, b)</dt>
 <dd>
 true if both values evaluate as true (i.e. not nil or false) and
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -546,17 +569,19 @@ true if both values evaluate as true (i.e. not nil or false) and
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="le"></a><strong>le</strong>&nbsp;(a, b)</dt>
+<dt><a name="operator.le"></a><strong>operator.le</strong>&nbsp;(a, b)</dt>
 <dd>
 returns true if a is less or equal to b <=
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -576,17 +601,19 @@ returns true if a is less or equal to b <=
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="len"></a><strong>len</strong>&nbsp;(a)</dt>
+<dt><a name="operator.len"></a><strong>operator.len</strong>&nbsp;(a)</dt>
 <dd>
 returns length of string or table #
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -602,17 +629,19 @@ returns length of string or table #
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="lnot"></a><strong>lnot</strong>&nbsp;(a)</dt>
+<dt><a name="operator.lnot"></a><strong>operator.lnot</strong>&nbsp;(a)</dt>
 <dd>
 false if value evaluates as true (i.e. not nil or false) not
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -628,17 +657,19 @@ false if value evaluates as true (i.e. not nil or false) not
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="lor"></a><strong>lor</strong>&nbsp;(a, b)</dt>
+<dt><a name="operator.lor"></a><strong>operator.lor</strong>&nbsp;(a, b)</dt>
 <dd>
 true if either value evaluate as true (i.e. not nil or false) or
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -658,17 +689,19 @@ true if either value evaluate as true (i.e. not nil or false) or
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="lt"></a><strong>lt</strong>&nbsp;(a, b)</dt>
+<dt><a name="operator.lt"></a><strong>operator.lt</strong>&nbsp;(a, b)</dt>
 <dd>
 returns true if a is less than b <
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -688,17 +721,19 @@ returns true if a is less than b <
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="mod"></a><strong>mod</strong>&nbsp;(a, b)</dt>
+<dt><a name="operator.mod"></a><strong>operator.mod</strong>&nbsp;(a, b)</dt>
 <dd>
 modulo; remainder of a divided by b %
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -718,17 +753,19 @@ modulo; remainder of a divided by b %
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="mul"></a><strong>mul</strong>&nbsp;(a, b)</dt>
+<dt><a name="operator.mul"></a><strong>operator.mul</strong>&nbsp;(a, b)</dt>
 <dd>
 multiply two values *
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -748,17 +785,19 @@ multiply two values *
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="neq"></a><strong>neq</strong>&nbsp;(a, b)</dt>
+<dt><a name="operator.neq"></a><strong>operator.neq</strong>&nbsp;(a, b)</dt>
 <dd>
 returns true if arguments are not equal ~=
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -778,17 +817,19 @@ returns true if arguments are not equal ~=
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="nop"></a><strong>nop</strong>&nbsp;(...)</dt>
+<dt><a name="operator.nop"></a><strong>operator.nop</strong>&nbsp;(...)</dt>
 <dd>
 the null operation.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -796,6 +837,8 @@ the null operation.
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -812,12 +855,12 @@ the arguments
 
 
 
-<dt><a name="pow"></a><strong>pow</strong>&nbsp;(a, b)</dt>
+<dt><a name="operator.pow"></a><strong>operator.pow</strong>&nbsp;(a, b)</dt>
 <dd>
 raise first to the power of second ^
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -837,17 +880,19 @@ raise first to the power of second ^
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="sub"></a><strong>sub</strong>&nbsp;(a, b)</dt>
+<dt><a name="operator.sub"></a><strong>operator.sub</strong>&nbsp;(a, b)</dt>
 <dd>
 subtract b from a -
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -867,17 +912,19 @@ subtract b from a -
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="table"></a><strong>table</strong>&nbsp;(...)</dt>
+<dt><a name="operator.table"></a><strong>operator.table</strong>&nbsp;(...)</dt>
 <dd>
 make a table from the arguments. {}
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -885,6 +932,8 @@ make a table from the arguments. {}
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -901,12 +950,12 @@ a table
 
 
 
-<dt><a name="unm"></a><strong>unm</strong>&nbsp;(a)</dt>
+<dt><a name="operator.unm"></a><strong>operator.unm</strong>&nbsp;(a)</dt>
 <dd>
 return the negative of a value -
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -914,6 +963,8 @@ return the negative of a value -
 	</li>
 	
 </ul>
+
+
 
 
 

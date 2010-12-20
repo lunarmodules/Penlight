@@ -16,9 +16,8 @@ utils = require 'pl.utils'
 for name,klass in pairs(utils.stdmt) do
     klass.__index = function(t,key)
         return require ('pl.'..modules[name])[name][key]
-    end
+    end;
 end
-
 
 local _hook
 setmetatable(_G,{
@@ -27,14 +26,20 @@ setmetatable(_G,{
     end,
     __index = function(t,name)
         local found = modules[name]
-        local modname
+        -- either true, or the name of the module containing this class.
+        -- either way, we load the required module and make it globally available.
         if found then
-            if type(found) == 'string' then
-                return require('pl.'..found) [name]
+            if found == true then
+                -- e..g pretty.dump causes pl.pretty to become available as 'pretty'
+                rawset(_G,name,require('pl.'..name))                
             else
-                rawset(_G,name,require('pl.'..name))
-                return _G[name]
+            -- e.g. 'List' causes pl.list to be loaded as above, and then
+            -- 'List' becomes global.                
+                rawset(_G,found,require('pl.'..found))
+                rawset(_G,name,_G[found][name])            
+                --print('name',name,'found',found)
             end
+            return _G[name]
         elseif _hook then
             return _hook(t,name)
         end

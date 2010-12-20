@@ -2,7 +2,7 @@
    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 <head>
-    <title>Reference</title>
+    <title>pl.utils: Module Index</title>
     <link rel="stylesheet" href="../luadoc.css" type="text/css" />
 	<!--meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/-->
 </head>
@@ -21,7 +21,7 @@
 <div id="navigation">
 
 
-<h1>LuaDoc</h1>
+<h2>LuaDoc</h2>
 <ul>
 	
 	<li><a href="../index.html">Index</a></li>
@@ -31,7 +31,7 @@
 
 <!-- Module list -->
 
-<h1>Modules</h1>
+<h2>Modules</h2>
 <ul>
 
 	<li>
@@ -72,6 +72,10 @@
 
 	<li>
 		<a href="../modules/pl.input.html">pl.input</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.lapp.html">pl.lapp</a>
 	</li>
 
 	<li>
@@ -143,7 +147,7 @@
 
 <div id="content">
 
-<h1>Module <code>pl.utils</code></h1>
+<h1>Module "pl.utils"</h1>
 
 <p>Generally useful routines.</p>
 
@@ -155,92 +159,102 @@
 <table class="function_list">
 
 	<tr>
-	<td class="name" nowrap><a href="#args">args</a>&nbsp;(...)</td>
-	<td class="summary">take an arbitrary set of arguments and make into a table.</td>
+	<td class="name" nowrap><a href="#utils.assert_arg">utils.assert_arg</a>&nbsp;(n, val, tp, verify, msg, lev)</td>
+	<td class="summary">assert that the given argument is in fact of the correct type.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#bind1">bind1</a>&nbsp;(fn, p)</td>
+	<td class="name" nowrap><a href="#utils.assert_string">utils.assert_string</a>&nbsp;(n, val)</td>
+	<td class="summary">assert the common case that the argument is a string.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#utils.bind1">utils.bind1</a>&nbsp;(fn, p)</td>
 	<td class="summary">bind the first argument of the function to a value.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#choose">choose</a>&nbsp;(cond, value1, value2)</td>
+	<td class="name" nowrap><a href="#utils.choose">utils.choose</a>&nbsp;(cond, value1, value2)</td>
 	<td class="summary">return either of two values, depending on a condition.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#escape">escape</a>&nbsp;(s)</td>
+	<td class="name" nowrap><a href="#utils.escape">utils.escape</a>&nbsp;(s)</td>
 	<td class="summary">escape any 'magic' characters in a string </td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#fprintf">fprintf</a>&nbsp;(f, fmt, ...)</td>
+	<td class="name" nowrap><a href="#utils.fprintf">utils.fprintf</a>&nbsp;(f, fmt, ...)</td>
 	<td class="summary">write an arbitrary number of arguments to a file using a format.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#function_arg">function_arg</a>&nbsp;(f)</td>
+	<td class="name" nowrap><a href="#utils.function_arg">utils.function_arg</a>&nbsp;(idx, f, msg)</td>
 	<td class="summary">process a function argument.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#import">import</a>&nbsp;(t, T)</td>
+	<td class="name" nowrap><a href="#utils.import">utils.import</a>&nbsp;(t, T)</td>
 	<td class="summary">take a table and 'inject' it into the local namespace.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#is_callable">is_callable</a>&nbsp;(obj)</td>
+	<td class="name" nowrap><a href="#utils.is_callable">utils.is_callable</a>&nbsp;(obj)</td>
 	<td class="summary">is the object either a function or a callable object?.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#is_type">is_type</a>&nbsp;(obj, tp)</td>
+	<td class="name" nowrap><a href="#utils.is_type">utils.is_type</a>&nbsp;(obj, tp)</td>
 	<td class="summary">is the object of the specified type?.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#memoize">memoize</a>&nbsp;(func)</td>
+	<td class="name" nowrap><a href="#utils.memoize">utils.memoize</a>&nbsp;(func)</td>
 	<td class="summary">'memoize' a function (cache returned value for next call).</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#printf">printf</a>&nbsp;(fmt, ...)</td>
+	<td class="name" nowrap><a href="#utils.on_error">utils.on_error</a>&nbsp;(mode)</td>
+	<td class="summary">control the error strategy used by Penlight.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#utils.printf">utils.printf</a>&nbsp;(fmt, ...)</td>
 	<td class="summary">print an arbitrary number of arguments using a format.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#quit">quit</a>&nbsp;(code, msg, ...)</td>
+	<td class="name" nowrap><a href="#utils.quit">utils.quit</a>&nbsp;(code, msg, ...)</td>
 	<td class="summary">end this program gracefully.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#readfile">readfile</a>&nbsp;(filename, is_bin)</td>
+	<td class="name" nowrap><a href="#utils.raise">utils.raise</a>&nbsp;(err)</td>
+	<td class="summary">used by Penlight functions to return errors.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#utils.readfile">utils.readfile</a>&nbsp;(filename, is_bin)</td>
 	<td class="summary">return the contents of a file as a string </td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#readlines">readlines</a>&nbsp;(filename)</td>
+	<td class="name" nowrap><a href="#utils.readlines">utils.readlines</a>&nbsp;(filename)</td>
 	<td class="summary">return the contents of a file as a list of lines </td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#split">split</a>&nbsp;(s, re)</td>
+	<td class="name" nowrap><a href="#utils.split">utils.split</a>&nbsp;(s, re)</td>
 	<td class="summary">split a string into a list of strings separated by a delimiter.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#splitl">splitl</a>&nbsp;(s)</td>
-	<td class="summary">split a string into a list of strings separated by either spaces or commas.</td>
-	</tr>
-
-	<tr>
-	<td class="name" nowrap><a href="#splitv">splitv</a>&nbsp;(s, re)</td>
+	<td class="name" nowrap><a href="#utils.splitv">utils.splitv</a>&nbsp;(s, re)</td>
 	<td class="summary">split a string into a number of values.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#writefile">writefile</a>&nbsp;(filename, str)</td>
+	<td class="name" nowrap><a href="#utils.writefile">utils.writefile</a>&nbsp;(filename, str)</td>
 	<td class="summary">write a string to a file </td>
 	</tr>
 
@@ -261,16 +275,36 @@
 
 
 
-<dt><a name="args"></a><strong>args</strong>&nbsp;(...)</dt>
+<dt><a name="utils.assert_arg"></a><strong>utils.assert_arg</strong>&nbsp;(n, val, tp, verify, msg, lev)</dt>
 <dd>
-take an arbitrary set of arguments and make into a table. This returns the table and the size; works fine for nil arguments
+assert that the given argument is in fact of the correct type.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
-	  ...: arguments
+	  n: argument index
+	</li>
+	
+	<li>
+	  val: the value
+	</li>
+	
+	<li>
+	  tp: the type
+	</li>
+	
+	<li>
+	  verify: an optional verfication function
+	</li>
+	
+	<li>
+	  msg: an optional custom message
+	</li>
+	
+	<li>
+	  lev: optional stack position for trace, default 2
 	</li>
 	
 </ul>
@@ -279,18 +313,17 @@ take an arbitrary set of arguments and make into a table. This returns the table
 
 
 <h3>Usage:</h3>
-local t,n = utils.args(...)
+<ul>
+	
+	<li>assert_arg(1,t,'table')
+	
+	<li>assert_arg(n,val,'string',path.isdir,'not a directory')
+	
+</ul>
 
 
 
-<h3>Return values:</h3>
-<ol>
-	
-	<li>table
-	
-	<li>table size
-	
-</ol>
+
 
 
 
@@ -299,12 +332,44 @@ local t,n = utils.args(...)
 
 
 
-<dt><a name="bind1"></a><strong>bind1</strong>&nbsp;(fn, p)</dt>
+<dt><a name="utils.assert_string"></a><strong>utils.assert_string</strong>&nbsp;(n, val)</dt>
+<dd>
+assert the common case that the argument is a string.
+
+
+<h3>Parameters:</h3>
+<ul>
+	
+	<li>
+	  n: argument index
+	</li>
+	
+	<li>
+	  val: a value that must be a string
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+
+
+
+</dd>
+
+
+
+
+<dt><a name="utils.bind1"></a><strong>utils.bind1</strong>&nbsp;(fn, p)</dt>
 <dd>
 bind the first argument of the function to a value.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -322,6 +387,8 @@ bind the first argument of the function to a value.
 
 
 
+
+
 <h3>Return value:</h3>
 a function such that f(x) is fn(p,x)
 
@@ -330,7 +397,7 @@ a function such that f(x) is fn(p,x)
 <h3>See also:</h3>
 <ul>
 	
-	<li><a href="../modules/pl.func.html#curry">
+	<li><a href="">
 		pl.func.curry
 	</a>
 	
@@ -341,12 +408,12 @@ a function such that f(x) is fn(p,x)
 
 
 
-<dt><a name="choose"></a><strong>choose</strong>&nbsp;(cond, value1, value2)</dt>
+<dt><a name="utils.choose"></a><strong>utils.choose</strong>&nbsp;(cond, value1, value2)</dt>
 <dd>
 return either of two values, depending on a condition.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -370,17 +437,19 @@ return either of two values, depending on a condition.
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="escape"></a><strong>escape</strong>&nbsp;(s)</dt>
+<dt><a name="utils.escape"></a><strong>utils.escape</strong>&nbsp;(s)</dt>
 <dd>
 escape any 'magic' characters in a string
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -396,17 +465,19 @@ escape any 'magic' characters in a string
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="fprintf"></a><strong>fprintf</strong>&nbsp;(f, fmt, ...)</dt>
+<dt><a name="utils.fprintf"></a><strong>utils.fprintf</strong>&nbsp;(f, fmt, ...)</dt>
 <dd>
 write an arbitrary number of arguments to a file using a format.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -430,24 +501,39 @@ write an arbitrary number of arguments to a file using a format.
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="function_arg"></a><strong>function_arg</strong>&nbsp;(f)</dt>
+<dt><a name="utils.function_arg"></a><strong>utils.function_arg</strong>&nbsp;(idx, f, msg)</dt>
 <dd>
-process a function argument. <br> This is used throughout Penlight and defines what is meant by a function: <br> Something that is_callable, or an operator string as defined by pl.operator, <br> such as '>' or '#'.
+process a function argument.
+This is used throughout Penlight and defines what is meant by a function:
+Something that is callable, or an operator string as defined by <code>pl.operator</code>,
+such as '>' or '#'.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
+	
+	<li>
+	  idx: argument index
+	</li>
 	
 	<li>
 	  f: a function, operator string, or callable object
 	</li>
 	
+	<li>
+	  msg: optional error message
+	</li>
+	
 </ul>
+
+
 
 
 
@@ -459,17 +545,26 @@ a callable
 
 
 
+<h3>See also:</h3>
+<ul>
+	
+	<li><a href="">
+		utils.is_callable
+	</a>
+	
+</ul>
+
 </dd>
 
 
 
 
-<dt><a name="import"></a><strong>import</strong>&nbsp;(t, T)</dt>
+<dt><a name="utils.import"></a><strong>utils.import</strong>&nbsp;(t, T)</dt>
 <dd>
 take a table and 'inject' it into the local namespace.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -489,17 +584,19 @@ take a table and 'inject' it into the local namespace.
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="is_callable"></a><strong>is_callable</strong>&nbsp;(obj)</dt>
+<dt><a name="utils.is_callable"></a><strong>utils.is_callable</strong>&nbsp;(obj)</dt>
 <dd>
 is the object either a function or a callable object?.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -515,17 +612,20 @@ is the object either a function or a callable object?.
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="is_type"></a><strong>is_type</strong>&nbsp;(obj, tp)</dt>
+<dt><a name="utils.is_type"></a><strong>utils.is_type</strong>&nbsp;(obj, tp)</dt>
 <dd>
-is the object of the specified type?. If the type is a string, then use type, otherwise compare with metatable
+is the object of the specified type?.
+If the type is a string, then use type, otherwise compare with metatable
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -545,17 +645,22 @@ is the object of the specified type?. If the type is a string, then use type, ot
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="memoize"></a><strong>memoize</strong>&nbsp;(func)</dt>
+<dt><a name="utils.memoize"></a><strong>utils.memoize</strong>&nbsp;(func)</dt>
 <dd>
-'memoize' a function (cache returned value for next call). This is useful if you have a function which is relatively expensive, but you don't know in advance what values will be required, so building a table upfront is wasteful/impossible.
+'memoize' a function (cache returned value for next call).
+This is useful if you have a function which is relatively expensive,
+but you don't know in advance what values will be required, so
+building a table upfront is wasteful/impossible.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -563,6 +668,8 @@ is the object of the specified type?. If the type is a string, then use type, ot
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -579,12 +686,53 @@ a function with at least one argument, which is used as the key.
 
 
 
-<dt><a name="printf"></a><strong>printf</strong>&nbsp;(fmt, ...)</dt>
+<dt><a name="utils.on_error"></a><strong>utils.on_error</strong>&nbsp;(mode)</dt>
+<dd>
+control the error strategy used by Penlight.
+Controls how <code>utils.raise</code> works; the default is for it
+to return nil and the error string, but if the mode is 'error' then
+it will throw an error. If mode is 'quit' it will immediately terminate
+the program.
+
+
+<h3>Parameters:</h3>
+<ul>
+	
+	<li>
+	  mode: - either 'default', 'quit'  or 'error'
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+
+
+
+<h3>See also:</h3>
+<ul>
+	
+	<li><a href="">
+		utils.raise
+	</a>
+	
+</ul>
+
+</dd>
+
+
+
+
+<dt><a name="utils.printf"></a><strong>utils.printf</strong>&nbsp;(fmt, ...)</dt>
 <dd>
 print an arbitrary number of arguments using a format.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -604,17 +752,19 @@ print an arbitrary number of arguments using a format.
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="quit"></a><strong>quit</strong>&nbsp;(code, msg, ...)</dt>
+<dt><a name="utils.quit"></a><strong>utils.quit</strong>&nbsp;(code, msg, ...)</dt>
 <dd>
 end this program gracefully.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -638,11 +788,13 @@ end this program gracefully.
 
 
 
+
+
 <h3>See also:</h3>
 <ul>
 	
-	<li><a href="../modules/pl.utils.html#fprintf">
-		pl.utils.fprintf
+	<li><a href="">
+		utils.fprintf
 	</a>
 	
 </ul>
@@ -652,12 +804,50 @@ end this program gracefully.
 
 
 
-<dt><a name="readfile"></a><strong>readfile</strong>&nbsp;(filename, is_bin)</dt>
+<dt><a name="utils.raise"></a><strong>utils.raise</strong>&nbsp;(err)</dt>
+<dd>
+used by Penlight functions to return errors.  Its global behaviour is controlled
+by <code>utils.on_error</code>
+
+
+<h3>Parameters:</h3>
+<ul>
+	
+	<li>
+	  err: the error string.
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+
+
+
+<h3>See also:</h3>
+<ul>
+	
+	<li><a href="">
+		utils.on_error
+	</a>
+	
+</ul>
+
+</dd>
+
+
+
+
+<dt><a name="utils.readfile"></a><strong>utils.readfile</strong>&nbsp;(filename, is_bin)</dt>
 <dd>
 return the contents of a file as a string
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -675,6 +865,8 @@ return the contents of a file as a string
 
 
 
+
+
 <h3>Return value:</h3>
 file contents
 
@@ -685,12 +877,12 @@ file contents
 
 
 
-<dt><a name="readlines"></a><strong>readlines</strong>&nbsp;(filename)</dt>
+<dt><a name="utils.readlines"></a><strong>utils.readlines</strong>&nbsp;(filename)</dt>
 <dd>
 return the contents of a file as a list of lines
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -698,6 +890,8 @@ return the contents of a file as a list of lines
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -714,12 +908,12 @@ file contents as a table
 
 
 
-<dt><a name="split"></a><strong>split</strong>&nbsp;(s, re)</dt>
+<dt><a name="utils.split"></a><strong>utils.split</strong>&nbsp;(s, re)</dt>
 <dd>
 split a string into a list of strings separated by a delimiter.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -737,33 +931,6 @@ split a string into a list of strings separated by a delimiter.
 
 
 
-<h3>Return value:</h3>
-a list-like table
-
-
-
-</dd>
-
-
-
-
-<dt><a name="splitl"></a><strong>splitl</strong>&nbsp;(s)</dt>
-<dd>
-split a string into a list of strings separated by either spaces or commas.
-
-
-<h3>Parameters</h3>
-<ul>
-	
-	<li>
-	  s: The input string
-	</li>
-	
-</ul>
-
-
-
-
 
 
 <h3>Return value:</h3>
@@ -776,12 +943,12 @@ a list-like table
 
 
 
-<dt><a name="splitv"></a><strong>splitv</strong>&nbsp;(s, re)</dt>
+<dt><a name="utils.splitv"></a><strong>utils.splitv</strong>&nbsp;(s, re)</dt>
 <dd>
 split a string into a number of values.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -802,6 +969,8 @@ first,next = splitv('jane:doe',':')
 
 
 
+
+
 <h3>Return value:</h3>
 n values
 
@@ -810,7 +979,7 @@ n values
 <h3>See also:</h3>
 <ul>
 	
-	<li><a href="../modules/pl.utils.html#split">
+	<li><a href="">
 		split
 	</a>
 	
@@ -821,12 +990,12 @@ n values
 
 
 
-<dt><a name="writefile"></a><strong>writefile</strong>&nbsp;(filename, str)</dt>
+<dt><a name="utils.writefile"></a><strong>utils.writefile</strong>&nbsp;(filename, str)</dt>
 <dd>
 write a string to a file
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -838,6 +1007,8 @@ write a string to a file
 	</li>
 	
 </ul>
+
+
 
 
 

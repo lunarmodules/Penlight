@@ -2,7 +2,7 @@
    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 <head>
-    <title>Reference</title>
+    <title>pl.stringx: Module Index</title>
     <link rel="stylesheet" href="../luadoc.css" type="text/css" />
 	<!--meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/-->
 </head>
@@ -21,7 +21,7 @@
 <div id="navigation">
 
 
-<h1>LuaDoc</h1>
+<h2>LuaDoc</h2>
 <ul>
 	
 	<li><a href="../index.html">Index</a></li>
@@ -31,7 +31,7 @@
 
 <!-- Module list -->
 
-<h1>Modules</h1>
+<h2>Modules</h2>
 <ul>
 
 	<li>
@@ -72,6 +72,10 @@
 
 	<li>
 		<a href="../modules/pl.input.html">pl.input</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.lapp.html">pl.lapp</a>
 	</li>
 
 	<li>
@@ -143,9 +147,13 @@
 
 <div id="content">
 
-<h1>Module <code>pl.stringx</code></h1>
+<h1>Module "pl.stringx"</h1>
 
-<p>Python-style string library. see 3.6.1 of the Python reference. <br> <br> If you want to make these available as string methods, then say <code>stringx.import()</code> to bring them into the standard <code>string</code> table.</p>
+<p>Python-style string library. <p>
+see 3.6.1 of the Python reference. <p>
+If you want to make these available as string methods, then say
+<code>stringx.import()</code> to bring them into the standard <code>string</code>
+table.</p>
 
 
 
@@ -155,132 +163,137 @@
 <table class="function_list">
 
 	<tr>
-	<td class="name" nowrap><a href="#at">at</a>&nbsp;(self, idx)</td>
-	<td class="summary">return the 'character' at the index.</td>
-	</tr>
-
-	<tr>
-	<td class="name" nowrap><a href="#center">center</a>&nbsp;(s, w, ch)</td>
-	<td class="summary">center-justify s with width w.</td>
-	</tr>
-
-	<tr>
-	<td class="name" nowrap><a href="#count">count</a>&nbsp;(self, sub)</td>
-	<td class="summary">count all instances of substring in string.</td>
-	</tr>
-
-	<tr>
-	<td class="name" nowrap><a href="#endswith">endswith</a>&nbsp;(self, s, first, last)</td>
-	<td class="summary">does string end with the given substring?.</td>
-	</tr>
-
-	<tr>
-	<td class="name" nowrap><a href="#expandtabs">expandtabs</a>&nbsp;(self, n)</td>
-	<td class="summary">replace all tabs in s with n spaces.</td>
-	</tr>
-
-	<tr>
-	<td class="name" nowrap><a href="#isalnum">isalnum</a>&nbsp;(s)</td>
-	<td class="summary">does s only contain alphanumeric characters?.</td>
-	</tr>
-
-	<tr>
-	<td class="name" nowrap><a href="#isalpha">isalpha</a>&nbsp;(s)</td>
-	<td class="summary">does s only contain alphabetic characters?.</td>
-	</tr>
-
-	<tr>
-	<td class="name" nowrap><a href="#isdigit">isdigit</a>&nbsp;(s)</td>
-	<td class="summary">does s only contain digits?.</td>
-	</tr>
-
-	<tr>
-	<td class="name" nowrap><a href="#islower">islower</a>&nbsp;(s)</td>
-	<td class="summary">does s only contain lower case characters?.</td>
-	</tr>
-
-	<tr>
-	<td class="name" nowrap><a href="#isspace">isspace</a>&nbsp;(s)</td>
-	<td class="summary">does s only contain spaces?.</td>
-	</tr>
-
-	<tr>
-	<td class="name" nowrap><a href="#isupper">isupper</a>&nbsp;(s)</td>
-	<td class="summary">does s only contain upper case characters?.</td>
-	</tr>
-
-	<tr>
-	<td class="name" nowrap><a href="#join">join</a>&nbsp;(self, seq)</td>
-	<td class="summary">concatenate the strings using this string as a delimiter.</td>
-	</tr>
-
-	<tr>
-	<td class="name" nowrap><a href="#lfind">lfind</a>&nbsp;(self, sub, i1)</td>
-	<td class="summary">find index of first instance of sub in s from the left.</td>
-	</tr>
-
-	<tr>
-	<td class="name" nowrap><a href="#lines">lines</a>&nbsp;(self)</td>
-	<td class="summary">return an interator over all lines in a string </td>
-	</tr>
-
-	<tr>
-	<td class="name" nowrap><a href="#ljust">ljust</a>&nbsp;(self, w, ch)</td>
-	<td class="summary">left-justify s with width w.</td>
-	</tr>
-
-	<tr>
-	<td class="name" nowrap><a href="#lstrip">lstrip</a>&nbsp;(self, chrs)</td>
-	<td class="summary">trim any whitespace on the left of s.</td>
-	</tr>
-
-	<tr>
-	<td class="name" nowrap><a href="#partition">partition</a>&nbsp;(self, ch)</td>
-	<td class="summary">partition the string using first occurance of a delimiter </td>
-	</tr>
-
-	<tr>
-	<td class="name" nowrap><a href="#replace">replace</a>&nbsp;(s, old, new, n)</td>
-	<td class="summary">replace up to n instances of old by new in the string s.</td>
-	</tr>
-
-	<tr>
-	<td class="name" nowrap><a href="#rfind">rfind</a>&nbsp;(self, sub, first, last)</td>
-	<td class="summary">find index of first instance of sub in s from the right.</td>
-	</tr>
-
-	<tr>
-	<td class="name" nowrap><a href="#rjust">rjust</a>&nbsp;(s, w, ch)</td>
-	<td class="summary">right-justify s with width w.</td>
-	</tr>
-
-	<tr>
-	<td class="name" nowrap><a href="#rpartition">rpartition</a>&nbsp;(self, ch)</td>
-	<td class="summary">partition the string p using last occurance of a delimiter </td>
-	</tr>
-
-	<tr>
-	<td class="name" nowrap><a href="#rstrip">rstrip</a>&nbsp;(s, chrs)</td>
-	<td class="summary">trim any whitespace on the right of s.</td>
-	</tr>
-
-	<tr>
 	<td class="name" nowrap><a href="#split">split</a>&nbsp;(self, re)</td>
 	<td class="summary">split a string into a list of strings using a pattern.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#splitv">splitv</a>&nbsp;(self, re)</td>
+	<td class="name" nowrap><a href="#stringx.at">stringx.at</a>&nbsp;(self, idx)</td>
+	<td class="summary">return the 'character' at the index.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#stringx.center">stringx.center</a>&nbsp;(s, w, ch)</td>
+	<td class="summary">center-justify s with width w.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#stringx.count">stringx.count</a>&nbsp;(self, sub)</td>
+	<td class="summary">count all instances of substring in string.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#stringx.endswith">stringx.endswith</a>&nbsp;(self, s, first, last)</td>
+	<td class="summary">does string end with the given substring?.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#stringx.expandtabs">stringx.expandtabs</a>&nbsp;(self, n)</td>
+	<td class="summary">replace all tabs in s with n spaces.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#stringx.isalnum">stringx.isalnum</a>&nbsp;(s)</td>
+	<td class="summary">does s only contain alphanumeric characters?.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#stringx.isalpha">stringx.isalpha</a>&nbsp;(s)</td>
+	<td class="summary">does s only contain alphabetic characters?.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#stringx.isdigit">stringx.isdigit</a>&nbsp;(s)</td>
+	<td class="summary">does s only contain digits?.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#stringx.islower">stringx.islower</a>&nbsp;(s)</td>
+	<td class="summary">does s only contain lower case characters?.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#stringx.isspace">stringx.isspace</a>&nbsp;(s)</td>
+	<td class="summary">does s only contain spaces?.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#stringx.isupper">stringx.isupper</a>&nbsp;(s)</td>
+	<td class="summary">does s only contain upper case characters?.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#stringx.join">stringx.join</a>&nbsp;(self, seq)</td>
+	<td class="summary">concatenate the strings using this string as a delimiter.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#stringx.lfind">stringx.lfind</a>&nbsp;(self, sub, i1)</td>
+	<td class="summary">find index of first instance of sub in s from the left.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#stringx.lines">stringx.lines</a>&nbsp;(self)</td>
+	<td class="summary">return an interator over all lines in a string </td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#stringx.ljust">stringx.ljust</a>&nbsp;(self, w, ch)</td>
+	<td class="summary">left-justify s with width w.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#stringx.lstrip">stringx.lstrip</a>&nbsp;(self, chrs)</td>
+	<td class="summary">trim any whitespace on the left of s.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#stringx.partition">stringx.partition</a>&nbsp;(self, ch)</td>
+	<td class="summary">partition the string using first occurance of a delimiter </td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#stringx.replace">stringx.replace</a>&nbsp;(s, old, new, n)</td>
+	<td class="summary">replace up to n instances of old by new in the string s.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#stringx.rfind">stringx.rfind</a>&nbsp;(self, sub, first, last)</td>
+	<td class="summary">find index of first instance of sub in s from the right.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#stringx.rjust">stringx.rjust</a>&nbsp;(s, w, ch)</td>
+	<td class="summary">right-justify s with width w.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#stringx.rpartition">stringx.rpartition</a>&nbsp;(self, ch)</td>
+	<td class="summary">partition the string p using last occurance of a delimiter </td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#stringx.rstrip">stringx.rstrip</a>&nbsp;(s, chrs)</td>
+	<td class="summary">trim any whitespace on the right of s.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#stringx.shorten">stringx.shorten</a>&nbsp;(self, sz, tail)</td>
+	<td class="summary">return a shorted version of a string.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#stringx.splitv">stringx.splitv</a>&nbsp;(self, re)</td>
 	<td class="summary">split a string using a pattern.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#startswith">startswith</a>&nbsp;(self, s2)</td>
+	<td class="name" nowrap><a href="#stringx.startswith">stringx.startswith</a>&nbsp;(self, s2)</td>
 	<td class="summary">does string start with the substring?.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#strip">strip</a>&nbsp;(self, chrs)</td>
+	<td class="name" nowrap><a href="#stringx.strip">stringx.strip</a>&nbsp;(self, chrs)</td>
 	<td class="summary">trim any whitespace on both left and right of s.</td>
 	</tr>
 
@@ -301,12 +314,47 @@
 
 
 
-<dt><a name="at"></a><strong>at</strong>&nbsp;(self, idx)</dt>
+<dt><a name="split"></a><strong>split</strong>&nbsp;(self, re)</dt>
+<dd>
+split a string into a list of strings using a pattern.
+
+
+<h3>Parameters:</h3>
+<ul>
+	
+	<li>
+	  self: the string
+	</li>
+	
+	<li>
+	  re: a Lua string pattern (defaults to whitespace)
+	</li>
+	
+</ul>
+
+
+
+
+<h3>Usage:</h3>
+#(('one two'):split()) == 2
+
+
+
+
+
+
+
+</dd>
+
+
+
+
+<dt><a name="stringx.at"></a><strong>stringx.at</strong>&nbsp;(self, idx)</dt>
 <dd>
 return the 'character' at the index.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -324,6 +372,8 @@ return the 'character' at the index.
 
 
 
+
+
 <h3>Return value:</h3>
 a substring of length 1 if successful, empty string otherwise.
 
@@ -334,12 +384,12 @@ a substring of length 1 if successful, empty string otherwise.
 
 
 
-<dt><a name="center"></a><strong>center</strong>&nbsp;(s, w, ch)</dt>
+<dt><a name="stringx.center"></a><strong>stringx.center</strong>&nbsp;(s, w, ch)</dt>
 <dd>
 center-justify s with width w.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -363,17 +413,19 @@ center-justify s with width w.
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="count"></a><strong>count</strong>&nbsp;(self, sub)</dt>
+<dt><a name="stringx.count"></a><strong>stringx.count</strong>&nbsp;(self, sub)</dt>
 <dd>
 count all instances of substring in string.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -393,17 +445,19 @@ count all instances of substring in string.
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="endswith"></a><strong>endswith</strong>&nbsp;(self, s, first, last)</dt>
+<dt><a name="stringx.endswith"></a><strong>stringx.endswith</strong>&nbsp;(self, s, first, last)</dt>
 <dd>
 does string end with the given substring?.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -431,17 +485,19 @@ does string end with the given substring?.
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="expandtabs"></a><strong>expandtabs</strong>&nbsp;(self, n)</dt>
+<dt><a name="stringx.expandtabs"></a><strong>stringx.expandtabs</strong>&nbsp;(self, n)</dt>
 <dd>
 replace all tabs in s with n spaces. If not specified, n defaults to 8.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -461,17 +517,19 @@ replace all tabs in s with n spaces. If not specified, n defaults to 8.
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="isalnum"></a><strong>isalnum</strong>&nbsp;(s)</dt>
+<dt><a name="stringx.isalnum"></a><strong>stringx.isalnum</strong>&nbsp;(s)</dt>
 <dd>
 does s only contain alphanumeric characters?.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -487,17 +545,19 @@ does s only contain alphanumeric characters?.
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="isalpha"></a><strong>isalpha</strong>&nbsp;(s)</dt>
+<dt><a name="stringx.isalpha"></a><strong>stringx.isalpha</strong>&nbsp;(s)</dt>
 <dd>
 does s only contain alphabetic characters?.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -513,17 +573,19 @@ does s only contain alphabetic characters?.
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="isdigit"></a><strong>isdigit</strong>&nbsp;(s)</dt>
+<dt><a name="stringx.isdigit"></a><strong>stringx.isdigit</strong>&nbsp;(s)</dt>
 <dd>
 does s only contain digits?.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -539,17 +601,19 @@ does s only contain digits?.
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="islower"></a><strong>islower</strong>&nbsp;(s)</dt>
+<dt><a name="stringx.islower"></a><strong>stringx.islower</strong>&nbsp;(s)</dt>
 <dd>
 does s only contain lower case characters?.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -565,17 +629,19 @@ does s only contain lower case characters?.
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="isspace"></a><strong>isspace</strong>&nbsp;(s)</dt>
+<dt><a name="stringx.isspace"></a><strong>stringx.isspace</strong>&nbsp;(s)</dt>
 <dd>
 does s only contain spaces?.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -591,17 +657,19 @@ does s only contain spaces?.
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="isupper"></a><strong>isupper</strong>&nbsp;(s)</dt>
+<dt><a name="stringx.isupper"></a><strong>stringx.isupper</strong>&nbsp;(s)</dt>
 <dd>
 does s only contain upper case characters?.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -617,17 +685,19 @@ does s only contain upper case characters?.
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="join"></a><strong>join</strong>&nbsp;(self, seq)</dt>
+<dt><a name="stringx.join"></a><strong>stringx.join</strong>&nbsp;(self, seq)</dt>
 <dd>
 concatenate the strings using this string as a delimiter.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -650,17 +720,19 @@ concatenate the strings using this string as a delimiter.
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="lfind"></a><strong>lfind</strong>&nbsp;(self, sub, i1)</dt>
+<dt><a name="stringx.lfind"></a><strong>stringx.lfind</strong>&nbsp;(self, sub, i1)</dt>
 <dd>
 find index of first instance of sub in s from the left.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -672,10 +744,12 @@ find index of first instance of sub in s from the left.
 	</li>
 	
 	<li>
-	  i1: start index
+	  i1: 
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -689,12 +763,12 @@ find index of first instance of sub in s from the left.
 
 
 
-<dt><a name="lines"></a><strong>lines</strong>&nbsp;(self)</dt>
+<dt><a name="stringx.lines"></a><strong>stringx.lines</strong>&nbsp;(self)</dt>
 <dd>
 return an interator over all lines in a string
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -702,6 +776,8 @@ return an interator over all lines in a string
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -718,12 +794,12 @@ an iterator
 
 
 
-<dt><a name="ljust"></a><strong>ljust</strong>&nbsp;(self, w, ch)</dt>
+<dt><a name="stringx.ljust"></a><strong>stringx.ljust</strong>&nbsp;(self, w, ch)</dt>
 <dd>
 left-justify s with width w.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -747,17 +823,19 @@ left-justify s with width w.
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="lstrip"></a><strong>lstrip</strong>&nbsp;(self, chrs)</dt>
+<dt><a name="stringx.lstrip"></a><strong>stringx.lstrip</strong>&nbsp;(self, chrs)</dt>
 <dd>
 trim any whitespace on the left of s.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -777,17 +855,19 @@ trim any whitespace on the left of s.
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="partition"></a><strong>partition</strong>&nbsp;(self, ch)</dt>
+<dt><a name="stringx.partition"></a><strong>stringx.partition</strong>&nbsp;(self, ch)</dt>
 <dd>
 partition the string using first occurance of a delimiter
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -805,6 +885,8 @@ partition the string using first occurance of a delimiter
 
 
 
+
+
 <h3>Return value:</h3>
 part before ch, ch, part after ch
 
@@ -815,12 +897,13 @@ part before ch, ch, part after ch
 
 
 
-<dt><a name="replace"></a><strong>replace</strong>&nbsp;(s, old, new, n)</dt>
+<dt><a name="stringx.replace"></a><strong>stringx.replace</strong>&nbsp;(s, old, new, n)</dt>
 <dd>
-replace up to n instances of old by new in the string s. if n is not present, replace all instances.
+replace up to n instances of old by new in the string s.
+if n is not present, replace all instances.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -846,6 +929,8 @@ replace up to n instances of old by new in the string s. if n is not present, re
 
 
 
+
+
 <h3>Return values:</h3>
 <ol>
 	
@@ -862,12 +947,12 @@ replace up to n instances of old by new in the string s. if n is not present, re
 
 
 
-<dt><a name="rfind"></a><strong>rfind</strong>&nbsp;(self, sub, first, last)</dt>
+<dt><a name="stringx.rfind"></a><strong>stringx.rfind</strong>&nbsp;(self, sub, first, last)</dt>
 <dd>
 find index of first instance of sub in s from the right.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -895,17 +980,19 @@ find index of first instance of sub in s from the right.
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="rjust"></a><strong>rjust</strong>&nbsp;(s, w, ch)</dt>
+<dt><a name="stringx.rjust"></a><strong>stringx.rjust</strong>&nbsp;(s, w, ch)</dt>
 <dd>
 right-justify s with width w.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -929,17 +1016,19 @@ right-justify s with width w.
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="rpartition"></a><strong>rpartition</strong>&nbsp;(self, ch)</dt>
+<dt><a name="stringx.rpartition"></a><strong>stringx.rpartition</strong>&nbsp;(self, ch)</dt>
 <dd>
 partition the string p using last occurance of a delimiter
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -957,6 +1046,8 @@ partition the string p using last occurance of a delimiter
 
 
 
+
+
 <h3>Return value:</h3>
 part before ch, ch, part after ch
 
@@ -967,12 +1058,12 @@ part before ch, ch, part after ch
 
 
 
-<dt><a name="rstrip"></a><strong>rstrip</strong>&nbsp;(s, chrs)</dt>
+<dt><a name="stringx.rstrip"></a><strong>stringx.rstrip</strong>&nbsp;(s, chrs)</dt>
 <dd>
 trim any whitespace on the right of s.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -992,17 +1083,19 @@ trim any whitespace on the right of s.
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="split"></a><strong>split</strong>&nbsp;(self, re)</dt>
+<dt><a name="stringx.shorten"></a><strong>stringx.shorten</strong>&nbsp;(self, sz, tail)</dt>
 <dd>
-split a string into a list of strings using a pattern.
+return a shorted version of a string.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -1010,7 +1103,11 @@ split a string into a list of strings using a pattern.
 	</li>
 	
 	<li>
-	  re: a Lua string pattern (defaults to whitespace)
+	  sz: the maxinum size allowed
+	</li>
+	
+	<li>
+	  tail: true if we want to show the end of the string (head otherwise)
 	</li>
 	
 </ul>
@@ -1018,8 +1115,7 @@ split a string into a list of strings using a pattern.
 
 
 
-<h3>Usage:</h3>
-#(('one two'):split()) == 2
+
 
 
 
@@ -1030,12 +1126,12 @@ split a string into a list of strings using a pattern.
 
 
 
-<dt><a name="splitv"></a><strong>splitv</strong>&nbsp;(self, re)</dt>
+<dt><a name="stringx.splitv"></a><strong>stringx.splitv</strong>&nbsp;(self, re)</dt>
 <dd>
 split a string using a pattern. Note that at least one value will be returned!
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -1052,7 +1148,9 @@ split a string using a pattern. Note that at least one value will be returned!
 
 
 <h3>Usage:</h3>
-a,b = line:splitv('=')
+ a,b = line:splitv('=')
+
+
 
 
 
@@ -1066,12 +1164,12 @@ the parts of the string
 
 
 
-<dt><a name="startswith"></a><strong>startswith</strong>&nbsp;(self, s2)</dt>
+<dt><a name="stringx.startswith"></a><strong>stringx.startswith</strong>&nbsp;(self, s2)</dt>
 <dd>
 does string start with the substring?.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -1091,17 +1189,19 @@ does string start with the substring?.
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="strip"></a><strong>strip</strong>&nbsp;(self, chrs)</dt>
+<dt><a name="stringx.strip"></a><strong>stringx.strip</strong>&nbsp;(self, chrs)</dt>
 <dd>
 trim any whitespace on both left and right of s.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -1113,6 +1213,8 @@ trim any whitespace on both left and right of s.
 	</li>
 	
 </ul>
+
+
 
 
 

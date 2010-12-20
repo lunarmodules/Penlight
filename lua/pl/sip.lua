@@ -1,10 +1,25 @@
----------------------------------
---- Simple Input Patterns (SIP). SIP patterns start with '$', then a
--- one-letter type, and then an optional variable in curly braces. <br>
+--- Simple Input Patterns (SIP). <p>
+-- SIP patterns start with '$', then a
+-- one-letter type, and then an optional variable in curly braces. <p>
 -- Example:
--- <pre class=example>sip.match('($q{first},$q{second})','("john","smith")',res)</pre>
--- <pre class=example>result is true and 'res' is: {second='smith',first='john'} </pre>
+-- <pre class=example>
+--  sip.match('$v=$q','name="dolly"',res)
+--  ==> res=={'name','dolly'}
+--  sip.match('($q{first},$q{second})','("john","smith")',res)
+--  ==> res=={second='smith',first='john'}
+-- </pre>
+-- <pre>
+-- <b>Type names</b>
+-- v    identifier
+-- i     integer
+-- f     floating-point
+-- q    quoted string
+-- ([{&lt;  match up to closing bracket
+-- </pre>
+-- <p>
 -- See <a href="../../index.html#sip">the Guide</a>
+-- @class module
+-- @name pl.sip
 
 local utils = require 'pl.utils'
 local patterns = utils.patterns
@@ -15,7 +30,11 @@ local io,_G = io,_G
 local print,rawget = print,rawget
 local assert_arg = utils.assert_arg
 
+--[[
 module ('pl.sip',utils._module)
+]]
+
+local sip = {}
 
 local brackets = {['<'] = '>', ['('] = ')', ['{'] = '}', ['['] = ']' }
 local stdclasses = {a=1,c=0,d=1,l=1,p=0,u=1,w=1,x=1,s=0}
@@ -57,7 +76,7 @@ end
 -- @param spec a SIP pattern
 -- @param fieldnames an optional table which is to be filled with fieldnames
 -- @param fieldtypes an optional table which maps the names to their types
-function create_pattern (spec,options)
+function sip.create_pattern (spec,options)
     assert_arg(1,spec,'string')
     local fieldnames,fieldtypes = {},{}
     if type(spec) == 'string' then
@@ -111,7 +130,7 @@ function create_pattern (spec,options)
         -- this kludge is necessary because %q generates two matches, and
         -- we want to ignore the first. Not a problem for named captures.
         if not names and type == 'q' then
-            addfield(nil,type)
+            addfield(nil,'Q')
         else
             addfield(name,type)
         end
@@ -127,7 +146,7 @@ function create_pattern (spec,options)
         elseif type == 'q' then
             -- some Lua pattern matching voodoo; we want to match '...' as
             -- well as "...", and can use the fact that %n will match a
-            -- previous capture. Adding an extra field comes from needing
+            -- previous capture. Adding the extra field above comes from needing
             -- to accomodate the extra spurious match (which is either ' or ")
             addfield(name,type)
             res = '(["\'])(.-)%'..(kount-2)
@@ -158,10 +177,10 @@ local function tnumber (s)
     return s == 'd' or s == 'i' or s == 'f'
 end
 
-function create_spec_fun(spec,options)
+function sip.create_spec_fun(spec,options)
     local fieldtypes,fieldnames
     local ls = {}
-    spec,fieldnames,fieldtypes = create_pattern(spec,options)
+    spec,fieldnames,fieldtypes = sip.create_pattern(spec,options)
     if not spec then return spec,fieldnames end
     local named_vars = type(fieldnames[1]) == 'string'
     for i = 1,#fieldnames do
@@ -169,7 +188,7 @@ function create_spec_fun(spec,options)
     end
     local fun = ('return (function(s,res)\n\t\local %s = s:match(%q)\n'):format(concat(ls,','),spec)
     fun = fun..'\tif not mm1 then return false end\n'
-    local k = 1
+    local k=1
     for i,f in ipairs(fieldnames) do
         if f ~= '_' then
             local var = 'mm'..i
@@ -180,10 +199,12 @@ function create_spec_fun(spec,options)
             end
             if named_vars then
                 fun = ('%s\tres.%s = %s\n'):format(fun,f,var)
-            else
-                fun = ('%s\tres[%d] = %s\n'):format(fun,k,var)
-            end
-            k = k + 1
+            else                
+                if fieldtypes[f] ~= 'Q' then -- we skip the string-delim capture
+                    fun = ('%s\tres[%d] = %s\n'):format(fun,k,var)
+                    k = k + 1
+                end
+            end            
         end
     end
     return fun..'\treturn true\nend)\n', named_vars
@@ -196,9 +217,9 @@ end
 -- @param spec a SIP pattern
 -- @param options optional table; {anywhere=true} will stop pattern anchoring at start
 -- @return a function if successful, or nil,<error>
-function compile(spec,options)
+function sip.compile(spec,options)
     assert_arg(1,spec,'string')
-    local fun,names = create_spec_fun(spec,options)
+    local fun,names = sip.create_spec_fun(spec,options)
     if not fun then return nil,names end
     if rawget(_G,'_DEBUG') then print(fun) end
     chunk,err = loadstring(fun,'tmp')
@@ -214,12 +235,12 @@ local cache = {}
 -- @param res a table to receive values
 -- @param options (optional) option table
 -- @return true or false
-function match (spec,line,res,options)
+function sip.match (spec,line,res,options)
     assert_arg(1,spec,'string')
     assert_arg(2,line,'string')
     assert_arg(3,res,'table')
     if not cache[spec] then
-        cache[spec] = compile(spec,options)
+        cache[spec] = sip.compile(spec,options)
     end
     return cache[spec](line,res)
 end
@@ -229,17 +250,17 @@ end
 -- @param line a string
 -- @param res a table to receive values
 -- @return true or false
-function match_at_start (spec,line,res)
-    return match(spec,line,res,{at_start=true})
+function sip.match_at_start (spec,line,res)
+    return sip.match(spec,line,res,{at_start=true})
 end
 
 --- given a pattern and a file object, return an iterator over the results
 -- @param spec a SIP pattern
 -- @param f a file - use standard input if not specified.
-function fields (spec,f)
+function sip.fields (spec,f)
     assert_arg(1,spec,'string')
     f = f or io.stdin
-    local fun,err = compile(spec)
+    local fun,err = sip.compile(spec)
     if not fun then return nil,err end
     local res = {}
     return function()
@@ -259,15 +280,15 @@ end
 -- @param spec a SIP pattern
 -- @param fun a function to be called with the results of the match
 -- @see read
-function pattern (spec,fun)
+function sip.pattern (spec,fun)
     assert_arg(1,spec,'string')
-    local pat,named = compile(spec)
+    local pat,named = sip.compile(spec)
     append(_patterns,{pat=pat,named=named,callback=fun or false})
 end
 
 --- enter a loop which applies all registered matches to the input file.
 -- @param f a file object; if nil, then io.stdin is assumed.
-function read (f)
+function sip.read (f)
     local owned,err
     f = f or io.stdin
     if type(f) == 'string' then
@@ -293,3 +314,5 @@ function read (f)
     end
     if owned then f:close() end
 end
+
+return sip

@@ -2,7 +2,7 @@
    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 <head>
-    <title>Reference</title>
+    <title>pl.text: Module Index</title>
     <link rel="stylesheet" href="../luadoc.css" type="text/css" />
 	<!--meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/-->
 </head>
@@ -21,7 +21,7 @@
 <div id="navigation">
 
 
-<h1>LuaDoc</h1>
+<h2>LuaDoc</h2>
 <ul>
 	
 	<li><a href="../index.html">Index</a></li>
@@ -31,7 +31,7 @@
 
 <!-- Module list -->
 
-<h1>Modules</h1>
+<h2>Modules</h2>
 <ul>
 
 	<li>
@@ -72,6 +72,10 @@
 
 	<li>
 		<a href="../modules/pl.input.html">pl.input</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.lapp.html">pl.lapp</a>
 	</li>
 
 	<li>
@@ -143,9 +147,22 @@
 
 <div id="content">
 
-<h1>Module <code>pl.text</code></h1>
+<h1>Module "pl.text"</h1>
 
-<p>Text processing utilities. <br> This provides a Template class (modeled after the same from the Python <br> libraries, see string.Template). It also provides dedent, wrap and fill as found in the textwrap module, as well as indent.</p>
+<p>Text processing utilities. <p>
+This provides a Template class (modeled after the same from the Python
+libraries, see string.Template). It also provides similar functions to those
+found in the textwrap module.
+<p>
+Calling <code>text.format_operator()</code> overloads the % operator for strings to give Python/Ruby style formated output.
+This is extended to also do template-like substitution for map-like data.
+<pre class=example>
+> require 'pl.text'.format_operator()
+> = '%s = %5.3f' % {'PI',math.pi}
+PI = 3.142
+> = '$name = $value' % {name='dog',value='Pluto'}
+dog = Pluto
+</pre></p>
 
 
 
@@ -170,22 +187,28 @@
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#dedent">dedent</a>&nbsp;(s)</td>
+	<td class="name" nowrap><a href="#text.dedent">text.dedent</a>&nbsp;(s)</td>
 	<td class="summary">dedent a multiline string by removing any initial indent.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#fill">fill</a>&nbsp;(s, width)</td>
+	<td class="name" nowrap><a href="#text.fill">text.fill</a>&nbsp;(s, width)</td>
 	<td class="summary">format a paragraph so that it fits into a line width.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#indent">indent</a>&nbsp;(s, n, ch)</td>
+	<td class="name" nowrap><a href="#text.format_operator">text.format_operator</a>&nbsp;()</td>
+	<td class="summary">Python-style formatting operator ------
+(see http://lua-users.org/wiki/StringInterpolation) -- </td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#text.indent">text.indent</a>&nbsp;(s, n, ch)</td>
 	<td class="summary">indent a multiline string.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#wrap">wrap</a>&nbsp;(s, width)</td>
+	<td class="name" nowrap><a href="#text.wrap">text.wrap</a>&nbsp;(s, width)</td>
 	<td class="summary">format a paragraph into lines so that they fit into a line width.</td>
 	</tr>
 
@@ -208,10 +231,14 @@
 
 <dt><a name="Template:indent_substitute"></a><strong>Template:indent_substitute</strong>&nbsp;(tbl)</dt>
 <dd>
-substitute values into a template, preserving indentation. <br> If the value is a multiline string _or_ a template, it will insert the lines at the correct indentation. <br> Furthermore, if a template, then that template will be subsituted using the same table.
+substitute values into a template, preserving indentation. <br>
+If the value is a multiline string _or_ a template, it will insert
+the lines at the correct indentation. <br>
+Furthermore, if a template, then that template will be subsituted
+using the same table.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -219,6 +246,8 @@ substitute values into a template, preserving indentation. <br> If the value is 
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -234,10 +263,11 @@ substitute values into a template, preserving indentation. <br> If the value is 
 
 <dt><a name="Template:safe_substitute"></a><strong>Template:safe_substitute</strong>&nbsp;(tbl)</dt>
 <dd>
-substitute values into a template. This version just passes unknown names through.
+substitute values into a template.
+This version just passes unknown names through.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -245,6 +275,8 @@ substitute values into a template. This version just passes unknown names throug
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -260,10 +292,11 @@ substitute values into a template. This version just passes unknown names throug
 
 <dt><a name="Template:substitute"></a><strong>Template:substitute</strong>&nbsp;(tbl)</dt>
 <dd>
-substitute values into a template, throwing an error. This will throw an error if no name is found.
+substitute values into a template, throwing an error.
+This will throw an error if no name is found.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -279,17 +312,20 @@ substitute values into a template, throwing an error. This will throw an error i
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="dedent"></a><strong>dedent</strong>&nbsp;(s)</dt>
+<dt><a name="text.dedent"></a><strong>text.dedent</strong>&nbsp;(s)</dt>
 <dd>
-dedent a multiline string by removing any initial indent. useful when working with [[..]] strings.
+dedent a multiline string by removing any initial indent.
+useful when working with [[..]] strings.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -297,6 +333,8 @@ dedent a multiline string by removing any initial indent. useful when working wi
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -313,12 +351,12 @@ a string with initial indent zero.
 
 
 
-<dt><a name="fill"></a><strong>fill</strong>&nbsp;(s, width)</dt>
+<dt><a name="text.fill"></a><strong>text.fill</strong>&nbsp;(s, width)</dt>
 <dd>
 format a paragraph so that it fits into a line width.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -336,6 +374,8 @@ format a paragraph so that it fits into a line width.
 
 
 
+
+
 <h3>Return value:</h3>
 a string
 
@@ -344,7 +384,7 @@ a string
 <h3>See also:</h3>
 <ul>
 	
-	<li><a href="../modules/pl.text.html#wrap">
+	<li><a href="">
 		wrap
 	</a>
 	
@@ -355,12 +395,32 @@ a string
 
 
 
-<dt><a name="indent"></a><strong>indent</strong>&nbsp;(s, n, ch)</dt>
+<dt><a name="text.format_operator"></a><strong>text.format_operator</strong>&nbsp;()</dt>
+<dd>
+Python-style formatting operator ------
+(see http://lua-users.org/wiki/StringInterpolation) --
+
+
+
+
+
+
+
+
+
+
+
+</dd>
+
+
+
+
+<dt><a name="text.indent"></a><strong>text.indent</strong>&nbsp;(s, n, ch)</dt>
 <dd>
 indent a multiline string.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -382,6 +442,8 @@ indent a multiline string.
 
 
 
+
+
 <h3>Return value:</h3>
 indented string
 
@@ -392,12 +454,14 @@ indented string
 
 
 
-<dt><a name="wrap"></a><strong>wrap</strong>&nbsp;(s, width)</dt>
+<dt><a name="text.wrap"></a><strong>text.wrap</strong>&nbsp;(s, width)</dt>
 <dd>
-format a paragraph into lines so that they fit into a line width. It will not break long words, so lines can be over the length to that extent.
+format a paragraph into lines so that they fit into a line width.
+It will not break long words, so lines can be over the length
+to that extent.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -409,6 +473,8 @@ format a paragraph into lines so that they fit into a line width. It will not br
 	</li>
 	
 </ul>
+
+
 
 
 

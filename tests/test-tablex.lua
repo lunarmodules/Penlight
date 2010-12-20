@@ -1,7 +1,6 @@
-require 'pl.compat52'
-require 'pl.tablex'
+local tablex = require 'pl.tablex'
 -- bring tablex funtions into global namespace
-require ('pl.utils').import(pl.tablex)
+require ('pl.utils').import(tablex)
 local asserteq = require('pl.test').asserteq
 
 local cmp = deepcompare

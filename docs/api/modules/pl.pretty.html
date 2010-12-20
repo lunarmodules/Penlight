@@ -2,7 +2,7 @@
    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 <head>
-    <title>Reference</title>
+    <title>pl.pretty: Module Index</title>
     <link rel="stylesheet" href="../luadoc.css" type="text/css" />
 	<!--meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/-->
 </head>
@@ -21,7 +21,7 @@
 <div id="navigation">
 
 
-<h1>LuaDoc</h1>
+<h2>LuaDoc</h2>
 <ul>
 	
 	<li><a href="../index.html">Index</a></li>
@@ -31,7 +31,7 @@
 
 <!-- Module list -->
 
-<h1>Modules</h1>
+<h2>Modules</h2>
 <ul>
 
 	<li>
@@ -72,6 +72,10 @@
 
 	<li>
 		<a href="../modules/pl.input.html">pl.input</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.lapp.html">pl.lapp</a>
 	</li>
 
 	<li>
@@ -143,9 +147,9 @@
 
 <div id="content">
 
-<h1>Module <code>pl.pretty</code></h1>
+<h1>Module "pl.pretty"</h1>
 
-<p>Pretty-printing Lua tables</p>
+<p>Pretty-printing Lua tables.</p>
 
 
 
@@ -155,18 +159,18 @@
 <table class="function_list">
 
 	<tr>
-	<td class="name" nowrap><a href="#dump">dump</a>&nbsp;(t, ...)</td>
-	<td class="summary">Dump a Lua table out to a file or stdout.</td>
+	<td class="name" nowrap><a href="#pretty.dump">pretty.dump</a>&nbsp;(t, ...)</td>
+	<td class="summary">	Dump a Lua table out to a file or stdout.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#read">read</a>&nbsp;(s)</td>
+	<td class="name" nowrap><a href="#pretty.read">pretty.read</a>&nbsp;(s)</td>
 	<td class="summary">read a string representation of a Lua table.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#write">write</a>&nbsp;(tbl, space, not_clever)</td>
-	<td class="summary">Create a string representation of a Lua table.</td>
+	<td class="name" nowrap><a href="#pretty.write">pretty.write</a>&nbsp;(tbl, space, not_clever)</td>
+	<td class="summary">	Create a string representation of a Lua table.</td>
 	</tr>
 
 </table>
@@ -186,12 +190,12 @@
 
 
 
-<dt><a name="dump"></a><strong>dump</strong>&nbsp;(t, ...)</dt>
+<dt><a name="pretty.dump"></a><strong>pretty.dump</strong>&nbsp;(t, ...)</dt>
 <dd>
-Dump a Lua table out to a file or stdout.
+	Dump a Lua table out to a file or stdout.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -199,10 +203,13 @@ Dump a Lua table out to a file or stdout.
 	</li>
 	
 	<li>
-	  ...: {string} (optional) File name to write too. Defaults to writing to stdout.
+	  ...: {string} (optional) File name to write too. Defaults to writing
+		to stdout.
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -216,19 +223,26 @@ Dump a Lua table out to a file or stdout.
 
 
 
-<dt><a name="read"></a><strong>read</strong>&nbsp;(s)</dt>
+<dt><a name="pretty.read"></a><strong>pretty.read</strong>&nbsp;(s)</dt>
 <dd>
-read a string representation of a Lua table. Uses loadstring, but tries to be cautious about loading arbitrary code! It is expecting a string of the form '{...}', with perhaps some whitespace before or after the curly braces. An empty environment is used, and any occurance of the keyword 'function' will be considered a problem.
+read a string representation of a Lua table.
+Uses loadstring, but tries to be cautious about loading arbitrary code!
+It is expecting a string of the form '{...}', with perhaps some whitespace
+before or after the curly braces. An empty environment is used, and
+any occurance of the keyword 'function' will be considered a problem.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
-	  s: {string} string of the form '{...}', with perhaps some whitespace before or after the curly braces.
+	  s: {string} string of the form '{...}', with perhaps some whitespace
+		before or after the curly braces.
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -242,12 +256,12 @@ read a string representation of a Lua table. Uses loadstring, but tries to be ca
 
 
 
-<dt><a name="write"></a><strong>write</strong>&nbsp;(tbl, space, not_clever)</dt>
+<dt><a name="pretty.write"></a><strong>pretty.write</strong>&nbsp;(tbl, space, not_clever)</dt>
 <dd>
-Create a string representation of a Lua table.
+	Create a string representation of a Lua table.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -255,14 +269,18 @@ Create a string representation of a Lua table.
 	</li>
 	
 	<li>
-	  space: {string} (optional) The indent to use. Defaults to two spaces.
+	  space: {string} (optional) The indent to use.
+		Defaults to two spaces.
 	</li>
 	
 	<li>
-	  not_clever: {bool} (optional) Use for plain output, e.g {['key']=1}. Defaults to false.
+	  not_clever: {bool} (optional) Use for plain output, e.g {['key']=1}.
+		Defaults to false.
 	</li>
 	
 </ul>
+
+
 
 
 

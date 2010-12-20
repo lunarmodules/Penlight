@@ -1,6 +1,6 @@
-----------------------------------------------
--- Permutation operations
-
+--- Permutation operations.
+-- @class module
+-- @name pl.permute
 local tablex = require 'pl.tablex'
 local utils = require 'pl.utils'
 local copy = tablex.deepcopy
@@ -9,7 +9,11 @@ local coroutine = coroutine
 local resume = coroutine.resume
 local assert_arg = utils.assert_arg
 
+--[[
 module ('pl.permute',utils._module)
+]]
+
+local permute = {}
 
 -- PiL, 9.3
 
@@ -36,7 +40,7 @@ end
 -- Please note that the same list is returned each time, so do not keep references!
 -- @param a list-like table
 -- @return an iterator which provides the next permutation as a list
-function iter (a)
+function permute.iter (a)
     assert_arg(1,a,'table')
     local n = #a
     local co = coroutine.create(function () permgen(a, n, coroutine.yield) end)
@@ -50,10 +54,12 @@ end
 -- @param a list-like table
 -- @return a table of tables
 -- @usage permute.table {1,2,3} --> {{2,3,1},{3,2,1},{3,1,2},{1,3,2},{2,1,3},{1,2,3}}
-function table (a)
+function permute.table (a)
     assert_arg(1,a,'table')
     local res = {}
     local n = #a
     permgen(a,n,function(t) append(res,copy(t)) end)
     return res
 end
+
+return permute

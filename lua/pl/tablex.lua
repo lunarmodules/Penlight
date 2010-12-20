@@ -1,5 +1,6 @@
-------------------------------------
--- Extended operations on Lua tables
+--- Extended operations on Lua tables.
+-- @class module
+-- @name pl.tablex
 local getmetatable,setmetatable,require = getmetatable,setmetatable,require
 local append,remove = table.insert,table.remove
 local min,max = math.min,math.max
@@ -10,9 +11,12 @@ local Set = utils.stdmt.Set
 local List = utils.stdmt.List
 local Map = utils.stdmt.Map
 local assert_arg = utils.assert_arg
-local print = print
 
+--[[
 module ('pl.tablex',utils._module)
+]]
+
+local tablex = {}
 
 -- generally, functions that make copies of tables try to preserve the metatable.
 -- However, when the source has no obvious type, then we attach appropriate metatables
@@ -29,7 +33,7 @@ end
 -- @param t1 destination table
 -- @param t2 source table
 -- @return first table
-function update (t1,t2)
+function tablex.update (t1,t2)
     assert_arg(1,t1,'table')
     assert_arg(2,t2,'table')
     for k,v in pairs(t2) do
@@ -45,7 +49,7 @@ end
 -- the hash part, for practical purposes.
 -- @param t a table
 -- @return the size
-function size (t)
+function tablex.size (t)
     assert_arg(1,t,'table')
     local i = 0
     for k in pairs(t) do i = i + 1 end
@@ -55,7 +59,7 @@ end
 --- make a shallow copy of a table
 -- @param t source table
 -- @return new table
-function copy (t)
+function tablex.copy (t)
     assert_arg(1,t,'table')
     local res = {}
     for k,v in pairs(t) do
@@ -68,14 +72,14 @@ end
 -- This will also set the copied table's metatable to that of the original.
 --  @param t A table
 -- @return new table
-function deepcopy(t)
+function tablex.deepcopy(t)
     assert_arg(1,t,'table')
     if type(t) ~= 'table' then return t end
     local mt = getmetatable(t)
     local res = {}
     for k,v in pairs(t) do
         if type(v) == 'table' then
-            v = deepcopy(v)
+            v = tablex.deepcopy(v)
         end
         res[k] = v
     end
@@ -89,7 +93,7 @@ end
 -- @param t2 A value
 -- @param ignore_mt if true, ignore __eq metamethod (default false)
 -- @return true or false
-function deepcompare(t1,t2,ignore_mt)
+function tablex.deepcompare(t1,t2,ignore_mt)
     local ty1 = type(t1)
     local ty2 = type(t2)
     if ty1 ~= ty2 then return false end
@@ -100,11 +104,11 @@ function deepcompare(t1,t2,ignore_mt)
     if not ignore_mt and mt and mt.__eq then return t1 == t2 end
     for k1,v1 in pairs(t1) do
         local v2 = t2[k1]
-        if v2 == nil or not deepcompare(v1,v2,ignore_mt) then return false end
+        if v2 == nil or not tablex.deepcompare(v1,v2,ignore_mt) then return false end
     end
     for k2,v2 in pairs(t2) do
         local v1 = t1[k2]
-        if v1 == nil or not deepcompare(v1,v2,ignore_mt) then return false end
+        if v1 == nil or not tablex.deepcompare(v1,v2,ignore_mt) then return false end
     end
     return true
 end
@@ -113,11 +117,11 @@ end
 -- @param t1 a table
 -- @param t2 a table
 -- @param cmp A comparison function
-function compare (t1,t2,cmp)
+function tablex.compare (t1,t2,cmp)
     assert_arg(1,t1,'table')
     assert_arg(2,t2,'table')
     if #t1 ~= #t2 then return false end
-    cmp = function_arg(cmp)
+    cmp = function_arg(3,cmp)
     for k in ipairs(t1) do
         if not cmp(t1[k],t2[k]) then return false end
     end
@@ -128,10 +132,10 @@ end
 -- @param t1 a list-like table
 -- @param t2 a list-like table
 -- @param cmp A comparison function (may be nil)
-function compare_no_order (t1,t2,cmp)
+function tablex.compare_no_order (t1,t2,cmp)
     assert_arg(1,t1,'table')
     assert_arg(2,t2,'table')
-	if cmp then cmp = function_arg(cmp) end
+	if cmp then cmp = function_arg(3,cmp) end
     if #t1 ~= #t2 then return false end
     local visited = {}
     for i = 1,#t1 do
@@ -162,7 +166,7 @@ end
 -- @usage find({10,20,30},20) == 2
 -- @usage find({'a','b','a','c'},'a',2) == 3
 
-function find(t,val,idx)
+function tablex.find(t,val,idx)
     assert_arg(1,t,'table')
     idx = idx or 1
     if idx < 0 then idx = #t + idx + 1 end
@@ -180,7 +184,7 @@ end
 -- @param idx index to start; -1 means last element,etc (default 1)
 -- @return index of value or nil if not found
 -- @usage rfind({10,10,10},10) == 3
-function rfind(t,val,idx)
+function tablex.rfind(t,val,idx)
     assert_arg(1,t,'table')
     idx = idx or #t
     if idx < 0 then idx = #t + idx + 1 end
@@ -197,9 +201,9 @@ end
 -- @param arg an optional second argument to the function
 -- @return index of value, or nil if not found
 -- @return value returned by comparison function
-function find_if(t,cmp,arg)
+function tablex.find_if(t,cmp,arg)
     assert_arg(1,t,'table')
-    cmp = function_arg(cmp)
+    cmp = function_arg(2,cmp)
     for k,v in pairs(t) do
         local c = cmp(v,arg)
         if c then return k,c end
@@ -213,7 +217,7 @@ end
 -- @return a list-like table
 -- @usage index_by({10,20,30,40},{2,4}) == {20,40}
 -- @usage index_by({one=1,two=2,three=3},{'one','three'}) == {1,3}
-function index_by(tbl,idx)
+function tablex.index_by(tbl,idx)
     assert_arg(1,tbl,'table')
     assert_arg(2,idx,'table')
     local res = {}
@@ -229,9 +233,9 @@ end
 -- @param fun A function that takes at least one argument
 -- @param t A table
 -- @usage map(function(v) return v*v end, {10,20,30,fred=2}) is {100,400,900,fred=4}
-function map(fun,t,...)
+function tablex.map(fun,t,...)
     assert_arg(1,t,'table')
-    fun = function_arg(fun)
+    fun = function_arg(1,fun)
     local res = {}
     for k,v in pairs(t) do
         res[k] = fun(v,...)
@@ -246,12 +250,14 @@ end
 -- @param t a table (applies to array part)
 -- @return a list-like table
 -- @usage imap(function(v) return v*v end, {10,20,30,fred=2}) is {100,400,900}
-function imap(fun,t,...)
+function tablex.imap(fun,t,...)
     assert_arg(1,t,'table')
-    fun = function_arg(fun)
+    fun = function_arg(1,fun)
     local res = {}
     for i = 1,#t do
-        res[i] = fun(t[i],...)
+        local val = fun(t[i],...)
+        if val == nil then return utils.raise 'operation returned nil' end
+        res[i] = val
     end
     return setmeta(res,t,List)
 end
@@ -260,7 +266,7 @@ end
 -- @param name the method name
 -- @param t a list-like table
 -- @param ... any extra arguments to the method
-function map_named_method (name,t,...)
+function tablex.map_named_method (name,t,...)
     assert_arg(1,name,'string')
     assert_arg(2,t,'table')
     local res = {}
@@ -278,9 +284,9 @@ end
 -- @param fun A function that takes at least one argument
 -- @param t a table
 -- @param ... extra arguments
-function transform (fun,t,...)
+function tablex.transform (fun,t,...)
     assert_arg(1,t,'table')
-    fun = function_arg(fun)
+    fun = function_arg(1,fun)
     for k,v in pairs(t) do
         t[v] = fun(v,...)
     end
@@ -290,7 +296,7 @@ end
 -- @param start  number
 -- @param finish number
 -- @param step optional increment (default 1 for increasing, -1 for decreasing)
-function range (start,finish,step)
+function tablex.range (start,finish,step)
     local res = {}
     local k = 1
     if not step then
@@ -307,10 +313,10 @@ end
 -- @param ... extra arguments
 -- @return a table
 -- @usage map2('+',{1,2,3,m=4},{10,20,30,m=40}) is {11,22,23,m=44}
-function map2 (fun,t1,t2,...)
+function tablex.map2 (fun,t1,t2,...)
     assert_arg(1,t1,'table')
     assert_arg(2,t2,'table')
-    fun = function_arg(fun)
+    fun = function_arg(1,fun)
     local res = {}
     for k,v in pairs(t1) do
         res[k] = fun(v,t2[k],...)
@@ -324,10 +330,10 @@ end
 -- @param t2 a list-like table
 -- @param ... extra arguments
 -- @usage imap2('+',{1,2,3,m=4},{10,20,30,m=40}) is {11,22,23}
-function imap2 (fun,t1,t2,...)
+function tablex.imap2 (fun,t1,t2,...)
     assert_arg(2,t1,'table')
     assert_arg(3,t2,'table')
-    fun = function_arg(fun)
+    fun = function_arg(1,fun)
     local res = {}
     for i = 1,#t1 do
         res[i] = fun(t1[i],t2[i],...)
@@ -340,9 +346,9 @@ end
 -- @param t a list-like table
 -- @return the result of the function
 -- @usage reduce('+',{1,2,3,4}) == 10
-function reduce (fun,t)
+function tablex.reduce (fun,t)
     assert_arg(2,t,'table')
-    fun = function_arg(fun)
+    fun = function_arg(1,fun)
     local n = #t
     local res = t[1]
     for i = 2,n do
@@ -358,9 +364,9 @@ end
 -- @param t a table
 -- @param fun a function with at least one argument
 -- @param ... extra arguments
-function foreach(t,fun,...)
+function tablex.foreach(t,fun,...)
     assert_arg(1,t,'table')
-    fun = function_arg(fun)
+    fun = function_arg(2,fun)
     for k,v in pairs(t) do
         fun(v,k,...)
     end
@@ -371,9 +377,9 @@ end
 -- the index and <i>finally</i> any extra arguments passed to this function
 -- @param t a table
 -- @param fun a function with at least one argument
-function foreachi(t,fun,...)
+function tablex.foreachi(t,fun,...)
     assert_arg(1,t,'table')
-    fun = function_arg(fun)
+    fun = function_arg(2,fun)
     for k,v in ipairs(t) do
         fun(v,k,...)
     end
@@ -387,8 +393,8 @@ end
 -- @usage mapn(function(x,y,z) return x+y+z end, {1,2,3},{10,20,30},{100,200,300}) is {111,222,333}
 -- @usage mapn(math.max, {1,20,300},{10,2,3},{100,200,100}) is	{100,200,300}
 -- @param fun A function that takes as many arguments as there are tables
-function mapn(fun,...)
-    fun = function_arg(fun)
+function tablex.mapn(fun,...)
+    fun = function_arg(1,fun)
     local res = {}
     local lists = {...}
     local minn = 1e40
@@ -413,9 +419,9 @@ end
 -- @param t A table
 -- @usage pairmap({fred=10,bonzo=20},function(k,v) return v end) is {10,20}
 -- @usage pairmap({one=1,two=2},function(k,v) return {k,v},k end) is {one={'one',1},two={'two',2}}
-function pairmap(fun,t,...)
+function tablex.pairmap(fun,t,...)
     assert_arg(1,t,'table')
-    fun = function_arg(fun)
+    fun = function_arg(1,fun)
     local res = {}
     for k,v in pairs(t) do
         local rv,rk = fun(k,v,...)
@@ -432,18 +438,18 @@ local function keys_op(i,v) return i end
 
 --- return all the keys of a table in arbitrary order.
 --  @param t A table
-function keys(t)
+function tablex.keys(t)
     assert_arg(1,t,'table')
-    return makelist(pairmap(keys_op,t))
+    return makelist(tablex.pairmap(keys_op,t))
 end
 
 local function values_op(i,v) return v end
 
 --- return all the values of the table in arbitrary order
 --  @param t A table
-function values(t)
+function tablex.values(t)
     assert_arg(1,t,'table')
-    return makelist(pairmap(values_op,t))
+    return makelist(tablex.pairmap(values_op,t))
 end
 
 local function index_map_op (i,v) return i,v end
@@ -452,9 +458,9 @@ local function index_map_op (i,v) return i,v end
 -- and the associated values are the indices into the original list.
 -- @param t a list-like table
 -- @return a map-like table
-function index_map (t)
+function tablex.index_map (t)
     assert_arg(1,t,'table')
-    return setmetatable(pairmap(index_map_op,t),Map)
+    return setmetatable(tablex.pairmap(index_map_op,t),Map)
 end
 
 local function set_op(i,v) return true,v end
@@ -463,9 +469,9 @@ local function set_op(i,v) return true,v end
 -- become keys, and the associated values are all true.
 -- @param t a list-like table
 -- @return a set (a map-like table)
-function makeset (t)
+function tablex.makeset (t)
     assert_arg(1,t,'table')
-    return setmetatable(pairmap(set_op,t),Set)
+    return setmetatable(tablex.pairmap(set_op,t),Set)
 end
 
 
@@ -477,8 +483,8 @@ end
 -- @param dup true for a union, false for an intersection.
 -- @usage merge({alice=23,fred=34},{bob=25,fred=34}) is {fred=34}
 -- @usage merge({alice=23,fred=34},{bob=25,fred=34},true) is {bob=25,fred=34,alice=23}
--- @see index_map
-function merge (t1,t2,dup)
+-- @see tablex.index_map
+function tablex.merge (t1,t2,dup)
     assert_arg(1,t1,'table')
     assert_arg(2,t2,'table')
     local res = {}
@@ -498,7 +504,7 @@ end
 -- @param s2 a map-like table or set
 -- @param symm symmetric difference (default false)
 -- @return a map-like table or set
-function difference (s1,s2,symm)
+function tablex.difference (s1,s2,symm)
     assert_arg(1,s1,'table')
     assert_arg(2,s2,'table')
     local res = {}
@@ -517,11 +523,11 @@ end
 -- @param t a list-like table
 -- @param cmp a function that defines equality (otherwise uses ==)
 -- @return a map-like table
--- @see pl.seq.count_map
-function count_map (t,cmp)
+-- @see seq.count_map
+function tablex.count_map (t,cmp)
     assert_arg(1,t,'table')
     local res,mask = {},{}
-    cmp = function_arg(cmp)
+    cmp = function_arg(2,cmp)
     local n = #t
     for i,v in ipairs(t) do
         if not mask[v] then
@@ -544,9 +550,9 @@ end
 -- @param t a list-like table
 -- @param pred a boolean function
 -- @param optional argument to be passed as second argument of the predicate
-function filter (t,pred,arg)
+function tablex.filter (t,pred,arg)
     assert_arg(1,t,'table')
-    pred = function_arg(pred)
+    pred = function_arg(2,pred)
     local res = {}
     for k,v in ipairs(t) do
         if pred(v,arg) then append(res,v) end
@@ -557,7 +563,7 @@ end
 --- return a table where each element is a table of the ith values of an arbitrary
 -- number of tables. It is equivalent to a matrix transpose.
 -- @usage zip({10,20,30},{100,200,300}) is {{10,100},{20,200},{30,300}}
-function zip(...)
+function tablex.zip(...)
     return mapn(function(...) return {...} end,...)
 end
 
@@ -574,7 +580,7 @@ function _copy (dest,src,idest,isrc,nsrc,clean_tail)
     end
     if dest == src then -- special case
         if idest > isrc and iend >= idest then -- overlapping ranges
-            src = sub(src,isrc,nsrc)
+            src = tablex.sub(src,isrc,nsrc)
             isrc = 1; iend = #src
         end
     end
@@ -583,7 +589,7 @@ function _copy (dest,src,idest,isrc,nsrc,clean_tail)
         idest = idest + 1
     end
     if clean_tail then
-		clear(dest,idest)
+		tablex.clear(dest,idest)
     end
     return dest
 end
@@ -594,7 +600,7 @@ end
 -- @param isrc where to start copying values into destination (default 1)
 -- @param idest where to start copying values from source (default 1)
 -- @param n number of elements to copy from source (default source size)
-function icopy (dest,src,idest,isrc,nsrc)
+function tablex.icopy (dest,src,idest,isrc,nsrc)
     assert_arg(1,dest,'table')
     assert_arg(2,src,'table')
     return _copy(dest,src,idest,isrc,ndest,true)
@@ -606,13 +612,13 @@ end
 -- @param isrc where to start copying values into destination (default 1)
 -- @param idest where to start copying values from source (default 1)
 -- @param n number of elements to copy from source (default source size)
-function move (dest,src,idest,isrc,nsrc)
+function tablex.move (dest,src,idest,isrc,nsrc)
     assert_arg(1,dest,'table')
     assert_arg(2,src,'table')
     return _copy(dest,src,idest,isrc,nsrc,false)
 end
 
-function _normalize_slice(self,first,last)
+function tablex._normalize_slice(self,first,last)
   local sz = #self
   if not first then first=1 end
   if first<0 then first=sz+first+1 end
@@ -630,9 +636,9 @@ end
 -- @param first An index
 -- @param last An index
 -- @return a new List
-function sub(t,first,last)
+function tablex.sub(t,first,last)
 	assert_arg(1,t,'table')
-	first,last = _normalize_slice(t,first,last)
+	first,last = tablex._normalize_slice(t,first,last)
 	local res={}
 	for i=first,last do append(res,t[i]) end
 	return setmeta(res,t,List)
@@ -644,7 +650,7 @@ end
 -- @param val a value
 -- @param i1 start range (default 1)
 -- @param i2 end range (default table size)
-function set (t,val,i1,i2)
+function tablex.set (t,val,i1,i2)
     i1,i2 = i1 or 1,i2 or #t
     if utils.is_callable(val) then
         for i = i1,i2 do
@@ -661,7 +667,7 @@ end
 -- @param n size
 -- @param val initial value (can be nil, but don't expect # to work!)
 -- @return the table
-function new (n,val)
+function tablex.new (n,val)
     local res = {}
     set(res,val,1,n)
     return res
@@ -669,7 +675,7 @@ end
 
 --- clear out the contents of a table.
 -- @param t a table
-function clear(t,istart)
+function tablex.clear(t,istart)
 	istart = istart or 1
     for i = istart,#t do remove(t) end
 end
@@ -678,7 +684,7 @@ end
 -- insertvalues(t, [pos,] values) <br>
 -- similar to table.insert but inserts values from given table "values",
 -- not the object itself, into table "t" at position "pos".
-function insertvalues(t, ...)
+function tablex.insertvalues(t, ...)
     local pos, values
     if select('#', ...) == 1 then
         pos,values = #t+1, ...
@@ -702,8 +708,8 @@ end
 -- @param i1 start index
 -- @param i2 end index
 -- @return the table
-function removevalues (t,i1,i2)
-	i1,i2 = _normalize_slice(t,i1,i2)
+function tablex.removevalues (t,i1,i2)
+	i1,i2 = tablex._normalize_slice(t,i1,i2)
     for i = i1,i2 do
         remove(t,i1)
     end
@@ -737,7 +743,7 @@ end
 -- @param exclude any tables to avoid searching
 -- @usage search(_G,math.sin,{package.path}) == 'math.sin'
 -- @return a fieldspec, e.g. 'a.b' or 'math.sin'
-function search (t,value,exclude)
+function tablex.search (t,value,exclude)
 	assert_arg(1,t,'table')
 	local tables = {[t]=true}
 	if exclude then
@@ -745,3 +751,5 @@ function search (t,value,exclude)
 	end
 	return _find(t,value,tables)
 end
+
+return tablex

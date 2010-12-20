@@ -8,7 +8,9 @@ local pretty = require 'pl.pretty'
 local path = require 'pl.path'
 local print,type = print,type
 local clock = os.clock
+local debug = require 'debug'
 local io,debug = io,debug
+
 local function dump(x)
 	if type(x) == 'table' then
 		return pretty.write(x,' ',true)
@@ -17,7 +19,11 @@ local function dump(x)
 	end
 end
 
+--[[
 module ('pl.test',utils._module)
+]]
+
+local test = {}
 
 local function complain (x,y)
     local i = debug.getinfo(3)
@@ -31,7 +37,7 @@ end
 -- If they are plain tables, it will use tablex.deepcompare.
 -- @param x any value
 -- @param y a value equal to x
-function asserteq (x,y)
+function test.asserteq (x,y)
     if x ~= y then
         local res = false
         if type(x) == 'table' and type(y) == 'table' then
@@ -50,7 +56,7 @@ end
 -- @param x2 any value
 -- @param y1 any value
 -- @param y2 any value
-function asserteq2 (x1,x2,y1,y2)
+function test.asserteq2 (x1,x2,y1,y2)
     if x1 ~= y1 then complain(x1,y1) end
     if x2 ~= y2 then complain(x2,y2) end
 end
@@ -60,9 +66,10 @@ end
 -- @param msg a descriptive message
 -- @param n number of times to call the function
 -- @param fun the function
-function timer(msg,n,fun,...)
+function test.timer(msg,n,fun,...)
     local start = clock()
     for i = 1,n do fun(...) end
     utils.printf("%s: took %7.2f sec\n",msg,clock()-start)
 end
 
+return test

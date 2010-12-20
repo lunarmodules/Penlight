@@ -12,10 +12,10 @@ function markdown (file,tmp)
         for line in io.lines (file) do
             line = line:gsub('@see [%a%.]+',function(s)
                 s = s:gsub('@see ','')
-                local mod,fun = s:match('(.-%..-)%.(.+)')
-                if not mod then mod = s end
-                local res = '[see '..s..'](modules/'..mod..'.html'
-                if fun then return res..'#'..fun..')'
+                local m,fun = s:match('(.-)%.(.+)')
+                if not m then m = s end
+                local res = '[see '..s..'](modules/pl.'..m..'.html'
+                if fun then return res..'#'..s..')'
                 else return res..')'
                 end
             end)

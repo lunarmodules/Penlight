@@ -2,7 +2,7 @@
    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 <head>
-    <title>Reference</title>
+    <title>pl.func: Module Index</title>
     <link rel="stylesheet" href="../luadoc.css" type="text/css" />
 	<!--meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/-->
 </head>
@@ -21,7 +21,7 @@
 <div id="navigation">
 
 
-<h1>LuaDoc</h1>
+<h2>LuaDoc</h2>
 <ul>
 	
 	<li><a href="../index.html">Index</a></li>
@@ -31,7 +31,7 @@
 
 <!-- Module list -->
 
-<h1>Modules</h1>
+<h2>Modules</h2>
 <ul>
 
 	<li>
@@ -70,6 +70,10 @@
 	
 	<li>
 		<a href="../modules/pl.input.html">pl.input</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.lapp.html">pl.lapp</a>
 	</li>
 
 	<li>
@@ -143,9 +147,10 @@
 
 <div id="content">
 
-<h1>Module <code>pl.func</code></h1>
+<h1>Module "pl.func"</h1>
 
-<p>Functional helpers like composition,binding and placeholder expressions. <br> See <a href="../../index.html#func">the Guide</a></p>
+<p>Functional helpers like composition,binding and placeholder expressions. <br>
+See <a href="../../index.html#func">the Guide</a></p>
 
 
 
@@ -155,47 +160,47 @@
 <table class="function_list">
 
 	<tr>
-	<td class="name" nowrap><a href="#I">I</a>&nbsp;(e)</td>
+	<td class="name" nowrap><a href="#func.I">func.I</a>&nbsp;(e)</td>
 	<td class="summary">instantiate a PE unless it has already been done.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#bind">bind</a>&nbsp;(fn, ...)</td>
+	<td class="name" nowrap><a href="#func.bind">func.bind</a>&nbsp;(fn, ...)</td>
 	<td class="summary">bind the arguments of a function to given values.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#compose">compose</a>&nbsp;(f, g)</td>
+	<td class="name" nowrap><a href="#func.compose">func.compose</a>&nbsp;(f, g)</td>
 	<td class="summary">create a function which chains two functions.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#curry">curry</a>&nbsp;(fn, p)</td>
+	<td class="name" nowrap><a href="#func.curry">func.curry</a>&nbsp;(fn, p)</td>
 	<td class="summary">bind the first parameter of the function to a value.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#import">import</a>&nbsp;(tname, context)</td>
+	<td class="name" nowrap><a href="#func.import">func.import</a>&nbsp;(tname, context)</td>
 	<td class="summary">wrap a table of functions.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#instantiate">instantiate</a>&nbsp;(e)</td>
+	<td class="name" nowrap><a href="#func.instantiate">func.instantiate</a>&nbsp;(e)</td>
 	<td class="summary">instantiate a PE into an actual function.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#register">register</a>&nbsp;(fun, name, an)</td>
+	<td class="name" nowrap><a href="#func.register">func.register</a>&nbsp;(fun, name, an)</td>
 	<td class="summary">register a function for use in placeholder expressions.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#repr">repr</a>&nbsp;(e, lastpred)</td>
+	<td class="name" nowrap><a href="#func.repr">func.repr</a>&nbsp;(e, lastpred)</td>
 	<td class="summary">create a string representation of a placeholder expression.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#tail">tail</a>&nbsp;(ls)</td>
+	<td class="name" nowrap><a href="#func.tail">func.tail</a>&nbsp;(ls)</td>
 	<td class="summary">all elements of a table except the first.</td>
 	</tr>
 
@@ -216,12 +221,12 @@
 
 
 
-<dt><a name="I"></a><strong>I</strong>&nbsp;(e)</dt>
+<dt><a name="func.I"></a><strong>func.I</strong>&nbsp;(e)</dt>
 <dd>
 instantiate a PE unless it has already been done.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -229,6 +234,8 @@ instantiate a PE unless it has already been done.
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -245,12 +252,13 @@ the function
 
 
 
-<dt><a name="bind"></a><strong>bind</strong>&nbsp;(fn, ...)</dt>
+<dt><a name="func.bind"></a><strong>func.bind</strong>&nbsp;(fn, ...)</dt>
 <dd>
-bind the arguments of a function to given values. bind(fn,v,_2) is equivalent to curry(fn,v).
+bind the arguments of a function to given values.
+bind(fn,v,_2) is equivalent to curry(fn,v).
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -266,7 +274,7 @@ bind the arguments of a function to given values. bind(fn,v,_2) is equivalent to
 
 
 
-<h3>Usage</h3>
+<h3>Usage:</h3>
 <ul>
 	
 	<li>(bind(f,_1,a))(b) == f(a,b)
@@ -274,6 +282,8 @@ bind the arguments of a function to given values. bind(fn,v,_2) is equivalent to
 	<li>(bind(f,_2,_1))(a,b) == f(b,a)
 	
 </ul>
+
+
 
 
 
@@ -287,12 +297,12 @@ a function
 
 
 
-<dt><a name="compose"></a><strong>compose</strong>&nbsp;(f, g)</dt>
+<dt><a name="func.compose"></a><strong>func.compose</strong>&nbsp;(f, g)</dt>
 <dd>
 create a function which chains two functions.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -313,6 +323,8 @@ printf = compose(io.write,string.format)
 
 
 
+
+
 <h3>Return value:</h3>
 a function
 
@@ -323,12 +335,12 @@ a function
 
 
 
-<dt><a name="curry"></a><strong>curry</strong>&nbsp;(fn, p)</dt>
+<dt><a name="func.curry"></a><strong>func.curry</strong>&nbsp;(fn, p)</dt>
 <dd>
 bind the first parameter of the function to a value.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -349,6 +361,8 @@ bind the first parameter of the function to a value.
 
 
 
+
+
 <h3>Return value:</h3>
 a function of one less argument
 
@@ -359,12 +373,13 @@ a function of one less argument
 
 
 
-<dt><a name="import"></a><strong>import</strong>&nbsp;(tname, context)</dt>
+<dt><a name="func.import"></a><strong>func.import</strong>&nbsp;(tname, context)</dt>
 <dd>
-wrap a table of functions. This makes them available for use in placeholder expressions.
+wrap a table of functions. This makes them available for use in
+placeholder expressions.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -384,17 +399,22 @@ wrap a table of functions. This makes them available for use in placeholder expr
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="instantiate"></a><strong>instantiate</strong>&nbsp;(e)</dt>
+<dt><a name="func.instantiate"></a><strong>func.instantiate</strong>&nbsp;(e)</dt>
 <dd>
-instantiate a PE into an actual function. First we find the largest placeholder used, e.g. _2; from this a list of the formal parameters can be build. Then we collect and replace any non-PE values from the PE, and build up a constant binding list. Finally, the expression can be compiled, and e.__PE_function is set.
+instantiate a PE into an actual function. First we find the largest placeholder used,
+e.g. _2; from this a list of the formal parameters can be build. Then we collect and replace
+any non-PE values from the PE, and build up a constant binding list.
+Finally, the expression can be compiled, and e.__PE_function is set.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -402,6 +422,8 @@ instantiate a PE into an actual function. First we find the largest placeholder 
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -418,12 +440,12 @@ a function
 
 
 
-<dt><a name="register"></a><strong>register</strong>&nbsp;(fun, name, an)</dt>
+<dt><a name="func.register"></a><strong>func.register</strong>&nbsp;(fun, name, an)</dt>
 <dd>
 register a function for use in placeholder expressions.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -445,6 +467,8 @@ register a function for use in placeholder expressions.
 
 
 
+
+
 <h3>Return value:</h3>
 a placeholder functiond
 
@@ -455,12 +479,12 @@ a placeholder functiond
 
 
 
-<dt><a name="repr"></a><strong>repr</strong>&nbsp;(e, lastpred)</dt>
+<dt><a name="func.repr"></a><strong>func.repr</strong>&nbsp;(e, lastpred)</dt>
 <dd>
 create a string representation of a placeholder expression.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -480,17 +504,19 @@ create a string representation of a placeholder expression.
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="tail"></a><strong>tail</strong>&nbsp;(ls)</dt>
+<dt><a name="func.tail"></a><strong>func.tail</strong>&nbsp;(ls)</dt>
 <dd>
 all elements of a table except the first.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -498,6 +524,8 @@ all elements of a table except the first.
 	</li>
 	
 </ul>
+
+
 
 
 

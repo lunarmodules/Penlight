@@ -22,13 +22,14 @@ local newFileName = "move_test.txt"
 local err, msg = dir.movefile( fileName, newFileName )
 
 -- Make sure the move is successful
-asserteq( err, true )
+assert( err )
 
 -- Check to make sure the original file is gone
+
 asserteq( path.exists( fileName ), false )
 
 -- Check to make sure the new file is there
-asserteq( path.exists( newFileName ), true )
+asserteq (path.exists( newFileName ) , newFileName)
 
 -- Clean up
 file.delete( newFileName )

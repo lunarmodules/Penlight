@@ -1,6 +1,31 @@
---- reads configuration files into a Lua table. <br>
+--- reads configuration files into a Lua table. <p>
 --  Understands INI files, classic Unix config files, and simple
--- delimited columns of values. <br>
+-- delimited columns of values. <p>
+-- <pre class=example>
+--    # test.config
+--    # Read timeout in seconds
+--    read.timeout=10
+--    # Write timeout in seconds
+--    write.timeout=5
+--    #acceptable ports
+--    ports = 1002,1003,1004
+--
+--        -- readconfig.lua
+--    require 'pl'
+--    local t = config.read 'test.config'
+--    print(pretty.write(t))
+--    
+--    ### output #####
+--   {
+--      ports = {
+--        1002,
+--        1003,
+--        1004
+--      },
+--      write_timeout = 5,
+--      read_timeout = 10
+--    }    
+-- </pre>
 -- See the Guide for further <a href="../../index.html#config">discussion</a>
 -- @class module
 -- @name pl.config
@@ -11,7 +36,11 @@ local type,tonumber,ipairs,io = type,tonumber,ipairs,io
 local utils = require 'pl.utils'
 local raise = utils.raise
 
+--[[
 module ('pl.config',utils._module)
+]]
+
+local config = {}
 
 -- @class table
 -- @name configuration
@@ -19,13 +48,11 @@ module ('pl.config',utils._module)
 -- @field convert_numbers try to convert values into numbers (default true)
 -- @field trim_space ensure that there is no starting or trailing whitespace with values (default true)
 -- @field list_delim delimiter to use when separating columns (default ',')
-
-
 --- like io.lines(), but allows for lines to be continued with '\'.
 -- @param file a file-like object (anything where read() returns the next line) or a filename.
 -- Defaults to stardard input.
 -- @return an iterator over the lines
-function lines(file)
+function config.lines(file)
     local f,openf,err
     local line = ''
     if type(file) == 'string' then
@@ -61,7 +88,7 @@ end
 -- @param file either a file-like object or a string, which must be a filename
 -- @param cnfg a configuration table
 -- @return nil,error_msg in case of an error, otherwise a table containing items
-function read(file,cnfg)
+function config.read(file,cnfg)
     local f,openf,err
     if not cnfg then
         cnfg = {variablilize = true, convert_numbers = true,
@@ -98,7 +125,7 @@ function read(file,cnfg)
         return value
     end
 
-    local iter,err = lines(file)
+    local iter,err = config.lines(file)
     if not iter then return raise(err) end
     for line in iter do
         -- strips comments
@@ -125,3 +152,4 @@ function read(file,cnfg)
     return top_t
 end
 
+return config

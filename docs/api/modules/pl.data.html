@@ -2,7 +2,7 @@
    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 <head>
-    <title>Reference</title>
+    <title>pl.data: Module Index</title>
     <link rel="stylesheet" href="../luadoc.css" type="text/css" />
 	<!--meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/-->
 </head>
@@ -21,7 +21,7 @@
 <div id="navigation">
 
 
-<h1>LuaDoc</h1>
+<h2>LuaDoc</h2>
 <ul>
 	
 	<li><a href="../index.html">Index</a></li>
@@ -31,7 +31,7 @@
 
 <!-- Module list -->
 
-<h1>Modules</h1>
+<h2>Modules</h2>
 <ul>
 
 	<li>
@@ -70,6 +70,10 @@
 
 	<li>
 		<a href="../modules/pl.input.html">pl.input</a>
+	</li>
+
+	<li>
+		<a href="../modules/pl.lapp.html">pl.lapp</a>
 	</li>
 
 	<li>
@@ -143,9 +147,23 @@
 
 <div id="content">
 
-<h1>Module <code>pl.data</code></h1>
+<h1>Module "pl.data"</h1>
 
-<p>Reading and querying simple tabular data. <br> This provides a way of creating basic SQL-like queries. <br> See <a href="../../index.html#data">the Guide</a></p>
+<p>Reading and querying simple tabular data.
+<pre class=example>
+data.read 'test.txt'
+==> {{10,20},{2,5},{40,50},fieldnames={'x','y'},delim=','}
+</pre>
+Provides a way of creating basic SQL-like queries.
+<pre class=example>
+   require 'pl'
+   local d = data.read('xyz.txt')
+   local q = d:select('x,y,z where x > 3 and z < 2 sort by y')
+   for x,y,z in q do
+       print(x,y,z)
+   end
+</pre>
+<p>See <a href="../../index.html#data">the Guide</a></p>
 
 
 
@@ -155,22 +173,22 @@
 <table class="function_list">
 
 	<tr>
-	<td class="name" nowrap><a href="#filter">filter</a>&nbsp;(Q, file, dont_fail)</td>
+	<td class="name" nowrap><a href="#data.filter">data.filter</a>&nbsp;(Q, file, dont_fail)</td>
 	<td class="summary">Filter input using a query.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#new">new</a>&nbsp;(data, fieldnames)</td>
+	<td class="name" nowrap><a href="#data.new">data.new</a>&nbsp;(d, fieldnames)</td>
 	<td class="summary">create a new dataset from a table of rows.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#query">query</a>&nbsp;(data, condn, context, return_row)</td>
+	<td class="name" nowrap><a href="#data.query">data.query</a>&nbsp;(data, condn, context, return_row)</td>
 	<td class="summary">create a query iterator from a select string.</td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#read">read</a>&nbsp;(file, cnfg)</td>
+	<td class="name" nowrap><a href="#data.read">data.read</a>&nbsp;(file, cnfg)</td>
 	<td class="summary">read a delimited file in a Lua table.</td>
 	</tr>
 
@@ -191,12 +209,12 @@
 
 
 
-<dt><a name="filter"></a><strong>filter</strong>&nbsp;(Q, file, dont_fail)</dt>
+<dt><a name="data.filter"></a><strong>data.filter</strong>&nbsp;(Q, file, dont_fail)</dt>
 <dd>
 Filter input using a query.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -220,21 +238,26 @@ Filter input using a query.
 
 
 
+
+
 </dd>
 
 
 
 
-<dt><a name="new"></a><strong>new</strong>&nbsp;(data, fieldnames)</dt>
+<dt><a name="data.new"></a><strong>data.new</strong>&nbsp;(d, fieldnames)</dt>
 <dd>
-create a new dataset from a table of rows. <br> Can specify the fieldnames, else the table must have a field called 'fieldnames', which is either a string of comma-separated names, or a table of names.
+create a new dataset from a table of rows. <br>
+Can specify the fieldnames, else the table must have a field called
+'fieldnames', which is either a string of comma-separated names,
+or a table of names.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
-	  data: the table.
+	  d: the table.
 	</li>
 	
 	<li>
@@ -242,6 +265,8 @@ create a new dataset from a table of rows. <br> Can specify the fieldnames, else
 	</li>
 	
 </ul>
+
+
 
 
 
@@ -258,12 +283,17 @@ the table.
 
 
 
-<dt><a name="query"></a><strong>query</strong>&nbsp;(data, condn, context, return_row)</dt>
+<dt><a name="data.query"></a><strong>data.query</strong>&nbsp;(data, condn, context, return_row)</dt>
 <dd>
-create a query iterator from a select string. Select string has this format: <br> FIELDLIST [ where LUA-CONDN [ sort by FIELD] ]<br> FIELDLISt is a comma-separated list of valid fields, or '*'. <br> <br> The condition can also be a table, with fields 'fields' (comma-sep string or table), 'sort_by' (string) and 'where' (Lua expression string or function)
+create a query iterator from a select string.
+Select string has this format: <br>
+FIELDLIST [ where LUA-CONDN [ sort by FIELD] ]<br>
+FIELDLISt is a comma-separated list of valid fields, or '*'. <br> <br>
+The condition can also be a table, with fields 'fields' (comma-sep string or
+table), 'sort_by' (string) and 'where' (Lua expression string or function)
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -289,6 +319,8 @@ create a query iterator from a select string. Select string has this format: <br
 
 
 
+
+
 <h3>Return value:</h3>
 an iterator over the specified fields
 
@@ -299,12 +331,13 @@ an iterator over the specified fields
 
 
 
-<dt><a name="read"></a><strong>read</strong>&nbsp;(file, cnfg)</dt>
+<dt><a name="data.read"></a><strong>data.read</strong>&nbsp;(file, cnfg)</dt>
 <dd>
-read a delimited file in a Lua table. By default, attempts to treat first line as separated list of fieldnames.
+read a delimited file in a Lua table.
+By default, attempts to treat first line as separated list of fieldnames.
 
 
-<h3>Parameters</h3>
+<h3>Parameters:</h3>
 <ul>
 	
 	<li>
@@ -312,10 +345,14 @@ read a delimited file in a Lua table. By default, attempts to treat first line a
 	</li>
 	
 	<li>
-	  cnfg: options table: can override delim (a string pattern), fieldnames (a list), specify no_convert (default is to convert), numfields (indices of columns known to be numbers) and thousands_dot (thousands separator in Excel CSV is '.')
+	  cnfg: options table: can override delim (a string pattern), fieldnames (a list),
+specify no_convert (default is to convert), numfields (indices of columns known
+to be numbers) and thousands_dot (thousands separator in Excel CSV is '.')
 	</li>
 	
 </ul>
+
+
 
 
 

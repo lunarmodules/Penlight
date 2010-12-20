@@ -3,7 +3,7 @@
 
 The module documentation is available [here](api/index.html); and there is an alphabetical [function index](function_index.html).
 
-The latest vesion is available at [LuaForge](http://luaforge.net/frs/?group_id=450).
+The latest vesion is available at [Github](http://github.com/stevedonovan/Penlight).
 
 ## Introduction
 
@@ -85,11 +85,9 @@ If you wish to enforce strictness globally, then just add `require 'pl.strict'` 
 
 ### What are function arguments in Penlight?
 
-Many functions in Penlight themselves take function arguments, like `map` which applies a function to a list, element by element.  You can use existing functions, like `math.max`, anonymous functions (like `function(x,y) return x > y end`), operations by name (e.g '*' or '..') or _string lambdas_ like '|x,y| x > y'.  The module `pl.operator` exports all the standard Lua operations, like the Python module of the same name. Penlight allows these to be refered to by name, so `operator.gt` can be more concisely expressed as '>'.
+Many functions in Penlight themselves take function arguments, like `map` which applies a function to a list, element by element.  You can use existing functions, like `math.max`, anonymous functions (like `function(x,y) return x > y end`), or operations by name (e.g '*' or '..').  The module `pl.operator` exports all the standard Lua operations, like the Python module of the same name. Penlight allows these to be refered to by name, so `operator.gt` can be more concisely expressed as '>'.
 
 Note that the `map` functions pass any extra arguments to the function, so we can have `ls:filter('>',0)`, which is effectively `ls:filter(function(x) return x > 0 end)`.
-
-String lambdas provide a convenient way to express simple anonymous functions, without the 'keyword noise' of the usual syntax. This is not to everyone's taste, which is why it is not part of the language itself, but these forms can make code that is both more compact and readable.
 
 Finally, `pl.func` supports _placeholder expressions_ in the Boost style, so that an anonymous function to multiply the two arguments can be expressed as `_1*_2`.
 
@@ -133,10 +131,10 @@ A common pattern when working with Lua varargs is capturing all the arguments in
         ...
     end
 
-But this will bite you someday when `nil` is one of the arguments, since this will put a 'hole' in your table. In particular, `#ls` will only give you the size upto the `nil` value.  Hence the need for `utils.args`:
+But this will bite you someday when `nil` is one of the arguments, since this will put a 'hole' in your table. In particular, `#ls` will only give you the size upto the `nil` value.  Hence the need for `table.pack` - this is a new Lua 5.2 function which Penlight defines also for Lua 5.1.
 
     function t(...)
-        local args,n = utils.args(...)
+        local args,n = table.pack(...)
         for i = 1,n do
           ...
         end
@@ -154,6 +152,7 @@ The 'memoize' pattern occurs when you have a function which is expensive to call
     ...
     s = sum(1e8) --returned saved value!
 
+<a id="app"/>
 ### Application Support
 
 `app.parse_args` is a simple command-line argument parser. If called without any arguments, it tries to use the global `arg` array.  It returns the _flags_ (options begining with '-') as a table of name/value pairs, and the _arguments_ as an array.  It knows about long GNU-style flag names, e.g. `--value`, and groups of short flags are understood, so that `-ab` is short for `-a -b`. The flags result would then look like `{value=true,a=true,b=true}`.
@@ -179,7 +178,7 @@ and the equivalent on my Linux machine:
 
 Penlight makes it convenient to save application data in Lua format. You can use `pretty.dump(t,file)` to write a Lua table in a human-readable form to a file, and `pretty.read(file.read(file))` to generate the table again.
 
-(@see pl.app, @see pl.pretty)
+(@see app, @see pretty)
 
 
 <a id="class"/>
@@ -268,7 +267,7 @@ This useful notation is borrowed from Hugo Etchegoyen's [classlib](http://lua-us
 
 ### Python-style Lists
 
-One of the elegant things about Lua is that tables do the job of both lists and dicts (as called in Python) or vectors and maps, (as called in C++), and they do it efficiently.  However, if we are dealing with 'tables with numerical indices' we may as well call them lists and look for operations which particularly make sense for lists. The Penlight `List` class was originally written by Nick Trout for Lua 5.0, and translated to 5.1 and extended by myself.  It seemed that borrowing from Python was a good idea, and this eventually grew into Penlight. (@see pl.list)
+One of the elegant things about Lua is that tables do the job of both lists and dicts (as called in Python) or vectors and maps, (as called in C++), and they do it efficiently.  However, if we are dealing with 'tables with numerical indices' we may as well call them lists and look for operations which particularly make sense for lists. The Penlight `List` class was originally written by Nick Trout for Lua 5.0, and translated to 5.1 and extended by myself.  It seemed that borrowing from Python was a good idea, and this eventually grew into Penlight. (@see list)
 
 Here is an example showing `List` in action; it redefines `__tostring`, so that it can print itself out more sensibly:
 
@@ -428,7 +427,7 @@ In general, this parameter is meant to be passed to the _class constructor_. In 
     end
 
 
-(@see pl.class, @see pl.classx)
+(@see class, @see classx)
 
 ### Tablex. Useful Operations on Tables
 
@@ -442,7 +441,7 @@ The functions provided in `table` provide all the basic manipulations on Lua tab
     end
     return res
 
-The `tablex` module (@see pl.tablex) provides this as `copy`, which does a _shallow_ copy of a table. There is also `deepcopy` which goes further than a simple loop in two ways; first, it also gives the copy the same metatable as the original (so it can copy objects like `List` above) and any nested tables will also be copied, to arbitrary depth. There is also `icopy` which operates on list-like tables, where you can set optionally set the start index of the source and destination as well. It ensures that any left-over elements will be deleted:
+The `tablex` module (@see tablex) provides this as `copy`, which does a _shallow_ copy of a table. There is also `deepcopy` which goes further than a simple loop in two ways; first, it also gives the copy the same metatable as the original (so it can copy objects like `List` above) and any nested tables will also be copied, to arbitrary depth. There is also `icopy` which operates on list-like tables, where you can set optionally set the start index of the source and destination as well. It ensures that any left-over elements will be deleted:
 
     asserteq(icopy({1,2,3,4,5,6},{20,30}),{20,30})   -- start at 1
     asserteq(icopy({1,2,3,4,5,6},{20,30},2),{1,20,30}) -- start at 2
@@ -707,7 +706,7 @@ This applies to `iter` as well, which can also optionally be given a range:
     3       2       8
     3       3       9
 
-(@see pl.array2d)
+(@see array2d)
 
 ## Strings. Higher-level operations on strings.
 
@@ -737,7 +736,7 @@ These are convenient borrowings from Python, as described in 3.6.1 of the Python
 
 Most of these can be fairly easily implemented using the Lua string library, which is more general and powerful. But they are convenient operations to have easily at hand. Note that can be injected into the `string` table if you use `require 'pl'` and then `stringx.import()`, or explicitly call `pl.stringx.import()`, but a simple alias like 'stringx = require 'pl.string'` can be used. This is the recommended practice when writing modules for consumption by other people, since it is bad manners to change the global state of the rest of the system.
 
-(@see pl.stringx)
+(@see stringx)
 
 ### String Templates
 
@@ -785,7 +784,7 @@ And the output is:
 
 `pl.text` also has a number of useful functions like `dedent`, which strips all the initial indentation from a multiline string. As in Python, this is useful for preprocessing multiline strings if you like indenting them with your code. The function `wrap` is passed a long string (a _paragraph_) and returns a list of lines that fit into a desired line width. As an extension, there is also `indent` for indenting multiline strings.
 
-(@see pl.text)
+(@see text)
 
 
 ## Paths and Directories
@@ -956,7 +955,9 @@ This is more self-documenting; it is generally better to make the code express t
 
 ### Reading Unstructured Text Data
 
-Text data is sometimes unstructured, for example a file containing words. The 'pl.input` module has a number of functions which makes processing such files easier. For example, a script to count the number of words in standard input (@see pl.input.words):
+<a id="input"/>
+
+Text data is sometimes unstructured, for example a file containing words. The 'pl.input` module has a number of functions which makes processing such files easier. For example, a script to count the number of words in standard input (@see input.words):
 
     -- countwords.lua
     require 'pl'
@@ -966,7 +967,7 @@ Text data is sometimes unstructured, for example a file containing words. The 'p
     end
     print('count',k)
 
-Or this script to calculate the average of a set of numbers (@see pl.input.numbers):
+Or this script to calculate the average of a set of numbers (@see input.numbers):
 
     -- average.lua
     require 'pl'
@@ -998,8 +999,6 @@ A useful feature of a sequence generator like `numbers` is that it can read from
         print(seq.sum(input.numbers(line))
     end
 
-<a id="data"/>
-
 ### Reading Columnar Data
 
 It is very common to find data in columnar form, either space or comma-separated, perhaps with an initial set of column headers. Here is a typical example:
@@ -1028,7 +1027,7 @@ It is very common to find data in columnar form, either space or comma-separated
 
 The second parameter is a delimiter, by default spaces. ' ' is understood to mean 'any number of spaces', i.e. '%s+'. Any Lua string pattern can be used.
 
-The third parameter is a _data source_, by default standard input (@see pl.input.create_getter) It assumes that the data source has a `read` method which brings in the next line, i.e. it is a 'file-like' object. As a special case, a string will be split into its lines:
+The third parameter is a _data source_, by default standard input (@see input.create_getter) It assumes that the data source has a `read` method which brings in the next line, i.e. it is a 'file-like' object. As a special case, a string will be split into its lines:
 
     > for x,y in input.fields(2,' ','10 20\n30 40\n') do print(x,y) end
     10      20
@@ -1042,7 +1041,9 @@ Note the default behaviour for bad fields, which is to show the offending line n
 
 This behaviour of `input.fields` is appropriate for a script which you want to fail immediately with an appropriate _user_ error message if conversion fails. The fourth optional parameter is an options table: `{no_fail=true}` means that conversion is attempted but if it fails it just returns the string, rather as AWK would operate. You are then responsible for checking the type of the returned field. `{no_convert=true}` switches off conversion altogether and all fields are returned as strings.
 
-Sometimes it is useful to bring a whole dataset into memory, for operations such as extracting columns. Penlight provides a flexible reader specifically for reading this kind of data (@see pl.data.read). Given a file looking like this:
+<a id="data"/>
+
+Sometimes it is useful to bring a whole dataset into memory, for operations such as extracting columns. Penlight provides a flexible reader specifically for reading this kind of data (@see data.read). Given a file looking like this:
 
     x,y
     10,20
@@ -1128,7 +1129,7 @@ Data does not have to come from files, nor does it necessarily come from the lab
         end
 
 
-I've always been an admirer of the AWK programming language; with `filter` (@see pl.data.filter) you can get Lua programs which are just as compact:
+I've always been an admirer of the AWK programming language; with `filter` (@see data.filter) you can get Lua programs which are just as compact:
 
     -- printxy.lua
     require 'pl'
@@ -1179,7 +1180,7 @@ The `config` module provides a simple way to convert several kinds of configurat
     #acceptable ports
     ports = 1002,1003,1004
 
-This can be easily brought in using `config.read` and the result shown using `pl.pretty.write` (@see pl.pretty.write)
+This can be easily brought in using `config.read` and the result shown using `pl.pretty.write` (@see pretty.write)
 
     -- readconfig.lua
     local config = require 'pl.config'
@@ -1581,7 +1582,7 @@ As a convenience, there is a function `seq.lines` which behaves just like `io.li
 
     seq.lines():take(10):upper():enum():map('..'):printall '\n'
 
-Note the method `upper`, which is not a `seq` function. if an unknown method is called, sequence wrappers apply that method to all the values in the sequence (this is implicit use of `mapmethod` - @see pl.seq.mapmethod.)
+Note the method `upper`, which is not a `seq` function. if an unknown method is called, sequence wrappers apply that method to all the values in the sequence (this is implicit use of `mapmethod` - @see seq.mapmethod)
 
 It is straightforward to create custom sequences that can be used in this way. On Unix, `/dev/random` gives you an _endless_ sequence of random bytes, so we use `take` to limit the sequence, and then `map` to scale the result into the desired range. The key step is to use `seq` to wrap the iterator function:
 
@@ -1601,10 +1602,6 @@ It is straightforward to create custom sequences that can be used in this way. O
     -- print 10 random numbers from 0 to 1 !
     dev_random():take(10):map('%',100):map('/',100):printall ','
 
-
-You may prefer this form, which uses the new 'string lambda' notation:
-
-	dev_random():take(10):map '|n| (n % 100)/100':printall ','
 
 Another Linux one-liner depends on the `/proc` filesystem and makes a list of all the currently running processes:
 
@@ -1851,7 +1848,6 @@ There are some performance considerations to using placeholder expressions. Inst
         res[i] = tablex.map2(fn,first[i],second[i])
     end
 
-Another option now supported by Penlight is the use of _string lambdas_. These use the 'short-form' for anonymous functions.  So any Penlight function can accept strings like '|x,y| x+y', which is equivalent to `function(x,y) return x+y end`. Please note that these functions are effectively compiled in the global context and they cannot have references to locals.  They do not suffer from the quoting problem, so that we can say '|f| f:read()', and they can be efficiently memoized.
 
 ## Additional Libraries
 
@@ -1989,7 +1985,7 @@ Finally, putting a ' $' at the end of a pattern means 'capture the rest of the l
     > res
     {first='jan',rest='and a string',last='smit'}
 
-(@see pl.sip)
+(@see sip)
 
 <a id="lapp"/>
 

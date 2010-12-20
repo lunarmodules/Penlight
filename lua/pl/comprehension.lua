@@ -11,19 +11,12 @@
 -- (c) 2008 David Manura. Licensed under the same terms as Lua (MIT license).
 --
 
-local assert = assert
-local loadstring = loadstring
-local tonumber = tonumber
-local math_max = math.max
-local table_concat = table.concat
-local getfenv = getfenv
-local setfenv = setfenv
-local ipairs = ipairs
-local setmetatable = setmetatable
-local _G = _G
-
 local lb = require "pl.luabalanced"
 local utils = require 'pl.utils'
+
+local math_max = math.max
+local table_concat = table.concat
+
 
 -- fold operations
 -- http://en.wikipedia.org/wiki/Fold_(higher-order_function)
@@ -206,9 +199,8 @@ local function wrap_comprehension(code, ninputs, max_param, invallists, env)
   end
   code = code .. ' return __result '
   --print('DEBUG:', code)
-  local f, err = loadstring(code)
+  local f, err = loadin(env,code)
   if not f then assert(false, err .. ' with generated code ' .. code) end
-  setfenv(f, env)
   return f
 end
 
@@ -239,7 +231,11 @@ local function new(env)
   -- explicitly manage caches; however, that might also have an undue
   -- performance penalty.
 
-  env = env or getfenv(2)
+  if not env then
+    if _VERSION=='Lua 5.1' then env = getfenv(2)
+    else env = _G
+    end
+   end
 
   local mt = {}
   local cache = setmetatable({}, mt)

@@ -1,5 +1,5 @@
 local stringio = require 'pl.stringio'
-require 'pl.config'
+local config = require 'pl.config'
 
 function dump(t,indent)
     if type(t) == 'table' then
@@ -19,7 +19,7 @@ end
 
 function testconfig(test)
     f = stringio.open(test)
-    c = pl.config.read(f)
+    c = config.read(f)
     f:close()
     dump(c,'  ')
     print '-----'

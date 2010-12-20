@@ -1,14 +1,18 @@
-----------------------------------------------------------
---- Pretty-printing Lua tables
+--- Pretty-printing Lua tables.
+-- @class module
+-- @name pl.pretty
 
 local append = table.insert
 local concat = table.concat
-local type,tostring,pairs,ipairs,loadstring,setfenv,require,print,select = type,tostring,pairs,ipairs,loadstring,setfenv,require,print,select
 local utils = require 'pl.utils'
 local lexer = require 'pl.lexer'
 local assert_arg = utils.assert_arg
 
+--[[
 module('pl.pretty',utils._module)
+]]
+
+local pretty = {}
 
 --- read a string representation of a Lua table.
 -- Uses loadstring, but tries to be cautious about loading arbitrary code!
@@ -17,7 +21,7 @@ module('pl.pretty',utils._module)
 -- any occurance of the keyword 'function' will be considered a problem.
 -- @param s {string} string of the form '{...}', with perhaps some whitespace
 --		before or after the curly braces.
-function read(s)
+function pretty.read(s)
     assert_arg(1,s,'string')
     if not s:find '^%s*%b{}%s*$' then return nil,"not a Lua table" end
     if s:find '[^\'"%w_]function[^\'"%w_]' then
@@ -28,9 +32,8 @@ function read(s)
             end
         end
     end
-    local chunk,err = loadstring('return '..s,'tbl')
+    local chunk,err = loadin({},'return '..s,'tbl')
     if not chunk then return nil,err end
-    setfenv(chunk,{})
     return chunk()
 end
 
@@ -51,7 +54,7 @@ local keywords
 --		Defaults to two spaces.
 --	@param not_clever {bool} (optional) Use for plain output, e.g {['key']=1}.
 --		Defaults to false.
-function write (tbl,space,not_clever)
+function pretty.write (tbl,space,not_clever)
     assert_arg(1,tbl,'table')
     if not keywords then
         keywords = lexer.get_keywords()
@@ -156,11 +159,13 @@ end
 --	@param t {table} The table to write to a file or stdout.
 --	@param ... {string} (optional) File name to write too. Defaults to writing
 --		to stdout.
-function dump (t,...)
+function pretty.dump (t,...)
     if select('#',...) == 0 then
-        print(write(t))
+        print(pretty.write(t))
         return true
     else
-        return utils.raise(utils.writefile((select(1,...)),write(t)))
+        return utils.writefile((select(1,...)),pretty.write(t))
     end
 end
+
+return pretty
