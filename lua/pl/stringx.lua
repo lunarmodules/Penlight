@@ -23,6 +23,14 @@ local function assert_string (n,s)
     assert_arg(n,s,'string')
 end
 
+local function non_empty(s)
+    return #s > 0
+end
+
+local function assert_nonempty_string(n,s)
+    assert_arg(n,s,'string',non_empty,'must be a non-empty string')
+end
+
 --[[
 module ('pl.stringx',utils._module)
 ]]
@@ -44,7 +52,7 @@ end
 --- does s only contain alphanumeric characters?.
 function stringx.isalnum(s)
     assert_string(1,s)
-    return find(s,'^%d+$') == 1
+    return find(s,'^%w+$') == 1
 end
 
 --- does s only contain spaces?.
@@ -82,6 +90,7 @@ function stringx.startswith(self,s2)
 end
 
 local function _find_all(s,sub,first,last)
+    if sub == '' then return #s+1,#s end
     local i1,i2 = find(s,sub,first,true)
     local res
     local k = 0
@@ -95,16 +104,14 @@ local function _find_all(s,sub,first,last)
 end
 
 --- does string end with the given substring?.
--- @param s a substring or a table of suffixes
-function stringx.endswith(self,s,first,last)
-    assert_string(1,self)
-    first = first or 1
+-- @param send a substring or a table of suffixes
+function stringx.endswith(s,send)
+    assert_string(1,s)
     if type(s) == 'string' then
-        local i1 = _find_all(self,s,first,last)
-        return i1 == #self - #s + 1
-    elseif type(s) == 'table' then
-        for _,suffix in ipairs(s) do
-            if stringx.endswith(self,suffix,first,last) then return true end
+        return #s >= #send and s:find(send, #s-#send+1, true) and true or false
+    elseif type(send) == 'table' then
+        for _,suffix in ipairs(send) do
+            if stringx.endswith(s,suffix) then return true end
         end
         return false
     else
@@ -123,8 +130,8 @@ end
 function stringx.expandtabs(self,n)
     assert_string(1,self)
     n = n or 8
-    local tab = rep(' ',n)
-    return (gsub(s,'\t',tab))
+    local tab = (' '):rep(n)
+    return (gsub(self,'\t',tab))
 end
 
 --- find index of first instance of sub in s from the left.
@@ -134,7 +141,7 @@ function stringx.lfind(self,sub,i1)
     assert_string(1,self)
     assert_string(2,sub)
     local idx = find(self,sub,i1,true)
-    if idx then return idx else return -1 end
+    if idx then return idx else return nil end
 end
 
 --- find index of first instance of sub in s from the right.
@@ -145,7 +152,7 @@ function stringx.rfind(self,sub,first,last)
     assert_string(1,self)
     assert_string(2,sub)
     local idx = _find_all(self,sub,first,last)
-    if idx then return idx else return -1 end
+    if idx then return idx else return nil end
 end
 
 --- replace up to n instances of old by new in the string s.
@@ -159,7 +166,7 @@ end
 function stringx.replace(s,old,new,n)
     assert_string(1,s)
     assert_string(1,old)
-    return gsub(s,escape(old),new,n)
+    return (gsub(s,escape(old),new:gsub('%%','%%%%'),n))
 end
 
 --- split a string into a list of strings using a pattern.
@@ -206,9 +213,11 @@ local function _just(s,w,ch,left,right)
         if not ch then ch = ' ' end
         local f1,f2
         if left and right then
-            f1 = rep(ch,ceil((w-n)/2))
-            f2 = f1
-        elseif left then
+            local ln = ceil((w-n)/2)
+            local rn = w - n - ln
+            f1 = rep(ch,ln)
+            f2 = rep(ch,rn)
+        elseif right then
             f1 = rep(ch,w-n)
             f2 = ''
         else
@@ -248,7 +257,7 @@ function stringx.center(s,w,ch)
     return _just(s,w,ch,true,true)
 end
 
-local function _strip(s,chrs,left,right)
+local function _strip(s,left,right)
     if left then
         local i1,i2 = find(s,'^%s*')
         if i2 >= i1 then
@@ -265,21 +274,21 @@ local function _strip(s,chrs,left,right)
 end
 
 --- trim any whitespace on the left of s.
-function stringx.lstrip(self,chrs)
+function stringx.lstrip(self)
     assert_string(1,self)
-    return _strip(self,chrs,true,false)
+    return _strip(self,true,false)
 end
 
 --- trim any whitespace on the right of s.
-function stringx.rstrip(s,chrs)
+function stringx.rstrip(s)
     assert_string(1,s)
-    return _strip(s,chrs,false,true)
+    return _strip(s,false,true)
 end
 
 --- trim any whitespace on both left and right of s.
-function stringx.strip(self,chrs)
+function stringx.strip(self)
     assert_string(1,self)
-    return _strip(self,chrs,true,true)
+    return _strip(self,true,true)
 end
 
 -- The partition functions split a string  using a delimiter into three parts:
@@ -299,8 +308,8 @@ end
 -- @return part before ch, ch, part after ch
 function stringx.partition(self,ch)
     assert_string(1,self)
-    assert_string(2,ch)
-    return _partition(self,ch,lfind)
+    assert_nonempty_string(2,ch)
+    return _partition(self,ch,stringx.lfind)
 end
 
 --- partition the string p using last occurance of a delimiter
@@ -308,8 +317,8 @@ end
 -- @return part before ch, ch, part after ch
 function stringx.rpartition(self,ch)
     assert_string(1,self)
-    assert_string(2,ch)
-    return _partition(self,ch,rfind)
+    assert_nonempty_string(2,ch)
+    return _partition(self,ch,stringx.rfind)
 end
 
 --- return the 'character' at the index.
@@ -329,8 +338,11 @@ function stringx.lines (self)
     assert_string(1,self)
     local s = self
     if not s:find '\n$' then s = s..'\n' end
-    return self:gmatch('([^\n]*)\n')
+    return s:gmatch('([^\n]*)\n')
 end
+
+local elipsis = '...'
+local n_elipsis = #elipsis
 
 --- return a shorted version of a string.
 -- @param self the string
@@ -338,11 +350,12 @@ end
 -- @param tail true if we want to show the end of the string (head otherwise)
 function stringx.shorten(self,sz,tail)
     if #self > sz then
+        if sz < n_elipsis then return elipsis:sub(1,sz) end
         if tail then
-            local i = #self - sz + 3
-            return '...' .. self:sub(i)
+            local i = #self - sz + 1 + n_elipsis
+            return elipsis .. self:sub(i)
         else
-            return self:sub(1,sz-3) .. '...'
+            return self:sub(1,sz-n_elipsis) .. elipsis
         end
     end
     return self

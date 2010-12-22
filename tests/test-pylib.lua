@@ -50,7 +50,7 @@ s = '  here we go    '
 assert (s:lstrip() == 'here we go    ')
 assert (s:rstrip() == '  here we go')
 assert (s:strip() == 'here we go')
-assert (('hello'):center(20,'+') == '++++++++hello++++++++')
+assert (('hello'):center(20,'+') == '++++++++hello+++++++')
 
 t = Template('${here} is the $answer')
 assert(t:substitute {here = 'one', answer = 'two'} == 'one is the two')
