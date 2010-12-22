@@ -12,10 +12,10 @@ local debug = require 'debug'
 local io,debug = io,debug
 
 local function dump(x)
-	if type(x) == 'table' then
+	if type(x) == 'table' and not (getmetatable(x) and getmetatable(x).__tostring) then
 		return pretty.write(x,' ',true)
 	else
-		return print(x)
+		return tostring(x)
 	end
 end
 
@@ -28,8 +28,8 @@ local test = {}
 local function complain (x,y)
     local i = debug.getinfo(3)
     io.stderr:write('assertion failed at '..path.basename(i.short_src)..':'..i.currentline..'\n')
-    print("x:",dump(x))
-    print("y:",dump(y))
+    print("got:",dump(x))
+    print("needed:",dump(y))
     utils.quit(1,"these values were not equal")
 end
 
