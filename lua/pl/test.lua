@@ -61,6 +61,35 @@ function test.asserteq2 (x1,x2,y1,y2)
     if x2 ~= y2 then complain(x2,y2) end
 end
 
+-- tuple type --
+
+local tuple_mt = {}
+
+function tuple_mt.__tostring(self)
+    local ts = {}
+    for i=1, self.n do
+        local s = self[i]
+        ts[i] = type(s) == 'string' and string.format('%q', s) or tostring(s)
+    end
+    return 'tuple(' .. table.concat(ts, ', ') .. ')'
+end
+
+function tuple_mt.__eq(a, b)
+    if a.n ~= b.n then return false end
+    for i=1, a.n do
+        if a[i] ~= b[i] then return false end
+    end
+    return true
+end
+
+--- encode an arbitrary argument list as a tuple.
+-- This can be used to compare to other argument lists, which is
+-- very useful for testing functions which return a number of values.
+-- @usage asserteq(tuple( ('ab'):find 'a'), tuple(1,1))
+function test.tuple(...)
+    return setmetatable({n=select('#', ...), ...}, tuple_mt)
+end
+
 --- Time a function. Call the function a given number of times, and report the number of seconds taken,
 -- together with a message.  Any extra arguments will be passed to the function.
 -- @param msg a descriptive message
