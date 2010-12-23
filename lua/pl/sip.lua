@@ -55,20 +55,22 @@ local function escape (spec)
 	return res
 end
 
-local function compress_space (s)
-    return s:gsub('%s+','%%s*')
+local function imcompressible (s)
+    return s:gsub('%s+','\001')
 end
 
 -- [handling of spaces in patterns]
 -- spaces may be 'compressed' (i.e will match zero or more spaces)
--- before or after a alphanum pattern,
--- if the character before the space is not alphanum
--- otherwise, always just before or after a pattern
-local function compress_spaces (s)
-    s = s:gsub('%W%s+%$[vifadxlu]',compress_space)
-    s = s:gsub('%$[vifadxlu]%s+[^%$%w]',compress_space)
-    s = s:gsub('%$[^vifadxlu]%s+',compress_space)
-    s = s:gsub('%s+%$[^vifadxlu]',compress_space)
+-- unless this occurs within a number or an identifier. So we mark
+-- the four possible imcompressible patterns first and then replace.
+-- The possible alnum patterns are v,f,a,d,x,l and u.
+local function compress_spaces (s)    
+    s = s:gsub('%$[vifadxlu]%s+%$[vfadxlu]',imcompressible)
+    s = s:gsub('[%w_]%s+[%w_]',imcompressible)
+    s = s:gsub('[%w_]%s+%$[vfadxlu]',imcompressible)    
+    s = s:gsub('%$[vfadxlu]%s+[%w_]',imcompressible)        
+    s = s:gsub('%s+','%%s*')
+    s = s:gsub('\001',' ')
     return s
 end
 
@@ -79,6 +81,7 @@ end
 function sip.create_pattern (spec,options)
     assert_arg(1,spec,'string')
     local fieldnames,fieldtypes = {},{}
+    
     if type(spec) == 'string' then
         spec = escape(spec)
     else
@@ -109,6 +112,7 @@ function sip.create_pattern (spec,options)
         spec = spec:sub(1,-2)..'$r'
         if named_vars then spec = spec..'{rest}' end
     end
+    
 
     local names
 
