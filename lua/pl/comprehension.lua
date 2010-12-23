@@ -1,15 +1,37 @@
---- List comprehensions implemented in Lua.
+--- List comprehensions implemented in Lua. <p>
+--
+-- See the <a href="http://lua-users.org/wiki/ListComprehensions">wiki page</a>
+-- <pre class=example>
+--   local C= require 'pl.comprehension' . new()
+--
+--    C ('x for x=1,10') ()
+--    ==> {1,2,3,4,5,6,7,8,9,10}
+--    C 'x^2 for x=1,4' ()
+--    ==> {1,4,9,16}
+--    C '{x,x^2} for x=1,4' ()
+--    ==> {{1,1},{2,4},{3,9},{4,16}}
+--    C '2*x for x' {1,2,3}
+--    ==> {2,4,6}
+--    dbl = C '2*x for x'
+--    dbl {10,20,30}
+--    ==> {20,40,60}
+--    C 'x for x if x % 2 == 0' {1,2,3,4,5}
+--    ==> {2,4}
+--    C '{x,y} for x = 1,2 for y = 1,2' ()
+--    ==> {{1,1},{1,2},{2,1},{2,2}}
+--    C '{x,y} for x for y' ({1,2},{10,20})
+--    ==> {{1,10},{1,20},{2,10},{2,20}}
+--   assert(C 'sum(x^2 for x)' {2,3,4} == 2^2+3^2+4^2)
+-- </pre>
+--
+-- <p> (c) 2008 David Manura. Licensed under the same terms as Lua (MIT license).
+-- <p> -- See <a href="../../index.html#T31">the Guide</a>
 -- @class module
 -- @name pl.comprehension
---
--- http://lua-users.org/wiki/ListComprehensions
---
--- Example:
---   local comp = require 'comprehension' . new()
---   assert(comp 'sum(x^2 for x)' {2,3,4} == 2^2+3^2+4^2)
---
--- (c) 2008 David Manura. Licensed under the same terms as Lua (MIT license).
---
+
+--[[ -- An unfortunately necessary hack for LuaDoc
+module ('pl.comprehension')
+]]
 
 local lb = require "pl.luabalanced"
 local utils = require 'pl.utils'
@@ -33,7 +55,7 @@ local ops = {
 }
 
 
--- Parses comprehension string <expr>.
+-- Parses comprehension string expr.
 -- Returns output expression list <out> string, array of for types
 -- ('=', 'in' or nil) <fortypes>, array of input variable name
 -- strings <invarlists>, array of input variable value strings
@@ -45,11 +67,10 @@ local ops = {
 --
 --   <opname> { <out> | <invarlist> in <invallist> , <preds> }
 --
--- Examples:
---   "x^2 for x"                 -- array values
---   "x^2 for x=1,10,2"          -- numeric for
---   "k^v for k,v in pairs(_1)"  -- iterator for
---   "(x+y)^2 for x for y if x > y"  -- nested
+-- @usage   "x^2 for x"                 -- array values
+-- @usage  "x^2 for x=1,10,2"          -- numeric for
+-- @usage  "k^v for k,v in pairs(_1)"  -- iterator for
+-- @usage  "(x+y)^2 for x for y if x > y"  -- nested
 --
 local function parse_comprehension(expr)
   local t = {}
