@@ -2,7 +2,7 @@
 local asserteq = require 'pl.test' . asserteq
 local app = require 'pl.lapp'
 
-
+local k = 1
 function check (spec,args,match)
     arg = args
     local args = app(spec)
@@ -41,6 +41,10 @@ check(simple,
     {'-o','help','-q','test-lapp.lua'},
     {quiet=true,p=false,o='help',input='<file>',input_name='test-lapp.lua'})
 
+local longs = [[
+    --open (string)
+]]
 
+check(longs,{'--open','folder'},{open='folder'})
 
 

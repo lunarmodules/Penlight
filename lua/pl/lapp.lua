@@ -175,18 +175,21 @@ function lapp.process_options_string(str)
     for line in lines(str) do
         local optspec,optparm,i1,i2,defval,vtype,constraint
         line = lstrip(line)
+        local function check(str)
+            return match(str,line,res)
+        end
 
-		-- flags: either -<short> or -<short>,--<long>
-		if match('-$v{short},--$v{long} $',line,res) or match('-$v{short} $',line,res) then
+		-- flags: either -<short>, -<short>,--<long> or --<long>
+		if check '-$v{short}, --$v{long} $' or check '-$v{short} $' or check '--$v{long} $' then
 			if res.long then
 				optparm = res.long
-				aliases[res.short] = optparm
+                if res.short then aliases[res.short] = optparm  end
 			else
 				optparm = res.short
 			end
-			force_short(res.short)
+            if res.short then force_short(res.short) end
             res.rest = check_varargs(res.rest)
-        elseif match('$<{name} $',line,res) then -- is it <parameter_name>?
+        elseif check '$<{name} $'  then -- is it <parameter_name>?
             -- so <input file...> becomes input_file ...
             optparm = check_varargs(res.name):gsub('%A','_')
 			append(parmlist,optparm)
