@@ -331,7 +331,7 @@ function lexer.cpp(s,filter,options)
             {'^.',tdump}
         }
     end
-    return scan(s,cpp_matches,filter,options)
+    return lexer.scan(s,cpp_matches,filter,options)
 end
 
 --- get a list of parameters separated by a delimiter from a stream.
