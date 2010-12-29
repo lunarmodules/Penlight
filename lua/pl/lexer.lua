@@ -294,9 +294,11 @@ function lexer.cpp(s,filter,options)
             ["if"] = true, ["static"] = true,  ["const"] = true, ["typedef"] = true,
             ["enum"] = true, ["char"] = true, ["int"] = true, ["bool"] = true,
             ["long"] = true, ["float"] = true, ["true"] = true, ["delete"] = true,
-            ["double"] = true,  ["while"] = true, ["new"] = true, ["delete"] = true,
+            ["double"] = true,  ["while"] = true, ["new"] = true, 
             ["namespace"] = true, ["try"] = true, ["catch"] = true,
             ["switch"] = true, ["case"] = true, ["extern"] = true,
+            ["return"] = true,["default"] = true,['unsigned']  = true,['signed'] = true,
+            ["union"] =  true, ["volatile"] = true, ["register"] = true,["short"] = true,
         }
     end
     if not cpp_matches then
