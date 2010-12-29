@@ -226,7 +226,7 @@ function sip.compile(spec,options)
     local fun,names = sip.create_spec_fun(spec,options)
     if not fun then return nil,names end
     if rawget(_G,'_DEBUG') then print(fun) end
-    chunk,err = loadstring(fun,'tmp')
+    local chunk,err = loadstring(fun,'tmp')
     if err then return nil,err end
     return chunk(),names
 end

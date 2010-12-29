@@ -33,6 +33,8 @@ local lapp = {}
 
 local open_files,parms,aliases,parmlist,usage,windows,script
 
+lapp.callback = false -- keep Strict happy
+
 local filetypes = {
     stdin = {io.stdin,'file-in'}, stdout = {io.stdout,'file-out'},
     stderr = {io.stderr,'file-out'}
@@ -199,7 +201,7 @@ function lapp.process_options_string(str)
 			res = {}
             -- do we have (default <val>) or (<type>)?
 			if match('$({def} $',line,res) or match('$({def}',line,res) then
-				typespec = strip(res.def)
+				local typespec = strip(res.def)
 				if match('default $',typespec,res) then
 					defval,vtype = process_default(res[1])
 				elseif match('$f{min}..$f{max}',typespec,res) then
