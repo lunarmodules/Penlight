@@ -7,7 +7,6 @@ local utils = require 'pl.utils'
 local path = require 'pl.path'
 local is_windows = path.is_windows
 local tablex = require 'pl.tablex'
-local attrib = lfs.attributes
 local ldir = lfs.dir
 local chdir = lfs.chdir
 local mkdir = lfs.mkdir
@@ -70,7 +69,7 @@ local function _listfiles(dir,filemode,match)
     for f in ldir(dir) do
         if f ~= '.' and f ~= '..' then
             local p = path.join(dir,f)
-            local mode = attrib(p,'mode')
+            local mode = lfs.attributes(p,'mode')
             if mode == filemode and (not match or match(p)) then
                 append(res,p)
             end
@@ -103,11 +102,11 @@ function dir.getdirectories(dir)
 end
 
 local function quote_if_necessary (f)
-	if f:find '%s' then
-		return '"'..f..'"'
-	else
-		return f
-	end
+    if f:find '%s' then
+        return '"'..f..'"'
+    else
+        return f
+    end
 end
 
 
@@ -128,72 +127,72 @@ local function file_op (is_copy,src,dest,flag)
                 kernel = alien.load('kernel32.dll')
                 CopyFile = kernel.CopyFileA
                 CopyFile:types(copySpec)
-				local moveSpec = {'string','string',ret='int',abi='stdcall'}
+                local moveSpec = {'string','string',ret='int',abi='stdcall'}
                 MoveFile = kernel.MoveFileA
                 MoveFile:types(moveSpec)
-				GetLastError = kernel.GetLastError
-				GetLastError:types{ret ='int', abi='stdcall'}
-				win32_errors = {
-					ERROR_FILE_NOT_FOUND    =         2,
-					ERROR_PATH_NOT_FOUND    =         3,
-					ERROR_ACCESS_DENIED    =          5,
-					ERROR_WRITE_PROTECT    =          19,
-					ERROR_BAD_UNIT         =          20,
-					ERROR_NOT_READY        =          21,
-					ERROR_WRITE_FAULT      =          29,
-					ERROR_READ_FAULT       =          30,
-					ERROR_SHARING_VIOLATION =         32,
-					ERROR_LOCK_VIOLATION    =         33,
-					ERROR_HANDLE_DISK_FULL  =         39,
-					ERROR_BAD_NETPATH       =         53,
-					ERROR_NETWORK_BUSY      =         54,
-					ERROR_DEV_NOT_EXIST     =         55,
-					ERROR_FILE_EXISTS       =         80,
-					ERROR_OPEN_FAILED       =         110,
-					ERROR_INVALID_NAME      =         123,
-					ERROR_BAD_PATHNAME      =         161,
-					ERROR_ALREADY_EXISTS    =         183,
-				}
+                GetLastError = kernel.GetLastError
+                GetLastError:types{ret ='int', abi='stdcall'}
+                win32_errors = {
+                    ERROR_FILE_NOT_FOUND    =         2,
+                    ERROR_PATH_NOT_FOUND    =         3,
+                    ERROR_ACCESS_DENIED    =          5,
+                    ERROR_WRITE_PROTECT    =          19,
+                    ERROR_BAD_UNIT         =          20,
+                    ERROR_NOT_READY        =          21,
+                    ERROR_WRITE_FAULT      =          29,
+                    ERROR_READ_FAULT       =          30,
+                    ERROR_SHARING_VIOLATION =         32,
+                    ERROR_LOCK_VIOLATION    =         33,
+                    ERROR_HANDLE_DISK_FULL  =         39,
+                    ERROR_BAD_NETPATH       =         53,
+                    ERROR_NETWORK_BUSY      =         54,
+                    ERROR_DEV_NOT_EXIST     =         55,
+                    ERROR_FILE_EXISTS       =         80,
+                    ERROR_OPEN_FAILED       =         110,
+                    ERROR_INVALID_NAME      =         123,
+                    ERROR_BAD_PATHNAME      =         161,
+                    ERROR_ALREADY_EXISTS    =         183,
+                }
             end
         end
-		if not cmd_tmpfile then cmd_tmpfile = path.tmpname () end
+        if not cmd_tmpfile then cmd_tmpfile = path.tmpname () end
         -- fallback if there's no Alien, just use DOS commands *shudder*
         if not CopyFile then
-			src = path.normcase(src)
-			dest = path.normcase(dest)
+            src = path.normcase(src)
+            dest = path.normcase(dest)
             cmd = is_copy and 'copy' or 'rename'
             null = ' > '..cmd_tmpfile
         else
             if is_copy then ret = CopyFile(src,dest,flag)
             else ret = MoveFile(src,dest) end
-			if ret == 0 then
-				local err = GetLastError()
-				for name,value in pairs(win32_errors) do
-					if value == err then return false,name end
-				end
-				return false,"Error #"..err
-			else return true
-			end
+            if ret == 0 then
+                local err = GetLastError()
+                for name,value in pairs(win32_errors) do
+                    if value == err then return false,name end
+                end
+                return false,"Error #"..err
+            else return true
+            end
         end
     else -- for Unix, just use cp for now
-		if not cmd_tmpfile then cmd_tmpfile = path.tmpname () end
+        if not cmd_tmpfile then cmd_tmpfile = path.tmpname () end
         cmd = is_copy and 'cp' or 'mv'
         null = ' 2> '..cmd_tmpfile
     end
-	if flag == 1 and path.exists(dest) then
-		return false,"cannot overwrite destination"
-	end
-	src = quote_if_necessary(src)
-	dest = quote_if_necessary(dest)
+    if flag == 1 and path.exists(dest) then
+        return false,"cannot overwrite destination"
+    end
+    src = quote_if_necessary(src)
+    dest = quote_if_necessary(dest)
     -- let's make this as quiet a call as we can...
     cmd = cmd..' '..src..' '..dest..null
-	--print(cmd)
+    --print(cmd)
     local ret = os.execute(cmd) == 0
-	if not ret then
-		return false,(utils.readfile(cmd_tmpfile):gsub('\n(.*)',''))
-	else
-		return true
-	end
+    if not ret then
+        return false,(utils.readfile(cmd_tmpfile):gsub('\n(.*)',''))
+    else
+        return true
+    end
 end
 
 --- copy a file.
@@ -218,9 +217,9 @@ function dir.movefile (src,dest)
     return file_op(false,src,dest,0)
 end
 
-local function _dirfiles(dir)
+local function _dirfiles(dir,attrib)
     local dirs = {}
-    local files = {}
+    local files = {}    
     for f in ldir(dir) do
         if f ~= '.' and f ~= '..' then
             local p = path.join(dir,f)
@@ -236,18 +235,18 @@ local function _dirfiles(dir)
 end
 
 
-local function _walker(root,bottom_up)
-    local dirs,files = _dirfiles(root)
+local function _walker(root,bottom_up,attrib)
+    local dirs,files = _dirfiles(root,attrib)
     if not bottom_up then yield(root,dirs,files) end
     for i,d in ipairs(dirs) do
-        _walker(root..path.sep..d,bottom_up)
+        _walker(root..path.sep..d,bottom_up,attrib)
     end
     if bottom_up then yield(root,dirs,files) end
 end
 
 --- return an iterator which walks through a directory tree starting at root.
 -- The iterator returns (root,dirs,files)
--- Note that dirs and files are lists of names (i.e. you must say _path.join(root,d)_
+-- Note that dirs and files are lists of names (i.e. you must say path.join(root,d)
 -- to get the actual full path)
 -- If bottom_up is false (or not present), then the entries at the current level are returned
 -- before we go deeper. This means that you can modify the returned list of directories before
@@ -255,23 +254,32 @@ end
 -- This is a clone of os.walk from the Python libraries.
 -- @param root A starting directory
 -- @param bottom_up False if we start listing entries immediately.
-function dir.walk(root,bottom_up)
+-- @param follow_links follow symbolic links
+function dir.walk(root,bottom_up,follow_links)
     assert_string(1,root)
-	if not path.isdir(root) then return raise 'not a directory' end
-    return wrap(function () _walker(root,bottom_up) end)
+    if not path.isdir(root) then return raise 'not a directory' end
+    local attrib
+    if path.is_windows or not follow_links then
+        attrib = lfs.attributes
+    else
+        attrib = lfs.symlinkattributes
+    end
+    return wrap(function () _walker(root,bottom_up,attrib) end)
 end
 
 --- remove a whole directory tree.
 -- @param fullpath A directory path
 function dir.rmtree(fullpath)
     assert_string(1,fullpath)
-	if not path.isdir(fullpath) then return raise 'not a directory' end
-    for root,dirs,files in walk(fullpath,true) do
+    if not path.isdir(fullpath) then return raise 'not a directory' end
+    if path.islink(fullpath) then return false,'will not follow symlink' end
+    for root,dirs,files in dir.walk(fullpath,true) do
         for i,f in ipairs(files) do
             remove(path.join(root,f))
         end
         lfs.rmdir(root)
     end
+    return true
 end
 
 local dirpat
@@ -283,14 +291,14 @@ end
 
 local _makepath
 function _makepath(p)
-	-- windows root drive case
-	if p:find '^%a:$' then
-		return true
-	end
+    -- windows root drive case
+    if p:find '^%a:$' then
+        return true
+    end
    if not path.isdir(p) then
     local subp = p:match(dirpat)
     if not _makepath(subp) then return raise ('cannot create '..subp) end
-	--print('create',p)
+    --print('create',p)
     return lfs.mkdir(p)
    else
     return true
@@ -311,13 +319,15 @@ end
 -- @param path1 the base path of the source tree
 -- @param path2 the new base path for the destination
 -- @param file_fun an optional function to apply on all files
--- @param verbose an optional boolean to control the verbosity of the output.
+-- @param verbose an optional boolean to control the verbosity of the output. 
+--  It can also be a logging function that behaves like print()
 -- @return if failed, false plus an error message. If completed the traverse,
 --  true, a list of failed directory creations and a list of failed file operations.
 -- @usage clonetree('.','../backup',copyfile)
 function dir.clonetree (path1,path2,file_fun,verbose)
     assert_string(1,path1)
     assert_string(2,path2)
+    if verbose == true then verbose = print end
     local abspath,normcase,isdir,join = path.abspath,path.normcase,path.isdir,path.join
     local faildirs,failfiles = {},{}
     if not isdir(path1) then return raise 'source is not a valid directory' end
@@ -364,46 +374,44 @@ end
 --	@param pattern {string} A shell pattern. If not given, all files are returned.
 --	@return Table containing all the files found recursively starting at <i>path</i> and filtered by <i>pattern</i>.
 function dir.getallfiles( start_path, pattern )
-	assert( type( start_path ) == "string", "bad argument #1 to 'GetAllFiles' (Expected string but recieved " .. type( start_path ) .. ")" )
-	pattern = pattern or ""
+    assert( type( start_path ) == "string", "bad argument #1 to 'GetAllFiles' (Expected string but recieved " .. type( start_path ) .. ")" )
+    pattern = pattern or ""
+    local attrib = lfs.attributes
+    local function dirtree( dir )
+        assert( dir and dir ~= "", "directory parameter is missing or empty" )
+        if sub( dir, -1 ) == "/" then
+            dir = sub( dir, 1, -2 )
+        end
 
-	local function dirtree( dir )
-		assert( dir and dir ~= "", "directory parameter is missing or empty" )
-		if sub( dir, -1 ) == "/" then
-			dir = sub( dir, 1, -2 )
-		end
+        local function yieldtree( dir )
+            for entry in ldir( dir ) do
+                if entry ~= "." and entry ~= ".." then
+                    entry = dir .. "/" .. entry
+                    local attr = attrib( entry )
+                    if attr then  -- Just in case a symlink is broken.
+                        yield( entry, attr )
+                        if attr.mode == "directory" then
+                            yieldtree( entry )
+                        end
+                    end
+                end
+            end
+        end
 
-		local function yieldtree( dir )
-			for entry in ldir( dir ) do
-				if entry ~= "." and entry ~= ".." then
-					entry = dir .. "/" .. entry
-					local attr = attrib( entry )
-					if attr then  -- Just in case a symlink is broken.
-						yield( entry, attr )
+        return wrap( function() yieldtree( dir ) end )
+    end
 
-						if attr.mode == "directory" then
-							yieldtree( entry )
-						end
-					end
-				end
-			end
-		end
-
-		return wrap( function() yieldtree( dir ) end )
-	end
-
-	local files = {}
-	for filename, attr in dirtree( start_path ) do
-		if "file" == attr.mode then
+    local files = {}
+    for filename, attr in dirtree( start_path ) do
+        if "file" == attr.mode then
             local mask = filemask( pattern ):lower()
+            if filename:lower():find( mask ) then
+                files[#files + 1] = filename
+            end
+        end
+    end
 
-			if filename:lower():find( mask ) then
-				files[#files + 1] = filename
-			end
-		end
-	end
-
-	return files
+    return files
 end
 
 return dir
