@@ -8,15 +8,13 @@ local _G = _G
 local sub = string.sub
 local getenv = os.getenv
 local tmpnam = os.tmpname
-local attributes
-local currentdir
+local attributes, currentdir, link_attributes
 local package = package
 local io = io
 local append = table.insert
 local ipairs = ipairs
 local utils = require 'pl.utils'
 local assert_arg,assert_string,raise = utils.assert_arg,utils.assert_string,utils.raise
-local attributes,currentdir
 
 --[[
 module ('pl.path',utils._module)
@@ -28,6 +26,7 @@ local res,lfs = _G.pcall(_G.require,'lfs')
 if res then
     attributes = lfs.attributes
     currentdir = lfs.currentdir
+    link_attributes = lfs.symlinkattributes
 end
 
 local function at(s,i)
@@ -188,6 +187,16 @@ function path.isfile(P)
         P = P:sub(1,-2)
     end
     return attrib(P,'mode') == 'file'
+end
+
+-- is this a symbolic link?
+-- @param P A file path
+function path.islink(P)
+    if link_attributes then
+        return link_attributes(P,'mode')=='link'
+    else
+        return false
+    end
 end
 
 --- return size of a file.
