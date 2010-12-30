@@ -109,12 +109,12 @@ end
 -- @param filename The file path
 -- @return file contents
 function utils.readfile(filename,is_bin)
-	local mode = is_bin and 'b' or ''
-	utils.assert_string(1,filename)
+    local mode = is_bin and 'b' or ''
+    utils.assert_string(1,filename)
     local f,err = io.open(filename,'r'..mode)
     if not f then return raise (err) end
     local res,err = f:read('*a')
-	f:close()
+    f:close()
     if not res then return raise (err) end
     return res
 end
@@ -125,7 +125,7 @@ end
 function utils.writefile(filename,str)
     utils.assert_string(1,filename)
     utils.assert_string(2,str)
-	local f,err = io.open(filename,'w')
+    local f,err = io.open(filename,'w')
     if not f then return raise(err) end
     f:write(str)
     f:close()
@@ -247,6 +247,22 @@ function utils.add_function_factory (mt,fun)
     _function_factories[mt] = fun
 end
 
+local function _string_lambda(f)
+    local raise = utils.raise
+    if f:find '^|' then
+        local args,body = f:match '|([^|]*)|(.+)'
+        if not args then return raise 'bad string lambda' end
+        local fstr = 'return function('..args..') return '..body..' end'
+        local fn,err = loadstring(fstr)
+        if not fn then return raise(err) end
+        fn = fn()
+        return fn
+    else return raise 'not a string lambda'
+    end
+end
+
+utils.string_lambda = utils.memoize(_string_lambda)
+
 local ops
 
 --- process a function argument. 
@@ -292,7 +308,7 @@ end
 -- @return a function such that f(x) is fn(p,x)
 -- @see pl.func.curry
 function utils.bind1 (fn,p)
-	fn = utils.function_arg(1,fn)
+    fn = utils.function_arg(1,fn)
     return function(...) return fn(p,...) end
 end
 
@@ -318,7 +334,7 @@ end
 -- @param n argument index
 -- @param val a value that must be a string
 function utils.assert_string (n,val)
-	utils.assert_arg(n,val,'string',nil,nil,nil,3)
+    utils.assert_arg(n,val,'string',nil,nil,nil,3)
 end
 
 local err_mode = 'default'
@@ -331,7 +347,7 @@ local err_mode = 'default'
 -- @param mode - either 'default', 'quit'  or 'error'
 -- @see utils.raise
 function utils.on_error (mode)
-	err_mode = mode
+    err_mode = mode
 end
 
 --- used by Penlight functions to return errors.  Its global behaviour is controlled
@@ -340,9 +356,9 @@ end
 -- @see utils.on_error
 function utils.raise (err)
     if err_mode == 'default' then return nil,err
-	elseif err_mode == 'quit' then quit(err)
-	else error(err,2)
-	end
+    elseif err_mode == 'quit' then quit(err)
+    else error(err,2)
+    end
 end
 
 return utils
