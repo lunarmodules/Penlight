@@ -46,32 +46,32 @@ local PREPRO = '^#.-[^\\]\n'
 local plain_matches,lua_matches,cpp_matches,lua_keyword,cpp_keyword
 
 local function tdump(tok)
-	return yield(tok,tok)
+    return yield(tok,tok)
 end
 
 local function ndump(tok,options)
     if options and options.number then
         tok = tonumber(tok)
     end
-	return yield("number",tok)
+    return yield("number",tok)
 end
 
 local function sdump(tok,options)
     if options and options.string then
         tok = tok:sub(2,-2)
     end
-	return yield("string",tok)
+    return yield("string",tok)
 end
 
 local function chdump(tok,options)
     if options and options.string then
         tok = tok:sub(2,-2)
     end
-	return yield("char",tok)
+    return yield("char",tok)
 end
 
 local function cdump(tok)
-	return yield("comment",tok)
+    return yield("comment",tok)
 end
 
 local function wsdump (tok)
@@ -110,11 +110,11 @@ end
 -- which means convert numbers and strip string quotes.
 function lexer.scan (s,matches,filter,options)
     assert_arg(1,s,'string')
-	filter = filter or {space=true}
-	options = options or {number=true,string=true}
+    filter = filter or {space=true}
+    options = options or {number=true,string=true}
     if filter then
         if filter.space then filter[wsdump] = true end
-		if filter.comments then filter[cdump] = true end
+        if filter.comments then filter[cdump] = true end
     end
     if not matches then
         if not plain_matches then
@@ -132,22 +132,22 @@ function lexer.scan (s,matches,filter,options)
         end
         matches = plain_matches
     end
-	function lex ()
-		local i1,i2,idx,res1,res2,tok,pat,fun
-		local sz = #s
+    function lex ()
+        local i1,i2,idx,res1,res2,tok,pat,fun
+        local sz = #s
         local idx = 1
         --print('sz',sz)
-		while true do
-			for _,m in ipairs(matches) do
+        while true do
+            for _,m in ipairs(matches) do
                 pat = m[1]
                 fun = m[2]
-				i1,i2 = strfind(s,pat,idx)
+                i1,i2 = strfind(s,pat,idx)
 --~                 if s:sub(idx,idx) == '/' then
 --~                     print(i1,pat,s:sub(idx))
 --~                 end
-				if i1 then
-					tok = strsub(s,i1,i2)
-					idx = i2 + 1
+                if i1 then
+                    tok = strsub(s,i1,i2)
+                    idx = i2 + 1
                     --print(s,pat,idx,tok,filter,filter[fun])
                     if not (filter and filter[fun]) then
                         lexer.finished = idx > sz
@@ -172,16 +172,16 @@ function lexer.scan (s,matches,filter,options)
                                 yield('','')
                                 idx = sz + 1
                             end
-							if idx > sz then return end
+                            if idx > sz then return end
                         end
                     end
-					if idx > sz then return  -- print 'ret';
-					else break end
-				end
-			end
-		end
-	end
-	return wrap(lex)
+                    if idx > sz then return  -- print 'ret';
+                    else break end
+                end
+            end
+        end
+    end
+    return wrap(lex)
 end
 
 local function isstring (s)
@@ -251,7 +251,7 @@ end
 -- which means convert numbers and strip string quotes.
 function lexer.lua(s,filter,options)
     assert_arg(1,s,'string')
-	filter = filter or {space=true,comments=true}
+    filter = filter or {space=true,comments=true}
     lexer.get_keywords()
     if not lua_matches then
         lua_matches = {
@@ -284,7 +284,7 @@ end
 -- which means convert numbers and strip string quotes.
 function lexer.cpp(s,filter,options)
     assert_arg(1,s,'string')
-	filter = filter or {comments=true}
+    filter = filter or {comments=true}
     if not cpp_keyword then
         cpp_keyword = {
             ["class"] = true, ["break"] = true,  ["do"] = true, ["sizeof"] = true,
@@ -391,11 +391,11 @@ end
 --- get the next non-space token from the stream.
 -- @param tok the token stream.
 function lexer.skipws (tok)
-	local t,v = tok()
-	while t == 'space' do
-		t,v = tok()
-	end
-	return t,v
+    local t,v = tok()
+    while t == 'space' do
+        t,v = tok()
+    end
+    return t,v
 end
 
 local skipws = lexer.skipws
@@ -409,13 +409,13 @@ function lexer.expecting (tok,expected_type,no_skip_ws)
     assert_arg(1,tok,'function')
     assert_arg(2,expected_type,'string')
     local t,v
-	if no_skip_ws then
-		t,v = tok()
-	else
-		t,v = skipws(tok)
-	end
-	if t ~= expected_type then utils.error ("expecting "..expected_type) end
-	return v
+    if no_skip_ws then
+        t,v = tok()
+    else
+        t,v = skipws(tok)
+    end
+    if t ~= expected_type then utils.error ("expecting "..expected_type) end
+    return v
 end
 
 return lexer

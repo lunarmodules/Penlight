@@ -51,8 +51,8 @@ end
 local function escape (spec)
     --_G.print('spec',spec)
     local res = spec:gsub('[%-%.%+%[%]%(%)%^%%%?%*]','%%%1'):gsub('%$%%(%S)','$%1')
-	--_G.print('res',res)
-	return res
+    --_G.print('res',res)
+    return res
 end
 
 local function imcompressible (s)

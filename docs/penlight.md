@@ -1633,6 +1633,8 @@ But there is a price to pay for this convenience. _Every_ function is affected, 
 
 What function is returned? It's almost certain to be something that makes no sense in the current context. So implicit sequences may make certain kinds of programming mistakes harder to catch - they are best used for interactive exploration and small scripts.
 
+<a id="comprehensions"/>
+
 ### List Comprehensions
 
 List comprehensions are a compact way to create tables by specifying their elements. In Python, you can say this:

@@ -183,7 +183,7 @@ end
 --- is this a file?.
 -- @param P A file path
 function path.isfile(P)
-	if P:match("\\$") then
+    if P:match("\\$") then
         P = P:sub(1,-2)
     end
     return attrib(P,'mode') == 'file'
