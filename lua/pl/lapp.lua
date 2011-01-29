@@ -246,6 +246,7 @@ function lapp.process_options_string(str)
 
     while i <= #arg do
         local theArg = arg[i]
+        local res = {}
         -- look for a flag, -<short flags> or --<long flag>
 		if match('--$v{long}',theArg,res) or match('-$v{short}',theArg,res) then
 			if res.long then -- long option
