@@ -12,11 +12,11 @@ local debug = require 'debug'
 local io,debug = io,debug
 
 local function dump(x)
-	if type(x) == 'table' and not (getmetatable(x) and getmetatable(x).__tostring) then
-		return pretty.write(x,' ',true)
-	else
-		return tostring(x)
-	end
+    if type(x) == 'table' and not (getmetatable(x) and getmetatable(x).__tostring) then
+        return pretty.write(x,' ',true)
+    else
+        return tostring(x)
+    end
 end
 
 --[[
