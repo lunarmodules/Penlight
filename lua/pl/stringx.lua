@@ -257,15 +257,20 @@ function stringx.center(s,w,ch)
     return _just(s,w,ch,true,true)
 end
 
-local function _strip(s,left,right)
+local function _strip(s,left,right,chrs)
+    if not chrs then
+        chrs = '%s'
+    else
+        chrs = '['..escape(chrs)..']'
+    end
     if left then
-        local i1,i2 = find(s,'^%s*')
+        local i1,i2 = find(s,'^'..chrs..'*')
         if i2 >= i1 then
             s = sub(s,i2+1)
         end
     end
     if right then
-        local i1,i2 = find(s,'%s*$')
+        local i1,i2 = find(s,chrs..'*$')
         if i2 >= i1 then
             s = sub(s,1,i1-1)
         end
@@ -274,21 +279,21 @@ local function _strip(s,left,right)
 end
 
 --- trim any whitespace on the left of s.
-function stringx.lstrip(self)
+function stringx.lstrip(self,chrs)
     assert_string(1,self)
-    return _strip(self,true,false)
+    return _strip(self,true,false,chrs)
 end
 
 --- trim any whitespace on the right of s.
-function stringx.rstrip(s)
+function stringx.rstrip(s,chrs)
     assert_string(1,s)
-    return _strip(s,false,true)
+    return _strip(s,false,true,chrs)
 end
 
 --- trim any whitespace on both left and right of s.
-function stringx.strip(self)
+function stringx.strip(self,chrs)
     assert_string(1,self)
-    return _strip(self,true,true)
+    return _strip(self,true,true,chrs)
 end
 
 -- The partition functions split a string  using a delimiter into three parts:

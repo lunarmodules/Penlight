@@ -251,3 +251,9 @@ asserteq(T(stringx.shorten('abcde', 4, true)), T'...e')
 asserteq(T(stringx.shorten('abcde', 3, true)), T'...')
 asserteq(T(stringx.shorten('abcde', 2, true)), T'..')
 asserteq(T(stringx.shorten('abcde', 0, true)), T'')
+
+-- strip
+asserteq(stringx.strip('    hello         '),'hello')
+asserteq(stringx.strip('--[hello] -- - ','-[] '),'hello')
+asserteq(stringx.rstrip('--[hello] -- - ','-[] '),'--[hello')
+
