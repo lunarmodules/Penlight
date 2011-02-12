@@ -2,14 +2,14 @@
 -- @class module
 -- @name pl.dir
 
-local lfs = require 'lfs'
 local utils = require 'pl.utils'
 local path = require 'pl.path'
 local is_windows = path.is_windows
 local tablex = require 'pl.tablex'
-local ldir = lfs.dir
-local chdir = lfs.chdir
-local mkdir = lfs.mkdir
+local ldir = path.dir
+local chdir = path.chdir
+local mkdir = path.mkdir
+local rmdir = path.rmdir
 local sub = string.sub
 local os,pcall,ipairs,pairs,require,setmetatable,_G = os,pcall,ipairs,pairs,require,setmetatable,_G
 local remove = os.remove
@@ -65,11 +65,12 @@ end
 
 local function _listfiles(dir,filemode,match)
     local res = {}
+    local attrib = path.attrib
     if not dir then dir = '.' end
     for f in ldir(dir) do
         if f ~= '.' and f ~= '..' then
             local p = path.join(dir,f)
-            local mode = lfs.attributes(p,'mode')
+            local mode = attrib(p,'mode')
             if mode == filemode and (not match or match(p)) then
                 append(res,p)
             end
@@ -260,9 +261,9 @@ function dir.walk(root,bottom_up,follow_links)
     if not path.isdir(root) then return raise 'not a directory' end
     local attrib
     if path.is_windows or not follow_links then
-        attrib = lfs.attributes
+        attrib = path.attrib
     else
-        attrib = lfs.symlinkattributes
+        attrib = path.link_attrib
     end
     return wrap(function () _walker(root,bottom_up,attrib) end)
 end
@@ -277,7 +278,7 @@ function dir.rmtree(fullpath)
         for i,f in ipairs(files) do
             remove(path.join(root,f))
         end
-        lfs.rmdir(root)
+        rmdir(root)
     end
     return true
 end
@@ -299,7 +300,7 @@ function _makepath(p)
     local subp = p:match(dirpat)
     if not _makepath(subp) then return raise ('cannot create '..subp) end
     --print('create',p)
-    return lfs.mkdir(p)
+    return mkdir(p)
    else
     return true
    end
@@ -368,6 +369,36 @@ function dir.clonetree (path1,path2,file_fun,verbose)
     return true,faildirs,failfiles
 end
 
+--- return an iterator over all entries in a directory tree
+-- @param d a directory
+-- @return an iterator giving pathname and mode (which is typically 'file' or 'directory')
+function dir.dirtree( d )
+    assert( d and d ~= "", "directory parameter is missing or empty" )
+    local attrib = path.attrib
+
+    if sub( d, -1 ) == "/" then
+        d = sub( d, 1, -2 )
+    end
+    
+    local function yieldtree( dir )
+        for entry in ldir( dir ) do                
+            if entry ~= "." and entry ~= ".." then
+                entry = dir .. "/" .. entry
+                local mode = attrib( entry, 'mode' )                    
+                if mode then  -- Just in case a symlink is broken.
+                    yield( entry, mode )
+                    if mode == "directory" then
+                        yieldtree( entry )
+                    end
+                end
+            end
+        end
+    end
+
+    return wrap( function() yieldtree( d ) end )
+end
+
+
 ---	Recursively returns all the file starting at <i>path</i>. It can optionally take a shell pattern and
 --	only returns files that match <i>pattern</i>. If a pattern is given it will do a case insensitive search.
 --	@param start_path {string} A directory. If not given, all files in current directory are returned.
@@ -376,36 +407,13 @@ end
 function dir.getallfiles( start_path, pattern )
     assert( type( start_path ) == "string", "bad argument #1 to 'GetAllFiles' (Expected string but recieved " .. type( start_path ) .. ")" )
     pattern = pattern or ""
-    local attrib = lfs.attributes
-    local function dirtree( dir )
-        assert( dir and dir ~= "", "directory parameter is missing or empty" )
-        if sub( dir, -1 ) == "/" then
-            dir = sub( dir, 1, -2 )
-        end
-
-        local function yieldtree( dir )
-            for entry in ldir( dir ) do
-                if entry ~= "." and entry ~= ".." then
-                    entry = dir .. "/" .. entry
-                    local attr = attrib( entry )
-                    if attr then  -- Just in case a symlink is broken.
-                        yield( entry, attr )
-                        if attr.mode == "directory" then
-                            yieldtree( entry )
-                        end
-                    end
-                end
-            end
-        end
-
-        return wrap( function() yieldtree( dir ) end )
-    end
 
     local files = {}
-    for filename, attr in dirtree( start_path ) do
-        if "file" == attr.mode then
-            local mask = filemask( pattern ):lower()
-            if filename:lower():find( mask ) then
+    local normcase = path.normcase
+    for filename, mode in dir.dirtree( start_path ) do
+        if "file" == mode then            
+            local mask = filemask( pattern )
+            if normcase(filename):find( mask ) then
                 files[#files + 1] = filename
             end
         end

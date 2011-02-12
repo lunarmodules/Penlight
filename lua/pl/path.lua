@@ -8,7 +8,7 @@ local _G = _G
 local sub = string.sub
 local getenv = os.getenv
 local tmpnam = os.tmpname
-local attributes, currentdir, link_attributes
+local attributes, currentdir, link_attrib
 local package = package
 local io = io
 local append = table.insert
@@ -26,7 +26,9 @@ local res,lfs = _G.pcall(_G.require,'lfs')
 if res then
     attributes = lfs.attributes
     currentdir = lfs.currentdir
-    link_attributes = lfs.symlinkattributes
+    link_attrib = lfs.symlinkattributes    
+else
+    error("pl.path requires LuaFileSystem")
 end
 
 local function at(s,i)
@@ -36,13 +38,19 @@ end
 local function attrib(path,field)
     assert_string(1,path)
     assert_string(2,field)
-    if not attributes then return nil end
     local attr,err = attributes(path)
     if not attr then return raise(err)
     else
         return attr[field]
     end
 end
+
+path.attrib = attrib
+path.link_attrib = link_attrib
+path.dir = lfs.dir
+path.mkdir = lfs.mkdir
+path.rmdir = lfs.rmdir
+path.chdir = lfs.chdir
 
 path.is_windows = utils.dir_separator == '\\'
 
@@ -192,8 +200,8 @@ end
 -- is this a symbolic link?
 -- @param P A file path
 function path.islink(P)
-    if link_attributes then
-        return link_attributes(P,'mode')=='link'
+    if link_attrib then
+        return link_attrib(P,'mode')=='link'
     else
         return false
     end
@@ -209,17 +217,7 @@ end
 -- @param P A file path
 -- @return the file path if it exists, nil otherwise
 function path.exists(P)
-    if attributes then
-        return attributes(P) ~= nil and P
-    else
-        local f = io.open(P,'r')
-        if f then
-            f:close()
-            return P
-        else
-            return false
-        end
-    end
+    return attrib(P,'mode') ~= nil and P
 end
 
 --- Replace a starting '~' with the user's home directory.
