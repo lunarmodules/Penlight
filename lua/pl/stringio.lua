@@ -26,6 +26,9 @@ function SW:value()
     return concat(self.tbl)
 end
 
+function SW:close() -- for compatibility only
+end
+
 --- Reader class
 local SR = {}
 SR.__index = SR
@@ -93,6 +96,9 @@ function SR:lines()
     return function()
         return self:read()
     end
+end
+
+function SR:close() -- for compatibility only
 end
  
 --- create a file-like object which can be used to construct a string.
