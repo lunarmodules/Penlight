@@ -31,26 +31,17 @@ else
     error("pl.path requires LuaFileSystem")
 end
 
-local function at(s,i)
-    return sub(s,i,i)
-end
-
-local function attrib(path,field)
-    assert_string(1,path)
-    assert_string(2,field)
-    local attr,err = attributes(path)
-    if not attr then return raise(err)
-    else
-        return attr[field]
-    end
-end
-
+attrib = attributes
 path.attrib = attrib
 path.link_attrib = link_attrib
 path.dir = lfs.dir
 path.mkdir = lfs.mkdir
 path.rmdir = lfs.rmdir
 path.chdir = lfs.chdir
+
+local function at(s,i)
+    return sub(s,i,i)
+end
 
 path.is_windows = utils.dir_separator == '\\'
 
