@@ -252,8 +252,7 @@ function lapp.process_options_string(str)
             if res.long then -- long option
                 parm = res.long
             elseif #res.short == 1 then
-                parm = r
-                es.short
+                parm = res.short
             else
                 local parmstr = res.short
                 parm = at(parmstr,1)
