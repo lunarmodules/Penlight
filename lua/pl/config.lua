@@ -30,11 +30,19 @@
 -- @class module
 -- @name pl.config
 
-local stringx = require ('pl.stringx')
-local split,strip = stringx.split,stringx.strip
 local type,tonumber,ipairs,io = type,tonumber,ipairs,io
-local utils = require 'pl.utils'
-local raise = utils.raise
+
+local function split(s,re)
+    local res = {}
+    local t_insert = table.insert
+    re = '[^'..re..']+'
+    for k in s:gmatch(re) do t_insert(res,k) end
+    return res
+end
+
+local function strip(s)
+    return s:gsub('^%s+',''):gsub('%s+$','')
+end
 
 --[[
 module ('pl.config',utils._module)
@@ -57,13 +65,13 @@ function config.lines(file)
     local line = ''
     if type(file) == 'string' then
         f,err = io.open(file,'r')
-        if not f then return raise(err) end
+        if not f then return nil,err end
         openf = true
     else
         f = file or io.stdin
-        if not file.read then return raise 'not a file-like object' end
+        if not file.read then return nil, 'not a file-like object' end
     end
-    if not f then return raise'file is nil' end
+    if not f then return nil, 'file is nil' end
     return function()
         local l = f:read()
         while l do
@@ -126,7 +134,7 @@ function config.read(file,cnfg)
     end
 
     local iter,err = config.lines(file)
-    if not iter then return raise(err) end
+    if not iter then return nil,err end
     for line in iter do
         -- strips comments
         local ci = line:find('%s*[#;]')

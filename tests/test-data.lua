@@ -48,7 +48,8 @@ root 2332  0.4  0.2 fred --start=yes
 root 2338  0.2  0.1 backyard-process
 ]]
 
-t2 = data.read(t2f,{last_field_collect=true})
+t2,err = data.read(t2f,{last_field_collect=true})
+if not t2 then return print (err) end
 
 -- the last_field_collect option is useful with space-delimited data where the last
 -- field may contain spaces. Otherwise, a record count mismatch should be an error!

@@ -18,16 +18,22 @@
 -- @class module
 -- @name pl.lapp
 
-local match = require 'pl.sip'.match_at_start
-local stringx = require 'pl.stringx'
-local lines,lstrip,strip,at = stringx.lines,stringx.lstrip,stringx.strip,stringx.at
-local isdigit = stringx.isdigit
-local append = table.insert
-local tinsert = table.insert
+local status,sip = pcall(require,'pl.sip')
+if not status then
+    sip = require 'sip'
+end
+local match = sip.match_at_start
+local append,tinsert = table.insert,table.insert
 
 --[[
 module('pl.lapp')
 ]]
+
+local function lines(s) return s:gmatch('([^\n]*)\n') end
+local function lstrip(str)  return str:gsub('^%s+','')  end
+local function strip(str)  return lstrip(str):gsub('%s+$','') end
+local function at(s,k)  return s:sub(k,k) end
+local function isdigit(s) return s:find('^%d+$') == 1 end
 
 local lapp = {}
 

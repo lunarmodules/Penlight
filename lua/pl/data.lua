@@ -16,17 +16,11 @@
 -- @class module
 -- @name pl.data
 
-local stringx = require 'pl.stringx'
 local utils = require 'pl.utils'
-local seq = require 'pl.seq'
-local tablex = require 'pl.tablex'
-local List = require 'pl.list'.List
-local rstrip,count = stringx.rstrip,stringx.count
 local _DEBUG = rawget(_G,'_DEBUG')
 
-local raise,patterns,choose,function_arg,split = utils.raise,utils.patterns,utils.choose,utils.function_arg,utils.split
+local patterns,function_arg,usplit = utils.patterns,utils.function_arg,utils.split
 local append,concat = table.insert,table.concat
-local map,find = tablex.map,tablex.find
 local gsub = string.gsub
 local io = io
 local _G,print,loadstring,type,tonumber,ipairs,setmetatable,pcall,error,setfenv = _G,print,loadstring,type,tonumber,ipairs,setmetatable,pcall,error,setfenv
@@ -39,16 +33,58 @@ local data = {}
 
 local parse_select
 
+local function count(s,chr)
+    chr = utils.escape(chr)
+    local _,cnt = s:gsub(chr,' ')
+    return cnt        
+end
+
+local function rstrip(s)
+    return s:gsub('%s+$','')
+end
+
+local function make_list(l)
+    return setmetatable(l,utils.stdmt.List)
+end
+
+local function split(s,delim)
+    return make_list(usplit(s,delim))
+end
+
+local function map(fun,t)
+    local res = {}
+    for i = 1,#t do
+        append(res,fun(t[i]))
+    end
+    return res
+end
+
+local function find(t,v)
+    for i = 1,#t do
+        if v == t[i] then return i end
+    end
+end
+
 local DataMT = {
     column_by_name = function(self,name)
-        return seq.copy(data.query(self,name))
+        local arr = {}
+        for res in data.query(self,name) do
+            append(arr,res)
+        end
+        return arr
     end,
 
     copy_query = function(self,condn)
         condn = parse_select(condn,self)
-        local res = seq.copy_tuples(data.query(self,condn))
+        local iter = data.query(self,condn)
+        local res = {}
+        local row = {iter()}
+        while #row > 0 do
+            append(res,row)
+            row = {iter()}
+        end
         res.delim = self.delim
-        return new(res,List.split(condn.fields,','))
+        return new(res,split(condn.fields,','))
     end,
 
     column_names = function(self)
@@ -59,16 +95,15 @@ DataMT.__index = DataMT
 
 -- [guessing delimiter] We check for comma, tab and spaces in that order.
 -- [issue] any other delimiters to be checked?
+local delims = {',','\t',' ',';'}
+
 local function guess_delim (line)
-    if count(line,',') > 0 then
-        return ','
-    elseif count(line,'\t') > 0 then
-        return '\t'
-    elseif count(line,' ') > 0 then
-        return '%s+'
-    else
-        return ' '
+    for _,delim in ipairs(delims) do
+        if count(line,delim) > 0 then
+            return delim == ' ' and '%s+' or delim
+        end
     end
+    return ' '
 end
 
 -- [file parameter] If it's a string, we try open as a filename. If nil, then
@@ -79,11 +114,11 @@ local function open_file (f,mode)
     local reading = mode == 'r'
     if type(f) == 'string' then
         f,err = io.open(f,mode)
-        if not f then return raise(err) end
+        if not f then return nil,err end
         opened = true
     end
     if f and ((reading and not f.read) or (not reading and not f.write)) then
-        return raise "not a file-like object"
+        return nil, "not a file-like object"
     end
     return (f or (reading and io.stdin or io.stdout)),nil,opened
 end
@@ -99,12 +134,11 @@ end
 -- specify no_convert (default is to convert), numfields (indices of columns known
 -- to be numbers) and thousands_dot (thousands separator in Excel CSV is '.')
 function data.read(file,cnfg)
-    local list = seq.list
     local convert,err,opened
     local D = {}
     if not cnfg then cnfg = {} end
     local f,err,opened = open_file(file,'r')
-    if not f then return raise (err) end
+    if not f then return nil, err end
     local thousands_dot = cnfg.thousands_dot
 
     local function try_tonumber(x)
@@ -113,16 +147,16 @@ function data.read(file,cnfg)
     end
 
     local line = f:read()
-    if not line then return raise "empty file" end
+    if not line then return nil, "empty file" end
     -- first question: what is the delimiter?
     D.delim = cnfg.delim and cnfg.delim or guess_delim(line)
     local delim = D.delim
     local collect_end = cnfg.last_field_collect
     -- first line will usually be field names. Unless fieldnames are specified,
     -- we check if it contains purely numerical values for the case of reading
-    -- plain D files.
+    -- plain data files.
     if not cnfg.fieldnames then
-        local fields = List.split(line,delim)
+        local fields = split(line,delim)
         local nums = map(tonumber,fields)
         if #nums == #fields then
             convert = tonumber
@@ -132,22 +166,22 @@ function data.read(file,cnfg)
         end
         line = f:read()
     elseif type(cnfg.fieldnames) == 'string' then
-        cnfg.fieldnames = List.split(cnfg.fieldnames,delim)
+        cnfg.fieldnames = split(cnfg.fieldnames,delim)
     end
     -- at this point, the column headers have been read in. If the first
-    -- row consisted of numbers, it has already been added to the Dset.
+    -- row consisted of numbers, it has already been added to the dataset.
     local numfields = cnfg.numfields
     if cnfg.fieldnames then
         D.fieldnames = cnfg.fieldnames
         -- [conversion] unless @no_convert, we need the numerical field indices
-        -- of the first D row. Can also be specified by @numfields.
+        -- of the first data row. Can also be specified by @numfields.
         if not cnfg.no_convert then
             if not numfields then
-                numfields = List()
+                numfields = {}
                 local fields = split(line,D.delim)
                 for i = 1,#fields do
                     if tonumber(fields[i]) then
-                        numfields:append(i)
+                        append(numfields,i)
                     end
                 end
             end
@@ -164,10 +198,11 @@ function data.read(file,cnfg)
         if not line:find ('^%s*$') then
             local fields =  split(line,delim)
             if convert then
-                for i in list(numfields) do
+                for k = 1,#numfields do
+                    local i = numfields[k]
                     local val = convert(fields[i])
                     if val == nil then
-                        return raise ("not a number: "..fields[i])
+                        return nil, "not a number: "..fields[i]
                     else
                         fields[i] = val
                     end
@@ -176,8 +211,15 @@ function data.read(file,cnfg)
             -- [collecting end field] If @last_field_collect then we will collect
             -- all extra space-delimited fields into a single last field.
             if collect_end and #fields > N then
-                local ends = List(fields):slice(N):join ' '
-                tablex.icopy(fields,{ends},N)  --*note* copy
+                local ends = {}
+                for i = N+1,#fields do
+                    append(ends,fields[i])
+                end
+                ends = concat(ends,' ')
+                local cfields = {}
+                for i = 1,N do cfields[i] = fields[i] end
+                cfields[N] = cfields[N]..' '..ends
+                fields = cfields
             end
             append(D,fields)
         end
@@ -189,15 +231,15 @@ function data.read(file,cnfg)
 end
 
 local function write_row (data,f,row)
-    f:write(List.join(row,data.delim),'\n')
+    f:write(concat(row,data.delim),'\n')
 end
 
 DataMT.write_row = write_row
 
 local function write (data,file)
     local f,err,opened = open_file(file,'w')
-    if not f then return raise (err) end
-    f:write(data.fieldnames:join(data.delim),'\n')
+    if not f then return nil, err end
+    f:write(data.concat(fieldnames,data.delim),'\n')
     for i = 1,#data do
         write_row(data,f,data[i])
     end
@@ -227,7 +269,7 @@ function data.new (d,fieldnames)
         d.delim = guess_delim(d.fieldnames)
         d.fieldnames = split(d.fieldnames,d.delim)
     end
-    d.fieldnames = List(d.fieldnames)
+    d.fieldnames = make_list(d.fieldnames)
     massage_fieldnames(d.fieldnames)
     setmetatable(d,DataMT)
     -- a query with just the fieldname will return a sequence
@@ -305,7 +347,7 @@ local function process_select (data,parms)
     local fields = rstrip(parms.fields):gsub('[^,%w]','_') -- non-identifier chars
     local massage_fields = utils.bind1(massage_fields,data)
     ret = gsub(fields,patterns.IDEN,massage_fields)
-    if field_error then return raise(field_error) end
+    if field_error then return nil,field_error end
     parms.proc_fields = ret
     parms.where = parms.where or  'true'
     if is_string(parms.where) then
@@ -331,7 +373,7 @@ parse_select = function(s,data)
     endp = (w1 or s1 or 0)-1
     parms.fields = s:sub(1,endp)
     local status,err = process_select(data,parms)
-    if not status then return raise(err)
+    if not status then return nil,err
     else return parms end
 end
 
@@ -350,17 +392,17 @@ function data.query(data,condn,context,return_row)
     local err   
     if is_string(condn) then
         condn,err = parse_select(condn,data)
-        if not condn then return raise(err) end
+        if not condn then return nil,err end
     elseif type(condn) == 'table' then
         if type(condn.fields) == 'table' then
             condn.fields = concat(condn.fields,',')
         end
         if not condn.proc_fields then
             local status,err = process_select(data,condn)
-            if not status then return raise(err) end
+            if not status then return nil,err end
         end
     else
-        return raise "condition must be a string or a table"
+        return nil, "condition must be a string or a table"
     end
     local query
     if condn.sort_by then -- use sorted_query
@@ -391,7 +433,7 @@ function data.query(data,condn,context,return_row)
             sort_dir = 'asc'
         end
         sort_var = massage_fields(data,sort_var)
-        if field_error then return raise(field_error) end
+        if field_error then return nil,field_error end
         if sort_dir == 'asc' then
             sort_dir = '<'
         else
@@ -406,7 +448,7 @@ function data.query(data,condn,context,return_row)
     if _DEBUG then print(query) end
 
     local fn,err = loadstring(query,'tmp')
-    if not fn then return raise(err) end
+    if not fn then return nil,err end
     fn = fn() -- get the function
     if condn.where then
         fn = fn(condn.where)

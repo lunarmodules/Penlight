@@ -33,12 +33,13 @@
 module ('pl.comprehension')
 ]]
 
-local lb = require "pl.luabalanced"
-local utils = require 'pl.utils'
+local status,lb = pcall(require, "pl.luabalanced")
+if not status then
+    lb = require 'luabalanced'
+end
 
 local math_max = math.max
 local table_concat = table.concat
-
 
 -- fold operations
 -- http://en.wikipedia.org/wiki/Fold_(higher-order_function)
@@ -284,12 +285,5 @@ end
 
 local comprehension = {}
 comprehension.new = new
-
--- a default instance
-local C = new()
-utils.add_function_factory(getmetatable "",function(s)
-    return C(s)
-end)
-
 
 return comprehension

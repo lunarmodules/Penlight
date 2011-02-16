@@ -669,7 +669,7 @@ end
 -- @return the table
 function tablex.new (n,val)
     local res = {}
-    set(res,val,1,n)
+    tablex.set(res,val,1,n)
     return res
 end
 

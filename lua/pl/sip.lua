@@ -21,14 +21,25 @@
 -- @class module
 -- @name pl.sip
 
-local utils = require 'pl.utils'
-local patterns = utils.patterns
 local append,concat = table.insert,table.concat
 local concat = table.concat
 local ipairs,loadstring,type,unpack = ipairs,loadstring,type,unpack
 local io,_G = io,_G
 local print,rawget = print,rawget
-local assert_arg = utils.assert_arg
+
+local patterns = {
+    FLOAT = '[%+%-%d]%d*%.?%d*[eE]?[%+%-]?%d*',
+    INTEGER = '[+%-%d]%d*',
+    IDEN = '[%a_][%w_]*',
+    FILE = '[%a%.\\][:%][%w%._%-\\]*'
+}
+
+local function assert_arg(idx,val,tp)
+    if type(val) ~= tp then
+        error("argument "..idx.." must be "..tp, 2)
+    end
+end
+
 
 --[[
 module ('pl.sip',utils._module)
@@ -297,7 +308,7 @@ function sip.read (f)
     f = f or io.stdin
     if type(f) == 'string' then
         f,err = io.open(f)
-        if not f then utils.quit(1,err) end
+        if not f then return nil,err end
         owned = true
     end
     local res = {}

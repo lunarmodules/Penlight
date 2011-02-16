@@ -16,15 +16,20 @@
 -- @name pl.text
 
 local gsub = string.gsub
-local stringx = require 'pl.stringx'
-local concat = table.concat
-local imap = require 'pl.tablex'.imap
+local concat,append = table.concat,table.insert
 local utils = require 'pl.utils'
-local bind1 = utils.bind1
-local split = stringx.split
-local List = require 'pl.list'.List
-local lstrip,strip = stringx.lstrip,stringx.strip
-local assert_arg = utils.assert_arg
+local bind1,usplit,assert_arg,is_callable = utils.bind1,utils.split,utils.assert_arg,utils.is_callable
+
+local function lstrip(str)  return (str:gsub('^%s+',''))  end
+local function strip(str)  return (lstrip(str):gsub('%s+$','')) end
+local function make_list(l)  return setmetatable(l,utils.stdmt.List) end
+local function split(s,delim)  return make_list(usplit(s,delim)) end
+
+local function imap(f,t,...) 
+    local res = {}
+    for i = 1,#t do res[i] = f(t[i],...) end
+    return res
+end
 
 --[[
 module ('pl.text',utils._module)
@@ -56,8 +61,8 @@ function text.dedent (s)
     assert_arg(1,s,'string')
     local sl = split(s,'\n')
     local i1,i2 = sl[1]:find('^%s*')
-    sl = sl:map(string.sub,i2+1)
-    return sl:concat('\n')..'\n'
+    sl = imap(string.sub,sl,i2+1)
+    return concat(sl,'\n')..'\n'
 end
 
 --- format a paragraph into lines so that they fit into a line width.
@@ -71,7 +76,7 @@ function text.wrap (s,width)
     width = width or 70
     s = s:gsub('\n',' ')
     local i,nxt = 1
-    local lines = List()
+    local lines = {}
     while i < #s do
         nxt = i+width
         if s:find("[%w']",nxt) then -- inside a word
@@ -79,9 +84,9 @@ function text.wrap (s,width)
         end
         line = s:sub(i,nxt)
         i = i + #line
-        lines:append(strip(line))
+        append(lines,strip(line))
     end
-    return lines
+    return make_list(lines)
 end
 
 --- format a paragraph so that it fits into a line width.
@@ -90,7 +95,7 @@ end
 -- @return a string
 -- @see wrap
 function text.fill (s,width)
-    return text.wrap(s,width):concat '\n' .. '\n'
+    return concat(text.wrap(s,width),'\n') .. '\n'
 end
 
 local Template = {}
@@ -111,7 +116,7 @@ end
 
 local function _substitute(s,tbl,safe)
     local subst
-    if utils.is_callable(tbl) then
+    if is_callable(tbl) then
         subst = tbl
     else
         function subst(f)
@@ -227,6 +232,5 @@ function text.format_operator()
         end
     end
 end
-
 
 return text

@@ -21,15 +21,19 @@
 -- @class module
 -- @name pl.lexer
 
-local utils = require 'pl.utils'
 local yield,wrap = coroutine.yield,coroutine.wrap
 local strfind = string.find
 local strsub = string.sub
 local append = table.insert
-local assert_arg = utils.assert_arg
 --[[
 module ('pl.lexer',utils._module)
 ]]
+
+local function assert_arg(idx,val,tp)
+    if type(val) ~= tp then
+        error("argument "..idx.." must be "..tp, 2)
+    end
+end
 
 local lexer = {}
 
@@ -414,7 +418,7 @@ function lexer.expecting (tok,expected_type,no_skip_ws)
     else
         t,v = skipws(tok)
     end
-    if t ~= expected_type then utils.error ("expecting "..expected_type) end
+    if t ~= expected_type then error ("expecting "..expected_type,2) end
     return v
 end
 
