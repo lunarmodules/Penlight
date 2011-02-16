@@ -65,13 +65,12 @@ end
 
 local function _listfiles(dir,filemode,match)
     local res = {}
-    local attrib = path.attrib
+    local check = utils.choose(filemode,path.isfile,path.isdir)
     if not dir then dir = '.' end
     for f in ldir(dir) do
         if f ~= '.' and f ~= '..' then
             local p = path.join(dir,f)
-            local mode = attrib(p,'mode')
-            if mode == filemode and (not match or match(p)) then
+            if check(p) and (not match or match(p)) then
                 append(res,p)
             end
         end
@@ -92,14 +91,14 @@ function dir.getfiles(dir,mask)
             return f:find(mask)
         end
     end
-    return _listfiles(dir,'file',match)
+    return _listfiles(dir,true,match)
 end
 
 --- return a list of all subdirectories of the directory.
 -- @param dir A directory
 function dir.getdirectories(dir)
     assert_dir(1,dir)
-    return _listfiles(dir,'directory')
+    return _listfiles(dir,false)
 end
 
 local function quote_if_necessary (f)
@@ -371,10 +370,10 @@ end
 
 --- return an iterator over all entries in a directory tree
 -- @param d a directory
--- @return an iterator giving pathname and mode (which is typically 'file' or 'directory')
+-- @return an iterator giving pathname and mode (true for dir, false otherwise)
 function dir.dirtree( d )
     assert( d and d ~= "", "directory parameter is missing or empty" )
-    local attrib = path.attrib
+    local exists, isdir = path.exists, path.isdir
 
     if sub( d, -1 ) == "/" then
         d = sub( d, 1, -2 )
@@ -384,10 +383,10 @@ function dir.dirtree( d )
         for entry in ldir( dir ) do                
             if entry ~= "." and entry ~= ".." then
                 entry = dir .. "/" .. entry
-                local mode = attrib( entry, 'mode' )                    
-                if mode then  -- Just in case a symlink is broken.
-                    yield( entry, mode )
-                    if mode == "directory" then
+                if exists(entry) then  -- Just in case a symlink is broken.                    
+                    local is_dir = isdir(entry)
+                    yield( entry, is_dir )
+                    if is_dir then
                         yieldtree( entry )
                     end
                 end
@@ -411,7 +410,7 @@ function dir.getallfiles( start_path, pattern )
     local files = {}
     local normcase = path.normcase
     for filename, mode in dir.dirtree( start_path ) do
-        if "file" == mode then            
+        if not mode then            
             local mask = filemask( pattern )
             if normcase(filename):find( mask ) then
                 files[#files + 1] = filename

@@ -20,24 +20,87 @@ local assert_arg,assert_string,raise = utils.assert_arg,utils.assert_string,util
 module ('pl.path',utils._module)
 ]]
 
-local path = {}
+local path
 
-local res,lfs = _G.pcall(_G.require,'lfs')
-if res then
-    attributes = lfs.attributes
-    currentdir = lfs.currentdir
-    link_attrib = lfs.symlinkattributes    
+if luajava then
+    path = require 'pl.platf.luajava'
 else
-    error("pl.path requires LuaFileSystem")
+    path = {}
+
+    local res,lfs = _G.pcall(_G.require,'lfs')
+    if res then
+        attributes = lfs.attributes
+        currentdir = lfs.currentdir
+        link_attrib = lfs.symlinkattributes    
+    else
+        error("pl.path requires LuaFileSystem")
+    end
+
+    attrib = attributes
+    path.attrib = attrib
+    path.link_attrib = link_attrib
+    path.dir = lfs.dir
+    path.mkdir = lfs.mkdir
+    path.rmdir = lfs.rmdir
+    path.chdir = lfs.chdir
+
+    --- is this a directory?
+    -- @param P A file path
+    function path.isdir(P)
+        if P:match("\\$") then
+            P = P:sub(1,-2)
+        end
+        return attrib(P,'mode') == 'directory'
+    end
+
+    --- is this a file?.
+    -- @param P A file path
+    function path.isfile(P)
+        return attrib(P,'mode') == 'file'
+    end
+
+    -- is this a symbolic link?
+    -- @param P A file path
+    function path.islink(P)
+        if link_attrib then
+            return link_attrib(P,'mode')=='link'
+        else
+            return false
+        end
+    end
+
+    --- return size of a file.
+    -- @param P A file path
+    function path.getsize(P)
+        return attrib(P,'size')
+    end
+
+    --- does a path exist?.
+    -- @param P A file path
+    -- @return the file path if it exists, nil otherwise
+    function path.exists(P)
+        return attrib(P,'mode') ~= nil and P
+    end
+
+    --- Return the time of last access as the number of seconds since the epoch.
+    -- @param P A file path
+    function path.getatime(P)
+        return attrib(P,'access')
+    end
+
+    --- Return the time of last modification
+    -- @param P A file path
+    function path.getmtime(P)
+        return attrib(P,'modification')
+    end
+
+    ---Return the system's ctime.
+    -- @param P A file path
+    function path.getctime(P)
+        return path.attrib(P,'change')
+    end
 end
 
-attrib = attributes
-path.attrib = attrib
-path.link_attrib = link_attrib
-path.dir = lfs.dir
-path.mkdir = lfs.mkdir
-path.rmdir = lfs.rmdir
-path.chdir = lfs.chdir
 
 local function at(s,i)
     return sub(s,i,i)
@@ -170,46 +233,6 @@ function path.normcase(P)
     end
 end
 
---- is this a directory?
--- @param P A file path
-function path.isdir(P)
-    if P:match("\\$") then
-        P = P:sub(1,-2)
-    end
-    return attrib(P,'mode') == 'directory'
-end
-
---- is this a file?.
--- @param P A file path
-function path.isfile(P)
-    if P:match("\\$") then
-        P = P:sub(1,-2)
-    end
-    return attrib(P,'mode') == 'file'
-end
-
--- is this a symbolic link?
--- @param P A file path
-function path.islink(P)
-    if link_attrib then
-        return link_attrib(P,'mode')=='link'
-    else
-        return false
-    end
-end
-
---- return size of a file.
--- @param P A file path
-function path.getsize(P)
-    return attrib(P,'size')
-end
-
---- does a path exist?.
--- @param P A file path
--- @return the file path if it exists, nil otherwise
-function path.exists(P)
-    return attrib(P,'mode') ~= nil and P
-end
 
 --- Replace a starting '~' with the user's home directory.
 -- In windows, if HOME isn't set, then USERPROFILE is used in preference to
@@ -228,23 +251,6 @@ function path.expanduser(P)
     end
 end
 
---- Return the time of last access as the number of seconds since the epoch.
--- @param P A file path
-function path.getatime(P)
-    return attrib(P,'access')
-end
-
---- Return the time of last modification
--- @param P A file path
-function path.getmtime(P)
-    return attrib(P,'modification')
-end
-
----Return the system's ctime.
--- @param P A file path
-function path.getctime(P)
-    return path.attrib(P,'change')
-end
 
 ---Return a suitable full path to a new temporary file name.
 -- unlike os.tmpnam(), it always gives you a writeable path (uses %TMP% on Windows)
