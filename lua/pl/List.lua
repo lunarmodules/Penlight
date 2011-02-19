@@ -16,7 +16,7 @@
 -- Written for Lua version 4.0 <br />
 -- Redone for Lua 5.1, Steve Donovan.
 -- @class module
--- @name pl.list
+-- @name pl.List
 
 local tinsert,tremove,concat,tsort = table.insert,table.remove,table.concat,table.sort
 local setmetatable, getmetatable,type,tostring,assert,string,next = setmetatable,getmetatable,type,tostring,assert,string,next
@@ -36,16 +36,12 @@ local normalize_slice = tablex._normalize_slice
 module ('pl.list',utils._module)
 ]]
 
-local list = {}
-
 local Multimap = utils.stdmt.MultiMap
 -- metatable for our list objects
-list.List = utils.stdmt.List
-local List = list.List
+local List = utils.stdmt.List
 List.__index = List
 List._name = "List"
 List._class = List
-
 
 -- we give the metatable its own metatable so that we can call it like a function!
 setmetatable(List,{
@@ -334,7 +330,7 @@ List.concat = concat
 
 local function tostring_q(val)
     local s = tostring(val)
-    if type(val) ~= 'number' then
+    if type(val) == 'string' then
         s = '"'..s..'"'
     end
     return s
@@ -511,5 +507,5 @@ function iter(seq)
     end
 end
 
-return list
+return List
 
