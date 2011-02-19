@@ -10,11 +10,19 @@ local stringio = {}
 --- Writer class
 local SW = {}
 SW.__index = SW
- 
-function SW:write(...)
+
+local function xwrite(self,...)
     local args = {...} --arguments may not be nil!
     for i = 1, #args do 
-        append(self.tbl,tostring(args[i]))
+        append(self.tbl,args[i])
+    end
+end
+
+function SW:write(arg1,arg2,...)
+    if arg2 then
+        xwrite(self,arg1,arg2,...)
+    else
+        append(self.tbl,arg1)
     end
 end
  
@@ -27,6 +35,9 @@ function SW:value()
 end
 
 function SW:close() -- for compatibility only
+end
+
+function SW:seek()
 end
 
 --- Reader class
@@ -113,6 +124,10 @@ end
 -- @param s The input string.
 function stringio.open(s)
     return setmetatable({str=s,i=1},SR)
+end
+
+function stringio.lines(s)
+    return stringio.open(s):lines()
 end
 
 return stringio
