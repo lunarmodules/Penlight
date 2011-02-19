@@ -50,7 +50,7 @@ _1,_2,_3,_4,_5 = PH(1),PH(2),PH(3),PH(4),PH(5)
 _0 = P{op='X',repr='...',index=0}
 
 function func.Var (name)
-    local ls = utils.split(name,',')
+    local ls = utils.split(name,'%s*,')
     local res = {}
     for _,n in ipairs(ls) do
         append(res,P{op='X',repr=n,index=0})
