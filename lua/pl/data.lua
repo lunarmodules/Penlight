@@ -71,7 +71,7 @@ local DataMT = {
         for res in data.query(self,name) do
             append(arr,res)
         end
-        return arr
+        return make_list(arr)
     end,
 
     copy_query = function(self,condn)
@@ -113,14 +113,20 @@ local function open_file (f,mode)
     local opened
     local reading = mode == 'r'
     if type(f) == 'string' then
-        f,err = io.open(f,mode)
-        if not f then return nil,err end
-        opened = true
+        if f == 'stdin'  then
+            f = io.stdin
+        elseif f == 'stdout'  then
+            f = io.stdout
+        else
+            f,err = io.open(f,mode)
+            if not f then return nil,err end
+            opened = true
+        end
     end
     if f and ((reading and not f.read) or (not reading and not f.write)) then
         return nil, "not a file-like object"
     end
-    return (f or (reading and io.stdin or io.stdout)),nil,opened
+    return f,nil,opened
 end
 
 local function all_n ()
@@ -227,6 +233,7 @@ function data.read(file,cnfg)
     end
     if opened then f:close() end
     if delim == '%s+' then D.delim = ' ' end
+    if not D.fieldnames then D.fieldnames = {} end
     return data.new(D)
 end
 
@@ -239,7 +246,9 @@ DataMT.write_row = write_row
 local function write (data,file)
     local f,err,opened = open_file(file,'w')
     if not f then return nil, err end
-    f:write(data.concat(fieldnames,data.delim),'\n')
+    if #data.fieldnames > 0 then
+        f:write(concat(data.fieldnames,data.delim),'\n')
+    end
     for i = 1,#data do
         write_row(data,f,data[i])
     end
@@ -258,8 +267,10 @@ end
 
 --- create a new dataset from a table of rows. <br>
 -- Can specify the fieldnames, else the table must have a field called
--- 'fieldnames', which is either a string of comma-separated names,
--- or a table of names.
+-- 'fieldnames', which is either a string of delimiter-separated names,
+-- or a table of names. <br> 
+-- If the table does not have a field called 'delim', then an attempt will be 
+-- made to guess it from the fieldnames string, defaults otherwise to tab.
 -- @param d the table.
 -- @param fieldnames optional fieldnames
 -- @return the table.
