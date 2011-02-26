@@ -67,6 +67,9 @@ end
 
 local DataMT = {
     column_by_name = function(self,name)
+        if type(name) == 'number' then
+            name = '$'..name
+        end
         local arr = {}
         for res in data.query(self,name) do
             append(arr,res)
@@ -74,17 +77,17 @@ local DataMT = {
         return make_list(arr)
     end,
 
-    copy_query = function(self,condn)
+    copy_select = function(self,condn)
         condn = parse_select(condn,self)
         local iter = data.query(self,condn)
         local res = {}
-        local row = {iter()}
+        local row = make_list{iter()}
         while #row > 0 do
             append(res,row)
-            row = {iter()}
+            row = make_list{iter()}
         end
         res.delim = self.delim
-        return new(res,split(condn.fields,','))
+        return data.new(res,split(condn.fields,','))
     end,
 
     column_names = function(self)
@@ -339,7 +342,12 @@ local function fieldnames_as_string (data)
 end
 
 local function massage_fields(data,f)
-    local idx = find(data.fieldnames,f)
+    local idx
+    if f:find '^%d+$' then
+        idx = tonumber(f)
+    else
+        idx = find(data.fieldnames,f)
+    end
     if idx then
         return 'v['..idx..']'
     else
@@ -352,17 +360,33 @@ local function process_select (data,parms)
     --- preparing fields ----
     local res,ret
     field_error = nil
-    if parms.fields:find '^%s*%*%s*' then
-        parms.fields = fieldnames_as_string(data)
+    local fields = parms.fields
+    local numfields = fields:find '%$'
+    if fields:find '^%s*%*%s*' then
+        if not numfields then
+            fields = fieldnames_as_string(data)
+        else
+            local ncol = #data[1]
+            filelds = {}
+            for i = 1,ncol do append(fields,'$'..i) end
+            fields = concat(fields,',')
+        end
+    end    
+    local idpat = patterns.IDEN
+    if numfields then
+        idpat = '%$(%d+)'
+    else
+        -- massage field names to replace non-identifier chars
+        fields = rstrip(fields):gsub('[^,%w]','_') 
     end
-    local fields = rstrip(parms.fields):gsub('[^,%w]','_') -- non-identifier chars
     local massage_fields = utils.bind1(massage_fields,data)
-    ret = gsub(fields,patterns.IDEN,massage_fields)
+    ret = gsub(fields,idpat,massage_fields)
     if field_error then return nil,field_error end
+    parms.fields = fields
     parms.proc_fields = ret
     parms.where = parms.where or  'true'
     if is_string(parms.where) then
-        parms.where = gsub(parms.where,patterns.IDEN,massage_fields)
+        parms.where = gsub(parms.where,idpat,massage_fields)
         field_error = nil
     end
     return true

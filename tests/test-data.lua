@@ -1,12 +1,13 @@
 --_DEBUG=true
 data = require 'pl.data'
-List = require 'pl.list' . List
+List = require 'pl.List'
 array = require 'pl.array2d'
 seq = require 'pl.seq'
 utils = require 'pl.utils'
 stringio = require 'pl.stringio'
 open = stringio. open
 asserteq = require 'pl.test' . asserteq
+T = require 'pl.test'. tuple
 
 -- tab-separated data, explicit column names
 t1f = open [[
@@ -116,10 +117,49 @@ don,3
 dilbert,10
 ]])
 
+-- data may not always have column headers. When creating a data object 
+-- from a two-dimensional array, must specify the fieldnames, as a list or a string.
+-- The delimiter is deduced from the fieldname string, so a string just containing
+-- the delimiter will set it,  and the fieldnames will be empty.
+local dat = List()
+local row = List.range(1,10)
+for i = 1,10 do
+    dat:append(row:map('*',i))
+end
+dat = data.new(dat,',')
+local out = stringio.create()
+dat:write(out,',')
+asserteq(out:value(), [[
+1,2,3,4,5,6,7,8,9,10
+2,4,6,8,10,12,14,16,18,20
+3,6,9,12,15,18,21,24,27,30
+4,8,12,16,20,24,28,32,36,40
+5,10,15,20,25,30,35,40,45,50
+6,12,18,24,30,36,42,48,54,60
+7,14,21,28,35,42,49,56,63,70
+8,16,24,32,40,48,56,64,72,80
+9,18,27,36,45,54,63,72,81,90
+10,20,30,40,50,60,70,80,90,100
+]])
 
+-- you can always use numerical field indices, AWK-style;
+-- note how the copy_select method gives you a data object instead of an
+-- iterator over the fields
+local res = dat:copy_select '$1,$3 where $1 > 5'
+local L = List
+asserteq(L(res),L{
+    L{6, 18},
+    L{7,	21},
+    L{8,	24},
+    L{9,	27},
+    L{10,30},
+})
 
+-- the column_by_name method may take a fieldname or an index
+asserteq(dat:column_by_name(2), L{2,4,6,8,10,12,14,16,18,20})
 
-
-
+-- the field list may contain expressions or even constants
+local q = dat:select '$3,2*$4 where $1 == 8'
+asserteq(T(q()),T(24,64))
 
 
