@@ -161,6 +161,7 @@ function data.read(file,cnfg)
     D.delim = cnfg.delim and cnfg.delim or guess_delim(line)
     local delim = D.delim
     local collect_end = cnfg.last_field_collect
+    local numfields = cnfg.numfields    
     -- first line will usually be field names. Unless fieldnames are specified,
     -- we check if it contains purely numerical values for the case of reading
     -- plain data files.
@@ -170,6 +171,8 @@ function data.read(file,cnfg)
         if #nums == #fields then
             convert = tonumber
             append(D,nums)
+            numfields = {}
+            for i = 1,#nums do numfields[i] = i end
         else
             cnfg.fieldnames = fields
         end
@@ -179,7 +182,6 @@ function data.read(file,cnfg)
     end
     -- at this point, the column headers have been read in. If the first
     -- row consisted of numbers, it has already been added to the dataset.
-    local numfields = cnfg.numfields
     if cnfg.fieldnames then
         D.fieldnames = cnfg.fieldnames
         -- [conversion] unless @no_convert, we need the numerical field indices
@@ -201,7 +203,6 @@ function data.read(file,cnfg)
             end
         end
     end
-    local N = #D.fieldnames
     -- keep going until finished
     while line do
         if not line:find ('^%s*$') then
@@ -219,8 +220,8 @@ function data.read(file,cnfg)
             end
             -- [collecting end field] If @last_field_collect then we will collect
             -- all extra space-delimited fields into a single last field.
-            if collect_end and #fields > N then
-                local ends = {}
+            if collect_end and #fields > #D.fieldnames then
+                local ends,N = {},#D.fieldnames
                 for i = N+1,#fields do
                     append(ends,fields[i])
                 end
@@ -515,11 +516,13 @@ end
 
 --- Filter input using a query.
 -- @param Q a query string
--- @param file a file-like object
+-- @param infile filename or file-like object
+-- @param outfile filename or file-like object
 -- @param dont_fail true if you want to return an error, not just fail
-function data.filter (Q,file,dont_fail)
+function data.filter (Q,infile,outfile,dont_fail)
     local err
-    local d = read(file)
+    local d = data.read(infile or 'stdin')
+    local out = open_file(outfile or 'stdout')
     local iter,err = d:select(Q)
     local delim = d.delim
     if not iter then
@@ -533,7 +536,7 @@ function data.filter (Q,file,dont_fail)
     while true do
         local res = {iter()}
         if #res == 0 then break end
-        print(concat(res,delim))
+        out:write(concat(res,delim),'\n')
     end
 end
 
