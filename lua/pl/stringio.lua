@@ -1,4 +1,4 @@
---- reading and writing strings using Lua IO.
+--- reading and writing strings using file-like objects. <br>
 -- @class module
 -- @name pl.stringio
 

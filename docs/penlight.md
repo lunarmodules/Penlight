@@ -17,7 +17,7 @@ Penlight captures many such code patterns, so that the intent of your code becom
 
 The default error handling policy follows that of the Lua standard libraries: if a argument is the wrong type, then an error will be thrown, but otherwise we return `nil,message` if there is a problem. There are some exceptions; functions like `input.fields` default to shutting down the program immediately with a useful message. This is more appropriate behaviour for a _script_ than providing a stack trace. (However, this default can be changed.) The lexer functions always throw errors, to simplify coding, and so should be wrapped in `pcall`.
 
-By default, the error stacktrace starts with your code, since you are not usually interested in the internal details of the library.
+By default, the error stacktrace starts with your code, since you are not usually interested in the internal details of the library. ??
 
 If you are used to Python conventions, please note that all indices consistently start at 1.
 
@@ -33,22 +33,19 @@ It was realized a long time ago that large programs needed a way to keep names d
 
 So the Penlight library provides the formal way and the informal way, without imposing any preference. You can do it formally like:
 
-    require 'pl.utils'
-    pl.utils.printf("%s\n","hello, world!")
+    local utils = require 'pl.utils'
+    utils.printf("%s\n","hello, world!")
 
 or informally like:
 
     require 'pl'
     utils.printf("%s\n","That feels better")
 
-`require 'pl'` makes all the separate Penlight modules available, without needing to require them each individually.
+`require 'pl'` makes all the separate Penlight modules available, without needing to require them each individually..   Generally, the formal way is better when writing modules, since then there are no global side-effects and the dependencies of your module are made explicit.
 
-This is also commonly done like so, especially when writing modules:
+With Penlight after 0.9, please note that `require 'pl.utils'` no longer implies that a global table `pl.tuils` exists, since these new modules are no longer created with `module()`.
 
-    local utils = require 'pl.utils'
-    utils.printf("The answer is %d\n",42)
-
-Penlight will not bring in functions into the global table, or clobber standard tables like 'io'.  require('pl') will bring tables like 'utils','tablex',etc into the global table _if they are used_. This 'load-on-demand' strategy ensures that the whole kitchen sink is not loaded up front.
+Penlight will not bring in functions into the global table, or clobber standard tables like 'io'.  require('pl') will bring tables like 'utils','tablex',etc into the global table _if they are used_. This 'load-on-demand' strategy ensures that the whole kitchen sink is not loaded up front,  so this method is as efficient as explicitly loading required modules. 
 
 You have an option to bring the `pl.stringx` methods into the standard string table. All strings have a metatable that allows for automatic lookup in `string`, so we can say `s:upper()`. Importing `stringx` allows for its functions to also be called as methods: `s:strip()`,etc:
 
@@ -66,9 +63,9 @@ A more delicate operation is importing tables into the local environment. This i
     > = sin(1.2)
     0.93203908596723
 
-`utils.import` can also be passed a module name, which is first required and then imported. If used in a module, `import` will bring the symbols into the module context.
+`utils.import` can also be passed a module name as a string, which is first required and then imported. If used in a module, `import` will bring the symbols into the module context.
 
-Keeping the global scope simple is very necessary with dynamic languages. Using global variables in a big program is always asking for trouble, especially if you don't have the spell-checking provided by a compiler. The `pl.strict` module enforces a simple rule: globals must be 'declared'.  This means that they must be assigned before use; assigning to `nil` is sufficient.
+Keeping the global scope simple is very necessary with dynamic languages. Using global variables in a big program is always asking for trouble, especially since you do  not have the spell-checking provided by a compiler. The `pl.strict` module enforces a simple rule: globals must be 'declared'.  This means that they must be assigned before use; assigning to `nil` is sufficient.
 
     > require 'pl.strict'
     > print(x)
@@ -87,19 +84,15 @@ If you wish to enforce strictness globally, then just add `require 'pl.strict'` 
 
 Many functions in Penlight themselves take function arguments, like `map` which applies a function to a list, element by element.  You can use existing functions, like `math.max`, anonymous functions (like `function(x,y) return x > y end`), or operations by name (e.g '*' or '..').  The module `pl.operator` exports all the standard Lua operations, like the Python module of the same name. Penlight allows these to be refered to by name, so `operator.gt` can be more concisely expressed as '>'.
 
-Note that the `map` functions pass any extra arguments to the function, so we can have `ls:filter('>',0)`, which is effectively `ls:filter(function(x) return x > 0 end)`.
+Note that the `map` functions pass any extra arguments to the function, so we can have `ls:filter('>',0)`, which is a shortcut for `ls:filter(function(x) return x > 0 end)`.
 
-Finally, `pl.func` supports _placeholder expressions_ in the Boost style, so that an anonymous function to multiply the two arguments can be expressed as `_1*_2`.
+Finally, `pl.func` supports _placeholder expressions_ in the Boost lambda style, so that an anonymous function to multiply the two arguments can be expressed as `_1*_2`.
 
-To use them directly, note that _all_ function arguments in Penlight go through `utils.function_arg`:
+To use them directly, note that _all_ function arguments in Penlight go through `utils.function_arg`. `pl.func` registers itself with this function, so that you can directly use placeholder expressions with standard methods:
 
-    > FA = utils.function_arg
-    > f = FA '+'
-    > f(10,20)
-    30
-    > f = FA '|x| x+1'
-    > f(10)
-    11
+    > _1 = func._1
+    > = List{10,20,30}:map(_1+1)
+    {11,21,31}
 
 
 ### Pros and Cons of Loopless Programming
@@ -139,7 +132,7 @@ But this will bite you someday when `nil` is one of the arguments, since this wi
           ...
         end
     end
-
+    
 The 'memoize' pattern occurs when you have a function which is expensive to call, but will always return the same value subsequently. `utils.memoize` is given a function, and returns another function. This calls the function the first time, saves the value for that argument, and thereafter for that argument returns the saved value.  This is a more flexible alternative to building a table of values upfront, since in general you won't know what values are needed.
 
     sum = utils.memoize(function(n)
@@ -152,6 +145,8 @@ The 'memoize' pattern occurs when you have a function which is expensive to call
     ...
     s = sum(1e8) --returned saved value!
 
+Penlight is fully compatible with Lua 5.1, 5.2 and LuaJIT 2. To ensure this, `utils` also defines the global Lua 5.2 `loadin` function when needed.  The first argument is the environment of the compiled chunk, the second is the input (either a string or a function) and the third is the source name used in debug information. Using `loadin` should reduce the need to call the deprecated function `setfenv`.
+
 <a id="app"/>
 ### Application Support
 
@@ -161,7 +156,7 @@ Flags may take values. The command-line `--value=open -n10` would result in `{va
 
 	> require 'pl'
 	> flags,args = utils.parse_args({'-o','fred','-n10','fred.txt'},{o=true})
-	> dump(flags)
+	> pretty.dump(flags)
 	{o='fred',n='10'}
 
 `parse_args` is not intelligent or psychic; it will not convert any flag values or arguments for you, or raise errors. For that, have a look at [#lapp](pl.lapp).
@@ -189,7 +184,7 @@ Lua is similar to JavaScript in that the concept of class is not directly suppor
 
     -- animal.lua
 
-    class = require 'pl.class'.class
+    class = require 'pl.class'
 
     class.Animal()
 
@@ -271,6 +266,7 @@ One of the elegant things about Lua is that tables do the job of both lists and 
 
 Here is an example showing `List` in action; it redefines `__tostring`, so that it can print itself out more sensibly:
 
+    > List = require 'pl.List'  --> automatic with require 'pl' <---
     > l = List()
     > l:append(10)
     > l:append(20)
@@ -327,12 +323,12 @@ The `List` constructor can be passed a function. If so, it's assumed that this i
     ls = List(io.lines())
     print(#ls)
 
-`pl.list.iter` captures what `List` considers a sequence. In particular, it can also iterate over all 'characters' in a string:
+`List.iterate` captures what `List` considers a sequence. In particular, it can also iterate over all 'characters' in a string:
 
-    > for ch in pl.list.iter 'help' do io.write(ch,' ') end
+    > for ch in List.iterate 'help' do io.write(ch,' ') end
     h e l p >
 
-Since the function `iter` is used internally by the `List` constructor, strings can be made into lists of character strings very easily.
+Since the function `iterate` is used internally by the `List` constructor, strings can be made into lists of character strings very easily.
 
 There are a number of operations that go beyond the standard Python methods. For instance, you can _partition_ a list into a table of sublists using a function. In the simplest form, you use a predicate (a function returning a boolean value) to partition the list into two lists, one of elements matching and another of elements not matching. But you can use any function; if we use `type` then the keys will be the standard Lua type names.
 
@@ -353,7 +349,7 @@ Stacks occur everywhere in computing. `List` supports stack-like operations; the
 
 The `Map` class exposes what Python would call a 'dict' interface, and accesses the hash part of the table. The name 'Map' is used to emphasize the interface, not the implementation; it is an object which maps keys onto values; `m['alice']` or the equivalent `m.alice` is the access operation.  This class also provides explicit `set` and `get` methods, which are trivial for regular maps but get interesting when `Map` is subclassed. The other operation is `update`, which extends a map by copying the keys and values from another table, perhaps overwriting existing keys:
 
-    > Map = require 'pl.class' . Map
+    > Map = require 'pl.Map' 
     > m = Map{one=1,two=2}
     > m:update {three=3,four=4,two=20}
     > = m == M{one=1,two=20,three=3,four=4}
@@ -376,7 +372,7 @@ The reason is that `m[key]` can be ambiguous; due to the current implementation,
 
 A `Set` is a special kind of `Map`, where all the values are `true`. So `get` will always return either `true` or `nil`; all the values are keys, and the order is not important. So in this case `values` is defined to return a list of the keys.  Sets can display themselves, and the basic operations like `union` (`+`) and `intersection` (`*`) are defined.
 
-    > Set = pl.class.Set
+    > Set = require 'pl.Set'
     > = Set{'one','two'} == Set{'two','one'}
     true
     > fruit = Set{'apple','banana','orange'}
@@ -403,35 +399,15 @@ There are also the methods `difference` and `symmetric_difference`. The first an
 
 Adding elements to a set is either done like `fruit['peach'] = true` or by `fruit:set('peach')`. Removing is either `fruit['apple'] = nil` or `fruit:unset('apple')`.
 
-`pl.classx` defines some useful classes which also inherit from `Map`. An `OrderedMap` behaves like a `Map` but keeps its keys in order if you use its `set` method to add keys and values.  Like all the 'container' classes in Penlight, it defines an `iter` method for iterating over its values; this will return the keys and values in the order of insertion; the `keys` and `values` methods likewise.
+There are also some useful classes which also inherit from `Map`. An `OrderedMap` behaves like a `Map` but keeps its keys in order if you use its `set` method to add keys and values.  Like all the 'container' classes in Penlight, it defines an `iter` method for iterating over its values; this will return the keys and values in the order of insertion; the `keys` and `values` methods likewise.
 
 A `MultiMap` allows multiple values to be associated with a given key. So `set` (as before) takes a key and a value, but calling it with the same key and a different value does not overwrite but adds a new value. `get` (or using `[]`) will return a list of values.
-
-There are occaisions when 'type-safe' containers can be very useful. These can only accept values of a particular kind. `TypedList` is a base class for lists of values of a particular type.
-
-    class.StringList(TypedList,'string')
-
-    sl = StringList()
-
-    sl:append 'hello'
-    sl:append (10)  --> error! 'not a string'
-    sl:extend {'hello'} --> error! 'cannot extend with another List type'
-
-The extra parameter can either be a Lua type (here 'string') or a previously defined class type (i.e. works like `pl.utils.is_type`)
-
-In general, this parameter is meant to be passed to the _class constructor_. In classx.lua, `TypedList` defines this by defining a special class method called `_class_init`:
-
-    function TypedList._class_init (klass,type)
-        klass._type = type
-        klass._name = 'TypedList<'..name_of_type(type)..'>'
-    end
-
 
 (@see class, @see classx)
 
 ### Tablex. Useful Operations on Tables
 
-Some notes on terminology: Lua tables are usually _list-like_ (like an array) or _map-like_ (like an associative array or dict); they can of course have a list-like and a map-like part. Some of the table operations only make sense for list-like tables, and some only for map-like tables. (The usual Lua terminology is the array part and the hash part of the table, which reflects the actual implementation used.)
+Some notes on terminology: Lua tables are usually _list-like_ (like an array) or _map-like_ (like an associative array or dict); they can of course have a list-like and a map-like part. Some of the table operations only make sense for list-like tables, and some only for map-like tables. (The usual Lua terminology is the array part and the hash part of the table, which reflects the actual implementation used; it is more accurate to say that a Lua table is an associative map which happens to be particularly efficient at acting like an array.)
 
 The functions provided in `table` provide all the basic manipulations on Lua tables, but as we saw with the `List` class, it is useful to build higher-level operations on top of those functions. For instance, to copy a table involves this kind of loop:
 
@@ -468,9 +444,9 @@ Another example:
 
     > T = require 'pl.tablex'
     > t = {10,20,30,40}
-    > T.removevalues(t,2,3)
+    > = T.removevalues(t,2,3)
     {10,40}
-    > T.insertvalues(t,2,{20,30})
+    > = T.insertvalues(t,2,{20,30})
     {10,20,30,40}
 
 
@@ -497,14 +473,14 @@ In a similar spirit to `deepcopy`, `deepcompare` will take two tables and return
     > = tablex.find(t,'four')
     nil
     > il = tablex.index_map(t)
-    > il['two']
+    > = il['two']
     2
-    > il.two
+    > = il.two
     2
 
 A version of `index_map` called `makeset` is also provided, where the values are just `true`. This is useful because two such sets can be compared for equality using `deepcompare`:
 
-    > deepcompare(makeset {1,2,3},makeset {2,1,3})
+    > = deepcompare(makeset {1,2,3},makeset {2,1,3})
     true
 
 Consider the problem of determining the new employees that have joined in a period. Assume we have two files of employee names:
@@ -563,9 +539,9 @@ Note that `find_if` will also return the _actual value_ returned by the function
 
 `deepcompare` does a thorough recursive comparison, but otherwise using the default equality operator. `compare` allows you to specify exactly what function to use when comparing two list-like tables, and `compare_no_order` is true if they contain exactly the same elements. Do note that the latter does not need an explicit comparison function - in this case the implementation is actually to compare the two sets, as above:
 
-    > compare_no_order({1,2,3},{2,1,3})
+    > = compare_no_order({1,2,3},{2,1,3})
     true
-    > compare_no_order({1,2,3},{2,1,3},'==')
+    > = compare_no_order({1,2,3},{2,1,3},'==')
     true
 
 (Note the special string '==' above; instead of saying `ops.gt` or `ops.eq` we can use the strings '>' or '==' respectively.)
@@ -574,16 +550,16 @@ There are several ways to merge tables in PL. If they are list-like, then see th
 
     > S1 = {john=27,jane=31,mary=24}
     > S2 = {jane=31,jones=50}
-    > tablex.merge(S1,S2,false)
+    > = tablex.merge(S1, S2, false)
     {jane=31}
-    > tablex.merge(S1,S2,true)
+    > = tablex.merge(S1, S2, true)
     {mary=24,jane=31,john=27,jones=50}
 
 When working with tables, you will often find yourself writing loops like in the first example. Loops are second nature to programmers, but they are often not the most elegant and self-describing way of expressing an operation. Consider the `map` function, which creates a new table by applying a function to each element of the original:
 
-    > = map(math.sin,{1,2,3,4})
+    > = map(math.sin, {1,2,3,4})
     {  0.84,  0.91,  0.14, -0.76}
-    > = map(function(x) return x*x end,{1,2,3,4})
+    > = map(function(x) return x*x end, {1,2,3,4})
     {1,4,9,16}
 
 `map` saves you from writing a loop, and the resulting code is often clearer, as well as being shorter. This is not to say that 'loops are bad' (although you will hear that from some extremists), just that it's good to capture standard patterns. Then the loops you do write will stand out and acquire more significance.
@@ -598,7 +574,7 @@ When working with tables, you will often find yourself writing loops like in the
 
 (These are common enough operations that the first is defined as `values` and the second as `keys`.) If the function returns two values, then the _second_ value is considered to be the new key:
 
-    > = pairmap(t,function(k,v) return v+10,k:upper() end)
+    > = pairmap(t,function(k,v) return v+10, k:upper() end)
     {BONZO=30,FRED=20,ALICE=14}
 
 `map2` applies a function to two tables:
@@ -610,9 +586,9 @@ When working with tables, you will often find yourself writing loops like in the
 
 The various map operations generate tables; `reduce` applies a function of two arguments over a table and returns the result as a scalar:
 
-    > reduce ('+',{1,2,3})
+    > reduce ('+', {1,2,3})
     6
-    > reduce ('..',{'one','two','three'})
+    > reduce ('..', {'one','two','three'})
     'onetwothree'
 
 Finally, `zip` sews different tables together:
@@ -621,7 +597,6 @@ Finally, `zip` sews different tables together:
     {{1,10},{2,20},{3,30}}
 
 Browsing through the documentation, you will find that `tablex` and `List` share methods.  For instance, `tablex.imap` and `List.map` are basically the same function; they both operate over the array-part of the table and generate another table. This can also be expressed as a _list comprehension_ `C 'f(x) for x' (t)` which makes the operation more explicit. So why are there different ways to do the same thing? The main reason is that not all tables are Lists: the expression `ls:map('#')` will return a _list_ of the lengths of any elements of `ls`. A list is a thin wrapper around a table, provided by the metatable `List`. Sometimes you may wish to work with ordinary Lua tables; the `List` interface is not a compulsory way to use Penlight table operations.
-
 
 ### Operations on two-dimensional tables
 
@@ -662,11 +637,12 @@ There are three equivalents to `tablex.reduce`. You can either reduce along the 
 `tablex.map2` applies an operation to two tables, giving another table. `array2d.map2` does this for 2D arrays. Note that you have to provide the _rank_ of the arrays involved, since it's hard to always correctly deduce this from the data:
 
     > b = {{10,20},{30,40}}
-    > array2d.map2('+',2,2,a,b)  -- two 2D arrays
+    > a = {{1,2},{3,4}}
+    > = array2d.map2('+',2,2,a,b)  -- two 2D arrays
     {{11,22},{33,44}}
-    > array2d.map2('+',1,2,{10,100},a)  -- 1D, 2D
+    > = array2d.map2('+',1,2,{10,100},a)  -- 1D, 2D
     {{11,102},{13,104}}
-    > array2d.map2('*',2,1,a,{1,-1})  -- 2D, 1D
+    > = array2d.map2('*',2,1,a,{1,-1})  -- 2D, 1D
     {{1,-2},{3,-4}}
 
 Of course, you are not limited to simple arithmetic. Say we have a 2D array of strings, and wish to print it out with proper right justification. The first step is to create all the string lengths by mapping `string.len` over the array, the second is to reduce this along the columns using `math.max` to get maximum column widths, and last, apply `string.rjust` with these widths.
@@ -784,15 +760,40 @@ And the output is:
 
 `pl.text` also has a number of useful functions like `dedent`, which strips all the initial indentation from a multiline string. As in Python, this is useful for preprocessing multiline strings if you like indenting them with your code. The function `wrap` is passed a long string (a _paragraph_) and returns a list of lines that fit into a desired line width. As an extension, there is also `indent` for indenting multiline strings.
 
+New in Penlight with the 0.9 series is `text.format_operator`. Calling this enables Python-style string formating using the modulo operator `%`:
+
+    > text.format_operator()
+    > = '%s[%d]' % {'dog',1}
+    dog[1]
+    
+So in its simplest form it saves the typing involved with `string.format`; it will also expand `$` variables using named fields:
+
+    > = '$animal[$num}' % {animal='dog',num=1}
+    dog[1}
+
 (@see text)
 
+### File-style I/O on Strings
+
+`pl.stringio`  provides just three functions; `stringio.open` is passed a string, and returns a file-like object for reading. It supports a `read` method, which takes the same arguments as standard file objects:
+
+    > f = stringio.open 'first line\n10 20 30\n'
+    > = f:read()
+    first line
+    > = f:read('*n','*n','*n')
+    10	20	30
+    
+`lines` and `seek` are also supported.
+
+`stringio.lines` is a useful short-cut for iterating over all the lines in a string.
+
+`stringio.create` creates a writeable file-like object. You then use `write` to this stream, and finally extract the builded string using `value`.  This 'string builder' pattern is useful for efficiently creating large strings.
 
 ## Paths and Directories
 
 ### Working with Paths
 
 Programs should not depend on quirks of your operating system. They will be harder to read, and need to be ported for other systems.  The worst of course is hardcoding paths like 'c:\\' in programs, and wondering why Vista complains so much. But even something like `dir..'\\'..file` is a problem, since Unix can't understand backslashes in this way. `dir..'/'..file` is _usually_ portable, but it's best to put this all into a simple function, `path.join`. If you consistently use `path.join`, then it's much easier to write cross-platform code, since it handles the directory separator for you.
-
 
 `pl.path` provides the same functionality as Python's `os.path` module (11.1).
 
@@ -819,7 +820,7 @@ Programs should not depend on quirks of your operating system. They will be hard
     false
 
 
-It is becoming increasingly important for all programmers, not just on Unix, to only write to where they are allowed to write. `path.expanduser` will expand '~' (tilde) into the home directory. Depending on your OS, this will be a guaranteed place where you can create files:
+It is very important for all programmers, not just on Unix, to only write to where they are allowed to write. `path.expanduser` will expand '~' (tilde) into the home directory. Depending on your OS, this will be a guaranteed place where you can create files:
 
     > = path.expanduser '~/mydata.txt'
     'C:\Documents and Settings\SJDonova/mydata.txt'
@@ -1053,9 +1054,8 @@ Sometimes it is useful to bring a whole dataset into memory, for operations such
 Then `data.read` will create a table like this, with each row represented by a sublist:
 
     > t = data.read 'test.txt'
-    > t
-    {{10,20},{2,5},{40,50},
-    fieldnames={'x','y'},delim=','}
+    > pretty.dump(t)
+    {{10,20},{2,5},{40,50},fieldnames={'x','y'},delim=','}
 
 You can now analyze this returned table using the supplied methods. For instance, the method `column_by_name` returns a table of all the values of that column.
 
@@ -1117,13 +1117,13 @@ The task is to reduce the dataset to a relevant set of rows and columns, perhaps
 Data does not have to come from files, nor does it necessarily come from the lab or the accounts department. On Linux, `ps aux` gives you a full listing of all processes running on your machine. It is straightforward to feed the output of this command into `data.read` and perform useful queries on it. Notice that non-identifier characters like '%' get converted into underscores:
 
         require 'pl'
-
+        List = require 'pl.List'
         f = io.popen 'ps aux'
         s = data.read (f,{last_field_collect=true})
         f:close()
         print(s.fieldnames)
         print(s:column_by_name 'USER')
-        qs = 'COMMAND,_MEM where _MEM > 0.5 and USER=="sdonovan"'
+        qs = 'COMMAND,_MEM where _MEM > 5 and USER=="steve"'
         for name,mem in s:select(qs) do
             print(mem,name)
         end
@@ -1134,6 +1134,17 @@ I've always been an admirer of the AWK programming language; with `filter` (@see
     -- printxy.lua
     require 'pl'
     data.filter 'x,y where x > 3'
+    
+It is common enough to have data files without headers of field names. `data.read` makes a special exception for such files if all fields are numeric. Since there are no column names to use in query expressions, you can use AWK-like column indexes, e.g. '$1,$2 where $1 > 3'.  I have a little executable script on my system called `lf` which looks like this:
+
+    #!/usr/bin/env lua
+    require 'pl.data'.filter(arg[1])
+
+And it can be used generally as a filter command to extract columns from data. (The column specifications may be expressions or even constants.)
+
+    $ lf '$1,$5/10' < test.dat
+    
+(As with AWK, please note the single-quotes used in this command; this prevents the shell trying to expand the column indexes. If you are on Windows, then you are fine, but it is still necessary to quote the expression in double-quotes so it is passed as one argument to your batch file.)
 
 As a tutorial resource, have a look at test-data.lua in the PL tests directory for other examples of use, plus comments.
 
@@ -1318,8 +1329,7 @@ and you get:
 
 ### Lexical Scanning
 
-Although Lua's string pattern matching is very powerful, there are times when something more powerful is needed.  `pl.lexer.scan` provides a lexical scanner which _tokenizes_ a string, classifying tokens into numbers, strings, etc.
-
+Although Lua's string pattern matching is very powerful, there are times when something more powerful is needed.  `pl.lexer.scan` provides lexical scanners which _tokenizes_ a string, classifying tokens into numbers, strings, etc.
 
     > lua -lpl
     Lua 5.1.4  Copyright (C) 1994-2008 Lua.org, PUC-Rio
@@ -1337,10 +1347,11 @@ Although Lua's string pattern matching is very powerful, there are times when so
     > = tok()
     )       )
     > = tok()
+    (nil)
 
-The scanner is a function, which is repeatedly called and returns the _type_ and _value_ of the token.  Recognized types are 'iden','string','number','space', 'comment' and 'keyword', and everything else is represented by itself. Note that by default the scanner will skip any 'space' tokens.
+The scanner is a function, which is repeatedly called and returns the _type_ and _value_ of the token.  Recognized basic types are 'iden','string','number', and 'space'. and everything else is represented by itself. Note that by default the scanner will skip any 'space' tokens.
 
-'comment' and 'keyword' aren't applicable to the plain scanner, which is not language-specific, but a scanner which understands Lua is available:
+'comment' and 'keyword' aren't applicable to the plain scanner, which is not language-specific, but a scanner which understands Lua is available. It recognizes the Lua keywords, and understands both short and long comments and strings.
 
     > for t,v in lexer.lua 'for i=1,n do' do print(t,v) end
     keyword for
@@ -1362,25 +1373,23 @@ A lexical scanner is useful where you have highly-structured data which is not n
 Here is code to extract the points using `pl.lexer`:
 
     -- assume 's' contains the text above...
+    local lexer = require 'pl.lexer'
     local expecting = lexer.expecting
     local append = table.insert
 
     local tok = lexer.scan(s)
 
     local points = {}
-    local t,v = tok() -- should be 'points'
+    local t,v = tok() -- should be 'iden','points'
 
     while t ~= ';' do
         c = {}
-        t,v = tok() -- should be '('
-        t,v = tok()
-        c.x = v
+        expecting(tok,'(')
+        c.x = expecting(tok,'number')
         expecting(tok,',')
-        t,v = tok()
-        c.y = v
+        c.y = expecting(tok,'number')
         expecting(tok,',')
-        t,v = tok()
-        c.z = v
+        c.z = expecting(tok,'number')
         expecting(tok,')')
         t,v = tok()  -- either ',' or ';'
         append(points,c)
@@ -1388,10 +1397,12 @@ Here is code to extract the points using `pl.lexer`:
 
 The `expecting` function grabs the next token and if the type doesn't match, it throws an error. (`pl.lexer`, unlike other PL libraries, raises errors if something goes wrong, so you should wrap your code in `pcall` to catch the error gracefully.)
 
+The scanners all have a second optional argument, which is a table which controls whether you want to exclude spaces and/or comments. The default for `lexer.lua` is `{space=true,comments=true}`.  There is a third optional argument which determines how string and number tokens are to be processsed.
+
 The ultimate highly-structured data is of course, program source. Here is a snippet from 'text-lexer.lua':
 
-
-    -- uses asserteq from pl.test
+    require 'pl'
+    
     lines = [[
     for k,v in pairs(t) do
         if type(k) == 'number' then
@@ -1407,23 +1418,23 @@ The ultimate highly-structured data is of course, program source. Here is a snip
         assert(tp ~= 'space' and tp ~= 'comment')
         if tp == 'keyword' then ls:append(val) end
     end
-    asserteq(ls,List{'for','in','do','if','then','else','end','end'})
+    test.asserteq(ls,List{'for','in','do','if','then','else','end','end'})
 
-`pl.lexer.lua` does not by default exclude spaces and comments, but the second argument is an _exception list_ that is used to filter token types out.
-
-Here is a useful little utility that identifies all common global variables present in a lua module:
+Here is a useful little utility that identifies all common global variables found in a lua module:
 
     -- testglobal.lua
     require 'pl'
 
-    local txt = utils.readfile(arg[1])
+    local txt,err = utils.readfile(arg[1])
+    if not txt then return print(err) end
+    
     local globals = List()
     for t,v in lexer.lua(txt) do
         if t == 'iden' and _G[v] then
             globals:append(v)
         end
     end
-    print(pretty.write(seq.count_map(globals)))
+    pretty.dump(seq.count_map(globals))
 
 Rather then dumping the whole list, with its duplicates, we pass it through `seq.count_map` which turns the list into a table where the keys are the values, and the associated values are the number of times those values occur in the sequence. Typical output looks like this:
 
@@ -1465,7 +1476,6 @@ But `range` is actually equivalent to Python's `xrange`, since it generates a se
 
 `enum` takes a sequence and turns it into a double-valued sequence consisting of a sequence number and the value, so `enum(list(ls))` is actually equivalent to `ipairs`. A more interesting example prints out a file with line numbers:
 
-
     for i,v in seq.enum(io.lines(fname)) do print(i..' '..v) end
 
 Sequences can be _combined_, either by 'zipping' them or by concatenating them.
@@ -1486,29 +1496,29 @@ Sequences can be _combined_, either by 'zipping' them or by concatenating them.
 
     > seq.printall(seq.random(10))
     0.0012512588885159 0.56358531449324 0.19330423902097 ....
-    > seq.printall(seq.random(10),',',4,'%4.2f')
+    > seq.printall(seq.random(10), ',', 4, '%4.2f')
     0.17,0.86,0.71,0.51
     0.30,0.01,0.09,0.36
     0.15,0.17,
 
 `map` will apply a function to a sequence.
 
-    > seq.printall(seq.map(string.upper,{'one','two'}))
+    > seq.printall(seq.map(string.upper, {'one','two'}))
     ONE TWO
-    > seq.printall(seq.map('+',{10,20,30},1))
+    > seq.printall(seq.map('+', {10,20,30}, 1))
     11 21 31
 
 `filter` will filter a sequence using a boolean function (often called a _predicate_). For instance, this code only prints lines in a file which are composed of digits:
 
-    for l in seq.filter(io.lines(file),pl.stringx.isdigit) do print(l) end
+    for l in seq.filter(io.lines(file), stringx.isdigit) do print(l) end
 
-The following returns a table consisting of all the positive values in the original table (equivalent to `tablex.filter(ls,'>',0)`)
+The following returns a table consisting of all the positive values in the original table (equivalent to `tablex.filter(ls, '>', 0)`)
 
-    ls = seq.copy(seq.filter(ls,'>',0))
+    ls = seq.copy(seq.filter(ls, '>', 0))
 
 We're already encounted `seq.sum` when discussing `input.numbers`. This can also be expressed with `seq.reduce`:
 
-    > seq.reduce(function(x,y) return x + y end,seq.list{1,2,3,4})
+    > seq.reduce(function(x,y) return x + y end, seq.list{1,2,3,4})
     10
 
 `seq.reduce` applies a binary function in a recursive fashion, so that:
@@ -1519,7 +1529,7 @@ it's now possible to easily generate other cumulative operations; the standard o
 
     > ops = require 'pl.operator'
     > -- can also say '*' instead of ops.mul
-    > seq.reduce(ops.mul,input.numbers '1 2 3 4')
+    > = seq.reduce(ops.mul,input.numbers '1 2 3 4')
     24
 
 There are functions to extract statistics from a sequence of numbers:
@@ -1534,7 +1544,7 @@ There are functions to extract statistics from a sequence of numbers:
 It is common to get sequences where values are repeated, say the words in a file. `count_map` will take such a sequence and count the values, returning a table where the _keys_ are the unique values, and the value associated with each key is the number of times they occurred:
 
     > t = seq.count_map {'one','fred','two','one','two','two'}
-    > t
+    > = t
     {one=2,fred=1,two=3}
 
 This will also work on numerical sequences, but you cannot expect the result to be a proper list, i.e. having no 'holes'. Instead, you always need to use `pairs` to iterate over the result - note that there is a hole at index 5:
@@ -1559,7 +1569,7 @@ This will also work on numerical sequences, but you cannot expect the result to 
 This makes it easy to do things like identify repeated lines in a file, or construct differences between values. `filter` can handle double-valued sequences as well, so one could filter such a sequence to only return cases where the current value is less than the last value by using `operator.lt` or just '<'. This code then copies the resulting code into a table.
 
     > ls = {10,9,10,3}
-    > seq.copy(seq.filter(seq.last(s),'<'))
+    > = seq.copy(seq.filter(seq.last(s),'<'))
     {9,3}
 
 
@@ -1571,7 +1581,7 @@ The functions in `pl.seq` cover the common patterns when dealing with sequences,
 
 With this notation, the operation becomes a chain of method calls running from left to right.
 
-Sequence is not a basic Lua type, they are generally functions or callable objects. The expression `seq(s)` wraps a sequence in a _sequence wrapper_, which is an object which understands all the functions in `pl.seq` as methods. This object then explicitly represents sequences.
+'Sequence' is not a basic Lua type, they are generally functions or callable objects. The expression `seq(s)` wraps a sequence in a _sequence wrapper_, which is an object which understands all the functions in `pl.seq` as methods. This object then explicitly represents sequences.
 
 As a special case, the  constructor (which is when you call the table `seq`) will make a wrapper for a plain list-like table. Here we apply the length operator to a sequence of strings, and print them out.
 
@@ -1615,11 +1625,8 @@ This version of Penlight has an experimental feature which relies on the fact th
 
 This avoids the awkward `seq(seq.random(5))` construction. Or the iterator can come from somewhere else completely:
 
-    > require 'lfs'
-
-    > lfs.dir('.'):printall()
-    . .. old out.txt readconfig.lua test.config test.ini
-    test.txt
+    > ('one two three'):gfind('%a+'):printall(',')
+    one,two,three,
 
 After `seq.import()`, it is no longer necessary to explicitly wrap sequence functions.
 
@@ -1628,7 +1635,7 @@ But there is a price to pay for this convenience. _Every_ function is affected, 
     > math.sin:printall()
     ..seq.lua:287: bad argument #1 to '(for generator)' (number expected, got nil)
     > a = tostring
-    > a:find(' ')
+    > = a:find(' ')
     function: 0042C920
 
 What function is returned? It's almost certain to be something that makes no sense in the current context. So implicit sequences may make certain kinds of programming mistakes harder to catch - they are best used for interactive exploration and small scripts.
@@ -1644,61 +1651,61 @@ List comprehensions are a compact way to create tables by specifying their eleme
 In Lua, using `pl.comprehension`:
 
     > C = require('pl.comprehension').new()
-    > C ('x for x=1,10') ()
+    > = C ('x for x=1,10') ()
     {1,2,3,4,5,6,7,8,9,10}
 
 `C` is a function which compiles a list comprehension _string_ into a _function_. In this case, the function has no arguments. The parentheses are redundant for a function taking a string argument, so this works as well:
 
-    > C 'x^2 for x=1,4' ()
+    > = C 'x^2 for x=1,4' ()
     {1,4,9,16}
-    > C '{x,x^2} for x=1,4' ()
+    > = C '{x,x^2} for x=1,4' ()
     {{1,1},{2,4},{3,9},{4,16}}
 
 Note that the expression can be _any_ function of the variable `x`!
 
 The basic syntax so far is `<expr> for <set>`, where `<set>` can be anything that the Lua `for` statement understands. `<set>` can also just be the variable, in which case the values will come from the _argument_ of the comprehension. Here I'm emphasizing that a comprehension is a function which can take a list argument:
 
-    > C '2*x for x' {1,2,3}
+    > = C '2*x for x' {1,2,3}
     {2,4,6}
     > dbl = C '2*x for x'
-    > dbl {10,20,30}
+    > = dbl {10,20,30}
     {20,40,60}
 
 Here is a somewhat more explicit way of saying the same thing; `_1` is a _placeholder_ refering to the _first_ argument passed to the comprehension.
 
-    > C '2*x for _,x in pairs(_1)' {10,20,30}
+    > = C '2*x for _,x in pairs(_1)' {10,20,30}
     {20,40,60}
-    > C '_1(x) for x'(tostring,{1,2,3,4})
+    > = C '_1(x) for x'(tostring,{1,2,3,4})
     {'1','2','3','4'}
 
 This extended syntax is useful when you wish to collect the result of some iterator, such as `io.lines`. This comprehension creates a function which creates a table of all the lines in a file:
 
     > f = io.open('array.lua')
     > lines = C 'line for line in _1:lines()' (f)
-    > #lines
+    > = #lines
     118
 
 There are a number of functions that may be applied to the result of a comprehension:
 
-    > C 'min(x for x)' {1,44,0}
+    > = C 'min(x for x)' {1,44,0}
     0
-    > C 'max(x for x)' {1,44,0}
+    > = C 'max(x for x)' {1,44,0}
     44
-    > C 'sum(x for x)' {1,44,0}
+    > = C 'sum(x for x)' {1,44,0}
     45
 
 (These are equivalent to a reduce operation on a list.)
 
 After the `for` part, there may be a condition, which filters the output. This comprehension collects the even numbers from a list:
 
-    > C 'x for x if x % 2 == 0' {1,2,3,4,5}
+    > = C 'x for x if x % 2 == 0' {1,2,3,4,5}
     {2,4}
 
 There may be a number of `for` parts:
 
-    > C '{x,y} for x = 1,2 for y = 1,2' ()
+    > = C '{x,y} for x = 1,2 for y = 1,2' ()
     {{1,1},{1,2},{2,1},{2,2}}
-    > C '{x,y} for x for y' ({1,2},{10,20})
+    > = C '{x,y} for x for y' ({1,2},{10,20})
     {{1,10},{1,20},{2,10},{2,20}}
 
 These comprehensions are useful when dealing with functions of more than one variable, and are not so easily achieved with the other Penlight functional forms.
@@ -1715,7 +1722,7 @@ Lua functions may be treated like any other value, although of course you cannot
     hello world
     true
 
-Many functions require you to pass a function as an argument, say to apply to all values of a sequence or as a callback. Usually this function is required to have a particular number of arguments, often one (in the case of the `map` functions) or two (for comparison functions.)  But often useful functions have the wrong number of arguments. For instance, `operator.add` simply adds its two arguments, but can't be passed to `tablex.map`, which expects to pass only one value to its function. So there is a need to construct a function of one argument from one of two arguments, _binding_ the extra argument to a given value.
+Many functions require you to pass a function as an argument, say to apply to all values of a sequence or as a callback. Often useful functions have the wrong number of arguments. So there is a need to construct a function of one argument from one of two arguments, _binding_ the extra argument to a given value.
 
 _currying_ takes a function of n arguments and returns a function of n-1 arguments where the first argument is bound to some value:
 
@@ -1723,14 +1730,14 @@ _currying_ takes a function of n arguments and returns a function of n-1 argumen
     > p2('hello',2)
     start>  hello   2
     > ops = require 'pl.operator'
-    > tablex.filter({1,-2,10,-1,2},curry(ops.gt,0))
+    > = tablex.filter({1,-2,10,-1,2},curry(ops.gt,0))
     {-2,-1}
     > tablex.filter({1,-2,10,-1,2},curry(ops.le,0))
     {1,10,2}
 
 The last example unfortunately reads backwards, because `curry` alway binds the first argument!
 
-Currying is a specialized form of function binding. Here is another way to say the `print` example:
+Currying is a specialized form of function argument binding. Here is another way to say the `print` example:
 
     > p2 = func.bind(print,'start>',func._1,func._2)
     > p2('hello',2)
@@ -1741,25 +1748,25 @@ where `_1` and `_2` are _placeholder variables_, corresponding to the first and 
 Having `func` all over the place is distracting, so it's useful to pull all of `pl.func` into the local context. Here is the filter example, this time the right way around:
 
     > utils.import 'pl.func'
-    > tablex.filter({1,-2,10,-1,2},bind(ops.gt,_1,0))
+    > tablex.filter({1,-2,10,-1,2},bind(ops.gt, _1, 0))
     {1,10,2}
 
 
 `tablex.merge` does a general merge of two tables. This example shows the usefulness of binding the last argument of a function.
 
-    > S1 = {john=27,jane=31,mary=24}
-    > S2 = {jane=31,jones=50}
-    > intersection = bind(tablex.merge,_1,_2,false)
-    > union = bind(tablex.merge,_1,_2,true)
-    > intersection(S1,S2)
+    > S1 = {john=27, jane=31, mary=24}
+    > S2 = {jane=31, jones=50}
+    > intersection = bind(tablex.merge, _1, _2, false)
+    > union = bind(tablex.merge, _1, _2, true)
+    > = intersection(S1,S2)
     {jane=31}
-    > union(S1,S2)
+    > = union(S1,S2)
     {mary=24,jane=31,john=27,jones=50}
 
 When using `bind` to curry `print`, we got a function of precisely two arguments, whereas we really want our function to use varargs like `print`. This is the role of `_0`:
 
     > _DEBUG = true
-    > p = bind(print,'start>',_0)
+    > p = bind(print,'start>', _0)
     return function (fn,_v1)
         return function(...) return fn(_v1,...) end
     end
@@ -1773,56 +1780,54 @@ I've turned on the global `_DEBUG` flag, so that the function generated is print
 
 A common pattern in Penlight is a function which applies another function to all elements in a table or a sequence, such as `tablex.map` or `seq.filter`. Lua does anonymous functions well, although they can be a bit tedious to type:
 
-    > tablex.map(function(x) return x*x end,{1,2,3,4})
+    > = tablex.map(function(x) return x*x end, {1,2,3,4})
     {1,4,9,16}
 
 `pl.func` allows you to define _placeholder expressions_, which can cut down on the typing required, and also make your intent clearer. First, we bring contents of `pl.func` into our context, and then supply an expression using placeholder variables, such as `_1`,`_2`,etc. (C++ programmers will recognize this from the Boost libraries.)
 
     > utils.import 'pl.func'
-    > tablex.map(_1*_1,{1,2,3,4})
+    > = tablex.map(_1*_1, {1,2,3,4})
     {1,4,9,16}
 
 Functions of up to 5 arguments can be generated.
 
-    > tablex.map2(_1+_2,{1,2,3},{10,20,30})
+    > = tablex.map2(_1+_2,{1,2,3}, {10,20,30})
     {11,22,33}
 
 These expressions can use arbitrary functions, altho they must first be registered with the functional library. `pl.func.register` brings in a single function, and `pl.func.import` brings in a whole table of functions, such as `math`.
 
     > sin = register(math.sin)
-    > tablex.map(sin(_1),{1,2,3,4})
+    > = tablex.map(sin(_1), {1,2,3,4})
     {0.8414709848079,0.90929742682568,0.14112000805987,-0.75680249530793}
     > import 'math'
-    > tablex.map(cos(2*_1),{1,2,3,4})
+    > = tablex.map(cos(2*_1),{1,2,3,4})
     {-0.41614683654714,-0.65364362086361,0.96017028665037,-0.14550003380861}
 
 A common operation is calling a method of a set of objects:
 
-    > tablex.map(_1:sub(1,1),{'one','four','x'})
-    {'o','f','x'}
-    > tablex.map(_1:at(1),{'one','four','x'})
+    > = tablex.map(_1:sub(1,1), {'one','four','x'})
     {'o','f','x'}
 
 There are some restrictions on what operators can be used in PEs. For instance, because the `__len` metamethod cannot be overriden by plain Lua tables, we need to define a special function to express `#_1':
 
-    > tablex.map(Len(_1),{'one','four','x'})
+    > = tablex.map(Len(_1), {'one','four','x'})
     {3,4,1}
 
 Likewise for comparison operators, which cannot be overloaded for _different_ types, and thus also have to be expressed as a special function:
 
-    > tablex.filter(Gt(_1,0),{1,-1,2,4,-3})
+    > = tablex.filter(Gt(_1,0), {1,-1,2,4,-3})
     {1,2,4}
 
 It is useful to express the fact that a function returns multiple values. For instance, `tablex.pairmap`  expects a function that will be called with the key and the value, and returns the new value and the key, in that order.
 
-    > pairmap(Args(_2,_1:upper()),{fred=1,alice=2})
+    > = pairmap(Args(_2,_1:upper()),{fred=1,alice=2})
     {ALICE=2,FRED=1}
 
 PEs cannot contain `nil` values, since PE function arguments are represented as an array. Instead, a special value called `Nil` is provided.  So say `_1:f(Nil,1)` instead of `_1:f(nil,1)`.
 
 A placeholder expression cannot be automatically used as a Lua function. The technical reason is that the call operator must be overloaded to construct function calls like `_1(1)`.  If you want to force a PE to return a function, use `pl.func.I`.
 
-    > tablex.map(_1(10),{I(2*_1),I(_1*_1),I(_1+2)})
+    > = tablex.map(_1(10),{I(2*_1),I(_1*_1),I(_1+2)})
     {20,100,12}
 
 Here we make a table of functions taking a single argument, and then call them all with a value of 10.
@@ -1838,10 +1843,10 @@ Now this will work for _any_ 'file-like' object which which has a `read` method 
 Placeholder expressions can be mixed with sequence wrapper expressions. `lexer.lua` will give us a double-valued sequence of tokens, where the first value is a type, and the second is a value. We filter out only the values where the type is 'iden', extract the actual value using `map`, get the unique values and finally copy to a list.
 
     > str = 'for i=1,10 do for j = 1,10 do print(i,j) end end'
-    > S(lexer.lua(str)):filter('==','iden'):map(_2):unique():copy()
+    > = seq(lexer.lua(str)):filter('==','iden'):map(_2):unique():copy()
     {i,print,j}
 
-This is a particularly intense line (and I don't always suggest making everything a one-liner!); the key is the behaviour of `map`, which will take both values of the sequence, so `_2` returns the value part. (Since `filter` here is given an extra argument, it only operates on the type values.)
+This is a particularly intense line (and I don't always suggest making everything a one-liner!); the key is the behaviour of `map`, which will take both values of the sequence, so `_2` returns the value part. (Since `filter` here takes extra arguments, it only operates on the type values.)
 
 There are some performance considerations to using placeholder expressions. Instantiating a PE requires constructing and compiling a function, which is not such a fast operation. So to get best performance, factor out PEs from loops like this;
 
@@ -1896,18 +1901,17 @@ Verification issues will further cloud the picture, since regular expression peo
 `pl.sip` provides a simple, intuitive way to detect patterns in strings and extract relevant parts.
 
     > sip = require 'pl.sip'
-    > write = require('pl.pretty').write
-    > function pprint(t) print(write(t)) end
+    > dump = require('pl.pretty').dump
     > res = {}
     > c = sip.compile 'ref=$S{file}:$d{line}'
     > = c('ref=hello.c:10',res)
     true
-    > pprint(res)
+    > dump(res)
     {
       line = 10,
       file = "hello.c"
     }
-    > c('ref=long name, no line',res)
+    > = c('ref=long name, no line',res)
     false
 
 `sip.compile` creates a pattern matcher function, which is given a string and a table. If it matches the string, then `true` is returned and the table is populated according to the _named fields_ in the pattern.
@@ -2225,20 +2229,20 @@ Callbacks are needed when you want to take action immediately on parsing an argu
 In an ideal world, a program should only load the libraries it needs. Penlight is intended to work in situations where an extra 100Kb of bytecode could be a problem. It is straightforward but tedious to load exactly what you need:
 
     local data = require 'pl.data'
-    local List = require 'pl.list' . List
+    local List = require 'pl.List' 
     local array2d = require 'pl.array2d'
     local seq = require 'pl.seq'
     local utils = require 'pl.utils'
 
 This is the style that I follow in Penlight itself, so that modules don't mess with the global environment; also, `stringx.import()` is not used because it will update the global `string` table.
 
-But `require 'pl'` is more convenient in scripts; the question is how to ensure that one doesn't load the whole kitchen sink as the price of convenience. The strategy is to only load modules when they are referenced. In 'init.lua' (which is loaded by `require 'pl'`) a metatable is attached to the global table with an `__index` metamethod. Any unknown name is looked up in the list of modules, and if found, we require it and make that module globally available. So when `tablex.deepcompare` is encountered, looking up `tablex` causes 'pl.tablex' to be required.  This strategy is also used for the standard classes defined in `class` and `classx`.
+But `require 'pl'` is more convenient in scripts; the question is how to ensure that one doesn't load the whole kitchen sink as the price of convenience. The strategy is to only load modules when they are referenced. In 'init.lua' (which is loaded by `require 'pl'`) a metatable is attached to the global table with an `__index` metamethod. Any unknown name is looked up in the list of modules, and if found, we require it and make that module globally available. So when `tablex.deepcompare` is encountered, looking up `tablex` causes 'pl.tablex' to be required.  .
 
 Modifying the behaviour of the global table has consequences. For instance, there is the famous module `strict` which comes with Lua itself (perhaps the only standard Lua module written in Lua itself) which also does this modification so that global variiables must be defined before use.  So the implementation in 'init.lua' allows for a 'not found' hook, which 'pl.strict.lua' uses.
 
 But the strategy is worth the effort: the old 'kitchen sink' 'init.lua' would pull in about 260K of bytecode, whereas now typical programs use about 100K less, and short scripts even better - for instance, if they were only needing functionality in `utils`.
 
-There are some functions which mark their output table with a special metatable, when it seems particularly appropriate. For instance, `tablex.makeset` creates a `Set`, and `seq.copy` creates a `List`. But this does not automatically result in the loading of `pl.class` and `pl.list`; only if you try to access any of these methods.  In 'utils.lua', there is an exported table called `stdmt`:
+There are some functions which mark their output table with a special metatable, when it seems particularly appropriate. For instance, `tablex.makeset` creates a `Set`, and `seq.copy` creates a `List`. But this does not automatically result in the loading of `pl.Set` and `pl.List`; only if you try to access any of these methods.  In 'utils.lua', there is an exported table called `stdmt`:
 
     stdmt = { List = {}, Map = {}, Set = {}, MultiMap = {} }
 
@@ -2249,13 +2253,17 @@ If you go through 'init.lua', then these plain little 'identity' tables get an `
     List._name = "List"
     List._class = List
 
-The 'load-on-demand' strategy helps to modularize the library. If there are a lot of modules, then the user has to keep track of where things are defined, that `Map` is in `pl.class` but `MultiMap` is in `pl.classx`. Especially for more casual use, `require 'pl'` is a good compromise between convenience and modularity.
+The 'load-on-demand' strategy helps to modularize the library.  Especially for more casual use, `require 'pl'` is a good compromise between convenience and modularity.
+
+In this current version, I have generally reduced the amount of trickery involved. Previously, `Map` was defined in `pl.class`; now it is sensibly defined in `pl.Map`; `pl.class` only contains the basic class mechanism (and returns that function.) For consistency, `List` is returned directly by  `require 'pl.List'` (note the uppercase 'L'),  Also, the amount of module dependencies in the non-core libraries like `pl.config` have been reduced.
 
 ### Defining what is Callable
 
 'utils.lua' exports `function_arg` which is used extensively throughout Penlight. It defines what is meant by 'callable'.  Obviously true functions are immediately passed back. But what about strings? The first option is that it represents an operator in 'operator.lua', so that '<' is just an alias for `operator.lt`.
 
-We then check whether there is a _function factory_ defined for the metatable of the value. In Penlight, the list comprehensions module registers itself as the function factory for strings, so that `map('x^2 for x',a)` can work (it operates on the rows of a 2D array).  It is true that strings can be made callable, but in practice this turns out to be a cute but dubious idea, since _all_ strings share the same metatable. A common programming error is to pass the wrong kind of object to a function, and it's better to get a nice clean 'attempting to call a string' message rather than some obscure trace from the bowels of your library.
+We then check whether there is a _function factory_ defined for the metatable of the value.
+
+(It is true that strings can be made callable, but in practice this turns out to be a cute but dubious idea, since _all_ strings share the same metatable. A common programming error is to pass the wrong kind of object to a function, and it's better to get a nice clean 'attempting to call a string' message rather than some obscure trace from the bowels of your library.)
 
 The other module that registers a function factory is `pl.func`. Placeholder expressions cannot be directly calleable, and so need to be instantiated and cached in as efficient way as possible.
 

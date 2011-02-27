@@ -12,6 +12,7 @@ local utils = require 'pl.utils'
 local tablex = require 'pl.tablex'
 local map = tablex.map
 local _DEBUG = rawget(_G,'_DEBUG')
+local LUA52 = rawget(_G,'_VERSION')=='Lua 5.2'
 local assert_arg = utils.assert_arg
 
 --[[
@@ -50,7 +51,7 @@ _1,_2,_3,_4,_5 = PH(1),PH(2),PH(3),PH(4),PH(5)
 _0 = P{op='X',repr='...',index=0}
 
 function func.Var (name)
-    local ls = utils.split(name,'%s*,')
+    local ls = utils.split(name,'[%s,]+')
     local res = {}
     for _,n in ipairs(ls) do
         append(res,P{op='X',repr=n,index=0})
@@ -61,6 +62,8 @@ end
 function func._ (value)
     return P{op='X',repr=value,index='wrap'}
 end
+
+local repr
 
 Nil = func.Var 'nil'
 
@@ -86,6 +89,12 @@ end
 
 function func.Len (arg)
     return P{op='#',arg}
+end
+
+if LUA52 then
+--~     function _PEMT.__len (arg)
+--~         return P{op='#',arg}
+--~     end
 end
 
 local function binreg(context,t)
@@ -180,7 +189,7 @@ end
 
 --- create a string representation of a placeholder expression.
 -- @param e a placeholder expression
-function func.repr (e,lastpred)
+function repr (e,lastpred)
     if isPE(e) then
         local pred = operators[e.op]
         local ls = map(repr,e,pred)
@@ -218,10 +227,12 @@ function func.repr (e,lastpred)
         return tostring(e) --should not really get here!
     end
 end
+func.repr = repr
 
 -- collect all the non-PE values in this PE into vlist, and replace each occurence
 -- with a constant PH (_C1, etc). Return the maximum placeholder index found.
-function func.collect_values (e,vlist)
+local collect_values
+function collect_values (e,vlist)
     if isPE(e) then
         if e.op ~= 'X' then
             local m = 0
@@ -248,6 +259,7 @@ function func.collect_values (e,vlist)
         return 0
     end
 end
+func.collect_values = collect_values
 
 --- instantiate a PE into an actual function. First we find the largest placeholder used,
 -- e.g. _2; from this a list of the formal parameters can be build. Then we collect and replace

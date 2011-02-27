@@ -1,13 +1,11 @@
-require 'pl'
-classes = require 'pl.class'
-classx = require 'pl.classx'
+    require 'pl'
+class = require 'pl.class'
+S = require 'pl.Set'
+M = require 'pl.Map'
 asserteq = require 'pl.test' . asserteq
 asserteq2 = require 'pl.test' . asserteq2
-S = classes.Set
-M = classes.Map
-class = classes.class
-MultiMap = classx.MultiMap
-OrderedMap = classx.OrderedMap
+MultiMap = require 'pl.MultiMap'
+OrderedMap = require 'pl.OrderedMap'
 
 s1 = S{1,2}
 s2 = S{1,2}

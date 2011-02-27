@@ -43,6 +43,8 @@ List.__index = List
 List._name = "List"
 List._class = List
 
+local iter
+
 -- we give the metatable its own metatable so that we can call it like a function!
 setmetatable(List,{
     __call = function (tbl,arg)
@@ -64,8 +66,8 @@ end
 
 --- Create a new list. Can optionally pass a table;
 -- passing another instance of List will cause a copy to be created
--- we pass anything which isn't a simple table to iter() to work out
--- an appropriate iterator  @see iter
+-- we pass anything which isn't a simple table to iterate() to work out
+-- an appropriate iterator  @see iterate
 -- @param t An optional list-like table
 -- @return a new List
 -- @usage ls = List();  ls = List {1,2,3,4}
@@ -476,9 +478,9 @@ end
 -- This captures the Python concept of 'sequence'.
 -- For tables, iterates over all values with integer indices.
 -- @param seq a sequence; a string (over characters), a table, a file object (over lines) or an iterator function
--- @usage for x in iter {1,10,22,55} do io.write(x,',') end ==> 1,10,22,55
--- @usage for ch in iter 'help' do do io.write(ch,' ') end ==> h e l p
-function iter(seq)
+-- @usage for x in iterate {1,10,22,55} do io.write(x,',') end ==> 1,10,22,55
+-- @usage for ch in iterate 'help' do do io.write(ch,' ') end ==> h e l p
+function List.iterate(seq)
     if type(seq) == 'string' then
         local idx = 0
         local n = #seq
@@ -506,6 +508,7 @@ function iter(seq)
         return seq:lines()
     end
 end
+iter = List.iterate
 
 return List
 

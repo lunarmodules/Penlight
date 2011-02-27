@@ -1,6 +1,10 @@
---utils keeps the predefined metatables for these useful interfaces,
--- so that other modules (such as tablex) can tag their output accordingly.
--- However, users are not required to use this module.
+---- A Set class.
+-- @class module
+-- @name pl.Map
+
+--[[
+module ('pl.Map')
+]]
 local tablex = require 'pl.tablex'
 local utils = require 'pl.utils'
 local stdmt = utils.stdmt
