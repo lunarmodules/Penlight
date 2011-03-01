@@ -1,9 +1,9 @@
 ---- A Set class.
 -- @class module
--- @name pl.Map
+-- @name pl.Set
 
 --[[
-module ('pl.Map')
+module ('pl.Set')
 ]]
 local tablex = require 'pl.tablex'
 local utils = require 'pl.utils'
@@ -21,6 +21,10 @@ local function makeset (t)
     return setmetatable(t,Set)
 end
 
+--- create a set. <br>
+-- @param t may be a Set, Map or list-like table.
+-- @class function
+-- @name Set
 function Set:_init (t)
     local mt = getmetatable(t)
     if mt == Set or mt == Map then

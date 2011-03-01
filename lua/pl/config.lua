@@ -50,12 +50,6 @@ module ('pl.config',utils._module)
 
 local config = {}
 
--- @class table
--- @name configuration
--- @field variablilize make names into valid Lua identifiers (default true)
--- @field convert_numbers try to convert values into numbers (default true)
--- @field trim_space ensure that there is no starting or trailing whitespace with values (default true)
--- @field list_delim delimiter to use when separating columns (default ',')
 --- like io.lines(), but allows for lines to be continued with '\'.
 -- @param file a file-like object (anything where read() returns the next line) or a filename.
 -- Defaults to stardard input.
@@ -94,7 +88,13 @@ end
 
 --- read a configuration file into a table
 -- @param file either a file-like object or a string, which must be a filename
--- @param cnfg a configuration table
+-- @param cnfg a configuration table that may contain these fields:
+-- <ul>
+-- <li> variablilize make names into valid Lua identifiers (default true)</li>
+-- <li> convert_numbers try to convert values into numbers (default true)</li>
+-- <li> trim_space ensure that there is no starting or trailing whitespace with values (default true)</li>
+-- <li> list_delim delimiter to use when separating columns (default ',')</li>
+-- </ul>
 -- @return nil,error_msg in case of an error, otherwise a table containing items
 function config.read(file,cnfg)
     local f,openf,err

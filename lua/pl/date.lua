@@ -9,7 +9,6 @@ module("pl.date")
 local class = require 'pl.class'.class
 local os_time, os_date = os.time, os.date
 
-
 local Date = class()
 Date.Format = class()
 
@@ -271,7 +270,6 @@ end
 function Date.Format:tostring(d)
     return os.date(self.outf,d.time)
 end
-
 
 return Date
 

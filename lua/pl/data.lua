@@ -96,6 +96,37 @@ local DataMT = {
 }
 DataMT.__index = DataMT
 
+--- return a particular column as a list of values (Method). <br>
+-- @param name either name of column, or numerical index.
+-- @class function
+-- @name Data.column_by_name
+
+--- return a query iterator on this data object (Method). <br>
+-- @param condn the query expression
+-- @class function
+-- @name Data.select
+-- @see data.query
+
+--- return a new data object based on this query (Method). <br>
+-- @param condn the query expression
+-- @class function
+-- @name Data.copy_select
+
+--- return the field names of this data object (Method). <br>
+-- @class function
+-- @name Data.column_names
+
+--- write out a row (Method). <br>
+-- @param f file-like object
+-- @class function
+-- @name Data.write_row
+
+--- write data out to file(Method). <br>
+-- @param f file-like object
+-- @class function
+-- @name Data.write
+
+
 -- [guessing delimiter] We check for comma, tab and spaces in that order.
 -- [issue] any other delimiters to be checked?
 local delims = {',','\t',' ',';'}

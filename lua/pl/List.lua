@@ -33,7 +33,7 @@ local assert_arg = utils.assert_arg
 local normalize_slice = tablex._normalize_slice
 
 --[[
-module ('pl.list',utils._module)
+module ('pl.List',utils._module)
 ]]
 
 local Multimap = utils.stdmt.MultiMap

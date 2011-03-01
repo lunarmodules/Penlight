@@ -1,6 +1,6 @@
 --- Provides a reuseable and convenient framework for creating classes in Lua.
--- Two possible notations: <code> B = class(A) </code> or <code> class.B(A) </code>. <br>
--- The latter form creates a named class. <br>
+-- Two possible notations: <br> <code> B = class(A) </code> or <code> class.B(A) </code>. <br>
+-- <p>The latter form creates a named class. </p>
 -- See the Guide for further <a href="../../index.html#class">discussion</a>
 -- @class module
 -- @name pl.class
@@ -125,9 +125,9 @@ local function _class(base,c_arg,c)
     return c
 end
 
---- create a new class, derived from a given base class.
--- supporting two class creation syntaxes:
--- either 'Name = class()' or'class.Name()'
+--- create a new class, derived from a given base class. <br>
+-- Supporting two class creation syntaxes:
+-- either <code>Name = class(base)</code> or <code>class.Name(base)</code>
 -- @class function
 -- @name class
 -- @param base optional base class
