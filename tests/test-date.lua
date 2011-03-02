@@ -2,7 +2,7 @@ local asserteq = require 'pl.test'.asserteq
 local dump = require 'pl.pretty'.dump
 local T = require 'pl.test'.tuple
 
-local Date = require 'Date'
+local Date = require 'pl.Date'
 
 --[[
 d = Date()
@@ -20,7 +20,7 @@ print(d:month(7):last_day())
 function check_df(fmt,str,no_check)
     df = Date.Format(fmt)
     d = df:parse(str)
-    print(str,d)
+    --print(str,d)
     if not no_check then
         asserteq(df:tostring(d),str)
     end
@@ -38,4 +38,12 @@ check_df('HH:MM','23:10')
 
 iso = Date.Format 'yyyy-mm-dd' -- ISO date
 d = iso:parse '2010-04-10'
---asserteq(T(d:day(),d:month(),d:year()),T(10,4,2010))
+asserteq(T(d:day(),d:month(),d:year()),T(10,4,2010))
+amer = Date.Format 'mm/dd/yyyy' -- American style
+s = amer:tostring(d)
+dc = amer:parse(s)
+asserteq(d,dc)
+
+d = Date() -- today
+d:add { day = 1 }  -- tomorrow
+assert(d > Date())

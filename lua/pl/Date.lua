@@ -165,6 +165,17 @@ function Date:__tostring()
     return os_date('%Y-%m-%d %H:%M',self.time)
 end
 
+--- equality between Date objects.
+function Date:__eq(other)
+    return self.time == other.time
+end
+
+--- equality between Date objects.
+function Date:__lt(other)
+    return self.time < other.time
+end
+
+
 ------------ Date.Format class: parsing and renderinig dates ------------
 
 -- short field names, explicit os.date names, and a mask for allowed field repeats
