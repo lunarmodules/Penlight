@@ -1,5 +1,12 @@
 --- a template preprocessor.
--- Originally by Ricki Lake,
+-- Originally by Ricki Lake, see
+-- There are two rules: <ul>
+-- <li>lines starting with # are Lua</li>
+-- <li> otherwise, `$(expr)` is the result of evaluating `expr`</li>
+-- </ul>
+-- (Other escape characters can be used.)
+-- @class module
+-- @name pl.template
 
 --[[
     module('pl.template')
@@ -50,6 +57,14 @@ end
 
 local template = {}
 
+--- expand the template using the specified environment.
+-- @param str the template string
+-- @param env the environment (by default empty). <br>
+-- There are three special fields in the environment table <ul>
+-- <li><code>_parent</code> continue looking up in this table</li>
+-- <li><code>_brackets</code>; default is '()', can be any suitable bracket pair</li>
+-- <li><code>_escape</code>; default is '#' </li>
+-- </ul>
 function template.substitute(str,env)
     env = env or {}
     if env._parent then
