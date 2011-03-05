@@ -1,9 +1,9 @@
 --- Date and Date.Format classes. <br>
 -- @class module
--- @name pl.date
+-- @name pl.Date
 
 --[[
-module("pl.date")
+module("pl.Date")
 ]]
 
 local class = require 'pl.class'.class
@@ -47,58 +47,66 @@ end
 --- set the year.
 -- @param y Four-digit year
 -- @class function
--- @name Date.year
+-- @name Date:year
 
 --- set the month.
 -- @param m month
 -- @class function
--- @name Date.year
+-- @name Date:month
+
+--- set the day.
+-- @param d day
+-- @class function
+-- @name Date:day
 
 --- set the hour.
 -- @param h hour
 -- @class function
--- @name Date.year
+-- @name Date:hour
 
 --- set the minutes.
 -- @param min minutes
 -- @class function
--- @name Date.year
+-- @name Date:min
 
 --- set the seconds.
 -- @param sec seconds
 -- @class function
--- @name Date.year
+-- @name Date:sec
 
 --- set the day of year.
 -- @class function
 -- @param yday day of year
--- @name Date.year
+-- @name Date:yday
 
 --- get the year.
 -- @param y Four-digit year
 -- @class function
--- @name Date.year
+-- @name Date:year
 
 --- get the month.
 -- @class function
--- @name Date.year
+-- @name Date:month
+
+--- get the day.
+-- @class function
+-- @name Date:day
 
 --- get the hour.
 -- @class function
--- @name Date.year
+-- @name Date:hour
 
 --- get the minutes.
 -- @class function
--- @name Date.year
+-- @name Date:min
 
 --- get the seconds.
 -- @class function
--- @name Date.year
+-- @name Date:sec
 
 --- get the day of year.
--- @param yday day of year
--- @name Date.year
-
+-- @class function
+-- @name Date:yday
 
 
 for _,c in ipairs{'year','month','day','hour','min','sec','yday'} do
@@ -153,10 +161,10 @@ function Date:last_day()
 end
 
 --- difference between two Date objects.
--- @param d1
--- @param d2
-function Date.diff(d1,d2)
-    local dt = d1.time - d2.time
+-- @param other Date object
+-- @return a Date object    
+function Date:diff(other)
+    local dt = self.time - other.time
     return Date(dt)
 end
 
@@ -198,7 +206,7 @@ local formats = {
 -- <li>H hour (either H or HH)</li>
 -- <li>M minute (either M or MM)</li>
 -- <li>S second (either S or SS)</li>
--- <ul>
+-- </ul>
 -- @usage df = Date.Format("yyyy-mm-dd HH:MM:SS")
 -- @class function
 -- @name Date.Format

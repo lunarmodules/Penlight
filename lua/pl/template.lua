@@ -70,7 +70,7 @@ function template.substitute(str,env)
     if env._parent then
         setmetatable(env,{__index = env._parent})
     end
-    local code = parseHashLines(str,env._brackets or '()',env._escape or '#')
+    local code = parseHashLines(str,env._brackets or '()',env._escape or '#')    
     local fn,err = loadin(env,code,'TMP')
     if not fn then return nil,err end
     fn = fn()
@@ -78,7 +78,10 @@ function template.substitute(str,env)
     local res,err = pcall(fn,function(s)
         out[#out+1] = s
     end)
-    if not res then return nil,err end
+    if not res then
+        if env._debug then print(code) end
+        return nil,err
+    end
     return table.concat(out)
 end
 

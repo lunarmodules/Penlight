@@ -339,7 +339,7 @@ local function tostring_q(val)
 end
 
 --- how our list should be rendered as a string. Uses join().
--- @see pl.list.List:join
+-- @see pl.List:join
 function List:__tostring()
     return '{'..self:join(',',tostring_q)..'}'
 end
@@ -455,7 +455,7 @@ end
 -- @param ... will also be passed to the function
 -- @return a table where the keys are the returned values, and the values are Lists
 -- of values where the function returned that key. It is given the type of Multimap.
--- @see pl.classx.MultiMap
+-- @see pl.MultiMap
 function List:partition (fun,...)
     fun = function_arg(1,fun)
     local res = {}

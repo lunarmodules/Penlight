@@ -8,6 +8,7 @@ local modules = {
     comprehension=true,luabalanced=true,
     test = true, app = true, file = true, class = true, List = true,
     Map = true, Set = true, OrderedMap = true, MultiMap = true,
+    Date = true,
     -- classes --
 }
 utils = require 'pl.utils'

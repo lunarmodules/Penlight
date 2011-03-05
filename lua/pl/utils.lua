@@ -147,7 +147,7 @@ function utils.readlines(filename)
     return res
 end
 
----- split a string into a list of strings separated by a delimiter.
+--- split a string into a list of strings separated by a delimiter.
 -- @param s The input string
 -- @param re A regular expression; defaults to spaces
 -- @return a list-like table

@@ -108,7 +108,7 @@ This can be efficiently and succintly expressed as `ls:map(fun)`. Not only is th
 
 A common observation is that loopless programming is less efficient, particularly in the way it uses memory. `ls1:map2('*',ls2):reduce '+'` will give you the dot product of two lists, but an unnecessary temporary list is created.  But efficiency is relative to the actual situation, it may turn out to be _fast enough_, or may not appear in any crucial inner loops, etc.
 
-Writing loops is 'error-prone and tedious', as Stroustrup says. But any half-decent editor can be taught to do much of that typing for you. The question should actually be: is it tedious to _read_ loops?  As with natural language, programmers tend to read chunks at a time. A for-loop causes no suprise, and probably little brain activity. One argument for loopless programming is the loops that you _do_ write stand out more, and signal 'something different happening here'.  It should not be an all-or-nothing thing, since most programs require a mixture of idioms that suit the problem.  Some languages (like APL) do nearly everything with map and reduce operations on arrays, and so solutions can sometimes seem forced. Wisdom is knowing when a particular idiom makes a particular problem easy to _solve_ and the solution easy to _explain_ afterwards.
+Writing loops is 'error-prone and tedious', as Stroustrup says. But any half-decent editor can be taught to do much of that typing for you. The question should actually be: is it tedious to _read_ loops?  As with natural language, programmers tend to read chunks at a time. A for-loop causes no surprise, and probably little brain activity. One argument for loopless programming is the loops that you _do_ write stand out more, and signal 'something different happening here'.  It should not be an all-or-nothing thing, since most programs require a mixture of idioms that suit the problem.  Some languages (like APL) do nearly everything with map and reduce operations on arrays, and so solutions can sometimes seem forced. Wisdom is knowing when a particular idiom makes a particular problem easy to _solve_ and the solution easy to _explain_ afterwards.
 
 
 ### Utilities. Generally useful functions.
@@ -403,7 +403,7 @@ There are also some useful classes which also inherit from `Map`. An `OrderedMap
 
 A `MultiMap` allows multiple values to be associated with a given key. So `set` (as before) takes a key and a value, but calling it with the same key and a different value does not overwrite but adds a new value. `get` (or using `[]`) will return a list of values.
 
-(@see class, @see classx)
+(@see Map, @see Set)
 
 ### Tablex. Useful Operations on Tables
 
@@ -768,10 +768,78 @@ New in Penlight with the 0.9 series is `text.format_operator`. Calling this enab
     
 So in its simplest form it saves the typing involved with `string.format`; it will also expand `$` variables using named fields:
 
-    > = '$animal[$num}' % {animal='dog',num=1}
-    dog[1}
+    > = '$animal[$num]' % {animal='dog',num=1}
+    dog[1]
+    
+A new module is `template`, which is a version of Rici Lake's [Lua  Preprocessor](http://lua-users.org/wiki/SlightlyLessSimpleLuaPreprocessor).  This allows you to mix Lua code with your templates in a straightforward way. There are only two rules:
 
-(@see text)
+  - Lines begining with `#` are Lua
+  - Otherwise, anything inside `$()` is a Lua expression.
+  
+So a template generating an HTML list would look like this:
+
+    <ul>
+    # for i,val in ipairs(T) do
+    <li>$(i) = $(val:upper())</li>
+    # end
+    </ul>
+    
+Assume the text is inside `tmpl`, then the template can be expanded using:
+
+    local template = require 'pl.template'
+    res = template.substitute(tmpl,{T = {'one','two','three'}})
+
+and we get
+
+    <ul>
+    <li>1 = ONE</li>
+    <li>2 = TWO</li>
+    <li>3 = THREE</li>
+    </ul>
+  
+There is a single function, `substitute` which is passed a template string and an environment table.   This table may contain some special fields, like `_parent` which can be set to a table representing a 'fallback' environment in case a symbol was not found. `_brackets` is usually '()' and `_escape` is usually '#' but it's sometimes necessary to redefine these if the defaults interfere with the target language - for instance, `$(V)` has another meaning in Make, and `#` means a preprocessor line in C/C++.
+
+Finally, if something goes wrong, passing `_debug` will cause the intermediate Lua code to be dumped if there's a problem.
+
+Here is a C code generation example; something that could easily be extended to be a minimal Lua extension skeleton generator.
+
+    local subst = require 'pl.template'.substitute
+    
+    local templ = [[
+    #include <lua.h>
+    #include <lauxlib.h>
+    #include <lualib.h>
+
+    > for _,f in ipairs(mod) do
+    static int l_$(f.name) (lua_State *L) {
+
+    }
+    > end
+
+    static const luaL_reg $(mod.name)[] = {
+    > for _,f in ipairs(mod) do
+        {"$(f.name)",l_$(f.name)},
+    > end
+        {NULL,NULL}
+    };
+
+    int luaopen_$(mod.name) {
+       luaL_register (L, "$(mod.name)", $(mod.name));
+        return 1;
+    }
+    ]]
+
+    print(subst(templ,{
+        _escape = '>',
+        ipairs = ipairs,
+        mod = {        
+            name = 'baggins';
+            {name='frodo'},
+            {name='bilbo'}
+        }
+    }))
+
+(@see text, @see template)
 
 ### File-style I/O on Strings
 
@@ -911,6 +979,45 @@ If you need to find the common path of list of files, then `tablex.reduce` will 
     > = tablex.reduce(path.common_prefix,{p1,p2,p3})
     'd:\dev'
 
+## Date and Time
+
+### Manipulating Dates
+
+The `Date` class provides a simplified way to work with [date and time](http://www.lua.org/pil/22.1.html) in Lua; it leans heavily on the functions `os.date` and `os.time`.
+
+A `Date` object can be constructed from a table, just like with `os.time`. Methods are provided to get and set the various parts of the date.  
+
+    > d = Date {year = 2011, month = 3, day = 2 }
+    > = d
+    2011-03-02 12:00
+    > = d:month(),d:year(),d:day()
+    3	2011	2
+    > d:month(4)
+    > = d
+    2011-04-02 12:00
+    > d:add {day=1}
+    > = d
+    2011-04-03 12:00
+    
+`add` takes a table containing one of the date table fields. 
+
+    > = d:weekday_name()
+    Sun
+    > = d:last_day()
+    2011-04-30 12:00
+    > = d:month_name(true)
+    April
+
+There is a default conversion to text for date objects, but `Date.Format` gives you full control of the format for both parsing and displaying dates:
+
+    > iso = Date.Format 'yyyy-mm-dd'
+    > d = iso:parse '2010-04-10'
+    > amer = Date.Format 'mm/dd/yyyy'
+    > = amer:tostring(d)
+    04/10/2010
+
+
+(@see Date)
 
 ## Data
 
