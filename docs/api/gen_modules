@@ -1,3 +1,4 @@
-lua luadoc_start.lua ../../lua/pl/*.lua --nofiles
-
+PL="/home/steve/lua/projects/Penlight"
+# PL="../.."
+lua ldoc.lua $PL/lua/pl
 
