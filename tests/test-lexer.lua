@@ -1,7 +1,7 @@
 asserteq = require('pl.test').asserteq
 lexer = require 'pl.lexer'
 seq = require 'pl.seq'
-List = require ('pl.list').List
+List = require ('pl.List')
 copy2 = seq.copy2
 
 s = '20 = hello'
@@ -21,7 +21,7 @@ for k,v in pairs(t) do
         print(v) -- array-like case
     else
         print(k,v)
-    end
+    end -- if
 end
 ]]
 

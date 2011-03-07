@@ -115,7 +115,7 @@ function utils.readfile(filename,is_bin)
     local mode = is_bin and 'b' or ''
     utils.assert_string(1,filename)
     local f,err = io.open(filename,'r'..mode)
-    if not f then return raise (err) end
+    if not f then return utils.raise (err) end
     local res,err = f:read('*a')
     f:close()
     if not res then return raise (err) end
@@ -150,7 +150,7 @@ function utils.readlines(filename)
     return res
 end
 
----- split a string into a list of strings separated by a delimiter.
+--- split a string into a list of strings separated by a delimiter.
 -- @param s The input string
 -- @param re A regular expression; defaults to spaces
 -- @return a list-like table
@@ -188,8 +188,13 @@ function utils.splitv (s,re)
 end
 
 if not loadin then
-    function loadin(env,str)
-        local chunk,err = loadstring(str)
+    function loadin(env,str,src)
+        local chunk,err
+        if type(str) == 'string' then
+            chunk,err = loadstring(str,src)
+        else
+            chunk,err = load(str,src)
+        end
         if chunk then setfenv(chunk,env) end
         return chunk,err
     end

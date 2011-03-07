@@ -8,7 +8,7 @@ local _G = _G
 local sub = string.sub
 local getenv = os.getenv
 local tmpnam = os.tmpname
-local attributes, currentdir, link_attributes
+local attributes, currentdir, link_attrib
 local package = package
 local io = io
 local append = table.insert
@@ -20,28 +20,90 @@ local assert_arg,assert_string,raise = utils.assert_arg,utils.assert_string,util
 module ('pl.path',utils._module)
 ]]
 
-local path = {}
+local path
 
-local res,lfs = _G.pcall(_G.require,'lfs')
-if res then
-    attributes = lfs.attributes
-    currentdir = lfs.currentdir
-    link_attributes = lfs.symlinkattributes
+if luajava then
+    path = require 'pl.platf.luajava'
+else
+    path = {}
+
+    local res,lfs = _G.pcall(_G.require,'lfs')
+    if res then
+        attributes = lfs.attributes
+        currentdir = lfs.currentdir
+        link_attrib = lfs.symlinkattributes    
+    else
+        error("pl.path requires LuaFileSystem")
+    end
+
+    attrib = attributes
+    path.attrib = attrib
+    path.link_attrib = link_attrib
+    path.dir = lfs.dir
+    path.mkdir = lfs.mkdir
+    path.rmdir = lfs.rmdir
+    path.chdir = lfs.chdir
+
+    --- is this a directory?
+    -- @param P A file path
+    function path.isdir(P)
+        if P:match("\\$") then
+            P = P:sub(1,-2)
+        end
+        return attrib(P,'mode') == 'directory'
+    end
+
+    --- is this a file?.
+    -- @param P A file path
+    function path.isfile(P)
+        return attrib(P,'mode') == 'file'
+    end
+
+    -- is this a symbolic link?
+    -- @param P A file path
+    function path.islink(P)
+        if link_attrib then
+            return link_attrib(P,'mode')=='link'
+        else
+            return false
+        end
+    end
+
+    --- return size of a file.
+    -- @param P A file path
+    function path.getsize(P)
+        return attrib(P,'size')
+    end
+
+    --- does a path exist?.
+    -- @param P A file path
+    -- @return the file path if it exists, nil otherwise
+    function path.exists(P)
+        return attrib(P,'mode') ~= nil and P
+    end
+
+    --- Return the time of last access as the number of seconds since the epoch.
+    -- @param P A file path
+    function path.getatime(P)
+        return attrib(P,'access')
+    end
+
+    --- Return the time of last modification
+    -- @param P A file path
+    function path.getmtime(P)
+        return attrib(P,'modification')
+    end
+
+    ---Return the system's ctime.
+    -- @param P A file path
+    function path.getctime(P)
+        return path.attrib(P,'change')
+    end
 end
+
 
 local function at(s,i)
     return sub(s,i,i)
-end
-
-local function attrib(path,field)
-    assert_string(1,path)
-    assert_string(2,field)
-    if not attributes then return nil end
-    local attr,err = attributes(path)
-    if not attr then return raise(err)
-    else
-        return attr[field]
-    end
 end
 
 path.is_windows = utils.dir_separator == '\\'
@@ -171,56 +233,6 @@ function path.normcase(P)
     end
 end
 
---- is this a directory?
--- @param P A file path
-function path.isdir(P)
-    if P:match("\\$") then
-        P = P:sub(1,-2)
-    end
-    return attrib(P,'mode') == 'directory'
-end
-
---- is this a file?.
--- @param P A file path
-function path.isfile(P)
-	if P:match("\\$") then
-        P = P:sub(1,-2)
-    end
-    return attrib(P,'mode') == 'file'
-end
-
--- is this a symbolic link?
--- @param P A file path
-function path.islink(P)
-    if link_attributes then
-        return link_attributes(P,'mode')=='link'
-    else
-        return false
-    end
-end
-
---- return size of a file.
--- @param P A file path
-function path.getsize(P)
-    return attrib(P,'size')
-end
-
---- does a path exist?.
--- @param P A file path
--- @return the file path if it exists, nil otherwise
-function path.exists(P)
-    if attributes then
-        return attributes(P) ~= nil and P
-    else
-        local f = io.open(P,'r')
-        if f then
-            f:close()
-            return P
-        else
-            return false
-        end
-    end
-end
 
 --- Replace a starting '~' with the user's home directory.
 -- In windows, if HOME isn't set, then USERPROFILE is used in preference to
@@ -239,23 +251,6 @@ function path.expanduser(P)
     end
 end
 
---- Return the time of last access as the number of seconds since the epoch.
--- @param P A file path
-function path.getatime(P)
-    return attrib(P,'access')
-end
-
---- Return the time of last modification
--- @param P A file path
-function path.getmtime(P)
-    return attrib(P,'modification')
-end
-
----Return the system's ctime.
--- @param P A file path
-function path.getctime(P)
-    return path.attrib(P,'change')
-end
 
 ---Return a suitable full path to a new temporary file name.
 -- unlike os.tmpnam(), it always gives you a writeable path (uses %TMP% on Windows)

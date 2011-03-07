@@ -135,7 +135,7 @@ end
 function tablex.compare_no_order (t1,t2,cmp)
     assert_arg(1,t1,'table')
     assert_arg(2,t2,'table')
-	if cmp then cmp = function_arg(3,cmp) end
+    if cmp then cmp = function_arg(3,cmp) end
     if #t1 ~= #t2 then return false end
     local visited = {}
     for i = 1,#t1 do
@@ -589,7 +589,7 @@ function _copy (dest,src,idest,isrc,nsrc,clean_tail)
         idest = idest + 1
     end
     if clean_tail then
-		tablex.clear(dest,idest)
+        tablex.clear(dest,idest)
     end
     return dest
 end
@@ -637,11 +637,11 @@ end
 -- @param last An index
 -- @return a new List
 function tablex.sub(t,first,last)
-	assert_arg(1,t,'table')
-	first,last = tablex._normalize_slice(t,first,last)
-	local res={}
-	for i=first,last do append(res,t[i]) end
-	return setmeta(res,t,List)
+    assert_arg(1,t,'table')
+    first,last = tablex._normalize_slice(t,first,last)
+    local res={}
+    for i=first,last do append(res,t[i]) end
+    return setmeta(res,t,List)
 end
 
 --- set an array range to a value. If it's a function we use the result
@@ -669,14 +669,14 @@ end
 -- @return the table
 function tablex.new (n,val)
     local res = {}
-    set(res,val,1,n)
+    tablex.set(res,val,1,n)
     return res
 end
 
 --- clear out the contents of a table.
 -- @param t a table
 function tablex.clear(t,istart)
-	istart = istart or 1
+    istart = istart or 1
     for i = istart,#t do remove(t) end
 end
 
@@ -709,7 +709,7 @@ end
 -- @param i2 end index
 -- @return the table
 function tablex.removevalues (t,i1,i2)
-	i1,i2 = tablex._normalize_slice(t,i1,i2)
+    i1,i2 = tablex._normalize_slice(t,i1,i2)
     for i = i1,i2 do
         remove(t,i1)
     end
@@ -718,23 +718,23 @@ end
 
 local _find
 _find = function (t,value,tables)
-	for k,v in pairs(t) do
-		if v == value then return k end
-	end
-	for k,v in pairs(t) do
-		if not tables[v] and type(v) == 'table' then
-			tables[v] = true
-			local res = _find(v,value,tables)
-			if res then
-				res = tostring(res)
-				if type(k) ~= 'string' then
-					return '['..k..']'..res
-				else
-					return k..'.'..res
-				end
-			end
-		end
-	end
+    for k,v in pairs(t) do
+        if v == value then return k end
+    end
+    for k,v in pairs(t) do
+        if not tables[v] and type(v) == 'table' then
+            tables[v] = true
+            local res = _find(v,value,tables)
+            if res then
+                res = tostring(res)
+                if type(k) ~= 'string' then
+                    return '['..k..']'..res
+                else
+                    return k..'.'..res
+                end
+            end
+        end
+    end
 end
 
 --- find a value in a table by recursive search.
@@ -744,12 +744,12 @@ end
 -- @usage search(_G,math.sin,{package.path}) == 'math.sin'
 -- @return a fieldspec, e.g. 'a.b' or 'math.sin'
 function tablex.search (t,value,exclude)
-	assert_arg(1,t,'table')
-	local tables = {[t]=true}
-	if exclude then
-		for _,v in pairs(exclude) do tables[v] = true end
-	end
-	return _find(t,value,tables)
+    assert_arg(1,t,'table')
+    local tables = {[t]=true}
+    if exclude then
+        for _,v in pairs(exclude) do tables[v] = true end
+    end
+    return _find(t,value,tables)
 end
 
 return tablex

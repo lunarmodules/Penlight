@@ -92,9 +92,9 @@ function pretty.write (tbl,space,not_clever)
         end
     end
 
-	local function quote (s)
-	    return ('%q'):format(tostring(s))
-	end
+    local function quote (s)
+        return ('%q'):format(tostring(s))
+    end
 
     local function index (numkey,key)
         if not numkey then key = quote(key) end

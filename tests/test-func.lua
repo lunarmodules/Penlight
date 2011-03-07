@@ -18,17 +18,17 @@ end
 
 import ('math')
 
---~ test(_1+_2('hello'))
---~ test(sin(_1))
---~ test(_1:method())
---~ test(Not(_1))
+test(_1+_2('hello'))
+test(sin(_1))
+test(_1:method())
+test(Not(_1))
 
---~ print(instantiate(_1+_2)(10,20))
---~ print(instantiate(_1+20)(10))
---~ print(instantiate(Or(Not(_1),_2))(true,true))
---~ test(_1() + _2() + _3())
---~ print(I(_1+_2)(10,20))
----test(sin(_1)+cos(_2))
+print(instantiate(_1+_2)(10,20))
+print(instantiate(_1+20)(10))
+print(instantiate(Or(Not(_1),_2))(true,true))
+test(_1() + _2() + _3())
+print(I(_1+_2)(10,20))
+test(sin(_1)+cos(_2))
 
 
 asserteq(instantiate(_1+_2)(10,20),30)

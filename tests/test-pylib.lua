@@ -1,9 +1,8 @@
 -- test-pylib.lua
-local list = require 'pl.list'
+local List = require 'pl.List'
 require 'pl.stringx'.import()
 local text = require ('pl.text')
 local Template = text.Template
-local List = list.List
 
 l = List{10,20,30,40,50}
 s = List{1,2,3,4,5}
