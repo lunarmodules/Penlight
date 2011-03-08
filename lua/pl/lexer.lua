@@ -40,6 +40,8 @@ local lexer = {}
 local NUMBER1 = '^[%+%-]?%d+%.?%d*[eE][%+%-]?%d+'
 local NUMBER2 = '^[%+%-]?%d+%.?%d*'
 local NUMBER3 = '^0x[%da-fA-F]+'
+local NUMBER4 = '^%d+%.?%d*[eE][%+%-]?%d+'
+local NUMBER5 = '^%d+%.?%d*'
 local IDEN = '^[%a_][%w_]*'
 local WSPACE = '^%s+'
 local STRING1 = "^'.-[^\\]'"
@@ -304,8 +306,8 @@ function lexer.lua(s,filter,options)
             {WSPACE,wsdump},
             {NUMBER3,ndump},
             {IDEN,lua_vdump},
-            {NUMBER1,ndump},
-            {NUMBER2,ndump},
+            {NUMBER4,ndump},
+            {NUMBER5,ndump},
             {STRING3,sdump},
             {STRING1,sdump},
             {STRING2,sdump},
@@ -353,8 +355,8 @@ function lexer.cpp(s,filter,options)
             {PREPRO,pdump},
             {NUMBER3,ndump},
             {IDEN,cpp_vdump},
-            {NUMBER1,ndump},
-            {NUMBER2,ndump},
+            {NUMBER4,ndump},
+            {NUMBER5,ndump},
             {STRING3,sdump},
             {STRING1,chdump},
             {STRING2,sdump},
