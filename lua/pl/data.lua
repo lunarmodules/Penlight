@@ -193,6 +193,13 @@ function data.read(file,cnfg)
     local delim = D.delim
     local collect_end = cnfg.last_field_collect
     local numfields = cnfg.numfields    
+    -- some space-delimited data starts with a space.  This should not be a column,
+    -- although it certainly would be for comma-separated, etc.
+    local strip
+    if delim == '%s+' and line:find(delim) == 1 then
+        strip = function(s)  return s:gsub('^%s+','') end
+        line = strip(line)
+    end
     -- first line will usually be field names. Unless fieldnames are specified,
     -- we check if it contains purely numerical values for the case of reading
     -- plain data files.
@@ -208,6 +215,7 @@ function data.read(file,cnfg)
             cnfg.fieldnames = fields
         end
         line = f:read()
+        if strip then line = strip(line) end
     elseif type(cnfg.fieldnames) == 'string' then
         cnfg.fieldnames = split(cnfg.fieldnames,delim)
     end
@@ -237,6 +245,7 @@ function data.read(file,cnfg)
     -- keep going until finished
     while line do
         if not line:find ('^%s*$') then
+            if strip then line = strip(line) end
             local fields =  split(line,delim)
             if convert then
                 for k = 1,#numfields do
@@ -388,18 +397,20 @@ local function massage_fields(data,f)
     end
 end
 
+List = require 'pl.List'
+
 local function process_select (data,parms)
     --- preparing fields ----
     local res,ret
     field_error = nil
     local fields = parms.fields
-    local numfields = fields:find '%$'
+    local numfields = fields:find '%$'  or #data.fieldnames == 0
     if fields:find '^%s*%*%s*' then
         if not numfields then
             fields = fieldnames_as_string(data)
         else
             local ncol = #data[1]
-            filelds = {}
+            fields = {}
             for i = 1,ncol do append(fields,'$'..i) end
             fields = concat(fields,',')
         end
@@ -499,6 +510,7 @@ function data.query(data,condn,context,return_row)
             sort_var = sort_by
             sort_dir = 'asc'
         end
+        if sort_var:match '^%$' then sort_var = sort_var:sub(2) end
         sort_var = massage_fields(data,sort_var)
         if field_error then return nil,field_error end
         if sort_dir == 'asc' then
