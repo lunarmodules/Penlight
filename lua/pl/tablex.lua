@@ -255,9 +255,7 @@ function tablex.imap(fun,t,...)
     fun = function_arg(1,fun)
     local res = {}
     for i = 1,#t do
-        local val = fun(t[i],...)
-        if val == nil then return utils.raise 'operation returned nil' end
-        res[i] = val
+        res[i] = fun(t[i],...) or false
     end
     return setmeta(res,t,List)
 end

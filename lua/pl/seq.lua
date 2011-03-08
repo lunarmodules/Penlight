@@ -323,8 +323,8 @@ function seq.map(fn,iter,arg)
     return function()
         local v1,v2 = iter()
         if v1 == nil then return nil end
-        if arg then return fn(v1,arg)
-        else return fn(v1,v2)
+        if arg then return fn(v1,arg) or false
+        else return fn(v1,v2) or false
         end
     end
 end
