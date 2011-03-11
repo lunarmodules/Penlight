@@ -1,0 +1,14 @@
+--- This file is part of LuaDist project
+
+name = "penlight"
+version = "0.9.3"
+
+desc = "A portable, pure-Lua standard library covering common patterns."
+author = "Steve Donovan"
+maintainer = "Peter Drahoš"
+url = "https://github.com/stevedonovan/Penlight"
+
+depends = {
+	"lua ~> 5.1"
+}
+
