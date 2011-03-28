@@ -262,7 +262,7 @@ This useful notation is borrowed from Hugo Etchegoyen's [classlib](http://lua-us
 
 ### Python-style Lists
 
-One of the elegant things about Lua is that tables do the job of both lists and dicts (as called in Python) or vectors and maps, (as called in C++), and they do it efficiently.  However, if we are dealing with 'tables with numerical indices' we may as well call them lists and look for operations which particularly make sense for lists. The Penlight `List` class was originally written by Nick Trout for Lua 5.0, and translated to 5.1 and extended by myself.  It seemed that borrowing from Python was a good idea, and this eventually grew into Penlight. (@see list)
+One of the elegant things about Lua is that tables do the job of both lists and dicts (as called in Python) or vectors and maps, (as called in C++), and they do it efficiently.  However, if we are dealing with 'tables with numerical indices' we may as well call them lists and look for operations which particularly make sense for lists. The Penlight `List` class was originally written by Nick Trout for Lua 5.0, and translated to 5.1 and extended by myself.  It seemed that borrowing from Python was a good idea, and this eventually grew into Penlight. (@see List)
 
 Here is an example showing `List` in action; it redefines `__tostring`, so that it can print itself out more sensibly:
 
@@ -546,7 +546,7 @@ Note that `find_if` will also return the _actual value_ returned by the function
 
 (Note the special string '==' above; instead of saying `ops.gt` or `ops.eq` we can use the strings '>' or '==' respectively.)
 
-There are several ways to merge tables in PL. If they are list-like, then see the operations defined by `pl.list.List`, like concatenation. If they are map-like, then `merge` provides two basic operations. If the third arg is false, then the result only contains the keys that are in common between the two tables, and if true, then the result contains all the keys of both tables. These are in fact generalized set union and intersection operations:
+There are several ways to merge tables in PL. If they are list-like, then see the operations defined by `pl.List`, like concatenation. If they are map-like, then `merge` provides two basic operations. If the third arg is false, then the result only contains the keys that are in common between the two tables, and if true, then the result contains all the keys of both tables. These are in fact generalized set union and intersection operations:
 
     > S1 = {john=27,jane=31,mary=24}
     > S2 = {jane=31,jones=50}
