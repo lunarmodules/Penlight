@@ -11,7 +11,7 @@
 --
 --      print(args.offset + args.scale * args.number)
 -- </pre>
--- Lines begining with '-' are flags; there may be a short and a long name; 
+-- Lines begining with '-' are flags; there may be a short and a long name;
 -- lines begining wih '&lt;var&gt;' are arguments.  Anything in parens after
 -- the flag/argument is either a default, a type name or a range constraint.
 -- <p>See <a href="../../index.html#lapp">the Guide</a>
@@ -141,6 +141,7 @@ local function process_default (sval)
         local ft = filetypes[sval]
         return ft[1],ft[2]
     else
+        if sval:match '^["\']' then sval = sval:sub(2,-2) end
         return sval,'string'
     end
 end
@@ -282,8 +283,9 @@ function lapp.process_options_string(str)
             if not parm then
                -- extra unnamed parameters are indexed starting at 1
                parm = iextra
-               iextra = iextra + 1
                ps = { type = 'string' }
+               parms[parm] = ps
+               iextra = iextra + 1
             else
                 ps = parms[parm]
             end
