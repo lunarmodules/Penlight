@@ -21,7 +21,7 @@ utils.dir_separator = _G.package.config:sub(1,1)
 --- end this program gracefully.
 -- @param code The exit code
 -- @param msg A message to be printed
--- @param ... extra arguments for fprintf
+-- @param ... extra arguments for message's format'
 -- @see utils.fprintf
 function utils.quit(code,msg,...)
     if type(code) == 'string' then
@@ -34,13 +34,16 @@ function utils.quit(code,msg,...)
 end
 
 --- print an arbitrary number of arguments using a format.
---  @param fmt The format (see string.format)
+-- @param fmt The format (see string.format)
+-- @param ... Extra arguments for format
 function utils.printf(fmt,...)
     utils.fprintf(stdout,fmt,...)
 end
 
 --- write an arbitrary number of arguments to a file using a format.
--- @param fmt The format (see string.format)
+-- @param f File handle to write to.
+-- @param fmt The format (see string.format).
+-- @param ... Extra arguments for format
 function utils.fprintf(f,fmt,...)
     utils.assert_string(2,fmt)
     f:write(format(fmt,...))
@@ -230,14 +233,15 @@ function utils.memoize(func)
 end
 
 --- is the object either a function or a callable object?.
+-- @param obj Object to check.
 function utils.is_callable (obj)
     return type(obj) == 'function' or getmetatable(obj) and getmetatable(obj).__call
 end
 
 --- is the object of the specified type?.
 -- If the type is a string, then use type, otherwise compare with metatable
--- @param obj an object
--- @param tp a type
+-- @param obj An object to check
+-- @param tp String of what type it should be
 function utils.is_type (obj,tp)
     if type(tp) == 'string' then return type(obj) == tp end
     local mt = getmetatable(obj)
@@ -270,9 +274,9 @@ utils.string_lambda = utils.memoize(_string_lambda)
 
 local ops
 
---- process a function argument. 
--- This is used throughout Penlight and defines what is meant by a function: 
--- Something that is callable, or an operator string as defined by <code>pl.operator</code>, 
+--- process a function argument.
+-- This is used throughout Penlight and defines what is meant by a function:
+-- Something that is callable, or an operator string as defined by <code>pl.operator</code>,
 -- such as '>' or '#'.
 -- @param idx argument index
 -- @param f a function, operator string, or callable object
@@ -300,10 +304,10 @@ function utils.function_arg (idx,f)
             return ff(f) -- we have a function factory for this type!
         end
     end
-    if idx > 0 then        
+    if idx > 0 then
         error("argument "..idx..": "..msg,2)
     else
-        error(msg,2)    
+        error(msg,2)
     end
 end
 
@@ -344,7 +348,7 @@ end
 
 local err_mode = 'default'
 
---- control the error strategy used by Penlight. 
+--- control the error strategy used by Penlight.
 -- Controls how <code>utils.raise</code> works; the default is for it
 -- to return nil and the error string, but if the mode is 'error' then
 -- it will throw an error. If mode is 'quit' it will immediately terminate

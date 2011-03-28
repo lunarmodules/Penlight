@@ -143,7 +143,7 @@ function path.abspath(P)
     assert_string(1,P)
     if not currentdir then return P end
     if not path.isabs(P) then
-        return join(currentdir(),P)
+        return path.join(currentdir(),P)
     else
         return P
     end
