@@ -401,18 +401,22 @@ function lexer.get_separated_list(tok,endtoken,delim)
     end
     local is_end
     if endtoken == '\n' then
-        is_end = function(tok,val)
-            return tok == 'space' and val:find '\n'
+        is_end = function(t,val)
+            return t == 'space' and val:find '\n'
         end
     else
-        is_end = function (tok)
-            return tok == endtoken
+        is_end = function (t)
+            return t == endtoken
         end
     end
+    local token,value
     while true do
         token,value=tok()
-        if not token then return end -- end of stream is an error!
-        if token == '(' then
+        if not token then return nil,'EOS' end -- end of stream is an error!
+        if is_end(token,value) and level == 1 then
+            append(parm_values,tl)
+            break        
+        elseif token == '(' then
             level = level + 1
             tappend(tl,'(')
         elseif token == ')' then
@@ -426,14 +430,11 @@ function lexer.get_separated_list(tok,endtoken,delim)
         elseif token == delim and level == 1 then
             append(parm_values,tl) -- a new parm
             tl = {}
-        elseif is_end(token,value) and level == 1 then
-            append(parm_values,tl)
-            break
         else
             tappend(tl,token,value)
         end
     end
-    return parm_values
+    return parm_values,{token,value}
 end
 
 --- get the next non-space token from the stream.
