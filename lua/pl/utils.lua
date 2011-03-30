@@ -108,6 +108,8 @@ function utils.choose(cond,value1,value2)
     end
 end
 
+local raise
+
 --- return the contents of a file as a string
 -- @param filename The file path
 -- @return file contents
@@ -157,7 +159,7 @@ end
 function utils.split(s,re)
     utils.assert_string(1,s)
     local find,sub,append = string.find, string.sub, table.insert
-    local i1,ls = 1,{}    
+    local i1,ls = 1,{}
     if not re then re = '%s+' end
     if re == '' then return {s} end
     while true do
@@ -370,6 +372,8 @@ function utils.raise (err)
     else error(err,2)
     end
 end
+
+raise = utils.raise
 
 return utils
 
