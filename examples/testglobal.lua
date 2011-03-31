@@ -8,7 +8,7 @@
 local utils = require 'pl.utils'
 local file = require 'pl.file'
 local lexer = require 'pl.lexer'
-local List = require 'pl.list' . List
+local List = require 'pl.List'
 local pretty = require 'pl.pretty'
 local seq = require 'pl.seq'
 

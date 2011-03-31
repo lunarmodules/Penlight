@@ -1,7 +1,7 @@
 require 'pl'
 utils.import 'pl.func'
 local ops = require 'pl.operator'
-local List = require 'pl.list' . List
+local List = require 'pl.List'
 local append,concat = table.insert,table.concat
 local compare,find_if,compare_no_order,imap,reduce,count_map = tablex.compare,tablex.find_if,tablex.compare_no_order,tablex.imap,tablex.reduce,tablex.count_map
 
