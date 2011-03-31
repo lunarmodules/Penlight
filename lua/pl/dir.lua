@@ -163,6 +163,9 @@ local function file_op (is_copy,src,dest,flag)
             cmd = is_copy and 'copy' or 'rename'
             null = ' > '..cmd_tmpfile
         else
+            if path.isdir(dest) then
+                dest = path.join(dest,path.basename(src))
+            end
             if is_copy then ret = CopyFile(src,dest,flag)
             else ret = MoveFile(src,dest) end
             if ret == 0 then
@@ -197,7 +200,7 @@ end
 
 --- copy a file.
 -- @param src source file
--- @param dest destination file
+-- @param dest destination file or directory
 -- @param flag true if you want to force the copy (default)
 -- @return true if operation succeeded
 function dir.copyfile (src,dest,flag)
@@ -209,7 +212,7 @@ end
 
 --- move a file.
 -- @param src source file
--- @param dest destination file
+-- @param dest destination file or directory
 -- @return true if operation succeeded
 function dir.movefile (src,dest)
     assert_string(1,src)
@@ -219,7 +222,7 @@ end
 
 local function _dirfiles(dir,attrib)
     local dirs = {}
-    local files = {}    
+    local files = {}
     for f in ldir(dir) do
         if f ~= '.' and f ~= '..' then
             local p = path.join(dir,f)
@@ -319,7 +322,7 @@ end
 -- @param path1 the base path of the source tree
 -- @param path2 the new base path for the destination
 -- @param file_fun an optional function to apply on all files
--- @param verbose an optional boolean to control the verbosity of the output. 
+-- @param verbose an optional boolean to control the verbosity of the output.
 --  It can also be a logging function that behaves like print()
 -- @return if failed, false plus an error message. If completed the traverse,
 --  true, a list of failed directory creations and a list of failed file operations.
@@ -378,12 +381,12 @@ function dir.dirtree( d )
     if sub( d, -1 ) == "/" then
         d = sub( d, 1, -2 )
     end
-    
+
     local function yieldtree( dir )
-        for entry in ldir( dir ) do                
+        for entry in ldir( dir ) do
             if entry ~= "." and entry ~= ".." then
                 entry = dir .. "/" .. entry
-                if exists(entry) then  -- Just in case a symlink is broken.                    
+                if exists(entry) then  -- Just in case a symlink is broken.
                     local is_dir = isdir(entry)
                     yield( entry, is_dir )
                     if is_dir then
@@ -410,7 +413,7 @@ function dir.getallfiles( start_path, pattern )
     local files = {}
     local normcase = path.normcase
     for filename, mode in dir.dirtree( start_path ) do
-        if not mode then            
+        if not mode then
             local mask = filemask( pattern )
             if normcase(filename):find( mask ) then
                 files[#files + 1] = filename
