@@ -45,7 +45,7 @@ or informally like:
 
 With Penlight after 0.9, please note that `require 'pl.utils'` no longer implies that a global table `pl.tuils` exists, since these new modules are no longer created with `module()`.
 
-Penlight will not bring in functions into the global table, or clobber standard tables like 'io'.  require('pl') will bring tables like 'utils','tablex',etc into the global table _if they are used_. This 'load-on-demand' strategy ensures that the whole kitchen sink is not loaded up front,  so this method is as efficient as explicitly loading required modules. 
+Penlight will not bring in functions into the global table, or clobber standard tables like 'io'.  require('pl') will bring tables like 'utils','tablex',etc into the global table _if they are used_. This 'load-on-demand' strategy ensures that the whole kitchen sink is not loaded up front,  so this method is as efficient as explicitly loading required modules.
 
 You have an option to bring the `pl.stringx` methods into the standard string table. All strings have a metatable that allows for automatic lookup in `string`, so we can say `s:upper()`. Importing `stringx` allows for its functions to also be called as methods: `s:strip()`,etc:
 
@@ -132,7 +132,7 @@ But this will bite you someday when `nil` is one of the arguments, since this wi
           ...
         end
     end
-    
+
 The 'memoize' pattern occurs when you have a function which is expensive to call, but will always return the same value subsequently. `utils.memoize` is given a function, and returns another function. This calls the function the first time, saves the value for that argument, and thereafter for that argument returns the saved value.  This is a more flexible alternative to building a table of values upfront, since in general you won't know what values are needed.
 
     sum = utils.memoize(function(n)
@@ -159,9 +159,9 @@ Flags may take values. The command-line `--value=open -n10` would result in `{va
 	> pretty.dump(flags)
 	{o='fred',n='10'}
 
-`parse_args` is not intelligent or psychic; it will not convert any flag values or arguments for you, or raise errors. For that, have a look at [#lapp](pl.lapp).
+`parse_args` is not intelligent or psychic; it will not convert any flag values or arguments for you, or raise errors. For that, have a look at [lapp](#lapp).
 
-An application which consists of several files cannot use `require` to load files in the same directory as the main script.  `app.require_here()` ensures that the Lua module path is modified so that files found locally are found first. In the `examples` directory, `test-symbols.lua` uses this function to ensure that it can find `symbols.lua` even if it is not run from this directory.
+An application which consists of several files usually cannot use `require` to load files in the same directory as the main script.  `app.require_here()` ensures that the Lua module path is modified so that files found locally are found first. In the `examples` directory, `test-symbols.lua` uses this function to ensure that it can find `symbols.lua` even if it is not run from this directory.
 
 `app.appfile` will create a filename that your application can use to store its private data, based on the script name. For example, `app.appfile "test.txt"` from a script called `testapp.lua` produces the following file on my Windows machine:
 
@@ -170,6 +170,8 @@ An application which consists of several files cannot use `require` to load file
 and the equivalent on my Linux machine:
 
 	/home/sdonovan/.testapp/test.txt
+
+If `.testapp` does not exist, it will be created.
 
 Penlight makes it convenient to save application data in Lua format. You can use `pretty.dump(t,file)` to write a Lua table in a human-readable form to a file, and `pretty.read(file.read(file))` to generate the table again.
 
@@ -349,7 +351,7 @@ Stacks occur everywhere in computing. `List` supports stack-like operations; the
 
 The `Map` class exposes what Python would call a 'dict' interface, and accesses the hash part of the table. The name 'Map' is used to emphasize the interface, not the implementation; it is an object which maps keys onto values; `m['alice']` or the equivalent `m.alice` is the access operation.  This class also provides explicit `set` and `get` methods, which are trivial for regular maps but get interesting when `Map` is subclassed. The other operation is `update`, which extends a map by copying the keys and values from another table, perhaps overwriting existing keys:
 
-    > Map = require 'pl.Map' 
+    > Map = require 'pl.Map'
     > m = Map{one=1,two=2}
     > m:update {three=3,four=4,two=20}
     > = m == M{one=1,two=20,three=3,four=4}
@@ -765,17 +767,17 @@ New in Penlight with the 0.9 series is `text.format_operator`. Calling this enab
     > text.format_operator()
     > = '%s[%d]' % {'dog',1}
     dog[1]
-    
+
 So in its simplest form it saves the typing involved with `string.format`; it will also expand `$` variables using named fields:
 
     > = '$animal[$num]' % {animal='dog',num=1}
     dog[1]
-    
+
 A new module is `template`, which is a version of Rici Lake's [Lua  Preprocessor](http://lua-users.org/wiki/SlightlyLessSimpleLuaPreprocessor).  This allows you to mix Lua code with your templates in a straightforward way. There are only two rules:
 
   - Lines begining with `#` are Lua
   - Otherwise, anything inside `$()` is a Lua expression.
-  
+
 So a template generating an HTML list would look like this:
 
     <ul>
@@ -783,7 +785,7 @@ So a template generating an HTML list would look like this:
     <li>$(i) = $(val:upper())</li>
     # end
     </ul>
-    
+
 Assume the text is inside `tmpl`, then the template can be expanded using:
 
     local template = require 'pl.template'
@@ -796,7 +798,7 @@ and we get
     <li>2 = TWO</li>
     <li>3 = THREE</li>
     </ul>
-  
+
 There is a single function, `substitute` which is passed a template string and an environment table.   This table may contain some special fields, like `_parent` which can be set to a table representing a 'fallback' environment in case a symbol was not found. `_brackets` is usually '()' and `_escape` is usually '#' but it's sometimes necessary to redefine these if the defaults interfere with the target language - for instance, `$(V)` has another meaning in Make, and `#` means a preprocessor line in C/C++.
 
 Finally, if something goes wrong, passing `_debug` will cause the intermediate Lua code to be dumped if there's a problem.
@@ -804,7 +806,7 @@ Finally, if something goes wrong, passing `_debug` will cause the intermediate L
 Here is a C code generation example; something that could easily be extended to be a minimal Lua extension skeleton generator.
 
     local subst = require 'pl.template'.substitute
-    
+
     local templ = [[
     #include <lua.h>
     #include <lauxlib.h>
@@ -832,7 +834,7 @@ Here is a C code generation example; something that could easily be extended to 
     print(subst(templ,{
         _escape = '>',
         ipairs = ipairs,
-        mod = {        
+        mod = {
             name = 'baggins';
             {name='frodo'},
             {name='bilbo'}
@@ -850,7 +852,7 @@ Here is a C code generation example; something that could easily be extended to 
     first line
     > = f:read('*n','*n','*n')
     10	20	30
-    
+
 `lines` and `seek` are also supported.
 
 `stringio.lines` is a useful short-cut for iterating over all the lines in a string.
@@ -985,7 +987,7 @@ If you need to find the common path of list of files, then `tablex.reduce` will 
 
 The `Date` class provides a simplified way to work with [date and time](http://www.lua.org/pil/22.1.html) in Lua; it leans heavily on the functions `os.date` and `os.time`.
 
-A `Date` object can be constructed from a table, just like with `os.time`. Methods are provided to get and set the various parts of the date.  
+A `Date` object can be constructed from a table, just like with `os.time`. Methods are provided to get and set the various parts of the date.
 
     > d = Date {year = 2011, month = 3, day = 2 }
     > = d
@@ -998,8 +1000,8 @@ A `Date` object can be constructed from a table, just like with `os.time`. Metho
     > d:add {day=1}
     > = d
     2011-04-03 12:00
-    
-`add` takes a table containing one of the date table fields. 
+
+`add` takes a table containing one of the date table fields.
 
     > = d:weekday_name()
     Sun
@@ -1241,7 +1243,7 @@ I've always been an admirer of the AWK programming language; with `filter` (@see
     -- printxy.lua
     require 'pl'
     data.filter 'x,y where x > 3'
-    
+
 It is common enough to have data files without headers of field names. `data.read` makes a special exception for such files if all fields are numeric. Since there are no column names to use in query expressions, you can use AWK-like column indexes, e.g. '$1,$2 where $1 > 3'.  I have a little executable script on my system called `lf` which looks like this:
 
     #!/usr/bin/env lua
@@ -1250,7 +1252,7 @@ It is common enough to have data files without headers of field names. `data.rea
 And it can be used generally as a filter command to extract columns from data. (The column specifications may be expressions or even constants.)
 
     $ lf '$1,$5/10' < test.dat
-    
+
 (As with AWK, please note the single-quotes used in this command; this prevents the shell trying to expand the column indexes. If you are on Windows, then you are fine, but it is still necessary to quote the expression in double-quotes so it is passed as one argument to your batch file.)
 
 As a tutorial resource, have a look at test-data.lua in the PL tests directory for other examples of use, plus comments.
@@ -1509,7 +1511,7 @@ The scanners all have a second optional argument, which is a table which control
 The ultimate highly-structured data is of course, program source. Here is a snippet from 'text-lexer.lua':
 
     require 'pl'
-    
+
     lines = [[
     for k,v in pairs(t) do
         if type(k) == 'number' then
@@ -1534,7 +1536,7 @@ Here is a useful little utility that identifies all common global variables foun
 
     local txt,err = utils.readfile(arg[1])
     if not txt then return print(err) end
-    
+
     local globals = List()
     for t,v in lexer.lua(txt) do
         if t == 'iden' and _G[v] then
@@ -2146,7 +2148,7 @@ There are two kinds of lines in Lapp usage strings which are meaningful; option 
 This script shows the relation between the specified parameter names and the fields in the output table.
 
       -- simple.lua
-      local args = require ('lapp') [[
+      local args = require ('pl.lapp') [[
       Various flags and option types
         -p          A simple optional flag, defaults to false
         -q,--quiet  A simple flag with long name
@@ -2186,8 +2188,8 @@ Files don't really have to be closed explicitly for short scripts with a quick w
 
 The type specifier can also be of the form '(' MIN '..' MAX ')'.
 
-    require 'pl.lapp'
-    local args = pl.lapp [[
+    local lapp = require 'pl.lapp'
+    local args = lapp [[
         Setting ranges
         <x> (1..10)  A number from 1 to 10
         <y> (-5..1e6) Bigger range
@@ -2217,7 +2219,7 @@ You may also define custom types that can be used in the type specifier:
 
 #### 'varargs' Parameter Arrays
 
-    require 'lapp'
+    lapp = require 'pl.lapp'
     local args = lapp [[
     Summing numbers
         <numbers...> (number) A list of numbers to be summed
@@ -2236,7 +2238,7 @@ Consider this implementation of the head utility from Mac OS X:
         -- implements a BSD-style head
         -- (see http://www.manpagez.com/man/1/head/osx-10.3.php)
 
-        require ('lapp')
+        lapp = require ('pl.lapp')
 
         local args = lapp [[
         Print the first few lines of specified files
@@ -2336,7 +2338,7 @@ Callbacks are needed when you want to take action immediately on parsing an argu
 In an ideal world, a program should only load the libraries it needs. Penlight is intended to work in situations where an extra 100Kb of bytecode could be a problem. It is straightforward but tedious to load exactly what you need:
 
     local data = require 'pl.data'
-    local List = require 'pl.List' 
+    local List = require 'pl.List'
     local array2d = require 'pl.array2d'
     local seq = require 'pl.seq'
     local utils = require 'pl.utils'
