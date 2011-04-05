@@ -273,6 +273,11 @@ local function _string_lambda(f)
     end
 end
 
+--- an anonymous function as a string. This string is of the form
+-- '|args| expression'.
+-- @param lf function as a string
+-- @return a function
+-- @usage string_lambda '|x|x+1' (2) == 3
 utils.string_lambda = utils.memoize(_string_lambda)
 
 local ops

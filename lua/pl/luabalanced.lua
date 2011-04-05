@@ -1,4 +1,4 @@
--- luabalanced.lua
+--- luabalanced.lua
 -- Extracted delimited Lua sequences from strings.[1]
 -- Inspired by Damian Conway's Text::Balanced[2] in Perl.
 --
@@ -6,7 +6,8 @@
 --   [2] http://search.cpan.org/dist/Text-Balanced/lib/Text/Balanced.pm
 --
 -- (c) 2008, David Manura, Licensed under the same terms as Lua (MIT license).
---
+-- @class module
+-- @name pl.luabalanced
 
 local M = {}
 

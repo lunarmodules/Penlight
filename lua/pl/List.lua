@@ -339,7 +339,7 @@ local function tostring_q(val)
 end
 
 --- how our list should be rendered as a string. Uses join().
--- @see pl.List:join
+-- @see List:join
 function List:__tostring()
     return '{'..self:join(',',tostring_q)..'}'
 end
