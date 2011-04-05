@@ -58,4 +58,43 @@ around the language. That
 is the role of the community.
 ]])
 
+local template = require 'pl.template'
+
+local t = [[
+# for i = 1,3 do
+    print($(i+1))
+# end
+]]
+
+asserteq(template.substitute(t),[[
+    print(2)
+    print(3)
+    print(4)
+]])
+
+t = [[
+> for i = 1,3 do
+    print(${i+1})
+> end
+]]
+
+asserteq(template.substitute(t,{_brackets='{}',_escape='>'}),[[
+    print(2)
+    print(3)
+    print(4)
+]])
+
+t = [[
+# for k,v in pairs(T) do
+    "$(k)", -- $(v)
+# end
+]]
+
+local T = {Dog = 'Bonzo', Cat = 'Felix', Lion = 'Leo'}
+
+asserteq(template.substitute(t,{T=T,_parent=_G}),[[
+    "Dog", -- Bonzo
+    "Cat", -- Felix
+    "Lion", -- Leo
+]])
 
