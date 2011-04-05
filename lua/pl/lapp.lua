@@ -161,9 +161,8 @@ function lapp.process_options_string(str)
     types = {}
 
     local function check_varargs(s)
-        local res,cnt = s:gsub('%.%.%.%s*','')
-        varargs = cnt > 0
-        return res
+        local res,cnt = s:gsub('^%.%.%.%s*','')
+        return res, (cnt > 0)
     end
 
     local function set_result(ps,parm,val)
@@ -188,7 +187,7 @@ function lapp.process_options_string(str)
             return match(str,line,res)
         end
 
-        -- flags: either -<short>, -<short>,--<long> or --<long>
+        -- flags: either '-<short>', '-<short>,--<long>' or '--<long>'
         if check '-$v{short}, --$v{long} $' or check '-$v{short} $' or check '--$v{long} $' then
             if res.long then
                 optparm = res.long
@@ -197,10 +196,12 @@ function lapp.process_options_string(str)
                 optparm = res.short
             end
             if res.short then force_short(res.short) end
-            res.rest = check_varargs(res.rest)
+            res.rest, varargs = check_varargs(res.rest)
         elseif check '$<{name} $'  then -- is it <parameter_name>?
             -- so <input file...> becomes input_file ...
-            optparm = check_varargs(res.name):gsub('%A','_')
+            optparm,rest = res.name:match '([^%.]+)(.*)'
+            optparm = optparm:gsub('%A','_')
+            varargs = rest == '...'
             append(parmlist,optparm)
         end
         if res.rest then -- this is not a pure doc line
