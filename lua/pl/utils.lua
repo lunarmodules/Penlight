@@ -14,7 +14,7 @@ module ('pl.utils')
 
 local utils = {}
 
-utils._VERSION = "0.9.0"
+utils._VERSION = "0.9.4"
 
 utils.dir_separator = _G.package.config:sub(1,1)
 
