@@ -133,11 +133,16 @@ end
 -- @param base optional base class
 -- @param c_arg optional parameter to class ctor
 -- @param c optional table to be used as class
-local class = setmetatable({},{
+local class
+class = setmetatable({},{
     __call = function(fun,...)
         return _class(...)
     end,
     __index = function(tbl,key)
+        if key == 'class' then
+            print('require("pl.class").class is deprecated. Use require("pl.class")')
+            return class
+        end
         local env = _G
         return function(...)
             local c = _class(...)
