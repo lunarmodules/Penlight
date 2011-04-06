@@ -18,13 +18,14 @@ ldoc, a Lua documentation generator, vs 0.1 Beta
 
 local known_tags = {
     param = 'M', see = 'M', usage = 'M', ['return'] = 'M', field = 'M', author='M';
-    class = 'id', name = 'id';
+    class = 'id', name = 'id', pragma = 'id';
     copyright = 'S', description = 'S', release = 'S'
 }
 
 local kind_names = {
     ['function'] = {name='Functions',subnames='Parameters'},
-    table = {name='Tables',subnames='Fields'}
+    table = {name='Tables',subnames='Fields'},
+    field = {name='Fields'}
 }
 
 local filename, lineno
@@ -135,7 +136,7 @@ function File:finish()
                 -- new-style modules will have qualified names like 'mod.foo';
                 -- if that's the mod_name, then we want to only use 'foo'
                 local mod,fname = split_dotted_name(item.name)
-                if mod == this_mod.mod_name then
+                if mod == this_mod.mod_name and this_mod.tags.pragma ~= 'nostrip' then
                     item.name = fname
                 end
                 item.module = this_mod
@@ -280,7 +281,6 @@ function Module:resolve_references(modules)
             if fun_ref then return self,fun_ref
             else
                 item:warning("function not found: "..s.." in this module")
-                for k in pairs(self.items.by_name) do print(k) end
             end
         end
     end
@@ -636,7 +636,7 @@ end
 
 generate_output()
 
-if args.v then
+if args.verbose then
     for k in pairs(module_list.by_name) do print(k) end
 end
 
