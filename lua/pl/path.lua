@@ -1,4 +1,4 @@
---- path manipulation and file queries. <br>
+--- Path manipulation and file queries. <br>
 -- This is modelled after Python's os.path library (11.1)
 -- @class module
 -- @name pl.path

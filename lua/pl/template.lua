@@ -1,4 +1,4 @@
---- a template preprocessor.
+--- A template preprocessor.
 -- Originally by Ricki Lake, see
 -- There are two rules: <ul>
 -- <li>lines starting with # are Lua</li>

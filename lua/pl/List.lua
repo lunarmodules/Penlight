@@ -17,6 +17,7 @@
 -- Redone for Lua 5.1, Steve Donovan.
 -- @class module
 -- @name pl.List
+-- @pragma nostrip
 
 local tinsert,tremove,concat,tsort = table.insert,table.remove,table.concat,table.sort
 local setmetatable, getmetatable,type,tostring,assert,string,next = setmetatable,getmetatable,type,tostring,assert,string,next
