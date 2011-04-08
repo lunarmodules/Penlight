@@ -39,7 +39,7 @@ function seq.less_than(x)
 end
 
 -- given any value, return a function(y) which returns true if y == x
--- @param x
+-- @param x a value
 function seq.equal_to(x)
   if type(x) == "number" then
     return function(v)
@@ -53,7 +53,7 @@ function seq.equal_to(x)
 end
 
 --- given a string, return a function(y) which matches y against the string.
--- @param a string
+-- @param s a string
 function seq.matching(s)
   return function(v)
      return strfind(v,s)
@@ -233,6 +233,7 @@ end
 --- A table where the key/values are the values and value counts of the sequence.
 -- This version works with 'hashable' values like strings and numbers. <br>
 -- pl.tablex.count_map is more general.
+-- @param iter a sequence
 -- @return a map-like table
 -- @return a table
 -- @see pl.tablex.count_map
@@ -410,7 +411,7 @@ end
 -- @param iter a sequence
 -- @param name the method name
 -- @param arg1 optional first extra argument
--- @param arg1 optional second extra argument
+-- @param arg2 optional second extra argument
 function seq.mapmethod (iter,name,arg1,arg2)
     iter = default_iter(iter)
     return function()

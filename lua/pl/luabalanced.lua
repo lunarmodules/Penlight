@@ -1,9 +1,18 @@
---- Extracted delimited Lua sequences from strings. [1]
--- Inspired by Damian Conway's Text::Balanced[2] in Perl.
+--- Extract delimited Lua sequences from strings.
+-- Inspired by Damian Conway's Text::Balanced in Perl. <br/>
 -- <ul>
---   <li>[1] http://lua-users.org/wiki/LuaBalanced</li>
+--   <li>[1] <a href="http://lua-users.org/wiki/LuaBalanced">Lua Wiki Page</a></li>
 --   <li>[2] http://search.cpan.org/dist/Text-Balanced/lib/Text/Balanced.pm</li>
--- </ul>
+-- </ul> <br/>
+-- <pre class=example>
+-- local lb = require "pl.luabalanced"
+-- --Extract Lua expression starting at position 4.
+--  print(lb.match_expression("if x^2 + x > 5 then print(x) end", 4))
+--  --> x^2 + x > 5     16
+-- --Extract Lua string starting at (default) position 1.
+-- print(lb.match_string([["test\"123" .. "more"]]))
+-- --> "test\"123"     12
+-- </pre>
 -- (c) 2008, David Manura, Licensed under the same terms as Lua (MIT license).
 -- @class module
 -- @name pl.luabalanced

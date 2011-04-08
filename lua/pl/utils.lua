@@ -1,4 +1,5 @@
---- Generally useful routines.
+--- Generally useful routines. 
+-- See  <a href="../../index.html#utils">the Guide</a>.
 -- @class module
 -- @name pl.utils
 local format,gsub,byte = string.format,string.gsub,string.byte
@@ -112,6 +113,7 @@ local raise
 
 --- return the contents of a file as a string
 -- @param filename The file path
+-- @param is_bin open in binary mode 
 -- @return file contents
 function utils.readfile(filename,is_bin)
     local mode = is_bin and 'b' or ''

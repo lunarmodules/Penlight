@@ -209,7 +209,7 @@ function array2d.parse_range (s)
     end
 end
 
---- get a slice of a 2D array using spreadsheet range notation (see <a href="#array2d.parse_range">parse_range</a>).
+--- get a slice of a 2D array using spreadsheet range notation. @see parse_range
 -- @param t a 2D array
 -- @param rstr range expression
 -- @return a slice
