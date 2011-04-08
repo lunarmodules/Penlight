@@ -189,8 +189,10 @@ function Item:finish()
     local tags = self.tags
     self.name = tags.name
     self.type = tags.class
+    self.usage = tags.usage
     tags.name = nil
     tags.class = nil
+    tags.usage = nil
     -- see tags are multiple, but they may also be comma-separated
     if tags.see then
         tags.see = expand_comma_list(tags.see)

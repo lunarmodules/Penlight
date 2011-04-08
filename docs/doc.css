@@ -1,5 +1,7 @@
 body {
 	padding-left: 2em;
+	margin-left: 60px;
+	width: 600px;
 	}
 pre {
 	background-color: #eeeeff
