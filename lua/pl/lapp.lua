@@ -182,7 +182,7 @@ function lapp.process_options_string(str)
 
     for line in lines(str) do
         local res = {}
-        local optspec,optparm,i1,i2,defval,vtype,constraint
+        local optspec,optparm,i1,i2,defval,vtype,constraint,rest
         line = lstrip(line)
         local function check(str)
             return match(str,line,res)
