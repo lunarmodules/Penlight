@@ -1,10 +1,22 @@
---- a template preprocessor.
--- Originally by Ricki Lake, see
--- There are two rules: <ul>
+--- A template preprocessor.
+-- Originally by <a href="http://lua-users.org/wiki/SlightlyLessSimpleLuaPreprocessor">Ricki Lake</a>
+-- <p>There are two rules: <ul>
 -- <li>lines starting with # are Lua</li>
 -- <li> otherwise, `$(expr)` is the result of evaluating `expr`</li>
 -- </ul>
--- (Other escape characters can be used.)
+-- <pre class=example>
+-- #  for i = 1,3 do
+--    $(i) Hello, Word!
+-- #  end
+-- </pre>
+-- Other escape characters can be used, when the defaults conflict
+-- with the output language.
+-- <pre class=example>
+-- > for _,n in pairs{'one','two','three'} do
+--  static int l_${n} (luaState *state);
+-- > end
+-- </pre>
+-- See  <a href="../../index.html#rici_templates">the Guide</a>.
 -- @class module
 -- @name pl.template
 

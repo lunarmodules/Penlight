@@ -1,4 +1,4 @@
---- path manipulation and file queries. <br>
+--- Path manipulation and file queries. <br>
 -- This is modelled after Python's os.path library (11.1)
 -- @class module
 -- @name pl.path
@@ -31,7 +31,7 @@ else
     if res then
         attributes = lfs.attributes
         currentdir = lfs.currentdir
-        link_attrib = lfs.symlinkattributes    
+        link_attrib = lfs.symlinkattributes
     else
         error("pl.path requires LuaFileSystem")
     end
@@ -119,6 +119,18 @@ else
 end
 local sep,dirsep = path.sep,path.dirsep
 
+--- are we running Windows?
+-- @class field
+-- @name path.is_windows
+
+--- path separator for this platform.
+-- @class field
+-- @name path.sep
+
+--- separator for PATH for this platform
+-- @class field
+-- @name path.dirsep
+
 --- given a path, return the directory part and a file part.
 -- if there's no directory part, the first value will be empty
 -- @param P A file path
@@ -142,8 +154,11 @@ end
 function path.abspath(P)
     assert_string(1,P)
     if not currentdir then return P end
+    local pwd = currentdir()
     if not path.isabs(P) then
-        return path.join(currentdir(),P)
+        return path.join(pwd,P)
+    elseif path.is_windows and P:sub(2,2) ~= ':' then
+        return pwd:sub(1,2)..P
     else
         return P
     end
@@ -256,7 +271,7 @@ end
 -- unlike os.tmpnam(), it always gives you a writeable path (uses %TMP% on Windows)
 function path.tmpname ()
     local res = tmpnam()
-    if is_windows then res = getenv('TMP')..res end
+    if path.is_windows then res = getenv('TMP')..res end
     return res
 end
 

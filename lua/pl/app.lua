@@ -7,10 +7,6 @@ local utils = require 'pl.utils'
 local path = require 'pl.path'
 local lfs = require 'lfs'
 
---[[
-module ('pl.app',utils._module)
-]]
-
 local app = {}
 
 local function check_script_name ()
@@ -54,6 +50,19 @@ function app.appfile (file)
     return path.join(dir,file)
 end
 
+--- return string indicating operating system.
+-- @return 'Windows','OSX' or whatever uname returns (e.g. 'Linux')
+function app.platform()
+    if path.is_windows then
+        return 'Windows'
+    else
+        local f = io.popen('uname')
+        local res = f:read()
+        if res == 'Darwin' then res = 'OSX' end
+        f:close()
+        return res
+    end
+end
 
 --- parse command-line arguments into flags and parameters.
 -- Understands GNU-style command-line flags; short (-f) and long (--flag).

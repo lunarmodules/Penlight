@@ -26,7 +26,7 @@ function markdown (file,tmp)
     else
         tmp = file
     end
-    local cmd = lua..' '..markdown_dir..'/markdown.lua -s doc.css -l '..tmp
+    local cmd = lua..' '..markdown_dir..'/markdown.lua -s doc.css  '..tmp
     print(cmd)
     os.execute (cmd)
     if tmp_created then os.remove (tmp) end

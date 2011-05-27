@@ -85,10 +85,12 @@ local function compress_spaces (s)
     return s
 end
 
---- convert a SIP pattern into the equivalent Lua regular expression.
+--- convert a SIP pattern into the equivalent Lua string pattern.
 -- @param spec a SIP pattern
--- @param fieldnames an optional table which is to be filled with fieldnames
--- @param fieldtypes an optional table which maps the names to their types
+-- @param options a table; only the <code>at_start</code> field is
+-- currently meaningful and esures that the pattern is anchored
+-- at the start of the string.
+-- @return a Lua string pattern.
 function sip.create_pattern (spec,options)
     assert_arg(1,spec,'string')
     local fieldnames,fieldtypes = {},{}

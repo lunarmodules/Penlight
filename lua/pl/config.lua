@@ -1,4 +1,4 @@
---- reads configuration files into a Lua table. <p>
+--- Reads configuration files into a Lua table. <p>
 --  Understands INI files, classic Unix config files, and simple
 -- delimited columns of values. <p>
 -- <pre class=example>

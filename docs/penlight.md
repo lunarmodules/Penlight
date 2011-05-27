@@ -94,6 +94,11 @@ To use them directly, note that _all_ function arguments in Penlight go through 
     > = List{10,20,30}:map(_1+1)
     {11,21,31}
 
+Another option for short anonymous functions is provided by `utils.string_lambda`; since 0.9 you have to explicitly ask for this feature:
+
+    > L = require 'pl.utils'.string_lambda
+    > = List{10,20,30}:map (L'|x| x + 1')
+    {11,21,31}
 
 ### Pros and Cons of Loopless Programming
 
@@ -110,6 +115,7 @@ A common observation is that loopless programming is less efficient, particularl
 
 Writing loops is 'error-prone and tedious', as Stroustrup says. But any half-decent editor can be taught to do much of that typing for you. The question should actually be: is it tedious to _read_ loops?  As with natural language, programmers tend to read chunks at a time. A for-loop causes no surprise, and probably little brain activity. One argument for loopless programming is the loops that you _do_ write stand out more, and signal 'something different happening here'.  It should not be an all-or-nothing thing, since most programs require a mixture of idioms that suit the problem.  Some languages (like APL) do nearly everything with map and reduce operations on arrays, and so solutions can sometimes seem forced. Wisdom is knowing when a particular idiom makes a particular problem easy to _solve_ and the solution easy to _explain_ afterwards.
 
+<a id="utils"></a>
 
 ### Utilities. Generally useful functions.
 
@@ -602,11 +608,10 @@ Browsing through the documentation, you will find that `tablex` and `List` share
 
 ### Operations on two-dimensional tables
 
-two-dimensional tables are of course easy to represent in Lua, for instance `{{1,2},{3,4}}` where we store rows as subtables and index like so `A[col][row]`. This is the common representation used by matrix libraries like [LuaMatrix](http://lua-users.org/wiki/LuaMatrix). `pl.array2d` does not provide matrix operations, since that is the job for a specialized library, but rather provides generalizations of the higher-level operations provided by `pl.tablex` for one-dimensional arrays.
+Two-dimensional tables are of course easy to represent in Lua, for instance `{{1,2},{3,4}}` where we store rows as subtables and index like so `A[col][row]`. This is the common representation used by matrix libraries like [LuaMatrix](http://lua-users.org/wiki/LuaMatrix). `pl.array2d` does not provide matrix operations, since that is the job for a specialized library, but rather provides generalizations of the higher-level operations provided by `pl.tablex` for one-dimensional arrays.
 
 `iter` is a useful generalization of `ipairs`. (The extra parameter determines whether you want the indices as well.)
 
-    > array = require 'pl.array2d'
     > a = {{1,2},{3,4}}
     > for i,j,v in array2d.iter(a,true) do print(i,j,v) end
     1       1       1
@@ -614,9 +619,9 @@ two-dimensional tables are of course easy to represent in Lua, for instance `{{1
     2       1       3
     2       2       4
 
-Bear in mind that you can always convert an arbitrary 2D array into a 'list of lists' with `List(tablex.map(List,a))`
+Note that you can always convert an arbitrary 2D array into a 'list of lists' with `List(tablex.map(List,a))`
 
-`map` will apply a function over all elements (notice that extra arguments can be provided, so the operation is in effect `function(x) return x-1 end`)
+`map` will apply a function over all elements (notice that extra arguments can be provided, so this operation is in effect `function(x) return x-1 end`)
 
     > array2d.map('-',a,1)
     {{0,1},{2,3}}
@@ -712,9 +717,11 @@ These are convenient borrowings from Python, as described in 3.6.1 of the Python
     two
     three
 
-Most of these can be fairly easily implemented using the Lua string library, which is more general and powerful. But they are convenient operations to have easily at hand. Note that can be injected into the `string` table if you use `require 'pl'` and then `stringx.import()`, or explicitly call `pl.stringx.import()`, but a simple alias like 'stringx = require 'pl.string'` can be used. This is the recommended practice when writing modules for consumption by other people, since it is bad manners to change the global state of the rest of the system.
+Most of these can be fairly easily implemented using the Lua string library, which is more general and powerful. But they are convenient operations to have easily at hand. Note that can be injected into the `string` table if you use `stringx.import()`, but a simple alias like 'local stringx = require 'pl.stringx'` is preferrable. This is the recommended practice when writing modules for consumption by other people, since it is bad manners to change the global state of the rest of the system.
 
 (@see stringx)
+
+<a id="templates"></a>
 
 ### String Templates
 
@@ -772,6 +779,8 @@ So in its simplest form it saves the typing involved with `string.format`; it wi
 
     > = '$animal[$num]' % {animal='dog',num=1}
     dog[1]
+
+<a id="rici_templates"></a>
 
 A new module is `template`, which is a version of Rici Lake's [Lua  Preprocessor](http://lua-users.org/wiki/SlightlyLessSimpleLuaPreprocessor).  This allows you to mix Lua code with your templates in a straightforward way. There are only two rules:
 
@@ -842,6 +851,8 @@ Here is a C code generation example; something that could easily be extended to 
     }))
 
 (@see text, @see template)
+
+<a id="stringio"></a>
 
 ### File-style I/O on Strings
 
@@ -982,6 +993,8 @@ If you need to find the common path of list of files, then `tablex.reduce` will 
     'd:\dev'
 
 ## Date and Time
+
+<a id="date"></a>
 
 ### Manipulating Dates
 

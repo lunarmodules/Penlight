@@ -17,6 +17,7 @@
 -- Redone for Lua 5.1, Steve Donovan.
 -- @class module
 -- @name pl.List
+-- @pragma nostrip
 
 local tinsert,tremove,concat,tsort = table.insert,table.remove,table.concat,table.sort
 local setmetatable, getmetatable,type,tostring,assert,string,next = setmetatable,getmetatable,type,tostring,assert,string,next
@@ -67,7 +68,7 @@ end
 --- Create a new list. Can optionally pass a table;
 -- passing another instance of List will cause a copy to be created
 -- we pass anything which isn't a simple table to iterate() to work out
--- an appropriate iterator  @see iterate
+-- an appropriate iterator  @see List.iterate
 -- @param t An optional list-like table
 -- @return a new List
 -- @usage ls = List();  ls = List {1,2,3,4}
@@ -290,7 +291,7 @@ function List:slice_assign(i1,i2,seq)
     return self
 end
 
---- concatenation operator .. .
+--- concatenation operator.
 -- @param L another List
 -- @return a new list consisting of the list with the elements of the new list appended
 function List:__concat(L)
@@ -311,15 +312,14 @@ function List:__eq(L)
     return true
 end
 
---- join the elements of a list using a delimiter.<br>
+--- join the elements of a list using a delimiter. <br>
 -- This method uses tostring on all elements.
 -- @param delim a delimiter string, can be empty.
 -- @return a string
-function List:join (delim,v2s)
-    v2s = v2s or tostring
+function List:join (delim)
     delim = delim or ''
     assert_arg(1,delim,'string')
-    return concat(imap(v2s,self),delim)
+    return concat(imap(tostring,self),delim)
 end
 
 --- join a list of strings. <br>
@@ -339,7 +339,7 @@ local function tostring_q(val)
 end
 
 --- how our list should be rendered as a string. Uses join().
--- @see pl.List:join
+-- @see List:join
 function List:__tostring()
     return '{'..self:join(',',tostring_q)..'}'
 end

@@ -2,6 +2,7 @@
 -- This provides a Template class (modeled after the same from the Python 
 -- libraries, see string.Template). It also provides similar functions to those
 -- found in the textwrap module.
+-- See  <a href="../../index.html#templates">the Guide</a>.
 -- <p>
 -- Calling <code>text.format_operator()</code> overloads the % operator for strings to give Python/Ruby style formated output. 
 -- This is extended to also do template-like substitution for map-like data.

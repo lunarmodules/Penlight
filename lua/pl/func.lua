@@ -1,4 +1,18 @@
---- Functional helpers like composition,binding and placeholder expressions. <br>
+--- Functional helpers like composition, binding and placeholder expressions.
+-- Placeholder expressions are useful for short anonymous functions, and were
+-- inspired by the Boost Lambda library.
+-- <pre class=example>
+-- utils.import 'pl.func'
+-- ls = List{10,20,30}
+-- = ls:map(_1+1)
+--    {11,21,31}
+-- </pre>
+-- They can also be used to <em>bind</em> particular arguments of a function.
+-- <pre class = example>
+-- p = bind(print,'start>',_0)
+-- p(10,20,30)
+-- start>   10   20  30
+-- </pre>
 -- See <a href="../../index.html#func">the Guide</a>
 -- @class module
 -- @name pl.func

@@ -39,7 +39,7 @@ function seq.less_than(x)
 end
 
 -- given any value, return a function(y) which returns true if y == x
--- @param x
+-- @param x a value
 function seq.equal_to(x)
   if type(x) == "number" then
     return function(v)
@@ -53,7 +53,7 @@ function seq.equal_to(x)
 end
 
 --- given a string, return a function(y) which matches y against the string.
--- @param a string
+-- @param s a string
 function seq.matching(s)
   return function(v)
      return strfind(v,s)
@@ -112,8 +112,8 @@ end
 -- @param optional argument to be passed to predicate as second argument.
 function seq.count(iter,condn,arg)
   local i = 0
-  foreach(iter,function(val)
-        if condn(v,arg) then i = i + 1 end
+  seq.foreach(iter,function(val)
+        if condn(val,arg) then i = i + 1 end
   end)
   return i
 end
@@ -148,7 +148,7 @@ end
 -- @param iter a sequence
 -- @return a List
 -- @usage copy(list(ls)) is equal to ls
--- @usage copy(list {1,2,3},List) == List{1,2,3}
+-- @usage copy(list {1,2,3}) == List{1,2,3}
 function seq.copy(iter)
     local res = {}
     for v in default_iter(iter) do
@@ -233,6 +233,7 @@ end
 --- A table where the key/values are the values and value counts of the sequence.
 -- This version works with 'hashable' values like strings and numbers. <br>
 -- pl.tablex.count_map is more general.
+-- @param iter a sequence
 -- @return a map-like table
 -- @return a table
 -- @see pl.tablex.count_map
@@ -255,6 +256,7 @@ function seq.unique(iter,returns_table)
   local t = count_map(iter)
   local res = {}
   for k in pairs(t) do tappend(res,k) end
+  table.sort(res)
   if returns_table then
     return res
   else
@@ -361,7 +363,7 @@ function seq.reduce (fun,seq,oldval)
     end
     local val = seq()
     if val==nil then return oldval
-    else return fun(oldval,reduce(fun,seq,val))
+    else return fun(oldval,seq.reduce(fun,seq,val))
     end
 end
 
@@ -409,7 +411,7 @@ end
 -- @param iter a sequence
 -- @param name the method name
 -- @param arg1 optional first extra argument
--- @param arg1 optional second extra argument
+-- @param arg2 optional second extra argument
 function seq.mapmethod (iter,name,arg1,arg2)
     iter = default_iter(iter)
     return function()
@@ -461,6 +463,7 @@ end
 
 
 -- can't directly look these up in seq because of the wrong argument order...
+local map,reduce,mapmethod = seq.map, seq.reduce, seq.mapmethod
 local overrides = {
     map = function(self,fun,arg)
         return map(fun,self,arg)
@@ -487,7 +490,7 @@ SMT = {
 setmetatable(seq,{
     __call = function(tbl,iter)
         if not callable(iter) then
-            if type(iter) == 'table' then iter = list(iter)
+            if type(iter) == 'table' then iter = seq.list(iter)
             else return iter
             end
         end

@@ -1,4 +1,5 @@
---- Generally useful routines.
+--- Generally useful routines. 
+-- See  <a href="../../index.html#utils">the Guide</a>.
 -- @class module
 -- @name pl.utils
 local format,gsub,byte = string.format,string.gsub,string.byte
@@ -112,6 +113,7 @@ local raise
 
 --- return the contents of a file as a string
 -- @param filename The file path
+-- @param is_bin open in binary mode 
 -- @return file contents
 function utils.readfile(filename,is_bin)
     local mode = is_bin and 'b' or ''
@@ -273,6 +275,11 @@ local function _string_lambda(f)
     end
 end
 
+--- an anonymous function as a string. This string is of the form
+-- '|args| expression'.
+-- @param lf function as a string
+-- @return a function
+-- @usage string_lambda '|x|x+1' (2) == 3
 utils.string_lambda = utils.memoize(_string_lambda)
 
 local ops

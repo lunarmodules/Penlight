@@ -1,4 +1,3 @@
-PL="/home/steve/lua/projects/Penlight"
-# PL="../.."
+PL="../.."
 lua ldoc.lua $PL/lua/pl
 
