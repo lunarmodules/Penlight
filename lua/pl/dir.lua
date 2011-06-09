@@ -111,7 +111,7 @@ local function quote_argument (f)
 end
 
 
-local alien,no_alien,kernel,CopyFile,MoveFile,GetLastError,win32_errors,cmd_tmpfile
+local res,alien,no_alien,kernel,CopyFile,MoveFile,GetLastError,win32_errors,cmd_tmpfile
 
 local function execute_command(cmd,parms)
    if not cmd_tmpfile then cmd_tmpfile = path.tmpname () end
@@ -176,7 +176,6 @@ local function file_op (is_copy,src,dest,flag)
         return false,"cannot overwrite destination"
     end
     if is_windows then
-        local res
         -- if we haven't tried to load Alien before, then do so
         find_alien_copyfile()
         -- fallback if there's no Alien, just use DOS commands *shudder*
@@ -184,7 +183,7 @@ local function file_op (is_copy,src,dest,flag)
         if not CopyFile then
             src = path.normcase(src)
             dest = path.normcase(dest)
-            cmd = is_copy and 'copy' or 'rename'
+            local cmd = is_copy and 'copy' or 'rename'
             local res, err = execute_command('copy',two_arguments(src,dest))
             if not res then return nil,err end
             if not is_copy then
@@ -194,6 +193,7 @@ local function file_op (is_copy,src,dest,flag)
             if path.isdir(dest) then
                 dest = path.join(dest,path.basename(src))
             end
+			local ret
             if is_copy then ret = CopyFile(src,dest,flag)
             else ret = MoveFile(src,dest) end
             if ret == 0 then
