@@ -308,13 +308,12 @@ end
 local _makepath
 function _makepath(p)
     -- windows root drive case
-    if p:find '^%a:$' then
+    if p:find '^%a:[\\]*$' then
         return true
     end
    if not path.isdir(p) then
     local subp = p:match(dirpat)
     if not _makepath(subp) then return raise ('cannot create '..subp) end
-    --print('create',p)
     return mkdir(p)
    else
     return true
