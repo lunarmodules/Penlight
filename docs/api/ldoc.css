@@ -79,6 +79,8 @@ p, ul { margin: 10px 0 0 10px;}
 
 strong { font-weight: bold;}
 
+em { font-style: italic;}
+
 h1 {
     font-size: 1.5em;
     margin: 0 0 20px 0;
@@ -115,6 +117,15 @@ pre.example {
     font-family: "Andale Mono", monospace;
     font-size: .85em;
 }
+
+pre {
+    background-color: rgb(245, 245, 245);
+    border: 1px solid silver;
+    padding: 10px;
+    margin: 10px 0 10px 0;
+    font-family: "Andale Mono", monospace;
+}
+
 
 table.index { border: 1px #00007f; }
 table.index td { text-align: left; vertical-align: top; }

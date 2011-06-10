@@ -1,4 +1,4 @@
-lua ldoc.lua ..\..\lua\pl
+ldoc --dir . ..\..\lua\pl
 
 
 
