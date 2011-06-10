@@ -154,10 +154,11 @@ end
 function path.abspath(P)
     assert_string(1,P)
     if not currentdir then return P end
+    P = P:gsub('[\//]$','')
     local pwd = currentdir()
     if not path.isabs(P) then
         return path.join(pwd,P)
-    elseif path.is_windows and at(P,2) ~= ':' and at(P,1) ~= '\\' then
+    elseif path.is_windows and at(P,2) ~= ':' and at(P,2) ~= '\\' then
         return pwd:sub(1,2)..P
     else
         return P
