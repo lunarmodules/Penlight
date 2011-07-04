@@ -49,13 +49,23 @@ local keywords
 
 
 ---	Create a string representation of a Lua table.
+--  This function never fails, but may complain by returning an
+--  extra value. Normally puts out one item per line, using
+--  the provided indent; set the second parameter to '' if
+--  you want output on one line.
 --	@param tbl {table} Table to serialize to a string.
 --	@param space {string} (optional) The indent to use.
 --		Defaults to two spaces.
 --	@param not_clever {bool} (optional) Use for plain output, e.g {['key']=1}.
 --		Defaults to false.
+--  @return a string
+--  @return a possible error message
 function pretty.write (tbl,space,not_clever)
-    assert_arg(1,tbl,'table')
+    if type(tbl) ~= 'table' then
+        local res = tostring(tbl)
+        if type(tbl) == 'string' then res = '"'..res..'"' end
+        return res, 'not a table'
+    end
     if not keywords then
         keywords = lexer.get_keywords()
     end
@@ -120,12 +130,12 @@ function pretty.write (tbl,space,not_clever)
             tables[t] = true
             local newindent = indent..space
             putln('{')
-            local max = 0
+            local used = {}
             if not not_clever then
                 for i,val in ipairs(t) do
                     put(indent)
                     writeit(val,indent,newindent)
-                    max = i
+                    used[i] = true
                 end
             end
             for key,val in pairs(t) do
@@ -135,7 +145,7 @@ function pretty.write (tbl,space,not_clever)
                     put(indent..index(numkey,key)..' = ')
                     writeit(val,indent,newindent)
                 else
-                    if not numkey or key < 1 or key > max then -- non-array indices
+                    if not numkey or not used[key] then -- non-array indices
                         if numkey or not is_identifier(key) then
                             key = index(numkey,key)
                         end
@@ -157,14 +167,14 @@ end
 
 ---	Dump a Lua table out to a file or stdout.
 --	@param t {table} The table to write to a file or stdout.
---	@param ... {string} (optional) File name to write too. Defaults to writing
+--	@param fname {string} (optional) File name to write too. Defaults to writing
 --		to stdout.
-function pretty.dump (t,...)
-    if select('#',...) == 0 then
+function pretty.dump (t,fname)
+    if not fname then
         print(pretty.write(t))
         return true
     else
-        return utils.writefile((select(1,...)),pretty.write(t))
+        return utils.writefile(fname,pretty.write(t))
     end
 end
 
