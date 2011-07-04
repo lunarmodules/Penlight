@@ -1,4 +1,4 @@
---- Generally useful routines. 
+--- Generally useful routines.
 -- See  <a href="../../index.html#utils">the Guide</a>.
 -- @class module
 -- @name pl.utils
@@ -8,10 +8,6 @@ local stdout = io.stdout
 local append = table.insert
 
 local collisions = {}
-
---[[
-module ('pl.utils')
-]]
 
 local utils = {}
 
@@ -24,12 +20,13 @@ utils.dir_separator = _G.package.config:sub(1,1)
 -- @param msg A message to be printed
 -- @param ... extra arguments for message's format'
 -- @see utils.fprintf
-function utils.quit(code,msg,...)
+function utils.quit(code,...)
     if type(code) == 'string' then
-        msg = code
+        utils.fprintf(io.stderr,code,...)
         code = -1
+    else
+        utils.fprintf(io.stderr,...)
     end
-    utils.fprintf(io.stderr,msg,...)
     io.stderr:write('\n')
     os.exit(code)
 end
@@ -113,7 +110,7 @@ local raise
 
 --- return the contents of a file as a string
 -- @param filename The file path
--- @param is_bin open in binary mode 
+-- @param is_bin open in binary mode
 -- @return file contents
 function utils.readfile(filename,is_bin)
     local mode = is_bin and 'b' or ''
