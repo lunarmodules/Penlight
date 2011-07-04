@@ -142,8 +142,12 @@ end
 function stringx.expandtabs(self,n)
     assert_string(1,self)
     n = n or 8
-    local tab = (' '):rep(n)
-    return (gsub(self,'\t',tab))
+--~     local tab = (' '):rep(n)
+--~     return (gsub(self,'\t',tab))
+    return (gsub(self,'([^\t]*)\t', function(s)
+        print(#s, #s % n)
+        return s..(' '):rep(n - #s % n)
+    end))
 end
 
 --- find index of first instance of sub in s from the left.
