@@ -25,3 +25,17 @@ asserteq( path.isdir( "../docs/penlight.jpg" ), false )
 
 asserteq( path.isfile( "../docs" ), false )
 asserteq( path.isfile( "../docs/penlight.jpg" ), true )
+
+local norm = path.normpath
+local p = norm '/a/b'
+
+asserteq(norm '/a/fred/../b',p)
+asserteq(norm '/a//b',p)
+
+if path.is_windows then
+  asserteq(norm [[\a\.\b]],p)
+end
+
+asserteq(norm '1/2/../3/4/../5',norm '1/3/5')
+
+
