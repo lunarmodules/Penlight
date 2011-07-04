@@ -376,6 +376,16 @@ function stringx.lines (self)
     return s:gmatch('([^\n]*)\n')
 end
 
+--- iniital word letters uppercase ('title case').
+-- Here 'words' mean chunks of non-space characters.
+-- @param self the string
+-- @return a string with each word's first letter uppercase
+function stringx.title(self)
+    return (self:gsub('(%S)(%S*)',function(f,r)
+        return f:upper()..r
+    end))
+end
+
 local elipsis = '...'
 local n_elipsis = #elipsis
 
