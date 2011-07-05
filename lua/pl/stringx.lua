@@ -136,18 +136,27 @@ function stringx.splitlines (self,keepends)
     return setmetatable(usplit(self,'\n'),list_MT)
 end
 
+local function tab_expand (self,n)
+    return (gsub(self,'([^\t]*)\t', function(s)
+            return s..(' '):rep(n - #s % n)
+    end))
+end
+
 --- replace all tabs in s with n spaces. If not specified, n defaults to 8.
+-- with 0.9.5 this now correctly expands to the next tab stop (if you really
+-- want to just replace tabs, use :gsub('\t','  ') etc)
 -- @param self the string
--- @param n number of spaces to expand each tab
+-- @param n number of spaces to expand each tab, (default 8)
 function stringx.expandtabs(self,n)
     assert_string(1,self)
     n = n or 8
---~     local tab = (' '):rep(n)
---~     return (gsub(self,'\t',tab))
-    return (gsub(self,'([^\t]*)\t', function(s)
-        print(#s, #s % n)
-        return s..(' '):rep(n - #s % n)
-    end))
+    if not self:find '\n' then return tab_expand(self,n) end
+    local res,i = {},1
+    for line in stringx.lines(self) do
+        res[i] = tab_expand(line,n)
+        i = i + 1
+    end
+    return table.concat(res,'\n')
 end
 
 --- find index of first instance of sub in s from the left.

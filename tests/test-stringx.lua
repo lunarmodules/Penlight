@@ -84,19 +84,20 @@ asserteq(stringx.splitlines('ab\ncd\n'), {'ab', 'cd'}) --FIX:intended and specif
 asserteq(T(stringx.expandtabs('',0)), T(''))
 asserteq(T(stringx.expandtabs('',1)), T(''))
 asserteq(T(stringx.expandtabs(' ',1)), T(' '))
-asserteq(T(stringx.expandtabs(' \t ')), T((' '):rep(2+8)))
-asserteq(T(stringx.expandtabs(' \t ',2)), T('    '))
+-- expandtabs now works like Python's str.expandtabs (up to next tab stop)
+asserteq(T(stringx.expandtabs(' \t ')), T((' '):rep(1+8)))
+asserteq(T(stringx.expandtabs(' \t ',2)), T('   '))
 --]]
 
 -- lfind
 asserteq(T(stringx.lfind('', '')), T(1))
 asserteq(T(stringx.lfind('a', '')), T(1))
 asserteq(T(stringx.lfind('ab', 'b')), T(2))
-asserteq(T(stringx.lfind('abc', 'cd')), T(nil)) 
+asserteq(T(stringx.lfind('abc', 'cd')), T(nil))
 asserteq(T(stringx.lfind('abcbc', 'bc')), T(2))
 
 -- rfind
-asserteq(T(stringx.rfind('', '')), T(1)) 
+asserteq(T(stringx.rfind('', '')), T(1))
 asserteq(T(stringx.rfind('ab', '')), T(3))
 asserteq(T(stringx.rfind('abcbc', 'bc')), T(4))
 asserteq(T(stringx.rfind('abcbcb', 'bc')), T(4))
@@ -146,7 +147,7 @@ asserteq(T(stringx.rjust('abcd', 3)), T('abcd')) -- Q:specified behavior?]]
 
 -- center
 asserteq(T(stringx.center('', 0)), T(''))
-asserteq(T(stringx.center('', 1)), T(' ')) 
+asserteq(T(stringx.center('', 1)), T(' '))
 asserteq(T(stringx.center('', 2)), T('  '))
 asserteq(T(stringx.center('a', 1)), T('a'))
 asserteq(T(stringx.center('a', 2)), T(' a'))
