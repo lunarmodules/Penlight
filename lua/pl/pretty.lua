@@ -32,7 +32,7 @@ function pretty.read(s)
             end
         end
     end
-    local chunk,err = loadin({},'return '..s,'tbl')
+    local chunk,err = load('return '..s,'tbl','t',{})
     if not chunk then return nil,err end
     return chunk()
 end

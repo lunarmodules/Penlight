@@ -6,11 +6,11 @@ local path = require( "pl.path" )
 local asserteq = require( "pl.test" ).asserteq
 local pretty = require( "pl.pretty" )
 
-local normcase = path.normcase
+local normpath = path.normpath
 
-local expected = {normcase "../docs/function_index.txt"}
+local expected = {normpath "../docs/function_index.txt"}
 
-local files = dir.getallfiles( normcase "../docs/", "*.txt" )
+local files = dir.getallfiles( normpath "../docs/", "*.txt" )
 
 asserteq( files, expected )
 
@@ -24,7 +24,7 @@ local newFileName = path.tmpname()
 local err, msg = dir.movefile( fileName, newFileName )
 
 -- Make sure the move is successful
-assert( err )
+assert( err, msg )
 
 -- Check to make sure the original file is gone
 

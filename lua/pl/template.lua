@@ -26,17 +26,9 @@
 
 local append,format = table.insert,string.format
 
-if not loadin then -- Lua 5.2 compatibility
-    function loadin(env,str,name)
-        local chunk,err = loadstring(str,name)
-        if chunk then setfenv(chunk,env) end
-        return chunk,err
-    end
-end
-
 local function parseHashLines(chunk,brackets,esc)
     local exec_pat = "()$(%b"..brackets..")()"
-    
+
     local function parseDollarParen(pieces, chunk, s, e)
         local s = 1
         for term, executed, e in chunk:gmatch (exec_pat) do
@@ -47,7 +39,7 @@ local function parseHashLines(chunk,brackets,esc)
         end
         append(pieces, format("%q", chunk:sub(s)))
     end
-    
+
     local esc_pat = esc.."+([^\n]*\n?)"
     local esc_pat1, esc_pat2 = "^"..esc_pat, "\n"..esc_pat
     local  pieces, s = {"return function(_put) ", n = 1}, 1
@@ -82,8 +74,8 @@ function template.substitute(str,env)
     if env._parent then
         setmetatable(env,{__index = env._parent})
     end
-    local code = parseHashLines(str,env._brackets or '()',env._escape or '#')    
-    local fn,err = loadin(env,code,'TMP')
+    local code = parseHashLines(str,env._brackets or '()',env._escape or '#')
+    local fn,err = load(code,'TMP','t',env)
     if not fn then return nil,err end
     fn = fn()
     local out = {}

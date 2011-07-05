@@ -221,7 +221,7 @@ local function wrap_comprehension(code, ninputs, max_param, invallists, env)
   end
   code = code .. ' return __result '
   --print('DEBUG:', code)
-  local f, err = loadin(env,code)
+  local f, err = load(code,'tmp','t',env)
   if not f then assert(false, err .. ' with generated code ' .. code) end
   return f
 end

@@ -118,7 +118,7 @@ local function execute_command(cmd,parms)
    local err = path.is_windows and ' > ' or ' 2> '
     cmd = cmd..' '..parms..err..cmd_tmpfile
     --print(cmd)
-    local ret = os.execute(cmd) == 0
+    local ret = utils.execute(cmd)
     if not ret then
         return false,(utils.readfile(cmd_tmpfile):gsub('\n(.*)',''))
     else
