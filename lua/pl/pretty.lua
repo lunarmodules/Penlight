@@ -15,7 +15,7 @@ module('pl.pretty',utils._module)
 local pretty = {}
 
 --- read a string representation of a Lua table.
--- Uses loadstring, but tries to be cautious about loading arbitrary code!
+-- Uses load(), but tries to be cautious about loading arbitrary code!
 -- It is expecting a string of the form '{...}', with perhaps some whitespace
 -- before or after the curly braces. An empty environment is used, and
 -- any occurance of the keyword 'function' will be considered a problem.

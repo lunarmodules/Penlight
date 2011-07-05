@@ -205,6 +205,7 @@ if not lua52 then -- define Lua 5.2 style load()
     end
 end
 
+
 --- execute a shell command.
 -- This is a compatibility function that returns the same for Lua 5.1 and Lua 5.2
 -- @param cmd a shell command
@@ -396,6 +397,25 @@ function utils.raise (err)
 end
 
 raise = utils.raise
+
+--- Lua 5.2 Compatible Functions
+-- @section lua52
+
+--- load a code string or bytecode chunk.
+-- @param code Lua code as a string or bytecode
+-- @param name for source errors
+-- @param mode kind of chunk, 't' for text, 'b' for bytecode, 'bt' for all (default)
+-- @param env  the environment for the new chunk (default nil)
+-- @return compiled chunk
+-- @return error message (chunk is nil)
+-- @function load
+
+--- pack an argument list into a table.
+-- @param ... any arguments
+-- @return a table with field n set to the length
+-- @return the length
+-- @function table.pack
+
 
 return utils
 

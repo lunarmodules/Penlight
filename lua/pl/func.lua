@@ -26,7 +26,6 @@ local utils = require 'pl.utils'
 local tablex = require 'pl.tablex'
 local map = tablex.map
 local _DEBUG = rawget(_G,'_DEBUG')
-local LUA52 = rawget(_G,'_VERSION')=='Lua 5.2'
 local assert_arg = utils.assert_arg
 
 --[[

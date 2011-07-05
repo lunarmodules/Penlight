@@ -1,4 +1,4 @@
---- experimental support for LuaJava
+-- experimental support for LuaJava
 --
 local path = {}
 
