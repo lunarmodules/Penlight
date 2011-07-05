@@ -189,22 +189,40 @@ function utils.splitv (s,re)
     return unpack(utils.split(s,re))
 end
 
-if not loadin then
-    function loadin(env,str,src)
+local lua52 = table.pack ~= nil
+local lua51_load = load
+
+if not lua52 then -- define Lua 5.2 style load()
+    function load(str,src,mode,env)
         local chunk,err
         if type(str) == 'string' then
             chunk,err = loadstring(str,src)
         else
-            chunk,err = load(str,src)
+            chunk,err = lua51_load(str,src)
         end
-        if chunk then setfenv(chunk,env) end
+        if chunk and env then setfenv(chunk,env) end
         return chunk,err
     end
 end
 
-if not table.pack then
+--- execute a shell command.
+-- This is a compatibility function that returns the same for Lua 5.1 and Lua 5.2
+-- @param cmd a shell command
+-- @return true if successful
+-- @return actual return code
+function utils.execute (cmd)
+    local res1,res2,res2 = os.execute(cmd)
+    if not lua52 then
+        return res1==0,res1
+    else
+        return res1,res2
+    end
+end
+
+if not lua52 then
     function table.pack (...)
-        return {n=select('#',...); ...}
+        local n = select('#',...)
+        return {n=n; ...},n
     end
 end
 if not table.pack then table.pack = pack end
