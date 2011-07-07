@@ -116,11 +116,12 @@ end
 -- @param send a substring or a table of suffixes
 function stringx.endswith(s,send)
     assert_string(1,s)
-    if type(s) == 'string' then
+    if type(send) == 'string' then
         return #s >= #send and s:find(send, #s-#send+1, true) and true or false
     elseif type(send) == 'table' then
+        local endswith = stringx.endswith
         for _,suffix in ipairs(send) do
-            if stringx.endswith(s,suffix) then return true end
+            if endswith(s,suffix) then return true end
         end
         return false
     else

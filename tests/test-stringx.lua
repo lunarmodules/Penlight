@@ -39,16 +39,17 @@ asserteq(T(stringx.islower'aMz'), T(false))
 asserteq(T(stringx.islower'a z'), T(false)) -- OK???
 
 -- startswith
-asserteq(T(stringx.startswith('', '')), T(true))
-asserteq(T(stringx.startswith('', 'a')), T(false))
-asserteq(T(stringx.startswith('a', '')), T(true))
-asserteq(T(stringx.startswith('a', 'a')), T(true))
-asserteq(T(stringx.startswith('a', 'b')), T(false))
-asserteq(T(stringx.startswith('a', 'ab')), T(false))
-asserteq(T(stringx.startswith('abc', 'ab')), T(true))
-asserteq(T(stringx.startswith('abc', 'bc')), T(false)) -- off by one
-asserteq(T(stringx.startswith('abc', '.')), T(false)) -- Lua pattern char
-asserteq(T(stringx.startswith('a\0bc', 'a\0b')), T(true)) -- '\0'
+local startswith = stringx.startswith
+asserteq(T(startswith('', '')), T(true))
+asserteq(T(startswith('', 'a')), T(false))
+asserteq(T(startswith('a', '')), T(true))
+asserteq(T(startswith('a', 'a')), T(true))
+asserteq(T(startswith('a', 'b')), T(false))
+asserteq(T(startswith('a', 'ab')), T(false))
+asserteq(T(startswith('abc', 'ab')), T(true))
+asserteq(T(startswith('abc', 'bc')), T(false)) -- off by one
+asserteq(T(startswith('abc', '.')), T(false)) -- Lua pattern char
+asserteq(T(startswith('a\0bc', 'a\0b')), T(true)) -- '\0'
 
 
 -- endswith
@@ -70,6 +71,10 @@ asserteq(T(endswith("abc", "a")), T(false))
 asserteq(T(endswith("abc", ".")), T(false)) -- Lua pattern char
 asserteq(T(endswith("ab\0c", "b\0c")), T(true))     -- \0
 asserteq(T(endswith("ab\0c", "b\0d")), T(false)) -- \0
+
+asserteq(endswith('dollar.dot',{'.dot','.txt'}),true)
+asserteq(endswith('dollar.txt',{'.dot','.txt'}),true)
+asserteq(endswith('dollar.rtxt',{'.dot','.txt'}),false)
 
 -- splitlines
 asserteq(T(stringx.splitlines('')), T({}))
