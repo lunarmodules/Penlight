@@ -48,3 +48,32 @@ tok = lexer.lua('10+2.3') ---> '+' is no longer considered part of the number!
 asserteq(T(tok()),T('number',10))
 asserteq(T(tok()),T('+','+'))
 asserteq(T(tok()),T('number',2.3))
+
+local txt = [==[
+-- comment
+--[[
+block
+comment
+]][[
+hello dammit
+]][[hello]]
+]==]
+
+tok = lexer.lua(txt,{})
+asserteq(tok(),'comment')
+asserteq(tok(),'comment')
+asserteq(tok(),'string')
+asserteq(tok(),'string')
+asserteq(tok(),'space')
+
+txt = [[
+// comment
+/* a long
+set of words */ // more
+]]
+
+tok = lexer.cpp(txt,{})
+asserteq(tok(),'comment')
+asserteq(tok(),'comment')
+asserteq(tok(),'space')
+asserteq(tok(),'comment')
