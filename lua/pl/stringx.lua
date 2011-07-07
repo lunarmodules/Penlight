@@ -18,6 +18,7 @@ local escape = utils.escape
 local ceil = math.ceil
 local _G = _G
 local assert_arg,usplit,list_MT = utils.assert_arg,utils.split,utils.stdmt.List
+local lstrip
 
 local function assert_string (n,s)
     assert_arg(n,s,'string')
@@ -69,14 +70,14 @@ end
 -- @param s a string
 function stringx.islower(s)
     assert_string(1,s)
-    return find(s,'^%l+$') == 1
+    return find(s,'^[%l%s]+$') == 1
 end
 
 --- does s only contain upper case characters?.
 -- @param s a string
 function stringx.isupper(s)
     assert_string(1,s)
-    return find(s,'^%u+$') == 1
+    return find(s,'^[%u%s]+$') == 1
 end
 
 --- concatenate the strings using this string as a delimiter.
@@ -134,7 +135,10 @@ end
 -- @param keepends (currently not used)
 function stringx.splitlines (self,keepends)
     assert_string(1,self)
-    return setmetatable(usplit(self,'\n'),list_MT)
+    local res = usplit(self,'[\r\n]')
+    -- we are currently hacking around a problem with utils.split (see stringx.split)
+    if #res == 0 then res = {''} end
+    return setmetatable(res,list_MT)
 end
 
 local function tab_expand (self,n)
@@ -197,14 +201,27 @@ function stringx.replace(s,old,new,n)
     return (gsub(s,escape(old),new:gsub('%%','%%%%'),n))
 end
 
---- split a string into a list of strings using a pattern.
+--- split a string into a list of strings using a delimiter.
 -- @class function
 -- @name split
 -- @param self the string
--- @param re a Lua string pattern (defaults to whitespace)
+-- @param re a delimiter (defaults to whitespace)
+-- @param n maximum number of results
 -- @usage #(('one two'):split()) == 2
-function stringx.split(self,re)
-	return setmetatable(usplit(self,re),list_MT)
+-- @usage ('one,two,three'):split(',') == List{'one','two','three'}
+-- @usage ('one,two,three'):split(',',2) == List{'one','two,three'}
+function stringx.split(self,re,n)
+    local s = self
+    local plain = true
+    if not re then -- default spaces
+        s = lstrip(s)
+        plain = false
+    end
+    local res = usplit(s,re,plain,n)
+    if re and re ~= '' and find(s,re,-#re,true) then
+        res[#res+1] = ""
+    end
+	return setmetatable(res,list_MT)
 end
 
 --- split a string using a pattern. Note that at least one value will be returned!
@@ -219,12 +236,6 @@ end
 
 local function copy(self)
     return self..''
-end
-
--- capitalize the string
-function stringx.capitalize(self)
-    assert_string(1,self)
-    return self:sub(1,1):upper()..self:sub(2)
 end
 
 --- count all instances of substring in string.
@@ -317,6 +328,7 @@ function stringx.lstrip(self,chrs)
     assert_string(1,self)
     return _strip(self,true,false,chrs)
 end
+lstrip = stringx.lstrip
 
 --- trim any whitespace on the right of s.
 -- @param s the string
@@ -396,9 +408,11 @@ end
 -- @return a string with each word's first letter uppercase
 function stringx.title(self)
     return (self:gsub('(%S)(%S*)',function(f,r)
-        return f:upper()..r
+        return f:upper()..r:lower()
     end))
 end
+
+stringx.capitalize = stringx.title
 
 local elipsis = '...'
 local n_elipsis = #elipsis
