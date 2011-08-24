@@ -213,7 +213,7 @@ end
 -- @param iter a sequence
 -- @param comp an optional comparison function (comp(x,y) is true if x < y)
 function seq.sort(iter,comp)
-    local t = copy(iter)
+    local t = seq.copy(iter)
     tsort(t,comp)
     return list(t)
 end

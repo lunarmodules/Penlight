@@ -154,7 +154,7 @@ end
 function path.abspath(P)
     assert_string(1,P)
     if not currentdir then return P end
-    P = P:gsub('[\//]$','')
+    P = P:gsub('[\\/]$','')
     local pwd = currentdir()
     if not path.isabs(P) then
         return path.join(pwd,P)
