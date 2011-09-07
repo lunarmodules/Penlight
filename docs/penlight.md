@@ -43,7 +43,7 @@ or informally like:
 
 `require 'pl'` makes all the separate Penlight modules available, without needing to require them each individually..   Generally, the formal way is better when writing modules, since then there are no global side-effects and the dependencies of your module are made explicit.
 
-With Penlight after 0.9, please note that `require 'pl.utils'` no longer implies that a global table `pl.tuils` exists, since these new modules are no longer created with `module()`.
+With Penlight after 0.9, please note that `require 'pl.utils'` no longer implies that a global table `pl.utils` exists, since these new modules are no longer created with `module()`.
 
 Penlight will not bring in functions into the global table, or clobber standard tables like 'io'.  require('pl') will bring tables like 'utils','tablex',etc into the global table _if they are used_. This 'load-on-demand' strategy ensures that the whole kitchen sink is not loaded up front,  so this method is as efficient as explicitly loading required modules.
 
@@ -76,13 +76,13 @@ Keeping the global scope simple is very necessary with dynamic languages. Using 
 
 The `strict` module provided by Penlight is compatible with the 'load-on-demand' scheme used by `require 'pl`.
 
-`strict` also disallows assignment to global variables, except in the main program. Generally, modules have no business messing with global scope; if you must do it, then use a call to `rawset`. Simularly, if you have to check for the existance of a global, use `rawget`.
+`strict` also disallows assignment to global variables, except in the main program. Generally, modules have no business messing with global scope; if you must do it, then use a call to `rawset`. Similarly, if you have to check for the existance of a global, use `rawget`.
 
 If you wish to enforce strictness globally, then just add `require 'pl.strict'` at the end of `pl/init.lua`.
 
 ### What are function arguments in Penlight?
 
-Many functions in Penlight themselves take function arguments, like `map` which applies a function to a list, element by element.  You can use existing functions, like `math.max`, anonymous functions (like `function(x,y) return x > y end`), or operations by name (e.g '*' or '..').  The module `pl.operator` exports all the standard Lua operations, like the Python module of the same name. Penlight allows these to be refered to by name, so `operator.gt` can be more concisely expressed as '>'.
+Many functions in Penlight themselves take function arguments, like `map` which applies a function to a list, element by element.  You can use existing functions, like `math.max`, anonymous functions (like `function(x,y) return x > y end`), or operations by name (e.g '*' or '..').  The module `pl.operator` exports all the standard Lua operations, like the Python module of the same name. Penlight allows these to be referred to by name, so `operator.gt` can be more concisely expressed as '>'.
 
 Note that the `map` functions pass any extra arguments to the function, so we can have `ls:filter('>',0)`, which is a shortcut for `ls:filter(function(x) return x > 0 end)`.
 
@@ -109,7 +109,7 @@ The standard loops-and-ifs 'imperative' style of programming is dominant, and of
         res[i] = fun(ls[i])
     end
 
-This can be efficiently and succintly expressed as `ls:map(fun)`. Not only is there less typing but the intention of the code is clearer. If readers of your code spend too much time trying to guess your intention by analyzing your loops, then you have failed to express yourself clearly. Simularly, `ls:filter('>',0)` will give you all the values in a list greater than zero. (Of course, if you don't feel like using `List`, or have non-list-like tables, then `pl.tablex` offers the same facilities. In fact, the `List` methods are implemented using `tablex' functions.)
+This can be efficiently and succintly expressed as `ls:map(fun)`. Not only is there less typing but the intention of the code is clearer. If readers of your code spend too much time trying to guess your intention by analyzing your loops, then you have failed to express yourself clearly. Similarly, `ls:filter('>',0)` will give you all the values in a list greater than zero. (Of course, if you don't feel like using `List`, or have non-list-like tables, then `pl.tablex` offers the same facilities. In fact, the `List` methods are implemented using `tablex' functions.)
 
 A common observation is that loopless programming is less efficient, particularly in the way it uses memory. `ls1:map2('*',ls2):reduce '+'` will give you the dot product of two lists, but an unnecessary temporary list is created.  But efficiency is relative to the actual situation, it may turn out to be _fast enough_, or may not appear in any crucial inner loops, etc.
 
@@ -151,7 +151,14 @@ The 'memoize' pattern occurs when you have a function which is expensive to call
     ...
     s = sum(1e8) --returned saved value!
 
-Penlight is fully compatible with Lua 5.1, 5.2 and LuaJIT 2. To ensure this, `utils` also defines the global Lua 5.2 `loadin` function when needed.  The first argument is the environment of the compiled chunk, the second is the input (either a string or a function) and the third is the source name used in debug information. Using `loadin` should reduce the need to call the deprecated function `setfenv`.
+Penlight is fully compatible with Lua 5.1, 5.2 and LuaJIT 2. To ensure this, `utils` also defines the global Lua 5.2 [load](http://www.lua.org/work/doc/manual.html#pdf-load) function when needed.
+
+ * the input (either a string or a function)
+ * the source name used in debug information
+ * the mode is a string that can have either or both of 'b' or 't', depending on whether the source is a binary chunk or text code (default is 'bt')
+ * the environment for the compiled chunk
+
+Using `load` should reduce the need to call the deprecated function `setfenv`, and make your Lua 5.1 code 5.2-friendly.
 
 <a id="app"/>
 ### Application Support
@@ -927,7 +934,7 @@ Smaller files can be efficiently read and written in one operation. `file.read` 
 
 In previous versions of Penlight, `utils.readfile` would read standard input if the file was not specified, but this can lead to nasty bugs; use `io.read '*a'` to grab all of standard input.
 
-Simularly, `file.write` takes a filename and a string which will be written to that file.
+Similarly, `file.write` takes a filename and a string which will be written to that file.
 
 For example, this little script converts a file into upper case:
 
@@ -2156,7 +2163,7 @@ Here is a command-line session using this script:
 
       ....(usage as before)
 
-There are two kinds of lines in Lapp usage strings which are meaningful; option and parameter lines. An option line gives the short option, optionally followed by the corresponding long option. A type specifier in parentheses may follow. Simularly, a parameter line starts with '<' PARAMETER '>', followed by a type specifier. Type specifiers are either of the form '(default ' VALUE ')' or '(' TYPE ')'; the default specifier means that the parameter or option has a default value and is not required. TYPE is one of 'string','number','file-in' or 'file-out'; VALUE is a number, one of ('stdin','stdout','stderr') or a token. The rest of the line is not parsed and can be used for explanatory text.
+There are two kinds of lines in Lapp usage strings which are meaningful; option and parameter lines. An option line gives the short option, optionally followed by the corresponding long option. A type specifier in parentheses may follow. Similarly, a parameter line starts with '<' PARAMETER '>', followed by a type specifier. Type specifiers are either of the form '(default ' VALUE ')' or '(' TYPE ')'; the default specifier means that the parameter or option has a default value and is not required. TYPE is one of 'string','number','file-in' or 'file-out'; VALUE is a number, one of ('stdin','stdout','stderr') or a token. The rest of the line is not parsed and can be used for explanatory text.
 
 This script shows the relation between the specified parameter names and the fields in the output table.
 

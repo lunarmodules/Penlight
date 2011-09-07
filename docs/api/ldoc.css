@@ -272,7 +272,7 @@ table.function_list td {
     border-color: #cccccc;
 }
 
-table.function_list td.name { background-color: #f0f0f0; }
+table.function_list td.name { background-color: #f0f0f0; min-width: 200px; }
 
 table.function_list td.summary { width: 100%; }
 
@@ -289,7 +289,7 @@ table.table_list td {
     border-color: #cccccc;
 }
 
-table.table_list td.name { background-color: #f0f0f0; }
+table.table_list td.name { background-color: #f0f0f0; min-width: 300px;}
 
 table.table_list td.summary { width: 100%; }
 
