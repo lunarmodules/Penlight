@@ -75,11 +75,11 @@ end
 -- unless this occurs within a number or an identifier. So we mark
 -- the four possible imcompressible patterns first and then replace.
 -- The possible alnum patterns are v,f,a,d,x,l and u.
-local function compress_spaces (s)    
+local function compress_spaces (s)
     s = s:gsub('%$[vifadxlu]%s+%$[vfadxlu]',imcompressible)
     s = s:gsub('[%w_]%s+[%w_]',imcompressible)
-    s = s:gsub('[%w_]%s+%$[vfadxlu]',imcompressible)    
-    s = s:gsub('%$[vfadxlu]%s+[%w_]',imcompressible)        
+    s = s:gsub('[%w_]%s+%$[vfadxlu]',imcompressible)
+    s = s:gsub('%$[vfadxlu]%s+[%w_]',imcompressible)
     s = s:gsub('%s+','%%s*')
     s = s:gsub('\001',' ')
     return s
@@ -94,7 +94,7 @@ end
 function sip.create_pattern (spec,options)
     assert_arg(1,spec,'string')
     local fieldnames,fieldtypes = {},{}
-    
+
     if type(spec) == 'string' then
         spec = escape(spec)
     else
@@ -125,7 +125,7 @@ function sip.create_pattern (spec,options)
         spec = spec:sub(1,-2)..'$r'
         if named_vars then spec = spec..'{rest}' end
     end
-    
+
 
     local names
 
@@ -203,7 +203,7 @@ function sip.create_spec_fun(spec,options)
     for i = 1,#fieldnames do
         append(ls,'mm'..i)
     end
-    local fun = ('return (function(s,res)\n\t\local %s = s:match(%q)\n'):format(concat(ls,','),spec)
+    local fun = ('return (function(s,res)\n\tlocal %s = s:match(%q)\n'):format(concat(ls,','),spec)
     fun = fun..'\tif not mm1 then return false end\n'
     local k=1
     for i,f in ipairs(fieldnames) do
@@ -216,12 +216,12 @@ function sip.create_spec_fun(spec,options)
             end
             if named_vars then
                 fun = ('%s\tres.%s = %s\n'):format(fun,f,var)
-            else                
+            else
                 if fieldtypes[f] ~= 'Q' then -- we skip the string-delim capture
                     fun = ('%s\tres[%d] = %s\n'):format(fun,k,var)
                     k = k + 1
                 end
-            end            
+            end
         end
     end
     return fun..'\treturn true\nend)\n', named_vars
