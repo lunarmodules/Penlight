@@ -111,13 +111,12 @@ local function quote_argument (f)
 end
 
 
-local res,alien,no_alien,kernel,CopyFile,MoveFile,GetLastError,win32_errors,cmd_tmpfile
+local alien,ffi,ffi_checked,CopyFile,MoveFile,GetLastError,win32_errors,cmd_tmpfile
 
 local function execute_command(cmd,parms)
    if not cmd_tmpfile then cmd_tmpfile = path.tmpname () end
    local err = path.is_windows and ' > ' or ' 2> '
     cmd = cmd..' '..parms..err..cmd_tmpfile
-    --print(cmd)
     local ret = utils.execute(cmd)
     if not ret then
         return false,(utils.readfile(cmd_tmpfile):gsub('\n(.*)',''))
@@ -126,45 +125,62 @@ local function execute_command(cmd,parms)
     end
 end
 
-local function find_alien_copyfile ()
-    if not alien and not no_alien then
+local function find_ffi_copyfile ()
+    if not ffi_checked then
+        ffi_checked = true
+        local res
         res,alien = pcall(require,'alien')
-        no_alien = not res
-        if no_alien then alien = nil end
-        if alien then
-            -- register the Win32 CopyFile and MoveFile functions
-            local copySpec = {'string','string','int',ret='int',abi='stdcall'}
-            kernel = alien.load('kernel32.dll')
-            CopyFile = kernel.CopyFileA
-            CopyFile:types(copySpec)
-            local moveSpec = {'string','string',ret='int',abi='stdcall'}
-            MoveFile = kernel.MoveFileA
-            MoveFile:types(moveSpec)
-            GetLastError = kernel.GetLastError
-            GetLastError:types{ret ='int', abi='stdcall'}
-            win32_errors = {
-                ERROR_FILE_NOT_FOUND    =         2,
-                ERROR_PATH_NOT_FOUND    =         3,
-                ERROR_ACCESS_DENIED    =          5,
-                ERROR_WRITE_PROTECT    =          19,
-                ERROR_BAD_UNIT         =          20,
-                ERROR_NOT_READY        =          21,
-                ERROR_WRITE_FAULT      =          29,
-                ERROR_READ_FAULT       =          30,
-                ERROR_SHARING_VIOLATION =         32,
-                ERROR_LOCK_VIOLATION    =         33,
-                ERROR_HANDLE_DISK_FULL  =         39,
-                ERROR_BAD_NETPATH       =         53,
-                ERROR_NETWORK_BUSY      =         54,
-                ERROR_DEV_NOT_EXIST     =         55,
-                ERROR_FILE_EXISTS       =         80,
-                ERROR_OPEN_FAILED       =         110,
-                ERROR_INVALID_NAME      =         123,
-                ERROR_BAD_PATHNAME      =         161,
-                ERROR_ALREADY_EXISTS    =         183,
-            }
+        if not res then
+            alien = nil
+            res, ffi = pcall(require,'ffi')
         end
+        if not res then
+            ffi = nil
+            return
+        end
+    else
+        return
     end
+    if alien then
+        -- register the Win32 CopyFile and MoveFile functions
+        local kernel = alien.load('kernel32.dll')
+        CopyFile = kernel.CopyFileA
+        CopyFile:types{'string','string','int',ret='int',abi='stdcall'}
+        MoveFile = kernel.MoveFileA
+        MoveFile:types{'string','string',ret='int',abi='stdcall'}
+        GetLastError = kernel.GetLastError
+        GetLastError:types{ret ='int', abi='stdcall'}
+    elseif ffi then
+        ffi.cdef [[
+            int CopyFileA(const char *src, const char *dest, int iovr);
+            int MoveFileA(const char *src, const char *dest);
+            int GetLastError();
+        ]]
+        CopyFile = ffi.C.CopyFileA
+        MoveFile = ffi.C.MoveFileA
+        GetLastError = ffi.C.GetLastError
+    end
+    win32_errors = {
+        ERROR_FILE_NOT_FOUND    =         2,
+        ERROR_PATH_NOT_FOUND    =         3,
+        ERROR_ACCESS_DENIED    =          5,
+        ERROR_WRITE_PROTECT    =          19,
+        ERROR_BAD_UNIT         =          20,
+        ERROR_NOT_READY        =          21,
+        ERROR_WRITE_FAULT      =          29,
+        ERROR_READ_FAULT       =          30,
+        ERROR_SHARING_VIOLATION =         32,
+        ERROR_LOCK_VIOLATION    =         33,
+        ERROR_HANDLE_DISK_FULL  =         39,
+        ERROR_BAD_NETPATH       =         53,
+        ERROR_NETWORK_BUSY      =         54,
+        ERROR_DEV_NOT_EXIST     =         55,
+        ERROR_FILE_EXISTS       =         80,
+        ERROR_OPEN_FAILED       =         110,
+        ERROR_INVALID_NAME      =         123,
+        ERROR_BAD_PATHNAME      =         161,
+        ERROR_ALREADY_EXISTS    =         183,
+    }
 end
 
 local function two_arguments (f1,f2)
@@ -176,8 +192,8 @@ local function file_op (is_copy,src,dest,flag)
         return false,"cannot overwrite destination"
     end
     if is_windows then
-        -- if we haven't tried to load Alien before, then do so
-        find_alien_copyfile()
+        -- if we haven't tried to load Alien/LuaJIT FFI before, then do so
+        find_ffi_copyfile()
         -- fallback if there's no Alien, just use DOS commands *shudder*
         -- 'rename' involves a copy and then deleting the source.
         if not CopyFile then
