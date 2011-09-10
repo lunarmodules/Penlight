@@ -55,4 +55,4 @@ t = Template('${here} is the $answer')
 assert(t:substitute {here = 'one', answer = 'two'} == 'one is the two')
 
 assert (('hello dolly'):title() == 'Hello Dolly')
-assert (('h bk bonzo TOK fred m'):title() == 'H Bk Bonzo TOK Fred M')
+assert (('h bk bonzo TOK fred m'):title() == 'H Bk Bonzo Tok Fred M')
