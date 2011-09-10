@@ -106,3 +106,37 @@ o1:set('beta',nil)
 
 asserteq(o1,OrderedMap{{z=4},{name='alice'},{extra='dolly'}})
 
+o3 = OrderedMap()
+o3:set('dog',10)
+o3:set('cat',20)
+o3:set('mouse',30)
+
+asserteq(o3:keys(),{'dog','cat','mouse'})
+
+o3:set('dog',nil)
+
+asserteq(o3:keys(),{'cat','mouse'})
+
+-- Vadim found a problem when clearing a key which did not exist already.
+-- The keys list would then contain the key, although the map would not
+o3:set('lizard',nil)
+
+asserteq(o3:keys(),{'cat','mouse'})
+asserteq(o3:values(), {20,30})
+asserteq(tostring(o3),'{cat=20,mouse=30}')
+
+-- copy constructor
+o4 = OrderedMap(o3)
+
+asserteq(o4,o3)
+
+-- constructor throws an error if the argument is bad
+-- (errors same as OrderedMap:update)
+asserteq(false,pcall(function()
+    m = OrderedMap('string')
+end))
+
+
+
+
+

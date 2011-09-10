@@ -9,7 +9,7 @@ module ('pl.MultiMap')
 local classes = require 'pl.class'
 local tablex = require 'pl.tablex'
 local utils = require 'pl.utils'
-local List = require 'pl.List' 
+local List = require 'pl.List'
 
 local index_by,tsort,concat = tablex.index_by,table.sort,table.concat
 local append,extend,slice = List.append,List.extend,List.slice
@@ -26,13 +26,15 @@ class(Map,nil,MultiMap)
 MultiMap._name = 'MultiMap'
 
 function MultiMap:_init (t)
+    if not t then return end
     self:update(t)
 end
 
 --- update a MultiMap using a table.
 -- @param t either a Multimap or a map-like table.
+-- @return the map
 function MultiMap:update (t)
-    if not t then return end
+    utils.assert_arg(1,t,'table')
     if Map:class_of(t) then
         for k,v in pairs(t) do
             self[k] = List()
@@ -48,6 +50,7 @@ end
 --- add a new value to a key.  Setting a nil value removes the key.
 -- @param key the key
 -- @param val the value
+-- @return the map
 function MultiMap:set (key,val)
     if val == nil then
         self[key] = nil

@@ -8,7 +8,7 @@ module ('pl.OrderedMap')
 
 local tablex = require 'pl.tablex'
 local utils = require 'pl.utils'
-local List = require 'pl.List' 
+local List = require 'pl.List'
 local index_by,tsort,concat = tablex.index_by,table.sort,table.concat
 
 local class = require 'pl.class'
@@ -17,9 +17,15 @@ local Map = require 'pl.Map'
 local OrderedMap = class(Map)
 OrderedMap._name = 'OrderedMap'
 
+--- construct an OrderedMap.
+-- Will throw an error if the argument is bad.
+-- @param optional initialization table, same as for @{OrderedMap:update}
 function OrderedMap:_init (t)
     self._keys = List()
-    if t then self:update(t) end
+    if t then
+        local map,err = self:update(t)
+        if not map then error(err,2) end
+    end
 end
 
 local assert_arg,raise = utils.assert_arg,utils.raise
@@ -29,13 +35,15 @@ local assert_arg,raise = utils.assert_arg,utils.raise
 -- if it s a table of the form <code>{{key1=val1},{key2=val2},...}</code> these will be appended. <br>
 -- Otherwise, it is assumed to be a map-like table, and order of extra entries is arbitrary.
 -- @param t a table.
+-- @return the map, or nil in case of error
+-- @return the error message
 function OrderedMap:update (t)
-   assert_arg(1,t,'table')
-   if OrderedMap:class_of(t) then
+    assert_arg(1,t,'table')
+    if OrderedMap:class_of(t) then
        for k,v in t:iter() do
            self:set(k,v)
        end
-   elseif #t > 0 then -- an array must contain {key=val} tables
+    elseif #t > 0 then -- an array must contain {key=val} tables
        if type(t[1]) == 'table' then
            for _,pair in ipairs(t) do
                local key,value = next(pair)
@@ -45,41 +53,49 @@ function OrderedMap:update (t)
        else
            return raise 'cannot use an array to initialize an OrderedMap'
        end
-   else
+    else
        for k,v in pairs(t) do
            self:set(k,v)
        end
-   end
+    end
+   return self
 end
 
 --- set the key's value.   This key will be appended at the end of the map. <br>
 -- If the value is nil, then the key is removed.
 -- @param key the key
 -- @param val the value
+-- @return the map
 function OrderedMap:set (key,val)
-   if not self[key] then -- ensure that keys are unique
+    if not self[key] and val ~= nil then -- ensure that keys are unique
        self._keys:append(key)
-   elseif val == nil then -- removing a key-value pair
+    elseif val == nil then -- removing a key-value pair
        self._keys:remove_value(key)
-   end
+    end
     self[key] = val
+    return self
 end
 
 --- return the keys in order.
 -- (Not a copy!)
+-- @return List
 function OrderedMap:keys ()
     return self._keys
 end
 
 --- return the values in order.
 -- this is relatively expensive.
+-- @return List
 function OrderedMap:values ()
     return List(index_by(self,self._keys))
 end
 
 --- sort the keys.
+-- @param cmp a comparison function as for @{table.sort}
+-- @return the map
 function OrderedMap:sort (cmp)
     tsort(self._keys,cmp)
+    return self
 end
 
 --- iterate over key-value pairs in order.
