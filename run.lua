@@ -24,6 +24,7 @@ if #arg == 0 then arg[1] = 'tests'; arg[2] = 'examples' end
 for _,dir in ipairs(arg) do
     print('directory',dir)
     lfs.chdir(dir)
-	do_lua_files()
+    do_lua_files()
+    lfs.chdir('..')
 end
 

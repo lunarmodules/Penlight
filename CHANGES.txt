@@ -1,17 +1,39 @@
-## Changes from the last version
+## 0.9.6
 
-## Lua 5.2 compatibility
+### Lua 5.2 compatibility
+
+- Bad string escape in tests fixed
+
+### Changes
+
+- LuaJIT FFI used on Windows for Copy/MoveFile functionality
+
+### Fixes
+
+- Issue 13 seq.sort now calls seq.copy
+- issue 14 bad pattern to escape trailing separators in path.abspath
+- lexer: string tokens broken with some combinations
+- lexer: long comments broken for Lua and C
+- stringx.split behaves according to Python spec; extra parm meaning 'max splits'
+- stringx.title behaves according to Python spec
+- stringx.endswith broken for 2nd arg being table of postfixes
+- OrderedMap.set broken when value was nil and key did not exist in map; ctor throws
+  error if unhappy
+
+## 0.9.5
+
+### Lua 5.2 compatibility
 
  - defines Lua 5.2 beta compatible load()
  - defines table.pack()
 
-## New functions
+### New functions
 
  - stringx.title(): translates "a dog's day" to "A Dog's Day"
  - path.normpath(): translates 'A//B','A/./B' and 'A/C/../B' to 'A/B'
  - utils.execute(): returns ok,return-code: compatible with 5.1 and 5.2
 
-## Fixes
+### Fixes
 
  - pretty.write() _always_ returns a string, but will return also an error string
 if the argument is not a table. Non-integer indices between 1 and #t are no longer falsely considered part of the array
