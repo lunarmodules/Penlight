@@ -69,6 +69,8 @@ function pretty.write (tbl,space,not_clever)
     if not keywords then
         keywords = lexer.get_keywords()
     end
+    local set = ' = '
+    if space == '' then set = '=' end
     space = space or '  '
     local lines = {}
     local line = ''
@@ -142,14 +144,14 @@ function pretty.write (tbl,space,not_clever)
                 local numkey = type(key) == 'number'
                 if not_clever then
                     key = tostring(key)
-                    put(indent..index(numkey,key)..' = ')
+                    put(indent..index(numkey,key)..set)
                     writeit(val,indent,newindent)
                 else
                     if not numkey or not used[key] then -- non-array indices
                         if numkey or not is_identifier(key) then
                             key = index(numkey,key)
                         end
-                        put(indent..key..' = ')
+                        put(indent..key..set)
                         writeit(val,indent,newindent)
                     end
                 end
