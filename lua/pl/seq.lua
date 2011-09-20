@@ -352,19 +352,22 @@ function seq.filter (iter,pred,arg)
 end
 
 --- 'reduce' a sequence using a binary function.
--- @param seq a sequence
 -- @param fun a function of two arguments
+-- @param iter a sequence
+-- @param oldval optional initial value
 -- @usage seq.reduce(operator.add,seq.list{1,2,3,4}) == 10
-function seq.reduce (fun,seq,oldval)
-    if not oldval then
-        seq = default_iter(seq)
-        oldval = seq()
-        fun = function_arg(1,fun)
-    end
-    local val = seq()
-    if val==nil then return oldval
-    else return fun(oldval,seq.reduce(fun,seq,val))
-    end
+-- @usage seq.reduce('-',{1,2,3,4,5}) == -13
+function seq.reduce (fun,iter,oldval)
+   fun = function_arg(1,fun)
+   iter = default_iter(iter)
+   if not oldval then
+       oldval = iter()
+   end
+   local val = oldval
+   for v in iter do
+       val = fun(val,v)
+   end
+   return val
 end
 
 --- take the first n values from the sequence.

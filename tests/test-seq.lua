@@ -25,6 +25,7 @@ asserteq(
   {20,15}
 )
 
+asserteq(seq.reduce('-',{1,2,3,4,5}),-13)
 
 asserteq(seq.count(S{10,20,30,40},L'|x| x > 20'), 2)
 
