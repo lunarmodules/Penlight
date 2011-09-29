@@ -312,16 +312,6 @@ function path.common_prefix (path1,path2)
     --return ''
 end
 
-if not package.searchpath then
-    function package.searchpath (mod,path)
-        mod = mod:gsub('%.',sep)
-        for m in path:gmatch('[^;]+') do
-            local nm = m:gsub('?',mod)
-            local f = io.open(nm,'r')
-            if f then f:close(); return nm end
-        end
-    end
-end
 
 --- return the full path where a particular Lua module would be found.
 -- Both package.path and package.cpath is searched, so the result may
@@ -339,6 +329,7 @@ function path.package_path(mod)
     if res then return res,false end
     return raise 'cannot find module on path'
 end
+
 
 ---- finis -----
 return path

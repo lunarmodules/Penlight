@@ -261,6 +261,16 @@ if not lua52 then
         local n = select('#',...)
         return {n=n; ...},n
     end
+    function package.searchpath (mod,path)
+        mod = mod:gsub('%.',sep)
+        for m in path:gmatch('[^;]+') do
+            local nm = m:gsub('?',mod)
+            local f = io.open(nm,'r')
+            if f then f:close(); return nm end
+        end
+    end
+end
+
 end
 if not table.pack then table.pack = _G.pack end
 if not _G.pack then _G.pack = table.pack end
@@ -457,6 +467,13 @@ raise = utils.raise
 -- @return a table with field n set to the length
 -- @return the length
 -- @function table.pack
+
+------
+-- return the full path where a Lua module name would be matched.
+-- @param mod module name, possibly dotted
+-- @param path a path in the same form as package.path or package.cpath
+-- @see path.package_path
+-- @function package.searchpath
 
 
 return utils
