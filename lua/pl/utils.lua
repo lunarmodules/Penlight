@@ -271,7 +271,6 @@ if not lua52 then
     end
 end
 
-end
 if not table.pack then table.pack = _G.pack end
 if not _G.pack then _G.pack = table.pack end
 
@@ -319,6 +318,11 @@ utils.stdmt = { List = {}, Map = {}, Set = {}, MultiMap = {} }
 
 local _function_factories = {}
 
+--- associate a function factory with a type.
+-- A function factory takes an object of the given type and
+-- returns a function for evaluating it
+-- @param mt metatable
+-- @param fun a callable that returns a function
 function utils.add_function_factory (mt,fun)
     _function_factories[mt] = fun
 end
@@ -355,7 +359,8 @@ local ops
 --- process a function argument.
 -- This is used throughout Penlight and defines what is meant by a function:
 -- Something that is callable, or an operator string as defined by <code>pl.operator</code>,
--- such as '>' or '#'.
+-- such as '>' or '#'. If a function factory has been registered for the type, it will
+-- be called to get the function.
 -- @param idx argument index
 -- @param f a function, operator string, or callable object
 -- @param msg optional error message
@@ -373,7 +378,7 @@ function utils.function_arg (idx,f,msg)
         if fn then return fn end
     elseif tp == 'table' or tp == 'userdata' then
         local mt = getmetatable(f)
-        if not mt then error('not a callable object') end
+        if not mt then error('not a callable object',2) end
         local ff = _function_factories[mt]
         if not ff then
             if not mt.__call then error('not a callable object',2) end
