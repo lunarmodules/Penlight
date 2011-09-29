@@ -562,7 +562,7 @@ end
 -- number of tables. It is equivalent to a matrix transpose.
 -- @usage zip({10,20,30},{100,200,300}) is {{10,100},{20,200},{30,300}}
 function tablex.zip(...)
-    return mapn(function(...) return {...} end,...)
+    return tablex.mapn(function(...) return {...} end,...)
 end
 
 local _copy
@@ -597,11 +597,11 @@ end
 -- @param src a list-like table
 -- @param isrc where to start copying values into destination (default 1)
 -- @param idest where to start copying values from source (default 1)
--- @param n number of elements to copy from source (default source size)
+-- @param nsrc number of elements to copy from source (default source size)
 function tablex.icopy (dest,src,idest,isrc,nsrc)
     assert_arg(1,dest,'table')
     assert_arg(2,src,'table')
-    return _copy(dest,src,idest,isrc,ndest,true)
+    return _copy(dest,src,idest,isrc,nsrc,true)
 end
 
 --- copy an array into another one. <br>
