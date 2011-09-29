@@ -92,7 +92,7 @@ local function default_iter(iter)
   else return iter end
 end
 
-iter = default_iter
+seq.iter = default_iter
 
 --- create an iterator over a numerical range. Like the standard Python function xrange.
 -- @param start a number
@@ -253,7 +253,7 @@ end
 -- @param returns_table true if we return a table, not a sequence
 -- @return a sequence or a table; defaults to a sequence.
 function seq.unique(iter,returns_table)
-  local t = count_map(iter)
+  local t = seq.count_map(iter)
   local res = {}
   for k in pairs(t) do tappend(res,k) end
   table.sort(res)
