@@ -9,7 +9,8 @@
 module ('pl.class')
 ]]
 
-
+local error, getmetatable, io, pairs, rawget, rawset, setmetatable, tostring, type =
+    _G.error, _G.getmetatable, _G.io, _G.pairs, _G.rawget, _G.rawset, _G.setmetatable, _G.tostring, _G.type
 -- this trickery is necessary to prevent the inheritance of 'super' and
 -- the resulting recursive call problems.
 local function call_ctor (c,obj,...)
@@ -140,7 +141,7 @@ class = setmetatable({},{
     end,
     __index = function(tbl,key)
         if key == 'class' then
-            print('require("pl.class").class is deprecated. Use require("pl.class")')
+            io.stderr:write('require("pl.class").class is deprecated. Use require("pl.class")\n')
             return class
         end
         local env = _G
