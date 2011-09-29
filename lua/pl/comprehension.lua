@@ -29,9 +29,12 @@
 -- @class module
 -- @name pl.comprehension
 
---[[ -- An unfortunately necessary hack for LuaDoc
-module ('pl.comprehension')
-]]
+if _G._VERSION == 'Lua 5.2' then -- Lua 5.2 needs getfenv
+    require 'pl.utils'
+end
+
+--~ local _VERSION, assert, getfenv, ipairs, load, math, pcall, require, setmetatable, table, tonumber =
+--~     _G._VERSION, _G.assert, _G.getfenv, _G.ipairs, _G.load, _G.math, _G.pcall, _G.require, _G.setmetatable, _G.table, _G.tonumber
 
 local status,lb = pcall(require, "pl.luabalanced")
 if not status then
@@ -254,10 +257,8 @@ local function new(env)
   -- performance penalty.
 
   if not env then
-    if _VERSION=='Lua 5.1' then env = getfenv(2)
-    else env = _G
-    end
-   end
+    env = getfenv(2)
+  end
 
   local mt = {}
   local cache = setmetatable({}, mt)
