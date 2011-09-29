@@ -14,7 +14,7 @@
 --    require 'pl'
 --    local t = config.read 'test.config'
 --    print(pretty.write(t))
---    
+--
 --    ### output #####
 --   {
 --      ports = {
@@ -24,13 +24,13 @@
 --      },
 --      write_timeout = 5,
 --      read_timeout = 10
---    }    
+--    }
 -- </pre>
 -- See the Guide for further <a href="../../index.html#config">discussion</a>
 -- @class module
 -- @name pl.config
 
-local type,tonumber,ipairs,io = type,tonumber,ipairs,io
+local type,tonumber,ipairs,io, table = _G.type,_G.tonumber,_G.ipairs,_G.io,_G.table
 
 local function split(s,re)
     local res = {}
@@ -44,9 +44,9 @@ local function strip(s)
     return s:gsub('^%s+',''):gsub('%s+$','')
 end
 
---[[
-module ('pl.config',utils._module)
-]]
+local function strip_quotes (s)
+    return s:gsub("['\"](.*)['\"]",'%1')
+end
 
 local config = {}
 
@@ -93,22 +93,25 @@ end
 -- <li> variablilize make names into valid Lua identifiers (default true)</li>
 -- <li> convert_numbers try to convert values into numbers (default true)</li>
 -- <li> trim_space ensure that there is no starting or trailing whitespace with values (default true)</li>
+-- <li> trim_quotes remove quotes from strings (default false)</li>
 -- <li> list_delim delimiter to use when separating columns (default ',')</li>
 -- </ul>
 -- @return nil,error_msg in case of an error, otherwise a table containing items
 function config.read(file,cnfg)
     local f,openf,err
-    if not cnfg then
-        cnfg = {variablilize = true, convert_numbers = true,
-                trim_space = true, list_delim=','
-                }
+    cnfg = cnfg or {}
+    local function check_cnfg (var,def)
+        local val = cnfg[var]
+        if val == nil then return def else return val end
     end
     local t = {}
     local top_t = t
-    local variablilize = cnfg.variablilize
-    local list_delim = cnfg.list_delim
-    local convert_numbers = cnfg.convert_numbers
-    local trim_space = cnfg.trim_space
+    local variablilize = check_cnfg ('variabilize',true)
+    local list_delim = check_cnfg('list_delim',',')
+    local convert_numbers = check_cnfg('convert_numbers',true)
+    local trim_space = check_cnfg('trim_space',true)
+    local trim_quotes = check_cnfg('trim_quotes',false)
+    local ignore_assign = check_cnfg('ignore_assign',false)
 
     local function process_name(key)
         if variablilize then
@@ -127,8 +130,9 @@ function config.read(file,cnfg)
             local val = tonumber(value)
             if val then value = val end
         end
-        if trim_space and type(value) == 'string' then
-            value = strip(value)
+        if type(value) == 'string' then
+           if trim_space then value = strip(value) end
+           if trim_quotes then value = strip_quotes(value) end
         end
         return value
     end
@@ -148,7 +152,7 @@ function config.read(file,cnfg)
             t = t[section]
         else
             local i1,i2 = line:find('%s*=%s*')
-            if i1 then -- key,value assignment
+            if i1 and not ignore_assign then -- key,value assignment
                 local key = process_name(line:sub(1,i1-1))
                 local value = process_value(line:sub(i2+1))
                 t[key] = value
