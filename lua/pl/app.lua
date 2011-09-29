@@ -19,14 +19,21 @@ end
 --- add the current script's path to the Lua module path.
 -- Applies to both the source and the binary module paths. It makes it easy for
 -- the main file of a multi-file program to access its modules in the same directory.
+-- `base` allows these modules to be put in a specified subdirectory, to allow for
+-- cleaner deployment and resolve potential conflicts between a script name and its
+-- library directory.
+-- @param base optional base directory.
 -- @return the current script's path with a trailing slash
-function app.require_here ()
+function app.require_here (base)
     local p = path.dirname(check_script_name())
     if not path.isabs(p) then
         p = path.join(lfs.currentdir(),p)
     end
     if p:sub(-1,-1) ~= path.sep then
         p = p..path.sep
+    end
+    if base then
+        p = p..base..path.sep
     end
     local so_ext = path.is_windows and 'dll' or 'so'
     local lsep = package.path:find '^;' and '' or ';'
