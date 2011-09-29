@@ -3,9 +3,11 @@
 -- @class module
 -- @name pl.app
 
+local io,package,require = _G.io, _G.package, _G.require
 local utils = require 'pl.utils'
 local path = require 'pl.path'
 local lfs = require 'lfs'
+
 
 local app = {}
 

@@ -1,4 +1,4 @@
---- Reading and querying simple tabular data. 
+--- Reading and querying simple tabular data.
 -- <pre class=example>
 -- data.read 'test.txt'
 -- ==> {{10,20},{2,5},{40,50},fieldnames={'x','y'},delim=','}
@@ -36,7 +36,7 @@ local parse_select
 local function count(s,chr)
     chr = utils.escape(chr)
     local _,cnt = s:gsub(chr,' ')
-    return cnt        
+    return cnt
 end
 
 local function rstrip(s)
@@ -144,7 +144,7 @@ end
 -- either stdin or stdout depending on the mode. Otherwise, check if this is
 -- a file-like object (implements read or write depending)
 local function open_file (f,mode)
-    local opened
+    local opened, err
     local reading = mode == 'r'
     if type(f) == 'string' then
         if f == 'stdin'  then
@@ -192,7 +192,7 @@ function data.read(file,cnfg)
     D.delim = cnfg.delim and cnfg.delim or guess_delim(line)
     local delim = D.delim
     local collect_end = cnfg.last_field_collect
-    local numfields = cnfg.numfields    
+    local numfields = cnfg.numfields
     -- some space-delimited data starts with a space.  This should not be a column,
     -- although it certainly would be for comma-separated, etc.
     local strip
@@ -312,8 +312,8 @@ end
 --- create a new dataset from a table of rows. <br>
 -- Can specify the fieldnames, else the table must have a field called
 -- 'fieldnames', which is either a string of delimiter-separated names,
--- or a table of names. <br> 
--- If the table does not have a field called 'delim', then an attempt will be 
+-- or a table of names. <br>
+-- If the table does not have a field called 'delim', then an attempt will be
 -- made to guess it from the fieldnames string, defaults otherwise to tab.
 -- @param d the table.
 -- @param fieldnames optional fieldnames
@@ -397,7 +397,7 @@ local function massage_fields(data,f)
     end
 end
 
-List = require 'pl.List'
+local List = require 'pl.List'
 
 local function process_select (data,parms)
     --- preparing fields ----
@@ -414,13 +414,13 @@ local function process_select (data,parms)
             for i = 1,ncol do append(fields,'$'..i) end
             fields = concat(fields,',')
         end
-    end    
+    end
     local idpat = patterns.IDEN
     if numfields then
         idpat = '%$(%d+)'
     else
         -- massage field names to replace non-identifier chars
-        fields = rstrip(fields):gsub('[^,%w]','_') 
+        fields = rstrip(fields):gsub('[^,%w]','_')
     end
     local massage_fields = utils.bind1(massage_fields,data)
     ret = gsub(fields,idpat,massage_fields)
@@ -467,7 +467,7 @@ end
 -- @param return_row if true, wrap the results in a row table
 -- @return an iterator over the specified fields
 function data.query(data,condn,context,return_row)
-    local err   
+    local err
     if is_string(condn) then
         condn,err = parse_select(condn,data)
         if not condn then return nil,err end
@@ -482,7 +482,7 @@ function data.query(data,condn,context,return_row)
     else
         return nil, "condition must be a string or a table"
     end
-    local query
+    local query, k
     if condn.sort_by then -- use sorted_query
         query = sorted_query
     else

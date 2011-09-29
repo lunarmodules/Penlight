@@ -17,9 +17,9 @@ local modules = {
     Date = true,
     -- classes --
 }
-utils = require 'pl.utils'
+_G.utils = require 'pl.utils'
 
-for name,klass in pairs(utils.stdmt) do
+for name,klass in pairs(_G.utils.stdmt) do
     klass.__index = function(t,key)
         return require ('pl.'..name)[key]
     end;
@@ -44,4 +44,4 @@ setmetatable(_G,{
     end
 })
 
-if PENLIGHT_STRICT then require 'pl.strict' end
+if _G.PENLIGHT_STRICT then require 'pl.strict' end

@@ -20,9 +20,9 @@ local assert_arg,assert_string,raise = utils.assert_arg,utils.assert_string,util
 module ('pl.path',utils._module)
 ]]
 
-local path
+local path, attrib
 
-if luajava then
+if _G.luajava then
     path = require 'pl.platf.luajava'
 else
     path = {}
@@ -206,7 +206,7 @@ end
 -- @param P A file path
 function path.extension(P)
     assert_string(1,P)
-    p1,p2 = path.splitext(P)
+    local p1,p2 = path.splitext(P)
     return p2
 end
 
