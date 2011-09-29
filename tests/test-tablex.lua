@@ -1,6 +1,8 @@
 local tablex = require 'pl.tablex'
+local utils = require ('pl.utils')
+local L = utils.string_lambda
 -- bring tablex funtions into global namespace
-require ('pl.utils').import(tablex)
+utils.import(tablex)
 local asserteq = require('pl.test').asserteq
 
 local cmp = deepcompare
@@ -21,7 +23,7 @@ asserteq(
 )
 
 asserteq(
-	pairmap(function(k) return k end,{fred=10,bonzo=20}),
+	pairmap(L'_',{fred=10,bonzo=20}),
 	{'fred','bonzo'}
 )
 
@@ -39,10 +41,28 @@ asserteq(
 	pairmap(function(k,v) return {k,v},k end,{one=1,two=2}),
 	{one={'one',1},two={'two',2}}
 )
+-- same as above, using string lambdas
+asserteq(
+	pairmap(L'|k,v|{k,v},k',{one=1,two=2}),
+	{one={'one',1},two={'two',2}}
+)
+
 
 asserteq(
 	map(function(v) return v*v end,{10,20,30}),
 	{100,400,900}
+)
+
+-- extra arguments to map() are passed to the function; can use
+-- the abbreviations provided by pl.operator
+asserteq(
+    map('+',{10,20,30},1),
+    {11,21,31}
+)
+
+asserteq(
+    map(L'_+1',{10,20,30}),
+    {11,21,31}
 )
 
 -- map2 generalizes for operations on two tables
@@ -81,6 +101,10 @@ asserteq(update(t1,t2),{one=1,three=3,two=20,four=4})
 asserteq(move({1,2,3,4,5,6},{20,30}),{20,30,3,4,5,6})
 asserteq(move({1,2,3,4,5,6},{20,30},2),{1,20,30,4,5,6})
 asserteq(icopy({1,2,3,4,5,6},{20,30},2),{1,20,30})
+-- 5th arg determines how many elements to copy (default size of source)
+asserteq(icopy({1,2,3,4,5,6},{20,30},2,1,1),{1,20})
+-- 4th arg is where to stop copying from the source (default s to 1)
+asserteq(icopy({1,2,3,4,5,6},{20,30},2,2,1),{1,30})
 
 -- whereas insertvalues works like table.insert, but inserts a range of values
 -- from the given table.

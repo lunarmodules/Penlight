@@ -23,9 +23,9 @@ test(sin(_1))
 test(_1:method())
 test(Not(_1))
 
-print(instantiate(_1+_2)(10,20))
-print(instantiate(_1+20)(10))
-print(instantiate(Or(Not(_1),_2))(true,true))
+asserteq(instantiate(_1+_2)(10,20),30)
+asserteq(instantiate(_1+20)(10),30)
+asserteq(instantiate(Or(Not(_1),_2))(true,true),true)
 test(_1() + _2() + _3())
 print(I(_1+_2)(10,20))
 test(sin(_1)+cos(_2))
@@ -36,9 +36,9 @@ asserteq(instantiate(_1+_2)(10,20),30)
 ls = List {1,2,3,4}
 res = ls:map(10*_1 - 1)
 asserteq(res,List {9,19,29,39})
-ls = List {10,20,30,40}
 
 -- note that relational operators can't be overloaded for _different_ types
+ls = List {10,20,30,40}
 asserteq(ls:filter(Gt(_1,20)),List {30,40})
 
 
@@ -72,6 +72,7 @@ union = bind(tablex.merge,_1,_2,true)
 
 asserteq(union(t1,t2),{bob=25,fred=34,alice=23})
 
+asserteq(repr(_1+_2),"_1 + _2")
 
 
 

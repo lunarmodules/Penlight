@@ -33,14 +33,14 @@ asserteq(C2(seq.zip({1,2,3},{10,20,30})),test)
 
 asserteq(C(seq.splice({10,20},{30,40})),{10,20,30,40})
 
-asserteq(C(seq.map(L'|s| #s',{'one','tw'})),{3,2})
+asserteq(C(seq.map(L'#_',{'one','tw'})),{3,2})
 
 --for l1,l2 in seq.last{10,20,30} do print(l1,l2) end
 
 asserteq(C2(seq.last{10,20,30}),{{20,10},{30,20}} )
 
 asserteq(
-  seq{10,20,30}:map(L'|x|x+1'):copy(),
+  seq{10,20,30}:map(L'_+1'):copy(),
   {11,21,31}
 )
 
@@ -49,7 +49,10 @@ asserteq(
   {'ONE','TWO'}
 )
 
-
+asserteq(
+  C(seq.unique(seq.list{1,2,3,2,1})),
+  {1,2,3}
+)
 
 
 

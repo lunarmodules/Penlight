@@ -90,11 +90,36 @@ t = [[
 # end
 ]]
 
-local T = {Dog = 'Bonzo', Cat = 'Felix', Lion = 'Leo'}
+local Tee = {Dog = 'Bonzo', Cat = 'Felix', Lion = 'Leo'}
 
-asserteq(template.substitute(t,{T=T,_parent=_G}),[[
+asserteq(template.substitute(t,{T=Tee,_parent=_G}),[[
     "Dog", -- Bonzo
     "Cat", -- Felix
     "Lion", -- Leo
 ]])
+
+-- for those with a fondness for Python-style % formatting...
+T.format_operator()
+asserteq('[%s]' % 'home', '[home]')
+asserteq('%s = %d' % {'fred',42},'fred = 42')
+
+-- mostly works like string.format, except that %s forces use of tostring()
+-- rather than throwing an error
+local List = require 'pl.List'
+asserteq('TBL:%s' % List{1,2,3},'TBL:{1,2,3}')
+
+-- table with keys and format with $
+asserteq('<$one>' % {one=1}, '<1>')
+-- (second arg may also be a function, like os.getenv)
+function subst(k)
+    if k == 'A' then return 'ay'
+    elseif k == 'B' then return 'bee'
+    else return '?'
+    end
+end
+asserteq(
+    '$A & $B' % subst,'ay & bee'
+)
+
+
 
