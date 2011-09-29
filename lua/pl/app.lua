@@ -12,7 +12,7 @@ local lfs = require 'lfs'
 local app = {}
 
 local function check_script_name ()
-    if _G.arg == nil then utils.error('no command line args available\nWas this run from a main script?') end
+    if _G.arg == nil then error('no command line args available\nWas this run from a main script?') end
     return _G.arg[0]
 end
 
@@ -78,7 +78,7 @@ end
 function app.parse_args (args,flags_with_values)
     if not args then
         args = _G.arg
-        if not args then utils.error "Not in a main program: 'arg' not found" end
+        if not args then error "Not in a main program: 'arg' not found" end
     end
     flags_with_values = flags_with_values or {}
     local _args = {}

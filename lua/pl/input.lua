@@ -67,7 +67,7 @@ function input.create_getter(f)
        end
     else
       -- anything that supports the read() method!
-      if not f.read then utils.error('not a file-like object') end
+      if not f.read then error('not a file-like object') end
       return function() return f:read() end
     end
   else

@@ -126,7 +126,7 @@ function stringx.endswith(s,send)
         end
         return false
     else
-        utils.error('argument #2: either a substring or a table of suffixes expected')
+        error('argument #2: either a substring or a table of suffixes expected')
     end
 end
 
