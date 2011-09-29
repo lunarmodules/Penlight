@@ -208,6 +208,37 @@ if not lua52 then -- define Lua 5.2 style load()
         if chunk and env then setfenv(chunk,env) end
         return chunk,err
     end
+else
+    -- setfenv/getfenv replacements for Lua 5.2
+    -- by Sergey Rozhenko
+    -- http://lua-users.org/lists/lua-l/2010-06/msg00313.html
+    -- Roberto Ierusalimschy notes that it is possible for getfenv to return nil
+    -- in the case of a function with no globals:
+    -- http://lua-users.org/lists/lua-l/2010-06/msg00315.html
+    function setfenv(f, t)
+        f = (type(f) == 'function' and f or debug.getinfo(f + 1, 'f').func)
+        local name
+        local up = 0
+        repeat
+            up = up + 1
+            name = debug.getupvalue(f, up)
+        until name == '_ENV' or name == nil
+        if name then
+            debug.upvaluejoin(f, up, function() return name end, 1) -- use unique upvalue
+            debug.setupvalue(f, up, t)
+        end
+    end
+
+    function getfenv(f)
+        f = (type(f) == 'function' and f or debug.getinfo(f + 1, 'f').func)
+        local name, val
+        local up = 0
+        repeat
+            up = up + 1
+            name, val = debug.getupvalue(f, up)
+        until name == '_ENV' or name == nil
+        return val
+    end
 end
 
 
@@ -231,8 +262,8 @@ if not lua52 then
         return {n=n; ...},n
     end
 end
-if not table.pack then table.pack = pack end
-if not pack then pack = table.pack end
+if not table.pack then table.pack = _G.pack end
+if not _G.pack then _G.pack = table.pack end
 
 --- take an arbitrary set of arguments and make into a table.
 -- This returns the table and the size; works fine for nil arguments
@@ -284,9 +315,14 @@ end
 
 local function _string_lambda(f)
     local raise = utils.raise
-    if f:find '^|' then
+    if f:find '^|' or f:find '_' then
         local args,body = f:match '|([^|]*)|(.+)'
-        if not args then return raise 'bad string lambda' end
+        if f:find '_' then
+            args = '_'
+            body = f
+        else
+            if not args then return raise 'bad string lambda' end
+        end
         local fstr = 'return function('..args..') return '..body..' end'
         local fn,err = loadstring(fstr)
         if not fn then return raise(err) end
@@ -296,11 +332,12 @@ local function _string_lambda(f)
     end
 end
 
---- an anonymous function as a string. This string is of the form
--- '|args| expression'.
+--- an anonymous function as a string. This string is either of the form
+-- '|args| expression' or is a function of one argument, '_'
 -- @param lf function as a string
 -- @return a function
 -- @usage string_lambda '|x|x+1' (2) == 3
+-- @usage string_lambda '_+1 (2) == 3
 utils.string_lambda = utils.memoize(_string_lambda)
 
 local ops
@@ -314,7 +351,7 @@ local ops
 -- @param msg optional error message
 -- @return a callable
 -- @see utils.is_callable
-function utils.function_arg (idx,f)
+function utils.function_arg (idx,f,msg)
     utils.assert_arg(1,idx,'number')
     if not msg then msg = " must be callable" end
     local tp = type(f)
@@ -396,7 +433,7 @@ end
 -- @see utils.on_error
 function utils.raise (err)
     if err_mode == 'default' then return nil,err
-    elseif err_mode == 'quit' then quit(err)
+    elseif err_mode == 'quit' then utils.quit(err)
     else error(err,2)
     end
 end
