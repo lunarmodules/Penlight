@@ -76,6 +76,26 @@ function OrderedMap:set (key,val)
     return self
 end
 
+--- insert a key/value pair before a given position.
+-- Note: if the map already contains the key, then this effectively
+-- moves the item to the new position by first removing at the old position.
+-- Has no effect if the key does not exist and val is nil
+-- @param pos a position starting at 1
+-- @param key the key
+-- @param val the value; if nil use the old value
+function OrderedMap:insert (pos,key,val)
+    local oldval = self[key]
+    val = val or oldval
+    if oldval then
+        self._keys:remove_value(key)
+    end
+    if val then
+        self._keys:insert(pos,key)
+        self[key] = val
+    end
+    return self
+end
+
 --- return the keys in order.
 -- (Not a copy!)
 -- @return List

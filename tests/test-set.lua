@@ -136,6 +136,21 @@ asserteq(false,pcall(function()
     m = OrderedMap('string')
 end))
 
+---- changing order of key/value pairs ----
+
+o3 = OrderedMap{{cat=20},{mouse=30}}
+
+o3:insert(1,'bird',5) -- adds key/value before specified position
+o3:insert(1,'mouse') -- moves key keeping old value
+asserteq(o3:keys(),{'mouse','bird','cat'})
+asserteq(tostring(o3),'{mouse=30,bird=5,cat=20}')
+o3:insert(2,'cat',21) -- moves key and sets new value
+asserteq(tostring(o3),'{mouse=30,cat=21,bird=5}')
+-- if you don't specify a value for an unknown key, nothing happens to the map
+o3:insert(3,'alligator')
+asserteq(tostring(o3),'{mouse=30,cat=21,bird=5}')
+
+
 
 
 
