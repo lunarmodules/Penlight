@@ -46,6 +46,10 @@ local filetypes = {
     stderr = {io.stderr,'file-out'}
 }
 
+--- controls whether to dump usage on error.
+-- Defaults to true
+lapp.show_usage_error = true
+
 --- quit this script immediately.
 -- @param msg optional message
 -- @param no_usage suppress 'usage' display
@@ -63,6 +67,9 @@ end
 -- @param msg a message
 -- @param no_usage suppress 'usage' display
 function lapp.error(msg,no_usage)
+    if not lapp.show_usage_error then
+        no_usage = true
+    end
     lapp.quit(script..':'..msg,no_usage)
 end
 

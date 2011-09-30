@@ -1,4 +1,3 @@
---if _VERSION == "Lua 5.2" then return print 'broken for Lua 5.2' end
 local asserteq = require 'pl.test' . asserteq
 local lapp = require 'pl.lapp'
 
