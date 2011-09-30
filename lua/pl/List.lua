@@ -231,16 +231,18 @@ end
 -- Include it in List table for tidiness
 -- @param start A number
 -- @param finish A number greater than start; if zero, then 0..start-1
+-- @param incr an optional increment (may be less than 1)
 -- @usage List.range(0,3) == List {0,1,2,3}
-function List.range(start,finish)
+function List.range(start,finish,incr)
   if not finish then
     start = 0
     finish = finish - 1
   end
+  incr = incr or 1
   assert_arg(1,start,'number')
   assert_arg(2,finish,'number')
   local  t = List:new()
-  for i=start,finish do tinsert(t,i) end
+  for i=start,finish,incr do tinsert(t,i) end
   return t
 end
 
