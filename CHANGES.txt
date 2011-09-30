@@ -1,3 +1,28 @@
+## 0.9.7
+
+### Lua 5.2 compatibility
+
+(These are all now defined in pl.utils)
+
+- setfenv, getfenv defined for Lua 5.2 (by Sergey Rozhenko)
+
+### Changes
+
+- array2d.flatten is new
+- OrderedMap:insert is new
+
+### Fixes
+
+- seq.reduce re-implemented to give correct order (Carl Ådahl)
+- seq.unique was broken: new test
+- tablex.icopy broken for last argument; new test
+- utils.function_arg last parm 'msg' was missing
+- array2d.product was broken; more sensible implementation
+- array2d.range, .slice, .write were broken
+- text optional operator % overload broken for 'fmt % fun'; new tests
+- a few occurances of non-existent function utils.error removed
+
+
 ## 0.9.6
 
 ### Lua 5.2 compatibility
