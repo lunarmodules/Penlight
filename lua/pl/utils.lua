@@ -261,6 +261,7 @@ if not lua52 then
         local n = select('#',...)
         return {n=n; ...},n
     end
+    local sep = package.config:sub(1,1)
     function package.searchpath (mod,path)
         mod = mod:gsub('%.',sep)
         for m in path:gmatch('[^;]+') do
