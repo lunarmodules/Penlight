@@ -1,6 +1,5 @@
 --- Useful test utilities.
--- @class module
--- @name pl.test
+-- @module pl.test
 
 local tablex = require 'pl.tablex'
 local utils = require 'pl.utils'
@@ -19,10 +18,6 @@ local function dump(x)
     end
 end
 
---[[
-module ('pl.test',utils._module)
-]]
-
 local test = {}
 
 local function complain (x,y)
@@ -37,15 +32,14 @@ end
 -- If they are plain tables, it will use tablex.deepcompare.
 -- @param x any value
 -- @param y a value equal to x
-function test.asserteq (x,y)
-    if x ~= y then
-        local res = false
-        if type(x) == 'table' and type(y) == 'table' then
-            res = tablex.deepcompare(x,y,true)
-        end
-        if not res then
-            complain(x,y)
-        end
+-- @param eps an optional tolerance for numerical comparisons
+function test.asserteq (x,y,eps)
+    local res = x == y
+    if not res then
+        res = tablex.deepcompare(x,y,true,eps)
+    end
+    if not res then
+        complain(x,y)
     end
 end
 
