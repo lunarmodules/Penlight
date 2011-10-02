@@ -20,6 +20,8 @@ flags,args = parse_args({'-k','-b=23','-o','hello','--out'},{o=true})
 
 asserteq(flags,{out=true,o="hello",k=true,b="23"})
 
+do return end
+
 -- modify this script's module path so it looks in the 'lua' subdirectory
 -- for its modules
 app.require_here 'lua'
