@@ -315,7 +315,20 @@ function utils.is_type (obj,tp)
     return tp == mt
 end
 
-utils.stdmt = { List = {}, Map = {}, Set = {}, MultiMap = {} }
+function utils.type (obj)
+    local t = type(obj)
+    if t == 'table' or t == 'userdata' then
+        local mt = getmetatable(obj)
+        return mt._name or "unknown "..t
+    else
+        return t
+    end
+end
+
+utils.stdmt = {
+    List = {_name='List'}, Map = {_name='Map'},
+    Set = {_name='Set'}, MultiMap = {_name='MultiMap'}
+}
 
 local _function_factories = {}
 
@@ -369,7 +382,6 @@ local ops
 -- @see utils.is_callable
 function utils.function_arg (idx,f,msg)
     utils.assert_arg(1,idx,'number')
-    if not msg then msg = " must be callable" end
     local tp = type(f)
     if tp == 'function' then return f end  -- no worries!
     -- ok, a string can correspond to an operator (like '==')
@@ -377,6 +389,9 @@ function utils.function_arg (idx,f,msg)
         if not ops then ops = require 'pl.operator'.optable end
         local fn = ops[f]
         if fn then return fn end
+        local fn, err = utils.string_lambda(f)
+        if not fn then error(err..': '..f) end
+        return fn
     elseif tp == 'table' or tp == 'userdata' then
         local mt = getmetatable(f)
         if not mt then error('not a callable object',2) end
@@ -388,6 +403,7 @@ function utils.function_arg (idx,f,msg)
             return ff(f) -- we have a function factory for this type!
         end
     end
+    if not msg then msg = " must be callable" end
     if idx > 0 then
         error("argument "..idx..": "..msg,2)
     else
