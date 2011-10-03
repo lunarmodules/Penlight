@@ -257,6 +257,8 @@ function List:clear()
   return self
 end
 
+local eps = 1.0e-10
+
 --- Emulate Python's range(x) function.
 -- Include it in List table for tidiness
 -- @param start A number
@@ -268,10 +270,14 @@ function List.range(start,finish,incr)
     start = 0
     finish = finish - 1
   end
-  incr = incr or 1
+  if incr then
+    if not utils.is_integer(incr) then finish = finish + eps end
+  else
+    incr = 1
+  end
   assert_arg(1,start,'number')
   assert_arg(2,finish,'number')
-  local  t = List.new()
+  local t = List.new()
   for i=start,finish,incr do tinsert(t,i) end
   return t
 end
