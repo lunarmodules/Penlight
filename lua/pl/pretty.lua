@@ -171,12 +171,55 @@ end
 --	@param t {table} The table to write to a file or stdout.
 --	@param fname {string} (optional) File name to write too. Defaults to writing
 --		to stdout.
-function pretty.dump (t,fname)
-    if not fname then
+function pretty.dump (t,...)
+    if select('#',...)==0 then
         print(pretty.write(t))
         return true
     else
-        return utils.writefile(fname,pretty.write(t))
+        return utils.writefile(...,pretty.write(t))
+    end
+end
+
+local memp,nump = {'B','KiB','MiB','GiB'},{'','K','M','B'}
+
+local comma
+function comma (val)
+    local thou = math.floor(val/1000)
+    if thou > 0 then return comma(thou)..','..(val % 1000)
+    else return tostring(val) end
+end
+
+--- format large numbers nicely for human consumption.
+-- @param num a number
+-- @param kind one of 'M' (memory in KiB etc), 'N' (postfixes are 'K','M' and 'B')
+-- and 'T' (use commas as thousands separator)
+-- @param prec number of digits to use for 'M' and 'N' (default 1)
+function pretty.number (num,kind,prec)
+    local fmt = '%.'..(prec or 1)..'f%s'
+    if kind == 'T' then
+        return comma(num)
+    else
+        local postfixes, fact
+        if kind == 'M' then
+            fact = 1024
+            postfixes = memp
+        else
+            fact = 1000
+            postfixes = nump
+        end
+        local div = fact
+        local k = 1
+        while num >= div and k <= #postfixes do
+            div = div * fact
+            k = k + 1
+        end
+        div = div / fact
+        if k > #postfixes then k = k - 1; div = div/fact end
+        if k > 1 then
+            return fmt:format(num/div,postfixes[k] or 'duh')
+        else
+            return num..postfixes[1]
+        end
     end
 end
 
