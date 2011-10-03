@@ -126,6 +126,9 @@ end
 --- write a string to a file
 -- @param filename The file path
 -- @param str The string
+-- @return true or nil
+-- @return error message
+-- @raise error if filename or str aren't strings
 function utils.writefile(filename,str)
     utils.assert_string(1,filename)
     utils.assert_string(2,str)
@@ -139,6 +142,7 @@ end
 --- return the contents of a file as a list of lines
 -- @param filename The file path
 -- @return file contents as a table
+-- @raise errror if filename is not a string
 function utils.readlines(filename)
     utils.assert_string(1,filename)
     local f,err = io.open(filename,'r')
@@ -156,6 +160,7 @@ end
 -- @param re A Lua string pattern; defaults to '%s+'
 -- @param plain don't use Lua patterns
 -- @return a list-like table
+-- @raise error if s is not a string
 function utils.split(s,re,plain,n)
     utils.assert_string(1,s)
     local find,sub,append = string.find, string.sub, table.insert
@@ -181,8 +186,6 @@ function utils.split(s,re,plain,n)
         i1 = i3+1
     end
 end
-
-
 
 --- split a string into a number of values.
 -- @param s the string
@@ -315,14 +318,32 @@ function utils.is_type (obj,tp)
     return tp == mt
 end
 
+local fileMT = getmetatable(io.stdout)
+
+--- a string representation of a type.
+-- For tables with metatables, we assume that the metatable has a `_name`
+-- field. Knows about Lua file objects.
+-- @param obj an object
+-- @return a string like 'number', 'table' or 'List'
 function utils.type (obj)
     local t = type(obj)
     if t == 'table' or t == 'userdata' then
         local mt = getmetatable(obj)
-        return mt._name or "unknown "..t
+        if mt == fileMT then
+            return 'file'
+        else
+            return mt._name or "unknown "..t
+        end
     else
         return t
     end
+end
+
+--- is this number an integer?
+-- @param a number
+-- @raise error if x is not a number
+function utils.is_integer (x)
+    return math.ceil(x)==x
 end
 
 utils.stdmt = {
