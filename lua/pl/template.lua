@@ -24,6 +24,7 @@
     module('pl.template')
 ]]
 
+local utils = require 'pl.utils'
 local append,format = table.insert,string.format
 
 local function parseHashLines(chunk,brackets,esc)
@@ -75,7 +76,7 @@ function template.substitute(str,env)
         setmetatable(env,{__index = env._parent})
     end
     local code = parseHashLines(str,env._brackets or '()',env._escape or '#')
-    local fn,err = load(code,'TMP','t',env)
+    local fn,err = utils.load(code,'TMP','t',env)
     if not fn then return nil,err end
     fn = fn()
     local out = {}

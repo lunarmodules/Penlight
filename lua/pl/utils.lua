@@ -201,7 +201,7 @@ local lua52 = table.pack ~= nil
 local lua51_load = load
 
 if not lua52 then -- define Lua 5.2 style load()
-    function load(str,src,mode,env)
+    function utils.load(str,src,mode,env)
         local chunk,err
         if type(str) == 'string' then
             chunk,err = loadstring(str,src)
@@ -212,6 +212,7 @@ if not lua52 then -- define Lua 5.2 style load()
         return chunk,err
     end
 else
+    utils.load = load
     -- setfenv/getfenv replacements for Lua 5.2
     -- by Sergey Rozhenko
     -- http://lua-users.org/lists/lua-l/2010-06/msg00313.html
@@ -493,9 +494,6 @@ end
 
 raise = utils.raise
 
---- Lua 5.2 Compatible Functions
--- @section lua52
-
 --- load a code string or bytecode chunk.
 -- @param code Lua code as a string or bytecode
 -- @param name for source errors
@@ -503,7 +501,11 @@ raise = utils.raise
 -- @param env  the environment for the new chunk (default nil)
 -- @return compiled chunk
 -- @return error message (chunk is nil)
--- @function load
+-- @function utils.load
+
+
+--- Lua 5.2 Compatible Functions
+-- @section lua52
 
 --- pack an argument list into a table.
 -- @param ... any arguments

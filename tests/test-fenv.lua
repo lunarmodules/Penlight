@@ -19,8 +19,8 @@ assert(t[1] == 1 and t[3] == 'hello')
 local a,b = unpack{10,'wow'}
 assert(a == 10 and b == 'wow')
 
--- load() is Lua 5.2 style
-chunk = load('return x+y','tmp','t',{x=1,y=2})
+-- utils.load() is Lua 5.2 style
+chunk = utils.load('return x+y','tmp','t',{x=1,y=2})
 asserteq(chunk(),3)
 
 -- package.searchpath for Lua 5.1

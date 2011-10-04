@@ -1,4 +1,6 @@
 --- Pretty-printing Lua tables.
+-- Also provides a sandboxed Lua table reader and
+-- a function to present large numbers in human-friendly format.
 -- @class module
 -- @name pl.pretty
 
@@ -7,10 +9,6 @@ local concat = table.concat
 local utils = require 'pl.utils'
 local lexer = require 'pl.lexer'
 local assert_arg = utils.assert_arg
-
---[[
-module('pl.pretty',utils._module)
-]]
 
 local pretty = {}
 
@@ -32,7 +30,7 @@ function pretty.read(s)
             end
         end
     end
-    local chunk,err = load('return '..s,'tbl','t',{})
+    local chunk,err = utils.load('return '..s,'tbl','t',{})
     if not chunk then return nil,err end
     return chunk()
 end

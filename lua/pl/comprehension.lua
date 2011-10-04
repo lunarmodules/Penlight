@@ -29,9 +29,7 @@
 -- @class module
 -- @name pl.comprehension
 
-if _G._VERSION == 'Lua 5.2' then -- Lua 5.2 needs getfenv
-    require 'pl.utils'
-end
+local utils = require 'pl.utils'
 
 --~ local _VERSION, assert, getfenv, ipairs, load, math, pcall, require, setmetatable, table, tonumber =
 --~     _G._VERSION, _G.assert, _G.getfenv, _G.ipairs, _G.load, _G.math, _G.pcall, _G.require, _G.setmetatable, _G.table, _G.tonumber
@@ -224,7 +222,7 @@ local function wrap_comprehension(code, ninputs, max_param, invallists, env)
   end
   code = code .. ' return __result '
   --print('DEBUG:', code)
-  local f, err = load(code,'tmp','t',env)
+  local f, err = utils.load(code,'tmp','t',env)
   if not f then assert(false, err .. ' with generated code ' .. code) end
   return f
 end
