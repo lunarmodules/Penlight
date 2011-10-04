@@ -282,4 +282,98 @@ asserteq(res,{
   DELEGATES = "bzlib freetype jpeg jp2 lcms png tiff x11 xml wmf zlib"
 })
 
+-- short excerpt from
+-- /usr/share/mobile-broadband-provider-info/serviceproviders.xml
+
+d = xml.parse [[
+<serviceproviders format="2.0">
+<country code="za">
+	<provider>
+		<name>Cell-c</name>
+		<gsm>
+			<network-id mcc="655" mnc="07"/>
+			<apn value="internet">
+				<username>Cellcis</username>
+				<dns>196.7.0.138</dns>
+				<dns>196.7.142.132</dns>
+			</apn>
+		</gsm>
+	</provider>
+	<provider>
+		<name>MTN</name>
+		<gsm>
+			<network-id mcc="655" mnc="10"/>
+			<apn value="internet">
+				<dns>196.11.240.241</dns>
+				<dns>209.212.97.1</dns>
+			</apn>
+		</gsm>
+	</provider>
+	<provider>
+		<name>Vodacom</name>
+		<gsm>
+			<network-id mcc="655" mnc="01"/>
+			<apn value="internet">
+				<dns>196.207.40.165</dns>
+				<dns>196.43.46.190</dns>
+			</apn>
+			<apn value="unrestricted">
+				<name>Unrestricted</name>
+				<dns>196.207.32.69</dns>
+				<dns>196.43.45.190</dns>
+			</apn>
+		</gsm>
+	</provider>
+	<provider>
+		<name>Virgin Mobile</name>
+		<gsm>
+			<apn value="vdata">
+				<dns>196.7.0.138</dns>
+				<dns>196.7.142.132</dns>
+			</apn>
+		</gsm>
+	</provider>
+</country>
+
+</serviceproviders>
+]]
+
+res = d:match [[
+    <serviceproviders>
+    {{<country code="$_">
+        {{<provider>
+            <name>$0</name>
+        </provider>}}
+    </country>}}
+    </serviceproviders>
+]]
+
+asserteq(res,{
+  za = {
+    "Cell-c",
+    "MTN",
+    "Vodacom",
+    "Virgin Mobile"
+  }
+})
+
+res = d:match [[
+<serviceproviders>
+ <country code="$country">
+   <provider>
+     <name>$name</name>
+     <gsm>
+      <apn value="vdata">
+         <dns>196.7.0.138</dns>
+      </apn>
+     </gsm>
+   </provider>
+ </country>
+</serviceproviders>
+]]
+
+asserteq(res,{
+  name = "Virgin Mobile",
+  country = "za"
+})
 
