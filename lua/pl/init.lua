@@ -11,7 +11,7 @@ local modules = {
     input=true,seq=true,lexer=true,stringx=true,
     config=true,pretty=true,data=true,func=true,text=true,
     operator=true,lapp=true,array2d=true,
-    comprehension=true,
+    comprehension=true,xml=true,
     test = true, app = true, file = true, class = true, List = true,
     Map = true, Set = true, OrderedMap = true, MultiMap = true,
     Date = true,
