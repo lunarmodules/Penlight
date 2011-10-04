@@ -363,8 +363,8 @@ res = d:match [[
    <provider>
      <name>$name</name>
      <gsm>
-      <apn value="vdata">
-         <dns>196.7.0.138</dns>
+      <apn value="$apn">
+         <dns>196.43.46.190</dns>
       </apn>
      </gsm>
    </provider>
@@ -373,7 +373,17 @@ res = d:match [[
 ]]
 
 asserteq(res,{
-  name = "Virgin Mobile",
-  country = "za"
+  name = "Vodacom",
+  country = "za",
+  apn = "internet"
 })
 
+-- can always use xmlification to generate your templates...
+
+local SP, country, provider, gsm, apn, dns = xml.tags 'serviceprovider, country, provider, gsm, apn, dns'
+
+t = SP{country{code="$country",provider{
+   name '$name', gsm{apn {value="$apn",dns '196.43.46.190'}}
+   }}}
+
+print(xml.tostring(t,' ','  '))
