@@ -1011,22 +1011,22 @@ A `Date` object can be constructed from a table, just like with `os.time`. Metho
 
     > d = Date {year = 2011, month = 3, day = 2 }
     > = d
-    2011-03-02 12:00
+    2011-03-02 12:00:00
     > = d:month(),d:year(),d:day()
     3	2011	2
     > d:month(4)
     > = d
-    2011-04-02 12:00
+    2011-04-02 12:00:00
     > d:add {day=1}
     > = d
-    2011-04-03 12:00
+    2011-04-03 12:00:00
 
 `add` takes a table containing one of the date table fields.
 
     > = d:weekday_name()
     Sun
     > = d:last_day()
-    2011-04-30 12:00
+    2011-04-30 12:00:00
     > = d:month_name(true)
     April
 
@@ -1038,6 +1038,64 @@ There is a default conversion to text for date objects, but `Date.Format` gives 
     > = amer:tostring(d)
     04/10/2010
 
+With the 0.9.7 relase, the `Date` constructor has become more flexible. You may omit any of the 'year', 'month' or 'day' fields:
+
+    > = Date { year = 2008 }
+    2008-01-01 12:00:00
+    > = Date { month = 3 }
+    2011-03-01 12:00:00
+    > = Date { day = 20 }
+    2011-10-20 12:00:00
+    > = Date { hour = 14, min = 30 }
+    2011-10-13 14:30:00
+
+If 'year' is omitted, then the current year is assumed, and likewise for 'month'.
+
+To set the time on such a partial date, you can use the fact that the 'setter' methods return the date object and so you can 'chain' these methods.
+
+    > d = Date { day = 03 }
+    > = d:hour(18):min(30)
+    2011-10-03 18:30:00
+
+Finally, `Date` also now accepts positional arguments:
+
+    > = Date(2011,10,3)
+    2011-10-03 12:00:00
+    > = Date(2011,10,3,18,30,23)
+    2011-10-03 18:30:23
+
+`Date.format` has been extended. If you construct an instance without a pattern, then it will try to match against a set of known formats. This is useful for human-input dates since keeping to a strict format is not one of the strong points of users. It assumes that there will be a date, and then a date.
+
+    > df = Date.Format()
+    > = df:parse '5.30pm'
+    2011-10-13 17:30:00
+    > = df:parse '1730'
+    nil     day out of range: 1730 is not between 1 and 31
+    > = df:parse '17.30'
+    2011-10-13 17:30:00
+    > = df:parse 'mar'
+    2011-03-01 12:00:00
+    > = df:parse '3 March'
+    2011-03-03 12:00:00
+    > = df:parse '15 March'
+    2011-03-15 12:00:00
+    > = df:parse '15 March 2008'
+    2008-03-15 12:00:00
+    > = df:parse '15 March 2008 1.30pm'
+    2008-03-15 13:30:00
+    > = df:parse '2008-10-03 15:30:23'
+    2008-10-03 15:30:23
+
+ISO date format is of course a good idea if you need to deal with users from different countries. Here is the default behaviour for 'short' dates:
+
+    > = df:parse '24/02/12'
+    2012-02-24 12:00:00
+
+That's not what Americans expect! It's tricky to work out in a cross-platform way exactly what the expected format is, so there is an explicit flag:
+
+    > df:US_order(true)
+    > = df:parse '9/11/01'
+    2001-11-09 12:00:00
 
 (@see Date)
 
@@ -1580,6 +1638,249 @@ Rather then dumping the whole list, with its duplicates, we pass it through `seq
 You could further pass this through `tablex.keys` to get a unique list of symbols. This can be useful when writing 'strict' Lua modules, where all global symbols must be defined as locals at the top of the file.
 
 For a more detailed use of `lexer.scan`, please look at 'testxml.lua' in the examples directory.
+
+### XML
+
+New in the 0.9.7 release is some support for XML. This is a large topic, and Penlight does not provide a full XML stack, which is properly the task of a more specialized library.
+
+#### Parsing and Pretty-Printing
+
+The semi-standard XML parser in the Lua universe is [lua-expat](). In particular, it has a function called `lxp.lom.parse` which will parse XML into the Lua Object Model (LOM) format. However, it does not provide a way to convert this data back into XML text.  `xml.parse` will use this function, _if_ `lua-expat` is available, and otherwise switches back to a pure Lua parser originally written by Roberto Ierusalimschy.
+
+The resulting document object knows how to render itself as a string, which is useful for debugging:
+
+    > d = xml.parse "<nodes><node id='1'>alice</node></nodes>"
+    > = d
+    <nodes><node id='1'>alice</node></nodes>
+    > pretty.dump (d)
+    {
+      {
+        "alice",
+        attr = {
+          "id",
+          id = "1"
+        },
+        tag = "node"
+      },
+      attr = {
+      },
+      tag = "nodes"
+    }
+
+Looking at the actual shape of the data reveals the structure of LOM:
+
+  * every element has a `tag` field with its name
+  * plus a `attr` field which is a table containing the attributes as fields, and also as an array. It is always present.
+  * the children of the element are the array part of the element, so `d[1]` is the first child of `d`, etc.
+
+It could be argued that having attributes also as the array part of `attr` is not essential (you generally cannot depend on attribute order in XML) but that's how it goes with this standard.
+
+`lua-expat` is another _soft dependency_ of Penlight; generally, the fallback parser is good enough for straightforward XML as is commonly found in configuration files, etc. `doc.basic_parse` is not intended to be a proper conforming parser (it's only sixty lines) but it handles simple kinds of documents that do not have comments or DTD directives. It is intelligent enough to ignore the `<?xml` directive and that is about it.
+
+You can get pretty-printing by explicitly calling `xml.tostring` and passing it the initial indent and the per-element indent:
+
+    > = xml.tostring(d,'','  ')
+
+    <nodes>
+      <node id='1'>alice</node>
+    </nodes>
+
+There is a fourth argument which is the _attribute indent_:
+
+    > a = xml.parse "<frodo name='baggins' age='50' type='hobbit'/>"
+    > = xml.tostring(a,'','  ','  ')
+
+    <frodo
+      type='hobbit'
+      name='baggins'
+      age='50'
+    />
+
+#### Parsing and Working with Configuration Files
+
+It's common to find configurations expressed with XML these days. It's straightforward to 'walk' the LOM data and extract the data in the form you want:
+
+    require 'pl'
+
+    local config = [[
+    <config>
+        <alpha>1.3</alpha>
+        <beta>10</beta>
+        <name>bozo</name>
+    </config>
+    ]]
+    local d,err = xml.parse(config)
+
+    local t = {}
+    for item in d:childtags() do
+        t[item.tag] = item[1]
+    end
+
+    pretty.dump(t)
+    --->
+    {
+      beta = "10",
+      alpha = "1.3",
+      name = "bozo"
+    }
+
+The only gotcha is that here we must use the `childtags` method, which will skip over any text elements.
+
+A more involved example is this excerpt from `serviceproviders.xml`, which is usually found at `/usr/share/mobile-broadband-provider-info/serviceproviders.xml` on Debian/Ubuntu Linux systems.
+
+    d = xml.parse [[
+    <serviceproviders format="2.0">
+    <country code="za">
+        <provider>
+            <name>Cell-c</name>
+            <gsm>
+                <network-id mcc="655" mnc="07"/>
+                <apn value="internet">
+                    <username>Cellcis</username>
+                    <dns>196.7.0.138</dns>
+                    <dns>196.7.142.132</dns>
+                </apn>
+            </gsm>
+        </provider>
+        <provider>
+            <name>MTN</name>
+            <gsm>
+                <network-id mcc="655" mnc="10"/>
+                <apn value="internet">
+                    <dns>196.11.240.241</dns>
+                    <dns>209.212.97.1</dns>
+                </apn>
+            </gsm>
+        </provider>
+        <provider>
+            <name>Vodacom</name>
+            <gsm>
+                <network-id mcc="655" mnc="01"/>
+                <apn value="internet">
+                    <dns>196.207.40.165</dns>
+                    <dns>196.43.46.190</dns>
+                </apn>
+                <apn value="unrestricted">
+                    <name>Unrestricted</name>
+                    <dns>196.207.32.69</dns>
+                    <dns>196.43.45.190</dns>
+                </apn>
+            </gsm>
+        </provider>
+        <provider>
+            <name>Virgin Mobile</name>
+            <gsm>
+                <apn value="vdata">
+                    <dns>196.7.0.138</dns>
+                    <dns>196.7.142.132</dns>
+                </apn>
+            </gsm>
+        </provider>
+    </country>
+
+    </serviceproviders>
+    ]]
+
+Getting the names of the providers per-country is straightforward:
+
+    local t = {}
+    for country in d:childtags() do
+        local providers = {}
+        t[country.tag] = providers
+        for provider in country:childtags() do
+            table.insert(providers,provider:child_with_name('name'):get_text())
+        end
+    end
+
+    pretty.dump(t)
+    -->
+    {
+      country = {
+        "Cell-c",
+        "MTN",
+        "Vodacom",
+        "Virgin Mobile"
+      }
+    }
+
+#### Generating XML with 'xmlification'
+
+This feature is inspired by the `htmlify` function used by [Orbit](http://keplerproject.github.com/orbit/) to simplify HTML generation, except that no function environment magic is used; the `tags` function returns a set of _constructors_ for elements of the given tag names.
+
+    > nodes, node = xml.tags 'nodes, node'
+    > = node 'alice'
+    <node>alice</node>
+    > = nodes { node {id='1','alice'}}
+    <nodes><node id='1'>alice</node></nodes>
+
+The flexibility of Lua tables is very useful here, since both the attributes and the children of an element can be encoded naturally. The argument to these tag constructors is either a single value (like a string) or a table where the attributes are the named keys and the children are the array values.
+
+#### Generating XML using Templates
+
+A template is a little XML document which contains dollar-variables. The `subst` method on a document is fed an array of tables containing values for these variables. Note how the parent tag name is specified:
+
+    > templ = xml.parse "<node id='$id'>$name</node>"
+    > = templ:subst {tag='nodes', {id=1,name='alice'},{id=2,name='john'}}
+    <nodes><node id='1'>alice</node><node id='2'>john</node></nodes>
+
+#### Extracting Data using Templates
+
+Matching goes in the opposite direction.  We have a document, and would like to extract values from it using a pattern.
+
+A common use of this is parsing the XML result of API queries.  The [(undocumented) Google Weather API](http://blog.programmableweb.com/2010/02/08/googles-secret-weather-api/) is a good example. Grabbing the result of `http://www.google.com/ig/api?weather=Johannesburg,ZA" we get something like this, after pretty-printing:
+
+    <xml_api_reply version='1'>
+      <weather module_id='0' tab_id='0' mobile_zipped='1' section='0' row='0' mobile_row='0'>
+        <forecast_information>
+          <city data='Johannesburg, Gauteng'/>
+          <postal_code data='Johannesburg,ZA'/>
+          <latitude_e6 data=''/>
+          <longitude_e6 data=''/>
+          <forecast_date data='2010-10-02'/>
+          <current_date_time data='2010-10-02 18:30:00 +0000'/>
+          <unit_system data='US'/>
+        </forecast_information>
+        <current_conditions>
+          <condition data='Clear'/>
+          <temp_f data='75'/>
+          <temp_c data='24'/>
+          <humidity data='Humidity: 19%'/>
+          <icon data='/ig/images/weather/sunny.gif'/>
+          <wind_condition data='Wind: NW at 7 mph'/>
+        </current_conditions>
+        <forecast_conditions>
+          <day_of_week data='Sat'/>
+          <low data='60'/>
+          <high data='89'/>
+          <icon data='/ig/images/weather/sunny.gif'/>
+          <condition data='Clear'/>
+        </forecast_conditions>
+        ....
+       </weather>
+    </xml_api_reply>
+
+Assume that the above XML has been read into `google`. The idea is to write a pattern looking like a template, and use it to extract some values of interest:
+
+    t = [[
+      <weather>
+        <current_conditions>
+          <condition data='$condition'/>
+          <temp_c data='$temp'/>
+        </current_conditions>
+      </weather>
+    ]]
+
+    local res, ret = google:match(t)
+    pretty.dump(res)
+
+And the output is:
+
+    {
+      condition = "Clear",
+      temp = "24"
+    }
+
+The `match` method can be passed a LOM document or some text, which will be parsed first. Note that `$NUMBER` is treated specially as a numerical index, so that `$1` is the first element of the resulting array, etc.
 
 
 ## Functional Programming
