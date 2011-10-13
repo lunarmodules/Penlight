@@ -20,12 +20,13 @@ end
 
 local test = {}
 
-local function complain (x,y)
+local function complain (x,y,msg)
     local i = debug.getinfo(3)
-    io.stderr:write('assertion failed at '..path.basename(i.short_src)..':'..i.currentline..'\n')
-    print("got:",dump(x))
-    print("needed:",dump(y))
-    utils.quit(1,"these values were not equal")
+    local err = io.stderr
+    err:write(path.basename(i.short_src)..':'..i.currentline..': assertion failed\n')
+    err:write("got:\t",dump(x),'\n')
+    err:write("needed:\t",dump(y),'\n')
+    utils.quit(1,msg or "these values were not equal")
 end
 
 --- like assert, except takes two arguments that must be equal and can be tables.
@@ -40,6 +41,22 @@ function test.asserteq (x,y,eps)
     end
     if not res then
         complain(x,y)
+    end
+end
+
+--- assert that the first string matches the second.
+-- @param s1 a string
+-- @param s2 a string
+function test.assertmatch (s1,s2)
+    if not s1:match(s2) then
+        complain (s1,s2,"these strings did not match")
+    end
+end
+
+function test.assertraise(fn,e)
+    local ok, err = pcall(unpack(fn))
+    if not err or err:match(e)==nil then
+        complain (err,e,"these errors did not match")
     end
 end
 
