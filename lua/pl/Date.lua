@@ -10,6 +10,7 @@ module("pl.Date")
 
 local class = require 'pl.class'
 local os_time, os_date = os.time, os.date
+local stringx = require 'pl.stringx'
 
 local Date = class()
 Date.Format = class()
@@ -17,14 +18,29 @@ Date.Format = class()
 --- Date constructor.
 -- @param t this can be either <ul>
 -- <li>nil - use current date and time</li>
--- <li>number - seconds since epoch (as returned by os.time())</li>
+-- <li>number - seconds since epoch (as returned by @{os.time()})</li>
 -- <li>Date - copy constructor</li>
--- <li>table - table containing year, month, etc as for os.time()</li>
+-- <li>table - table containing year, month, etc as for os.time()
+--  You may leave out year, month or day, in which case current values will be used.
+-- </li>
+-- <li> up to six numbers: year, month, day, hour, min sec
 -- </ul>
 -- @class function
 -- @name Date
-function Date:_init(t)
+function Date:_init(t,...)
     local time
+    if select('#',...) > 0 then
+        local extra = {...}
+        local year = t
+        t = {
+            year = year,
+            month = extra[1],
+            day = extra[2],
+            hour = extra[3],
+            min = extra[4],
+            sec = extra[5]
+        }
+    end
     if t == nil then
         time = os_time()
     elseif type(t) == 'number' then
@@ -33,10 +49,50 @@ function Date:_init(t)
         if getmetatable(t) == Date then -- copy ctor
             time = t.time
         else
+            if not (t.year and t.month and t.year) then
+                local lt = os.date('*t')
+                if not t.year and not t.month and not t.day then
+                    t.year = lt.year
+                    t.month = lt.month
+                    t.day = lt.day
+                else
+                    t.year = t.year or lt.year
+                    t.month = t.month or (t.day and lt.month or 1)
+                    t.day = t.day or 1
+                end
+            end
             time = os_time(t)
         end
     end
     self:set(time)
+end
+
+local thour,tmin
+
+--- get the time zone offset from UTC.
+-- @return hours ahead of UTC
+-- @return minutes ahead of UTC
+function Date.tzone ()
+    if not thour then
+        local t = os.time()
+        local ut = os.date('!*t',t)
+        local lt = os.date('*t',t)
+        thour = lt.hour - ut.hour
+        tmin = lt.min - ut.min
+    end
+    return thour, tmin
+end
+
+--- convert this date to UTC.
+function Date:toUTC ()
+    local th, tm = Date.tzone()
+    self:add { hour = -th, min = -tm }
+end
+
+--- convert this UTC date to local.
+function Date:toLocal ()
+    local th, tm = Date.tzone()
+    self:add { hour = th, min = tm }
 end
 
 --- set the current time of this Date object.
@@ -164,7 +220,7 @@ end
 
 --- difference between two Date objects.
 -- @param other Date object
--- @return a Date object    
+-- @return a Date object
 function Date:diff(other)
     local dt = self.time - other.time
     return Date(dt)
@@ -172,7 +228,7 @@ end
 
 --- long numerical ISO data format version of this date.
 function Date:__tostring()
-    return os_date('%Y-%m-%d %H:%M',self.time)
+    return os_date('%Y-%m-%d %H:%M:%S',self.time)
 end
 
 --- equality between Date objects.
@@ -213,6 +269,7 @@ local formats = {
 -- @class function
 -- @name Date.Format
 function Date.Format:_init(fmt)
+    if not fmt then return end
     local append = table.insert
     local D,PLUS,OPENP,CLOSEP = '\001','\002','\003','\004'
     local vars,used = {},{}
@@ -256,10 +313,15 @@ function Date.Format:_init(fmt)
 
 end
 
+local parse_date
+
 --- parse a string into a Date object.
 -- @param str a date string
 -- @return date object
 function Date.Format:parse(str)
+    if not self.fmt then
+        return parse_date(str,self.us)
+    end
     local res = {str:match(self.fmt)}
     if #res==0 then return nil, 'cannot parse '..str end
     local tab = {}
@@ -286,11 +348,159 @@ function Date.Format:parse(str)
 end
 
 --- convert a Date object into a string.
--- @param d a date object
+-- @param d a date object, or a time value as returned by @{os.time}
 -- @return string
 function Date.Format:tostring(d)
-    return os.date(self.outf,d.time)
+    local tm = type(d) == 'number' and d or d.time
+    if self.outf then
+        return os.date(self.outf,tm)
+    else
+        return tostring(Date(d))
+    end
 end
+
+function Date.Format:US_order(yesno)
+    self.us = yesno
+end
+
+local months = {jan=1,feb=2,mar=3,apr=4,may=5,jun=6,jul=7,aug=8,sep=9,oct=10,nov=11,dec=12}
+
+--[[
+Allowed patterns:
+- [day] [monthname] [year] [time]
+- [day]/[month][/year] [time]
+
+]]
+
+
+local is_word = stringx.isalpha
+local is_number = stringx.isdigit
+local function tonum(s,l1,l2,kind)
+    kind = kind or ''
+    local n = tonumber(s)
+    if not n then error(("%snot a number: '%s'"):format(kind,s)) end
+    if n < l1 or n > l2 then
+        error(("%s out of range: %s is not between %d and %d"):format(kind,s,l1,l2))
+    end
+    return n
+end
+
+local function  parse_iso_end(p,ns,sec)
+    -- may be fractional part of seconds
+    local _,nfrac,secfrac = p:find('^%.%d+',ns+1)
+    if secfrac then
+        sec = sec .. secfrac
+        p = p:sub(nfrac+1)
+    else
+        p = p:sub(ns+1)
+    end
+    -- ISO 8601 dates may end in Z (for UTC) or [+-][isotime]
+    if p:match 'z$' then return sec, {h=0,m=0} end -- we're UTC!
+    p = p:gsub(':','') -- turn 00:30 to 0030
+    _,_,sign,offs = p:find('^([%+%-])(%d+)')
+    if not sign then return sec, nil end -- not UTC
+    if #offs == 2 then offs = offs .. '00' end -- 01 to 0100
+    tz = { h = tonumber(offs:sub(1,2)), m = tonumber(offs:sub(3,4)) }
+    if sign == '-' then tz.h = -tz.h; tz.m = -tz.m end
+    return sec, tz
+end
+
+local function parse_date_unsafe (s,US)
+    s = s:gsub('T',' ') -- ISO 8601
+    local parts = stringx.split(s:lower())
+    local i,p = 1,parts[1]
+    local function nextp() i = i + 1; p = parts[i] end
+    local year,min,hour,sec,apm
+    local tz
+    local _,nxt,day, month = p:find '^(%d+)/(%d+)'
+    if day then
+        -- swop for US case
+        if US then
+            day, month = month, day
+        end
+        _,_,year = p:find('^/(%d+)',nxt+1)
+        nextp()
+    else -- ISO
+        year,month,day = p:match('^(%d+)%-(%d+)%-(%d+)')
+        if year then
+            nextp()
+        end
+    end
+    if p and not year and is_number(p) then -- has to be date
+        day = p
+        nextp()
+    end
+    if p and is_word(p) then
+        p = p:sub(1,3)
+        local mon = months[p]
+        if mon then
+            month = mon
+        else error("not a month: " .. p) end
+        nextp()
+    end
+    if p and not year and is_number(p) then
+        year = p
+        nextp()
+    end
+
+    if p then -- time is hh:mm[:ss], hhmm[ss] or H.M[am|pm]
+        _,nxt,hour,min = p:find '^(%d+):(%d+)'
+        if nxt then -- are there seconds?
+            _,ns,sec = p:find ('^:(%d+)',nxt+1)
+            --if ns then
+                sec,tz = parse_iso_end(p,ns or nxt,sec)
+            --end
+        else -- might be h.m
+            _,ns,hour,min = p:find '^(%d+)%.(%d+)'
+            if ns then
+                apm = p:match '[ap]m$'
+            else  -- or hhmm[ss]
+
+                _,nxt,hourmin = p:find ('^(%d+)')
+                if nxt then
+                   hour = hourmin:sub(1,2)
+                   min = hourmin:sub(3,4)
+                   sec = hourmin:sub(5,6)
+                   if #sec == 0 then sec = nil end
+                   sec,tz = parse_iso_end(p,nxt,sec)
+                end
+            end
+        end
+    end
+    local today
+    if not (year and month and day) then
+        today = Date()
+    end
+    day = day and tonum(day,1,31,'day') or (month and 1 or today:day())
+    month = month and tonum(month,1,12,'month') or today:month()
+    year = year and tonumber(year) or today:year()
+    if year < 100 then -- two-digit year pivot
+        year = year + (year < 35 and 2000 or 1900)
+    end
+    hour = hour and tonum(hour,1,apm and 12 or 24,'hour') or 12
+    if apm == 'pm' then
+        hour = hour + 12
+    end
+    min = min and tonum(min,1,60) or 0
+    sec = sec and tonum(sec,1,60) or 0
+    local res = Date {year = year, month = month, day = day, hour = hour, min = min, sec = sec}
+    if tz then -- ISO 8601 UTC time
+        res:toUTC()
+        res:add {hour = tz.h, min = tz.m}
+    end
+    return res
+end
+
+function parse_date (s)
+    local ok, d = pcall(parse_date_unsafe,s)
+    if not ok then -- error
+        d = d:gsub('.-:%d+: ','')
+        return nil, d
+    else
+        return d
+    end
+end
+
 
 return Date
 
