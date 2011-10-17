@@ -23,10 +23,9 @@ Date.Format = class()
 -- <li>table - table containing year, month, etc as for os.time()
 --  You may leave out year, month or day, in which case current values will be used.
 -- </li>
--- <li> up to six numbers: year, month, day, hour, min sec
+-- <li> two to six numbers: year, month, day, hour, min, sec
 -- </ul>
--- @class function
--- @name Date
+-- @function Date
 function Date:_init(t,...)
     local time
     if select('#',...) > 0 then
@@ -86,13 +85,15 @@ end
 --- convert this date to UTC.
 function Date:toUTC ()
     local th, tm = Date.tzone()
-    self:add { hour = -th, min = -tm }
+    self:add { hour = -th }
+    if tm > 0 then self:add {min = -tm} end
 end
 
 --- convert this UTC date to local.
 function Date:toLocal ()
     local th, tm = Date.tzone()
-    self:add { hour = th, min = tm }
+    self:add { hour = th }
+    if tm > 0 then self:add {min = tm} end
 end
 
 --- set the current time of this Date object.
@@ -181,12 +182,14 @@ end
 
 --- name of day of week.
 -- @param full abbreviated if true, full otherwise.
+-- @return string name
 function Date:weekday_name(full)
     return os_date(full and '%A' or '%a',self.time)
 end
 
 --- name of month.
 -- @param full abbreviated if true, full otherwise.
+-- @return string name
 function Date:month_name(full)
     return os_date(full and '%B' or '%b',self.time)
 end
@@ -199,6 +202,7 @@ end
 --- add to a date object.
 -- @param t a table containing one of the following keys and a value:<br>
 -- year,month,day,hour,min,sec
+-- @return this date
 function Date:add(t)
     local key,val = next(t)
     self.tab[key] = self.tab[key] + val
@@ -207,6 +211,7 @@ function Date:add(t)
 end
 
 --- last day of the month.
+-- @return int day
 function Date:last_day()
     local d = 28
     local m = self.tab.month
@@ -219,16 +224,37 @@ function Date:last_day()
 end
 
 --- difference between two Date objects.
+-- Note: currently the result is a regular @{Date} object,
+-- but also has `interval` field set, which means a more
+-- appropriate string rep is used.
 -- @param other Date object
 -- @return a Date object
 function Date:diff(other)
     local dt = self.time - other.time
-    return Date(dt)
+    if dt < 0 then error("date difference is negative!",2) end
+    local date = Date(dt)
+    date.interval = true
+    return date
 end
 
 --- long numerical ISO data format version of this date.
 function Date:__tostring()
-    return os_date('%Y-%m-%d %H:%M:%S',self.time)
+    if not self.interval then
+        return os_date('%Y-%m-%d %H:%M:%S',self.time)
+    else
+        local t, res = self.tab, ''
+        local y,m,d = t.year - 1970, t.month - 1, t.day - 1
+        if y > 0 then res = res .. y .. ' years ' end
+        if m > 0 then res = res .. m .. ' months ' end
+        if d > 0 then res = res .. d .. ' days ' end
+        if y == 0 and m == 0 then
+            local h = t.hour - Date.tzone()  -- not accounting for UTC mins!
+            if h > 0 then res = res .. h .. ' hours ' end
+            if t.min > 0 then res = res .. t.min .. ' min ' end
+            if t.sec > 0 then res = res .. t.sec .. ' sec ' end
+        end
+        return res
+    end
 end
 
 --- equality between Date objects.
@@ -308,8 +334,6 @@ function Date.Format:_init(fmt)
     self.fmt = fmt
     self.outf = table.concat(outf)
     self.vars = vars
---    print(self.fmt)
---    print(self.outf)
 
 end
 
