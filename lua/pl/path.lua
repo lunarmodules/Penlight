@@ -22,7 +22,7 @@ module ('pl.path',utils._module)
 
 local path, attrib
 
-if _G.luajava then
+if rawget(_G,"luajava") then
     path = require 'pl.platf.luajava'
 else
     path = {}

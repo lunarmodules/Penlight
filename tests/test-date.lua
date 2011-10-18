@@ -19,9 +19,8 @@ print(d:month(7):last_day())
 --]]
 
 function check_df(fmt,str,no_check)
-    df = Date.Format(fmt)
-    d = df:parse(str)
-    --print(str,d)
+    local df = Date.Format(fmt)
+    local d = df:parse(str)
     if not no_check then
         asserteq(df:tostring(d),str)
     end
@@ -55,7 +54,11 @@ assert(d > Date())
 local df = Date.Format()
 
 function parse_date (s)
-    return df:parse(s)
+    local d,err = df:parse(s)
+    if not d then
+        print('error parsing',s,err)
+    end
+    return d,err
 end
 
 -- ISO 8601

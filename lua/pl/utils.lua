@@ -277,7 +277,7 @@ if not lua52 then
 end
 
 if not table.pack then table.pack = _G.pack end
-if not _G.pack then _G.pack = table.pack end
+if not rawget(_G,"pack") then _G.pack = table.pack end
 
 --- take an arbitrary set of arguments and make into a table.
 -- This returns the table and the size; works fine for nil arguments
@@ -519,7 +519,6 @@ raise = utils.raise
 -- @param path a path in the same form as package.path or package.cpath
 -- @see path.package_path
 -- @function package.searchpath
-
 
 return utils
 

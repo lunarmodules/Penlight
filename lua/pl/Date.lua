@@ -421,10 +421,10 @@ local function  parse_iso_end(p,ns,sec)
     -- ISO 8601 dates may end in Z (for UTC) or [+-][isotime]
     if p:match 'z$' then return sec, {h=0,m=0} end -- we're UTC!
     p = p:gsub(':','') -- turn 00:30 to 0030
-    _,_,sign,offs = p:find('^([%+%-])(%d+)')
+    local _,_,sign,offs = p:find('^([%+%-])(%d+)')
     if not sign then return sec, nil end -- not UTC
     if #offs == 2 then offs = offs .. '00' end -- 01 to 0100
-    tz = { h = tonumber(offs:sub(1,2)), m = tonumber(offs:sub(3,4)) }
+    local tz = { h = tonumber(offs:sub(1,2)), m = tonumber(offs:sub(3,4)) }
     if sign == '-' then tz.h = -tz.h; tz.m = -tz.m end
     return sec, tz
 end
@@ -469,6 +469,7 @@ local function parse_date_unsafe (s,US)
 
     if p then -- time is hh:mm[:ss], hhmm[ss] or H.M[am|pm]
         _,nxt,hour,min = p:find '^(%d+):(%d+)'
+        local ns
         if nxt then -- are there seconds?
             _,ns,sec = p:find ('^:(%d+)',nxt+1)
             --if ns then
@@ -479,7 +480,7 @@ local function parse_date_unsafe (s,US)
             if ns then
                 apm = p:match '[ap]m$'
             else  -- or hhmm[ss]
-
+                local hourmin
                 _,nxt,hourmin = p:find ('^(%d+)')
                 if nxt then
                    hour = hourmin:sub(1,2)
