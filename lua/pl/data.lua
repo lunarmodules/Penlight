@@ -458,14 +458,15 @@ end
 --- create a query iterator from a select string.
 -- Select string has this format: <br>
 -- FIELDLIST [ where LUA-CONDN [ sort by FIELD] ]<br>
--- FIELDLISt is a comma-separated list of valid fields, or '*'. <br> <br>
+-- FIELDLIST is a comma-separated list of valid fields, or '*'. <br> <br>
 -- The condition can also be a table, with fields 'fields' (comma-sep string or
 -- table), 'sort_by' (string) and 'where' (Lua expression string or function)
 -- @param data table produced by read
 -- @param condn select string or table
 -- @param context a list of tables to be searched when resolving functions
 -- @param return_row if true, wrap the results in a row table
--- @return an iterator over the specified fields
+-- @return an iterator over the specified fields, or nil
+-- @return an error message
 function data.query(data,condn,context,return_row)
     local err
     if is_string(condn) then

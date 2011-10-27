@@ -134,6 +134,9 @@ local sep,dirsep = path.sep,path.dirsep
 --- given a path, return the directory part and a file part.
 -- if there's no directory part, the first value will be empty
 -- @param P A file path
+-- @return directory part (may be the empty string)
+-- @return file part
+-- @raise if P is not a string
 function path.splitpath(P)
     assert_string(1,P)
     local i = #P
@@ -151,6 +154,8 @@ end
 
 --- return an absolute path.
 -- @param PP A A file path
+-- @return absolute path
+-- @raise if P is not a string
 function path.abspath(P)
     assert_string(1,P)
     if not currentdir then return P end
@@ -168,6 +173,9 @@ end
 --- given a path, return the root part and the extension part.
 -- if there's no extension part, the second value will be empty
 -- @param P A file path
+-- @return root part (e.g. /my/path/name)
+-- @return extension part (e.g .txt)
+-- @raise if P is not a string
 function path.splitext(P)
     assert_string(1,P)
     local i = #P
@@ -188,6 +196,8 @@ end
 
 --- return the directory part of a path
 -- @param P A file path
+-- @return directory part (e.g. /my/path/name.txt -> /my/path)
+-- @raise if P is not a string
 function path.dirname(P)
     assert_string(1,P)
     local p1,p2 = path.splitpath(P)
@@ -196,6 +206,8 @@ end
 
 --- return the file part of a path
 -- @param P A file path
+-- @return file part (e.g. /my/path/name.txt -> name.txt)
+-- @raise if P is not a string
 function path.basename(P)
     assert_string(1,P)
     local p1,p2 = path.splitpath(P)
@@ -204,6 +216,8 @@ end
 
 --- get the extension part of a path.
 -- @param P A file path
+-- @return extension of P, with dot
+-- @raise if P is not a string
 function path.extension(P)
     assert_string(1,P)
     local p1,p2 = path.splitext(P)
@@ -212,6 +226,8 @@ end
 
 --- is this an absolute path?.
 -- @param P A file path
+-- @return true/false
+-- @raise if P is not a string
 function path.isabs(P)
     assert_string(1,P)
     if path.is_windows then
@@ -225,6 +241,8 @@ end
 -- if the second is already an absolute path, then it returns it.
 -- @param p1 A file path
 -- @param p2 A file path
+-- @raise if P is not a string
+-- @return joined path
 function path.join(p1,p2)
     assert_string(1,p1)
     assert_string(2,p2)
@@ -240,6 +258,8 @@ end
 --  for Windows, it converts the path to lowercase, and it also converts forward slashes
 -- to backward slashes.
 -- @param P A file path
+-- @return camonical case of filename for Windows
+-- @raise if P is not a string
 function path.normcase(P)
     assert_string(1,P)
     if path.is_windows then
@@ -252,6 +272,8 @@ end
 --- normalize a path name.
 --  A//B, A/./B and A/foo/../B all become A/B.
 -- @param P a file path
+-- @return normalized pathname
+-- @raise if P is not a string
 function path.normpath (P)
     assert_string(1,P)
     if path.is_windows then
@@ -267,6 +289,8 @@ end
 -- In windows, if HOME isn't set, then USERPROFILE is used in preference to
 -- HOMEDRIVE HOMEPATH. This is guaranteed to be writeable on all versions of Windows.
 -- @param P A file path
+-- @return a path
+-- @raise if P is not a string
 function path.expanduser(P)
     assert_string(1,P)
     if at(P,1) == '~' then
@@ -283,6 +307,8 @@ end
 
 ---Return a suitable full path to a new temporary file name.
 -- unlike os.tmpnam(), it always gives you a writeable path (uses %TMP% on Windows)
+-- @return full path to temporary file
+-- @raise if P is not a string
 function path.tmpname ()
     local res = tmpnam()
     if path.is_windows then res = getenv('TMP')..res end
@@ -292,6 +318,9 @@ end
 --- return the largest common prefix path of two paths.
 -- @param path1 a file path
 -- @param path2 a file path
+-- @return largest common prefix
+-- @raise if paths are not strings
+-- @usage common_prefix('/usr/local/bin','/usr/local/share') == '/usr/local'
 function path.common_prefix (path1,path2)
     assert_string(1,path1)
     assert_string(2,path2)
@@ -319,6 +348,7 @@ end
 -- @param mod name of the module
 -- @return on success: path of module, lua or binary
 -- @return on error: nil,error string
+-- @raise if mod is not a string
 function path.package_path(mod)
     assert_string(1,mod)
     local res
