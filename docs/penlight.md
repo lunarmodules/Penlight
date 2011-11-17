@@ -43,9 +43,9 @@ or informally like:
 
 `require 'pl'` makes all the separate Penlight modules available, without needing to require them each individually..   Generally, the formal way is better when writing modules, since then there are no global side-effects and the dependencies of your module are made explicit.
 
-With Penlight after 0.9, please note that `require 'pl.utils'` no longer implies that a global table `pl.tuils` exists, since these new modules are no longer created with `module()`.
+With Penlight after 0.9, please note that `require 'pl.utils'` no longer implies that a global table `pl.utils` exists, since these new modules are no longer created with `module()`.
 
-Penlight will not bring in functions into the global table, or clobber standard tables like 'io'.  require('pl') will bring tables like 'utils','tablex',etc into the global table _if they are used_. This 'load-on-demand' strategy ensures that the whole kitchen sink is not loaded up front,  so this method is as efficient as explicitly loading required modules. 
+Penlight will not bring in functions into the global table, or clobber standard tables like 'io'.  require('pl') will bring tables like 'utils','tablex',etc into the global table _if they are used_. This 'load-on-demand' strategy ensures that the whole kitchen sink is not loaded up front,  so this method is as efficient as explicitly loading required modules.
 
 You have an option to bring the `pl.stringx` methods into the standard string table. All strings have a metatable that allows for automatic lookup in `string`, so we can say `s:upper()`. Importing `stringx` allows for its functions to also be called as methods: `s:strip()`,etc:
 
@@ -76,13 +76,13 @@ Keeping the global scope simple is very necessary with dynamic languages. Using 
 
 The `strict` module provided by Penlight is compatible with the 'load-on-demand' scheme used by `require 'pl`.
 
-`strict` also disallows assignment to global variables, except in the main program. Generally, modules have no business messing with global scope; if you must do it, then use a call to `rawset`. Simularly, if you have to check for the existance of a global, use `rawget`.
+`strict` also disallows assignment to global variables, except in the main program. Generally, modules have no business messing with global scope; if you must do it, then use a call to `rawset`. Similarly, if you have to check for the existance of a global, use `rawget`.
 
 If you wish to enforce strictness globally, then just add `require 'pl.strict'` at the end of `pl/init.lua`.
 
 ### What are function arguments in Penlight?
 
-Many functions in Penlight themselves take function arguments, like `map` which applies a function to a list, element by element.  You can use existing functions, like `math.max`, anonymous functions (like `function(x,y) return x > y end`), or operations by name (e.g '*' or '..').  The module `pl.operator` exports all the standard Lua operations, like the Python module of the same name. Penlight allows these to be refered to by name, so `operator.gt` can be more concisely expressed as '>'.
+Many functions in Penlight themselves take function arguments, like `map` which applies a function to a list, element by element.  You can use existing functions, like `math.max`, anonymous functions (like `function(x,y) return x > y end`), or operations by name (e.g '*' or '..').  The module `pl.operator` exports all the standard Lua operations, like the Python module of the same name. Penlight allows these to be referred to by name, so `operator.gt` can be more concisely expressed as '>'.
 
 Note that the `map` functions pass any extra arguments to the function, so we can have `ls:filter('>',0)`, which is a shortcut for `ls:filter(function(x) return x > 0 end)`.
 
@@ -94,6 +94,11 @@ To use them directly, note that _all_ function arguments in Penlight go through 
     > = List{10,20,30}:map(_1+1)
     {11,21,31}
 
+Another option for short anonymous functions is provided by `utils.string_lambda`; since 0.9 you have to explicitly ask for this feature:
+
+    > L = require 'pl.utils'.string_lambda
+    > = List{10,20,30}:map (L'|x| x + 1')
+    {11,21,31}
 
 ### Pros and Cons of Loopless Programming
 
@@ -104,12 +109,13 @@ The standard loops-and-ifs 'imperative' style of programming is dominant, and of
         res[i] = fun(ls[i])
     end
 
-This can be efficiently and succintly expressed as `ls:map(fun)`. Not only is there less typing but the intention of the code is clearer. If readers of your code spend too much time trying to guess your intention by analyzing your loops, then you have failed to express yourself clearly. Simularly, `ls:filter('>',0)` will give you all the values in a list greater than zero. (Of course, if you don't feel like using `List`, or have non-list-like tables, then `pl.tablex` offers the same facilities. In fact, the `List` methods are implemented using `tablex' functions.)
+This can be efficiently and succintly expressed as `ls:map(fun)`. Not only is there less typing but the intention of the code is clearer. If readers of your code spend too much time trying to guess your intention by analyzing your loops, then you have failed to express yourself clearly. Similarly, `ls:filter('>',0)` will give you all the values in a list greater than zero. (Of course, if you don't feel like using `List`, or have non-list-like tables, then `pl.tablex` offers the same facilities. In fact, the `List` methods are implemented using `tablex' functions.)
 
 A common observation is that loopless programming is less efficient, particularly in the way it uses memory. `ls1:map2('*',ls2):reduce '+'` will give you the dot product of two lists, but an unnecessary temporary list is created.  But efficiency is relative to the actual situation, it may turn out to be _fast enough_, or may not appear in any crucial inner loops, etc.
 
 Writing loops is 'error-prone and tedious', as Stroustrup says. But any half-decent editor can be taught to do much of that typing for you. The question should actually be: is it tedious to _read_ loops?  As with natural language, programmers tend to read chunks at a time. A for-loop causes no surprise, and probably little brain activity. One argument for loopless programming is the loops that you _do_ write stand out more, and signal 'something different happening here'.  It should not be an all-or-nothing thing, since most programs require a mixture of idioms that suit the problem.  Some languages (like APL) do nearly everything with map and reduce operations on arrays, and so solutions can sometimes seem forced. Wisdom is knowing when a particular idiom makes a particular problem easy to _solve_ and the solution easy to _explain_ afterwards.
 
+<a id="utils"></a>
 
 ### Utilities. Generally useful functions.
 
@@ -132,7 +138,7 @@ But this will bite you someday when `nil` is one of the arguments, since this wi
           ...
         end
     end
-    
+
 The 'memoize' pattern occurs when you have a function which is expensive to call, but will always return the same value subsequently. `utils.memoize` is given a function, and returns another function. This calls the function the first time, saves the value for that argument, and thereafter for that argument returns the saved value.  This is a more flexible alternative to building a table of values upfront, since in general you won't know what values are needed.
 
     sum = utils.memoize(function(n)
@@ -145,7 +151,14 @@ The 'memoize' pattern occurs when you have a function which is expensive to call
     ...
     s = sum(1e8) --returned saved value!
 
-Penlight is fully compatible with Lua 5.1, 5.2 and LuaJIT 2. To ensure this, `utils` also defines the global Lua 5.2 `loadin` function when needed.  The first argument is the environment of the compiled chunk, the second is the input (either a string or a function) and the third is the source name used in debug information. Using `loadin` should reduce the need to call the deprecated function `setfenv`.
+Penlight is fully compatible with Lua 5.1, 5.2 and LuaJIT 2. To ensure this, `utils` also defines the global Lua 5.2 [load](http://www.lua.org/work/doc/manual.html#pdf-load) function when needed.
+
+ * the input (either a string or a function)
+ * the source name used in debug information
+ * the mode is a string that can have either or both of 'b' or 't', depending on whether the source is a binary chunk or text code (default is 'bt')
+ * the environment for the compiled chunk
+
+Using `load` should reduce the need to call the deprecated function `setfenv`, and make your Lua 5.1 code 5.2-friendly.
 
 <a id="app"/>
 ### Application Support
@@ -159,9 +172,9 @@ Flags may take values. The command-line `--value=open -n10` would result in `{va
 	> pretty.dump(flags)
 	{o='fred',n='10'}
 
-`parse_args` is not intelligent or psychic; it will not convert any flag values or arguments for you, or raise errors. For that, have a look at [#lapp](pl.lapp).
+`parse_args` is not intelligent or psychic; it will not convert any flag values or arguments for you, or raise errors. For that, have a look at [lapp](#lapp).
 
-An application which consists of several files cannot use `require` to load files in the same directory as the main script.  `app.require_here()` ensures that the Lua module path is modified so that files found locally are found first. In the `examples` directory, `test-symbols.lua` uses this function to ensure that it can find `symbols.lua` even if it is not run from this directory.
+An application which consists of several files usually cannot use `require` to load files in the same directory as the main script.  `app.require_here()` ensures that the Lua module path is modified so that files found locally are found first. In the `examples` directory, `test-symbols.lua` uses this function to ensure that it can find `symbols.lua` even if it is not run from this directory.
 
 `app.appfile` will create a filename that your application can use to store its private data, based on the script name. For example, `app.appfile "test.txt"` from a script called `testapp.lua` produces the following file on my Windows machine:
 
@@ -170,6 +183,8 @@ An application which consists of several files cannot use `require` to load file
 and the equivalent on my Linux machine:
 
 	/home/sdonovan/.testapp/test.txt
+
+If `.testapp` does not exist, it will be created.
 
 Penlight makes it convenient to save application data in Lua format. You can use `pretty.dump(t,file)` to write a Lua table in a human-readable form to a file, and `pretty.read(file.read(file))` to generate the table again.
 
@@ -262,7 +277,7 @@ This useful notation is borrowed from Hugo Etchegoyen's [classlib](http://lua-us
 
 ### Python-style Lists
 
-One of the elegant things about Lua is that tables do the job of both lists and dicts (as called in Python) or vectors and maps, (as called in C++), and they do it efficiently.  However, if we are dealing with 'tables with numerical indices' we may as well call them lists and look for operations which particularly make sense for lists. The Penlight `List` class was originally written by Nick Trout for Lua 5.0, and translated to 5.1 and extended by myself.  It seemed that borrowing from Python was a good idea, and this eventually grew into Penlight. (@see list)
+One of the elegant things about Lua is that tables do the job of both lists and dicts (as called in Python) or vectors and maps, (as called in C++), and they do it efficiently.  However, if we are dealing with 'tables with numerical indices' we may as well call them lists and look for operations which particularly make sense for lists. The Penlight `List` class was originally written by Nick Trout for Lua 5.0, and translated to 5.1 and extended by myself.  It seemed that borrowing from Python was a good idea, and this eventually grew into Penlight. (@see List)
 
 Here is an example showing `List` in action; it redefines `__tostring`, so that it can print itself out more sensibly:
 
@@ -349,7 +364,7 @@ Stacks occur everywhere in computing. `List` supports stack-like operations; the
 
 The `Map` class exposes what Python would call a 'dict' interface, and accesses the hash part of the table. The name 'Map' is used to emphasize the interface, not the implementation; it is an object which maps keys onto values; `m['alice']` or the equivalent `m.alice` is the access operation.  This class also provides explicit `set` and `get` methods, which are trivial for regular maps but get interesting when `Map` is subclassed. The other operation is `update`, which extends a map by copying the keys and values from another table, perhaps overwriting existing keys:
 
-    > Map = require 'pl.Map' 
+    > Map = require 'pl.Map'
     > m = Map{one=1,two=2}
     > m:update {three=3,four=4,two=20}
     > = m == M{one=1,two=20,three=3,four=4}
@@ -546,7 +561,7 @@ Note that `find_if` will also return the _actual value_ returned by the function
 
 (Note the special string '==' above; instead of saying `ops.gt` or `ops.eq` we can use the strings '>' or '==' respectively.)
 
-There are several ways to merge tables in PL. If they are list-like, then see the operations defined by `pl.list.List`, like concatenation. If they are map-like, then `merge` provides two basic operations. If the third arg is false, then the result only contains the keys that are in common between the two tables, and if true, then the result contains all the keys of both tables. These are in fact generalized set union and intersection operations:
+There are several ways to merge tables in PL. If they are list-like, then see the operations defined by `pl.List`, like concatenation. If they are map-like, then `merge` provides two basic operations. If the third arg is false, then the result only contains the keys that are in common between the two tables, and if true, then the result contains all the keys of both tables. These are in fact generalized set union and intersection operations:
 
     > S1 = {john=27,jane=31,mary=24}
     > S2 = {jane=31,jones=50}
@@ -600,11 +615,10 @@ Browsing through the documentation, you will find that `tablex` and `List` share
 
 ### Operations on two-dimensional tables
 
-two-dimensional tables are of course easy to represent in Lua, for instance `{{1,2},{3,4}}` where we store rows as subtables and index like so `A[col][row]`. This is the common representation used by matrix libraries like [LuaMatrix](http://lua-users.org/wiki/LuaMatrix). `pl.array2d` does not provide matrix operations, since that is the job for a specialized library, but rather provides generalizations of the higher-level operations provided by `pl.tablex` for one-dimensional arrays.
+Two-dimensional tables are of course easy to represent in Lua, for instance `{{1,2},{3,4}}` where we store rows as subtables and index like so `A[col][row]`. This is the common representation used by matrix libraries like [LuaMatrix](http://lua-users.org/wiki/LuaMatrix). `pl.array2d` does not provide matrix operations, since that is the job for a specialized library, but rather provides generalizations of the higher-level operations provided by `pl.tablex` for one-dimensional arrays.
 
 `iter` is a useful generalization of `ipairs`. (The extra parameter determines whether you want the indices as well.)
 
-    > array = require 'pl.array2d'
     > a = {{1,2},{3,4}}
     > for i,j,v in array2d.iter(a,true) do print(i,j,v) end
     1       1       1
@@ -612,9 +626,9 @@ two-dimensional tables are of course easy to represent in Lua, for instance `{{1
     2       1       3
     2       2       4
 
-Bear in mind that you can always convert an arbitrary 2D array into a 'list of lists' with `List(tablex.map(List,a))`
+Note that you can always convert an arbitrary 2D array into a 'list of lists' with `List(tablex.map(List,a))`
 
-`map` will apply a function over all elements (notice that extra arguments can be provided, so the operation is in effect `function(x) return x-1 end`)
+`map` will apply a function over all elements (notice that extra arguments can be provided, so this operation is in effect `function(x) return x-1 end`)
 
     > array2d.map('-',a,1)
     {{0,1},{2,3}}
@@ -710,9 +724,11 @@ These are convenient borrowings from Python, as described in 3.6.1 of the Python
     two
     three
 
-Most of these can be fairly easily implemented using the Lua string library, which is more general and powerful. But they are convenient operations to have easily at hand. Note that can be injected into the `string` table if you use `require 'pl'` and then `stringx.import()`, or explicitly call `pl.stringx.import()`, but a simple alias like 'stringx = require 'pl.string'` can be used. This is the recommended practice when writing modules for consumption by other people, since it is bad manners to change the global state of the rest of the system.
+Most of these can be fairly easily implemented using the Lua string library, which is more general and powerful. But they are convenient operations to have easily at hand. Note that can be injected into the `string` table if you use `stringx.import()`, but a simple alias like 'local stringx = require 'pl.stringx'` is preferrable. This is the recommended practice when writing modules for consumption by other people, since it is bad manners to change the global state of the rest of the system.
 
 (@see stringx)
+
+<a id="templates"></a>
 
 ### String Templates
 
@@ -765,17 +781,19 @@ New in Penlight with the 0.9 series is `text.format_operator`. Calling this enab
     > text.format_operator()
     > = '%s[%d]' % {'dog',1}
     dog[1]
-    
+
 So in its simplest form it saves the typing involved with `string.format`; it will also expand `$` variables using named fields:
 
     > = '$animal[$num]' % {animal='dog',num=1}
     dog[1]
-    
+
+<a id="rici_templates"></a>
+
 A new module is `template`, which is a version of Rici Lake's [Lua  Preprocessor](http://lua-users.org/wiki/SlightlyLessSimpleLuaPreprocessor).  This allows you to mix Lua code with your templates in a straightforward way. There are only two rules:
 
   - Lines begining with `#` are Lua
   - Otherwise, anything inside `$()` is a Lua expression.
-  
+
 So a template generating an HTML list would look like this:
 
     <ul>
@@ -783,7 +801,7 @@ So a template generating an HTML list would look like this:
     <li>$(i) = $(val:upper())</li>
     # end
     </ul>
-    
+
 Assume the text is inside `tmpl`, then the template can be expanded using:
 
     local template = require 'pl.template'
@@ -796,7 +814,7 @@ and we get
     <li>2 = TWO</li>
     <li>3 = THREE</li>
     </ul>
-  
+
 There is a single function, `substitute` which is passed a template string and an environment table.   This table may contain some special fields, like `_parent` which can be set to a table representing a 'fallback' environment in case a symbol was not found. `_brackets` is usually '()' and `_escape` is usually '#' but it's sometimes necessary to redefine these if the defaults interfere with the target language - for instance, `$(V)` has another meaning in Make, and `#` means a preprocessor line in C/C++.
 
 Finally, if something goes wrong, passing `_debug` will cause the intermediate Lua code to be dumped if there's a problem.
@@ -804,7 +822,7 @@ Finally, if something goes wrong, passing `_debug` will cause the intermediate L
 Here is a C code generation example; something that could easily be extended to be a minimal Lua extension skeleton generator.
 
     local subst = require 'pl.template'.substitute
-    
+
     local templ = [[
     #include <lua.h>
     #include <lauxlib.h>
@@ -832,7 +850,7 @@ Here is a C code generation example; something that could easily be extended to 
     print(subst(templ,{
         _escape = '>',
         ipairs = ipairs,
-        mod = {        
+        mod = {
             name = 'baggins';
             {name='frodo'},
             {name='bilbo'}
@@ -840,6 +858,8 @@ Here is a C code generation example; something that could easily be extended to 
     }))
 
 (@see text, @see template)
+
+<a id="stringio"></a>
 
 ### File-style I/O on Strings
 
@@ -850,7 +870,7 @@ Here is a C code generation example; something that could easily be extended to 
     first line
     > = f:read('*n','*n','*n')
     10	20	30
-    
+
 `lines` and `seek` are also supported.
 
 `stringio.lines` is a useful short-cut for iterating over all the lines in a string.
@@ -914,7 +934,7 @@ Smaller files can be efficiently read and written in one operation. `file.read` 
 
 In previous versions of Penlight, `utils.readfile` would read standard input if the file was not specified, but this can lead to nasty bugs; use `io.read '*a'` to grab all of standard input.
 
-Simularly, `file.write` takes a filename and a string which will be written to that file.
+Similarly, `file.write` takes a filename and a string which will be written to that file.
 
 For example, this little script converts a file into upper case:
 
@@ -981,30 +1001,32 @@ If you need to find the common path of list of files, then `tablex.reduce` will 
 
 ## Date and Time
 
+<a id="date"></a>
+
 ### Manipulating Dates
 
 The `Date` class provides a simplified way to work with [date and time](http://www.lua.org/pil/22.1.html) in Lua; it leans heavily on the functions `os.date` and `os.time`.
 
-A `Date` object can be constructed from a table, just like with `os.time`. Methods are provided to get and set the various parts of the date.  
+A `Date` object can be constructed from a table, just like with `os.time`. Methods are provided to get and set the various parts of the date.
 
     > d = Date {year = 2011, month = 3, day = 2 }
     > = d
-    2011-03-02 12:00
+    2011-03-02 12:00:00
     > = d:month(),d:year(),d:day()
     3	2011	2
     > d:month(4)
     > = d
-    2011-04-02 12:00
+    2011-04-02 12:00:00
     > d:add {day=1}
     > = d
-    2011-04-03 12:00
-    
-`add` takes a table containing one of the date table fields. 
+    2011-04-03 12:00:00
+
+`add` takes a table containing one of the date table fields.
 
     > = d:weekday_name()
     Sun
     > = d:last_day()
-    2011-04-30 12:00
+    2011-04-30 12:00:00
     > = d:month_name(true)
     April
 
@@ -1016,6 +1038,64 @@ There is a default conversion to text for date objects, but `Date.Format` gives 
     > = amer:tostring(d)
     04/10/2010
 
+With the 0.9.7 relase, the `Date` constructor has become more flexible. You may omit any of the 'year', 'month' or 'day' fields:
+
+    > = Date { year = 2008 }
+    2008-01-01 12:00:00
+    > = Date { month = 3 }
+    2011-03-01 12:00:00
+    > = Date { day = 20 }
+    2011-10-20 12:00:00
+    > = Date { hour = 14, min = 30 }
+    2011-10-13 14:30:00
+
+If 'year' is omitted, then the current year is assumed, and likewise for 'month'.
+
+To set the time on such a partial date, you can use the fact that the 'setter' methods return the date object and so you can 'chain' these methods.
+
+    > d = Date { day = 03 }
+    > = d:hour(18):min(30)
+    2011-10-03 18:30:00
+
+Finally, `Date` also now accepts positional arguments:
+
+    > = Date(2011,10,3)
+    2011-10-03 12:00:00
+    > = Date(2011,10,3,18,30,23)
+    2011-10-03 18:30:23
+
+`Date.format` has been extended. If you construct an instance without a pattern, then it will try to match against a set of known formats. This is useful for human-input dates since keeping to a strict format is not one of the strong points of users. It assumes that there will be a date, and then a date.
+
+    > df = Date.Format()
+    > = df:parse '5.30pm'
+    2011-10-13 17:30:00
+    > = df:parse '1730'
+    nil     day out of range: 1730 is not between 1 and 31
+    > = df:parse '17.30'
+    2011-10-13 17:30:00
+    > = df:parse 'mar'
+    2011-03-01 12:00:00
+    > = df:parse '3 March'
+    2011-03-03 12:00:00
+    > = df:parse '15 March'
+    2011-03-15 12:00:00
+    > = df:parse '15 March 2008'
+    2008-03-15 12:00:00
+    > = df:parse '15 March 2008 1.30pm'
+    2008-03-15 13:30:00
+    > = df:parse '2008-10-03 15:30:23'
+    2008-10-03 15:30:23
+
+ISO date format is of course a good idea if you need to deal with users from different countries. Here is the default behaviour for 'short' dates:
+
+    > = df:parse '24/02/12'
+    2012-02-24 12:00:00
+
+That's not what Americans expect! It's tricky to work out in a cross-platform way exactly what the expected format is, so there is an explicit flag:
+
+    > df:US_order(true)
+    > = df:parse '9/11/01'
+    2001-11-09 12:00:00
 
 (@see Date)
 
@@ -1241,7 +1321,7 @@ I've always been an admirer of the AWK programming language; with `filter` (@see
     -- printxy.lua
     require 'pl'
     data.filter 'x,y where x > 3'
-    
+
 It is common enough to have data files without headers of field names. `data.read` makes a special exception for such files if all fields are numeric. Since there are no column names to use in query expressions, you can use AWK-like column indexes, e.g. '$1,$2 where $1 > 3'.  I have a little executable script on my system called `lf` which looks like this:
 
     #!/usr/bin/env lua
@@ -1250,7 +1330,7 @@ It is common enough to have data files without headers of field names. `data.rea
 And it can be used generally as a filter command to extract columns from data. (The column specifications may be expressions or even constants.)
 
     $ lf '$1,$5/10' < test.dat
-    
+
 (As with AWK, please note the single-quotes used in this command; this prevents the shell trying to expand the column indexes. If you are on Windows, then you are fine, but it is still necessary to quote the expression in double-quotes so it is passed as one argument to your batch file.)
 
 As a tutorial resource, have a look at test-data.lua in the PL tests directory for other examples of use, plus comments.
@@ -1509,7 +1589,7 @@ The scanners all have a second optional argument, which is a table which control
 The ultimate highly-structured data is of course, program source. Here is a snippet from 'text-lexer.lua':
 
     require 'pl'
-    
+
     lines = [[
     for k,v in pairs(t) do
         if type(k) == 'number' then
@@ -1534,7 +1614,7 @@ Here is a useful little utility that identifies all common global variables foun
 
     local txt,err = utils.readfile(arg[1])
     if not txt then return print(err) end
-    
+
     local globals = List()
     for t,v in lexer.lua(txt) do
         if t == 'iden' and _G[v] then
@@ -1558,6 +1638,249 @@ Rather then dumping the whole list, with its duplicates, we pass it through `seq
 You could further pass this through `tablex.keys` to get a unique list of symbols. This can be useful when writing 'strict' Lua modules, where all global symbols must be defined as locals at the top of the file.
 
 For a more detailed use of `lexer.scan`, please look at 'testxml.lua' in the examples directory.
+
+### XML
+
+New in the 0.9.7 release is some support for XML. This is a large topic, and Penlight does not provide a full XML stack, which is properly the task of a more specialized library.
+
+#### Parsing and Pretty-Printing
+
+The semi-standard XML parser in the Lua universe is [lua-expat](). In particular, it has a function called `lxp.lom.parse` which will parse XML into the Lua Object Model (LOM) format. However, it does not provide a way to convert this data back into XML text.  `xml.parse` will use this function, _if_ `lua-expat` is available, and otherwise switches back to a pure Lua parser originally written by Roberto Ierusalimschy.
+
+The resulting document object knows how to render itself as a string, which is useful for debugging:
+
+    > d = xml.parse "<nodes><node id='1'>alice</node></nodes>"
+    > = d
+    <nodes><node id='1'>alice</node></nodes>
+    > pretty.dump (d)
+    {
+      {
+        "alice",
+        attr = {
+          "id",
+          id = "1"
+        },
+        tag = "node"
+      },
+      attr = {
+      },
+      tag = "nodes"
+    }
+
+Looking at the actual shape of the data reveals the structure of LOM:
+
+  * every element has a `tag` field with its name
+  * plus a `attr` field which is a table containing the attributes as fields, and also as an array. It is always present.
+  * the children of the element are the array part of the element, so `d[1]` is the first child of `d`, etc.
+
+It could be argued that having attributes also as the array part of `attr` is not essential (you generally cannot depend on attribute order in XML) but that's how it goes with this standard.
+
+`lua-expat` is another _soft dependency_ of Penlight; generally, the fallback parser is good enough for straightforward XML as is commonly found in configuration files, etc. `doc.basic_parse` is not intended to be a proper conforming parser (it's only sixty lines) but it handles simple kinds of documents that do not have comments or DTD directives. It is intelligent enough to ignore the `<?xml` directive and that is about it.
+
+You can get pretty-printing by explicitly calling `xml.tostring` and passing it the initial indent and the per-element indent:
+
+    > = xml.tostring(d,'','  ')
+
+    <nodes>
+      <node id='1'>alice</node>
+    </nodes>
+
+There is a fourth argument which is the _attribute indent_:
+
+    > a = xml.parse "<frodo name='baggins' age='50' type='hobbit'/>"
+    > = xml.tostring(a,'','  ','  ')
+
+    <frodo
+      type='hobbit'
+      name='baggins'
+      age='50'
+    />
+
+#### Parsing and Working with Configuration Files
+
+It's common to find configurations expressed with XML these days. It's straightforward to 'walk' the LOM data and extract the data in the form you want:
+
+    require 'pl'
+
+    local config = [[
+    <config>
+        <alpha>1.3</alpha>
+        <beta>10</beta>
+        <name>bozo</name>
+    </config>
+    ]]
+    local d,err = xml.parse(config)
+
+    local t = {}
+    for item in d:childtags() do
+        t[item.tag] = item[1]
+    end
+
+    pretty.dump(t)
+    --->
+    {
+      beta = "10",
+      alpha = "1.3",
+      name = "bozo"
+    }
+
+The only gotcha is that here we must use the `childtags` method, which will skip over any text elements.
+
+A more involved example is this excerpt from `serviceproviders.xml`, which is usually found at `/usr/share/mobile-broadband-provider-info/serviceproviders.xml` on Debian/Ubuntu Linux systems.
+
+    d = xml.parse [[
+    <serviceproviders format="2.0">
+    <country code="za">
+        <provider>
+            <name>Cell-c</name>
+            <gsm>
+                <network-id mcc="655" mnc="07"/>
+                <apn value="internet">
+                    <username>Cellcis</username>
+                    <dns>196.7.0.138</dns>
+                    <dns>196.7.142.132</dns>
+                </apn>
+            </gsm>
+        </provider>
+        <provider>
+            <name>MTN</name>
+            <gsm>
+                <network-id mcc="655" mnc="10"/>
+                <apn value="internet">
+                    <dns>196.11.240.241</dns>
+                    <dns>209.212.97.1</dns>
+                </apn>
+            </gsm>
+        </provider>
+        <provider>
+            <name>Vodacom</name>
+            <gsm>
+                <network-id mcc="655" mnc="01"/>
+                <apn value="internet">
+                    <dns>196.207.40.165</dns>
+                    <dns>196.43.46.190</dns>
+                </apn>
+                <apn value="unrestricted">
+                    <name>Unrestricted</name>
+                    <dns>196.207.32.69</dns>
+                    <dns>196.43.45.190</dns>
+                </apn>
+            </gsm>
+        </provider>
+        <provider>
+            <name>Virgin Mobile</name>
+            <gsm>
+                <apn value="vdata">
+                    <dns>196.7.0.138</dns>
+                    <dns>196.7.142.132</dns>
+                </apn>
+            </gsm>
+        </provider>
+    </country>
+
+    </serviceproviders>
+    ]]
+
+Getting the names of the providers per-country is straightforward:
+
+    local t = {}
+    for country in d:childtags() do
+        local providers = {}
+        t[country.tag] = providers
+        for provider in country:childtags() do
+            table.insert(providers,provider:child_with_name('name'):get_text())
+        end
+    end
+
+    pretty.dump(t)
+    -->
+    {
+      country = {
+        "Cell-c",
+        "MTN",
+        "Vodacom",
+        "Virgin Mobile"
+      }
+    }
+
+#### Generating XML with 'xmlification'
+
+This feature is inspired by the `htmlify` function used by [Orbit](http://keplerproject.github.com/orbit/) to simplify HTML generation, except that no function environment magic is used; the `tags` function returns a set of _constructors_ for elements of the given tag names.
+
+    > nodes, node = xml.tags 'nodes, node'
+    > = node 'alice'
+    <node>alice</node>
+    > = nodes { node {id='1','alice'}}
+    <nodes><node id='1'>alice</node></nodes>
+
+The flexibility of Lua tables is very useful here, since both the attributes and the children of an element can be encoded naturally. The argument to these tag constructors is either a single value (like a string) or a table where the attributes are the named keys and the children are the array values.
+
+#### Generating XML using Templates
+
+A template is a little XML document which contains dollar-variables. The `subst` method on a document is fed an array of tables containing values for these variables. Note how the parent tag name is specified:
+
+    > templ = xml.parse "<node id='$id'>$name</node>"
+    > = templ:subst {tag='nodes', {id=1,name='alice'},{id=2,name='john'}}
+    <nodes><node id='1'>alice</node><node id='2'>john</node></nodes>
+
+#### Extracting Data using Templates
+
+Matching goes in the opposite direction.  We have a document, and would like to extract values from it using a pattern.
+
+A common use of this is parsing the XML result of API queries.  The [(undocumented) Google Weather API](http://blog.programmableweb.com/2010/02/08/googles-secret-weather-api/) is a good example. Grabbing the result of `http://www.google.com/ig/api?weather=Johannesburg,ZA" we get something like this, after pretty-printing:
+
+    <xml_api_reply version='1'>
+      <weather module_id='0' tab_id='0' mobile_zipped='1' section='0' row='0' mobile_row='0'>
+        <forecast_information>
+          <city data='Johannesburg, Gauteng'/>
+          <postal_code data='Johannesburg,ZA'/>
+          <latitude_e6 data=''/>
+          <longitude_e6 data=''/>
+          <forecast_date data='2010-10-02'/>
+          <current_date_time data='2010-10-02 18:30:00 +0000'/>
+          <unit_system data='US'/>
+        </forecast_information>
+        <current_conditions>
+          <condition data='Clear'/>
+          <temp_f data='75'/>
+          <temp_c data='24'/>
+          <humidity data='Humidity: 19%'/>
+          <icon data='/ig/images/weather/sunny.gif'/>
+          <wind_condition data='Wind: NW at 7 mph'/>
+        </current_conditions>
+        <forecast_conditions>
+          <day_of_week data='Sat'/>
+          <low data='60'/>
+          <high data='89'/>
+          <icon data='/ig/images/weather/sunny.gif'/>
+          <condition data='Clear'/>
+        </forecast_conditions>
+        ....
+       </weather>
+    </xml_api_reply>
+
+Assume that the above XML has been read into `google`. The idea is to write a pattern looking like a template, and use it to extract some values of interest:
+
+    t = [[
+      <weather>
+        <current_conditions>
+          <condition data='$condition'/>
+          <temp_c data='$temp'/>
+        </current_conditions>
+      </weather>
+    ]]
+
+    local res, ret = google:match(t)
+    pretty.dump(res)
+
+And the output is:
+
+    {
+      condition = "Clear",
+      temp = "24"
+    }
+
+The `match` method can be passed a LOM document or some text, which will be parsed first. Note that `$NUMBER` is treated specially as a numerical index, so that `$1` is the first element of the resulting array, etc.
 
 
 ## Functional Programming
@@ -2141,12 +2464,12 @@ Here is a command-line session using this script:
 
       ....(usage as before)
 
-There are two kinds of lines in Lapp usage strings which are meaningful; option and parameter lines. An option line gives the short option, optionally followed by the corresponding long option. A type specifier in parentheses may follow. Simularly, a parameter line starts with '<' PARAMETER '>', followed by a type specifier. Type specifiers are either of the form '(default ' VALUE ')' or '(' TYPE ')'; the default specifier means that the parameter or option has a default value and is not required. TYPE is one of 'string','number','file-in' or 'file-out'; VALUE is a number, one of ('stdin','stdout','stderr') or a token. The rest of the line is not parsed and can be used for explanatory text.
+There are two kinds of lines in Lapp usage strings which are meaningful; option and parameter lines. An option line gives the short option, optionally followed by the corresponding long option. A type specifier in parentheses may follow. Similarly, a parameter line starts with '<' PARAMETER '>', followed by a type specifier. Type specifiers are either of the form '(default ' VALUE ')' or '(' TYPE ')'; the default specifier means that the parameter or option has a default value and is not required. TYPE is one of 'string','number','file-in' or 'file-out'; VALUE is a number, one of ('stdin','stdout','stderr') or a token. The rest of the line is not parsed and can be used for explanatory text.
 
 This script shows the relation between the specified parameter names and the fields in the output table.
 
       -- simple.lua
-      local args = require ('lapp') [[
+      local args = require ('pl.lapp') [[
       Various flags and option types
         -p          A simple optional flag, defaults to false
         -q,--quiet  A simple flag with long name
@@ -2186,8 +2509,8 @@ Files don't really have to be closed explicitly for short scripts with a quick w
 
 The type specifier can also be of the form '(' MIN '..' MAX ')'.
 
-    require 'pl.lapp'
-    local args = pl.lapp [[
+    local lapp = require 'pl.lapp'
+    local args = lapp [[
         Setting ranges
         <x> (1..10)  A number from 1 to 10
         <y> (-5..1e6) Bigger range
@@ -2217,7 +2540,7 @@ You may also define custom types that can be used in the type specifier:
 
 #### 'varargs' Parameter Arrays
 
-    require 'lapp'
+    lapp = require 'pl.lapp'
     local args = lapp [[
     Summing numbers
         <numbers...> (number) A list of numbers to be summed
@@ -2236,7 +2559,7 @@ Consider this implementation of the head utility from Mac OS X:
         -- implements a BSD-style head
         -- (see http://www.manpagez.com/man/1/head/osx-10.3.php)
 
-        require ('lapp')
+        lapp = require ('pl.lapp')
 
         local args = lapp [[
         Print the first few lines of specified files
@@ -2336,7 +2659,7 @@ Callbacks are needed when you want to take action immediately on parsing an argu
 In an ideal world, a program should only load the libraries it needs. Penlight is intended to work in situations where an extra 100Kb of bytecode could be a problem. It is straightforward but tedious to load exactly what you need:
 
     local data = require 'pl.data'
-    local List = require 'pl.List' 
+    local List = require 'pl.List'
     local array2d = require 'pl.array2d'
     local seq = require 'pl.seq'
     local utils = require 'pl.utils'

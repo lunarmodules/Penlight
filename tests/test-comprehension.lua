@@ -59,13 +59,10 @@ assert(({pcall(function() comp 'x for __result' end)})[2]
 
 -- environment.
 -- Note: generated functions are set to the environment of the 'new' call.
-if _VERSION == 'Lua 5.1' then
-    assert(5 == (function()
+ assert(5 == (function()
       local env = {d = 5}
       setfenv(1, env)
       local comp = comp.new()
       return comp 'sum(d for x)' {1}
-    end)());
-end
-
+ end)());
 print 'DONE'

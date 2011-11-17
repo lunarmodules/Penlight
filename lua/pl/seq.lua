@@ -39,7 +39,7 @@ function seq.less_than(x)
 end
 
 -- given any value, return a function(y) which returns true if y == x
--- @param x
+-- @param x a value
 function seq.equal_to(x)
   if type(x) == "number" then
     return function(v)
@@ -53,7 +53,7 @@ function seq.equal_to(x)
 end
 
 --- given a string, return a function(y) which matches y against the string.
--- @param a string
+-- @param s a string
 function seq.matching(s)
   return function(v)
      return strfind(v,s)
@@ -92,7 +92,7 @@ local function default_iter(iter)
   else return iter end
 end
 
-iter = default_iter
+seq.iter = default_iter
 
 --- create an iterator over a numerical range. Like the standard Python function xrange.
 -- @param start a number
@@ -112,8 +112,8 @@ end
 -- @param optional argument to be passed to predicate as second argument.
 function seq.count(iter,condn,arg)
   local i = 0
-  foreach(iter,function(val)
-        if condn(v,arg) then i = i + 1 end
+  seq.foreach(iter,function(val)
+        if condn(val,arg) then i = i + 1 end
   end)
   return i
 end
@@ -148,7 +148,7 @@ end
 -- @param iter a sequence
 -- @return a List
 -- @usage copy(list(ls)) is equal to ls
--- @usage copy(list {1,2,3},List) == List{1,2,3}
+-- @usage copy(list {1,2,3}) == List{1,2,3}
 function seq.copy(iter)
     local res = {}
     for v in default_iter(iter) do
@@ -213,7 +213,7 @@ end
 -- @param iter a sequence
 -- @param comp an optional comparison function (comp(x,y) is true if x < y)
 function seq.sort(iter,comp)
-    local t = copy(iter)
+    local t = seq.copy(iter)
     tsort(t,comp)
     return list(t)
 end
@@ -233,6 +233,7 @@ end
 --- A table where the key/values are the values and value counts of the sequence.
 -- This version works with 'hashable' values like strings and numbers. <br>
 -- pl.tablex.count_map is more general.
+-- @param iter a sequence
 -- @return a map-like table
 -- @return a table
 -- @see pl.tablex.count_map
@@ -252,9 +253,10 @@ end
 -- @param returns_table true if we return a table, not a sequence
 -- @return a sequence or a table; defaults to a sequence.
 function seq.unique(iter,returns_table)
-  local t = count_map(iter)
+  local t = seq.count_map(iter)
   local res = {}
   for k in pairs(t) do tappend(res,k) end
+  table.sort(res)
   if returns_table then
     return res
   else
@@ -323,8 +325,8 @@ function seq.map(fn,iter,arg)
     return function()
         local v1,v2 = iter()
         if v1 == nil then return nil end
-        if arg then return fn(v1,arg)
-        else return fn(v1,v2)
+        if arg then return fn(v1,arg) or false
+        else return fn(v1,v2) or false
         end
     end
 end
@@ -350,19 +352,22 @@ function seq.filter (iter,pred,arg)
 end
 
 --- 'reduce' a sequence using a binary function.
--- @param seq a sequence
 -- @param fun a function of two arguments
+-- @param iter a sequence
+-- @param oldval optional initial value
 -- @usage seq.reduce(operator.add,seq.list{1,2,3,4}) == 10
-function seq.reduce (fun,seq,oldval)
-    if not oldval then
-        seq = default_iter(seq)
-        oldval = seq()
-        fun = function_arg(1,fun)
-    end
-    local val = seq()
-    if val==nil then return oldval
-    else return fun(oldval,reduce(fun,seq,val))
-    end
+-- @usage seq.reduce('-',{1,2,3,4,5}) == -13
+function seq.reduce (fun,iter,oldval)
+   fun = function_arg(1,fun)
+   iter = default_iter(iter)
+   if not oldval then
+       oldval = iter()
+   end
+   local val = oldval
+   for v in iter do
+       val = fun(val,v)
+   end
+   return val
 end
 
 --- take the first n values from the sequence.
@@ -409,7 +414,7 @@ end
 -- @param iter a sequence
 -- @param name the method name
 -- @param arg1 optional first extra argument
--- @param arg1 optional second extra argument
+-- @param arg2 optional second extra argument
 function seq.mapmethod (iter,name,arg1,arg2)
     iter = default_iter(iter)
     return function()
@@ -461,6 +466,7 @@ end
 
 
 -- can't directly look these up in seq because of the wrong argument order...
+local map,reduce,mapmethod = seq.map, seq.reduce, seq.mapmethod
 local overrides = {
     map = function(self,fun,arg)
         return map(fun,self,arg)
@@ -487,7 +493,7 @@ SMT = {
 setmetatable(seq,{
     __call = function(tbl,iter)
         if not callable(iter) then
-            if type(iter) == 'table' then iter = list(iter)
+            if type(iter) == 'table' then iter = seq.list(iter)
             else return iter
             end
         end

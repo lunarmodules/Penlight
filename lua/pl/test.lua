@@ -1,6 +1,5 @@
 --- Useful test utilities.
--- @class module
--- @name pl.test
+-- @module pl.test
 
 local tablex = require 'pl.tablex'
 local utils = require 'pl.utils'
@@ -19,33 +18,45 @@ local function dump(x)
     end
 end
 
---[[
-module ('pl.test',utils._module)
-]]
-
 local test = {}
 
-local function complain (x,y)
+local function complain (x,y,msg)
     local i = debug.getinfo(3)
-    io.stderr:write('assertion failed at '..path.basename(i.short_src)..':'..i.currentline..'\n')
-    print("got:",dump(x))
-    print("needed:",dump(y))
-    utils.quit(1,"these values were not equal")
+    local err = io.stderr
+    err:write(path.basename(i.short_src)..':'..i.currentline..': assertion failed\n')
+    err:write("got:\t",dump(x),'\n')
+    err:write("needed:\t",dump(y),'\n')
+    utils.quit(1,msg or "these values were not equal")
 end
 
 --- like assert, except takes two arguments that must be equal and can be tables.
 -- If they are plain tables, it will use tablex.deepcompare.
 -- @param x any value
 -- @param y a value equal to x
-function test.asserteq (x,y)
-    if x ~= y then
-        local res = false
-        if type(x) == 'table' and type(y) == 'table' then
-            res = tablex.deepcompare(x,y,true)
-        end
-        if not res then
-            complain(x,y)
-        end
+-- @param eps an optional tolerance for numerical comparisons
+function test.asserteq (x,y,eps)
+    local res = x == y
+    if not res then
+        res = tablex.deepcompare(x,y,true,eps)
+    end
+    if not res then
+        complain(x,y)
+    end
+end
+
+--- assert that the first string matches the second.
+-- @param s1 a string
+-- @param s2 a string
+function test.assertmatch (s1,s2)
+    if not s1:match(s2) then
+        complain (s1,s2,"these strings did not match")
+    end
+end
+
+function test.assertraise(fn,e)
+    local ok, err = pcall(unpack(fn))
+    if not err or err:match(e)==nil then
+        complain (err,e,"these errors did not match")
     end
 end
 

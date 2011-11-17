@@ -1,11 +1,10 @@
---if _VERSION == "Lua 5.2" then return print 'broken for Lua 5.2' end
 local asserteq = require 'pl.test' . asserteq
-local app = require 'pl.lapp'
+local lapp = require 'pl.lapp'
 
 local k = 1
 function check (spec,args,match)
     arg = args
-    local args = app(spec)
+    local args = lapp(spec)
     for k,v in pairs(args) do
         if type(v) == 'userdata' then args[k]:close(); args[k] = '<file>' end
     end
@@ -30,7 +29,7 @@ Various flags and option types
     -p          A simple optional flag, defaults to false
     -q,--quiet  A simple flag with long name
     -o  (string)  A required option with argument
-    <input> (default stdin)  Optional input file parameter
+    <input> (default stdin)  Optional input file parameter...
 ]]
 
 check(simple,
@@ -47,4 +46,15 @@ local longs = [[
 
 check(longs,{'--open','folder'},{open='folder'})
 
+local extras1 = [[
+    <files...> (string) A bunch of files
+]]
 
+check(extras1,{'one','two'},{files={'one','two'}})
+
+-- any extra parameters go into the array part of the result
+local extras2 = [[
+    <file> (string) A file
+]]
+
+check(extras2,{'one','two'},{file='one','two'})

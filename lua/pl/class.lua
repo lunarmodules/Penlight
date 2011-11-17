@@ -2,19 +2,16 @@
 -- Two possible notations: <br> <code> B = class(A) </code> or <code> class.B(A) </code>. <br>
 -- <p>The latter form creates a named class. </p>
 -- See the Guide for further <a href="../../index.html#class">discussion</a>
--- @class module
--- @name pl.class
+-- @module pl.class
 
---[[
-module ('pl.class')
-]]
-
-
+local error, getmetatable, io, pairs, rawget, rawset, setmetatable, tostring, type =
+    _G.error, _G.getmetatable, _G.io, _G.pairs, _G.rawget, _G.rawset, _G.setmetatable, _G.tostring, _G.type
 -- this trickery is necessary to prevent the inheritance of 'super' and
 -- the resulting recursive call problems.
 local function call_ctor (c,obj,...)
     -- nice alias for the base class ctor
-    if rawget(c,'_base') then obj.super = c._base._init end
+    local base = rawget(c,'_base')
+    if base then obj.super = rawget(base,'_init') end
     local res = c._init(obj,...)
     obj.super = nil
     return res
@@ -133,11 +130,16 @@ end
 -- @param base optional base class
 -- @param c_arg optional parameter to class ctor
 -- @param c optional table to be used as class
-local class = setmetatable({},{
+local class
+class = setmetatable({},{
     __call = function(fun,...)
         return _class(...)
     end,
     __index = function(tbl,key)
+        if key == 'class' then
+            io.stderr:write('require("pl.class").class is deprecated. Use require("pl.class")\n')
+            return class
+        end
         local env = _G
         return function(...)
             local c = _class(...)

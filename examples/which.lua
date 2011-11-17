@@ -1,7 +1,7 @@
 -- a simple implementation of the which command. This looks for
 -- the given file on the path. On windows, it will assume an extension
 -- of .exe if no extension is given.
-local List = require 'pl.list'.List
+local List = require 'pl.List'
 local path = require 'pl.path'
 
 local pathl = List.split(os.getenv 'PATH',path.dirsep)

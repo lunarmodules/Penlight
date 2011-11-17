@@ -12,3 +12,34 @@ asserteq(array.column(A,2),{2,20,200,2000})
 asserteq(array.reduce_rows('+',A),{10,100,1000,10000})
 asserteq(array.reduce_cols('+',A),{1111,2222,3333,4444})
 
+--array.write(A)
+
+local dump = require 'pl.pretty'.dump
+
+asserteq(array.range(A,'A1:B1'),{1,2})
+
+asserteq(array.range(A,'A1:B2'),{{1,2},{10,20}})
+
+asserteq(
+    array.product('..',{1,2,3},{'a','b','c'}),
+    {{'1a','2a','3a'},{'1b','2b','3b'},{'1c','2c','3c'}}
+)
+
+asserteq(
+    array.product('{}',{1,2},{'a','b','c'}),
+    {{{1,'a'},{2,'a'}},{{1,'b'},{2,'b'}},{{1,'c'},{2,'c'}}}
+)
+
+asserteq(
+    array.flatten {{1,2},{3,4},{5,6}},
+    {1,2,3,4,5,6}
+)
+
+asserteq(
+    array.reduce2('+','*',{{1,10},{2,10},{3,10}}),
+    60 -- i.e. 1*10 + 2*10 + 3*10
+)
+
+
+
+

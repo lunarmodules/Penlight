@@ -117,7 +117,7 @@ don,3
 dilbert,10
 ]])
 
--- data may not always have column headers. When creating a data object 
+-- data may not always have column headers. When creating a data object
 -- from a two-dimensional array, must specify the fieldnames, as a list or a string.
 -- The delimiter is deduced from the fieldname string, so a string just containing
 -- the delimiter will set it,  and the fieldnames will be empty.
@@ -149,9 +149,9 @@ local res = dat:copy_select '$1,$3 where $1 > 5'
 local L = List
 asserteq(L(res),L{
     L{6, 18},
-    L{7,	21},
-    L{8,	24},
-    L{9,	27},
+    L{7,21},
+    L{8,24},
+    L{9,27},
     L{10,30},
 })
 

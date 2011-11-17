@@ -1,4 +1,6 @@
 --- Pretty-printing Lua tables.
+-- Also provides a sandboxed Lua table reader and
+-- a function to present large numbers in human-friendly format.
 -- @class module
 -- @name pl.pretty
 
@@ -8,14 +10,10 @@ local utils = require 'pl.utils'
 local lexer = require 'pl.lexer'
 local assert_arg = utils.assert_arg
 
---[[
-module('pl.pretty',utils._module)
-]]
-
 local pretty = {}
 
 --- read a string representation of a Lua table.
--- Uses loadstring, but tries to be cautious about loading arbitrary code!
+-- Uses load(), but tries to be cautious about loading arbitrary code!
 -- It is expecting a string of the form '{...}', with perhaps some whitespace
 -- before or after the curly braces. An empty environment is used, and
 -- any occurance of the keyword 'function' will be considered a problem.
@@ -32,7 +30,7 @@ function pretty.read(s)
             end
         end
     end
-    local chunk,err = loadin({},'return '..s,'tbl')
+    local chunk,err = utils.load('return '..s,'tbl','t',{})
     if not chunk then return nil,err end
     return chunk()
 end
@@ -49,16 +47,28 @@ local keywords
 
 
 ---	Create a string representation of a Lua table.
+--  This function never fails, but may complain by returning an
+--  extra value. Normally puts out one item per line, using
+--  the provided indent; set the second parameter to '' if
+--  you want output on one line.
 --	@param tbl {table} Table to serialize to a string.
 --	@param space {string} (optional) The indent to use.
 --		Defaults to two spaces.
 --	@param not_clever {bool} (optional) Use for plain output, e.g {['key']=1}.
 --		Defaults to false.
+--  @return a string
+--  @return a possible error message
 function pretty.write (tbl,space,not_clever)
-    assert_arg(1,tbl,'table')
+    if type(tbl) ~= 'table' then
+        local res = tostring(tbl)
+        if type(tbl) == 'string' then res = '"'..res..'"' end
+        return res, 'not a table'
+    end
     if not keywords then
         keywords = lexer.get_keywords()
     end
+    local set = ' = '
+    if space == '' then set = '=' end
     space = space or '  '
     local lines = {}
     local line = ''
@@ -120,26 +130,26 @@ function pretty.write (tbl,space,not_clever)
             tables[t] = true
             local newindent = indent..space
             putln('{')
-            local max = 0
+            local used = {}
             if not not_clever then
                 for i,val in ipairs(t) do
                     put(indent)
                     writeit(val,indent,newindent)
-                    max = i
+                    used[i] = true
                 end
             end
             for key,val in pairs(t) do
                 local numkey = type(key) == 'number'
                 if not_clever then
                     key = tostring(key)
-                    put(indent..index(numkey,key)..' = ')
+                    put(indent..index(numkey,key)..set)
                     writeit(val,indent,newindent)
                 else
-                    if not numkey or key < 1 or key > max then -- non-array indices
+                    if not numkey or not used[key] then -- non-array indices
                         if numkey or not is_identifier(key) then
                             key = index(numkey,key)
                         end
-                        put(indent..key..' = ')
+                        put(indent..key..set)
                         writeit(val,indent,newindent)
                     end
                 end
@@ -157,14 +167,57 @@ end
 
 ---	Dump a Lua table out to a file or stdout.
 --	@param t {table} The table to write to a file or stdout.
---	@param ... {string} (optional) File name to write too. Defaults to writing
+--	@param fname {string} (optional) File name to write too. Defaults to writing
 --		to stdout.
 function pretty.dump (t,...)
-    if select('#',...) == 0 then
+    if select('#',...)==0 then
         print(pretty.write(t))
         return true
     else
-        return utils.writefile((select(1,...)),pretty.write(t))
+        return utils.writefile(...,pretty.write(t))
+    end
+end
+
+local memp,nump = {'B','KiB','MiB','GiB'},{'','K','M','B'}
+
+local comma
+function comma (val)
+    local thou = math.floor(val/1000)
+    if thou > 0 then return comma(thou)..','..(val % 1000)
+    else return tostring(val) end
+end
+
+--- format large numbers nicely for human consumption.
+-- @param num a number
+-- @param kind one of 'M' (memory in KiB etc), 'N' (postfixes are 'K','M' and 'B')
+-- and 'T' (use commas as thousands separator)
+-- @param prec number of digits to use for 'M' and 'N' (default 1)
+function pretty.number (num,kind,prec)
+    local fmt = '%.'..(prec or 1)..'f%s'
+    if kind == 'T' then
+        return comma(num)
+    else
+        local postfixes, fact
+        if kind == 'M' then
+            fact = 1024
+            postfixes = memp
+        else
+            fact = 1000
+            postfixes = nump
+        end
+        local div = fact
+        local k = 1
+        while num >= div and k <= #postfixes do
+            div = div * fact
+            k = k + 1
+        end
+        div = div / fact
+        if k > #postfixes then k = k - 1; div = div/fact end
+        if k > 1 then
+            return fmt:format(num/div,postfixes[k] or 'duh')
+        else
+            return num..postfixes[1]
+        end
     end
 end
 

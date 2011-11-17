@@ -2,10 +2,12 @@
 -- @class module
 -- @name pl.array2d
 
+local require, type,tonumber,assert,tostring,io,ipairs,string,table =
+ _G.require, _G.type,_G.tonumber,_G.assert,_G.tostring,_G.io,_G.ipairs,_G.string,_G.table
 local ops = require 'pl.operator'
 local tablex = require 'pl.tablex'
 local utils = require 'pl.utils'
-local type,tonumber,assert,tostring = type,tonumber,assert,tostring
+
 local imap,tmap,reduce,keys,tmap2,tset,index_by = tablex.imap,tablex.map,tablex.reduce,tablex.keys,tablex.map2,tablex.set,tablex.index_by
 local remove = table.remove
 local perm = require 'pl.permute'
@@ -23,6 +25,7 @@ local array2d = {}
 -- @param a 2d array
 -- @param key an index or key
 -- @return 1d array
+-- @raise a must be a table
 function array2d.column (a,key)
     assert_arg(1,a,'table')
     return imap(ops.index,a,key)
@@ -34,6 +37,7 @@ local column = array2d.column
 -- @param a 2d array
 -- @param arg an optional extra argument to be passed to the function.
 -- @return 2d array
+-- @raise a must be a table
 function array2d.map (f,a,arg)
     assert_arg(1,a,'table')
     f = utils.function_arg(1,f)
@@ -44,6 +48,7 @@ end
 -- @param f a binary function
 -- @param a 2d array
 -- @return 1d array
+-- @raise a must be a table
 -- @see pl.tablex.reduce
 function array2d.reduce_rows (f,a)
     assert_arg(1,a,'table')
@@ -56,6 +61,7 @@ end
 -- @param f a binary function
 -- @param a 2d array
 -- @return 1d array
+-- @raise a must be a table
 -- @see pl.tablex.reduce
 function array2d.reduce_cols (f,a)
     assert_arg(1,a,'table')
@@ -66,9 +72,11 @@ end
 -- @param opc operation to reduce the final result
 -- @param opr operation to reduce the rows
 -- @param a 2D array
+-- @return a scalar
+-- @raise a must be a table
 function array2d.reduce2 (opc,opr,a)
-    assert_arg(1,a,'table')
-    local tmp = reduce_rows(opr,a)
+    assert_arg(3,a,'table')
+    local tmp = array2d.reduce_rows(opr,a)
     return reduce(opc,tmp)
 end
 
@@ -85,6 +93,7 @@ end
 -- @param b 1d or 2d array
 -- @param arg optional extra argument to pass to function
 -- @return 2D array, unless both arrays are 1D
+-- @raise a and b must be tables
 function array2d.map2 (f,ad,bd,a,b,arg)
     assert_arg(1,a,'table')
     assert_arg(2,b,'table')
@@ -112,16 +121,42 @@ end
 -- @param t1 a 1d table
 -- @param t2 a 1d table
 -- @return 2d table
+-- @raise f must be callable and t1, t2 must be tables
+-- @usage product('..',{1,2},{'a','b'}) == {{'1a','2a'},{'1b','2b'}}
 function array2d.product (f,t1,t2)
-    assert_arg(1,t1,'table')
-    assert_arg(2,t2,'table')
-    return map2(f,1,2,t1,perm.table(t2))
+    f = utils.function_arg(1,f)
+    assert_arg(2,t1,'table')
+    assert_arg(3,t2,'table')
+    local res, map = {}, tablex.map
+    for i,v in ipairs(t2) do
+        res[i] = map(f,t1,v)
+    end
+    return res
+end
+
+--- flatten a 2D array.
+-- (this goes over columns first.)
+-- @param t 2d table
+-- @return a 1d table
+-- @raise t must be a table
+-- @usage flatten {{1,2},{3,4},{5,6}} == {1,2,3,4,5,6}
+function array2d.flatten (t)
+    local res = {}
+    local k = 1
+    for _,a in ipairs(t) do -- for all rows
+        for i = 1,#a do
+            res[k] = a[i]
+            k = k + 1
+        end
+    end
+    return res
 end
 
 --- swap two rows of an array.
 -- @param t a 2d array
 -- @param i1 a row index
 -- @param i2 a row index
+-- @raise t must be a table
 function array2d.swap_rows (t,i1,i2)
     assert_arg(1,t,'table')
     t[i1],t[i2] = t[i2],t[i1]
@@ -131,6 +166,7 @@ end
 -- @param t a 2d array
 -- @param i1 a column index
 -- @param i2 a column index
+-- @raise t must be a table
 function array2d.swap_cols (t,j1,j2)
     assert_arg(1,t,'table')
     for i = 1,#t do
@@ -142,6 +178,8 @@ end
 --- extract the specified rows.
 -- @param a 2d array
 -- @param ridx a table of row indices
+-- @return a table of corresponding rows
+-- @raise t must be a table
 function array2d.extract_rows (t,ridx)
     return index_by(t,ridx)
 end
@@ -149,6 +187,8 @@ end
 --- extract the specified columns.
 -- @param a 2d array
 -- @param cidx a table of column indices
+-- @return a table of corresponding columns
+-- @raise t must be a table
 function array2d.extract_cols (t,cidx)
     assert_arg(1,t,'table')
     for i = 1,#t do
@@ -161,11 +201,13 @@ end
 -- @name array2d.remove_row
 -- @param t a 2d array
 -- @param i a row index
+-- @raise t must be a table
 array2d.remove_row = remove
 
 --- remove a column from an array.
 -- @param t a 2d array
 -- @param j a column index
+-- @raise t must be a table
 function array2d.remove_col (t,j)
     assert_arg(1,t,'table')
     for i = 1,#t do
@@ -197,6 +239,7 @@ end
 -- @return start row
 -- @return end col
 -- @return end row
+-- @raise 'bad cell specifier'
 function array2d.parse_range (s)
     if s:find ':' then
         local start,finish = splitv(s,':')
@@ -209,24 +252,24 @@ function array2d.parse_range (s)
     end
 end
 
---- get a slice of a 2D array using spreadsheet range notation (see <a href="#array2d.parse_range">parse_range</a>).
+--- get a slice of a 2D array using spreadsheet range notation. @see parse_range
 -- @param t a 2D array
 -- @param rstr range expression
 -- @return a slice
+-- @raise t must be a table; 'bad cell specifier'
 -- @see array2d.parse_range
 -- @see array2d.slice
 function array2d.range (t,rstr)
     assert_arg(1,t,'table')
-    local i1,j1,i2,j2 = parse_range(rstr)
+    local i1,j1,i2,j2 = array2d.parse_range(rstr)
     if i2 then
-        return slice(t,i1,j1,i2,j2)
+        return array2d.slice(t,i1,j1,i2,j2)
     else -- single value
         return t[i1][j1]
     end
 end
 
 local function default_range (t,i1,j1,i2,j2)
-    assert(t and type(t)=='table','not a table')
     i1,j1 = i1 or 1, j1 or 1
     i2,j2 = i2 or #t, j2 or #t[1]
     return i1,j1,i2,j2
@@ -240,6 +283,7 @@ end
 -- @param i2 end row   (default N)
 -- @param j1 end col   (default M)
 -- @return an array, 2D in general but 1D in special cases.
+-- @raise t must be a table
 function array2d.slice (t,i1,j1,i2,j2)
     assert_arg(1,t,'table')
     i1,j1,i2,j2 = default_range(t,i1,j1,i2,j2)
@@ -268,6 +312,7 @@ end
 -- @param j1 start col (default 1)
 -- @param i2 end row   (default N)
 -- @param j1 end col   (default M)
+-- @raise t must be a table
 function array2d.set (t,value,i1,j1,i2,j2)
     i1,j1,i2,j2 = default_range(t,i1,j1,i2,j2)
     for i = i1,i2 do
@@ -283,6 +328,7 @@ end
 -- @param j1 start col (default 1)
 -- @param i2 end row   (default N)
 -- @param j1 end col   (default M)
+-- @raise t must be a table
 function array2d.write (t,f,fmt,i1,j1,i2,j2)
     assert_arg(1,t,'table')
     f = f or stdout
@@ -295,7 +341,7 @@ function array2d.write (t,f,fmt,i1,j1,i2,j2)
     local function newline()
         f:write '\n'
     end
-    forall(t,rowop,newline,i1,j1,i2,j2)
+    array2d.forall(t,rowop,newline,i1,j1,i2,j2)
 end
 
 --- perform an operation for all values in a 2D array.
@@ -306,6 +352,7 @@ end
 -- @param j1 start col (default 1)
 -- @param i2 end row   (default N)
 -- @param j1 end col   (default M)
+-- @raise t must be a table
 function array2d.forall (t,row_op,end_row_op,i1,j1,i2,j2)
     assert_arg(1,t,'table')
     i1,j1,i2,j2 = default_range(t,i1,j1,i2,j2)
@@ -326,6 +373,7 @@ end
 -- @param i2 end row   (default N)
 -- @param j1 end col   (default M)
 -- @return either value or i,j,value depending on indices
+-- @raise a must be a table
 function array2d.iter (a,indices,i1,j1,i2,j2)
     assert_arg(1,a,'table')
     local norowset = not (i2 and j2)
@@ -350,6 +398,10 @@ function array2d.iter (a,indices,i1,j1,i2,j2)
     end
 end
 
+--- iterate over all columns in a 2D array.
+-- @param a a 2D array
+-- @raise a must be a table
+-- @return iterator over columns
 function array2d.columns (a)
     assert_arg(1,a,'table')
     local n = a[1][1]

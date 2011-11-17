@@ -1,4 +1,15 @@
---- reading and writing strings using file-like objects. <br>
+--- Reading and writing strings using file-like objects. <br>
+-- <pre class=example>
+--  f = stringio.open(text)
+--  l1 = f:read()  -- read first line
+--  n,m = f:read ('*n','*n') -- read two numbers
+--  for line in f:lines() do print(line) end -- iterate over all lines
+--  f = stringio.create()
+--  f:write('hello')
+--  f:write('dolly')
+--  assert(f:value(),'hellodolly')
+-- </pre>
+-- See  <a href="../../index.html#stringio">the Guide</a>.
 -- @class module
 -- @name pl.stringio
 
@@ -113,9 +124,9 @@ function SR:close() -- for compatibility only
 end
  
 --- create a file-like object which can be used to construct a string.
--- The resulting object has an extra value() method for
+-- The resulting object has an extra <code>value()</code> method for
 -- retrieving the string value.
---  @usage f = create(); f:write('hello, dolly\n'); print(f:value()) 
+-- @usage f = create(); f:write('hello, dolly\n'); print(f:value()) 
 function stringio.create()
     return setmetatable({tbl={}},SW)
 end

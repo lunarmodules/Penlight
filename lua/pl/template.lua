@@ -1,10 +1,22 @@
---- a template preprocessor.
--- Originally by Ricki Lake, see
--- There are two rules: <ul>
+--- A template preprocessor.
+-- Originally by <a href="http://lua-users.org/wiki/SlightlyLessSimpleLuaPreprocessor">Ricki Lake</a>
+-- <p>There are two rules: <ul>
 -- <li>lines starting with # are Lua</li>
 -- <li> otherwise, `$(expr)` is the result of evaluating `expr`</li>
 -- </ul>
--- (Other escape characters can be used.)
+-- <pre class=example>
+-- #  for i = 1,3 do
+--    $(i) Hello, Word!
+-- #  end
+-- </pre>
+-- Other escape characters can be used, when the defaults conflict
+-- with the output language.
+-- <pre class=example>
+-- > for _,n in pairs{'one','two','three'} do
+--  static int l_${n} (luaState *state);
+-- > end
+-- </pre>
+-- See  <a href="../../index.html#rici_templates">the Guide</a>.
 -- @class module
 -- @name pl.template
 
@@ -12,19 +24,12 @@
     module('pl.template')
 ]]
 
+local utils = require 'pl.utils'
 local append,format = table.insert,string.format
-
-if not loadin then -- Lua 5.2 compatibility
-    function loadin(env,str,name)
-        local chunk,err = loadstring(str,name)
-        if chunk then setfenv(chunk,env) end
-        return chunk,err
-    end
-end
 
 local function parseHashLines(chunk,brackets,esc)
     local exec_pat = "()$(%b"..brackets..")()"
-    
+
     local function parseDollarParen(pieces, chunk, s, e)
         local s = 1
         for term, executed, e in chunk:gmatch (exec_pat) do
@@ -35,7 +40,7 @@ local function parseHashLines(chunk,brackets,esc)
         end
         append(pieces, format("%q", chunk:sub(s)))
     end
-    
+
     local esc_pat = esc.."+([^\n]*\n?)"
     local esc_pat1, esc_pat2 = "^"..esc_pat, "\n"..esc_pat
     local  pieces, s = {"return function(_put) ", n = 1}, 1
@@ -67,11 +72,13 @@ local template = {}
 -- </ul>
 function template.substitute(str,env)
     env = env or {}
-    if env._parent then
+    if rawget(env,"_parent") then
         setmetatable(env,{__index = env._parent})
     end
-    local code = parseHashLines(str,env._brackets or '()',env._escape or '#')    
-    local fn,err = loadin(env,code,'TMP')
+    local brackets = rawget(env,"_brackets") or '()'
+    local escape = rawget(env,"_escape") or '#'
+    local code = parseHashLines(str,brackets,escape)
+    local fn,err = utils.load(code,'TMP','t',env)
     if not fn then return nil,err end
     fn = fn()
     local out = {}

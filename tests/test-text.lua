@@ -58,4 +58,68 @@ around the language. That
 is the role of the community.
 ]])
 
+local template = require 'pl.template'
+
+local t = [[
+# for i = 1,3 do
+    print($(i+1))
+# end
+]]
+
+asserteq(template.substitute(t),[[
+    print(2)
+    print(3)
+    print(4)
+]])
+
+t = [[
+> for i = 1,3 do
+    print(${i+1})
+> end
+]]
+
+asserteq(template.substitute(t,{_brackets='{}',_escape='>'}),[[
+    print(2)
+    print(3)
+    print(4)
+]])
+
+t = [[
+# for k,v in pairs(T) do
+    "$(k)", -- $(v)
+# end
+]]
+
+local Tee = {Dog = 'Bonzo', Cat = 'Felix', Lion = 'Leo'}
+
+asserteq(template.substitute(t,{T=Tee,_parent=_G}),[[
+    "Dog", -- Bonzo
+    "Cat", -- Felix
+    "Lion", -- Leo
+]])
+
+-- for those with a fondness for Python-style % formatting...
+T.format_operator()
+asserteq('[%s]' % 'home', '[home]')
+asserteq('%s = %d' % {'fred',42},'fred = 42')
+
+-- mostly works like string.format, except that %s forces use of tostring()
+-- rather than throwing an error
+local List = require 'pl.List'
+asserteq('TBL:%s' % List{1,2,3},'TBL:{1,2,3}')
+
+-- table with keys and format with $
+asserteq('<$one>' % {one=1}, '<1>')
+-- (second arg may also be a function, like os.getenv)
+function subst(k)
+    if k == 'A' then return 'ay'
+    elseif k == 'B' then return 'bee'
+    else return '?'
+    end
+end
+asserteq(
+    '$A & $B' % subst,'ay & bee'
+)
+
+
 

@@ -87,28 +87,34 @@ function tablex.deepcopy(t)
     return res
 end
 
+local abs = math.abs
+
 --- compare two values.
 -- if they are tables, then compare their keys and fields recursively.
 -- @param t1 A value
 -- @param t2 A value
 -- @param ignore_mt if true, ignore __eq metamethod (default false)
+-- @param eps if defined, then used for any number comparisons
 -- @return true or false
-function tablex.deepcompare(t1,t2,ignore_mt)
+function tablex.deepcompare(t1,t2,ignore_mt,eps)
     local ty1 = type(t1)
     local ty2 = type(t2)
     if ty1 ~= ty2 then return false end
     -- non-table types can be directly compared
-    if ty1 ~= 'table' and ty2 ~= 'table' then return t1 == t2 end
+    if ty1 ~= 'table' then
+        if ty1 == 'number' and eps then return abs(t1-t2) < eps end
+        return t1 == t2
+    end
     -- as well as tables which have the metamethod __eq
     local mt = getmetatable(t1)
     if not ignore_mt and mt and mt.__eq then return t1 == t2 end
     for k1,v1 in pairs(t1) do
         local v2 = t2[k1]
-        if v2 == nil or not tablex.deepcompare(v1,v2,ignore_mt) then return false end
+        if v2 == nil or not tablex.deepcompare(v1,v2,ignore_mt,eps) then return false end
     end
     for k2,v2 in pairs(t2) do
         local v1 = t1[k2]
-        if v1 == nil or not tablex.deepcompare(v1,v2,ignore_mt) then return false end
+        if v1 == nil or not tablex.deepcompare(v1,v2,ignore_mt,eps) then return false end
     end
     return true
 end
@@ -255,9 +261,7 @@ function tablex.imap(fun,t,...)
     fun = function_arg(1,fun)
     local res = {}
     for i = 1,#t do
-        local val = fun(t[i],...)
-        if val == nil then return utils.raise 'operation returned nil' end
-        res[i] = val
+        res[i] = fun(t[i],...) or false
     end
     return setmeta(res,t,List)
 end
@@ -564,7 +568,7 @@ end
 -- number of tables. It is equivalent to a matrix transpose.
 -- @usage zip({10,20,30},{100,200,300}) is {{10,100},{20,200},{30,300}}
 function tablex.zip(...)
-    return mapn(function(...) return {...} end,...)
+    return tablex.mapn(function(...) return {...} end,...)
 end
 
 local _copy
@@ -599,11 +603,11 @@ end
 -- @param src a list-like table
 -- @param isrc where to start copying values into destination (default 1)
 -- @param idest where to start copying values from source (default 1)
--- @param n number of elements to copy from source (default source size)
+-- @param nsrc number of elements to copy from source (default source size)
 function tablex.icopy (dest,src,idest,isrc,nsrc)
     assert_arg(1,dest,'table')
     assert_arg(2,src,'table')
-    return _copy(dest,src,idest,isrc,ndest,true)
+    return _copy(dest,src,idest,isrc,nsrc,true)
 end
 
 --- copy an array into another one. <br>

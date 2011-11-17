@@ -11,7 +11,7 @@
 --
 --      print(args.offset + args.scale * args.number)
 -- </pre>
--- Lines begining with '-' are flags; there may be a short and a long name; 
+-- Lines begining with '-' are flags; there may be a short and a long name;
 -- lines begining wih '&lt;var&gt;' are arguments.  Anything in parens after
 -- the flag/argument is either a default, a type name or a range constraint.
 -- <p>See <a href="../../index.html#lapp">the Guide</a>
@@ -46,6 +46,10 @@ local filetypes = {
     stderr = {io.stderr,'file-out'}
 }
 
+--- controls whether to dump usage on error.
+-- Defaults to true
+lapp.show_usage_error = true
+
 --- quit this script immediately.
 -- @param msg optional message
 -- @param no_usage suppress 'usage' display
@@ -63,6 +67,9 @@ end
 -- @param msg a message
 -- @param no_usage suppress 'usage' display
 function lapp.error(msg,no_usage)
+    if not lapp.show_usage_error then
+        no_usage = true
+    end
     lapp.quit(script..':'..msg,no_usage)
 end
 
@@ -141,6 +148,7 @@ local function process_default (sval)
         local ft = filetypes[sval]
         return ft[1],ft[2]
     else
+        if sval:match '^["\']' then sval = sval:sub(2,-2) end
         return sval,'string'
     end
 end
@@ -160,9 +168,8 @@ function lapp.process_options_string(str)
     types = {}
 
     local function check_varargs(s)
-        local res,cnt = s:gsub('%.%.%.%s*','')
-        varargs = cnt > 0
-        return res
+        local res,cnt = s:gsub('^%.%.%.%s*','')
+        return res, (cnt > 0)
     end
 
     local function set_result(ps,parm,val)
@@ -181,13 +188,13 @@ function lapp.process_options_string(str)
 
     for line in lines(str) do
         local res = {}
-        local optspec,optparm,i1,i2,defval,vtype,constraint
+        local optspec,optparm,i1,i2,defval,vtype,constraint,rest
         line = lstrip(line)
         local function check(str)
             return match(str,line,res)
         end
 
-        -- flags: either -<short>, -<short>,--<long> or --<long>
+        -- flags: either '-<short>', '-<short>,--<long>' or '--<long>'
         if check '-$v{short}, --$v{long} $' or check '-$v{short} $' or check '--$v{long} $' then
             if res.long then
                 optparm = res.long
@@ -196,10 +203,12 @@ function lapp.process_options_string(str)
                 optparm = res.short
             end
             if res.short then force_short(res.short) end
-            res.rest = check_varargs(res.rest)
+            res.rest, varargs = check_varargs(res.rest)
         elseif check '$<{name} $'  then -- is it <parameter_name>?
             -- so <input file...> becomes input_file ...
-            optparm = check_varargs(res.name):gsub('%A','_')
+            optparm,rest = res.name:match '([^%.]+)(.*)'
+            optparm = optparm:gsub('%A','_')
+            varargs = rest == '...'
             append(parmlist,optparm)
         end
         if res.rest then -- this is not a pure doc line
@@ -282,8 +291,9 @@ function lapp.process_options_string(str)
             if not parm then
                -- extra unnamed parameters are indexed starting at 1
                parm = iextra
-               iextra = iextra + 1
                ps = { type = 'string' }
+               parms[parm] = ps
+               iextra = iextra + 1
             else
                 ps = parms[parm]
             end

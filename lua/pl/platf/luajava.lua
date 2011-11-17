@@ -1,3 +1,5 @@
+-- experimental support for LuaJava
+--
 local path = {}
 
 

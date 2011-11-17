@@ -17,6 +17,7 @@
 -- Redone for Lua 5.1, Steve Donovan.
 -- @class module
 -- @name pl.List
+-- @pragma nostrip
 
 local tinsert,tremove,concat,tsort = table.insert,table.remove,table.concat,table.sort
 local setmetatable, getmetatable,type,tostring,assert,string,next = setmetatable,getmetatable,type,tostring,assert,string,next
@@ -40,7 +41,6 @@ local Multimap = utils.stdmt.MultiMap
 -- metatable for our list objects
 local List = utils.stdmt.List
 List.__index = List
-List._name = "List"
 List._class = List
 
 local iter
@@ -48,12 +48,16 @@ local iter
 -- we give the metatable its own metatable so that we can call it like a function!
 setmetatable(List,{
     __call = function (tbl,arg)
-        return List:new(arg)
+        return List.new(arg)
     end,
 })
 
-local function makelist (t)
-    return setmetatable(t,List)
+local function makelist (t,obj)
+    local klass = List
+    if obj then
+        klass = getmetatable(obj)
+    end
+    return setmetatable(t,klass)
 end
 
 local function is_list(t)
@@ -64,25 +68,52 @@ local function simple_table(t)
   return type(t) == 'table' and not is_list(t) and #t > 0
 end
 
+function List:_init (src)
+    if src then
+        for v in iter(src) do
+            tinsert(self,v)
+        end
+    end
+end
+
 --- Create a new list. Can optionally pass a table;
 -- passing another instance of List will cause a copy to be created
 -- we pass anything which isn't a simple table to iterate() to work out
--- an appropriate iterator  @see iterate
+-- an appropriate iterator  @see List.iterate
 -- @param t An optional list-like table
 -- @return a new List
 -- @usage ls = List();  ls = List {1,2,3,4}
-function List:new(t)
-  if not t then t={}
-  elseif not simple_table(t) then
-    local tbl = t
-    t = {}
-    for v in iter(tbl) do
-      tinsert(t,v)
+function List.new(t)
+    local ls
+    if not simple_table(t) then
+        ls = {}
+        List._init(ls,t)
+    else
+        ls = t
     end
-  end
-  makelist(t,List)
-  return t
+    makelist(ls)
+    return ls
 end
+
+function List:clone()
+    local ls = makelist({},self)
+    List._init(ls,self)
+    return ls
+end
+
+function List.default_map_with(T)
+    return function(self,name)
+       local f = T[name]
+       if f then
+          return function(self,...)
+             return self:map(f,...)
+          end
+       else
+          error("method not found: "..name,2)
+       end
+    end
+end
+
 
 ---Add an item to the end of the list.
 -- @param i An item
@@ -226,20 +257,28 @@ function List:clear()
   return self
 end
 
+local eps = 1.0e-10
+
 --- Emulate Python's range(x) function.
 -- Include it in List table for tidiness
 -- @param start A number
 -- @param finish A number greater than start; if zero, then 0..start-1
+-- @param incr an optional increment (may be less than 1)
 -- @usage List.range(0,3) == List {0,1,2,3}
-function List.range(start,finish)
+function List.range(start,finish,incr)
   if not finish then
     start = 0
     finish = finish - 1
   end
+  if incr then
+    if not utils.is_integer(incr) then finish = finish + eps end
+  else
+    incr = 1
+  end
   assert_arg(1,start,'number')
   assert_arg(2,finish,'number')
-  local  t = List:new()
-  for i=start,finish do tinsert(t,i) end
+  local t = List.new()
+  for i=start,finish,incr do tinsert(t,i) end
   return t
 end
 
@@ -290,12 +329,12 @@ function List:slice_assign(i1,i2,seq)
     return self
 end
 
---- concatenation operator .. .
+--- concatenation operator.
 -- @param L another List
 -- @return a new list consisting of the list with the elements of the new list appended
 function List:__concat(L)
     assert_arg(1,L,'table')
-    local ls = List(self)
+    local ls = self:clone()
     ls:extend(L)
     return ls
 end
@@ -311,15 +350,14 @@ function List:__eq(L)
     return true
 end
 
---- join the elements of a list using a delimiter.<br>
+--- join the elements of a list using a delimiter. <br>
 -- This method uses tostring on all elements.
 -- @param delim a delimiter string, can be empty.
 -- @return a string
-function List:join (delim,v2s)
-    v2s = v2s or tostring
+function List:join (delim)
     delim = delim or ''
     assert_arg(1,delim,'string')
-    return concat(imap(v2s,self),delim)
+    return concat(imap(tostring,self),delim)
 end
 
 --- join a list of strings. <br>
@@ -339,7 +377,7 @@ local function tostring_q(val)
 end
 
 --- how our list should be rendered as a string. Uses join().
--- @see pl.List:join
+-- @see List:join
 function List:__tostring()
     return '{'..self:join(',',tostring_q)..'}'
 end
@@ -381,7 +419,7 @@ end
 -- @param optional argument to be passed as second argument of the predicate
 -- @return a new filtered list.
 function List:filter (fun,arg)
-    return makelist(filter(self,fun,arg))
+    return makelist(filter(self,fun,arg),self)
 end
 
 --- split a string using a delimiter.
@@ -402,7 +440,7 @@ end
 -- @return a new list: {f(x) for x in self}
 -- @see pl.tablex.imap
 function List:map (fun,...)
-    return imap(fun,self,...)
+    return makelist(imap(fun,self,...),self)
 end
 
 --- apply a function to all elements, in-place.
@@ -420,10 +458,10 @@ end
 -- @return a new list: {f(x,y) for x in self, for x in arg1}
 -- @see pl.tablex.imap2
 function List:map2 (fun,ls,...)
-    return makelist(imap2(fun,self,ls,...))
+    return makelist(imap2(fun,self,ls,...),self)
 end
 
---- apply a named meethod to all elements.
+--- apply a named method to all elements.
 -- Any extra arguments will be passed to the method.
 -- @param name name of method
 -- @param ... extra arguments
@@ -435,10 +473,10 @@ function List:mapm (name,...)
     for i = 1,#t do
       local val = t[i]
       local fn = val[name]
-      if not fn then error(type(val).." does not have method "..name) end
+      if not fn then error(type(val).." does not have method "..name,2) end
       res[i] = fn(val,...)
     end
-    return makelist(res)
+    return makelist(res,self)
 end
 
 --- 'reduce' a list using a binary function.

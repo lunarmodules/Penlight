@@ -6,23 +6,25 @@ local path = require( "pl.path" )
 local asserteq = require( "pl.test" ).asserteq
 local pretty = require( "pl.pretty" )
 
-local expected = {"../docs/function_index.txt"}
+local normpath = path.normpath
 
-local files = dir.getallfiles( "../docs/", "*.txt" )
+local expected = {normpath "../docs/function_index.txt"}
+
+local files = dir.getallfiles( normpath "../docs/", "*.txt" )
 
 asserteq( files, expected )
 
 -- Test move files -----------------------------------------
---
+
 -- Create a dummy file
-local fileName = "poot.txt"
+local fileName = path.tmpname()
 file.write( fileName, string.rep( "poot ", 1000 ) )
 
-local newFileName = "move_test.txt"
+local newFileName = path.tmpname()
 local err, msg = dir.movefile( fileName, newFileName )
 
 -- Make sure the move is successful
-assert( err )
+assert( err, msg )
 
 -- Check to make sure the original file is gone
 

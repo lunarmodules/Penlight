@@ -1,4 +1,5 @@
 asserteq = require('pl.test').asserteq
+T = require 'pl.test' . tuple
 lexer = require 'pl.lexer'
 seq = require 'pl.seq'
 List = require ('pl.List')
@@ -35,8 +36,44 @@ asserteq(ls,List{'for','in','do','if','then','else','end','end'})
 tok = lexer.scan([[
     'help'  "help" "dolly you're fine" "a \"quote\" here"
 ]],nil,{space=true,string=true})
-print(tok())
-print(tok())
-print(tok())
-print(tok())
 
+function t2() local t,v = tok(); return v end
+
+asserteq(t2(),'help')
+asserteq(t2(),'help')
+asserteq(t2(),"dolly you're fine")
+asserteq(t2(),"a \\\"quote\\\" here")  --> NOT convinced this is correct!
+
+tok = lexer.lua('10+2.3') ---> '+' is no longer considered part of the number!
+asserteq(T(tok()),T('number',10))
+asserteq(T(tok()),T('+','+'))
+asserteq(T(tok()),T('number',2.3))
+
+local txt = [==[
+-- comment
+--[[
+block
+comment
+]][[
+hello dammit
+]][[hello]]
+]==]
+
+tok = lexer.lua(txt,{})
+asserteq(tok(),'comment')
+asserteq(tok(),'comment')
+asserteq(tok(),'string')
+asserteq(tok(),'string')
+asserteq(tok(),'space')
+
+txt = [[
+// comment
+/* a long
+set of words */ // more
+]]
+
+tok = lexer.cpp(txt,{})
+asserteq(tok(),'comment')
+asserteq(tok(),'comment')
+asserteq(tok(),'space')
+asserteq(tok(),'comment')

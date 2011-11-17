@@ -1,21 +1,21 @@
 --- Lexical scanner for creating a sequence of tokens from text. <br>
--- <p><code>lexer.scan(s)</code> returns an iterator over all tokens found in the 
--- string <code>s</code>. This iterator returns two values, a token type string 
--- (such as 'string' for quoted string, 'iden' for identifier) and the value of the 
+-- <p><code>lexer.scan(s)</code> returns an iterator over all tokens found in the
+-- string <code>s</code>. This iterator returns two values, a token type string
+-- (such as 'string' for quoted string, 'iden' for identifier) and the value of the
 -- token.
 -- <p>
 -- Versions specialized for Lua and C are available; these also handle block comments
--- and classify keywords as 'keyword' tokens. For example: 
+-- and classify keywords as 'keyword' tokens. For example:
 -- <pre class=example>
 -- > s = 'for i=1,n do'
 -- > for t,v in lexer.lua(s)  do print(t,v) end
 -- keyword for
--- iden    i 
--- =       = 
+-- iden    i
+-- =       =
 -- number  1
--- ,       , 
+-- ,       ,
 -- iden    n
--- keyword do 
+-- keyword do
 -- </pre>
 -- See the Guide for further <a href="../../index.html#lexer">discussion</a> <br>
 -- @class module
@@ -40,11 +40,13 @@ local lexer = {}
 local NUMBER1 = '^[%+%-]?%d+%.?%d*[eE][%+%-]?%d+'
 local NUMBER2 = '^[%+%-]?%d+%.?%d*'
 local NUMBER3 = '^0x[%da-fA-F]+'
+local NUMBER4 = '^%d+%.?%d*[eE][%+%-]?%d+'
+local NUMBER5 = '^%d+%.?%d*'
 local IDEN = '^[%a_][%w_]*'
 local WSPACE = '^%s+'
-local STRING1 = "^'.-[^\\]'"
-local STRING2 = '^".-[^\\]"'
-local STRING3 = '^[\'"][\'"]'
+local STRING1 = [[^'.-[^\\]']]
+local STRING2 = [[^".-[^\\]"]]
+local STRING3 = "^((['\"])%2)" -- empty string
 local PREPRO = '^#.-[^\\]\n'
 
 local plain_matches,lua_matches,cpp_matches,lua_keyword,cpp_keyword
@@ -86,15 +88,6 @@ end
 
 local function cdump(tok)
     return yield('comment',tok)
-end
-
--- handling line comments - want to trim off the excess whitespace (and linefeed)
--- and make it a separate space token. Needed because these patterns grab 
--- upto and including the line end.
-local function cdump_line(tok)
-    local s1 = tok:find '%s*$'
-    yield("comment",tok:sub(1,s1-1))
-    return yield("space",tok:sub(s1))
 end
 
 local function wsdump (tok)
@@ -140,7 +133,6 @@ function lexer.scan (s,matches,filter,options)
         if filter.space then filter[wsdump] = true end
         if filter.comments then
             filter[cdump] = true
-            filter[cdump_line] = true
         end
     end
     if not matches then
@@ -159,7 +151,7 @@ function lexer.scan (s,matches,filter,options)
         end
         matches = plain_matches
     end
-    function lex ()
+    local function lex ()
         local i1,i2,idx,res1,res2,tok,pat,fun,capt
         local line = 1
         if file then s = file:read()..'\n' end
@@ -203,11 +195,11 @@ function lexer.scan (s,matches,filter,options)
                     end
                     if idx > sz then
                         if file then
-                            repeat -- next non-empty line
+                            --repeat -- next non-empty line
                                 line = line + 1
                                 s = file:read()
                                 if not s then return end
-                            until not s:match '^%s*$'
+                            --until not s:match '^%s*$'
                             s = s .. '\n'
                             idx ,sz = 1,#s
                             break
@@ -304,19 +296,20 @@ function lexer.lua(s,filter,options)
             {WSPACE,wsdump},
             {NUMBER3,ndump},
             {IDEN,lua_vdump},
-            {NUMBER1,ndump},
-            {NUMBER2,ndump},
+            {NUMBER4,ndump},
+            {NUMBER5,ndump},
             {STRING3,sdump},
             {STRING1,sdump},
             {STRING2,sdump},
-            {'^%-%-.-\n',cdump_line},
-            {'^%[%[.+%]%]',sdump_l},
-            {'^%-%-%[%[.+%]%]',cdump},
+            {'^%-%-%[%[.-%]%]',cdump},
+            {'^%-%-.-\n',cdump},
+            {'^%[%[.-%]%]',sdump_l},
             {'^==',tdump},
             {'^~=',tdump},
             {'^<=',tdump},
             {'^>=',tdump},
             {'^%.%.%.',tdump},
+            {'^%.%.',tdump},
             {'^.',tdump}
         }
     end
@@ -340,7 +333,7 @@ function lexer.cpp(s,filter,options)
             ["if"] = true, ["static"] = true,  ["const"] = true, ["typedef"] = true,
             ["enum"] = true, ["char"] = true, ["int"] = true, ["bool"] = true,
             ["long"] = true, ["float"] = true, ["true"] = true, ["delete"] = true,
-            ["double"] = true,  ["while"] = true, ["new"] = true, 
+            ["double"] = true,  ["while"] = true, ["new"] = true,
             ["namespace"] = true, ["try"] = true, ["catch"] = true,
             ["switch"] = true, ["case"] = true, ["extern"] = true,
             ["return"] = true,["default"] = true,['unsigned']  = true,['signed'] = true,
@@ -353,12 +346,12 @@ function lexer.cpp(s,filter,options)
             {PREPRO,pdump},
             {NUMBER3,ndump},
             {IDEN,cpp_vdump},
-            {NUMBER1,ndump},
-            {NUMBER2,ndump},
+            {NUMBER4,ndump},
+            {NUMBER5,ndump},
             {STRING3,sdump},
             {STRING1,chdump},
             {STRING2,sdump},
-            {'^//.-\n',cdump_line},
+            {'^//.-\n',cdump},
             {'^/%*.-%*/',cdump},
             {'^==',tdump},
             {'^!=',tdump},
@@ -399,18 +392,22 @@ function lexer.get_separated_list(tok,endtoken,delim)
     end
     local is_end
     if endtoken == '\n' then
-        is_end = function(tok,val)
-            return tok == 'space' and val:find '\n'
+        is_end = function(t,val)
+            return t == 'space' and val:find '\n'
         end
     else
-        is_end = function (tok)
-            return tok == endtoken
+        is_end = function (t)
+            return t == endtoken
         end
     end
+    local token,value
     while true do
         token,value=tok()
-        if not token then return end -- end of stream is an error!
-        if token == '(' then
+        if not token then return nil,'EOS' end -- end of stream is an error!
+        if is_end(token,value) and level == 1 then
+            append(parm_values,tl)
+            break
+        elseif token == '(' then
             level = level + 1
             tappend(tl,'(')
         elseif token == ')' then
@@ -424,14 +421,11 @@ function lexer.get_separated_list(tok,endtoken,delim)
         elseif token == delim and level == 1 then
             append(parm_values,tl) -- a new parm
             tl = {}
-        elseif is_end(token,value) and level == 1 then
-            append(parm_values,tl)
-            break
         else
             tappend(tl,token,value)
         end
     end
-    return parm_values
+    return parm_values,{token,value}
 end
 
 --- get the next non-space token from the stream.

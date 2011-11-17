@@ -8,7 +8,7 @@ end
 
 
 -- isalpha
-asserteq(T(stringx.isalpha''), T(false)) -- OK???
+asserteq(T(stringx.isalpha''), T(false))
 asserteq(T(stringx.isalpha' '), T(false))
 asserteq(T(stringx.isalpha'0'), T(false))
 asserteq(T(stringx.isalpha'\0'), T(false))
@@ -16,39 +16,40 @@ asserteq(T(stringx.isalpha'azAZ'), T(true))
 asserteq(T(stringx.isalpha'az9AZ'), T(false))
 
 -- isdigit
-asserteq(T(stringx.isdigit''), T(false)) -- OK???
+asserteq(T(stringx.isdigit''), T(false))
 asserteq(T(stringx.isdigit' '), T(false))
 asserteq(T(stringx.isdigit'a'), T(false))
 asserteq(T(stringx.isdigit'0123456789'), T(true))
 
 -- isalnum
-asserteq(T(stringx.isalnum''), T(false)) -- OK???
+asserteq(T(stringx.isalnum''), T(false))
 asserteq(T(stringx.isalnum' '), T(false))
 asserteq(T(stringx.isalnum('azAZ01234567890')), T(true))
 
 -- isspace
-asserteq(T(stringx.isspace''), T(false)) -- OK???
+asserteq(T(stringx.isspace''), T(false))
 asserteq(T(stringx.isspace' '), T(true))
 asserteq(T(stringx.isspace' \r\n\f\t'), T(true))
 asserteq(T(stringx.isspace' \r\n-\f\t'), T(false))
 
 -- islower
-asserteq(T(stringx.islower''), T(false)) -- OK???
+asserteq(T(stringx.islower''), T(false))
 asserteq(T(stringx.islower'az'), T(true))
 asserteq(T(stringx.islower'aMz'), T(false))
-asserteq(T(stringx.islower'a z'), T(false)) -- OK???
+asserteq(T(stringx.islower'a z'), T(true))
 
 -- startswith
-asserteq(T(stringx.startswith('', '')), T(true))
-asserteq(T(stringx.startswith('', 'a')), T(false))
-asserteq(T(stringx.startswith('a', '')), T(true))
-asserteq(T(stringx.startswith('a', 'a')), T(true))
-asserteq(T(stringx.startswith('a', 'b')), T(false))
-asserteq(T(stringx.startswith('a', 'ab')), T(false))
-asserteq(T(stringx.startswith('abc', 'ab')), T(true))
-asserteq(T(stringx.startswith('abc', 'bc')), T(false)) -- off by one
-asserteq(T(stringx.startswith('abc', '.')), T(false)) -- Lua pattern char
-asserteq(T(stringx.startswith('a\0bc', 'a\0b')), T(true)) -- '\0'
+local startswith = stringx.startswith
+asserteq(T(startswith('', '')), T(true))
+asserteq(T(startswith('', 'a')), T(false))
+asserteq(T(startswith('a', '')), T(true))
+asserteq(T(startswith('a', 'a')), T(true))
+asserteq(T(startswith('a', 'b')), T(false))
+asserteq(T(startswith('a', 'ab')), T(false))
+asserteq(T(startswith('abc', 'ab')), T(true))
+asserteq(T(startswith('abc', 'bc')), T(false)) -- off by one
+asserteq(T(startswith('abc', '.')), T(false)) -- Lua pattern char
+asserteq(T(startswith('a\0bc', 'a\0b')), T(true)) -- '\0'
 
 
 -- endswith
@@ -71,32 +72,37 @@ asserteq(T(endswith("abc", ".")), T(false)) -- Lua pattern char
 asserteq(T(endswith("ab\0c", "b\0c")), T(true))     -- \0
 asserteq(T(endswith("ab\0c", "b\0d")), T(false)) -- \0
 
+asserteq(endswith('dollar.dot',{'.dot','.txt'}),true)
+asserteq(endswith('dollar.txt',{'.dot','.txt'}),true)
+asserteq(endswith('dollar.rtxt',{'.dot','.txt'}),false)
+
 -- splitlines
-asserteq(T(stringx.splitlines('')), T({}))
+asserteq(T(stringx.splitlines('')), T({''}))
 asserteq(stringx.splitlines('a'), {'a'})
-asserteq(stringx.splitlines('\n'), {}) --FIX:intended and specified behavior?
-asserteq(stringx.splitlines('\n\n'), {'', ''})  --FIX:intended and specified behavior?
-asserteq(stringx.splitlines('\r\r'), {'\r\r'}) --FIX:specified behavior?
-asserteq(stringx.splitlines('ab\ncd\n'), {'ab', 'cd'}) --FIX:intended and specified behavior?
+asserteq(stringx.splitlines('\n'), {''})
+asserteq(stringx.splitlines('\n\n'), {'', ''})
+asserteq(stringx.splitlines('\r\r'), {'', ''})
+asserteq(stringx.splitlines('ab\ncd\n'), {'ab', 'cd'})
 
 -- expandtabs
 ---FIX[[raises error
 asserteq(T(stringx.expandtabs('',0)), T(''))
 asserteq(T(stringx.expandtabs('',1)), T(''))
 asserteq(T(stringx.expandtabs(' ',1)), T(' '))
-asserteq(T(stringx.expandtabs(' \t ')), T((' '):rep(2+8)))
-asserteq(T(stringx.expandtabs(' \t ',2)), T('    '))
+-- expandtabs now works like Python's str.expandtabs (up to next tab stop)
+asserteq(T(stringx.expandtabs(' \t ')), T((' '):rep(1+8)))
+asserteq(T(stringx.expandtabs(' \t ',2)), T('   '))
 --]]
 
 -- lfind
 asserteq(T(stringx.lfind('', '')), T(1))
 asserteq(T(stringx.lfind('a', '')), T(1))
 asserteq(T(stringx.lfind('ab', 'b')), T(2))
-asserteq(T(stringx.lfind('abc', 'cd')), T(nil)) 
+asserteq(T(stringx.lfind('abc', 'cd')), T(nil))
 asserteq(T(stringx.lfind('abcbc', 'bc')), T(2))
 
 -- rfind
-asserteq(T(stringx.rfind('', '')), T(1)) 
+asserteq(T(stringx.rfind('', '')), T(1))
 asserteq(T(stringx.rfind('ab', '')), T(3))
 asserteq(T(stringx.rfind('abcbc', 'bc')), T(4))
 asserteq(T(stringx.rfind('abcbcb', 'bc')), T(4))
@@ -114,15 +120,22 @@ asserteq(T(stringx.replace('abc', 'd', 'e')), T('abc'))
 asserteq(T(stringx.replace('a.b', '.', '%d')), T('a%db'))
 
 -- split
-asserteq(T(stringx.split('', '')), T({''})) --FIX:intended and specified behavior?
-asserteq(T(stringx.split('', 'z')), T({})) --FIX:intended and specified behavior?
-asserteq(T(stringx.split('a', '')), T({'a'})) --FIX:intended and specified behavior?
-asserteq(T(stringx.split('a', 'a')), T({})) --FIX:intended and specified behavior?
-asserteq(T(stringx.split('ab1cd23ef%d', '%d+')), T({'ab', 'cd', 'ef%d'})) -- pattern chars
-
+local split = stringx.split
+asserteq(split('', ''), {''})
+asserteq(split('', 'z'), {}) --FIX:intended and specified behavior?
+asserteq(split('a', ''), {'a'}) --FIX:intended and specified behavior?
+asserteq(split('a', 'a'), {''})
+-- stringx.split now follows the Python pattern, so it uses a substring, not a pattern.
+-- If you need to split on a pattern, use utils.split()
+-- asserteq(split('ab1cd23ef%d', '%d+'), {'ab', 'cd', 'ef%d'}) -- pattern chars
+-- note that leading space is ignored by the default
+asserteq(split(' 1  2  3 '),{'1','2','3'})
+asserteq(split('a*bb*c*ddd','*'),{'a','bb','c','ddd'})
+asserteq(split('dog:fred:bonzo:alice',':',3), {'dog','fred','bonzo:alice'})
+asserteq(split('///','/'),{'','','',''})
 -- capitalize
 asserteq(T(stringx.capitalize('')), T(''))
-asserteq(T(stringx.capitalize('abC deF1')), T('AbC deF1')) --FIX:intended and specified behavior?
+asserteq(T(stringx.capitalize('abC deF1')), T('Abc Def1')) -- Python behaviour
 
 -- count
 asserteq(T(stringx.count('', '')), T(0)) --infinite loop]]
@@ -135,18 +148,18 @@ asserteq(T(stringx.ljust('', 0)), T(''))
 asserteq(T(stringx.ljust('', 2)), T('  '))
 asserteq(T(stringx.ljust('ab', 3)), T('ab '))
 asserteq(T(stringx.ljust('ab', 3, '%')), T('ab%'))
-asserteq(T(stringx.ljust('abcd', 3)), T('abcd')) -- Q:specified behavior?]
+asserteq(T(stringx.ljust('abcd', 3)), T('abcd')) -- agrees with Python
 
 -- rjust
 asserteq(T(stringx.rjust('', 0)), T(''))
 asserteq(T(stringx.rjust('', 2)), T('  '))
 asserteq(T(stringx.rjust('ab', 3)), T(' ab'))
 asserteq(T(stringx.rjust('ab', 3, '%')), T('%ab'))
-asserteq(T(stringx.rjust('abcd', 3)), T('abcd')) -- Q:specified behavior?]]
+asserteq(T(stringx.rjust('abcd', 3)), T('abcd')) -- agrees with Python
 
 -- center
 asserteq(T(stringx.center('', 0)), T(''))
-asserteq(T(stringx.center('', 1)), T(' ')) 
+asserteq(T(stringx.center('', 1)), T(' '))
 asserteq(T(stringx.center('', 2)), T('  '))
 asserteq(T(stringx.center('a', 1)), T('a'))
 asserteq(T(stringx.center('a', 2)), T(' a'))

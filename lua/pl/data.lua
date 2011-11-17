@@ -1,4 +1,4 @@
---- Reading and querying simple tabular data. 
+--- Reading and querying simple tabular data.
 -- <pre class=example>
 -- data.read 'test.txt'
 -- ==> {{10,20},{2,5},{40,50},fieldnames={'x','y'},delim=','}
@@ -36,7 +36,7 @@ local parse_select
 local function count(s,chr)
     chr = utils.escape(chr)
     local _,cnt = s:gsub(chr,' ')
-    return cnt        
+    return cnt
 end
 
 local function rstrip(s)
@@ -144,7 +144,7 @@ end
 -- either stdin or stdout depending on the mode. Otherwise, check if this is
 -- a file-like object (implements read or write depending)
 local function open_file (f,mode)
-    local opened
+    local opened, err
     local reading = mode == 'r'
     if type(f) == 'string' then
         if f == 'stdin'  then
@@ -192,7 +192,14 @@ function data.read(file,cnfg)
     D.delim = cnfg.delim and cnfg.delim or guess_delim(line)
     local delim = D.delim
     local collect_end = cnfg.last_field_collect
-    local numfields = cnfg.numfields    
+    local numfields = cnfg.numfields
+    -- some space-delimited data starts with a space.  This should not be a column,
+    -- although it certainly would be for comma-separated, etc.
+    local strip
+    if delim == '%s+' and line:find(delim) == 1 then
+        strip = function(s)  return s:gsub('^%s+','') end
+        line = strip(line)
+    end
     -- first line will usually be field names. Unless fieldnames are specified,
     -- we check if it contains purely numerical values for the case of reading
     -- plain data files.
@@ -208,6 +215,7 @@ function data.read(file,cnfg)
             cnfg.fieldnames = fields
         end
         line = f:read()
+        if strip then line = strip(line) end
     elseif type(cnfg.fieldnames) == 'string' then
         cnfg.fieldnames = split(cnfg.fieldnames,delim)
     end
@@ -237,6 +245,7 @@ function data.read(file,cnfg)
     -- keep going until finished
     while line do
         if not line:find ('^%s*$') then
+            if strip then line = strip(line) end
             local fields =  split(line,delim)
             if convert then
                 for k = 1,#numfields do
@@ -303,8 +312,8 @@ end
 --- create a new dataset from a table of rows. <br>
 -- Can specify the fieldnames, else the table must have a field called
 -- 'fieldnames', which is either a string of delimiter-separated names,
--- or a table of names. <br> 
--- If the table does not have a field called 'delim', then an attempt will be 
+-- or a table of names. <br>
+-- If the table does not have a field called 'delim', then an attempt will be
 -- made to guess it from the fieldnames string, defaults otherwise to tab.
 -- @param d the table.
 -- @param fieldnames optional fieldnames
@@ -388,28 +397,30 @@ local function massage_fields(data,f)
     end
 end
 
+local List = require 'pl.List'
+
 local function process_select (data,parms)
     --- preparing fields ----
     local res,ret
     field_error = nil
     local fields = parms.fields
-    local numfields = fields:find '%$'
+    local numfields = fields:find '%$'  or #data.fieldnames == 0
     if fields:find '^%s*%*%s*' then
         if not numfields then
             fields = fieldnames_as_string(data)
         else
             local ncol = #data[1]
-            filelds = {}
+            fields = {}
             for i = 1,ncol do append(fields,'$'..i) end
             fields = concat(fields,',')
         end
-    end    
+    end
     local idpat = patterns.IDEN
     if numfields then
         idpat = '%$(%d+)'
     else
         -- massage field names to replace non-identifier chars
-        fields = rstrip(fields):gsub('[^,%w]','_') 
+        fields = rstrip(fields):gsub('[^,%w]','_')
     end
     local massage_fields = utils.bind1(massage_fields,data)
     ret = gsub(fields,idpat,massage_fields)
@@ -447,16 +458,17 @@ end
 --- create a query iterator from a select string.
 -- Select string has this format: <br>
 -- FIELDLIST [ where LUA-CONDN [ sort by FIELD] ]<br>
--- FIELDLISt is a comma-separated list of valid fields, or '*'. <br> <br>
+-- FIELDLIST is a comma-separated list of valid fields, or '*'. <br> <br>
 -- The condition can also be a table, with fields 'fields' (comma-sep string or
 -- table), 'sort_by' (string) and 'where' (Lua expression string or function)
 -- @param data table produced by read
 -- @param condn select string or table
 -- @param context a list of tables to be searched when resolving functions
 -- @param return_row if true, wrap the results in a row table
--- @return an iterator over the specified fields
+-- @return an iterator over the specified fields, or nil
+-- @return an error message
 function data.query(data,condn,context,return_row)
-    local err   
+    local err
     if is_string(condn) then
         condn,err = parse_select(condn,data)
         if not condn then return nil,err end
@@ -471,7 +483,7 @@ function data.query(data,condn,context,return_row)
     else
         return nil, "condition must be a string or a table"
     end
-    local query
+    local query, k
     if condn.sort_by then -- use sorted_query
         query = sorted_query
     else
@@ -499,6 +511,7 @@ function data.query(data,condn,context,return_row)
             sort_var = sort_by
             sort_dir = 'asc'
         end
+        if sort_var:match '^%$' then sort_var = sort_var:sub(2) end
         sort_var = massage_fields(data,sort_var)
         if field_error then return nil,field_error end
         if sort_dir == 'asc' then
