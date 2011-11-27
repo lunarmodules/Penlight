@@ -167,7 +167,7 @@ end
 
 ---	Dump a Lua table out to a file or stdout.
 --	@param t {table} The table to write to a file or stdout.
---	@param fname {string} (optional) File name to write too. Defaults to writing
+--	@param ... {string} (optional) File name to write too. Defaults to writing
 --		to stdout.
 function pretty.dump (t,...)
     if select('#',...)==0 then

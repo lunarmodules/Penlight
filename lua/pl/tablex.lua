@@ -238,6 +238,7 @@ end
 -- Any extra arguments are passed to the function.
 -- @param fun A function that takes at least one argument
 -- @param t A table
+-- @param ... optional arguments
 -- @usage map(function(v) return v*v end, {10,20,30,fred=2}) is {100,400,900,fred=4}
 function tablex.map(fun,t,...)
     assert_arg(1,t,'table')
@@ -254,6 +255,7 @@ end
 -- Any extra arguments are passed to the function.
 -- @param fun A function that takes at least one argument
 -- @param t a table (applies to array part)
+-- @param ... optional arguments
 -- @return a list-like table
 -- @usage imap(function(v) return v*v end, {10,20,30,fred=2}) is {100,400,900}
 function tablex.imap(fun,t,...)
@@ -381,6 +383,7 @@ end
 -- the index and <i>finally</i> any extra arguments passed to this function
 -- @param t a table
 -- @param fun a function with at least one argument
+-- @param ... optional arguments
 function tablex.foreachi(t,fun,...)
     assert_arg(1,t,'table')
     fun = function_arg(2,fun)
@@ -394,6 +397,8 @@ end
 -- A more general version of map
 -- The result is a table containing the result of applying that function to the
 -- ith value of each table. Length of output list is the minimum length of all the lists
+-- @param fun a function of n arguments
+-- @param ... n tables
 -- @usage mapn(function(x,y,z) return x+y+z end, {1,2,3},{10,20,30},{100,200,300}) is {111,222,333}
 -- @usage mapn(math.max, {1,20,300},{10,2,3},{100,200,100}) is	{100,200,300}
 -- @param fun A function that takes as many arguments as there are tables
@@ -421,6 +426,7 @@ end
 -- it is appended to the result.
 -- @param fun A function which will be passed each key and value as arguments, plus any extra arguments to pairmap.
 -- @param t A table
+-- @param ... optional arguments
 -- @usage pairmap({fred=10,bonzo=20},function(k,v) return v end) is {10,20}
 -- @usage pairmap({one=1,two=2},function(k,v) return {k,v},k end) is {one={'one',1},two={'two',2}}
 function tablex.pairmap(fun,t,...)
@@ -553,7 +559,7 @@ end
 --- filter a table's values using a predicate function
 -- @param t a list-like table
 -- @param pred a boolean function
--- @param optional argument to be passed as second argument of the predicate
+-- @param arg optional argument to be passed as second argument of the predicate
 function tablex.filter (t,pred,arg)
     assert_arg(1,t,'table')
     pred = function_arg(2,pred)
@@ -601,8 +607,8 @@ end
 --- copy an array into another one, resizing the destination if necessary. <br>
 -- @param dest a list-like table
 -- @param src a list-like table
--- @param isrc where to start copying values into destination (default 1)
 -- @param idest where to start copying values from source (default 1)
+-- @param isrc where to start copying values into destination (default 1)
 -- @param nsrc number of elements to copy from source (default source size)
 function tablex.icopy (dest,src,idest,isrc,nsrc)
     assert_arg(1,dest,'table')
@@ -613,9 +619,9 @@ end
 --- copy an array into another one. <br>
 -- @param dest a list-like table
 -- @param src a list-like table
--- @param isrc where to start copying values into destination (default 1)
 -- @param idest where to start copying values from source (default 1)
--- @param n number of elements to copy from source (default source size)
+-- @param isrc where to start copying values into destination (default 1)
+-- @param nsrc number of elements to copy from source (default source size)
 function tablex.move (dest,src,idest,isrc,nsrc)
     assert_arg(1,dest,'table')
     assert_arg(2,src,'table')
@@ -679,6 +685,7 @@ end
 
 --- clear out the contents of a table.
 -- @param t a table
+-- @param istart optional start position
 function tablex.clear(t,istart)
     istart = istart or 1
     for i = istart,#t do remove(t) end

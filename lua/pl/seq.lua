@@ -160,6 +160,9 @@ end
 
 --- create a table of pairs from the double-valued sequence.
 -- @param iter a double-valued sequence
+-- @param i1 used to capture extra iterator values
+-- @param i2 as with pairs & ipairs
+-- @usage copy2(ipairs{10,20,30}) == {{1,10},{2,20},{3,30}}
 -- @return a list-like table
 function seq.copy2 (iter,i1,i2)
     local res = {}
@@ -316,8 +319,8 @@ end
 -- by a function. If you don't supply an argument, then the function will
 -- receive both values of a double-valued sequence, otherwise behaves rather like
 -- tablex.map.
--- @param iter a sequence of one or two values
 -- @param fn a function to apply to elements; may take two arguments
+-- @param iter a sequence of one or two values
 -- @param arg optional argument to pass to function.
 function seq.map(fn,iter,arg)
     fn = function_arg(1,fn)

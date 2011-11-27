@@ -1,4 +1,4 @@
---- OrderedMap.
+--- OrderedMap, a pl.Map which preserves ordering.
 -- @class module
 -- @name pl.OrderedMap
 
@@ -19,7 +19,7 @@ OrderedMap._name = 'OrderedMap'
 
 --- construct an OrderedMap.
 -- Will throw an error if the argument is bad.
--- @param optional initialization table, same as for @{OrderedMap:update}
+-- @param t optional initialization table, same as for @{OrderedMap:update}
 function OrderedMap:_init (t)
     self._keys = List()
     if t then

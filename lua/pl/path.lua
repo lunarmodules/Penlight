@@ -150,7 +150,7 @@ function path.splitpath(P)
 end
 
 --- return an absolute path.
--- @param PP A A file path
+-- @param P A file path
 function path.abspath(P)
     assert_string(1,P)
     if not currentdir then return P end

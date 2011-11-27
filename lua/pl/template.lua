@@ -80,9 +80,9 @@ function template.substitute(str,env)
     if not fn then return nil,err end
     fn = fn()
     local out = {}
-    local res,err = pcall(fn,function(s)
+    local res,err = xpcall(function() fn(function(s)
         out[#out+1] = s
-    end)
+    end) end,debug.traceback)
     if not res then
         if env._debug then print(code) end
         return nil,err

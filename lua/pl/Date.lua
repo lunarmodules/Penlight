@@ -18,7 +18,7 @@ Date.Format = class()
 --- Date constructor.
 -- @param t this can be either <ul>
 -- <li>nil - use current date and time</li>
--- <li>number - seconds since epoch (as returned by @{os.time()})</li>
+-- <li>number - seconds since epoch (as returned by @{os.time})</li>
 -- <li>Date - copy constructor</li>
 -- <li>table - table containing year, month, etc as for os.time()
 --  You may leave out year, month or day, in which case current values will be used.
@@ -86,6 +86,7 @@ end
 function Date:toUTC ()
     local th, tm = Date.tzone()
     self:add { hour = -th }
+
     if tm > 0 then self:add {min = -tm} end
 end
 
@@ -291,6 +292,18 @@ local formats = {
 -- <li>M minute (either M or MM)</li>
 -- <li>S second (either S or SS)</li>
 -- </ul>
+-- Alternatively, if fmt is nil then this returns a flexible date parser
+-- that tries various date/time schemes in turn:
+-- <ol>
+-- <li> <a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a>,
+--    like 2010-05-10 12:35:23Z or 2008-10-03T14:30+02<li>
+-- <li> times like 15:30 or 8.05pm  (assumed to be today's date)</li>
+-- <li> dates like 28/10/02 (European order!) or 5 Feb 2012 </li>
+-- <li> month name like march or Mar (case-insensitive, first 3 letters);
+-- here the day will be 1 and the year this current year </li>
+-- </ol>
+-- A date in format 3 can be optionally followed by a time in format 2.
+-- Please see test-date.lua in the tests folder for more examples.
 -- @usage df = Date.Format("yyyy-mm-dd HH:MM:SS")
 -- @class function
 -- @name Date.Format
@@ -423,6 +436,7 @@ local function  parse_iso_end(p,ns,sec)
     p = p:gsub(':','') -- turn 00:30 to 0030
     _,_,sign,offs = p:find('^([%+%-])(%d+)')
     if not sign then return sec, nil end -- not UTC
+
     if #offs == 2 then offs = offs .. '00' end -- 01 to 0100
     tz = { h = tonumber(offs:sub(1,2)), m = tonumber(offs:sub(3,4)) }
     if sign == '-' then tz.h = -tz.h; tz.m = -tz.m end
@@ -510,7 +524,8 @@ local function parse_date_unsafe (s,US)
     local res = Date {year = year, month = month, day = day, hour = hour, min = min, sec = sec}
     if tz then -- ISO 8601 UTC time
         res:toUTC()
-        res:add {hour = tz.h, min = tz.m}
+        res:add {hour = tz.h}
+        if tz.m ~= 0 then res:add {min = tz.m} end
     end
     return res
 end

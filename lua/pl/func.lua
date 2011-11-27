@@ -141,7 +141,7 @@ end
 
 --- register a function for use in placeholder expressions.
 -- @param fun a function
--- @param an optional name
+-- @param name an optional name
 -- @return a placeholder functiond
 function func.register (fun,name)
     assert_arg(1,fun,'function')
@@ -197,6 +197,7 @@ end
 
 --- create a string representation of a placeholder expression.
 -- @param e a placeholder expression
+-- @param lastpred not used
 function repr (e,lastpred)
     local tail = func.tail
     if isPE(e) then

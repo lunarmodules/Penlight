@@ -106,6 +106,7 @@ end
 -- @param msg a descriptive message
 -- @param n number of times to call the function
 -- @param fun the function
+-- @param ... optional arguments to fun
 function test.timer(msg,n,fun,...)
     local start = clock()
     for i = 1,n do fun(...) end

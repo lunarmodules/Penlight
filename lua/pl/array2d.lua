@@ -154,8 +154,8 @@ end
 
 --- swap two columns of an array.
 -- @param t a 2d array
--- @param i1 a column index
--- @param i2 a column index
+-- @param j1 a column index
+-- @param j2 a column index
 function array2d.swap_cols (t,j1,j2)
     assert_arg(1,t,'table')
     for i = 1,#t do
@@ -165,14 +165,14 @@ function array2d.swap_cols (t,j1,j2)
 end
 
 --- extract the specified rows.
--- @param a 2d array
+-- @param t 2d array
 -- @param ridx a table of row indices
 function array2d.extract_rows (t,ridx)
     return index_by(t,ridx)
 end
 
 --- extract the specified columns.
--- @param a 2d array
+-- @param t 2d array
 -- @param cidx a table of column indices
 function array2d.extract_cols (t,cidx)
     assert_arg(1,t,'table')
@@ -263,7 +263,7 @@ end
 -- @param i1 start row (default 1)
 -- @param j1 start col (default 1)
 -- @param i2 end row   (default N)
--- @param j1 end col   (default M)
+-- @param j2 end col   (default M)
 -- @return an array, 2D in general but 1D in special cases.
 function array2d.slice (t,i1,j1,i2,j2)
     assert_arg(1,t,'table')
@@ -292,7 +292,7 @@ end
 -- @param i1 start row (default 1)
 -- @param j1 start col (default 1)
 -- @param i2 end row   (default N)
--- @param j1 end col   (default M)
+-- @param j2 end col   (default M)
 function array2d.set (t,value,i1,j1,i2,j2)
     i1,j1,i2,j2 = default_range(t,i1,j1,i2,j2)
     for i = i1,i2 do
@@ -307,7 +307,7 @@ end
 -- @param i1 start row (default 1)
 -- @param j1 start col (default 1)
 -- @param i2 end row   (default N)
--- @param j1 end col   (default M)
+-- @param j2 end col   (default M)
 function array2d.write (t,f,fmt,i1,j1,i2,j2)
     assert_arg(1,t,'table')
     f = f or stdout
@@ -324,13 +324,13 @@ function array2d.write (t,f,fmt,i1,j1,i2,j2)
 end
 
 --- perform an operation for all values in a 2D array.
--- @param a 2D array
+-- @param t 2D array
 -- @param row_op function to call on each value
 -- @param end_row_op function to call at end of each row
 -- @param i1 start row (default 1)
 -- @param j1 start col (default 1)
 -- @param i2 end row   (default N)
--- @param j1 end col   (default M)
+-- @param j2 end col   (default M)
 function array2d.forall (t,row_op,end_row_op,i1,j1,i2,j2)
     assert_arg(1,t,'table')
     i1,j1,i2,j2 = default_range(t,i1,j1,i2,j2)
@@ -349,7 +349,7 @@ end
 -- @param i1 start row (default 1)
 -- @param j1 start col (default 1)
 -- @param i2 end row   (default N)
--- @param j1 end col   (default M)
+-- @param j2 end col   (default M)
 -- @return either value or i,j,value depending on indices
 function array2d.iter (a,indices,i1,j1,i2,j2)
     assert_arg(1,a,'table')

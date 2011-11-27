@@ -406,6 +406,7 @@ end
 
 --- call the function for each element of the list.
 -- @param fun a function or callable object
+-- @param ... optional values to pass to function
 function List:foreach (fun,...)
     local t = self
     fun = function_arg(1,fun)
@@ -416,7 +417,7 @@ end
 
 --- create a list of all elements which match a function.
 -- @param fun a boolean function
--- @param optional argument to be passed as second argument of the predicate
+-- @param arg optional argument to be passed as second argument of the predicate
 -- @return a new filtered list.
 function List:filter (fun,arg)
     return makelist(filter(self,fun,arg),self)
@@ -435,7 +436,6 @@ end
 --- apply a function to all elements.
 -- Any extra arguments will be passed to the function
 -- @param fun a function of at least one argument
--- @param arg1 an optional argument
 -- @param ... arbitrary extra arguments.
 -- @return a new list: {f(x) for x in self}
 -- @see pl.tablex.imap
@@ -447,13 +447,14 @@ end
 -- Any extra arguments are passed to the function.
 -- @param fun A function that takes at least one argument
 -- @param ... arbitrary extra arguments.
-function List:transform (fun,t,...)
+function List:transform (fun,...)
     transform(fun,self,...)
 end
 
 --- apply a function to elements of two lists.
 -- Any extra arguments will be passed to the function
 -- @param fun a function of at least two arguments
+-- @param ls another list
 -- @param ... arbitrary extra arguments.
 -- @return a new list: {f(x,y) for x in self, for x in arg1}
 -- @see pl.tablex.imap2

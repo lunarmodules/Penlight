@@ -191,7 +191,7 @@ function Template:indent_substitute(tbl)
 end
 
 ------- Python-style formatting operator ------
--- (see http://lua-users.org/wiki/StringInterpolation) --
+-- (see <a href="http://lua-users.org/wiki/StringInterpolation">the lua-users wiki</a>) --
 
 function text.format_operator()
 

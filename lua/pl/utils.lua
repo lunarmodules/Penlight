@@ -16,8 +16,7 @@ utils._VERSION = "0.9.4"
 utils.dir_separator = _G.package.config:sub(1,1)
 
 --- end this program gracefully.
--- @param code The exit code
--- @param msg A message to be printed
+-- @param code The exit code or a message to be printed
 -- @param ... extra arguments for message's format'
 -- @see utils.fprintf
 function utils.quit(code,...)
@@ -159,6 +158,7 @@ end
 -- @param s The input string
 -- @param re A Lua string pattern; defaults to '%s+'
 -- @param plain don't use Lua patterns
+-- @param n optional maximum number of splits
 -- @return a list-like table
 -- @raise error if s is not a string
 function utils.split(s,re,plain,n)
@@ -341,7 +341,7 @@ function utils.type (obj)
 end
 
 --- is this number an integer?
--- @param a number
+-- @param x a number
 -- @raise error if x is not a number
 function utils.is_integer (x)
     return math.ceil(x)==x
