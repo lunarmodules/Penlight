@@ -277,7 +277,7 @@ if not lua52 then
 end
 
 if not table.pack then table.pack = _G.pack end
-if not _G.pack then _G.pack = table.pack end
+if not rawget(_G,"pack") then _G.pack = table.pack end
 
 --- take an arbitrary set of arguments and make into a table.
 -- This returns the table and the size; works fine for nil arguments
@@ -401,6 +401,7 @@ local ops
 -- @param f a function, operator string, or callable object
 -- @param msg optional error message
 -- @return a callable
+-- @raise if idx is not a number or if f is not callable
 -- @see utils.is_callable
 function utils.function_arg (idx,f,msg)
     utils.assert_arg(1,idx,'number')
@@ -437,6 +438,7 @@ end
 -- @param fn a function of at least two values (may be an operator string)
 -- @param p a value
 -- @return a function such that f(x) is fn(p,x)
+-- @raise same as @{function_arg}
 -- @see pl.func.curry
 function utils.bind1 (fn,p)
     fn = utils.function_arg(1,fn)
@@ -450,6 +452,7 @@ end
 -- @param verify an optional verfication function
 -- @param msg an optional custom message
 -- @param lev optional stack position for trace, default 2
+-- @raise if the argument n is not the correct type
 -- @usage assert_arg(1,t,'table')
 -- @usage assert_arg(n,val,'string',path.isdir,'not a directory')
 function utils.assert_arg (n,val,tp,verify,msg,lev)
@@ -464,6 +467,7 @@ end
 --- assert the common case that the argument is a string.
 -- @param n argument index
 -- @param val a value that must be a string
+-- @raise val must be a string
 function utils.assert_string (n,val)
     utils.assert_arg(n,val,'string',nil,nil,nil,3)
 end
@@ -519,7 +523,6 @@ raise = utils.raise
 -- @param path a path in the same form as package.path or package.cpath
 -- @see path.package_path
 -- @function package.searchpath
-
 
 return utils
 

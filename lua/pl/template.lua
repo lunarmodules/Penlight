@@ -72,10 +72,12 @@ local template = {}
 -- </ul>
 function template.substitute(str,env)
     env = env or {}
-    if env._parent then
+    if rawget(env,"_parent") then
         setmetatable(env,{__index = env._parent})
     end
-    local code = parseHashLines(str,env._brackets or '()',env._escape or '#')
+    local brackets = rawget(env,"_brackets") or '()'
+    local escape = rawget(env,"_escape") or '#'
+    local code = parseHashLines(str,brackets,escape)
     local fn,err = utils.load(code,'TMP','t',env)
     if not fn then return nil,err end
     fn = fn()

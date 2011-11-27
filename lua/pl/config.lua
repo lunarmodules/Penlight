@@ -53,7 +53,8 @@ local config = {}
 --- like io.lines(), but allows for lines to be continued with '\'.
 -- @param file a file-like object (anything where read() returns the next line) or a filename.
 -- Defaults to stardard input.
--- @return an iterator over the lines
+-- @return an iterator over the lines, or nil
+-- @return error 'not a file-like object' or 'file is nil'
 function config.lines(file)
     local f,openf,err
     local line = ''
@@ -96,7 +97,8 @@ end
 -- <li> trim_quotes remove quotes from strings (default false)</li>
 -- <li> list_delim delimiter to use when separating columns (default ',')</li>
 -- </ul>
--- @return nil,error_msg in case of an error, otherwise a table containing items
+-- @return a table containing items, or nil
+-- @return error message (same as @{config.lines}
 function config.read(file,cnfg)
     local f,openf,err
     cnfg = cnfg or {}

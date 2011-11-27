@@ -47,7 +47,8 @@ end
 -- These will look like '~/.SNAME/file', with '~' as with expanduser and
 -- SNAME is the name of the script without .lua extension.
 -- @param file a filename (w/out path)
--- @return a full pathname
+-- @return a full pathname, or nil
+-- @return 'cannot create' error
 function app.appfile (file)
     local sname = path.basename(check_script_name())
     local name,ext = path.splitext(sname)
@@ -82,6 +83,7 @@ end
 -- @param flags_with_values any flags that take values, e.g. <code>{out=true}</code>
 -- @return a table of flags (flag=value pairs)
 -- @return an array of parameters
+-- @raise if args is nil, then the global `args` must be available!
 function app.parse_args (args,flags_with_values)
     if not args then
         args = _G.arg
