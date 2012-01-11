@@ -25,10 +25,6 @@ end
 local match = sip.match_at_start
 local append,tinsert = table.insert,table.insert
 
---[[
-module('pl.lapp')
-]]
-
 local function lines(s) return s:gmatch('([^\n]*)\n') end
 local function lstrip(str)  return str:gsub('^%s+','')  end
 local function strip(str)  return lstrip(str):gsub('%s+$','') end
@@ -54,13 +50,16 @@ lapp.show_usage_error = true
 -- @param msg optional message
 -- @param no_usage suppress 'usage' display
 function lapp.quit(msg,no_usage)
+    if no_usage == 'throw' then
+        error(msg)
+    end
     if msg then
         io.stderr:write(msg..'\n\n')
     end
     if not no_usage then
         io.stderr:write(usage)
     end
-    os.exit(1);
+    os.exit(1)
 end
 
 --- print an error to stderr and quit.
@@ -69,8 +68,10 @@ end
 function lapp.error(msg,no_usage)
     if not lapp.show_usage_error then
         no_usage = true
+    elseif lapp.show_usage_error == 'throw' then
+        no_usage = 'throw'
     end
-    lapp.quit(script..':'..msg,no_usage)
+    lapp.quit(script..': '..msg,no_usage)
 end
 
 --- open a file.
@@ -103,11 +104,9 @@ local function xtonumber(s)
     return val
 end
 
-local function is_filetype(type)
-    return type == 'file-in' or type == 'file-out'
-end
-
 local types
+
+local builtin_types = {string=true,number=true,['file-in']='file',['file-out']='file',boolean=true}
 
 local function convert_parameter(ps,val)
     if ps.converter then
@@ -115,7 +114,7 @@ local function convert_parameter(ps,val)
     end
     if ps.type == 'number' then
         val = xtonumber(val)
-    elseif is_filetype(ps.type) then
+    elseif builtin_types[ps.type] == 'file' then
         val = lapp.open(val,(ps.type == 'file-in' and 'r') or 'w' )
     elseif ps.type == 'boolean' then
         val = true
@@ -140,8 +139,11 @@ local function force_short(short)
     lapp.assert(#short==1,short..": short parameters should be one character")
 end
 
-local function process_default (sval)
-    local val = tonumber(sval)
+local function process_default (sval,vtype)
+    local val
+    if not vtype or vtype == 'number' then
+        val = tonumber(sval)
+    end
     if val then -- we have a number!
         return val,'number'
     elseif filetypes[sval] then
@@ -149,7 +151,7 @@ local function process_default (sval)
         return ft[1],ft[2]
     else
         if sval:match '^["\']' then sval = sval:sub(2,-2) end
-        return sval,'string'
+        return sval,vtype
     end
 end
 
@@ -197,7 +199,7 @@ function lapp.process_options_string(str)
         -- flags: either '-<short>', '-<short>,--<long>' or '--<long>'
         if check '-$v{short}, --$v{long} $' or check '-$v{short} $' or check '--$v{long} $' then
             if res.long then
-                optparm = res.long
+                optparm = res.long --:gsub('%A','_') -- so foo-bar becomes foo_bar in Lua
                 if res.short then aliases[res.short] = optparm  end
             else
                 optparm = res.short
@@ -211,23 +213,51 @@ function lapp.process_options_string(str)
             varargs = rest == '...'
             append(parmlist,optparm)
         end
-        if res.rest then -- this is not a pure doc line
+        -- this is not a pure doc line and specifies the flag/parameter type
+        if res.rest then
             line = res.rest
             res = {}
-            -- do we have (default <val>) or (<type>)?
+            -- do we have ([<type>] [default <val>])?
             if match('$({def} $',line,res) or match('$({def}',line,res) then
                 local typespec = strip(res.def)
-                if match('default $',typespec,res) then
-                    defval,vtype = process_default(res[1])
-                elseif match('$f{min}..$f{max}',typespec,res) then
-                    local min,max = res.min,res.max
-                    vtype = 'number'
-                    constraint = function(x)
-                        range_check(x,min,max,optparm)
+                local ftype, rest = typespec:match('^(%S+)(.*)$')
+                rest = strip(rest)
+                local default
+                if ftype == 'default' then
+                    default = true
+                    if rest == '' then lapp.error("value must follow default") end
+                else -- a type specification
+                    if match('$f{min}..$f{max}',ftype,res) then
+                        -- a numerical range like 1..10
+                        local min,max = res.min,res.max
+                        vtype = 'number'
+                        constraint = function(x)
+                            range_check(x,min,max,optparm)
+                        end
+                    elseif not ftype:match '|' then -- plain type
+                        vtype = ftype
+                    else
+                        -- 'enum' type is a string which must belong to
+                        -- one of several distinct values
+                        local enums = ftype
+                        enump = '|' .. enums .. '|'
+                        vtype = 'string'
+                        constraint = function(s)
+                            lapp.assert(enump:match('|'..s..'|'),
+                              "value '"..s.."' not in "..enums
+                            )
+                        end
                     end
-                else -- () just contains type of required parameter
-                    vtype = typespec
                 end
+                res.rest = rest
+                typespec = res.rest
+                -- optional 'default value' clause. Type is inferred as
+                -- 'string' or 'number' if there's no explicit type
+                if default or match('default $r{rest}',typespec,res) then
+                    --print(optparm,res.rest,'default',vtype)
+                    defval,vtype = process_default(res.rest,vtype)
+                end
+                --print('val',optparm,defval,vtype)
             else -- must be a plain flag, no extra parameter required
                 defval = false
                 vtype = 'boolean'
@@ -249,6 +279,8 @@ function lapp.process_options_string(str)
                     ps.converter = converter
                 end
                 ps.constraint = types[vtype].constraint
+            elseif not builtin_types[vtype] then
+                lapp.error(vtype.." is unknown type")
             end
             parms[optparm] = ps
         end
@@ -259,27 +291,40 @@ function lapp.process_options_string(str)
     local i = 1
     local parm,ps,val
 
+    local function check_parm (parm)
+        local eqi = parm:find '='
+        if eqi then
+            tinsert(arg,i+1,parm:sub(eqi+1))
+            parm = parm:sub(1,eqi-1)
+        end
+        return parm,eqi
+    end
+
     while i <= #arg do
         local theArg = arg[i]
         local res = {}
         -- look for a flag, -<short flags> or --<long flag>
-        if match('--$v{long}',theArg,res) or match('-$v{short}',theArg,res) then
+        if match('--$S{long}',theArg,res) or match('-$S{short}',theArg,res) then
             if res.long then -- long option
-                parm = res.long
+                parm = check_parm(res.long)
             elseif #res.short == 1 then
                 parm = res.short
             else
-                local parmstr = res.short
-                parm = at(parmstr,1)
-                if isdigit(at(parmstr,2)) then
-                    -- a short option followed by a digit is an exception (for AW;))
-                    -- push ahead into the arg array
-                    tinsert(arg,i+1,parmstr:sub(2))
-                else
-                    -- push multiple flags into the arg array!
-                    for k = 2,#parmstr do
-                        tinsert(arg,i+k-1,'-'..at(parmstr,k))
+                local parmstr,eq = check_parm(res.short)
+                if not eq then
+                    parm = at(parmstr,1)
+                    if isdigit(at(parmstr,2)) then
+                        -- a short option followed by a digit is an exception (for AW;))
+                        -- push ahead into the arg array
+                        tinsert(arg,i+1,parmstr:sub(2))
+                    else
+                        -- push multiple flags into the arg array!
+                        for k = 2,#parmstr do
+                            tinsert(arg,i+k-1,'-'..at(parmstr,k))
+                        end
                     end
+                else
+                    parm = parmstr
                 end
             end
             if parm == 'h' or parm == 'help' then
@@ -314,7 +359,7 @@ function lapp.process_options_string(str)
         ps.used = true
         val = convert_parameter(ps,val)
         set_result(ps,parm,val)
-        if is_filetype(ps.type) then
+        if builtin_types[ps.type] == 'file' then
             set_result(ps,parm..'_name',theArg)
         end
         if lapp.callback then
