@@ -85,6 +85,18 @@ local function compress_spaces (s)
     return s
 end
 
+local pattern_map = {
+  v = group(patterns.IDEN),
+  i = group(patterns.INTEGER),
+  f = group(patterns.FLOAT),
+  r = '(%S.*)',
+  p = '([%a]?[:]?[\\/%.%w_]+)'
+}
+
+function sip.custom_pattern(flag,patt)
+    pattern_map[flag] = patt
+end
+
 --- convert a SIP pattern into the equivalent Lua string pattern.
 -- @param spec a SIP pattern
 -- @param options a table; only the <code>at_start</code> field is
@@ -152,14 +164,8 @@ function sip.create_pattern (spec,options)
             addfield(name,type)
         end
         local res
-        if type == 'v' then
-            res = group(patterns.IDEN)
-        elseif type == 'i' then
-            res = group(patterns.INTEGER)
-        elseif type == 'f' then
-            res = group(patterns.FLOAT)
-        elseif type == 'r' then
-            res = '(%S.*)'
+        if pattern_map[type] then
+            res = pattern_map[type]
         elseif type == 'q' then
             -- some Lua pattern matching voodoo; we want to match '...' as
             -- well as "...", and can use the fact that %n will match a
@@ -167,8 +173,6 @@ function sip.create_pattern (spec,options)
             -- to accomodate the extra spurious match (which is either ' or ")
             addfield(name,type)
             res = '(["\'])(.-)%'..(kount-2)
-        elseif type == 'p' then
-            res = '([%a]?[:]?[\\/%.%w_]+)'
         else
             local endbracket = brackets[type]
             if endbracket then

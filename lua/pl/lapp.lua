@@ -25,6 +25,8 @@ end
 local match = sip.match_at_start
 local append,tinsert = table.insert,table.insert
 
+sip.custom_pattern('X','(%a[%w_%-]*)')
+
 local function lines(s) return s:gmatch('([^\n]*)\n') end
 local function lstrip(str)  return str:gsub('^%s+','')  end
 local function strip(str)  return lstrip(str):gsub('%s+$','') end
@@ -151,7 +153,7 @@ local function process_default (sval,vtype)
         return ft[1],ft[2]
     else
         if sval:match '^["\']' then sval = sval:sub(2,-2) end
-        return sval,vtype
+        return sval,vtype or 'string'
     end
 end
 
@@ -197,9 +199,9 @@ function lapp.process_options_string(str)
         end
 
         -- flags: either '-<short>', '-<short>,--<long>' or '--<long>'
-        if check '-$v{short}, --$v{long} $' or check '-$v{short} $' or check '--$v{long} $' then
+        if check '-$v{short}, --$v{long} $' or check '-$v{short} $' or check '--$X{long} $' then
             if res.long then
-                optparm = res.long --:gsub('%A','_') -- so foo-bar becomes foo_bar in Lua
+                optparm = res.long:gsub('%A','_') -- so foo-bar becomes foo_bar in Lua
                 if res.short then aliases[res.short] = optparm  end
             else
                 optparm = res.short
@@ -254,7 +256,6 @@ function lapp.process_options_string(str)
                 -- optional 'default value' clause. Type is inferred as
                 -- 'string' or 'number' if there's no explicit type
                 if default or match('default $r{rest}',typespec,res) then
-                    --print(optparm,res.rest,'default',vtype)
                     defval,vtype = process_default(res.rest,vtype)
                 end
                 --print('val',optparm,defval,vtype)
