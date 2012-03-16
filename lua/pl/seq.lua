@@ -267,9 +267,11 @@ function seq.unique(iter,returns_table)
   end
 end
 
--- print out a sequence @iter, with a separator @sep (default space)
--- and maximum number of values per line @nfields (default 7)
--- @fmt is an optional format function to create a representation of each value.
+--- print out a sequence iter with a separator.
+-- @param iter a sequence
+-- @param sep the separator (default space)
+-- @param nfields maximum number of values per line (default 7)
+-- @param fmt optional format function for each value
 function seq.printall(iter,sep,nfields,fmt)
   local write = io.write
   if not sep then sep = ' ' end

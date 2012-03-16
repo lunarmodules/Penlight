@@ -397,7 +397,6 @@ local function massage_fields(data,f)
     end
 end
 
-local List = require 'pl.List'
 
 local function process_select (data,parms)
     --- preparing fields ----
