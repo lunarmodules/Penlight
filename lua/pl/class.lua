@@ -1,7 +1,12 @@
 --- Provides a reuseable and convenient framework for creating classes in Lua.
--- Two possible notations: <br> <code> B = class(A) </code> or <code> class.B(A) </code>. <br>
--- <p>The latter form creates a named class. </p>
--- See the Guide for further <a href="../../index.html#class">discussion</a>
+-- Two possible notations:
+--
+--    B = class(A)
+--    class.B(A)
+--
+-- The latter form creates a named class.
+--
+-- See the Guide for further @{01-introduction.md.Simplifying_Object_Oriented_Programming_in_Lua|discussion}
 -- @module pl.class
 
 local error, getmetatable, io, pairs, rawget, rawset, setmetatable, tostring, type =

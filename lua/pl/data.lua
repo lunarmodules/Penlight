@@ -1,20 +1,19 @@
 --- Reading and querying simple tabular data.
--- <pre class=example>
--- data.read 'test.txt'
--- ==> {{10,20},{2,5},{40,50},fieldnames={'x','y'},delim=','}
--- </pre>
+--
+--    data.read 'test.txt'
+--    ==> {{10,20},{2,5},{40,50},fieldnames={'x','y'},delim=','}
+--
 -- Provides a way of creating basic SQL-like queries.
--- <pre class=example>
+--
 --    require 'pl'
 --    local d = data.read('xyz.txt')
 --    local q = d:select('x,y,z where x > 3 and z < 2 sort by y')
 --    for x,y,z in q do
 --        print(x,y,z)
 --    end
--- </pre>
--- <p>See <a href="../../index.html#data">the Guide</a>
--- @class module
--- @name pl.data
+--
+-- See @{06-DATA.md.Reading_Columnar_Data|the Guide}
+-- @module pl.data
 
 local utils = require 'pl.utils'
 local _DEBUG = rawget(_G,'_DEBUG')

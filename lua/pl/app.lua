@@ -1,5 +1,5 @@
 --- Application support functions.
--- <p>See <a href="../../index.html#app">the Guide</a>
+-- See @{01-introduction.md.Application_Support|the Guide}
 -- @class module
 -- @name pl.app
 

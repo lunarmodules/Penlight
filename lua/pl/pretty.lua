@@ -1,8 +1,7 @@
 --- Pretty-printing Lua tables.
 -- Also provides a sandboxed Lua table reader and
 -- a function to present large numbers in human-friendly format.
--- @class module
--- @name pl.pretty
+-- @module pl.pretty
 
 local append = table.insert
 local concat = table.concat

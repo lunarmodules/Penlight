@@ -108,9 +108,6 @@ A common observation is that loopless programming is less efficient, particularl
 
 Writing loops is 'error-prone and tedious', as Stroustrup says. But any half-decent editor can be taught to do much of that typing for you. The question should actually be: is it tedious to _read_ loops?  As with natural language, programmers tend to read chunks at a time. A for-loop causes no surprise, and probably little brain activity. One argument for loopless programming is the loops that you _do_ write stand out more, and signal 'something different happening here'.  It should not be an all-or-nothing thing, since most programs require a mixture of idioms that suit the problem.  Some languages (like APL) do nearly everything with map and reduce operations on arrays, and so solutions can sometimes seem forced. Wisdom is knowing when a particular idiom makes a particular problem easy to _solve_ and the solution easy to _explain_ afterwards.
 
-<a id="utils"></a>
-
-
 ### Generally useful functions.
 
 The function `printf` discussed earlier is included in `pl.utils` because it makes properly formatted output easier. (There is an equivalent `fprintf` which also takes a file object parameter, just like the C function.)
@@ -154,7 +151,6 @@ Penlight is fully compatible with Lua 5.1, 5.2 and LuaJIT 2. To ensure this, `ut
 
 Using `load` should reduce the need to call the deprecated function `setfenv`, and make your Lua 5.1 code 5.2-friendly.
 
-<a id="app"/>
 ### Application Support
 
 `app.parse_args` is a simple command-line argument parser. If called without any arguments, it tries to use the global `arg` array.  It returns the _flags_ (options begining with '-') as a table of name/value pairs, and the _arguments_ as an array.  It knows about long GNU-style flag names, e.g. `--value`, and groups of short flags are understood, so that `-ab` is short for `-a -b`. The flags result would then look like `{value=true,a=true,b=true}`.
@@ -182,8 +178,6 @@ If `.testapp` does not exist, it will be created.
 
 Penlight makes it convenient to save application data in Lua format. You can use `pretty.dump(t,file)` to write a Lua table in a human-readable form to a file, and `pretty.read(file.read(file))` to generate the table again, using the `pretty` module.
 
-
-<a id="class"/>
 
 ### Simplifying Object-Oriented Programming in Lua
 

@@ -1,10 +1,23 @@
----- A Set class.
--- @class module
--- @name pl.Set
+--- A Set class.
+--
+--     > Set = require 'pl.Set'
+--     > = Set{'one','two'} == Set{'two','one'}
+--     true
+--     > fruit = Set{'apple','banana','orange'}
+--     > = fruit['banana']
+--     true
+--     > = fruit['hazelnut']
+--     nil
+--     > colours = Set{'red','orange','green','blue'}
+--     > = fruit,colours
+--     [apple,orange,banana]   [blue,green,orange,red]
+--     > = fruit+colours
+--     [blue,green,apple,red,orange,banana]
+--     > = fruit*colours
+--     [orange]
+--
+-- @module pl.Set
 
---[[
-module ('pl.Set')
-]]
 local tablex = require 'pl.tablex'
 local utils = require 'pl.utils'
 local stdmt = utils.stdmt

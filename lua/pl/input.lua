@@ -1,12 +1,11 @@
 --- Iterators for extracting words or numbers from an input source.
--- <pre class=example>
+--
 --    require 'pl'
 --    local total,n = <a href="pl.seq.html#sum">seq.sum</a>(input.numbers())
 --    print('average',total/n)
--- </pre>
--- <p> See <a href="../../index.html#lexer">here</a>
--- @class module
--- @name pl.input
+--
+-- See @{06-data.md.Reading_Unstructured_Text_Data|here}
+-- @module pl.input
 local strfind = string.find
 local strsub = string.sub
 local strmatch = string.match

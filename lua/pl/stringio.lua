@@ -1,17 +1,16 @@
 --- Reading and writing strings using file-like objects. <br>
--- <pre class=example>
---  f = stringio.open(text)
---  l1 = f:read()  -- read first line
---  n,m = f:read ('*n','*n') -- read two numbers
---  for line in f:lines() do print(line) end -- iterate over all lines
---  f = stringio.create()
---  f:write('hello')
---  f:write('dolly')
---  assert(f:value(),'hellodolly')
--- </pre>
--- See  <a href="../../index.html#stringio">the Guide</a>.
--- @class module
--- @name pl.stringio
+--
+--    f = stringio.open(text)
+--    l1 = f:read()  -- read first line
+--    n,m = f:read ('*n','*n') -- read two numbers
+--    for line in f:lines() do print(line) end -- iterate over all lines
+--    f = stringio.create()
+--    f:write('hello')
+--    f:write('dolly')
+--    assert(f:value(),'hellodolly')
+--
+-- See  @{03-strings.md.File_Style_I_O_on_Strings|the Guide}.
+-- @module pl.stringio
 
 local getmetatable,tostring,unpack,tonumber = getmetatable,tostring,unpack,tonumber
 local concat,append = table.concat,table.insert
@@ -24,7 +23,7 @@ SW.__index = SW
 
 local function xwrite(self,...)
     local args = {...} --arguments may not be nil!
-    for i = 1, #args do 
+    for i = 1, #args do
         append(self.tbl,args[i])
     end
 end
@@ -36,11 +35,11 @@ function SW:write(arg1,arg2,...)
         append(self.tbl,arg1)
     end
 end
- 
+
 function SW:writef(fmt,...)
     self:write(fmt:format(...))
 end
- 
+
 function SW:value()
     return concat(self.tbl)
 end
@@ -54,7 +53,7 @@ end
 --- Reader class
 local SR = {}
 SR.__index = SR
- 
+
 function SR:_read(fmt)
     local i,str = self.i,self.str
     local sz = #str
@@ -73,11 +72,11 @@ function SR:_read(fmt)
         _,i2 = str:find ('%.%d+',idx+1)
         if i2 then idx = i2 end
         _,i2 = str:find ('[eE][%+%-]*%d+',idx+1)
-        if i2 then idx = i2 end   
+        if i2 then idx = i2 end
         local val = str:sub(i,idx)
         res = tonumber(val)
         self.i = idx+1
-    elseif type(fmt) == 'number' then   
+    elseif type(fmt) == 'number' then
         res = str:sub(i,i+fmt-1)
         self.i = i + fmt
     else
@@ -85,10 +84,10 @@ function SR:_read(fmt)
     end
     return res
 end
- 
-function SR:read(...) 
-    local fmts = {...} 
-    if #fmts <= 1 then 
+
+function SR:read(...)
+    local fmts = {...}
+    if #fmts <= 1 then
         return self:_read(fmts[1])
     else
         local res = {}
@@ -98,7 +97,7 @@ function SR:read(...)
         return unpack(res)
     end
 end
- 
+
 function SR:seek(whence,offset)
     local base
     whence = whence or 'cur'
@@ -113,7 +112,7 @@ function SR:seek(whence,offset)
     self.i = base + offset
     return self.i
 end
- 
+
 function SR:lines()
     return function()
         return self:read()
@@ -122,11 +121,11 @@ end
 
 function SR:close() -- for compatibility only
 end
- 
+
 --- create a file-like object which can be used to construct a string.
 -- The resulting object has an extra <code>value()</code> method for
 -- retrieving the string value.
--- @usage f = create(); f:write('hello, dolly\n'); print(f:value()) 
+-- @usage f = create(); f:write('hello, dolly\n'); print(f:value())
 function stringio.create()
     return setmetatable({tbl={}},SW)
 end

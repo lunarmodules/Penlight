@@ -1,10 +1,5 @@
---- MultiMap, a Map which has multiple values per key. <br>
--- @class module
--- @name pl.MultiMap
-
---[[
-module ('pl.MultiMap')
-]]
+--- MultiMap, a Map which has multiple values per key.
+-- @module pl.MultiMap
 
 local classes = require 'pl.class'
 local tablex = require 'pl.tablex'

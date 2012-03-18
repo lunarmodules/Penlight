@@ -1,7 +1,6 @@
 --- Generally useful routines.
--- See  <a href="../../index.html#utils">the Guide</a>.
--- @class module
--- @name pl.utils
+-- See  @{01-introduction.md.Generally_useful_functions|the Guide}.
+-- @module pl.utils
 local format,gsub,byte = string.format,string.gsub,string.byte
 local clock = os.clock
 local stdout = io.stdout

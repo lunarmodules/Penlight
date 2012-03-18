@@ -1,8 +1,8 @@
---- List comprehensions implemented in Lua. <p>
+--- List comprehensions implemented in Lua.
 --
--- See the <a href="http://lua-users.org/wiki/ListComprehensions">wiki page</a>
--- <pre class=example>
---   local C= require 'pl.comprehension' . new()
+-- See the [wiki page](http://lua-users.org/wiki/ListComprehensions)
+--
+--    local C= require 'pl.comprehension' . new()
 --
 --    C ('x for x=1,10') ()
 --    ==> {1,2,3,4,5,6,7,8,9,10}
@@ -21,18 +21,14 @@
 --    ==> {{1,1},{1,2},{2,1},{2,2}}
 --    C '{x,y} for x for y' ({1,2},{10,20})
 --    ==> {{1,10},{1,20},{2,10},{2,20}}
---   assert(C 'sum(x^2 for x)' {2,3,4} == 2^2+3^2+4^2)
--- </pre>
+--    assert(C 'sum(x^2 for x)' {2,3,4} == 2^2+3^2+4^2)
 --
--- <p> (c) 2008 David Manura. Licensed under the same terms as Lua (MIT license).
--- <p> -- See <a href="../../index.html#T31">the Guide</a>
--- @class module
--- @name pl.comprehension
+-- (c) 2008 David Manura. Licensed under the same terms as Lua (MIT license).
+--
+-- See @{07-functional.md.List_Comprehensions|the Guide}
+-- @module pl.comprehension
 
 local utils = require 'pl.utils'
-
---~ local _VERSION, assert, getfenv, ipairs, load, math, pcall, require, setmetatable, table, tonumber =
---~     _G._VERSION, _G.assert, _G.getfenv, _G.ipairs, _G.load, _G.math, _G.pcall, _G.require, _G.setmetatable, _G.table, _G.tonumber
 
 local status,lb = pcall(require, "pl.luabalanced")
 if not status then

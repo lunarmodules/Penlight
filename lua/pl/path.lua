@@ -1,7 +1,7 @@
---- Path manipulation and file queries. <br>
--- This is modelled after Python's os.path library (11.1)
--- @class module
--- @name pl.path
+--- Path manipulation and file queries.
+--
+-- This is modelled after Python's os.path library (11.1); see @{04-paths.md|the Guide}.
+-- @module pl.path
 
 -- imports and locals
 local _G = _G

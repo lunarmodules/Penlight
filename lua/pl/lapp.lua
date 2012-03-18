@@ -1,6 +1,6 @@
 --- Simple command-line parsing using human-readable specification.
 -- Supports GNU-style parameters.
--- <pre class=example>
+--
 --      lapp = require 'pl.lapp'
 --      local args = lapp [[
 --      Does some calculations
@@ -10,13 +10,13 @@
 --      ]]
 --
 --      print(args.offset + args.scale * args.number)
--- </pre>
+--
 -- Lines begining with '-' are flags; there may be a short and a long name;
--- lines begining wih '&lt;var&gt;' are arguments.  Anything in parens after
+-- lines begining wih '<var>' are arguments.  Anything in parens after
 -- the flag/argument is either a default, a type name or a range constraint.
--- <p>See <a href="../../index.html#lapp">the Guide</a>
--- @class module
--- @name pl.lapp
+--
+-- >See @{08-additional.md.Command_line_Programs_with_Lapp|the Guide}
+-- @module pl.lapp
 
 local status,sip = pcall(require,'pl.sip')
 if not status then

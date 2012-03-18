@@ -29,8 +29,6 @@ These are convenient borrowings from Python, as described in 3.6.1 of the Python
 Most of these can be fairly easily implemented using the Lua string library, which is more general and powerful. But they are convenient operations to have easily at hand. Note that can be injected into the `string` table if you use `stringx.import`, but a simple alias like `local stringx = require 'pl.stringx'` is preferrable. This is the recommended practice when writing modules for consumption by other people, since it is bad manners to change the global state of the rest of the system.
 
 
-<a id="templates"></a>
-
 ### String Templates
 
 @lookup pl.text
@@ -89,7 +87,7 @@ So in its simplest form it saves the typing involved with `string.format`; it wi
     > = '$animal[$num]' % {animal='dog',num=1}
     dog[1]
 
-<a id="rici_templates"></a>
+### Another Style of Template
 
 A new module is `template`, which is a version of Rici Lake's [Lua  Preprocessor](http://lua-users.org/wiki/SlightlyLessSimpleLuaPreprocessor).  This allows you to mix Lua code with your templates in a straightforward way. There are only two rules:
 
@@ -159,8 +157,6 @@ Here is a C code generation example; something that could easily be extended to 
         }
     }))
 
-
-<a id="stringio"></a>
 
 ### File-style I/O on Strings
 

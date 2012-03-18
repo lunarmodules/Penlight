@@ -1,6 +1,5 @@
 --- File manipulation functions: reading, writing, moving and copying.
--- @class module
--- @name pl.file
+-- @module pl.file
 local os = os
 local utils = require 'pl.utils'
 local dir = require 'pl.dir'

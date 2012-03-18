@@ -1,6 +1,5 @@
 --- Useful functions for getting directory contents and matching them against wildcards.
--- @class module
--- @name pl.dir
+-- @module pl.dir
 
 local utils = require 'pl.utils'
 local path = require 'pl.path'
@@ -18,10 +17,6 @@ local wrap = coroutine.wrap
 local yield = coroutine.yield
 local assert_arg,assert_string,raise = utils.assert_arg,utils.assert_string,utils.raise
 local List = utils.stdmt.List
-
---[[
-module ('pl.dir',utils._module)
-]]
 
 local dir = {}
 

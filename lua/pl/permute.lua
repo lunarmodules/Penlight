@@ -1,6 +1,5 @@
 --- Permutation operations.
--- @class module
--- @name pl.permute
+-- @module pl.permute
 local tablex = require 'pl.tablex'
 local utils = require 'pl.utils'
 local copy = tablex.deepcopy
@@ -9,9 +8,6 @@ local coroutine = coroutine
 local resume = coroutine.resume
 local assert_arg = utils.assert_arg
 
---[[
-module ('pl.permute',utils._module)
-]]
 
 local permute = {}
 

@@ -1,7 +1,7 @@
---- Reads configuration files into a Lua table. <p>
+--- Reads configuration files into a Lua table.
 --  Understands INI files, classic Unix config files, and simple
--- delimited columns of values. <p>
--- <pre class=example>
+-- delimited columns of values.
+--
 --    # test.config
 --    # Read timeout in seconds
 --    read.timeout=10
@@ -10,13 +10,13 @@
 --    #acceptable ports
 --    ports = 1002,1003,1004
 --
---        -- readconfig.lua
+--    -- readconfig.lua
 --    require 'pl'
 --    local t = config.read 'test.config'
 --    print(pretty.write(t))
 --
 --    ### output #####
---   {
+--    {
 --      ports = {
 --        1002,
 --        1003,
@@ -25,10 +25,9 @@
 --      write_timeout = 5,
 --      read_timeout = 10
 --    }
--- </pre>
--- See the Guide for further <a href="../../index.html#config">discussion</a>
--- @class module
--- @name pl.config
+--
+-- See the Guide for further @{06-data.md.Reading_Configuration_Files|discussion}
+-- @module pl.config
 
 local type,tonumber,ipairs,io, table = _G.type,_G.tonumber,_G.ipairs,_G.io,_G.table
 

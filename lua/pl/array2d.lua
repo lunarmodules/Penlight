@@ -1,6 +1,6 @@
 --- Operations on two-dimensional arrays.
--- @class module
--- @name pl.array2d
+-- See @{02-arrays.md.Operations_on_two_dimensional_tables|The Guide}
+-- @module pl.array2d
 
 local require, type,tonumber,assert,tostring,io,ipairs,string,table =
  _G.require, _G.type,_G.tonumber,_G.assert,_G.tostring,_G.io,_G.ipairs,_G.string,_G.table
@@ -14,10 +14,6 @@ local perm = require 'pl.permute'
 local splitv,fprintf,assert_arg = utils.splitv,utils.fprintf,utils.assert_arg
 local byte = string.byte
 local stdout = io.stdout
-
---[[
-module ('pl.array2d',utils._module)
-]]
 
 local array2d = {}
 

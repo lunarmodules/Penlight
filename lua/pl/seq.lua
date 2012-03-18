@@ -1,6 +1,7 @@
---- Manipulating sequences as iterators.
--- @class module
--- @name pl.seq
+--- Manipulating iterators as sequences.
+-- See @{07-functional.md.Sequences|The Guide}
+--
+-- @module pl.seq
 
 local next,assert,type,pairs,tonumber,type,setmetatable,getmetatable,_G = next,assert,type,pairs,tonumber,type,setmetatable,getmetatable,_G
 local strfind = string.find

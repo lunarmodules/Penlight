@@ -147,7 +147,7 @@ A `MultiMap` allows multiple values to be associated with a given key. So `set` 
 
 (See `pl.Map` and `pl.Set`)
 
-### Tablex. Useful Operations on Tables
+### Useful Operations on Tables
 
 @lookup pl.tablex
 

@@ -1,12 +1,8 @@
 --- Date and Date Format classes.
--- See  <a href="../../index.html#date">the Guide</a>.
--- @class module
--- @name pl.Date
+-- See  @{05-dates.md|the Guide}.
+-- @module pl.Date
 -- @pragma nostrip
 
---[[
-module("pl.Date")
-]]
 
 local class = require 'pl.class'
 local os_time, os_date = os.time, os.date

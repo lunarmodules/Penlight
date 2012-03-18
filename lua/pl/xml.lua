@@ -1,19 +1,20 @@
 --- XML LOM Utilities.
--- This implements some useful things on LOM documents, such as returned by lxp.lom.parse.
+--
+-- This implements some useful things on LOM documents, such as returned by `lxp.lom.parse`.
 -- In particular, it can convert LOM back into XML text, with optional pretty-printing control.
 -- It's based on stanza.lua from Prosody http://hg.prosody.im/trunk/file/4621c92d2368/util/stanza.lua)
 --
 -- Can be used as a lightweight one-stop-shop for simple XML processing; a simple XML parser is included
--- but the default is to use lxp.lom if it can be found.
+-- but the default is to use `lxp.lom` if it can be found.
 -- <pre>
 -- Prosody IM
 -- Copyright (C) 2008-2010 Matthew Wild
--- Copyright (C) 2008-2010 Waqas Hussain
---
+-- Copyright (C) 2008-2010 Waqas Hussain--
 -- classic Lua XML parser by Roberto Ierusalimschy.
 -- modified to output LOM format.
 -- http://lua-users.org/wiki/LuaXml
 -- </pre>
+-- See @{06-data.md.XML|the Guide}
 -- @module pl.xml
 
 local t_insert      =  table.insert;

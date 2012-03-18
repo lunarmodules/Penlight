@@ -1,6 +1,7 @@
 --- Extended operations on Lua tables.
--- @class module
--- @name pl.tablex
+--
+-- See @{02-arrays.md.Useful_Operations_on_Tables|the Guide}
+-- @module pl.tablex
 local getmetatable,setmetatable,require = getmetatable,setmetatable,require
 local append,remove = table.insert,table.remove
 local min,max = math.min,math.max
@@ -11,10 +12,6 @@ local Set = utils.stdmt.Set
 local List = utils.stdmt.List
 local Map = utils.stdmt.Map
 local assert_arg = utils.assert_arg
-
---[[
-module ('pl.tablex',utils._module)
-]]
 
 local tablex = {}
 

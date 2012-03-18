@@ -1,33 +1,29 @@
---- Lexical scanner for creating a sequence of tokens from text. <br>
--- <p><code>lexer.scan(s)</code> returns an iterator over all tokens found in the
--- string <code>s</code>. This iterator returns two values, a token type string
+--- Lexical scanner for creating a sequence of tokens from text.
+-- `lexer.scan(s)` returns an iterator over all tokens found in the
+-- string `s`. This iterator returns two values, a token type string
 -- (such as 'string' for quoted string, 'iden' for identifier) and the value of the
 -- token.
--- <p>
+--
 -- Versions specialized for Lua and C are available; these also handle block comments
 -- and classify keywords as 'keyword' tokens. For example:
--- <pre class=example>
--- > s = 'for i=1,n do'
--- > for t,v in lexer.lua(s)  do print(t,v) end
--- keyword for
--- iden    i
--- =       =
--- number  1
--- ,       ,
--- iden    n
--- keyword do
--- </pre>
--- See the Guide for further <a href="../../index.html#lexer">discussion</a> <br>
--- @class module
--- @name pl.lexer
+--
+--    > s = 'for i=1,n do'
+--    > for t,v in lexer.lua(s)  do print(t,v) end
+--    keyword for
+--    iden    i
+--    =       =
+--    number  1
+--    ,       ,
+--    iden    n
+--    keyword do
+--
+-- See the Guide for further @{06-data.md.Lexical_Scanning|discussion}
+-- @module pl.lexer
 
 local yield,wrap = coroutine.yield,coroutine.wrap
 local strfind = string.find
 local strsub = string.sub
 local append = table.insert
---[[
-module ('pl.lexer',utils._module)
-]]
 
 local function assert_arg(idx,val,tp)
     if type(val) ~= tp then

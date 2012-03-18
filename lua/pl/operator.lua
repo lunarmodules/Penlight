@@ -1,11 +1,13 @@
 --- Lua operators available as functions.
--- (similar to the Python module of the same name)<br>
--- There is a module field <code>optable</code> which maps the operator strings
--- onto these functions, e.g. <pre class=example>operator.optable['()']==operator.call</pre>
--- <p>Operator strings like '>' and '{}' can be passed to most Penlight functions
--- expecting a function argument.</p>
--- @class module
--- @name pl.operator
+--
+-- (similar to the Python module of the same name)
+--
+-- There is a module field `optable` which maps the operator strings
+-- onto these functions, e.g. `operator.optable['()']==operator.call`
+--
+-- Operator strings like '>' and '{}' can be passed to most Penlight functions
+-- expecting a function argument.
+-- @module pl.operator
 
 local strfind = string.find
 local utils = require 'pl.utils'

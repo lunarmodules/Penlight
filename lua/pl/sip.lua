@@ -1,25 +1,22 @@
---- Simple Input Patterns (SIP). <p>
+--- Simple Input Patterns (SIP).
 -- SIP patterns start with '$', then a
--- one-letter type, and then an optional variable in curly braces. <p>
--- Example:
--- <pre class=example>
---  sip.match('$v=$q','name="dolly"',res)
---  ==> res=={'name','dolly'}
---  sip.match('($q{first},$q{second})','("john","smith")',res)
---  ==> res=={second='smith',first='john'}
--- </pre>
--- <pre>
--- <b>Type names</b>
--- v    identifier
--- i     integer
--- f     floating-point
--- q    quoted string
--- ([{&lt;  match up to closing bracket
--- </pre>
--- <p>
--- See <a href="../../index.html#sip">the Guide</a>
--- @class module
--- @name pl.sip
+-- one-letter type, and then an optional variable in curly braces.
+--
+--    sip.match('$v=$q','name="dolly"',res)
+--    ==> res=={'name','dolly'}
+--    sip.match('($q{first},$q{second})','("john","smith")',res)
+--    ==> res=={second='smith',first='john'}
+--
+-- ''Type names''
+--
+--    v    identifier
+--    i     integer
+--    f     floating-point
+--    q    quoted string
+--    ([{<  match up to closing bracket
+--
+-- See @{08-additional.md.Simple_Input_Patterns|the Guide}
+-- @module pl.sip
 
 local append,concat = table.insert,table.concat
 local concat = table.concat
