@@ -1,9 +1,6 @@
 project = 'Penlight'
-description = [[
-# Penlight Lua Libraries 0.9.8
-
-The documentation is available @{01-introduction.md|here}.
-]]
+description = 'Penlight Lua Libraries 0.9.8'
+full_description = 'The documentation is available @{01-introduction.md|here}.'
 title = 'Penlight Documentation'
 dir = 'api_docs'
 topics = 'manual'
