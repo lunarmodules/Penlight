@@ -9,7 +9,7 @@
 --    f:write('dolly')
 --    assert(f:value(),'hellodolly')
 --
--- See  @{03-strings.md.File_Style_I_O_on_Strings|the Guide}.
+-- See  @{03-strings.md.File_style_I_O_on_Strings|the Guide}.
 -- @module pl.stringio
 
 local getmetatable,tostring,unpack,tonumber = getmetatable,tostring,unpack,tonumber

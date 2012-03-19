@@ -12,7 +12,7 @@
 --        print(x,y,z)
 --    end
 --
--- See @{06-DATA.md.Reading_Columnar_Data|the Guide}
+-- See @{06-data.md.Reading_Columnar_Data|the Guide}
 -- @module pl.data
 
 local utils = require 'pl.utils'

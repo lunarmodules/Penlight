@@ -1,10 +1,10 @@
 --------------
--- entry point for loading all PL libraries only on demand.
--- Requiring 'pl' means that whenever a module is accesssed (e.g. utils.split)
+-- Entry point for loading all PL libraries only on demand.
+-- Requiring 'pl' means that whenever a module is implicitly accesssed
+-- (e.g. `utils.split`)
 -- then that module is dynamically loaded. The submodules are all brought into
 -- the global space.
--- @class module
--- @name pl
+-- @module pl
 
 local modules = {
     utils = true,path=true,dir=true,tablex=true,stringio=true,sip=true,

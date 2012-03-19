@@ -88,15 +88,16 @@ end
 
 local index_by = tablex.index_by
 
--- get a list of values indexed by a list of keys.
+--- get a list of values indexed by a list of keys.
 -- @param keys a list-like table of keys
 -- @return a new list
 function Map:getvalues (keys)
     return makelist(index_by(self,keys))
 end
 
-Map.iter = pairs
-
+--- update the map using key/value pairs from another table.
+-- @param table
+-- @function Map:update
 Map.update = tablex.update
 
 function Map:__eq (m)

@@ -1,7 +1,7 @@
 --- Iterators for extracting words or numbers from an input source.
 --
 --    require 'pl'
---    local total,n = <a href="pl.seq.html#sum">seq.sum</a>(input.numbers())
+--    local total,n = seq.sum(input.numbers())
 --    print('average',total/n)
 --
 -- See @{06-data.md.Reading_Unstructured_Text_Data|here}

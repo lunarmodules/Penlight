@@ -23,7 +23,7 @@
 --    static int l_${n} (luaState *state);
 --    > end
 --
--- See  @{03-strings.md.Another_style_of_Template|the Guide}.
+-- See  @{03-strings.md.Another_Style_of_Template|the Guide}.
 -- @module pl.template
 
 local utils = require 'pl.utils'

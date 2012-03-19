@@ -1,6 +1,6 @@
 --- Python-style list class.
 --
--- ''Please Note'': methods that change the list will return the list.
+-- **Please Note**: methods that change the list will return the list.
 -- This is to allow for method chaining, but please note that `ls = ls:sort()`
 -- does not mean that a new copy of the list is made. In-place (mutable) methods
 -- are marked as returning 'the list' in this documentation.
@@ -9,7 +9,7 @@
 --
 -- See <a href="http://www.python.org/doc/current/tut/tut.html">http://www.python.org/doc/current/tut/tut.html</a>, section 5.1
 --
--- ''Note'': The comments before some of the functions are from the Python docs
+-- **Note**: The comments before some of the functions are from the Python docs
 -- and contain Python code.
 --
 -- Written for Lua version Nick Trout 4.0; Redone for Lua 5.1, Steve Donovan.
