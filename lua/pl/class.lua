@@ -16,7 +16,14 @@ local error, getmetatable, io, pairs, rawget, rawset, setmetatable, tostring, ty
 local function call_ctor (c,obj,...)
     -- nice alias for the base class ctor
     local base = rawget(c,'_base')
-    if base then obj.super = rawget(base,'_init') end
+    if base then
+        local parent_ctor = rawget(base,'_init')
+        if parent_ctor then
+            obj.super = function(obj,...)
+                call_ctor(base,obj,...)
+            end
+        end
+    end
     local res = c._init(obj,...)
     obj.super = nil
     return res
