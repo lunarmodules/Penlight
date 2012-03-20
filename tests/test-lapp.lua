@@ -4,8 +4,7 @@ local lapp = require 'pl.lapp'
 
 local k = 1
 function check (spec,args,match)
-    arg = args
-    local args = lapp(spec)
+    local args = lapp(spec,args)
     for k,v in pairs(args) do
         if type(v) == 'userdata' then args[k]:close(); args[k] = '<file>' end
     end

@@ -160,11 +160,13 @@ end
 --- process a Lapp options string.
 -- Usually called as lapp().
 -- @param str the options text
+-- @param args a table of arguments (default is `_G.arg`)
 -- @return a table with parameter-value pairs
-function lapp.process_options_string(str)
+function lapp.process_options_string(str,args)
     local results = {}
     local opts = {at_start=true}
     local varargs
+    local arg = args or _G.arg
     open_files = {}
     parms = {}
     aliases = {}
@@ -387,7 +389,7 @@ end
 
 
 setmetatable(lapp, {
-    __call = function(tbl,str) return lapp.process_options_string(str) end,
+    __call = function(tbl,str,args) return lapp.process_options_string(str,args) end,
 })
 
 
