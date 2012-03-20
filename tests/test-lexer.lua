@@ -77,3 +77,18 @@ asserteq(tok(),'comment')
 asserteq(tok(),'comment')
 asserteq(tok(),'space')
 asserteq(tok(),'comment')
+
+local function teststring (s)
+    local tok = lexer.lua(s,{},{string=false})
+    local t,v = tok()
+    asserteq(t,"string")
+    asserteq(v,s)
+end
+
+teststring [["hello\\"]]
+teststring [["hello\"dolly"]]
+teststring [['hello\'dolly']]
+teststring [['']]
+teststring [[""]]
+
+

@@ -40,10 +40,10 @@ local NUMBER4 = '^%d+%.?%d*[eE][%+%-]?%d+'
 local NUMBER5 = '^%d+%.?%d*'
 local IDEN = '^[%a_][%w_]*'
 local WSPACE = '^%s+'
-local STRING1 = [[^'.-[^\\]']]
-local STRING2 = [[^".-[^\\]"]]
+local STRING0 = [[^(['\"]).-\\%1]]
+local STRING1 = [[^(['\"]).-[^\]%1]]
 local STRING3 = "^((['\"])%2)" -- empty string
-local PREPRO = '^#.-[^\\]\n'
+local PREPRO = '^#.-[^\]\n'
 
 local plain_matches,lua_matches,cpp_matches,lua_keyword,cpp_keyword
 
@@ -140,8 +140,8 @@ function lexer.scan (s,matches,filter,options)
                 {NUMBER1,ndump},
                 {NUMBER2,ndump},
                 {STRING3,sdump},
+                {STRING0,sdump},
                 {STRING1,sdump},
-                {STRING2,sdump},
                 {'^.',tdump}
             }
         end
@@ -295,8 +295,8 @@ function lexer.lua(s,filter,options)
             {NUMBER4,ndump},
             {NUMBER5,ndump},
             {STRING3,sdump},
+            {STRING0,sdump},
             {STRING1,sdump},
-            {STRING2,sdump},
             {'^%-%-%[%[.-%]%]',cdump},
             {'^%-%-.-\n',cdump},
             {'^%[%[.-%]%]',sdump_l},
@@ -346,7 +346,6 @@ function lexer.cpp(s,filter,options)
             {NUMBER5,ndump},
             {STRING3,sdump},
             {STRING1,chdump},
-            {STRING2,sdump},
             {'^//.-\n',cdump},
             {'^/%*.-%*/',cdump},
             {'^==',tdump},
