@@ -93,37 +93,45 @@ local DataMT = {
         return self.fieldnames
     end,
 }
-DataMT.__index = DataMT
 
---- return a particular column as a list of values (Method). <br>
+local array2d
+
+DataMT.__index = function(self,name)
+    local f = DataMT[name]
+    if f then return f end
+    if not array2d then
+        array2d = require 'pl.array2d'
+    end
+    return array2d[name]
+end
+
+--- return a particular column as a list of values (method).
 -- @param name either name of column, or numerical index.
--- @class function
--- @name Data.column_by_name
+-- @function Data.column_by_name
 
---- return a query iterator on this data object (Method). <br>
+--- return a query iterator on this data (method).
 -- @param condn the query expression
--- @class function
--- @name Data.select
+-- @function Data.select
 -- @see data.query
 
---- return a new data object based on this query (Method). <br>
+--- return a row iterator on this data (method).
 -- @param condn the query expression
--- @class function
--- @name Data.copy_select
+-- @function Data.select_row
 
---- return the field names of this data object (Method). <br>
--- @class function
--- @name Data.column_names
+--- return a new data object based on this query (method).
+-- @param condn the query expression
+-- @function Data.copy_select
 
---- write out a row (Method). <br>
+--- return the field names of this data object (method).
+-- @function Data.column_names
+
+--- write out a row (method).
 -- @param f file-like object
--- @class function
--- @name Data.write_row
+-- @function Data.write_row
 
---- write data out to file(Method). <br>
+--- write data out to file (method).
 -- @param f file-like object
--- @class function
--- @name Data.write
+-- @function Data.write
 
 
 -- [guessing delimiter] We check for comma, tab and spaces in that order.
@@ -280,25 +288,38 @@ function data.read(file,cnfg)
     return data.new(D)
 end
 
-local function write_row (data,f,row)
-    f:write(concat(row,data.delim),'\n')
+local function write_row (data,f,row,delim)
+    f:write(concat(row,delim),'\n')
 end
 
-DataMT.write_row = write_row
+function DataMT:write_row(f,row)
+    write_row(data,f,row,delim)
+end
 
-local function write (data,file)
+--- write 2D data to a file.
+-- Does not assume that the data has actually been
+-- generated with `new` or `read`.
+-- @param data 2D array
+-- @param file filename or file-like object
+-- @param fieldnames list of fields (optional)
+-- @param delim delimiter (default tab)
+function data.write (data,file,fieldnames,delim)
     local f,err,opened = open_file(file,'w')
     if not f then return nil, err end
-    if #data.fieldnames > 0 then
-        f:write(concat(data.fieldnames,data.delim),'\n')
+    if fieldnames and #fieldnames > 0 then
+        f:write(concat(data.fieldnames,delim),'\n')
     end
+    delim = delim or '\t'
     for i = 1,#data do
-        write_row(data,f,data[i])
+        write_row(data,f,data[i],delim)
     end
     if opened then f:close() end
 end
 
-DataMT.write = write
+
+function DataMT:write(file)
+    write_data(self,file,self.fieldnames,self.delim)
+end
 
 local function massage_fieldnames (fields)
     -- [fieldnames must be valid Lua identifiers] fix 0.8 was %A
@@ -306,7 +327,6 @@ local function massage_fieldnames (fields)
         fields[i] = fields[i]:gsub('%W','_')
     end
 end
-
 
 --- create a new dataset from a table of rows. <br>
 -- Can specify the fieldnames, else the table must have a field called
