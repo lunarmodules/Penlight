@@ -14,36 +14,45 @@ local pretty = {}
 -- Uses load(), but tries to be cautious about loading arbitrary code!
 -- It is expecting a string of the form '{...}', with perhaps some whitespace
 -- before or after the curly braces. A comment may occur beforehand.
--- An empty environment is used by default, and
+-- An empty environment is used, and
 -- any occurance of the keyword 'function' will be considered a problem.
 -- If `plain` is set, then the string is 'free form' Lua statements, evaluated
 -- in the given environment - the return value may be `nil`.
 -- @param s {string} string of the form '{...}', with perhaps some whitespace
 --		before or after the curly braces.
--- @param env optional explicit environment
--- @param plain optionally read a top level Lua chunk into the environment
 -- @return a table
-function pretty.read(s, env, plain)
+function pretty.read(s)
     assert_arg(1,s,'string')
-    if not plain then
-        if s:find '^%s*%-%-' then -- may start with a comment..
-            s = s:gsub('%-%-.-\n','')
-        end
-        if not s:find '^%s*%b{}%s*$' then return nil,"not a Lua table" end
-        if s:find '[^\'"%w_]function[^\'"%w_]' then
-            local lexer = require 'pl.lexer'
-            local tok = lexer.lua(s)
-            for t,v in tok do
-                if t == 'keyword' then
-                    return nil,"cannot have Lua keywords in table definition"
-                end
+    if s:find '^%s*%-%-' then -- may start with a comment..
+        s = s:gsub('%-%-.-\n','')
+    end
+    if not s:find '^%s*%b{}%s*$' then return nil,"not a Lua table" end
+    if s:find '[^\'"%w_]function[^\'"%w_]' then
+        local lexer = require 'pl.lexer'
+        local tok = lexer.lua(s)
+        for t,v in tok do
+            if t == 'keyword' then
+                return nil,"cannot have Lua keywords in table definition"
             end
         end
-        s = 'return '..s
     end
+    s = 'return '..s
     local chunk,err = utils.load(s,'tbl','t',env or {})
     if not chunk then return nil,err end
     return chunk()
+end
+
+-- read a Lua chunk.
+-- @param s Lua code
+-- @param env optional environment
+-- @return the environment
+function pretty.load (s, env)
+    env = env or {}
+    local chunk,err = utils.load(s,'tbl','t',env)
+    if not chunk then return nil,err end
+    local ok,err = pcall(chunk)
+    if not ok then return nil,err end
+    return env
 end
 
 local function quote_if_necessary (v)
