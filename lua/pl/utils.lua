@@ -445,6 +445,17 @@ function utils.bind1 (fn,p)
     return function(...) return fn(p,...) end
 end
 
+--- bind the second argument of the function to a value.
+-- @param fn a function of at least two values (may be an operator string)
+-- @param p a value
+-- @return a function such that f(x) is fn(x,p)
+-- @raise same as @{function_arg}
+function utils.bind2 (fn,p)
+    fn = utils.function_arg(1,fn)
+    return function(x,...) return fn(x,p,...) end
+end
+
+
 --- assert that the given argument is in fact of the correct type.
 -- @param n argument index
 -- @param val the value

@@ -453,8 +453,8 @@ end
 -- @param iter a sequence with up to 3 values
 -- @param fn a function
 function seq.foreach(iter,fn)
-  fn = function_arg(2,fn)
-  for i1,i2,i3 in default_iter(iter) do fn(i1,i2,i3) end
+    fn = function_arg(2,fn)
+    for i1,i2,i3 in default_iter(iter) do fn(i1,i2,i3) end
 end
 
 ---------------------- Sequence Adapters ---------------------
