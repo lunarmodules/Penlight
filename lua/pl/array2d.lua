@@ -4,6 +4,8 @@
 
 local require, type,tonumber,assert,tostring,io,ipairs,string,table =
  _G.require, _G.type,_G.tonumber,_G.assert,_G.tostring,_G.io,_G.ipairs,_G.string,_G.table
+local setmetatable,getmetatable = setmetatable,getmetatable
+
 local ops = require 'pl.operator'
 local tablex = require 'pl.tablex'
 local utils = require 'pl.utils'
@@ -17,13 +19,31 @@ local stdout = io.stdout
 
 local array2d = {}
 
+
+local function obj (int,out)
+    local mt = getmetatable(int)
+    if mt then
+        setmetatable(out,mt)
+    end
+    return out
+end
+
+--- return the row and column size.
+-- @param t a 2d array
+-- @return number of rows
+-- @return number of cols
+function array2d.size (t)
+    assert_arg(1,t,'table')
+    return #t,#t[1]
+end
+
 --- extract a column from the 2D array.
 -- @param a 2d array
 -- @param key an index or key
 -- @return 1d array
 function array2d.column (a,key)
     assert_arg(1,a,'table')
-    return imap(ops.index,a,key)
+    return obj(a,imap(ops.index,a,key))
 end
 local column = array2d.column
 
@@ -35,7 +55,7 @@ local column = array2d.column
 function array2d.map (f,a,arg)
     assert_arg(1,a,'table')
     f = utils.function_arg(1,f)
-    return imap(function(row) return imap(f,row,arg) end, a)
+    return obj(a,imap(function(row) return imap(f,row,arg) end, a))
 end
 
 --- reduce the rows using a function.
@@ -136,7 +156,7 @@ function array2d.flatten (t)
             k = k + 1
         end
     end
-    return res
+    return setmetatable(res,utils.stdmt.List)
 end
 
 --- swap two rows of an array.
@@ -164,7 +184,7 @@ end
 -- @param t 2d array
 -- @param ridx a table of row indices
 function array2d.extract_rows (t,ridx)
-    return index_by(t,ridx)
+    return obj(t,index_by(t,ridx))
 end
 
 --- extract the specified columns.
@@ -172,9 +192,11 @@ end
 -- @param cidx a table of column indices
 function array2d.extract_cols (t,cidx)
     assert_arg(1,t,'table')
+    local res = {}
     for i = 1,#t do
-        t[i] = index_by(t[i],cidx)
+        res[i] = index_by(t[i],cidx)
     end
+    return obj(t,res)
 end
 
 --- remove a row from an array.
@@ -279,20 +301,21 @@ function array2d.slice (t,i1,j1,i2,j2)
         res[#res+1] = val
     end
     if i1 == i2 then res = res[1] end
-    return res
+    return obj(t,res)
 end
 
 --- set a specified range of an array to a value.
 -- @param t a 2D array
--- @param value the value
+-- @param value the value (may be a function)
 -- @param i1 start row (default 1)
 -- @param j1 start col (default 1)
 -- @param i2 end row   (default N)
 -- @param j2 end col   (default M)
+-- @see tablex.set
 function array2d.set (t,value,i1,j1,i2,j2)
     i1,j1,i2,j2 = default_range(t,i1,j1,i2,j2)
     for i = i1,i2 do
-        tset(t[i],value)
+        tset(t[i],value,j1,j2)
     end
 end
 
