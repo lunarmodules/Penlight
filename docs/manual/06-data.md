@@ -42,8 +42,6 @@ This is more self-documenting; it is generally better to make the code express t
 
 ### Reading Unstructured Text Data
 
-<a id="input"/>
-
 Text data is sometimes unstructured, for example a file containing words. The `pl.input` module has a number of functions which makes processing such files easier. For example, a script to count the number of words in standard input using `import.words`:
 
     -- countwords.lua
@@ -128,8 +126,6 @@ Note the default behaviour for bad fields, which is to show the offending line n
 
 This behaviour of `input.fields` is appropriate for a script which you want to fail immediately with an appropriate _user_ error message if conversion fails. The fourth optional parameter is an options table: `{no_fail=true}` means that conversion is attempted but if it fails it just returns the string, rather as AWK would operate. You are then responsible for checking the type of the returned field. `{no_convert=true}` switches off conversion altogether and all fields are returned as strings.
 
-<a id="data"/>
-
 @lookup pl.data
 
 Sometimes it is useful to bring a whole dataset into memory, for operations such as extracting columns. Penlight provides a flexible reader specifically for reading this kind of data, using the `data` module. Given a file looking like this:
@@ -158,7 +154,7 @@ You can now analyze this returned table using the supplied methods. For instance
         end
     end
 
-`data.read` tries to be clever when given data; by default it expects a first line of column names, unless any of them are numbers. It tries to deduce the column delimiter by looking at the firstline. Sometimes it guesses wrong; these things can be specified explicitly. The second optional parameter is an options table: can override `delim` (a string pattern), `fieldnames` (a list or comma-separated string), specify `no_convert` (default is to convert), numfields (indices of columns known to be numbers, as a list) and `thousands_dot` (when the thousands separator in Excel CSV is '.')
+`data.read` tries to be clever when given data; by default it expects a first line of column names, unless any of them are numbers. It tries to deduce the column delimiter by looking at the first line. Sometimes it guesses wrong; these things can be specified explicitly. The second optional parameter is an options table: can override `delim` (a string pattern), `fieldnames` (a list or comma-separated string), specify `no_convert` (default is to convert), numfields (indices of columns known to be numbers, as a list) and `thousands_dot` (when the thousands separator in Excel CSV is '.')
 
 A very powerful feature is a way to execute SQL-like queries on such data:
 
@@ -190,6 +186,7 @@ For this to work, _field names must be Lua identifiers_. So `read` will massage 
 The task is to reduce the dataset to a relevant set of rows and columns, perhaps do some processing on row data, and write the result out to a new CSV file. The `write_row` method uses the delimiter to write the row to a file; `select_row` is like `select`, except it iterates over _rows_, not fields; this is necessary if we are dealing with a lot of columns!
 
     names = {[1501]='don',[1433]='dilbert'}
+    keepcols = {'Employee_ID','Hours_Booked'}
     t:write_row (outf,{'Employee','Hours_Booked'})
     q = t:select_row {
         fields=keepcols,
@@ -205,7 +202,6 @@ The task is to reduce the dataset to a relevant set of rows and columns, perhaps
 Data does not have to come from files, nor does it necessarily come from the lab or the accounts department. On Linux, `ps aux` gives you a full listing of all processes running on your machine. It is straightforward to feed the output of this command into `data.read` and perform useful queries on it. Notice that non-identifier characters like '%' get converted into underscores:
 
         require 'pl'
-        List = require 'pl.List'
         f = io.popen 'ps aux'
         s = data.read (f,{last_field_collect=true})
         f:close()
@@ -215,7 +211,6 @@ Data does not have to come from files, nor does it necessarily come from the lab
         for name,mem in s:select(qs) do
             print(mem,name)
         end
-
 
 I've always been an admirer of the AWK programming language; with `filter` you can get Lua programs which are just as compact:
 
@@ -234,7 +229,26 @@ And it can be used generally as a filter command to extract columns from data. (
 
 (As with AWK, please note the single-quotes used in this command; this prevents the shell trying to expand the column indexes. If you are on Windows, then you are fine, but it is still necessary to quote the expression in double-quotes so it is passed as one argument to your batch file.)
 
-As a tutorial resource, have a look at test-data.lua in the PL tests directory for other examples of use, plus comments.
+As a tutorial resource, have a look at `test-data.lua` in the PL tests directory for other examples of use, plus comments.
+
+The data returned by `read` or constructed by `copy_select` from a query is basically just an array of rows: `{{1,2},{3,4}}`. So you may use `read` to pull in any array-like dataset, and process with any function that expects such a implementation. In particular, the functions in `array2d` will work fine with this data. In fact, these functions are available as methods; e.g. `array2d.flatten` can be called directly like so to give us a one-dimensional list:
+
+    v = data.read('dat.txt'):flatten()
+
+The data is also in exactly the right shape to be treated as matrices by [LuaMatrix](http://lua-users.org/wiki/LuaMatrix):
+
+    > matrix = require 'matrix'
+    > m = matrix(data.read 'mat.txt')
+    > = m
+    1       0.2     0.3
+    0.2     1       0.1
+    0.1     0.2     1
+    > = m^2  -- same as m*m
+    1.07    0.46    0.62
+    0.41    1.06    0.26
+    0.24    0.42    1.05
+
+`write` will write matrices back to files for you.
 
 Finally, for the curious, the global variable `_DEBUG` can be used to print out the actual iterator function which a query generates and dynamically compiles. By using code generation, we can get pretty much optimal performance out of arbitrary queries.
 
@@ -262,8 +276,6 @@ Finally, for the curious, the global variable `_DEBUG` can be used to print out 
 
     10,20
     40,50
-
-<a id="config"/>
 
 ### Reading Configuration Files
 
