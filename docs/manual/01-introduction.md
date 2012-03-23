@@ -16,7 +16,7 @@ If you are used to Python conventions, please note that all indices consistently
 
 The Lua function `table.foreach` has been deprecated in favour of the `for in` statement, but such an operation becomes particularly useful with the higher-order function support in Penlight. Note that `tablex.foreach` reverses the order, so that the function is passed the value and then the key. Although perverse, this matches the intended use better.
 
-The only important external dependence of Penlight is LuaFileSystem (`lfs`), and if you want `dir.copyfile` to work cleanly on Windows, you will need `alien` as well. (The fallback is to call the equivalent shell commands.)
+The only important external dependence of Penlight is [LuaFileSystem](http://keplerproject.github.com/luafilesystem/manual.html) (`lfs`), and if you want `dir.copyfile` to work cleanly on Windows, you will need either [alien](http://alien.luaforge.net/) or be using [LuaJIT](http://luajit.org) as well. (The fallback is to call the equivalent shell commands.)
 
 Some of the examples in this guide were created using [ilua](http://lua-users.org/wiki/InteractiveLua), which doesn't require '=' to print out expressions, and will attempt to print out table results as nicely as possible.  This is also available under Lua for Windows, as a library, so the command `lua -lilua -s` will work (the s option switches off 'strict' variable checking, which is annoying and conflicts with the use of `_DEBUG` in some of these libraries.
 
@@ -255,4 +255,6 @@ There are two ways to define a class, either `class.Name()` or `Name = class()`;
 So `Alice = class(); Alice._name = 'Alice'` is exactly the same as `class.Alice()`.
 
 This useful notation is borrowed from Hugo Etchegoyen's [classlib](http://lua-users.org/wiki/MultipleInheritanceClasses) which further extends this concept to allow for multiple inheritance.
+
+Penlight provides a number of useful classes; there is `List`, which is a Lua clone of the standard Python list object, and `Set` which represents sets. There are three kinds of _map_ defined: `Map`, `MultiMap` (where a key may have multiple values) and `OrderedMap` (where the order of insertion is remembered.).  There is nothing special about these classes and you may inherit from them.
 

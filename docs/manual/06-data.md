@@ -231,7 +231,7 @@ And it can be used generally as a filter command to extract columns from data. (
 
 As a tutorial resource, have a look at `test-data.lua` in the PL tests directory for other examples of use, plus comments.
 
-The data returned by `read` or constructed by `copy_select` from a query is basically just an array of rows: `{{1,2},{3,4}}`. So you may use `read` to pull in any array-like dataset, and process with any function that expects such a implementation. In particular, the functions in `array2d` will work fine with this data. In fact, these functions are available as methods; e.g. `array2d.flatten` can be called directly like so to give us a one-dimensional list:
+The data returned by `read` or constructed by `Data.copy_select` from a query is basically just an array of rows: `{{1,2},{3,4}}`. So you may use `read` to pull in any array-like dataset, and process with any function that expects such a implementation. In particular, the functions in `array2d` will work fine with this data. In fact, these functions are available as methods; e.g. `array2d.flatten` can be called directly like so to give us a one-dimensional list:
 
     v = data.read('dat.txt'):flatten()
 
@@ -550,7 +550,7 @@ Rather then dumping the whole list, with its duplicates, we pass it through `seq
 
 You could further pass this through `tablex.keys` to get a unique list of symbols. This can be useful when writing 'strict' Lua modules, where all global symbols must be defined as locals at the top of the file.
 
-For a more detailed use of `lexer.scan`, please look at 'testxml.lua' in the examples directory.
+For a more detailed use of `lexer.scan`, please look at `testxml.lua` in the examples directory.
 
 ### XML
 
@@ -637,7 +637,7 @@ It's common to find configurations expressed with XML these days. It's straightf
       name = "bozo"
     }
 
-The only gotcha is that here we must use the `childtags` method, which will skip over any text elements.
+The only gotcha is that here we must use the `Doc:childtags` method, which will skip over any text elements.
 
 A more involved example is this excerpt from `serviceproviders.xml`, which is usually found at `/usr/share/mobile-broadband-provider-info/serviceproviders.xml` on Debian/Ubuntu Linux systems.
 

@@ -400,9 +400,9 @@ There is `product` which returns  the _Cartesian product_ of two 1D arrays. The 
     > array2d.product('{}',{1,2},{'a','b'})
     {{{1,'b'},{2,'a'}},{{1,'a'},{2,'b'}}}
 
-There is a set of operations which work in-place on 2D arrays. You can `swap_rows` and `swap_cols`; the first really is a simple one-liner, but the idea is to give the operation a name. `remove_row` and `remove_col` are generalizations of `table.remove`. Likewise, `extract_rows` and `extract_cols` are given arrays of indices and discard anything else. So, for instance, `extract_cols(A,{2,4})` will leave just columns 2 and 4 in the array.
+There is a set of operations which work in-place on 2D arrays. You can `swap_rows` and `swap_cols`; the first really is a simple one-liner, but the idea here is to give the operation a name. `remove_row` and `remove_col` are generalizations of `table.remove`. Likewise, `extract_rows` and `extract_cols` are given arrays of indices and discard anything else. So, for instance, `extract_cols(A,{2,4})` will leave just columns 2 and 4 in the array.
 
-`List.slice` is often useful on 1D arrays; `array2d.slice` does the same thing, but is generally given a start (row,column) and a end (row,column).
+`List.slice` is often useful on 1D arrays; `slice` does the same thing, but is generally given a start (row,column) and a end (row,column).
 
     > A = {{1,2,3},{4,5,6},{7,8,9}}
     > B = slice(A,1,1,2,2)
@@ -414,7 +414,7 @@ There is a set of operations which work in-place on 2D arrays. You can `swap_row
      5.0 6.0
      8.0 9.0
 
-Here `array2d.write` is used to print out an array nicely; the second parameter is `nil`, which is the default (stdout) but can be any file object and the third parameter is an optional format (as used in `string.format`).
+Here `write` is used to print out an array nicely; the second parameter is `nil`, which is the default (stdout) but can be any file object and the third parameter is an optional format (as used in `string.format`).
 
 `parse_range` will take a spreadsheet range like 'A1:B2' or 'R1C1:R2C2' and return the range as four numbers, which can be passed to `slice`. The rule is that `slice` will return an array of the appropriate shape depending on the range; if a range represents a row or a column, the result is 1D, otherwise 2D.
 
@@ -426,5 +426,14 @@ This applies to `iter` as well, which can also optionally be given a range:
     2       3       6
     3       2       8
     3       3       9
+
+`new` will construct a new 2D array with the given dimensions. You provide an initial value for the elements, which is interpreted as a function if it's callable. With `L` being `utils.string_lambda` we then have the following way to make an _identity matrix_:
+
+    asserteq(
+        array.new(3,3,L'|i,j| i==j and 1 or 0'),
+        {{1,0,0},{0,1,0},{0,0,1}}
+    )
+
+Please note that most functions in `array2d` are _covariant_, that is, they return an array of the same type as they receive.  In particular, any objects created with `data.new` or `matrix.new` will remain data or matrix objects when reshaped or sliced, etc.  Data objects have the `array2d` functions available as methods.
 
 
