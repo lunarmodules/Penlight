@@ -1,5 +1,6 @@
 local array = require 'pl.array2d'
 local asserteq = require('pl.test').asserteq
+local L = require 'pl.utils'. string_lambda
 
 local A = {
 	{1,2,3,4},
@@ -35,10 +36,37 @@ asserteq(
     {1,2,3,4,5,6}
 )
 
+
+A = {{1,2,3},{4,5,6}}
+
+-- flatten in column order!
+asserteq(
+    array.reshape(A,1,true),
+    {{1,4,2,5,3,6}}
+)
+
+-- regular row-order reshape
+asserteq(
+    array.reshape(A,3),
+    {{1,2},{3,4},{5,6}}
+)
+
+asserteq(
+    array.new(3,3,0),
+    {{0,0,0},{0,0,0},{0,0,0}}
+)
+
+asserteq(
+    array.new(3,3,L'|i,j| i==j and 1 or 0'),
+    {{1,0,0},{0,1,0},{0,0,1}}
+)
+
 asserteq(
     array.reduce2('+','*',{{1,10},{2,10},{3,10}}),
     60 -- i.e. 1*10 + 2*10 + 3*10
 )
+
+
 
 
 
