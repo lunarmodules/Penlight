@@ -139,6 +139,7 @@ end
 local delims = {',','\t',' ',';'}
 
 local function guess_delim (line)
+    if line=='' then return ' ' end
     for _,delim in ipairs(delims) do
         if count(line,delim) > 0 then
             return delim == ' ' and '%s+' or delim
@@ -338,7 +339,7 @@ end
 -- @param fieldnames optional fieldnames
 -- @return the table.
 function data.new (d,fieldnames)
-    d.fieldnames = d.fieldnames or fieldnames
+    d.fieldnames = d.fieldnames or fieldnames or ''
     if not d.delim and type(d.fieldnames) == 'string' then
         d.delim = guess_delim(d.fieldnames)
         d.fieldnames = split(d.fieldnames,d.delim)

@@ -22,7 +22,7 @@ module ('pl.path',utils._module)
 
 local path, attrib
 
-if _G.luajava then
+if rawget(_G,'luajava') then
     path = require 'pl.platf.luajava'
 else
     path = {}
@@ -151,6 +151,7 @@ end
 
 --- return an absolute path.
 -- @param P A file path
+-- @param pwd optional start path to use (default is current dir)
 function path.abspath(P,pwd)
     assert_string(1,P)
     local use_pwd = pwd ~= nil

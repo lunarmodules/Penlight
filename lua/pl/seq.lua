@@ -111,6 +111,7 @@ end
 -- @param iter a sequence
 -- @param condn a predicate function (must return either true or false)
 -- @param optional argument to be passed to predicate as second argument.
+-- @return count
 function seq.count(iter,condn,arg)
   local i = 0
   seq.foreach(iter,function(val)
@@ -121,6 +122,8 @@ end
 
 --- return the minimum and the maximum value of the sequence.
 -- @param iter a sequence
+-- @return minimum value
+-- @return maximum value
 function seq.minmax(iter)
   local vmin,vmax = 1e70,-1e70
   for v in default_iter(iter) do

@@ -245,7 +245,8 @@ function List:reverse()
 end
 
 --- return the minimum and the maximum value of the list.
--- @param iter a sequence
+-- @return minimum value
+-- @return maximum value
 function List:minmax()
     local vmin,vmax = 1e70,-1e70
     for i = 1,#self do

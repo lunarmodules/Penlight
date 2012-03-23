@@ -159,6 +159,39 @@ function array2d.flatten (t)
     return setmetatable(res,utils.stdmt.List)
 end
 
+--- reshape a 2D array.
+-- @param t 2d array
+-- @param nrows new number of rows
+-- @param co column-order (Fortran-style) (default false)
+-- @return a new 2d array
+function array2d.reshape (t,nrows,co)
+    local nr,nc = array2d.size(t)
+    local ncols = nr*nc / nrows
+    local res = {}
+    local ir,ic = 1,1
+    for i = 1,nrows do
+        local row = {}
+        for j = 1,ncols do
+            row[j] = t[ir][ic]
+            if not co then
+                ic = ic + 1
+                if ic > nc then
+                    ir = ir + 1
+                    ic = 1
+                end
+            else
+                ir = ir + 1
+                if ir > nr then
+                    ic = ic + 1
+                    ir = 1
+                end
+            end
+        end
+        res[i] = row
+    end
+    return obj(t,res)
+end
+
 --- swap two rows of an array.
 -- @param t a 2d array
 -- @param i1 a row index
@@ -394,6 +427,9 @@ function array2d.iter (a,indices,i1,j1,i2,j2)
     end
 end
 
+--- iterate over all columns.
+-- @param a a 2D array
+-- @return each column in turn
 function array2d.columns (a)
     assert_arg(1,a,'table')
     local n = a[1][1]
@@ -403,6 +439,26 @@ function array2d.columns (a)
         if i > n then return nil end
         return column(a,i)
     end
+end
+
+--- new array of specified dimensions
+-- @param rows number of rows
+-- @param cols number of cols
+-- @param val initial value; if it's a function then use `val(i,j)`
+-- @return new 2d array
+function array2d.new(rows,cols,val)
+    local res = {}
+    local fun = utils.is_callable(val)
+    for i = 1,rows do
+        local row = {}
+        if fun then
+            for j = 1,cols do row[j] = val(i,j) end
+        else
+            for j = 1,cols do row[j] = val end
+        end
+        res[i] = row
+    end
+    return res
 end
 
 return array2d
