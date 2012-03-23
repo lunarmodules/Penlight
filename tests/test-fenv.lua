@@ -10,8 +10,7 @@ local ok,code = utils.execute(lua..' -v')
 assert(ok == true and code == 0)
 
 -- table.pack is defined for 5.1
-local t,n = table.pack(1,nil,'hello')
-asserteq(n,3)
+local t = table.pack(1,nil,'hello')
 asserteq(t.n,3)
 assert(t[1] == 1 and t[3] == 'hello')
 

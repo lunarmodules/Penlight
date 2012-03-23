@@ -293,7 +293,7 @@ local function write_row (data,f,row,delim)
 end
 
 function DataMT:write_row(f,row)
-    write_row(data,f,row,delim)
+    write_row(self,f,row,self.delim)
 end
 
 --- write 2D data to a file.
@@ -318,7 +318,7 @@ end
 
 
 function DataMT:write(file)
-    write_data(self,file,self.fieldnames,self.delim)
+    data.write(self,file,self.fieldnames,self.delim)
 end
 
 local function massage_fieldnames (fields)

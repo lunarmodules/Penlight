@@ -6,6 +6,7 @@
 local append = table.insert
 local concat = table.concat
 local utils = require 'pl.utils'
+local lexer = require 'pl.lexer'
 local assert_arg = utils.assert_arg
 
 local pretty = {}
@@ -28,7 +29,6 @@ function pretty.read(s)
     end
     if not s:find '^%s*%b{}%s*$' then return nil,"not a Lua table" end
     if s:find '[^\'"%w_]function[^\'"%w_]' then
-        local lexer = require 'pl.lexer'
         local tok = lexer.lua(s)
         for t,v in tok do
             if t == 'keyword' then

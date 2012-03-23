@@ -43,7 +43,7 @@ local WSPACE = '^%s+'
 local STRING0 = [[^(['\"]).-\\%1]]
 local STRING1 = [[^(['\"]).-[^\]%1]]
 local STRING3 = "^((['\"])%2)" -- empty string
-local PREPRO = '^#.-[^\]\n'
+local PREPRO = '^#.-[^\\]\n'
 
 local plain_matches,lua_matches,cpp_matches,lua_keyword,cpp_keyword
 

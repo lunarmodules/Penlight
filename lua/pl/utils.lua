@@ -262,7 +262,7 @@ end
 if not lua52 then
     function table.pack (...)
         local n = select('#',...)
-        return {n=n; ...},n
+        return {n=n; ...}
     end
     local sep = package.config:sub(1,1)
     function package.searchpath (mod,path)
