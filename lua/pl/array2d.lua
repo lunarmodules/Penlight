@@ -1,5 +1,7 @@
 --- Operations on two-dimensional arrays.
 -- See @{02-arrays.md.Operations_on_two_dimensional_tables|The Guide}
+--
+-- Dependencies: `pl.utils`, `pl.operator`, `pl.tablex`, `pl.permute`
 -- @module pl.array2d
 
 local require, type,tonumber,assert,tostring,io,ipairs,string,table =
@@ -302,9 +304,11 @@ function array2d.range (t,rstr)
 end
 
 local function default_range (t,i1,j1,i2,j2)
-    assert(t and type(t)=='table','not a table')
+    local nr, nc = array2d.size(t)
     i1,j1 = i1 or 1, j1 or 1
-    i2,j2 = i2 or #t, j2 or #t[1]
+    i2,j2 = i2 or nr, j2 or nc
+    if i2 < 0 then i2 = nr + i2 + 1 end
+    if j2 < 0 then j2 = nc + j2 + 1 end
     return i1,j1,i2,j2
 end
 
@@ -392,6 +396,33 @@ function array2d.forall (t,row_op,end_row_op,i1,j1,i2,j2)
             row_op(row,j)
         end
         if end_row_op then end_row_op(i) end
+    end
+end
+
+local min, max = math.min, math.max
+
+---- move a block from the destination to the source.
+-- @param dest a 2D array
+-- @param di start row in dest
+-- @param dj start col in dest
+-- @param src a 2D array
+-- @param i1 start row (default 1)
+-- @param j1 start col (default 1)
+-- @param i2 end row   (default N)
+-- @param j2 end col   (default M)
+function array2d.move (dest,di,dj,src,i1,j1,i2,j2)
+    assert_arg(1,dest,'table')
+    assert_arg(4,src,'table')
+    i1,j1,i2,j2 = default_range(src,i1,j1,i2,j2)
+    local nr,nc = array2d.size(dest)
+    i2, j2 = min(nr,i2), min(nc,j2)
+    --i1, j1 = max(1,i1), max(1,j1)
+    dj = dj - 1
+    for i = i1,i2 do
+        local drow, srow = dest[i+di-1], src[i]
+        for j = j1,j2 do
+            drow[j+dj] = srow[j]
+        end
     end
 end
 
