@@ -16,6 +16,8 @@
 -- the flag/argument is either a default, a type name or a range constraint.
 --
 -- >See @{08-additional.md.Command_line_Programs_with_Lapp|the Guide}
+--
+-- Dependencies: `pl.sip`
 -- @module pl.lapp
 
 local status,sip = pcall(require,'pl.sip')

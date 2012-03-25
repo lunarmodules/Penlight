@@ -1,7 +1,8 @@
 --- Application support functions.
 -- See @{01-introduction.md.Application_Support|the Guide}
--- @class module
--- @name pl.app
+--
+-- Dependencies: `pl.utils`, `pl.path`, `lfs`
+-- @module pl.app
 
 local io,package,require = _G.io, _G.package, _G.require
 local utils = require 'pl.utils'

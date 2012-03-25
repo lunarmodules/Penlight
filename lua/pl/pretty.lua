@@ -1,6 +1,8 @@
 --- Pretty-printing Lua tables.
 -- Also provides a sandboxed Lua table reader and
 -- a function to present large numbers in human-friendly format.
+--
+-- Dependencies: `pl.utils`, `pl.lexer`
 -- @module pl.pretty
 
 local append = table.insert

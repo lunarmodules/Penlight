@@ -13,6 +13,8 @@
 --    end
 --
 -- See @{06-data.md.Reading_Columnar_Data|the Guide}
+--
+-- Dependencies: `pl.utils`, `pl.array2d` (fallback methods)
 -- @module pl.data
 
 local utils = require 'pl.utils'
@@ -23,10 +25,6 @@ local append,concat = table.insert,table.concat
 local gsub = string.gsub
 local io = io
 local _G,print,loadstring,type,tonumber,ipairs,setmetatable,pcall,error,setfenv = _G,print,loadstring,type,tonumber,ipairs,setmetatable,pcall,error,setfenv
-
---[[
-module ('pl.data',utils._module)
-]]
 
 local data = {}
 

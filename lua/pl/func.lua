@@ -14,6 +14,8 @@
 --    > start>   10   20  30
 --
 -- See @{07-functional.md.Creating_Functions_from_Functions|the Guide}
+--
+-- Dependencies: `pl.utils`, `pl.tablex`
 -- @module pl.func
 local type,select,setmetatable,getmetatable,rawset = type,select,setmetatable,getmetatable,rawset
 local concat,append = table.concat,table.insert

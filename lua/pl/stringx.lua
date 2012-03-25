@@ -5,6 +5,8 @@
 -- `stringx.import()` to bring them into the standard `string` table.
 --
 -- See @{03-strings.md|the Guide}
+--
+-- Dependencies: `pl.utils`
 -- @module pl.stringx
 local string = string
 local find = string.find

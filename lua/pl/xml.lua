@@ -23,6 +23,10 @@
 -- http://lua-users.org/wiki/LuaXml
 -- </pre>
 -- See @{06-data.md.XML|the Guide}
+--
+-- Dependencies: `pl.utils`
+--
+-- Soft Dependencies: `lxp.lom` (fallback is to use basic Lua parser)
 -- @module pl.xml
 
 local t_insert      =  table.insert;

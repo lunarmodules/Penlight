@@ -1,6 +1,8 @@
 --- Path manipulation and file queries.
 --
 -- This is modelled after Python's os.path library (10.1); see @{04-paths.md|the Guide}.
+--
+-- Dependencies: `pl.utils`, `lfs`
 -- @module pl.path
 
 -- imports and locals

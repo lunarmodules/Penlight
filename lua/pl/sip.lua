@@ -16,6 +16,7 @@
 --    ([{<  match up to closing bracket
 --
 -- See @{08-additional.md.Simple_Input_Patterns|the Guide}
+--
 -- @module pl.sip
 
 local append,concat = table.insert,table.concat

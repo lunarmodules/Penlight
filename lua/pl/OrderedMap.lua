@@ -2,6 +2,7 @@
 --
 -- Derived from `pl.Map`.
 --
+-- Dependencies: `pl.utils`, `pl.tablex`, `pl.List`
 -- @module pl.OrderedMap
 
 local tablex = require 'pl.tablex'

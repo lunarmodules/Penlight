@@ -1,4 +1,8 @@
 --- Useful functions for getting directory contents and matching them against wildcards.
+--
+-- Dependencies: `pl.utils`, `pl.path`, `pl.tablex`
+--
+-- Soft Dependencies: `alien`, `ffi` (either are used on Windows for copying/moving files)
 -- @module pl.dir
 
 local utils = require 'pl.utils'

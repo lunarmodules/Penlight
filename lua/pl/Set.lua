@@ -16,6 +16,7 @@
 --     > = fruit*colours
 --     [orange]
 --
+-- Depdencies: `pl.utils`, `pl.tablex`, `pl.class`
 -- @module pl.Set
 
 local tablex = require 'pl.tablex'
@@ -29,6 +30,9 @@ local class = require 'pl.class'
 
 -- the Set class --------------------
 class(Map,nil,Set)
+
+-- note: Set has _no_ methods!
+Map.__index = nil
 
 local function makeset (t)
     return setmetatable(t,Set)
@@ -51,28 +55,15 @@ function Set:__tostring ()
     return '['..self:keys():join ','..']'
 end
 
---- add a value to a set.
--- @param key a value
-function Set:set (key)
-    self[key] = true
-end
-
---- remove a value from a set.
--- @param key a value
-function Set:unset (key)
-    self[key] = nil
-end
-
 --- get a list of the values in a set.
--- @class function
--- @name Set:values
+-- @function Set.values
 Set.values = Map.keys
 
 --- map a function over the values of a set.
 -- @param fn a function
 -- @param ... extra arguments to pass to the function.
 -- @return a new set
-function Set:map (fn,...)
+function Set.map (self,fn,...)
     fn = utils.function_arg(1,fn)
     local res = {}
     for k in pairs(self) do
@@ -84,7 +75,7 @@ end
 --- union of two sets (also +).
 -- @param set another set
 -- @return a new set
-function Set:union (set)
+function Set.union (self,set)
     return merge(self,set,true)
 end
 Set.__add = Set.union
@@ -92,7 +83,7 @@ Set.__add = Set.union
 --- intersection of two sets (also *).
 -- @param set another set
 -- @return a new set
-function Set:intersection (set)
+function Set.intersection (self,set)
     return merge(self,set,false)
 end
 Set.__mul = Set.intersection
@@ -100,7 +91,7 @@ Set.__mul = Set.intersection
 --- new set with elements in the set that are not in the other (also -).
 -- @param set another set
 -- @return a new set
-function Set:difference (set)
+function Set.difference (self,set)
     return difference(self,set,false)
 end
 Set.__sub = Set.difference
@@ -108,14 +99,14 @@ Set.__sub = Set.difference
 -- a new set with elements in _either_ the set _or_ other but not both (also ^).
 -- @param set another set
 -- @return a new set
-function Set:symmetric_difference (set)
+function Set.symmetric_difference (self,set)
     return difference(self,set,true)
 end
 Set.__pow = Set.symmetric_difference
 
 --- is the first set a subset of the second?.
 -- @return true or false
-function Set:issubset (set)
+function Set.issubset (self,set)
     for k in pairs(self) do
         if not set[k] then return false end
     end
@@ -125,7 +116,7 @@ Set.__lt = Set.subset
 
 --- is the set empty?.
 -- @return true or false
-function Set:issempty ()
+function Set.issempty (self)
     return next(self) == nil
 end
 
@@ -133,8 +124,8 @@ end
 -- Uses naive definition, i.e. that intersection is empty
 -- @param set another set
 -- @return true or false
-function Set:isdisjoint (set)
-    return self:intersection(set):isempty()
+function Set.isdisjoint (s1,s2)
+    return Set.isempty(Set.intersection(s1,s2))
 end
 
 return Set

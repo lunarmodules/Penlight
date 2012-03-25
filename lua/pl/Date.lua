@@ -1,8 +1,9 @@
 --- Date and Date Format classes.
 -- See  @{05-dates.md|the Guide}.
+--
+-- Dependencies: `pl.class`, `pl.stringx`
 -- @module pl.Date
 -- @pragma nostrip
-
 
 local class = require 'pl.class'
 local os_time, os_date = os.time, os.date

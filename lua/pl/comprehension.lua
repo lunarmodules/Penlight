@@ -25,6 +25,8 @@
 --
 -- (c) 2008 David Manura. Licensed under the same terms as Lua (MIT license).
 --
+-- Dependencies: `pl.utils`, `pl.luabalanced`
+--
 -- See @{07-functional.md.List_Comprehensions|the Guide}
 -- @module pl.comprehension
 

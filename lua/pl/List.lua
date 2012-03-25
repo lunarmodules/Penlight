@@ -13,6 +13,8 @@
 -- and contain Python code.
 --
 -- Written for Lua version Nick Trout 4.0; Redone for Lua 5.1, Steve Donovan.
+--
+-- Dependencies: `pl.utils`, `pl.tablex`
 -- @module pl.List
 -- @pragma nostrip
 

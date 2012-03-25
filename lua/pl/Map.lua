@@ -6,6 +6,7 @@
 --    > = m == M{one=1,two=20,three=3,four=4}
 --    true
 --
+-- Dependencies: `pl.utils`, `pl.class`, `pl.tablex`, `pl.pretty`
 -- @module pl.Map
 
 local tablex = require 'pl.tablex'

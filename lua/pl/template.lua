@@ -24,6 +24,8 @@
 --    > end
 --
 -- See  @{03-strings.md.Another_Style_of_Template|the Guide}.
+--
+-- Dependencies: `pl.utils`
 -- @module pl.template
 
 local utils = require 'pl.utils'

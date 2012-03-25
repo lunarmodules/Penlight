@@ -1,6 +1,7 @@
 --- Manipulating iterators as sequences.
 -- See @{07-functional.md.Sequences|The Guide}
 --
+-- Dependencies: `pl.utils`, `debug`
 -- @module pl.seq
 
 local next,assert,type,pairs,tonumber,type,setmetatable,getmetatable,_G = next,assert,type,pairs,tonumber,type,setmetatable,getmetatable,_G
@@ -16,10 +17,6 @@ local _List = utils.stdmt.List
 local _Map = utils.stdmt.Map
 local assert_arg = utils.assert_arg
 require 'debug'
-
---[[
-module("pl.seq",utils._module)
-]]
 
 local seq = {}
 

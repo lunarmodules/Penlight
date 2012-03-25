@@ -5,6 +5,8 @@
 --    print('average',total/n)
 --
 -- See @{06-data.md.Reading_Unstructured_Text_Data|here}
+--
+-- Dependencies: `pl.utils`
 -- @module pl.input
 local strfind = string.find
 local strsub = string.sub

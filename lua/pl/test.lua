@@ -5,6 +5,7 @@
 --    T = test.tuple -- used for comparing multiple results
 --    test.asserteq(T(string.find(" me","me")),T(2,3))
 --
+-- Dependencies: `pl.utils`, `pl.tablex`, `pl.pretty`, `pl.path`, `debug`
 -- @module pl.test
 
 local tablex = require 'pl.tablex'

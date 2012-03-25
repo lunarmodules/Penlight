@@ -15,6 +15,7 @@
 --    > = '$name = $value' % {name='dog',value='Pluto'}
 --    dog = Pluto
 --
+-- Dependencies: `pl.utils`
 -- @module pl.text
 
 local gsub = string.gsub

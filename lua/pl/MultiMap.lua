@@ -1,4 +1,6 @@
 --- MultiMap, a Map which has multiple values per key.
+--
+-- Dependencies: `pl.utils`, `pl.class`, `pl.tablex`, `pl.List`
 -- @module pl.MultiMap
 
 local classes = require 'pl.class'
