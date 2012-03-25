@@ -258,3 +258,37 @@ This useful notation is borrowed from Hugo Etchegoyen's [classlib](http://lua-us
 
 Penlight provides a number of useful classes; there is `List`, which is a Lua clone of the standard Python list object, and `Set` which represents sets. There are three kinds of _map_ defined: `Map`, `MultiMap` (where a key may have multiple values) and `OrderedMap` (where the order of insertion is remembered.).  There is nothing special about these classes and you may inherit from them.
 
+_Properties_ are a useful object-oriented pattern. We wish to control access to a field, but don't wish to force the user of the class to say `obj:get_field()` etc. This excerpt from `tests/test-class.lua` shows how it is done:
+
+
+    local MyProps = class(class.properties)
+    local setted_a, got_b
+
+    function MyProps:_init ()
+        self._a = 1
+        self._b = 2
+    end
+
+    function MyProps:set_a (v)
+        setted_a = true
+        self._a = v
+    end
+
+    function MyProps:get_b ()
+        got_b = true
+        return self._b
+    end
+
+    local mp = MyProps()
+
+    mp.a = 10
+
+    asserteq(mp.a,10)
+    asserteq(mp.b,2)
+    asserteq(setted_a and got_b, true)
+
+The convention is that the internal field name is prefixed with an underscore; when reading `mp.a`, first a check for an explicit _getter_ `get_a` and then only look for `_a`. Simularly, writing `mp.a` causes the _setter_ `set_a` to be used.
+
+This is cool behaviour, but like much Lua metaprogramming, it is not free. Method lookup on such objects goes through `__index` as before, but now `__index` is a function which has to explicitly look up methods in the class, before doing any property indexing, which is not going to be as fast as field lookup. If however, your accessors actually do non-trivial things, then the extra overhead could be worth it.
+
+This is not really intended for _access control_ because external code can write to `mp._a` directly. It is possible to have this kind of control in Lua, but it again comes with run-time costs, and in this case a simple audit of code will reveal any naughty use of 'protected' fields.

@@ -1,5 +1,6 @@
 require 'pl'
 asserteq = test.asserteq
+T = test.tuple
 
 A = class()
 
@@ -48,6 +49,83 @@ asserteq(tostring(C()),"1:2:3")
 
 asserteq(C()==C(),true)
 
+------ delegation ------
+
+class.Boo()
+
+function Boo:method (s)
+    self.s = s
+end
+
+boo = Boo()
+
+----- objects of type Bar delegate any _unknown_ calls to a Boo object
+
+class.Bar()
+
+function Bar:_init (boo)
+    class.delegate(Bar,boo)
+end
+
+bar = Bar(boo)
+
+bar:method(10)
+
+asserteq(boo.s,10)
+
+----- properties -----
+
+local MyProps = class(class.properties)
+local setted_a, got_b
+
+function MyProps:_init ()
+    self._a = 1
+    self._b = 2
+end
+
+function MyProps:set_a (v)
+    setted_a = true
+    self._a = v
+end
+
+function MyProps:get_b ()
+    got_b = true
+    return self._b
+end
+
+function MyProps:set (a,b)
+    self._a = a
+    self._b = b
+end
+
+local mp = MyProps()
+
+mp.a = 10
+
+asserteq(mp.a,10)
+asserteq(mp.b,2)
+asserteq(setted_a and got_b, true)
+
+class.MoreProps(MyProps)
+local setted_c
+
+function MoreProps:_init()
+    self:super()
+    self._c = 3
+end
+
+function MoreProps:set_c (c)
+    setted_c = true
+    self._c = c
+end
+
+mm = MoreProps()
+
+mm:set(10,20)
+mm.c = 30
+
+asserteq(setted_c, true)
+asserteq(T(mm.a, mm.b, mm.c),T(10,20,30))
 
 
 

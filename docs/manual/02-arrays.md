@@ -112,7 +112,11 @@ When querying the value of a `Map`, it is best to use the `get` method:
 
 The reason is that `m[key]` can be ambiguous; due to the current implementation, `m["get"]` will always succeed, because if a value is not present in the map, it will be looked up in the `Map` metatable, which contains a method `get`. There is currently no simple solution to this annoying restriction.
 
-A `Set` is a special kind of `Map`, where all the values are `true`. So `get` will always return either `true` or `nil`; all the values are keys, and the order is not important. So in this case `values` is defined to return a list of the keys.  Sets can display themselves, and the basic operations like `union` (`+`) and `intersection` (`*`) are defined.
+There are some useful classes which inherit from `Map`. An `OrderedMap` behaves like a `Map` but keeps its keys in order if you use its `set` method to add keys and values.  Like all the 'container' classes in Penlight, it defines an `iter` method for iterating over its values; this will return the keys and values in the order of insertion; the `keys` and `values` methods likewise.
+
+A `MultiMap` allows multiple values to be associated with a given key. So `set` (as before) takes a key and a value, but calling it with the same key and a different value does not overwrite but adds a new value. `get` (or using `[]`) will return a list of values.
+
+A `Set` can be seen as a special kind of `Map`, where all the values are `true`, the keys are the values, and the order is not important. So in this case `Set.values` is defined to return a list of the keys.  Sets can display themselves, and the basic operations like `union` (`+`) and `intersection` (`*`) are defined.
 
     > Set = require 'pl.Set'
     > = Set{'one','two'} == Set{'two','one'}
@@ -132,18 +136,15 @@ A `Set` is a special kind of `Map`, where all the values are `true`. So `get` wi
     > = fruit*colours
     [orange]
 
-There are also the methods `difference` and `symmetric_difference`. The first answers the question 'what fruits are not colours?' and the second 'what are fruits and colours but not both?'
+There are also the functions `Set.difference` and `Set.symmetric_difference`. The first answers the question 'what fruits are not colours?' and the second 'what are fruits and colours but not both?'
 
     > = fruit - colours
     [apple,banana]
     > = fruit ^ colours
     [blue,green,apple,red,banana]
 
-Adding elements to a set is either done like `fruit['peach'] = true` or by `fruit:set('peach')`. Removing is either `fruit['apple'] = nil` or `fruit:unset('apple')`.
+Adding elements to a set is simply `fruit['peach'] = true` and removing is  `fruit['apple'] = nil` . To make this simplicity properly, the `Set` class has no methods - either you use the operator forms or explicitly use `Set.intersect` etc. In this way we avoid the ambiguity that plagues `Map`.
 
-There are also some useful classes which also inherit from `Map`. An `OrderedMap` behaves like a `Map` but keeps its keys in order if you use its `set` method to add keys and values.  Like all the 'container' classes in Penlight, it defines an `iter` method for iterating over its values; this will return the keys and values in the order of insertion; the `keys` and `values` methods likewise.
-
-A `MultiMap` allows multiple values to be associated with a given key. So `set` (as before) takes a key and a value, but calling it with the same key and a different value does not overwrite but adds a new value. `get` (or using `[]`) will return a list of values.
 
 (See `pl.Map` and `pl.Set`)
 
