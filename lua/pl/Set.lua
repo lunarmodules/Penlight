@@ -56,10 +56,12 @@ function Set:__tostring ()
 end
 
 --- get a list of the values in a set.
+-- @param self a Set
 -- @function Set.values
 Set.values = Map.keys
 
 --- map a function over the values of a set.
+-- @param self a Set
 -- @param fn a function
 -- @param ... extra arguments to pass to the function.
 -- @return a new set
@@ -73,6 +75,7 @@ function Set.map (self,fn,...)
 end
 
 --- union of two sets (also +).
+-- @param self a Set
 -- @param set another set
 -- @return a new set
 function Set.union (self,set)
@@ -81,6 +84,7 @@ end
 Set.__add = Set.union
 
 --- intersection of two sets (also *).
+-- @param self a Set
 -- @param set another set
 -- @return a new set
 function Set.intersection (self,set)
@@ -89,6 +93,7 @@ end
 Set.__mul = Set.intersection
 
 --- new set with elements in the set that are not in the other (also -).
+-- @param self a Set
 -- @param set another set
 -- @return a new set
 function Set.difference (self,set)
@@ -97,6 +102,7 @@ end
 Set.__sub = Set.difference
 
 -- a new set with elements in _either_ the set _or_ other but not both (also ^).
+-- @param self a Set
 -- @param set another set
 -- @return a new set
 function Set.symmetric_difference (self,set)
@@ -104,7 +110,9 @@ function Set.symmetric_difference (self,set)
 end
 Set.__pow = Set.symmetric_difference
 
---- is the first set a subset of the second?.
+--- is the first set a subset of the second (also <)?.
+-- @param self a Set
+-- @param set another set
 -- @return true or false
 function Set.issubset (self,set)
     for k in pairs(self) do
@@ -115,6 +123,7 @@ end
 Set.__lt = Set.subset
 
 --- is the set empty?.
+-- @param self a Set
 -- @return true or false
 function Set.issempty (self)
     return next(self) == nil
@@ -122,7 +131,8 @@ end
 
 --- are the sets disjoint? (no elements in common).
 -- Uses naive definition, i.e. that intersection is empty
--- @param set another set
+-- @param s1 a Set
+-- @param s2 another set
 -- @return true or false
 function Set.isdisjoint (s1,s2)
     return Set.isempty(Set.intersection(s1,s2))

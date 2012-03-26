@@ -1,26 +1,23 @@
 --- Operations on two-dimensional arrays.
 -- See @{02-arrays.md.Operations_on_two_dimensional_tables|The Guide}
 --
--- Dependencies: `pl.utils`, `pl.operator`, `pl.tablex`, `pl.permute`
+-- Dependencies: `pl.utils`, `pl.tablex`
 -- @module pl.array2d
 
 local require, type,tonumber,assert,tostring,io,ipairs,string,table =
  _G.require, _G.type,_G.tonumber,_G.assert,_G.tostring,_G.io,_G.ipairs,_G.string,_G.table
 local setmetatable,getmetatable = setmetatable,getmetatable
 
-local ops = require 'pl.operator'
 local tablex = require 'pl.tablex'
 local utils = require 'pl.utils'
 
 local imap,tmap,reduce,keys,tmap2,tset,index_by = tablex.imap,tablex.map,tablex.reduce,tablex.keys,tablex.map2,tablex.set,tablex.index_by
 local remove = table.remove
-local perm = require 'pl.permute'
 local splitv,fprintf,assert_arg = utils.splitv,utils.fprintf,utils.assert_arg
 local byte = string.byte
 local stdout = io.stdout
 
 local array2d = {}
-
 
 local function obj (int,out)
     local mt = getmetatable(int)
@@ -28,6 +25,15 @@ local function obj (int,out)
         setmetatable(out,mt)
     end
     return out
+end
+
+local function makelist (res)
+    setmetatable(res,utils.stdmt.List)
+end
+
+
+local function index (t,k)
+    return t[k]
 end
 
 --- return the row and column size.
@@ -45,7 +51,7 @@ end
 -- @return 1d array
 function array2d.column (a,key)
     assert_arg(1,a,'table')
-    return obj(a,imap(ops.index,a,key))
+    return makelist(imap(index,a,key))
 end
 local column = array2d.column
 
@@ -69,8 +75,6 @@ function array2d.reduce_rows (f,a)
     assert_arg(1,a,'table')
     return tmap(function(row) return reduce(f,row) end, a)
 end
-
-
 
 --- reduce the columns using a function.
 -- @param f a binary function
@@ -158,7 +162,7 @@ function array2d.flatten (t)
             k = k + 1
         end
     end
-    return setmetatable(res,utils.stdmt.List)
+    return makelist(res)
 end
 
 --- reshape a 2D array.

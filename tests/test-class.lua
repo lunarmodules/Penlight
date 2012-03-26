@@ -49,30 +49,6 @@ asserteq(tostring(C()),"1:2:3")
 
 asserteq(C()==C(),true)
 
------- delegation ------
-
-class.Boo()
-
-function Boo:method (s)
-    self.s = s
-end
-
-boo = Boo()
-
------ objects of type Bar delegate any _unknown_ calls to a Boo object
-
-class.Bar()
-
-function Bar:_init (boo)
-    class.delegate(Bar,boo)
-end
-
-bar = Bar(boo)
-
-bar:method(10)
-
-asserteq(boo.s,10)
-
 ----- properties -----
 
 local MyProps = class(class.properties)

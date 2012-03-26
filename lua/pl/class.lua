@@ -148,22 +148,6 @@ class = setmetatable({},{
     end
 })
 
---- pass any unknown _method_ calls to another object.
--- @param klass the class
--- @param obj the delegate
-function class.delegate (klass,obj)
-    getmetatable(klass).__index = function(klass,key)
-        local method = obj[key]
-        if method then
-            return function(self,...)
-                return method(obj,...)
-            end
-        elseif klass._handler then
-            return klass._handler(tbl,key)
-        end
-    end
-end
-
 class.properties = class()
 
 function class.properties._class_init(klass)
