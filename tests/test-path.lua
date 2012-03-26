@@ -21,10 +21,10 @@ testpath [[alice]]
 testpath [[/path-to\dog\]]
 
 asserteq( path.isdir( "../docs" ), true )
-asserteq( path.isdir( "../docs/penlight.jpg" ), false )
+asserteq( path.isdir( "../docs/config.ld" ), false )
 
 asserteq( path.isfile( "../docs" ), false )
-asserteq( path.isfile( "../docs/penlight.jpg" ), true )
+asserteq( path.isfile( "../docs/config.ld" ), true )
 
 local norm = path.normpath
 local p = norm '/a/b'

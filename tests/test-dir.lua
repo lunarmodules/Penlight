@@ -8,9 +8,9 @@ local pretty = require( "pl.pretty" )
 
 local normpath = path.normpath
 
-local expected = {normpath "../docs/function_index.txt"}
+local expected = {normpath "../docs/config.ld"}
 
-local files = dir.getallfiles( normpath "../docs/", "*.txt" )
+local files = dir.getallfiles( normpath "../docs/", "*.ld" )
 
 asserteq( files, expected )
 
