@@ -183,7 +183,7 @@ For this to work, _field names must be Lua identifiers_. So `read` will massage 
     engineering,1501,maintenance,3
     engineering,1433,maintenance,10
 
-The task is to reduce the dataset to a relevant set of rows and columns, perhaps do some processing on row data, and write the result out to a new CSV file. The `write_row` method uses the delimiter to write the row to a file; `select_row` is like `select`, except it iterates over _rows_, not fields; this is necessary if we are dealing with a lot of columns!
+The task is to reduce the dataset to a relevant set of rows and columns, perhaps do some processing on row data, and write the result out to a new CSV file. The `write_row` method uses the delimiter to write the row to a file; `Data.select_row` is like `Data.select`, except it iterates over _rows_, not fields; this is necessary if we are dealing with a lot of columns!
 
     names = {[1501]='don',[1433]='dilbert'}
     keepcols = {'Employee_ID','Hours_Booked'}
@@ -197,7 +197,7 @@ The task is to reduce the dataset to a relevant set of rows and columns, perhaps
         t:write_row(outf,row)
     end
 
-`select_row` and `select` can be passed a table specifying the query; a list of field names, a function defining the condition and an optional parameter `sort_by`. It isn't really necessary here, but if we had a more complicated row condition (such as belonging to a specified set) then it is not generally possible to express such a condition as a query string, without resorting to hackery such as global variables.
+`Data.select_row` and `Data.select` can be passed a table specifying the query; a list of field names, a function defining the condition and an optional parameter `sort_by`. It isn't really necessary here, but if we had a more complicated row condition (such as belonging to a specified set) then it is not generally possible to express such a condition as a query string, without resorting to hackery such as global variables.
 
 Data does not have to come from files, nor does it necessarily come from the lab or the accounts department. On Linux, `ps aux` gives you a full listing of all processes running on your machine. It is straightforward to feed the output of this command into `data.read` and perform useful queries on it. Notice that non-identifier characters like '%' get converted into underscores:
 

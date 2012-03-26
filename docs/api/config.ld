@@ -1,5 +1,0 @@
-project = 'Penlight'
-description = '<h1>Penlight Lua Libraries 0.9.5</h1>'
-title = 'Penlight Documentation'
-dir = '.'
-file = '../../lua/pl'
