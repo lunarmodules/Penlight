@@ -10,7 +10,7 @@ local collisions = {}
 
 local utils = {}
 
-utils._VERSION = "0.9.8"
+utils._VERSION = "1.0.1"
 
 utils.dir_separator = _G.package.config:sub(1,1)
 
