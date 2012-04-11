@@ -230,9 +230,11 @@ else
             debug.upvaluejoin(f, up, function() return name end, 1) -- use unique upvalue
             debug.setupvalue(f, up, t)
         end
+        if f ~= 0 then return f end
     end
 
     function getfenv(f)
+        local f = f or 0
         f = (type(f) == 'function' and f or debug.getinfo(f + 1, 'f').func)
         local name, val
         local up = 0
