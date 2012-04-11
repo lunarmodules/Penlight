@@ -234,6 +234,7 @@ else
     end
 
     function getfenv(f)
+        local f = f or 0
         f = (type(f) == 'function' and f or debug.getinfo(f + 1, 'f').func)
         local name, val
         local up = 0
