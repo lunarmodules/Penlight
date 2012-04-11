@@ -230,6 +230,7 @@ else
             debug.upvaluejoin(f, up, function() return name end, 1) -- use unique upvalue
             debug.setupvalue(f, up, t)
         end
+        if f ~= 0 then return f end
     end
 
     function getfenv(f)
