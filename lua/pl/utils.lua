@@ -12,6 +12,8 @@ local utils = {}
 
 utils._VERSION = "1.0.1"
 
+unpack = unpack or table.unpack -- Lua 5.2 compatibility
+
 utils.dir_separator = _G.package.config:sub(1,1)
 
 --- end this program gracefully.
