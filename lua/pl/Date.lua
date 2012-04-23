@@ -63,35 +63,36 @@ function Date:_init(t,...)
     self:set(time)
 end
 
-local thour,tmin
+local tzone_
 
 --- get the time zone offset from UTC.
--- @return hours ahead of UTC
--- @return minutes ahead of UTC
+-- @return seconds ahead of UTC
 function Date.tzone ()
-    if not thour then
-        local t = os.time()
-        local ut = os.date('!*t',t)
-        local lt = os.date('*t',t)
-        thour = lt.hour - ut.hour
-        tmin = lt.min - ut.min
+    if not tzone_ then
+        local now = os.time()
+        local utc = os.date('!*t',now)
+        local lcl = os.date('*t',now)
+        local unow = os.time(utc)
+        tzone_ = os.difftime(now,unow)
+        if lcl.isdst then
+            if tzone_ > 0 then
+                tzone = tzone + 3600
+            else
+                tzone = tzone - 3600
+            end
+        end
     end
-    return thour, tmin
+    return tzone_
 end
 
 --- convert this date to UTC.
 function Date:toUTC ()
-    local th, tm = Date.tzone()
-    self:add { hour = -th }
-
-    if tm > 0 then self:add {min = -tm} end
+    self:add { sec = -Date.tzone() }
 end
 
 --- convert this UTC date to local.
 function Date:toLocal ()
-    local th, tm = Date.tzone()
-    self:add { hour = th }
-    if tm > 0 then self:add {min = tm} end
+    self:add { sec = Date.tzone() }
 end
 
 --- set the current time of this Date object.
@@ -246,7 +247,7 @@ function Date:__tostring()
         if m > 0 then res = res .. m .. ' months ' end
         if d > 0 then res = res .. d .. ' days ' end
         if y == 0 and m == 0 then
-            local h = t.hour - Date.tzone()  -- not accounting for UTC mins!
+            local h = t.hour
             if h > 0 then res = res .. h .. ' hours ' end
             if t.min > 0 then res = res .. t.min .. ' min ' end
             if t.sec > 0 then res = res .. t.sec .. ' sec ' end
@@ -429,6 +430,7 @@ local function  parse_iso_end(p,ns,sec)
         p = p:sub(ns+1)
     end
     -- ISO 8601 dates may end in Z (for UTC) or [+-][isotime]
+    -- (we're working with the date as lower case, hence 'z')
     if p:match 'z$' then return sec, {h=0,m=0} end -- we're UTC!
     p = p:gsub(':','') -- turn 00:30 to 0030
     local _,_,sign,offs = p:find('^([%+%-])(%d+)')
@@ -521,9 +523,10 @@ local function parse_date_unsafe (s,US)
     sec = sec and tonum(sec,0,60) or 0  --60 used to indicate leap second
     local res = Date {year = year, month = month, day = day, hour = hour, min = min, sec = sec}
     if tz then -- ISO 8601 UTC time
-        res:toUTC()
-        res:add {hour = tz.h}
-        if tz.m ~= 0 then res:add {min = tz.m} end
+        res:add {hour = -tz.h}
+        if tz.m ~= 0 then res:add {min = -tz.m} end
+        -- we're in UTC, so let's go local...
+        res:toLocal()
     end
     return res
 end

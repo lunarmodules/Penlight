@@ -63,13 +63,13 @@ end
 
 function parse_utc (s)
     local d = parse_date(s)
-    d:toLocal()
+    d:toUTC()
     return d
 end
 
 asserteq(parse_utc '2010-05-10 12:35:23Z', Date(2010,05,10,12,35,23))
-asserteq(parse_utc '2008-10-03T14:30+02', Date(2008,10,03,16,30))
-asserteq(parse_utc '2008-10-03T14:30-02:00',Date(2008,10,03,12,30))
+asserteq(parse_utc '2008-10-03T14:30+02', Date(2008,10,03,12,30))
+asserteq(parse_utc '2008-10-03T14:00-02:00',Date(2008,10,03,16,0))
 
 ---- can't do anything before 1970, which is somewhat unfortunate....
 --parse_date '20/03/59'
