@@ -76,9 +76,9 @@ function Date.tzone ()
         tzone_ = os.difftime(now,unow)
         if lcl.isdst then
             if tzone_ > 0 then
-                tzone = tzone + 3600
-            else
                 tzone = tzone - 3600
+            else
+                tzone = tzone + 3600
             end
         end
     end
