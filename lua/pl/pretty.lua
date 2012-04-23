@@ -13,6 +13,21 @@ local assert_arg = utils.assert_arg
 
 local pretty = {}
 
+local function save_string_index ()
+    local SMT = getmetatable ''
+    if SMT then
+        SMT.old__index = SMT.__index
+        SMT.__index = nil
+    end
+    return SMT
+end
+
+local function restore_string_index (SMT)
+    if SMT then
+        SMT.__index = SMT.old__index
+    end
+end
+
 --- read a string representation of a Lua table.
 -- Uses load(), but tries to be cautious about loading arbitrary code!
 -- It is expecting a string of the form '{...}', with perhaps some whitespace
@@ -34,25 +49,44 @@ function pretty.read(s)
         local tok = lexer.lua(s)
         for t,v in tok do
             if t == 'keyword' then
-                return nil,"cannot have Lua keywords in table definition"
+                return nil,"cannot have functions in table definition"
             end
         end
     end
     s = 'return '..s
     local chunk,err = utils.load(s,'tbl','t',env or {})
     if not chunk then return nil,err end
-    return chunk()
+    local SMT = save_string_index()
+    local ok,ret = pcall(chunk)
+    restore_string_index(SMT)
+    if ok then return ret
+    else
+        return nil,ret
+    end
 end
 
--- read a Lua chunk.
+--- read a Lua chunk.
 -- @param s Lua code
 -- @param env optional environment
+-- @param paranoid prevent any looping constructs and disable string methods
 -- @return the environment
-function pretty.load (s, env)
+function pretty.load (s, env, paranoid)
     env = env or {}
+    if paranoid then
+        local tok = lexer.lua(s)
+        for t,v in tok do
+            if t == 'keyword'
+                and (v == 'for' or v == 'repeat' or v == 'function' or v == 'goto')
+            then
+                return nil,"looping not allowed"
+            end
+        end
+    end
     local chunk,err = utils.load(s,'tbl','t',env)
     if not chunk then return nil,err end
+    local SMT = paranoid and save_string_index()
     local ok,err = pcall(chunk)
+    restore_string_index(SMT)
     if not ok then return nil,err end
     return env
 end
