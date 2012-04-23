@@ -24,7 +24,8 @@ local patterns,function_arg,usplit = utils.patterns,utils.function_arg,utils.spl
 local append,concat = table.insert,table.concat
 local gsub = string.gsub
 local io = io
-local _G,print,loadstring,type,tonumber,ipairs,setmetatable,pcall,error,setfenv = _G,print,loadstring,type,tonumber,ipairs,setmetatable,pcall,error,setfenv
+local _G,print,type,tonumber,ipairs,setmetatable,pcall,error,setfenv = _G,print,type,tonumber,ipairs,setmetatable,pcall,error,setfenv
+
 
 local data = {}
 

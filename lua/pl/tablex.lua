@@ -7,7 +7,7 @@
 local getmetatable,setmetatable,require = getmetatable,setmetatable,require
 local append,remove = table.insert,table.remove
 local min,max = math.min,math.max
-local pairs,type,unpack,next,select,tostring = pairs,type,unpack,next,select,tostring
+local pairs,type,unpack,next,select,tostring = pairs,type,unpack or table.unpack,next,select,tostring
 local utils = require ('pl.utils')
 local function_arg = utils.function_arg
 local Set = utils.stdmt.Set

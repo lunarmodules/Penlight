@@ -12,7 +12,7 @@
 -- See  @{03-strings.md.File_style_I_O_on_Strings|the Guide}.
 -- @module pl.stringio
 
-local getmetatable,tostring,unpack,tonumber = getmetatable,tostring,unpack,tonumber
+local getmetatable,tostring,unpack,tonumber = getmetatable,tostring,unpack or table.unpack,tonumber
 local concat,append = table.concat,table.insert
 
 local stringio = {}

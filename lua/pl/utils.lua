@@ -12,7 +12,12 @@ local utils = {}
 
 utils._VERSION = "1.0.1"
 
-unpack = unpack or table.unpack -- Lua 5.2 compatibility
+local lua51 = rawget(_G,'unpack')
+utils.lua51 = lua51
+if not lua51 then -- Lua 5.2 compatibility
+    unpack = table.unpack
+    loadstring = load
+end
 
 utils.dir_separator = _G.package.config:sub(1,1)
 
@@ -198,10 +203,9 @@ function utils.splitv (s,re)
     return unpack(utils.split(s,re))
 end
 
-local lua52 = table.pack ~= nil
 local lua51_load = load
 
-if not lua52 then -- define Lua 5.2 style load()
+if utils.lua51 then -- define Lua 5.2 style load()
     function utils.load(str,src,mode,env)
         local chunk,err
         if type(str) == 'string' then
@@ -256,14 +260,14 @@ end
 -- @return actual return code
 function utils.execute (cmd)
     local res1,res2,res2 = os.execute(cmd)
-    if not lua52 then
+    if lua51 then
         return res1==0,res1
     else
         return res1,res2
     end
 end
 
-if not lua52 then
+if lua51 then
     function table.pack (...)
         local n = select('#',...)
         return {n=n; ...}
