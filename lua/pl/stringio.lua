@@ -44,6 +44,10 @@ function SW:value()
     return concat(self.tbl)
 end
 
+function SW:__tostring()
+    return self:value()
+end
+
 function SW:close() -- for compatibility only
 end
 
@@ -57,11 +61,11 @@ SR.__index = SR
 function SR:_read(fmt)
     local i,str = self.i,self.str
     local sz = #str
-    if i >= sz then return nil end
+    if i > sz then return nil end
     local res
-    if fmt == nil or fmt == '*l' then
+    if fmt == '*l' or fmt == '*L' then
         local idx = str:find('\n',i) or (sz+1)
-        res = str:sub(i,idx-1)
+        res = str:sub(i,fmt == '*l' and idx-1 or idx)
         self.i = idx+1
     elseif fmt == '*a' then
         res = str:sub(i)
@@ -69,9 +73,9 @@ function SR:_read(fmt)
     elseif fmt == '*n' then
         local _,i2,i2,idx
         _,idx = str:find ('%s*%d+',i)
-        _,i2 = str:find ('%.%d+',idx+1)
+        _,i2 = str:find ('^%.%d+',idx+1)
         if i2 then idx = i2 end
-        _,i2 = str:find ('[eE][%+%-]*%d+',idx+1)
+        _,i2 = str:find ('^[eE][%+%-]*%d+',idx+1)
         if i2 then idx = i2 end
         local val = str:sub(i,idx)
         res = tonumber(val)
@@ -86,11 +90,10 @@ function SR:_read(fmt)
 end
 
 function SR:read(...)
-    local fmts = {...}
-    if #fmts <= 1 then
-        return self:_read(fmts[1])
+    if select('#',...) == 0 then
+        return self:_read('*l')
     else
-        local res = {}
+        local res, fmts = {},{...}
         for i = 1, #fmts do
             res[i] = self:_read(fmts[i])
         end
@@ -113,9 +116,17 @@ function SR:seek(whence,offset)
     return self.i
 end
 
-function SR:lines()
+function SR:lines(...)
+    local n, args = select('#',...)
+    if n > 0 then
+        args = {...}
+    end
     return function()
-        return self:read()
+        if n == 0 then
+            return self:_read '*l'
+        else
+            return self:read(unpack(args))
+        end
     end
 end
 
@@ -136,8 +147,8 @@ function stringio.open(s)
     return setmetatable({str=s,i=1},SR)
 end
 
-function stringio.lines(s)
-    return stringio.open(s):lines()
+function stringio.lines(s,...)
+    return stringio.open(s):lines(...)
 end
 
 return stringio

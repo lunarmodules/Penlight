@@ -510,15 +510,15 @@ local function parse_date_unsafe (s,US)
     day = day and tonum(day,1,31,'day') or (month and 1 or today:day())
     month = month and tonum(month,1,12,'month') or today:month()
     year = year and tonumber(year) or today:year()
-    if year < 100 then -- two-digit year pivot
+    if year < 100 then -- two-digit year pivot around year < 2035
         year = year + (year < 35 and 2000 or 1900)
     end
-    hour = hour and tonum(hour,1,apm and 12 or 24,'hour') or 12
+    hour = hour and tonum(hour,0,apm and 12 or 24,'hour') or 12
     if apm == 'pm' then
         hour = hour + 12
     end
-    min = min and tonum(min,1,60) or 0
-    sec = sec and tonum(sec,1,60) or 0
+    min = min and tonum(min,0,59) or 0
+    sec = sec and tonum(sec,0,60) or 0  --60 used to indicate leap second
     local res = Date {year = year, month = month, day = day, hour = hour, min = min, sec = sec}
     if tz then -- ISO 8601 UTC time
         res:toUTC()

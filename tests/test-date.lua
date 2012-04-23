@@ -89,6 +89,6 @@ function err (status,e)
 end
 
 assertmatch(err(parse_date('2005-10-40 01:30')),'40 is not between 1 and 31')
-assertmatch(err(parse_date('14.20pm')),'14 is not between 1 and 12')
+assertmatch(err(parse_date('14.20pm')),'14 is not between 0 and 12')
 
 
