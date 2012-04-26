@@ -12,7 +12,8 @@ local utils = {}
 
 utils._VERSION = "1.0.1"
 
-local lua51 = rawget(_G,'unpack')
+local lua51 = rawget(_G,'setfenv')
+
 utils.lua51 = lua51
 if not lua51 then -- Lua 5.2 compatibility
     unpack = table.unpack
