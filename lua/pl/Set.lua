@@ -23,7 +23,7 @@ local tablex = require 'pl.tablex'
 local utils = require 'pl.utils'
 local stdmt = utils.stdmt
 local tmakeset,deepcompare,merge,keys,difference,tupdate = tablex.makeset,tablex.deepcompare,tablex.merge,tablex.keys,tablex.difference,tablex.update
-local Map = stdmt.Map
+local Map = require 'pl.Map'
 local Set = stdmt.Set
 local List = stdmt.List
 local class = require 'pl.class'
@@ -32,7 +32,7 @@ local class = require 'pl.class'
 class(Map,nil,Set)
 
 -- note: Set has _no_ methods!
-Map.__index = nil
+Set.__index = nil
 
 local function makeset (t)
     return setmetatable(t,Set)
@@ -52,7 +52,7 @@ function Set:_init (t)
 end
 
 function Set:__tostring ()
-    return '['..self:keys():join ','..']'
+    return '['..Set.values(self):join ','..']'
 end
 
 --- get a list of the values in a set.
@@ -136,6 +136,10 @@ end
 -- @return true or false
 function Set.isdisjoint (s1,s2)
     return Set.isempty(Set.intersection(s1,s2))
+end
+
+function Set.__eq (s1,s2)
+    return Set.issubset(s1,s2) and Set.issubset(s2,s1)
 end
 
 return Set
