@@ -205,7 +205,7 @@ function lapp.process_options_string(str,args)
         -- flags: either '-<short>', '-<short>,--<long>' or '--<long>'
         if check '-$v{short}, --$v{long} $' or check '-$v{short} $' or check '--$X{long} $' then
             if res.long then
-                optparm = res.long:gsub('%A','_') -- so foo-bar becomes foo_bar in Lua
+                optparm = res.long:gsub('%W','_') -- so foo-bar becomes foo_bar in Lua
                 if res.short then aliases[res.short] = optparm  end
             else
                 optparm = res.short
