@@ -101,6 +101,23 @@ end
 
 local keywords
 
+local function is_identifier (s)
+    return type(s) == 'string' and s:find('^[%a_][%w_]*$') and not keywords[s]
+end
+
+local function quote (s)
+    if type(s) == 'table' then
+        return pretty.write(s,'')
+    else
+        return ('%q'):format(tostring(s))
+    end
+end
+
+local function index (numkey,key)
+    if not numkey then key = quote(key) end
+    return '['..key..']'
+end
+
 
 ---	Create a string representation of a Lua table.
 --  This function never fails, but may complain by returning an
@@ -130,9 +147,6 @@ function pretty.write (tbl,space,not_clever)
     local line = ''
     local tables = {}
 
-    local function is_identifier (s)
-        return (s:find('^[%a_][%w_]*$')) and not keywords[s]
-    end
 
     local function put(s)
         if #s > 0 then
@@ -158,14 +172,6 @@ function pretty.write (tbl,space,not_clever)
         end
     end
 
-    local function quote (s)
-        return ('%q'):format(tostring(s))
-    end
-
-    local function index (numkey,key)
-        if not numkey then key = quote(key) end
-        return '['..key..']'
-    end
 
     local writeit
     writeit = function (t,oldindent,indent)
