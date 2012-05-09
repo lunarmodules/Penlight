@@ -273,7 +273,7 @@ end
 --- empty the list.
 -- @return the list
 function List:clear()
-    for i=1,#self do tremove(self,i) end
+    for i=1,#self do tremove(self) end
     return self
 end
 
