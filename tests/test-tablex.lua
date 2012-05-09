@@ -90,6 +90,10 @@ asserteq(
 assert(compare_no_order({1,2,3,4},{2,1,4,3})==true)
 assert(compare_no_order({1,2,3,4},{2,1,4,4})==false)
 
+asserteq(range(10,9),{})
+asserteq(range(10,10),{10})
+asserteq(range(10,11),{10,11})
+
 -- update inserts key-value pairs from the second table
 t1 = {one=1,two=2}
 t2 = {three=3,two=20,four=4}

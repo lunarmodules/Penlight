@@ -314,6 +314,9 @@ end
 -- @param finish number
 -- @param step optional increment (default 1 for increasing, -1 for decreasing)
 function tablex.range (start,finish,step)
+    if start == finish then return {start}
+    elseif start > finish then return {}
+    end
     local res = {}
     local k = 1
     if not step then
