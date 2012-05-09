@@ -18,10 +18,6 @@ local ipairs = ipairs
 local utils = require 'pl.utils'
 local assert_arg,assert_string,raise = utils.assert_arg,utils.assert_string,utils.raise
 
---[[
-module ('pl.path',utils._module)
-]]
-
 local path, attrib
 
 if rawget(_G,'luajava') then
@@ -224,11 +220,20 @@ function path.isabs(P)
     end
 end
 
---- return the P resulting from combining the two paths.
--- if the second is already an absolute path, then it returns it.
+--- return the path resulting from combining the individual paths.
+-- if the second path is absolute, we return that path.
 -- @param p1 A file path
 -- @param p2 A file path
-function path.join(p1,p2)
+-- @param ... more file paths
+function path.join(p1,p2,...)
+    if select('#',...) > 0 then
+        local p = path.join(p1,p2)
+        local args = {...}
+        for i = 1,#args do
+            p = path.join(p,args[i])
+        end
+        return p
+    end
     assert_string(1,p1)
     assert_string(2,p2)
     if path.isabs(p2) then return p2 end
