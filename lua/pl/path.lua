@@ -18,85 +18,80 @@ local ipairs = ipairs
 local utils = require 'pl.utils'
 local assert_arg,assert_string,raise = utils.assert_arg,utils.assert_string,utils.raise
 
-local path, attrib
+local attrib
+local path = {}
 
-if rawget(_G,'luajava') then
-    path = require 'pl.platf.luajava'
+local res,lfs = _G.pcall(_G.require,'lfs')
+if res then
+    attributes = lfs.attributes
+    currentdir = lfs.currentdir
+    link_attrib = lfs.symlinkattributes
 else
-    path = {}
+    error("pl.path requires LuaFileSystem")
+end
 
-    local res,lfs = _G.pcall(_G.require,'lfs')
-    if res then
-        attributes = lfs.attributes
-        currentdir = lfs.currentdir
-        link_attrib = lfs.symlinkattributes
+attrib = attributes
+path.attrib = attrib
+path.link_attrib = link_attrib
+path.dir = lfs.dir
+path.mkdir = lfs.mkdir
+path.rmdir = lfs.rmdir
+path.chdir = lfs.chdir
+
+--- is this a directory?
+-- @param P A file path
+function path.isdir(P)
+    if P:match("\\$") then
+        P = P:sub(1,-2)
+    end
+    return attrib(P,'mode') == 'directory'
+end
+
+--- is this a file?.
+-- @param P A file path
+function path.isfile(P)
+    return attrib(P,'mode') == 'file'
+end
+
+-- is this a symbolic link?
+-- @param P A file path
+function path.islink(P)
+    if link_attrib then
+        return link_attrib(P,'mode')=='link'
     else
-        error("pl.path requires LuaFileSystem")
+        return false
     end
+end
 
-    attrib = attributes
-    path.attrib = attrib
-    path.link_attrib = link_attrib
-    path.dir = lfs.dir
-    path.mkdir = lfs.mkdir
-    path.rmdir = lfs.rmdir
-    path.chdir = lfs.chdir
+--- return size of a file.
+-- @param P A file path
+function path.getsize(P)
+    return attrib(P,'size')
+end
 
-    --- is this a directory?
-    -- @param P A file path
-    function path.isdir(P)
-        if P:match("\\$") then
-            P = P:sub(1,-2)
-        end
-        return attrib(P,'mode') == 'directory'
-    end
+--- does a path exist?.
+-- @param P A file path
+-- @return the file path if it exists, nil otherwise
+function path.exists(P)
+    return attrib(P,'mode') ~= nil and P
+end
 
-    --- is this a file?.
-    -- @param P A file path
-    function path.isfile(P)
-        return attrib(P,'mode') == 'file'
-    end
+--- Return the time of last access as the number of seconds since the epoch.
+-- @param P A file path
+function path.getatime(P)
+    return attrib(P,'access')
+end
 
-    -- is this a symbolic link?
-    -- @param P A file path
-    function path.islink(P)
-        if link_attrib then
-            return link_attrib(P,'mode')=='link'
-        else
-            return false
-        end
-    end
+--- Return the time of last modification
+-- @param P A file path
+function path.getmtime(P)
+    return attrib(P,'modification')
+end
 
-    --- return size of a file.
-    -- @param P A file path
-    function path.getsize(P)
-        return attrib(P,'size')
-    end
-
-    --- does a path exist?.
-    -- @param P A file path
-    -- @return the file path if it exists, nil otherwise
-    function path.exists(P)
-        return attrib(P,'mode') ~= nil and P
-    end
-
-    --- Return the time of last access as the number of seconds since the epoch.
-    -- @param P A file path
-    function path.getatime(P)
-        return attrib(P,'access')
-    end
-
-    --- Return the time of last modification
-    -- @param P A file path
-    function path.getmtime(P)
-        return attrib(P,'modification')
-    end
-
-    ---Return the system's ctime.
-    -- @param P A file path
-    function path.getctime(P)
-        return path.attrib(P,'change')
-    end
+---Return the system's ctime.
+-- @param P A file path
+function path.getctime(P)
+    return path.attrib(P,'change')
 end
 
 
@@ -257,17 +252,33 @@ function path.normcase(P)
     end
 end
 
+local np_gen1,np_gen2 = '[^SEP]+SEP%.%.SEP?','SEP+%.?SEP'
+local np_pat1, np_pat2
+
 --- normalize a path name.
 --  A//B, A/./B and A/foo/../B all become A/B.
 -- @param P a file path
 function path.normpath (P)
     assert_string(1,P)
     if path.is_windows then
+        if P:match '^\\\\' then -- UNC
+            return '\\\\'..path.normpath(P:sub(3))
+        end
         P = P:gsub('/','\\')
-        return (P:gsub('[^\\]+\\%.%.\\',''):gsub('\\%.?\\','\\'))
-    else
-        return (P:gsub('[^/]+/%.%./',''):gsub('/%.?/','/'))
     end
+    if not np_pat1 then
+        np_pat1 = np_gen1:gsub('SEP',sep)
+        np_pat2 = np_gen2:gsub('SEP',sep)
+    end
+    local k
+    repeat -- /./ -> /
+        P,k = P:gsub(np_pat2,sep)
+    until k == 0
+    repeat -- A/../ -> (empty)
+        P,k = P:gsub(np_pat1,'')
+    until k == 0
+    if P == '' then P = '.' end
+    return P
 end
 
 local function ATS (P)
