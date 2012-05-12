@@ -8,6 +8,7 @@
 --
 -- Dependencies: `pl.utils`
 -- @module pl.stringx
+local utils = require 'pl.utils'
 local string = string
 local find = string.find
 local type,setmetatable,getmetatable,ipairs,unpack = type,setmetatable,getmetatable,ipairs,unpack
@@ -16,7 +17,6 @@ local gsub = string.gsub
 local rep = string.rep
 local sub = string.sub
 local concat = table.concat
-local utils = require 'pl.utils'
 local escape = utils.escape
 local ceil = math.ceil
 local _G = _G

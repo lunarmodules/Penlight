@@ -29,6 +29,7 @@
 -- Soft Dependencies: `lxp.lom` (fallback is to use basic Lua parser)
 -- @module pl.xml
 
+local split = require 'pl.utils'.split
 local t_insert      =  table.insert;
 local t_concat      =  table.concat;
 local t_remove      =  table.remove;
@@ -42,13 +43,12 @@ local ipairs        =        ipairs;
 local type          =          type;
 local next          =          next;
 local print         =         print;
-local unpack        =        unpack or table.unpack;
+local unpack        =        unpack;
 local s_gsub        =   string.gsub;
 local s_char        =   string.char;
 local s_find        =   string.find;
 local os            =            os;
 local pcall,require,io     =   pcall,require,io
-local split = require 'pl.utils'.split
 
 local _M = {}
 local Doc = { __type = "doc" };

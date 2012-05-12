@@ -19,9 +19,14 @@
 --
 -- @module pl.sip
 
+if not rawget(_G,'loadstring') then -- Lua 5.2 full compatibility
+    loadstring = load
+    unpack = table.unpack
+end
+
 local append,concat = table.insert,table.concat
 local concat = table.concat
-local ipairs,loadstring,type,unpack = ipairs,loadstring or load,type,unpack
+local ipairs,loadstring,type,unpack = ipairs,loadstring,type,unpack
 local io,_G = io,_G
 local print,rawget = print,rawget
 

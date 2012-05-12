@@ -65,4 +65,4 @@ end
 
 setmetatable(_G,gmt)
 
-if _G.PENLIGHT_STRICT then require 'pl.strict' end
+if rawget(_G,'PENLIGHT_STRICT') then require 'pl.strict' end

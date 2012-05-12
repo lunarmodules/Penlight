@@ -246,7 +246,7 @@ function lapp.process_options_string(str,args)
                         -- 'enum' type is a string which must belong to
                         -- one of several distinct values
                         local enums = ftype
-                        enump = '|' .. enums .. '|'
+                        local enump = '|' .. enums .. '|'
                         vtype = 'string'
                         constraint = function(s)
                             lapp.assert(enump:match('|'..s..'|'),

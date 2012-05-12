@@ -17,11 +17,11 @@ function testpath(pth,p1,p2,p3)
     asserteq(ext,p3)
 end
 
-testpath ([[c:\bonzo\dog_stuff\cat.txt]],[[c:\bonzo\dog_stuff]],'cat','.txt')
+testpath ([[/bonzo/dog_stuff/cat.txt]],[[/bonzo/dog_stuff]],'cat','.txt')
 testpath ([[/bonzo/dog/cat/fred.stuff]],'/bonzo/dog/cat','fred','.stuff')
 testpath ([[../../alice/jones]],'../../alice','jones','')
 testpath ([[alice]],'','alice','')
-testpath ([[/path-to\dog\]],[[/path-to\dog]],'','')
+testpath ([[/path-to/dog/]],[[/path-to/dog]],'','')
 
 asserteq( path.isdir( "../docs" ), true )
 asserteq( path.isdir( "../docs/config.ld" ), false )

@@ -5,11 +5,11 @@ function dump(t,indent)
     if type(t) == 'table' then
         io.write(indent,'{\n')
         local newindent = indent..'  '
-        for k,v in pairs(t) do            
+        for k,v in pairs(t) do
             io.write(newindent,k,'=')
             dump(v,indent)
             io.write('\n')
-        end    
+        end
         io.write(newindent,'},\n')
     else
         io.write(indent,t,'(',type(t),')')
@@ -18,8 +18,8 @@ end
 
 
 function testconfig(test)
-    f = stringio.open(test)
-    c = config.read(f)
+    local f = stringio.open(test)
+    local c = config.read(f)
     f:close()
     dump(c,'  ')
     print '-----'

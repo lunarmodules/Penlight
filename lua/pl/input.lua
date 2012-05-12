@@ -11,8 +11,8 @@
 local strfind = string.find
 local strsub = string.sub
 local strmatch = string.match
-local pairs,type,unpack,tonumber = pairs,type,unpack or table.unpack,tonumber
 local utils = require 'pl.utils'
+local pairs,type,unpack,tonumber = pairs,type,unpack or table.unpack,tonumber
 local patterns = utils.patterns
 local io = io
 local assert_arg = utils.assert_arg

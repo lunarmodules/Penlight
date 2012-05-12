@@ -34,7 +34,6 @@ end
 -- before or after the curly braces. A comment may occur beforehand.
 -- An empty environment is used, and
 -- any occurance of the keyword 'function' will be considered a problem.
--- If `plain` is set, then the string is 'free form' Lua statements, evaluated
 -- in the given environment - the return value may be `nil`.
 -- @param s {string} string of the form '{...}', with perhaps some whitespace
 --		before or after the curly braces.
@@ -54,7 +53,7 @@ function pretty.read(s)
         end
     end
     s = 'return '..s
-    local chunk,err = utils.load(s,'tbl','t',env or {})
+    local chunk,err = utils.load(s,'tbl','t',{})
     if not chunk then return nil,err end
     local SMT = save_string_index()
     local ok,ret = pcall(chunk)

@@ -19,8 +19,8 @@ print(d:month(7):last_day())
 --]]
 
 function check_df(fmt,str,no_check)
-    df = Date.Format(fmt)
-    d = df:parse(str)
+    local df = Date.Format(fmt)
+    local d = df:parse(str)
     --print(str,d)
     if not no_check then
         asserteq(df:tostring(d),str)
