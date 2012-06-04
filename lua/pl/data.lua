@@ -322,13 +322,13 @@ function DataMT:write(file)
 end
 
 local function massage_fieldnames (fields)
-    -- [fieldnames must be valid Lua identifiers] fix 0.8 was %A
+    -- fieldnames must be valid Lua identifiers; ignore any surrounding padding
     for i = 1,#fields do
-        fields[i] = fields[i]:gsub('%W','_')
+        fields[i] = rstrip(fields[i]):gsub('^%s*',''):gsub('%W','_')
     end
 end
 
---- create a new dataset from a table of rows. <br>
+--- create a new dataset from a table of rows.
 -- Can specify the fieldnames, else the table must have a field called
 -- 'fieldnames', which is either a string of delimiter-separated names,
 -- or a table of names. <br>
