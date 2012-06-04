@@ -138,6 +138,14 @@ function Set.isdisjoint (s1,s2)
     return Set.isempty(Set.intersection(s1,s2))
 end
 
+--- size of this set (also # for 5.2).
+-- @param s a Set
+-- @return size
+-- @function Set.len
+Set.len = tablex.size
+
+Set.__len = Set.len
+
 function Set.__eq (s1,s2)
     return Set.issubset(s1,s2) and Set.issubset(s2,s1)
 end
