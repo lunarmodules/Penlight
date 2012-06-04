@@ -282,15 +282,20 @@ local eps = 1.0e-10
 --- Emulate Python's range(x) function.
 -- Include it in List table for tidiness
 -- @param start A number
--- @param finish A number greater than start; if zero, then 0..start-1
+-- @param finish A number greater than start; if absent,
+-- then start is 1 and finish is start
 -- @param incr an optional increment (may be less than 1)
--- @usage List.range(0,3) == List {0,1,2,3}
+-- @return a List from start .. finish
+-- @usage List.range(0,3) == List{0,1,2,3}
+-- @usage List.range(4) = List{1,2,3,4}
+-- @usage List.range(5,1,-1) == List{5,4,3,2,1}
 function List.range(start,finish,incr)
   if not finish then
-    start = 0
-    finish = finish - 1
+    finish = start
+    start = 1
   end
   if incr then
+    assert_arg(3,incr,'number')
     if not utils.is_integer(incr) then finish = finish + eps end
   else
     incr = 1
