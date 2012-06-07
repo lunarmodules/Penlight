@@ -127,4 +127,5 @@ asserteq(t,{1,0,0,4,5,6})
 insertvalues(t,1,{10,20})
 asserteq(t,{10,20,1,0,0,4,5,6})
 
-
+asserteq(merge({10,20,30},{nil, nil, 30, 40}), {[3]=30})
+asserteq(merge({10,20,30},{nil, nil, 30, 40}, true), {10,20,30,40})
