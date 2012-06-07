@@ -91,15 +91,17 @@ end
 --- read a configuration file into a table
 -- @param file either a file-like object or a string, which must be a filename
 -- @param cnfg a configuration table that may contain these fields:
--- <ul>
--- <li> variablilize make names into valid Lua identifiers (default true)</li>
--- <li> convert_numbers try to convert values into numbers (default true)</li>
--- <li> trim_space ensure that there is no starting or trailing whitespace with values (default true)</li>
--- <li> trim_quotes remove quotes from strings (default false)</li>
--- <li> list_delim delimiter to use when separating columns (default ',')</li>
--- </ul>
+--
+--  * `variablilize` make names into valid Lua identifiers (default `true`)
+--  * `convert_numbers` function to convert values into numbers (default `tonumber`)
+--  * `trim_space` ensure that there is no starting or trailing whitespace with values (default `true`)
+--  * `trim_quotes` remove quotes from strings (default `false`)
+--  * `list_delim` delimiter to use when separating columns (default ',')
+--  * `ignore_assign` ignore any key-pair assignments (default `false`)
+--  * `kepsep` use this as key-pair separator (default '=')
+--
 -- @return a table containing items, or nil
--- @return error message (same as @{config.lines}
+-- @return error message (same as @{config.lines})
 function config.read(file,cnfg)
     local f,openf,err
     cnfg = cnfg or {}
@@ -111,10 +113,13 @@ function config.read(file,cnfg)
     local top_t = t
     local variablilize = check_cnfg ('variabilize',true)
     local list_delim = check_cnfg('list_delim',',')
-    local convert_numbers = check_cnfg('convert_numbers',true)
+    local convert_numbers = check_cnfg('convert_numbers',tonumber)
+    if convert_numbers==true then convert_numbers = tonumber end
     local trim_space = check_cnfg('trim_space',true)
     local trim_quotes = check_cnfg('trim_quotes',false)
     local ignore_assign = check_cnfg('ignore_assign',false)
+    local keysep = check_cnfg('keysep','=')
+    local keypat = keysep == ' ' and '%s+' or '%s*'..keysep..'%s*'
 
     local function process_name(key)
         if variablilize then
@@ -130,7 +135,7 @@ function config.read(file,cnfg)
                 value[i] = process_value(v)
             end
         elseif convert_numbers and value:find('^[%d%+%-]') then
-            local val = tonumber(value)
+            local val = convert_numbers(value)
             if val then value = val end
         end
         if type(value) == 'string' then
@@ -154,7 +159,8 @@ function config.read(file,cnfg)
             t[section] = {}
             t = t[section]
         else
-            local i1,i2 = line:find('%s*=%s*')
+            line = line:gsub('^%s*','')
+            local i1,i2 = line:find(keypat)
             if i1 and not ignore_assign then -- key,value assignment
                 local key = process_name(line:sub(1,i1-1))
                 local value = process_value(line:sub(i2+1))
