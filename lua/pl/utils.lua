@@ -10,7 +10,7 @@ local collisions = {}
 
 local utils = {}
 
-utils._VERSION = "1.0.2"
+utils._VERSION = "1.0.3"
 
 local lua51 = rawget(_G,'setfenv')
 
