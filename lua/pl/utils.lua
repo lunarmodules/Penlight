@@ -477,7 +477,7 @@ end
 -- @usage assert_arg(n,val,'string',path.isdir,'not a directory')
 function utils.assert_arg (n,val,tp,verify,msg,lev)
     if type(val) ~= tp then
-        error(("argument %d expected a '%s', got a '%s'"):format(n,tp,type(val)),2)
+        error(("argument %d expected a '%s', got a '%s'"):format(n,tp,type(val)),lev or 2)
     end
     if verify and not verify(val) then
         error(("argument %d: '%s' %s"):format(n,val,msg),lev or 2)
@@ -489,7 +489,7 @@ end
 -- @param val a value that must be a string
 -- @raise val must be a string
 function utils.assert_string (n,val)
-    utils.assert_arg(n,val,'string',nil,nil,nil,3)
+    utils.assert_arg(n,val,'string',nil,nil,3)
 end
 
 local err_mode = 'default'
