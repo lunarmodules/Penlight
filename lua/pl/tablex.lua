@@ -515,8 +515,10 @@ function tablex.merge (t1,t2,dup)
     for k,v in pairs(t1) do
         if dup or t2[k] then res[k] = v end
     end
-    for k,v in pairs(t2) do
-        if dup or t1[k] then res[k] = v end
+    if dup then
+      for k,v in pairs(t2) do
+        res[k] = v
+      end
     end
     return setmeta(res,t1,Map)
 end
