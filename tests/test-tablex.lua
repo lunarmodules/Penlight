@@ -1,11 +1,19 @@
 local tablex = require 'pl.tablex'
 local utils = require ('pl.utils')
 local L = utils.string_lambda
+local test = require('pl.test')
 -- bring tablex funtions into global namespace
 utils.import(tablex)
-local asserteq = require('pl.test').asserteq
+local asserteq = test.asserteq
 
 local cmp = deepcompare
+
+function asserteq_no_order (x,y)
+    if not compare_no_order(x,y) then
+        test.complain(x,y,"these lists contained different elements")
+    end
+end
+
 
 asserteq(
 	copy {10,20,30},
@@ -22,17 +30,17 @@ asserteq(
 	{10,20,30}
 )
 
-asserteq(
+asserteq_no_order(
 	pairmap(L'_',{fred=10,bonzo=20}),
 	{'fred','bonzo'}
 )
 
-asserteq(
+asserteq_no_order(
 	pairmap(function(k,v) return v end,{fred=10,bonzo=20}),
 	{10,20}
 )
 
-asserteq(
+asserteq_no_order(
 	pairmap(function(i,v) return v,i end,{10,20,30}),
 	{10,20,30}
 )
