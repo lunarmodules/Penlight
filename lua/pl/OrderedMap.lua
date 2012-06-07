@@ -29,7 +29,7 @@ end
 
 local assert_arg,raise = utils.assert_arg,utils.raise
 
---- update an OrderedMap using a table. <br>
+--- update an OrderedMap using a table.
 -- If the table is itself an OrderedMap, then its entries will be appended. <br>
 -- if it s a table of the form <code>{{key1=val1},{key2=val2},...}</code> these will be appended. <br>
 -- Otherwise, it is assumed to be a map-like table, and order of extra entries is arbitrary.
@@ -129,6 +129,8 @@ function OrderedMap:iter ()
         return idx,self[idx]
     end
 end
+
+OrderedMap.__pairs = OrderedMap.iter
 
 function OrderedMap:__tostring ()
     local res = {}
