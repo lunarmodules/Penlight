@@ -370,12 +370,17 @@ This function is intended to be a Swiss Army Knife of configuration readers, but
 
     {
        variablilize = true,
-       convert_numbers = true,
+       convert_numbers = tonumber,
        trim_space = true,
-       list_delim = ','
+       list_delim = ',',
+       trim_quotes = true,
+       ignore_assign = false,
+       keysep = '='
     }
 
-`variablilize` is the option that converted `write.timeout` in the first example to the valid Lua identifier `write_timeout`.  If `convert_numbers` is true, then an attempt is made to convert any string that starts like a number. `trim_space` ensures that there is no starting or trailing whitespace with values, and `list_delim` is the character that will be used to decide whether to split a value up into a list (it may be a Lua string pattern such as '%s+'.)
+`variablilize` is the option that converted `write.timeout` in the first example to the valid Lua identifier `write_timeout`.  If `convert_numbers` is true, then an attempt is made to convert any string that starts like a number. You can specify your own function (say one that will convert a string like '5224 kb' into a number.)
+
+`trim_space` ensures that there is no starting or trailing whitespace with values, and `list_delim` is the character that will be used to decide whether to split a value up into a list (it may be a Lua string pattern such as '%s+'.)
 
 For instance, the password file in Unix is colon-delimited:
 
@@ -423,6 +428,18 @@ and you get:
       }
     ...
     }
+
+Many common Unix configuration files can be read by tweaking these parameters. For `/etc/fstab`, the options `{list_delim='%s+',ignore_assign=true}` will correctly separate the columns.  It's common to find 'KEY VALUE' assignments in files such as `/etc/ssh/ssh_config`; the options `{keysep=' '}` make `config.read` return a table where each KEY has a value VALUE.
+
+Files in the Linux `procfs` usually use ':` as the field delimiter:
+
+    > t = config.read('/proc/meminfo',{keysep=':'})
+    > = t.MemFree
+    220140 kB
+
+That result is a string, since `tonumber` doesn't like it, but defining the `convert_numbers` option as `function(s) return tonumber((s:gsub(' kB$',''))) end` will get the memory figures as actual numbers in the result. (The extra parentheses are necessary so that `tonumber` only gets the first result from `gsub`)
+
+Please note that `config.read` can be passed a _file-like object_; if it's not a string and supports the `read` method, then that will be used. For instance, to read a configuration from a string, use `stringio.open`.
 
 
 <a id="lexer"/>

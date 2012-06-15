@@ -36,6 +36,13 @@ local function complain (x,y,msg)
     utils.quit(1,msg or "these values were not equal")
 end
 
+--- general test complain message.
+-- Useful for composing new test functions (see tests/tablex.lua for an example)
+-- @param x a value
+-- @param y value to compare first value against
+-- @param msg message
+test.complain = complain
+
 --- like assert, except takes two arguments that must be equal and can be tables.
 -- If they are plain tables, it will use tablex.deepcompare.
 -- @param x any value
@@ -60,6 +67,9 @@ function test.assertmatch (s1,s2)
     end
 end
 
+--- assert that the function raises a particular error.
+-- @param fn a table of the form {function,arg1,...}
+-- @param e a string to match the error against
 function test.assertraise(fn,e)
     local ok, err = pcall(unpack(fn))
     if not err or err:match(e)==nil then
