@@ -8,6 +8,7 @@
 local class = require 'pl.class'
 local os_time, os_date = os.time, os.date
 local stringx = require 'pl.stringx'
+local assert_arg,assert_string,raise = utils.assert_arg,utils.assert_string,utils.raise
 
 local Date = class()
 Date.Format = class()
@@ -170,6 +171,7 @@ end
 for _,c in ipairs{'year','month','day','hour','min','sec','yday'} do
     Date[c] = function(self,val)
         if val then
+            assert_arg(1,val,"number")
             self.tab[c] = val
             self:set(os_time(self.tab))
             return self
@@ -354,6 +356,7 @@ local parse_date
 -- @param str a date string
 -- @return date object
 function Date.Format:parse(str)
+    assert_string(1,str)
     if not self.fmt then
         return parse_date(str,self.us)
     end
