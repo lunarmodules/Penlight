@@ -505,8 +505,10 @@ end
 -- Any extra arguments are passed to the function.
 -- @param fun A function that takes at least one argument
 -- @param ... arbitrary extra arguments.
+-- @return the list.
 function List:transform (fun,...)
     transform(fun,self,...)
+	return self
 end
 
 --- apply a function to elements of two lists.
