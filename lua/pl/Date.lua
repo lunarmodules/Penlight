@@ -8,6 +8,7 @@
 local class = require 'pl.class'
 local os_time, os_date = os.time, os.date
 local stringx = require 'pl.stringx'
+local utils = require 'pl.utils'
 local assert_arg,assert_string,raise = utils.assert_arg,utils.assert_string,utils.raise
 
 local Date = class()
