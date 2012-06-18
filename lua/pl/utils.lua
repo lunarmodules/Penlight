@@ -41,6 +41,7 @@ end
 -- @param fmt The format (see string.format)
 -- @param ... Extra arguments for format
 function utils.printf(fmt,...)
+    utils.assert_string(1,fmt)
     utils.fprintf(stdout,fmt,...)
 end
 
