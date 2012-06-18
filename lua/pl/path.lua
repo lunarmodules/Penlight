@@ -41,6 +41,7 @@ path.chdir = lfs.chdir
 --- is this a directory?
 -- @param P A file path
 function path.isdir(P)
+	assert_string(1,P)
     if P:match("\\$") then
         P = P:sub(1,-2)
     end
@@ -50,12 +51,14 @@ end
 --- is this a file?.
 -- @param P A file path
 function path.isfile(P)
+	assert_string(1,P)
     return attrib(P,'mode') == 'file'
 end
 
 -- is this a symbolic link?
 -- @param P A file path
 function path.islink(P)
+	assert_string(1,P)
     if link_attrib then
         return link_attrib(P,'mode')=='link'
     else
@@ -66,6 +69,7 @@ end
 --- return size of a file.
 -- @param P A file path
 function path.getsize(P)
+	assert_string(1,P)
     return attrib(P,'size')
 end
 
@@ -73,12 +77,14 @@ end
 -- @param P A file path
 -- @return the file path if it exists, nil otherwise
 function path.exists(P)
+	assert_string(1,P)
     return attrib(P,'mode') ~= nil and P
 end
 
 --- Return the time of last access as the number of seconds since the epoch.
 -- @param P A file path
 function path.getatime(P)
+	assert_string(1,P)
     return attrib(P,'access')
 end
 
@@ -91,6 +97,7 @@ end
 ---Return the system's ctime.
 -- @param P A file path
 function path.getctime(P)
+	assert_string(1,P)
     return path.attrib(P,'change')
 end
 
@@ -147,6 +154,7 @@ end
 -- @param pwd optional start path to use (default is current dir)
 function path.abspath(P,pwd)
     assert_string(1,P)
+	if pwd then assert_string(2,pwd) end
     local use_pwd = pwd ~= nil
     if not use_pwd and not currentdir then return P end
     P = P:gsub('[\\/]$','')
@@ -221,16 +229,17 @@ end
 -- @param p2 A file path
 -- @param ... more file paths
 function path.join(p1,p2,...)
+    assert_string(1,p1)
+    assert_string(2,p2)
     if select('#',...) > 0 then
         local p = path.join(p1,p2)
         local args = {...}
         for i = 1,#args do
+            assert_string(i,args[i])
             p = path.join(p,args[i])
         end
         return p
     end
-    assert_string(1,p1)
-    assert_string(2,p2)
     if path.isabs(p2) then return p2 end
     local endc = at(p1,#p1)
     if endc ~= path.sep and endc ~= other_sep then
@@ -258,7 +267,7 @@ local np_pat1, np_pat2
 --- normalize a path name.
 --  A//B, A/./B and A/foo/../B all become A/B.
 -- @param P a file path
-function path.normpath (P)
+function path.normpath(P)
     assert_string(1,P)
     if path.is_windows then
         if P:match '^\\\\' then -- UNC
@@ -292,6 +301,8 @@ end
 -- @param P a path
 -- @param start optional start point (default current directory)
 function path.relpath (P,start)
+    assert_string(1,P)
+	if start then assert_string(2,start) end
     local split,normcase,min,append = utils.split, path.normcase, math.min, table.insert
     P = normcase(path.abspath(P,start))
     start = start or currentdir()
