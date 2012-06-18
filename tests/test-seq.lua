@@ -1,8 +1,8 @@
-input = require 'pl.input'
-seq = require 'pl.seq'
-asserteq = require('pl.test').asserteq
-utils = require 'pl.utils'
-
+local input = require 'pl.input'
+local seq = require 'pl.seq'
+local asserteq = require('pl.test').asserteq
+local utils = require 'pl.utils'
+local stringio = require 'pl.stringio'
 
 local L = utils.string_lambda
 local S = seq.list
@@ -11,7 +11,7 @@ local C2 = seq.copy2
 
 
 asserteq (seq.sum(input.numbers '10 20 30 40 50'),150)
-x,y = unpack(C(input.numbers('10 20')))
+local x,y = unpack(C(input.numbers('10 20')))
 assert (x == 10 and y == 20)
 
 
@@ -52,6 +52,16 @@ asserteq(
 asserteq(
   C(seq.unique(seq.list{1,2,3,2,1})),
   {1,2,3}
+)
+
+
+local f = stringio.open '1 2 3 4'
+
+-- seq.lines may take format specifiers if using Lua 5.2, or a 5.2-compatible
+-- file object like that returned by stringio.
+asserteq(
+    seq.lines(f,'*n'):copy(),
+    {1,2,3,4}
 )
 
 
