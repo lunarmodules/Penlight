@@ -15,19 +15,19 @@ local Date = class()
 Date.Format = class()
 
 --- Date constructor.
--- @param t this can be either <ul>
--- <li>nil - use current date and time</li>
--- <li>number - seconds since epoch (as returned by @{os.time})</li>
--- <li>Date - copy constructor</li>
--- <li>table - table containing year, month, etc as for os.time()
---  You may leave out year, month or day, in which case current values will be used.
--- </li>
--- <li> two to six numbers: year, month, day, hour, min, sec
--- </ul>
+-- @param t this can be either
+--
+--   * `nil` or empty - use current date and time
+--   * number - seconds since epoch (as returned by @{os.time})
+--   * `Date` - copy constructor
+--   * table - table containing year, month, etc as for `os.time`. You may leave out year, month or day,
+-- in which case current values will be used.
+--   *three to six numbers: year, month, day, hour, min, sec
+--
 -- @function Date
 function Date:_init(t,...)
     local time
-    if select('#',...) > 0 then
+    if select('#',...) > 2 then
         local extra = {...}
         local year = t
         t = {
@@ -43,6 +43,8 @@ function Date:_init(t,...)
         time = os_time()
     elseif type(t) == 'number' then
         time = t
+        local next = ...
+        self.interval = next == true or next == 'interval'
     elseif type(t) == 'table' then
         if getmetatable(t) == Date then -- copy ctor
             time = t.time
@@ -101,7 +103,11 @@ end
 -- @param t seconds since epoch
 function Date:set(t)
     self.time = t
-    self.tab = os_date('*t',self.time)
+    if self.interval then
+        self.tab = os_date('!*t',self.time)
+    else
+        self.tab = os_date('*t',self.time)
+    end
 end
 
 --- set the year.
@@ -234,12 +240,11 @@ end
 function Date:diff(other)
     local dt = self.time - other.time
     if dt < 0 then error("date difference is negative!",2) end
-    local date = Date(dt)
-    date.interval = true
-    return date
+    return Date(dt,true)
 end
 
 --- long numerical ISO data format version of this date.
+-- If it's an interval then the format is '2 hours 29 sec' etc.
 function Date:__tostring()
     if not self.interval then
         return os_date('%Y-%m-%d %H:%M:%S',self.time)

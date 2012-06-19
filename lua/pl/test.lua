@@ -20,6 +20,8 @@ local io,debug = io,debug
 local function dump(x)
     if type(x) == 'table' and not (getmetatable(x) and getmetatable(x).__tostring) then
         return pretty.write(x,' ',true)
+    elseif type(x) == 'string' then
+        return '"'..x..'"'
     else
         return tostring(x)
     end

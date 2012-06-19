@@ -49,6 +49,12 @@ d = Date() -- today
 d:add { day = 1 }  -- tomorrow
 assert(d > Date())
 
+--------- Time intervals -----
+-- new constructor makes an interval; also returned by Date:diff
+d1 = Date(1202,true)
+d2 = Date(1500,true)
+asserteq(tostring(d2:diff(d1)),"4 min 58 sec ")
+
 -------- testing 'flexible' date parsing ---------
 
 
