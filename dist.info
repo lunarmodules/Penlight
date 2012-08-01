@@ -4,9 +4,10 @@ name = "penlight"
 version = "0.9.7"
 
 desc = "A portable, pure-Lua standard library covering common patterns."
-author = "Steve Donovan"
+author = "Steve Donovan, David Manura"
 maintainer = "Peter Drahoš"
 url = "https://github.com/stevedonovan/Penlight"
+license = "MIT"
 
 depends = {
 	"lua ~> 5.1",
