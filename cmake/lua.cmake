@@ -38,27 +38,30 @@ macro ( install_lua_executable _name _source )
   # Find srlua and glue
   find_program( SRLUA_EXECUTABLE NAMES srlua )
   find_program( GLUE_EXECUTABLE NAMES glue )
-  
+  # Executable output
+  set ( _exe ${CMAKE_CURRENT_BINARY_DIR}/${_name}${CMAKE_EXECUTABLE_SUFFIX} )
   if ( NOT SKIP_LUA_WRAPPER AND SRLUA_EXECUTABLE AND GLUE_EXECUTABLE )
-    # Generate binary gluing the lua code to srlua
+    # Generate binary gluing the lua code to srlua, this is a robuust approach for most systems
     add_custom_command(
-      OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${_name}
+      OUTPUT ${_exe}
       COMMAND ${GLUE_EXECUTABLE} 
-      ARGS ${SRLUA_EXECUTABLE} ${_source} ${CMAKE_CURRENT_BINARY_DIR}/${_name}
+      ARGS ${SRLUA_EXECUTABLE} ${_source} ${_exe}
       DEPENDS ${_source}
       WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
       VERBATIM
     )
     # Make sure we have a target associated with the binary
     add_custom_target(${_name} ALL
-        DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/${_name}
+        DEPENDS ${_exe}
     )
     # Install with run permissions
-    install ( PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/${_name} DESTINATION ${INSTALL_BIN} COMPONENT Runtime)
+    install ( PROGRAMS ${_exe} DESTINATION ${INSTALL_BIN} COMPONENT Runtime)
+	# Also install source as optional resurce
+	install ( FILES ${_source} DESTINATION ${INSTALL_FOO} COMPONENT Other )
   else()
-    # Add .lua suffix and install as is
+    # Install into bin as is but without the lua suffix, we assume the executable uses UNIX shebang/hash-bang magic
     install ( PROGRAMS ${_source} DESTINATION ${INSTALL_BIN}
-            RENAME ${_source_name}.lua 
+            RENAME ${_source_name}
             COMPONENT Runtime
     )
   endif()
