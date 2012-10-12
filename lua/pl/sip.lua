@@ -34,7 +34,8 @@ local patterns = {
     FLOAT = '[%+%-%d]%d*%.?%d*[eE]?[%+%-]?%d*',
     INTEGER = '[+%-%d]%d*',
     IDEN = '[%a_][%w_]*',
-    FILE = '[%a%.\\][:%][%w%._%-\\]*'
+    FILE = '[%a%.\\][:%][%w%._%-\\]*',
+    OPTION = '[%a_][%w_%-]*',
 }
 
 local function assert_arg(idx,val,tp)
@@ -92,6 +93,7 @@ local pattern_map = {
   v = group(patterns.IDEN),
   i = group(patterns.INTEGER),
   f = group(patterns.FLOAT),
+  o = group(patterns.OPTION),
   r = '(%S.*)',
   p = '([%a]?[:]?[\\/%.%w_]+)'
 }
