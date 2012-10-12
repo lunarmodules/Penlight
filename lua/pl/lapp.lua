@@ -181,7 +181,7 @@ function lapp.process_options_string(str,args)
     end
 
     local function set_result(ps,parm,val)
-        parm = parm:gsub("%W", "_") -- so foo-bar becomes foo_bar in Lua
+        parm = type(parm) == "string" and parm:gsub("%W", "_") or parm -- so foo-bar becomes foo_bar in Lua
         if not ps.varargs then
             results[parm] = val
         else
