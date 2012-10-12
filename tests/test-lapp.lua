@@ -89,5 +89,10 @@ check_error(extended,{'-n','x'},"unable to convert to number: x")
 
 check_error(extended,{'-n','12'},"n out of range")
 
+local with_dashes = [[
+  --first-dash  dash
+  --second-dash dash also
+]]
 
+check(with_dashes,{'--first-dash'},{first_dash=true,second_dash=false})
 
