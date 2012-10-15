@@ -224,11 +224,17 @@ function lapp.process_options_string(str,args)
         if res.rest then
             line = res.rest
             res = {}
-            -- do we have ([<type>] [default <val>])?
+            local optional
+            -- do we have ([optional] [<type>] [default <val>])?
             if match('$({def} $',line,res) or match('$({def}',line,res) then
                 local typespec = strip(res.def)
                 local ftype, rest = typespec:match('^(%S+)(.*)$')
                 rest = strip(rest)
+                if ftype == 'optional' then
+                    ftype, rest = rest:match('^(%S+)(.*)$')
+                    rest = strip(rest)
+                    optional = true
+                end
                 local default
                 if ftype == 'default' then
                     default = true
@@ -271,7 +277,7 @@ function lapp.process_options_string(str,args)
             local ps = {
                 type = vtype,
                 defval = defval,
-                required = defval == nil,
+                required = defval == nil and not optional,
                 comment = res.rest or optparm,
                 constraint = constraint,
                 varargs = varargs
