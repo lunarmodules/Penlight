@@ -96,3 +96,11 @@ local with_dashes = [[
 
 check(with_dashes,{'--first-dash'},{first_dash=true,second_dash=false})
 
+local optional = [[
+  -p (optional string)
+]]
+
+check(optional,{'-p', 'test'},{p='test'})
+check(optional,{},{})
+
+
