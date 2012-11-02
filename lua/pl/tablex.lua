@@ -144,13 +144,16 @@ function tablex.deepcompare(t1,t2,ignore_mt,eps)
     local mt = getmetatable(t1)
     if not ignore_mt and mt and mt.__eq then return t1 == t2 end
     for k1,v1 in pairs(t1) do
-        local v2 = t2[k1]
-        if v2 == nil or not deepcompare(v1,v2,ignore_mt,eps) then return false end
+        if t2[k1]==nil then return false end
     end
     for k2,v2 in pairs(t2) do
-        local v1 = t1[k2]
-        if v1 == nil or not deepcompare(v1,v2,ignore_mt,eps) then return false end
+        if t1[k2]==nil then return false end
     end
+    for k1,v1 in pairs(t1) do
+        local v2 = t2[k1]
+        if not deepcompare(v1,v2,ignore_mt,eps) then return false end
+    end
+
     return true
 end
 
