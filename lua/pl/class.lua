@@ -1,7 +1,12 @@
 --- Provides a reuseable and convenient framework for creating classes in Lua.
--- Two possible notations: <br> <code> B = class(A) </code> or <code> class.B(A) </code>. <br>
--- <p>The latter form creates a named class. </p>
--- See the Guide for further <a href="../../index.html#class">discussion</a>
+-- Two possible notations:
+--
+--    B = class(A)
+--    class.B(A)
+--
+-- The latter form creates a named class.
+--
+-- See the Guide for further @{01-introduction.md.Simplifying_Object_Oriented_Programming_in_Lua|discussion}
 -- @module pl.class
 
 local error, getmetatable, io, pairs, rawget, rawset, setmetatable, tostring, type =
@@ -11,7 +16,14 @@ local error, getmetatable, io, pairs, rawget, rawset, setmetatable, tostring, ty
 local function call_ctor (c,obj,...)
     -- nice alias for the base class ctor
     local base = rawget(c,'_base')
-    if base then obj.super = rawget(base,'_init') end
+    if base then
+        local parent_ctor = rawget(base,'_init')
+        if parent_ctor then
+            obj.super = function(obj,...)
+                call_ctor(base,obj,...)
+            end
+        end
+    end
     local res = c._init(obj,...)
     obj.super = nil
     return res
@@ -105,28 +117,14 @@ local function _class(base,c_arg,c)
     c.is_a = is_a
     c.class_of = class_of
     c._class = c
-    -- any object can have a specified delegate which is called with unrecognized methods
-    -- if _handler exists and obj[key] is nil, then pass onto handler!
-    c.delegate = function(self,obj)
-        mt.__index = function(tbl,key)
-            local method = obj[key]
-            if method then
-                return function(self,...)
-                    return method(obj,...)
-                end
-            elseif self._handler then
-                return self._handler(tbl,key)
-            end
-        end
-    end
+
     return c
 end
 
---- create a new class, derived from a given base class. <br>
+--- create a new class, derived from a given base class.
 -- Supporting two class creation syntaxes:
--- either <code>Name = class(base)</code> or <code>class.Name(base)</code>
--- @class function
--- @name class
+-- either `Name = class(base)` or `class.Name(base)`
+-- @function class
 -- @param base optional base class
 -- @param c_arg optional parameter to class ctor
 -- @param c optional table to be used as class
@@ -149,6 +147,33 @@ class = setmetatable({},{
         end
     end
 })
+
+class.properties = class()
+
+function class.properties._class_init(klass)
+    klass.__index = function(t,key)
+        -- normal class lookup!
+        local v = klass[key]
+        if v then return v end
+        -- is it a getter?
+        v = rawget(klass,'get_'..key)
+        if v then
+            return v(t)
+        end
+        -- is it a field?
+        return rawget(t,'_'..key)
+    end
+    klass.__newindex = function (t,key,value)
+        -- if there's a setter, use that, otherwise directly set table
+        local p = 'set_'..key
+        local setter = klass[p]
+        if setter then
+            setter(t,value)
+        else
+            rawset(t,key,value)
+        end
+    end
+end
 
 
 return class

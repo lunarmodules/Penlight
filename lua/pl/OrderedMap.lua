@@ -1,10 +1,9 @@
---- OrderedMap.
--- @class module
--- @name pl.OrderedMap
-
---[[
-module ('pl.OrderedMap')
-]]
+--- OrderedMap, a map which preserves ordering.
+--
+-- Derived from `pl.Map`.
+--
+-- Dependencies: `pl.utils`, `pl.tablex`, `pl.List`
+-- @module pl.OrderedMap
 
 local tablex = require 'pl.tablex'
 local utils = require 'pl.utils'
@@ -19,7 +18,7 @@ OrderedMap._name = 'OrderedMap'
 
 --- construct an OrderedMap.
 -- Will throw an error if the argument is bad.
--- @param optional initialization table, same as for @{OrderedMap:update}
+-- @param t optional initialization table, same as for @{OrderedMap:update}
 function OrderedMap:_init (t)
     self._keys = List()
     if t then
@@ -30,7 +29,7 @@ end
 
 local assert_arg,raise = utils.assert_arg,utils.raise
 
---- update an OrderedMap using a table. <br>
+--- update an OrderedMap using a table.
 -- If the table is itself an OrderedMap, then its entries will be appended. <br>
 -- if it s a table of the form <code>{{key1=val1},{key2=val2},...}</code> these will be appended. <br>
 -- Otherwise, it is assumed to be a map-like table, and order of extra entries is arbitrary.
@@ -130,6 +129,8 @@ function OrderedMap:iter ()
         return idx,self[idx]
     end
 end
+
+OrderedMap.__pairs = OrderedMap.iter
 
 function OrderedMap:__tostring ()
     local res = {}

@@ -2,8 +2,7 @@
 -- All global variables must be 'declared' through a regular assignment
 -- (even assigning nil will do) in a main chunk before being used
 -- anywhere or assigned to inside a function.
--- @class module
--- @name pl.strict
+-- @module pl.strict
 
 require 'debug'
 local getinfo, error, rawset, rawget = debug.getinfo, error, rawset, rawget

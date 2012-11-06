@@ -1,28 +1,32 @@
 --- A template preprocessor.
--- Originally by <a href="http://lua-users.org/wiki/SlightlyLessSimpleLuaPreprocessor">Ricki Lake</a>
--- <p>There are two rules: <ul>
--- <li>lines starting with # are Lua</li>
--- <li> otherwise, `$(expr)` is the result of evaluating `expr`</li>
--- </ul>
--- <pre class=example>
--- #  for i = 1,3 do
---    $(i) Hello, Word!
--- #  end
--- </pre>
+-- Originally by [Ricki Lake](http://lua-users.org/wiki/SlightlyLessSimpleLuaPreprocessor)
+--
+-- There are two rules:
+--
+--  * lines starting with # are Lua
+--  * otherwise, `$(expr)` is the result of evaluating `expr`
+--
+-- Example:
+--
+--    #  for i = 1,3 do
+--       $(i) Hello, Word!
+--    #  end
+--    ===>
+--    1 Hello, Word!
+--    2 Hello, Word!
+--    3 Hello, Word!
+--
 -- Other escape characters can be used, when the defaults conflict
 -- with the output language.
--- <pre class=example>
--- > for _,n in pairs{'one','two','three'} do
---  static int l_${n} (luaState *state);
--- > end
--- </pre>
--- See  <a href="../../index.html#rici_templates">the Guide</a>.
--- @class module
--- @name pl.template
-
---[[
-    module('pl.template')
-]]
+--
+--    > for _,n in pairs{'one','two','three'} do
+--    static int l_${n} (luaState *state);
+--    > end
+--
+-- See  @{03-strings.md.Another_Style_of_Template|the Guide}.
+--
+-- Dependencies: `pl.utils`
+-- @module pl.template
 
 local utils = require 'pl.utils'
 local append,format = table.insert,string.format
@@ -82,9 +86,9 @@ function template.substitute(str,env)
     if not fn then return nil,err end
     fn = fn()
     local out = {}
-    local res,err = pcall(fn,function(s)
+    local res,err = xpcall(function() fn(function(s)
         out[#out+1] = s
-    end)
+    end) end,debug.traceback)
     if not res then
         if env._debug then print(code) end
         return nil,err

@@ -1,7 +1,8 @@
 --- Application support functions.
--- <p>See <a href="../../index.html#app">the Guide</a>
--- @class module
--- @name pl.app
+-- See @{01-introduction.md.Application_Support|the Guide}
+--
+-- Dependencies: `pl.utils`, `pl.path`, `lfs`
+-- @module pl.app
 
 local io,package,require = _G.io, _G.package, _G.require
 local utils = require 'pl.utils'
@@ -72,6 +73,27 @@ function app.platform()
         f:close()
         return res
     end
+end
+
+--- return the full command-line used to invoke this script
+-- any extra flags occupy slots, so that 'lua -lpl' gives us {[-2]='lua',[-1]='-lpl')
+-- @return command-line
+-- @return name of Lua program used
+function app.lua ()
+    local args = _G.arg or error "not in a main program"
+    local imin = 0
+    for i in pairs(args) do
+        if i < imin then imin = i end
+    end
+    local cmd, append = {}, table.insert
+    for i = imin,-1 do
+        local a = args[i]
+        if a:match '%s' then
+            a = '"'..a..'"'
+        end
+        append(cmd,a)
+    end
+    return table.concat(cmd,' '),args[imin]
 end
 
 --- parse command-line arguments into flags and parameters.

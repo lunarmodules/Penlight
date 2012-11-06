@@ -2,7 +2,7 @@
 -- these are global side-effects of pl.utils
 local utils = require 'pl.utils'
 local asserteq = require 'pl.test'.asserteq
-local lua = arg[-1]
+local _,lua = require 'pl.app'. lua()
 
 -- utils.execute is a compromise between 5.1 and 5.2 for os.execute changes
 -- can we call Lua ?
@@ -10,8 +10,7 @@ local ok,code = utils.execute(lua..' -v')
 assert(ok == true and code == 0)
 
 -- table.pack is defined for 5.1
-local t,n = table.pack(1,nil,'hello')
-asserteq(n,3)
+local t = table.pack(1,nil,'hello')
 asserteq(t.n,3)
 assert(t[1] == 1 and t[3] == 'hello')
 

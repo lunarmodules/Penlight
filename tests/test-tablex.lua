@@ -1,11 +1,19 @@
 local tablex = require 'pl.tablex'
 local utils = require ('pl.utils')
 local L = utils.string_lambda
+local test = require('pl.test')
 -- bring tablex funtions into global namespace
 utils.import(tablex)
-local asserteq = require('pl.test').asserteq
+local asserteq = test.asserteq
 
 local cmp = deepcompare
+
+function asserteq_no_order (x,y)
+    if not compare_no_order(x,y) then
+        test.complain(x,y,"these lists contained different elements")
+    end
+end
+
 
 asserteq(
 	copy {10,20,30},
@@ -22,17 +30,17 @@ asserteq(
 	{10,20,30}
 )
 
-asserteq(
+asserteq_no_order(
 	pairmap(L'_',{fred=10,bonzo=20}),
 	{'fred','bonzo'}
 )
 
-asserteq(
+asserteq_no_order(
 	pairmap(function(k,v) return v end,{fred=10,bonzo=20}),
 	{10,20}
 )
 
-asserteq(
+asserteq_no_order(
 	pairmap(function(i,v) return v,i end,{10,20,30}),
 	{10,20,30}
 )
@@ -90,6 +98,10 @@ asserteq(
 assert(compare_no_order({1,2,3,4},{2,1,4,3})==true)
 assert(compare_no_order({1,2,3,4},{2,1,4,4})==false)
 
+asserteq(range(10,9),{})
+asserteq(range(10,10),{10})
+asserteq(range(10,11),{10,11})
+
 -- update inserts key-value pairs from the second table
 t1 = {one=1,two=2}
 t2 = {three=3,two=20,four=4}
@@ -123,4 +135,5 @@ asserteq(t,{1,0,0,4,5,6})
 insertvalues(t,1,{10,20})
 asserteq(t,{10,20,1,0,0,4,5,6})
 
-
+asserteq(merge({10,20,30},{nil, nil, 30, 40}), {[3]=30})
+asserteq(merge({10,20,30},{nil, nil, 30, 40}, true), {10,20,30,40})

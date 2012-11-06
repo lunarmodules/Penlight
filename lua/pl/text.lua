@@ -1,20 +1,22 @@
---- Text processing utilities. <p>
+--- Text processing utilities.
+--
 -- This provides a Template class (modeled after the same from the Python
 -- libraries, see string.Template). It also provides similar functions to those
 -- found in the textwrap module.
--- See  <a href="../../index.html#templates">the Guide</a>.
--- <p>
--- Calling <code>text.format_operator()</code> overloads the % operator for strings to give Python/Ruby style formated output.
+--
+-- See  @{03-strings.md.String_Templates|the Guide}.
+--
+-- Calling `text.format_operator()` overloads the % operator for strings to give Python/Ruby style formated output.
 -- This is extended to also do template-like substitution for map-like data.
--- <pre class=example>
--- > require 'pl.text'.format_operator()
--- > = '%s = %5.3f' % {'PI',math.pi}
--- PI = 3.142
--- > = '$name = $value' % {name='dog',value='Pluto'}
--- dog = Pluto
--- </pre>
--- @class module
--- @name pl.text
+--
+--    > require 'pl.text'.format_operator()
+--    > = '%s = %5.3f' % {'PI',math.pi}
+--    PI = 3.142
+--    > = '$name = $value' % {name='dog',value='Pluto'}
+--    dog = Pluto
+--
+-- Dependencies: `pl.utils`
+-- @module pl.text
 
 local gsub = string.gsub
 local concat,append = table.concat,table.insert
@@ -191,7 +193,7 @@ function Template:indent_substitute(tbl)
 end
 
 ------- Python-style formatting operator ------
--- (see http://lua-users.org/wiki/StringInterpolation) --
+-- (see <a href="http://lua-users.org/wiki/StringInterpolation">the lua-users wiki</a>) --
 
 function text.format_operator()
 

@@ -1,21 +1,22 @@
 --- Functional helpers like composition, binding and placeholder expressions.
 -- Placeholder expressions are useful for short anonymous functions, and were
 -- inspired by the Boost Lambda library.
--- <pre class=example>
--- utils.import 'pl.func'
--- ls = List{10,20,30}
--- = ls:map(_1+1)
+--
+--    > utils.import 'pl.func'
+--    > ls = List{10,20,30}
+--    > = ls:map(_1+1)
 --    {11,21,31}
--- </pre>
--- They can also be used to <em>bind</em> particular arguments of a function.
--- <pre class = example>
--- p = bind(print,'start>',_0)
--- p(10,20,30)
--- start>   10   20  30
--- </pre>
--- See <a href="../../index.html#func">the Guide</a>
--- @class module
--- @name pl.func
+--
+-- They can also be used to _bind_ particular arguments of a function.
+--
+--    > p = bind(print,'start>',_0)
+--    > p(10,20,30)
+--    > start>   10   20  30
+--
+-- See @{07-functional.md.Creating_Functions_from_Functions|the Guide}
+--
+-- Dependencies: `pl.utils`, `pl.tablex`
+-- @module pl.func
 local type,select,setmetatable,getmetatable,rawset = type,select,setmetatable,getmetatable,rawset
 local concat,append = table.concat,table.insert
 local max = math.max
@@ -27,10 +28,6 @@ local tablex = require 'pl.tablex'
 local map = tablex.map
 local _DEBUG = rawget(_G,'_DEBUG')
 local assert_arg = utils.assert_arg
-
---[[
-module ('pl.func',utils._module)
-]]
 
 local func = {}
 
@@ -141,7 +138,7 @@ end
 
 --- register a function for use in placeholder expressions.
 -- @param fun a function
--- @param an optional name
+-- @param name an optional name
 -- @return a placeholder functiond
 function func.register (fun,name)
     assert_arg(1,fun,'function')
@@ -197,6 +194,7 @@ end
 
 --- create a string representation of a placeholder expression.
 -- @param e a placeholder expression
+-- @param lastpred not used
 function repr (e,lastpred)
     local tail = func.tail
     if isPE(e) then

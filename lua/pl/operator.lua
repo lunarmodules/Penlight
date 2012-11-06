@@ -1,20 +1,24 @@
 --- Lua operators available as functions.
--- (similar to the Python module of the same name)<br>
--- There is a module field <code>optable</code> which maps the operator strings
--- onto these functions, e.g. <pre class=example>operator.optable['()']==operator.call</pre>
--- @class module
--- @name pl.operator
+--
+-- (similar to the Python module of the same name)
+--
+-- There is a module field `optable` which maps the operator strings
+-- onto these functions, e.g. `operator.optable['()']==operator.call`
+--
+-- Operator strings like '>' and '{}' can be passed to most Penlight functions
+-- expecting a function argument.
+--
+-- Dependencies: `pl.utils`
+-- @module pl.operator
 
 local strfind = string.find
 local utils = require 'pl.utils'
 
---[[
-module ('pl.operator',utils._module)
-]]
 local operator = {}
 
 --- apply function to some arguments ()
 -- @param fn a function or callable object
+-- @param ... arguments
 function operator.call(fn,...)
     return fn(...)
 end
@@ -118,45 +122,47 @@ end
 
 --- concatenate two values (either strings or __concat defined) ..
 -- @param a value
--- @param a value
+-- @param b value
 function  operator.concat(a,b)
     return a..b
 end
 
 --- return the negative of a value -
 -- @param a value
--- @param a value
+-- @param b value
 function  operator.unm(a)
     return -a
 end
 
---- false if value evaluates as true (i.e. not nil or false) not
+--- false if value evaluates as true not
 -- @param a value
 function  operator.lnot(a)
     return not a
 end
 
---- true if both values evaluate as true (i.e. not nil or false) and
+--- true if both values evaluate as true and
 -- @param a value
--- @param a value
+-- @param b value
 function  operator.land(a,b)
     return a and b
 end
 
---- true if either value evaluate as true (i.e. not nil or false) or
+--- true if either value evaluate as true or
 -- @param a value
--- @param a value
+-- @param b value
 function  operator.lor(a,b)
     return a or b
 end
 
---- make a table from the arguments. {}
+--- make a table from the arguments {}
 -- @param ... non-nil arguments
 -- @return a table
 function  operator.table (...)
     return {...}
 end
 
+--- match two strings ~
+-- uses @{string.find}
 function  operator.match (a,b)
     return strfind(a,b)~=nil
 end

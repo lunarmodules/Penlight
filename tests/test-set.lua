@@ -1,7 +1,8 @@
-    require 'pl'
 class = require 'pl.class'
-S = require 'pl.Set'
 M = require 'pl.Map'
+S = require 'pl.Set'
+List = require 'pl.List'
+
 asserteq = require 'pl.test' . asserteq
 asserteq2 = require 'pl.test' . asserteq2
 MultiMap = require 'pl.MultiMap'

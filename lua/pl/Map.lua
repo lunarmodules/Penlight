@@ -1,10 +1,14 @@
 --- A Map class.
--- @class module
--- @name pl.Map
+--
+--    > Map = require 'pl.Map'
+--    > m = Map{one=1,two=2}
+--    > m:update {three=3,four=4,two=20}
+--    > = m == M{one=1,two=20,three=3,four=4}
+--    true
+--
+-- Dependencies: `pl.utils`, `pl.class`, `pl.tablex`, `pl.pretty`
+-- @module pl.Map
 
---[[
-module ('pl.Map')
-]]
 local tablex = require 'pl.tablex'
 local utils = require 'pl.utils'
 local stdmt = utils.stdmt
@@ -17,7 +21,7 @@ local Set = stdmt.Set
 local List = stdmt.List
 
 local class = require 'pl.class'
- 
+
 -- the Map class ---------------------
 class(nil,nil,Map)
 
@@ -85,15 +89,16 @@ end
 
 local index_by = tablex.index_by
 
--- get a list of values indexed by a list of keys.
+--- get a list of values indexed by a list of keys.
 -- @param keys a list-like table of keys
 -- @return a new list
 function Map:getvalues (keys)
     return makelist(index_by(self,keys))
 end
 
-Map.iter = pairs
-
+--- update the map using key/value pairs from another table.
+-- @param table
+-- @function Map:update
 Map.update = tablex.update
 
 function Map:__eq (m)

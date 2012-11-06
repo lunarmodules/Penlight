@@ -1,33 +1,29 @@
---- Lexical scanner for creating a sequence of tokens from text. <br>
--- <p><code>lexer.scan(s)</code> returns an iterator over all tokens found in the
--- string <code>s</code>. This iterator returns two values, a token type string
+--- Lexical scanner for creating a sequence of tokens from text.
+-- `lexer.scan(s)` returns an iterator over all tokens found in the
+-- string `s`. This iterator returns two values, a token type string
 -- (such as 'string' for quoted string, 'iden' for identifier) and the value of the
 -- token.
--- <p>
+--
 -- Versions specialized for Lua and C are available; these also handle block comments
 -- and classify keywords as 'keyword' tokens. For example:
--- <pre class=example>
--- > s = 'for i=1,n do'
--- > for t,v in lexer.lua(s)  do print(t,v) end
--- keyword for
--- iden    i
--- =       =
--- number  1
--- ,       ,
--- iden    n
--- keyword do
--- </pre>
--- See the Guide for further <a href="../../index.html#lexer">discussion</a> <br>
--- @class module
--- @name pl.lexer
+--
+--    > s = 'for i=1,n do'
+--    > for t,v in lexer.lua(s)  do print(t,v) end
+--    keyword for
+--    iden    i
+--    =       =
+--    number  1
+--    ,       ,
+--    iden    n
+--    keyword do
+--
+-- See the Guide for further @{06-data.md.Lexical_Scanning|discussion}
+-- @module pl.lexer
 
 local yield,wrap = coroutine.yield,coroutine.wrap
 local strfind = string.find
 local strsub = string.sub
 local append = table.insert
---[[
-module ('pl.lexer',utils._module)
-]]
 
 local function assert_arg(idx,val,tp)
     if type(val) ~= tp then
@@ -44,8 +40,8 @@ local NUMBER4 = '^%d+%.?%d*[eE][%+%-]?%d+'
 local NUMBER5 = '^%d+%.?%d*'
 local IDEN = '^[%a_][%w_]*'
 local WSPACE = '^%s+'
-local STRING1 = [[^'.-[^\\]']]
-local STRING2 = [[^".-[^\\]"]]
+local STRING0 = [[^(['\"]).-\\%1]]
+local STRING1 = [[^(['\"]).-[^\]%1]]
 local STRING3 = "^((['\"])%2)" -- empty string
 local PREPRO = '^#.-[^\\]\n'
 
@@ -144,8 +140,8 @@ function lexer.scan (s,matches,filter,options)
                 {NUMBER1,ndump},
                 {NUMBER2,ndump},
                 {STRING3,sdump},
+                {STRING0,sdump},
                 {STRING1,sdump},
-                {STRING2,sdump},
                 {'^.',tdump}
             }
         end
@@ -299,8 +295,8 @@ function lexer.lua(s,filter,options)
             {NUMBER4,ndump},
             {NUMBER5,ndump},
             {STRING3,sdump},
+            {STRING0,sdump},
             {STRING1,sdump},
-            {STRING2,sdump},
             {'^%-%-%[%[.-%]%]',cdump},
             {'^%-%-.-\n',cdump},
             {'^%[%[.-%]%]',sdump_l},
@@ -350,7 +346,6 @@ function lexer.cpp(s,filter,options)
             {NUMBER5,ndump},
             {STRING3,sdump},
             {STRING1,chdump},
-            {STRING2,sdump},
             {'^//.-\n',cdump},
             {'^/%*.-%*/',cdump},
             {'^==',tdump},

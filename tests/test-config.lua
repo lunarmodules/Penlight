@@ -167,6 +167,22 @@ proc            /proc           proc    defaults        0       0
 {list_delim='%s+',ignore_assign=true}
 )
 
+-- Linux procfs 'files' often use ':' as the key/pair separator;
+-- a custom convert_numbers handles the units properly!
+-- Here is the first two lines from /proc/meminfo
+testconfig([[
+MemTotal:        1024748 kB
+MemFree:          220292 kB
+]],
+{ MemTotal = 1024748, MemFree = 220292 },
+{
+ keysep = ':',
+ convert_numbers = function(s)
+    s = s:gsub(' kB$','')
+    return tonumber(s)
+  end
+ }
+)
 
 -- altho this works, rather use pl.data.read for this kind of purpose.
 testconfig ([[

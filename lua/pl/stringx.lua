@@ -1,10 +1,14 @@
---- Python-style string library. <p>
--- see 3.6.1 of the Python reference. <p>
+--- Python-style extended string library.
+--
+-- see 3.6.1 of the Python reference.
 -- If you want to make these available as string methods, then say
--- <code>stringx.import()</code> to bring them into the standard <code>string</code>
--- table.
--- @class module
--- @name pl.stringx
+-- `stringx.import()` to bring them into the standard `string` table.
+--
+-- See @{03-strings.md|the Guide}
+--
+-- Dependencies: `pl.utils`
+-- @module pl.stringx
+local utils = require 'pl.utils'
 local string = string
 local find = string.find
 local type,setmetatable,getmetatable,ipairs,unpack = type,setmetatable,getmetatable,ipairs,unpack
@@ -13,7 +17,6 @@ local gsub = string.gsub
 local rep = string.rep
 local sub = string.sub
 local concat = table.concat
-local utils = require 'pl.utils'
 local escape = utils.escape
 local ceil = math.ceil
 local _G = _G
@@ -31,10 +34,6 @@ end
 local function assert_nonempty_string(n,s)
     assert_arg(n,s,'string',non_empty,'must be a non-empty string')
 end
-
---[[
-module ('pl.stringx',utils._module)
-]]
 
 local stringx = {}
 

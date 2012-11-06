@@ -1,25 +1,28 @@
---- Simple Input Patterns (SIP). <p>
+--- Simple Input Patterns (SIP).
 -- SIP patterns start with '$', then a
--- one-letter type, and then an optional variable in curly braces. <p>
--- Example:
--- <pre class=example>
---  sip.match('$v=$q','name="dolly"',res)
---  ==> res=={'name','dolly'}
---  sip.match('($q{first},$q{second})','("john","smith")',res)
---  ==> res=={second='smith',first='john'}
--- </pre>
--- <pre>
--- <b>Type names</b>
--- v    identifier
--- i     integer
--- f     floating-point
--- q    quoted string
--- ([{&lt;  match up to closing bracket
--- </pre>
--- <p>
--- See <a href="../../index.html#sip">the Guide</a>
--- @class module
--- @name pl.sip
+-- one-letter type, and then an optional variable in curly braces.
+--
+--    sip.match('$v=$q','name="dolly"',res)
+--    ==> res=={'name','dolly'}
+--    sip.match('($q{first},$q{second})','("john","smith")',res)
+--    ==> res=={second='smith',first='john'}
+--
+-- ''Type names''
+--
+--    v    identifier
+--    i     integer
+--    f     floating-point
+--    q    quoted string
+--    ([{<  match up to closing bracket
+--
+-- See @{08-additional.md.Simple_Input_Patterns|the Guide}
+--
+-- @module pl.sip
+
+if not rawget(_G,'loadstring') then -- Lua 5.2 full compatibility
+    loadstring = load
+    unpack = table.unpack
+end
 
 local append,concat = table.insert,table.concat
 local concat = table.concat
@@ -31,7 +34,8 @@ local patterns = {
     FLOAT = '[%+%-%d]%d*%.?%d*[eE]?[%+%-]?%d*',
     INTEGER = '[+%-%d]%d*',
     IDEN = '[%a_][%w_]*',
-    FILE = '[%a%.\\][:%][%w%._%-\\]*'
+    FILE = '[%a%.\\][:%][%w%._%-\\]*',
+    OPTION = '[%a_][%w_%-]*',
 }
 
 local function assert_arg(idx,val,tp)
@@ -83,6 +87,19 @@ local function compress_spaces (s)
     s = s:gsub('%s+','%%s*')
     s = s:gsub('\001',' ')
     return s
+end
+
+local pattern_map = {
+  v = group(patterns.IDEN),
+  i = group(patterns.INTEGER),
+  f = group(patterns.FLOAT),
+  o = group(patterns.OPTION),
+  r = '(%S.*)',
+  p = '([%a]?[:]?[\\/%.%w_]+)'
+}
+
+function sip.custom_pattern(flag,patt)
+    pattern_map[flag] = patt
 end
 
 --- convert a SIP pattern into the equivalent Lua string pattern.
@@ -152,14 +169,8 @@ function sip.create_pattern (spec,options)
             addfield(name,type)
         end
         local res
-        if type == 'v' then
-            res = group(patterns.IDEN)
-        elseif type == 'i' then
-            res = group(patterns.INTEGER)
-        elseif type == 'f' then
-            res = group(patterns.FLOAT)
-        elseif type == 'r' then
-            res = '(%S.*)'
+        if pattern_map[type] then
+            res = pattern_map[type]
         elseif type == 'q' then
             -- some Lua pattern matching voodoo; we want to match '...' as
             -- well as "...", and can use the fact that %n will match a
@@ -167,8 +178,6 @@ function sip.create_pattern (spec,options)
             -- to accomodate the extra spurious match (which is either ' or ")
             addfield(name,type)
             res = '(["\'])(.-)%'..(kount-2)
-        elseif type == 'p' then
-            res = '([%a]?[:]?[\\/%.%w_]+)'
         else
             local endbracket = brackets[type]
             if endbracket then

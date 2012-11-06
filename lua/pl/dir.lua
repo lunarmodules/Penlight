@@ -1,6 +1,9 @@
 --- Useful functions for getting directory contents and matching them against wildcards.
--- @class module
--- @name pl.dir
+--
+-- Dependencies: `pl.utils`, `pl.path`, `pl.tablex`
+--
+-- Soft Dependencies: `alien`, `ffi` (either are used on Windows for copying/moving files)
+-- @module pl.dir
 
 local utils = require 'pl.utils'
 local path = require 'pl.path'
@@ -19,18 +22,14 @@ local yield = coroutine.yield
 local assert_arg,assert_string,raise = utils.assert_arg,utils.assert_string,utils.raise
 local List = utils.stdmt.List
 
---[[
-module ('pl.dir',utils._module)
-]]
-
 local dir = {}
 
 local function assert_dir (n,val)
-    assert_arg(n,val,'string',path.isdir,'not a directory')
+    assert_arg(n,val,'string',path.isdir,'not a directory',4)
 end
 
 local function assert_file (n,val)
-    assert_arg(n,val,'string',path.isfile,'not a file')
+    assert_arg(n,val,'string',path.isfile,'not a file',4)
 end
 
 local function filemask(mask)
@@ -84,12 +83,12 @@ end
 
 --- return a list of all files in a directory which match the a shell pattern.
 -- @param dir A directory. If not given, all files in current directory are returned.
--- @param mask  A shell pattern. If  not given, all files are returned.
+-- @param mask  A shell pattern. If not given, all files are returned.
 -- @return lsit of files
 -- @raise dir and mask must be strings
 function dir.getfiles(dir,mask)
     assert_dir(1,dir)
-    assert_string(2,mask)
+    if mask then assert_string(2,mask) end
     local match
     if mask then
         mask = filemask(mask)
@@ -300,8 +299,7 @@ end
 -- @return an iterator returning root,dirs,files
 -- @raise root must be a string
 function dir.walk(root,bottom_up,follow_links)
-    assert_string(1,root)
-    if not path.isdir(root) then return raise 'not a directory' end
+    assert_dir(1,root)
     local attrib
     if path.is_windows or not follow_links then
         attrib = path.attrib
@@ -317,8 +315,7 @@ end
 -- @return error if failed
 -- @raise fullpath must be a string
 function dir.rmtree(fullpath)
-    assert_string(1,fullpath)
-    if not path.isdir(fullpath) then return raise 'not a directory' end
+    assert_dir(1,fullpath)
     if path.islink(fullpath) then return false,'will not follow symlink' end
     for root,dirs,files in dir.walk(fullpath,true) do
         for i,f in ipairs(files) do
@@ -458,7 +455,7 @@ end
 --	@return Table containing all the files found recursively starting at <i>path</i> and filtered by <i>pattern</i>.
 --  @raise start_path must be a string
 function dir.getallfiles( start_path, pattern )
-    assert( type( start_path ) == "string", "bad argument #1 to 'GetAllFiles' (Expected string but recieved " .. type( start_path ) .. ")" )
+    assert_dir(1,start_path)
     pattern = pattern or ""
 
     local files = {}

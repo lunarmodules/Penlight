@@ -2,11 +2,15 @@
 require 'pl'
 local lfs = require 'lfs'
 
--- get the Lua executable used to invoke this script
-cmd = arg[-1]
-if cmd:find '%s' then
-	cmd = '"'..cmd..'"'
+local function quote_if_needed (s)
+    if s:match '%s' then
+        s = '"'..s..'"'
+    end
+    return s
 end
+
+-- get the Lua command-line used to invoke this script
+local cmd = app.lua()
 
 function do_lua_files ()
 	for _,f in ipairs(dir.getfiles('.','*.lua')) do

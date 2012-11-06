@@ -21,6 +21,7 @@ print(d:month(7):last_day())
 function check_df(fmt,str,no_check)
     local df = Date.Format(fmt)
     local d = df:parse(str)
+    --print(str,d)
     if not no_check then
         asserteq(df:tostring(d),str)
     end
@@ -48,17 +49,19 @@ d = Date() -- today
 d:add { day = 1 }  -- tomorrow
 assert(d > Date())
 
+--------- Time intervals -----
+-- new constructor makes an interval; also returned by Date:diff
+d1 = Date(1202,true)
+d2 = Date(1500,true)
+asserteq(tostring(d2:diff(d1)),"4 min 58 sec ")
+
 -------- testing 'flexible' date parsing ---------
 
 
 local df = Date.Format()
 
 function parse_date (s)
-    local d,err = df:parse(s)
-    if not d then
-        print('error parsing',s,err)
-    end
-    return d,err
+    return df:parse(s)
 end
 
 -- ISO 8601
@@ -66,13 +69,13 @@ end
 
 function parse_utc (s)
     local d = parse_date(s)
-    d:toLocal()
+    d:toUTC()
     return d
 end
 
 asserteq(parse_utc '2010-05-10 12:35:23Z', Date(2010,05,10,12,35,23))
-asserteq(parse_utc '2008-10-03T14:30+02', Date(2008,10,03,16,30))
-asserteq(parse_utc '2008-10-03T14:30-02:00',Date(2008,10,03,12,30))
+asserteq(parse_utc '2008-10-03T14:30+02', Date(2008,10,03,12,30))
+asserteq(parse_utc '2008-10-03T14:00-02:00',Date(2008,10,03,16,0))
 
 ---- can't do anything before 1970, which is somewhat unfortunate....
 --parse_date '20/03/59'
@@ -92,6 +95,6 @@ function err (status,e)
 end
 
 assertmatch(err(parse_date('2005-10-40 01:30')),'40 is not between 1 and 31')
-assertmatch(err(parse_date('14.20pm')),'14 is not between 1 and 12')
+assertmatch(err(parse_date('14.20pm')),'14 is not between 0 and 12')
 
 

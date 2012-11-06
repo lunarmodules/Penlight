@@ -1,0 +1,10 @@
+project = 'Penlight'
+description = 'Penlight Lua Libraries 1.0.0'
+full_description = 'The documentation is available @{01-introduction.md|here}.'
+title = 'Penlight Documentation'
+dir = 'api'
+topics = 'manual'
+examples = {'../examples','../tests/test-data.lua'}
+package = 'pl'
+format = 'discount'
+file = '../lua/pl'

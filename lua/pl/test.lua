@@ -1,4 +1,11 @@
 --- Useful test utilities.
+--
+--    test.asserteq({1,2},{1,2}) -- can compare tables
+--    test.asserteq(1.2,1.19,0.02) -- compare FP numbers within precision
+--    T = test.tuple -- used for comparing multiple results
+--    test.asserteq(T(string.find(" me","me")),T(2,3))
+--
+-- Dependencies: `pl.utils`, `pl.tablex`, `pl.pretty`, `pl.path`, `debug`
 -- @module pl.test
 
 local tablex = require 'pl.tablex'
@@ -13,6 +20,8 @@ local io,debug = io,debug
 local function dump(x)
     if type(x) == 'table' and not (getmetatable(x) and getmetatable(x).__tostring) then
         return pretty.write(x,' ',true)
+    elseif type(x) == 'string' then
+        return '"'..x..'"'
     else
         return tostring(x)
     end
@@ -28,6 +37,13 @@ local function complain (x,y,msg)
     err:write("needed:\t",dump(y),'\n')
     utils.quit(1,msg or "these values were not equal")
 end
+
+--- general test complain message.
+-- Useful for composing new test functions (see tests/tablex.lua for an example)
+-- @param x a value
+-- @param y value to compare first value against
+-- @param msg message
+test.complain = complain
 
 --- like assert, except takes two arguments that must be equal and can be tables.
 -- If they are plain tables, it will use tablex.deepcompare.
@@ -53,6 +69,9 @@ function test.assertmatch (s1,s2)
     end
 end
 
+--- assert that the function raises a particular error.
+-- @param fn a table of the form {function,arg1,...}
+-- @param e a string to match the error against
 function test.assertraise(fn,e)
     local ok, err = pcall(unpack(fn))
     if not err or err:match(e)==nil then
@@ -106,6 +125,7 @@ end
 -- @param msg a descriptive message
 -- @param n number of times to call the function
 -- @param fun the function
+-- @param ... optional arguments to fun
 function test.timer(msg,n,fun,...)
     local start = clock()
     for i = 1,n do fun(...) end

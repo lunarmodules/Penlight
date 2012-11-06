@@ -1,24 +1,35 @@
--- XML LOM Utilities.
--- This implements some useful things on LOM documents, such as returned by lxp.lom.parse.
+--- XML LOM Utilities.
+--
+-- This implements some useful things on [LOM](http://matthewwild.co.uk/projects/luaexpat/lom.html) documents, such as returned by `lxp.lom.parse`.
 -- In particular, it can convert LOM back into XML text, with optional pretty-printing control.
--- It's based on stanza.lua from Prosody (http://hg.prosody.im/trunk/file/4621c92d2368/util/stanza.lua)
+-- It is s based on stanza.lua from [Prosody](http://hg.prosody.im/trunk/file/4621c92d2368/util/stanza.lua)
+--
+--     > d = xml.parse "<nodes><node id='1'>alice</node></nodes>"
+--     > = d
+--     <nodes><node id='1'>alice</node></nodes>
+--     > = xml.tostring(d,'','  ')
+--     <nodes>
+--        <node id='1'>alice</node>
+--     </nodes>
 --
 -- Can be used as a lightweight one-stop-shop for simple XML processing; a simple XML parser is included
--- but the default is to use lxp.lom if it can be found.
---
+-- but the default is to use `lxp.lom` if it can be found.
+-- <pre>
 -- Prosody IM
 -- Copyright (C) 2008-2010 Matthew Wild
--- Copyright (C) 2008-2010 Waqas Hussain
---
+-- Copyright (C) 2008-2010 Waqas Hussain--
 -- classic Lua XML parser by Roberto Ierusalimschy.
 -- modified to output LOM format.
 -- http://lua-users.org/wiki/LuaXml
+-- </pre>
+-- See @{06-data.md.XML|the Guide}
 --
--- This project is MIT/X11 licensed. Please see the
--- COPYING file in the source package for more information.
+-- Dependencies: `pl.utils`
 --
+-- Soft Dependencies: `lxp.lom` (fallback is to use basic Lua parser)
 -- @module pl.xml
 
+local split = require 'pl.utils'.split
 local t_insert      =  table.insert;
 local t_concat      =  table.concat;
 local t_remove      =  table.remove;
@@ -32,13 +43,12 @@ local ipairs        =        ipairs;
 local type          =          type;
 local next          =          next;
 local print         =         print;
-local unpack        =        unpack or table.unpack;
+local unpack        =        unpack;
 local s_gsub        =   string.gsub;
 local s_char        =   string.char;
 local s_find        =   string.find;
 local os            =            os;
 local pcall,require,io     =   pcall,require,io
-local split = require 'pl.utils'.split
 
 local _M = {}
 local Doc = { __type = "doc" };
@@ -377,6 +387,7 @@ local function _dostring(t, buf, self, xml_escape, parentns, idn, indent, attr_i
 end
 
 ---- pretty-print an XML document
+--- @param t an XML document
 --- @param idn an initial indent (indents are all strings)
 --- @param indent an indent for each level
 --- @param attr_indent if given, indent each attribute pair and put on a separate line
@@ -457,6 +468,7 @@ function _M.is_tag(d)
 end
 
 --- call the desired function recursively over the document.
+-- @param doc the document
 -- @param depth_first  visit child notes first, then the current node
 -- @param operation a function which will receive the current tag name and current node.
 function _M.walk (doc, depth_first, operation)

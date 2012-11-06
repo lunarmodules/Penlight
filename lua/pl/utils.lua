@@ -1,7 +1,6 @@
 --- Generally useful routines.
--- See  <a href="../../index.html#utils">the Guide</a>.
--- @class module
--- @name pl.utils
+-- See  @{01-introduction.md.Generally_useful_functions|the Guide}.
+-- @module pl.utils
 local format,gsub,byte = string.format,string.gsub,string.byte
 local clock = os.clock
 local stdout = io.stdout
@@ -11,13 +10,20 @@ local collisions = {}
 
 local utils = {}
 
-utils._VERSION = "0.9.4"
+utils._VERSION = "1.0.3"
+
+local lua51 = rawget(_G,'setfenv')
+
+utils.lua51 = lua51
+if not lua51 then -- Lua 5.2 compatibility
+    unpack = table.unpack
+    loadstring = load
+end
 
 utils.dir_separator = _G.package.config:sub(1,1)
 
 --- end this program gracefully.
--- @param code The exit code
--- @param msg A message to be printed
+-- @param code The exit code or a message to be printed
 -- @param ... extra arguments for message's format'
 -- @see utils.fprintf
 function utils.quit(code,...)
@@ -35,6 +41,7 @@ end
 -- @param fmt The format (see string.format)
 -- @param ... Extra arguments for format
 function utils.printf(fmt,...)
+    utils.assert_string(1,fmt)
     utils.fprintf(stdout,fmt,...)
 end
 
@@ -159,6 +166,7 @@ end
 -- @param s The input string
 -- @param re A Lua string pattern; defaults to '%s+'
 -- @param plain don't use Lua patterns
+-- @param n optional maximum number of splits
 -- @return a list-like table
 -- @raise error if s is not a string
 function utils.split(s,re,plain,n)
@@ -197,10 +205,9 @@ function utils.splitv (s,re)
     return unpack(utils.split(s,re))
 end
 
-local lua52 = table.pack ~= nil
 local lua51_load = load
 
-if not lua52 then -- define Lua 5.2 style load()
+if utils.lua51 then -- define Lua 5.2 style load()
     function utils.load(str,src,mode,env)
         local chunk,err
         if type(str) == 'string' then
@@ -231,9 +238,11 @@ else
             debug.upvaluejoin(f, up, function() return name end, 1) -- use unique upvalue
             debug.setupvalue(f, up, t)
         end
+        if f ~= 0 then return f end
     end
 
     function getfenv(f)
+        local f = f or 0
         f = (type(f) == 'function' and f or debug.getinfo(f + 1, 'f').func)
         local name, val
         local up = 0
@@ -253,17 +262,17 @@ end
 -- @return actual return code
 function utils.execute (cmd)
     local res1,res2,res2 = os.execute(cmd)
-    if not lua52 then
+    if lua51 then
         return res1==0,res1
     else
         return res1,res2
     end
 end
 
-if not lua52 then
+if lua51 then
     function table.pack (...)
         local n = select('#',...)
-        return {n=n; ...},n
+        return {n=n; ...}
     end
     local sep = package.config:sub(1,1)
     function package.searchpath (mod,path)
@@ -341,7 +350,7 @@ function utils.type (obj)
 end
 
 --- is this number an integer?
--- @param a number
+-- @param x a number
 -- @raise error if x is not a number
 function utils.is_integer (x)
     return math.ceil(x)==x
@@ -388,6 +397,7 @@ end
 -- @return a function
 -- @usage string_lambda '|x|x+1' (2) == 3
 -- @usage string_lambda '_+1 (2) == 3
+-- @function utils.string_lambda
 utils.string_lambda = utils.memoize(_string_lambda)
 
 local ops
@@ -445,6 +455,17 @@ function utils.bind1 (fn,p)
     return function(...) return fn(p,...) end
 end
 
+--- bind the second argument of the function to a value.
+-- @param fn a function of at least two values (may be an operator string)
+-- @param p a value
+-- @return a function such that f(x) is fn(x,p)
+-- @raise same as @{function_arg}
+function utils.bind2 (fn,p)
+    fn = utils.function_arg(1,fn)
+    return function(x,...) return fn(x,p,...) end
+end
+
+
 --- assert that the given argument is in fact of the correct type.
 -- @param n argument index
 -- @param val the value
@@ -457,7 +478,7 @@ end
 -- @usage assert_arg(n,val,'string',path.isdir,'not a directory')
 function utils.assert_arg (n,val,tp,verify,msg,lev)
     if type(val) ~= tp then
-        error(("argument %d expected a '%s', got a '%s'"):format(n,tp,type(val)),2)
+        error(("argument %d expected a '%s', got a '%s'"):format(n,tp,type(val)),lev or 2)
     end
     if verify and not verify(val) then
         error(("argument %d: '%s' %s"):format(n,val,msg),lev or 2)
@@ -469,7 +490,7 @@ end
 -- @param val a value that must be a string
 -- @raise val must be a string
 function utils.assert_string (n,val)
-    utils.assert_arg(n,val,'string',nil,nil,nil,3)
+    utils.assert_arg(n,val,'string',nil,nil,3)
 end
 
 local err_mode = 'default'
