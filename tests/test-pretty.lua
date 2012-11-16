@@ -70,6 +70,12 @@ asserteq( pretty.write(t1,""), [[{<cycle>}]] )
 t1[1],t1[2],t2[1] = 42,t2,t1
 asserteq( pretty.write(t1,""), [[{42,{<cycle>}}]] )
 
+-- Check false positives in write's cycles prevention
+
+t2 = {}
+t1[1],t1[2] = t2,t2
+asserteq( pretty.write(t1,""), [[{{},{}}]] )
+
 function testm(x,s)
   asserteq(pretty.number(x,'M'),s)
 end
