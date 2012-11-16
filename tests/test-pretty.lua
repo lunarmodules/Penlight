@@ -62,6 +62,14 @@ assertmatch(err,'looping not allowed')
 local tbl = { "a", 2, "c", false, 23, 453, "poot", 34 }
 asserteq( pretty.write( tbl, "" ), [[{"a",2,"c",false,23,453,"poot",34}]] )
 
+-- Check that write correctly prevents cycles
+
+local t1,t2 = {},{}
+t1[1] = t1
+asserteq( pretty.write(t1,""), [[{<cycle>}]] )
+t1[1],t1[2],t2[1] = 42,t2,t1
+asserteq( pretty.write(t1,""), [[{42,{<cycle>}}]] )
+
 function testm(x,s)
   asserteq(pretty.number(x,'M'),s)
 end
