@@ -52,7 +52,7 @@ end
 -- @return indented string
 function text.indent (s,n,ch)
     assert_arg(1,s,'string')
-    assert_arg(2,s,'number')
+    assert_arg(2,n,'number')
     return _indent(s,string.rep(ch or ' ',n))
 end
 
