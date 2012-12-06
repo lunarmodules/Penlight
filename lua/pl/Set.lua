@@ -16,7 +16,7 @@
 --     > = fruit*colours
 --     [orange]
 --
--- Depdencies: `pl.utils`, `pl.tablex`, `pl.class`
+-- Depdencies: `pl.utils`, `pl.tablex`, `pl.class`, (`pl.List` if __tostring is used)
 -- @module pl.Set
 
 local tablex = require 'pl.tablex'
@@ -24,9 +24,9 @@ local utils = require 'pl.utils'
 local stdmt = utils.stdmt
 local tmakeset,deepcompare,merge,keys,difference,tupdate = tablex.makeset,tablex.deepcompare,tablex.merge,tablex.keys,tablex.difference,tablex.update
 local Map = require 'pl.Map'
-local Set = stdmt.Set
-local List = stdmt.List
 local class = require 'pl.class'
+local Set = stdmt.Set
+local list_loaded
 
 -- the Set class --------------------
 class(Map,nil,Set)
@@ -52,6 +52,9 @@ function Set:_init (t)
 end
 
 function Set:__tostring ()
+    if not list_loaded then
+        list_loaded = require 'pl.List'
+    end
     return '['..Set.values(self):join ','..']'
 end
 
