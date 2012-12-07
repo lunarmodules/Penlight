@@ -20,7 +20,7 @@
 local utils = require 'pl.utils'
 local _DEBUG = rawget(_G,'_DEBUG')
 
-local patterns,function_arg,usplit = utils.patterns,utils.function_arg,utils.split
+local patterns,function_arg,usplit,array_tostring = utils.patterns,utils.function_arg,utils.split,utils.array_tostring
 local append,concat = table.insert,table.concat
 local gsub = string.gsub
 local io = io
@@ -38,23 +38,48 @@ local function count(s,chr)
 end
 
 local function rstrip(s)
-    return s:gsub('%s+$','')
+    return (s:gsub('%s+$',''))
 end
 
+local function strip (s)
+    return (rstrip(s):gsub('^%s*',''))
+end
+
+-- this gives `l` the standard List metatable, so that if you
+-- do choose to pull in pl.List, you can use its methods on such lists.
 local function make_list(l)
     return setmetatable(l,utils.stdmt.List)
-end
-
-local function split(s,delim)
-    return make_list(usplit(s,delim))
 end
 
 local function map(fun,t)
     local res = {}
     for i = 1,#t do
-        append(res,fun(t[i]))
+        res[i] = fun(t[i])
     end
     return res
+end
+
+local function split(line,delim,csv,n)
+    local massage
+    -- CSV fields may be double-quoted and may contain commas!
+    if csv and line:match '"' then
+        line = line:gsub('"([^"]+)"',function(str)
+            local s,cnt = str:gsub(',','\001')
+            if cnt > 0 then massage = true end
+            return s
+        end)
+        if massage then
+            massage = function(s) return (s:gsub('\001',',')) end
+        end
+    end
+    local res = (usplit(line,delim,false,n))
+    if csv then
+        -- restore CSV commas-in-fields
+        if massage then res = map(massage,res) end
+        -- in CSV mode trailiing commas are significant!
+        if line:match ',$' then append(res,'') end
+    end
+    return make_list(res)
 end
 
 local function find(t,v)
@@ -177,110 +202,126 @@ end
 --- read a delimited file in a Lua table.
 -- By default, attempts to treat first line as separated list of fieldnames.
 -- @param file a filename or a file-like object (default stdin)
--- @param cnfg options table: can override delim (a string pattern), fieldnames (a list),
--- specify no_convert (default is to convert), numfields (indices of columns known
--- to be numbers) and thousands_dot (thousands separator in Excel CSV is '.')
+-- @param cnfg options table: can override `delim` (a string pattern), `fieldnames` (a list),
+-- specify `no_convert` (default is to conversion), `numfields` (indices of columns known
+-- to be numbers) and `thousands_dot` (thousands separator in Excel CSV is '.').
+-- If `csv` is set then fields may be double-quoted and contain commas;
+-- @return `data` object, or `nil`
+-- @return error message. May be a file error, 'not a file-like object'
+-- or a conversion error
 function data.read(file,cnfg)
-    local convert,err,opened
+    local err,opened,count,line,csv
     local D = {}
     if not cnfg then cnfg = {} end
     local f,err,opened = open_file(file,'r')
     if not f then return nil, err end
     local thousands_dot = cnfg.thousands_dot
 
-    local function try_tonumber(x)
+    -- note that using dot as the thousands separator (@thousands_dot)
+    -- requires a special conversion function!
+    local tonumber = tonumber
+    local function try_number(x)
         if thousands_dot then x = x:gsub('%.(...)','%1') end
-        return tonumber(x)
+        local v = tonumber(x)
+        if v == nil then return nil,"not a number" end
+        return v
     end
 
-    local line = f:read()
+    csv = cnfg.csv
+    if csv then cnfg.delim = ',' end
+    count = 1
+    line = f:read()
     if not line then return nil, "empty file" end
+
     -- first question: what is the delimiter?
     D.delim = cnfg.delim and cnfg.delim or guess_delim(line)
     local delim = D.delim
-    local collect_end = cnfg.last_field_collect
-    local numfields = cnfg.numfields
+
+    local conversion
+    local numfields = {}
+    local function append_conversion (idx,conv)
+        conversion = conversion or {}
+        append(numfields,idx)
+        append(conversion,conv)
+    end
+    if cnfg.numfields then
+        for _,n in ipairs(cnfg.numfields) do append_conversion(n,try_number) end
+    end
+
     -- some space-delimited data starts with a space.  This should not be a column,
     -- although it certainly would be for comma-separated, etc.
-    local strip
+    local stripper
     if delim == '%s+' and line:find(delim) == 1 then
-        strip = function(s)  return s:gsub('^%s+','') end
-        line = strip(line)
+        stripper = function(s)  return s:gsub('^%s+','') end
+        line = stripper(line)
     end
     -- first line will usually be field names. Unless fieldnames are specified,
     -- we check if it contains purely numerical values for the case of reading
     -- plain data files.
     if not cnfg.fieldnames then
-        local fields = split(line,delim)
-        local nums = map(tonumber,fields)
-        if #nums == #fields then
-            convert = tonumber
-            append(D,nums)
-            numfields = {}
-            for i = 1,#nums do numfields[i] = i end
-        else
+        local fields,nums
+        fields = split(line,delim,csv)
+        if not cnfg.convert then
+            nums = map(tonumber,fields)
+            if #nums == #fields then -- they're ALL numbers!
+                append(D,nums) -- add the first converted row
+                -- and specify conversions for subsequent rows
+                for i = 1,#nums do append_conversion(i,try_number) end
+            else -- we'll try to check numbers just now..
+                nums = nil
+            end
+        else -- [explicit column conversions] (any deduced number conversions will be added)
+            for idx,conv in pairs(cnfg.convert) do append_conversion(idx,conv) end
+        end
+        if nums == nil then
             cnfg.fieldnames = fields
         end
         line = f:read()
-        if strip then line = strip(line) end
+        count = count + 1
+        if stripper then line = stripper(line) end
     elseif type(cnfg.fieldnames) == 'string' then
-        cnfg.fieldnames = split(cnfg.fieldnames,delim)
+        cnfg.fieldnames = split(cnfg.fieldnames,delim,csv)
     end
     -- at this point, the column headers have been read in. If the first
     -- row consisted of numbers, it has already been added to the dataset.
     if cnfg.fieldnames then
         D.fieldnames = cnfg.fieldnames
-        -- [conversion] unless @no_convert, we need the numerical field indices
-        -- of the first data row. Can also be specified by @numfields.
+        -- [collecting end field] If @last_field_collect then we'll
+        -- only split as many fields as there are fieldnames
+        if cnfg.last_field_collect then
+            nfields = #D.fieldnames
+        end
+        -- [implicit column conversion] unless @no_convert, we need the numerical field indices
+        -- of the first data row. These can also be specified explicitly by @numfields.
         if not cnfg.no_convert then
-            if not numfields then
-                numfields = {}
-                local fields = split(line,D.delim)
-                for i = 1,#fields do
-                    if tonumber(fields[i]) then
-                        append(numfields,i)
-                    end
+            local fields = split(line,D.delim,csv,nfields)
+            for i = 1,#fields do
+                if not find(numfields,i) and tonumber(fields[i]) then
+                    append_conversion(i,try_number)
                 end
-            end
-            if #numfields > 0 then -- there are numerical fields
-                -- note that using dot as the thousands separator (@thousands_dot)
-                -- requires a special conversion function!
-                convert = thousands_dot and try_tonumber or tonumber
             end
         end
     end
     -- keep going until finished
     while line do
-        if not line:find ('^%s*$') then
-            if strip then line = strip(line) end
-            local fields =  split(line,delim)
-            if convert then
+        if not line:find ('^%s*$') then -- [blank lines] ignore them!
+            if stripper then line = stripper(line) end
+            local fields = split(line,delim,csv,nfields)
+            if conversion then -- there were field conversions...
                 for k = 1,#numfields do
-                    local i = numfields[k]
-                    local val = convert(fields[i])
+                    local i,conv = numfields[k],conversion[k]
+                    local val,err = conv(fields[i])
                     if val == nil then
-                        return nil, "not a number: "..fields[i]
+                        return nil, err..": "..fields[i].." at line "..count
                     else
                         fields[i] = val
                     end
                 end
             end
-            -- [collecting end field] If @last_field_collect then we will collect
-            -- all extra space-delimited fields into a single last field.
-            if collect_end and #fields > #D.fieldnames then
-                local ends,N = {},#D.fieldnames
-                for i = N+1,#fields do
-                    append(ends,fields[i])
-                end
-                ends = concat(ends,' ')
-                local cfields = {}
-                for i = 1,N do cfields[i] = fields[i] end
-                cfields[N] = cfields[N]..' '..ends
-                fields = cfields
-            end
             append(D,fields)
         end
         line = f:read()
+        count = count + 1
     end
     if opened then f:close() end
     if delim == '%s+' then D.delim = ' ' end
@@ -289,7 +330,8 @@ function data.read(file,cnfg)
 end
 
 local function write_row (data,f,row,delim)
-    f:write(concat(row,delim),'\n')
+    data.temp = array_tostring(row,data.temp)
+    f:write(concat(data.temp,delim),'\n')
 end
 
 function DataMT:write_row(f,row)
@@ -321,10 +363,13 @@ function DataMT:write(file)
     data.write(self,file,self.fieldnames,self.delim)
 end
 
-local function massage_fieldnames (fields)
+local function massage_fieldnames (fields,copy)
     -- fieldnames must be valid Lua identifiers; ignore any surrounding padding
+    -- but keep the original fieldnames...
     for i = 1,#fields do
-        fields[i] = rstrip(fields[i]):gsub('^%s*',''):gsub('%W','_')
+        local f = strip(fields[i])
+        copy[i] = f
+        fields[i] = f:gsub('%W','_')
     end
 end
 
@@ -344,7 +389,8 @@ function data.new (d,fieldnames)
         d.fieldnames = split(d.fieldnames,d.delim)
     end
     d.fieldnames = make_list(d.fieldnames)
-    massage_fieldnames(d.fieldnames)
+    d.original_fieldnames = {}
+    massage_fieldnames(d.fieldnames,d.original_fieldnames)
     setmetatable(d,DataMT)
     -- a query with just the fieldname will return a sequence
     -- of values, which seq.copy turns into a table.

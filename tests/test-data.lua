@@ -82,9 +82,9 @@ assert(s() == 0.4)
 assert(s() == 0.2)
 assert(s() == nil)
 
--- CSV, Excel style
+-- CSV, Excel style. Double-quoted fields are allowed, and they may contain commas!
 t3f = open [[
-Department Name,Employee ID,Project,Hours Booked
+"Department Name","Employee ID",Project,"Hours Booked"
 sales,1231,overhead,4
 sales,1255,overhead,3
 engineering,1501,development,5
@@ -92,7 +92,11 @@ engineering,1501,maintenance,3
 engineering,1433,maintenance,10
 ]]
 
-t3 = data.read(t3f)
+t3 = data.read(t3f,{csv=true})
+
+-- although fieldnames are turned in valid Lua identifiers, there is always `original_fieldnames`
+asserteq(t3.fieldnames,List{'Department_Name','Employee_ID','Project','Hours_Booked'})
+asserteq(t3.original_fieldnames,List{'Department Name','Employee ID','Project','Hours Booked'})
 
 -- a common operation is to select using a given list of columns, and each row
 -- on some explicit condition. The select() method can take a table with these
@@ -130,7 +134,7 @@ dilbert,10
 ]])
 
 -- data may not always have column headers. When creating a data object
--- from a two-dimensional array, must specify the fieldnames, as a list or a string.
+-- from a two-dimensional array, may specify the fieldnames, as a list or a string.
 -- The delimiter is deduced from the fieldname string, so a string just containing
 -- the delimiter will set it,  and the fieldnames will be empty.
 local dat = List()
@@ -187,3 +191,26 @@ if err then print(err) end
 
 asserteq(T(dat:flatten():minmax()),T(0.1,1.3))
 
+f = open [[
+Time Message
+1266840760 +# EE7C0600006F0D00C00F06010302054000000308010A00002B00407B00
+1266840760 closure data 0.000000 1972 1972 0
+1266840760 ++ 1266840760 EE 1
+1266840760 +# EE7C0600006F0D00C00F06010302054000000408020A00002B00407B00
+1266840764 closure data 0.000000 1972 1972 0
+1266840764 ++ 1266840764 EE 1
+1266840764 +# EE7C0600006F0D00C00F06010302054000000508030A00002B00407B00
+1266840768 duplicate?
+1266840768 +# EE7C0600006F0D00C00F06010302054000000508030A00002B00407B00
+1266840768 closure data 0.000000 1972 1972 0
+]]
+
+-- the `convert` option provides custom converters for each specified column.
+-- Here we convert the timestamps into Date objects and collect everything
+-- else into one field
+local Date = require 'pl.Date'
+
+d = data.read(f,{convert={[1]=Date},last_field_collect=true})
+
+asserteq(#d[1],2)
+asserteq(d[2][1]:year(),2012)
