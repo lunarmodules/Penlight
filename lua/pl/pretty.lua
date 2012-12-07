@@ -133,7 +133,7 @@ end
 function pretty.write (tbl,space,not_clever)
     if type(tbl) ~= 'table' then
         local res = tostring(tbl)
-        if type(tbl) == 'string' then res = '"'..res..'"' end
+        if type(tbl) == 'string' then return quote(tbl) end
         return res, 'not a table'
     end
     if not keywords then
