@@ -18,6 +18,10 @@ asserteq(S{1,2} + S{2,3},S{1,2,3})
 asserteq(S{1,2} * S{2,3}, S{2})
 -- symmetric_difference
 asserteq(S{1,2} ^ S{2,3}, S{1,3})
+-- tostring - illustrative, because these assertions may or may not work,
+-- due to no ordering in set elements
+--asserteq(tostring(S{1,2}),'[1,2]')
+--asserteq(tostring(S{1,S{2,3}}),'[1,[2,3]]')
 
 m = M{one=1,two=2}
 asserteq(m,M{one=1,two=2})

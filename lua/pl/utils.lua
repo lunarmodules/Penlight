@@ -205,6 +205,20 @@ function utils.splitv (s,re)
     return unpack(utils.split(s,re))
 end
 
+--- convert an array of values to strings.
+-- @param t a list-like table
+-- @param temp buffer to use, otherwise allocate
+-- @param tostr custom tostring function, called with (value,index).
+-- Otherwise use `tostring`
+-- @return the converted buffer
+function utils.array_tostring (t,temp,tostr)
+    temp, tostr = temp or {}, tostr or tostring
+    for i = 1,#t do
+        temp[i] = tostr(t[i],i)
+    end
+    return temp
+end
+
 local lua51_load = load
 
 if utils.lua51 then -- define Lua 5.2 style load()

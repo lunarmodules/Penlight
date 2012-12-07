@@ -21,12 +21,12 @@
 
 local tablex = require 'pl.tablex'
 local utils = require 'pl.utils'
-local stdmt = utils.stdmt
+local array_tostring, concat = utils.array_tostring, table.concat
 local tmakeset,deepcompare,merge,keys,difference,tupdate = tablex.makeset,tablex.deepcompare,tablex.merge,tablex.keys,tablex.difference,tablex.update
 local Map = require 'pl.Map'
 local class = require 'pl.class'
+local stdmt = utils.stdmt
 local Set = stdmt.Set
-local list_loaded
 
 -- the Set class --------------------
 class(Map,nil,Set)
@@ -52,10 +52,7 @@ function Set:_init (t)
 end
 
 function Set:__tostring ()
-    if not list_loaded then
-        list_loaded = require 'pl.List'
-    end
-    return '['..Set.values(self):join ','..']'
+    return '['..concat(array_tostring(Set.values(self),','))..']'
 end
 
 --- get a list of the values in a set.

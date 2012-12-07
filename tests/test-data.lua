@@ -9,6 +9,18 @@ open = stringio. open
 asserteq = require 'pl.test' . asserteq
 T = require 'pl.test'. tuple
 
+--[=[
+dat,err = data.read(open [[
+1.0 0.1
+0.2 1.3
+]])
+
+if err then print(err) end
+
+require 'pl.pretty'.dump(dat)
+os.exit(0)
+--]=]
+
 -- tab-separated data, explicit column names
 t1f = open [[
 EventID	Magnitude	LocationX	LocationY	LocationZ	LocationError	EventDate	DataFile
@@ -162,10 +174,12 @@ asserteq(dat:column_by_name(2), L{2,4,6,8,10,12,14,16,18,20})
 local q = dat:select '$3,2*$4 where $1 == 8'
 asserteq(T(q()),T(24,64))
 
-dat = data.read(open [[
+dat,err = data.read(open [[
 1.0 0.1
 0.2 1.3
 ]])
+
+if err then print(err) end
 
 -- if a method cannot be found, then we look up in array2d
 -- array2d.flatten(t) makes a 1D list out of a 2D array,
