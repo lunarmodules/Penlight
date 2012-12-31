@@ -43,6 +43,7 @@ end
 -- @param x a value
 -- @param y value to compare first value against
 -- @param msg message
+-- @function complain
 test.complain = complain
 
 --- like assert, except takes two arguments that must be equal and can be tables.

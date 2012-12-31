@@ -143,10 +143,10 @@ function tablex.deepcompare(t1,t2,ignore_mt,eps)
     -- as well as tables which have the metamethod __eq
     local mt = getmetatable(t1)
     if not ignore_mt and mt and mt.__eq then return t1 == t2 end
-    for k1,v1 in pairs(t1) do
+    for k1 in pairs(t1) do
         if t2[k1]==nil then return false end
     end
-    for k2,v2 in pairs(t2) do
+    for k2 in pairs(t2) do
         if t1[k2]==nil then return false end
     end
     for k1,v1 in pairs(t1) do
