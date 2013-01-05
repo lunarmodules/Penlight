@@ -224,7 +224,8 @@ function path.isabs(P)
 end
 
 --- return the path resulting from combining the individual paths.
--- if the second path is absolute, we return that path.
+-- if the second (or later) path is absolute, we return the last absolute path (joined with any non-absolute paths following).
+-- empty elements (except the last) will be ignored.
 -- @param p1 A file path
 -- @param p2 A file path
 -- @param ... more file paths
@@ -242,7 +243,7 @@ function path.join(p1,p2,...)
     end
     if path.isabs(p2) then return p2 end
     local endc = at(p1,#p1)
-    if endc ~= path.sep and endc ~= other_sep then
+    if endc ~= path.sep and endc ~= other_sep and endc ~= "" then
         p1 = p1..path.sep
     end
     return p1..p2
