@@ -521,7 +521,7 @@ function utils.on_error (mode)
       err_mode = mode
     else
       -- fail loudly
-      err_mode = 'error'
+      if err_mode == 'default' then err_mode = 'error' end
       utils.raise("Bad argument expected string; 'default', 'quit', or 'error'. Got '"..tostring(mode).."'")
     end
 end
