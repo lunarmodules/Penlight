@@ -517,7 +517,13 @@ local err_mode = 'default'
 -- @param mode - either 'default', 'quit'  or 'error'
 -- @see utils.raise
 function utils.on_error (mode)
-    err_mode = mode
+    if ({['default'] = 1, ['quit'] = 2, ['error'] = 3})[mode] then
+      err_mode = mode
+    else
+      -- fail loudly
+      if err_mode == 'default' then err_mode = 'error' end
+      utils.raise("Bad argument expected string; 'default', 'quit', or 'error'. Got '"..tostring(mode).."'")
+    end
 end
 
 --- used by Penlight functions to return errors.  Its global behaviour is controlled
