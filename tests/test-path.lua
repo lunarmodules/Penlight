@@ -55,4 +55,16 @@ end
 
 asserteq(norm '1/2/../3/4/../5',norm '1/3/5')
 
+assert(path.join("somepath",".") == "somepath"..path.sep..".")
+assert(path.join(".","readme.txt") == "."..path.sep.."readme.txt")
+assert(path.join("/a_dir", "abs_path/") == "/a_dir"..path.sep.."abs_path/")
+assert(path.join("a_dir", "/abs_path/") == "/abs_path/")
+assert(path.join("a_dir", "/abs_path/", "/abs_path2/") == "/abs_path2/")
+assert(path.join("a_dir", "/abs_path/", "not_abs_path2/") == "/abs_path/not_abs_path2/")
+assert(path.join("a_dir", "/abs_path/", "not_abs_path2/", "/abs_path3/", "not_abs_path4/") == "/abs_path3/not_abs_path4/")
+assert(path.join("first","second","third") == "first"..path.sep.."second"..path.sep.."third")
+assert(path.join("first","second","") == "first"..path.sep.."second"..path.sep)
+assert(path.join("first","","third") == "first"..path.sep.."third")
+assert(path.join("","second","third") == "second"..path.sep.."third")
+assert(path.join("","") == "")
 
