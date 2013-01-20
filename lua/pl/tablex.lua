@@ -826,7 +826,7 @@ function tablex.readonly(t)
 	local mt = {
 		__index=t,
 		__newindex=function(t, k, v)
-			error("Attempt to modify read-only table")
+			error("Attempt to modify read-only table", 2)
 		end,
 		__metatable=false
 	}
