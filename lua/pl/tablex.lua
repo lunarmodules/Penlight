@@ -825,9 +825,10 @@ end
 function tablex.readonly(t)
 	local mt = {
 		__index=t,
-		__newindex=function(t, k, v)
-			error("Attempt to modify read-only table", 2)
-		end,
+		__newindex=function(t, k, v) error("Attempt to modify read-only table", 2) end,
+		__pairs=function() return pairs(t) end,
+		__ipairs=function() return ipairs(t) end,
+		__len=function() return #t end,
 		__metatable=false
 	}
 	return setmetatable({}, mt)
