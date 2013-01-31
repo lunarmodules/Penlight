@@ -817,4 +817,21 @@ function tablex.search (t,value,exclude)
     return _find(t,value,tables)
 end
 
+--- modifies a table to be read only.
+-- This only offers weak protection. Tables can still be modified with
+-- table.insert and rawset.
+-- @param t the table
+-- @return the table read only.
+function tablex.readonly(t)
+	local mt = {
+		__index=t,
+		__newindex=function(t, k, v) error("Attempt to modify read-only table", 2) end,
+		__pairs=function() return pairs(t) end,
+		__ipairs=function() return ipairs(t) end,
+		__len=function() return #t end,
+		__metatable=false
+	}
+	return setmetatable({}, mt)
+end
+
 return tablex
