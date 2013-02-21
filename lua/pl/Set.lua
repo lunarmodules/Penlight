@@ -52,7 +52,7 @@ function Set:_init (t)
 end
 
 function Set:__tostring ()
-    return '['..concat(array_tostring(Set.values(self),','))..']'
+    return '['..concat(array_tostring(Set.values(self)),',')..']'
 end
 
 --- get a list of the values in a set.
