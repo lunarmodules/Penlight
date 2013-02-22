@@ -71,10 +71,15 @@ function test.assertmatch (s1,s2)
 end
 
 --- assert that the function raises a particular error.
--- @param fn a table of the form {function,arg1,...}
+-- @param fn a function or a table of the form {function,arg1,...}
 -- @param e a string to match the error against
 function test.assertraise(fn,e)
-    local ok, err = pcall(unpack(fn))
+    local ok, err
+    if type(fn) == 'table' then
+        ok, err = pcall(unpack(fn))
+    else
+        ok, err = pcall(fn)
+    end
     if not err or err:match(e)==nil then
         complain (err,e,"these errors did not match")
     end

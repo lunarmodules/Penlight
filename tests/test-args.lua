@@ -1,4 +1,5 @@
 -- testing app.parse_args
+utils = require 'pl.utils'
 asserteq = require 'pl.test'.asserteq
 app = require 'pl.app'
 path = require 'pl.path'
@@ -26,6 +27,7 @@ app.require_here 'lua'
 
 asserteq(require 'foo.args'.answer(),42)
 asserteq(require 'bar'.name(),'bar')
+
 
 asserteq(
     app.appfile 'config',
