@@ -30,6 +30,7 @@ function strict.module (name,mod,predeclared)
     end
     if type(mod) == 'table' then
         mt = getmetatable(mod)
+        if mt and rawget(mt,'__declared') then return end -- already patched...
     else
         mod = {}
     end
@@ -74,7 +75,7 @@ end
 
 function strict.make_all_strict (T)
     for k,v in pairs(T) do
-        if type(v) == 'table' then
+        if type(v) == 'table' and v ~= T then
             strict.module(k,v)
         end
     end
