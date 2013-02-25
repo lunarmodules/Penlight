@@ -129,7 +129,6 @@ end
 
 --- return the negative of a value -
 -- @param a value
--- @param b value
 function  operator.unm(a)
     return -a
 end

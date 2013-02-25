@@ -9,10 +9,10 @@
 -- @module pl.import_into
 
 ---Inject PL modules into a given table, or an empty one if none is provided.
--- @param env a table to enject the environment into. (default return empty table)
+-- @module pl.import_into
+--
+-- `env` is a table to enject the environment into. (default return empty table)
 --  If this is `true`, then return a 'shadow table' as the module
--- @return the table where PL will be inserted, on demand.
--- @return if mod was `true`, a table only containing new entries
 return function(env)
     local mod
     if env == true then

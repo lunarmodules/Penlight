@@ -1,4 +1,4 @@
---- Useful functions for getting directory contents and matching them against wildcards.
+--- Getting directory contents and matching them against wildcards.
 --
 -- Dependencies: `pl.utils`, `pl.path`, `pl.tablex`
 --
