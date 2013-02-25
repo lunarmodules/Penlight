@@ -107,7 +107,13 @@ local joburg = [[
 
 ]]
 
-local d = xml.parse(joburg)
+-- we particularly want to test the built-in XML parser here, not lxp.lom
+local function parse (str)
+    return xml.parse(str,false,true)
+end
+
+local d = parse(joburg)
+
 
 function match(t,xpect)
     local res,ret = d:match(t)
@@ -122,6 +128,8 @@ t1 = [[
     </current_conditions>
   </weather>
 ]]
+
+
 
 match(t1,{
   condition = "Clear",
@@ -173,9 +181,8 @@ config = [[
     <name>bozo</name>
 </config>
 ]]
-d,err = xml.parse(config)
+d,err = parse(config)
 if not d then print(err); os.exit(1) end
-
 
 -- can match against wildcard tag names (end with -)
 -- can be names
@@ -188,7 +195,6 @@ match([[
   {key="beta", value = "10"},
   {key="name",value = "bozo"},
 })
-
 -- can be numerical indices
 match([[
 <config>
@@ -199,7 +205,6 @@ match([[
   {"beta","10"},
   {"name","bozo"},
 })
-
 -- _ is special; means 'this value is key of captured table'
 match([[
 <config>
@@ -231,7 +236,7 @@ config = [[
     <name type='string'>bozo</name>
 </config>
 ]]
-d,err = xml.parse(config)
+d,err = parse(config)
 if not d then print(err); os.exit(1) end
 
 match([[
@@ -244,7 +249,7 @@ match([[
   name = {"string","bozo"},
 })
 
-d,err = xml.parse [[
+d,err = parse [[
 
 <configuremap>
   <configure name="NAME" value="ImageMagick"/>
@@ -285,7 +290,7 @@ asserteq(res,{
 -- short excerpt from
 -- /usr/share/mobile-broadband-provider-info/serviceproviders.xml
 
-d = xml.parse [[
+d = parse [[
 <serviceproviders format="2.0">
 <country code="za">
 	<provider>
