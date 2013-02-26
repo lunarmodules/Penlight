@@ -1,12 +1,17 @@
 ## Additional Libraries
 
-Libraries in this section are no longer considered to be part of the Penlight core, but still provide specialized functionality when needed.
+Libraries in this section are no longer considered to be part of the Penlight
+core, but still provide specialized functionality when needed.
 
 <a id="sip"/>
 
 ### Simple Input Patterns
 
-Lua string pattern matching is very powerful, and usually you will not need a traditional regular expression library.  Even so, sometimes Lua code ends up looking like Perl, which happens because string patterns are not always the easiest things to read, especially for the casual reader.  Here is a program which needs to understand three distinct date formats:
+Lua string pattern matching is very powerful, and usually you will not need a
+traditional regular expression library.  Even so, sometimes Lua code ends up
+looking like Perl, which happens because string patterns are not always the
+easiest things to read, especially for the casual reader.  Here is a program
+which needs to understand three distinct date formats:
 
     -- parsing dates using Lua string patterns
     months={Jan=1,Feb=2,Mar=3,Apr=4,May=5,Jun=6,
@@ -36,11 +41,17 @@ Lua string pattern matching is very powerful, and usually you will not need a tr
         end
     end
 
-These aren't particularly difficult patterns, but already typical issues are appearing, such as having to escape '-'. Also, `string.match` returns its captures, so that we're forced to use a slightly awkward nested if-statement.
+These aren't particularly difficult patterns, but already typical issues are
+appearing, such as having to escape '-'. Also, `string.match` returns its
+captures, so that we're forced to use a slightly awkward nested if-statement.
 
-Verification issues will further cloud the picture, since regular expression people try to enforce constraints (like year cannot be more than four digits) using regular expressions, on the usual grounds that one shouldn't stop using a hammer when one is enjoying oneself.
+Verification issues will further cloud the picture, since regular expression
+people try to enforce constraints (like year cannot be more than four digits)
+using regular expressions, on the usual grounds that one shouldn't stop using a
+hammer when one is enjoying oneself.
 
-`pl.sip` provides a simple, intuitive way to detect patterns in strings and extract relevant parts.
+`pl.sip` provides a simple, intuitive way to detect patterns in strings and
+extract relevant parts.
 
     > sip = require 'pl.sip'
     > dump = require('pl.pretty').dump
@@ -56,7 +67,9 @@ Verification issues will further cloud the picture, since regular expression peo
     > = c('ref=long name, no line',res)
     false
 
-`sip.compile` creates a pattern matcher function, which is given a string and a table. If it matches the string, then `true` is returned and the table is populated according to the _named fields_ in the pattern.
+`sip.compile` creates a pattern matcher function, which is given a string and a
+table. If it matches the string, then `true` is returned and the table is
+populated according to the _named fields_ in the pattern.
 
 Here is another version of the date parser:
 
@@ -81,7 +94,8 @@ Here is another version of the date parser:
         end
     end
 
-SIP patterns start with '$', then a one-letter type, and then an optional variable in curly braces.
+SIP patterns start with '$', then a one-letter type, and then an optional
+variable in curly braces.
 
     Type    Meaning
     v         variable, or identifier.
@@ -99,11 +113,17 @@ SIP patterns start with '$', then a one-letter type, and then an optional variab
     d         digits
     ...
 
-If a type is not one of v,i,f,r or q, then it's assumed to be one of the standard Lua character classes.  Any spaces you leave in your pattern will match any number of spaces.  And any 'magic' string characters will be escaped.
+If a type is not one of v,i,f,r or q, then it's assumed to be one of the standard
+Lua character classes.  Any spaces you leave in your pattern will match any
+number of spaces.  And any 'magic' string characters will be escaped.
 
-SIP captures (like `$v{mon}`) do not have to be named. You can use just `$v`, but you have to be consistent; if a pattern contains unnamed captures, then all captures must be unnamed. In this case, the result table is a simple list of values.
+SIP captures (like `$v{mon}`) do not have to be named. You can use just `$v`, but
+you have to be consistent; if a pattern contains unnamed captures, then all
+captures must be unnamed. In this case, the result table is a simple list of
+values.
 
-`sip.match` is a useful shortcut if you like your matches to be 'in place'. (It caches the result, so it is not much slower than explicitly using `sip.compile`.)
+`sip.match` is a useful shortcut if you like your matches to be 'in place'. (It
+caches the result, so it is not much slower than explicitly using `sip.compile`.)
 
     > sip.match('($q{first},$q{second})','("john","smith")',res)
     true
@@ -121,7 +141,8 @@ SIP captures (like `$v{mon}`) do not have to be named. You can use just `$v`, bu
 
 As a general rule, allow for whitespace in your patterns.
 
-Finally, putting a ' $' at the end of a pattern means 'capture the rest of the line, starting at the first non-space'.
+Finally, putting a ' $' at the end of a pattern means 'capture the rest of the
+line, starting at the first non-space'.
 
     > sip.match('( $q , $q ) $','("jan", "smit") and a string',res)
     true
@@ -138,11 +159,24 @@ Finally, putting a ' $' at the end of a pattern means 'capture the rest of the l
 
 ### Command-line Programs with Lapp
 
-`pl.lapp` is a small and focused Lua module which aims to make standard command-line parsing easier and intuitive. It implements the standard GNU style, i.e. short flags with one letter start with '-', and there may be an additional long flag which starts with '--'. Generally options which take an argument expect to find it as the next parameter (e.g. 'gcc test.c -o test') but single short options taking a numerical parameter can dispense with the space (e.g. 'head -n4 test.c')
+`pl.lapp` is a small and focused Lua module which aims to make standard
+command-line parsing easier and intuitive. It implements the standard GNU style,
+i.e. short flags with one letter start with '-', and there may be an additional
+long flag which starts with '--'. Generally options which take an argument expect
+to find it as the next parameter (e.g. 'gcc test.c -o test') but single short
+options taking a numerical parameter can dispense with the space (e.g. 'head -n4
+test.c')
 
-As far as possible, Lapp will convert parameters into their equivalent Lua types, i.e. convert numbers and convert filenames into file objects. If any conversion fails, or a required parameter is missing, an error will be issued and the usage text will be written out. So there are two necessary tasks, supplying the flag and option names and associating them with a type.
+As far as possible, Lapp will convert parameters into their equivalent Lua types,
+i.e. convert numbers and convert filenames into file objects. If any conversion
+fails, or a required parameter is missing, an error will be issued and the usage
+text will be written out. So there are two necessary tasks, supplying the flag
+and option names and associating them with a type.
 
-For any non-trivial script, even for personal consumption, it's necessary to supply usage text. The novelty of Lapp is that it starts from that point and defines a loose format for usage strings which can specify the names and types of the parameters.
+For any non-trivial script, even for personal consumption, it's necessary to
+supply usage text. The novelty of Lapp is that it starts from that point and
+defines a loose format for usage strings which can specify the names and types of
+the parameters.
 
 An example will make this clearer:
 
@@ -175,9 +209,18 @@ Here is a command-line session using this script:
 
       ....(usage as before)
 
-There are two kinds of lines in Lapp usage strings which are meaningful; option and parameter lines. An option line gives the short option, optionally followed by the corresponding long option. A type specifier in parentheses may follow. Similarly, a parameter line starts with '<' PARAMETER '>', followed by a type specifier. Type specifiers are either of the form '(default ' VALUE ')' or '(' TYPE ')'; the default specifier means that the parameter or option has a default value and is not required. TYPE is one of 'string','number','file-in' or 'file-out'; VALUE is a number, one of ('stdin','stdout','stderr') or a token. The rest of the line is not parsed and can be used for explanatory text.
+There are two kinds of lines in Lapp usage strings which are meaningful; option
+and parameter lines. An option line gives the short option, optionally followed
+by the corresponding long option. A type specifier in parentheses may follow.
+Similarly, a parameter line starts with '<' PARAMETER '>', followed by a type
+specifier. Type specifiers are either of the form '(default ' VALUE ')' or '('
+TYPE ')'; the default specifier means that the parameter or option has a default
+value and is not required. TYPE is one of 'string','number','file-in' or
+'file-out'; VALUE is a number, one of ('stdin','stdout','stderr') or a token. The
+rest of the line is not parsed and can be used for explanatory text.
 
-This script shows the relation between the specified parameter names and the fields in the output table.
+This script shows the relation between the specified parameter names and the
+fields in the output table.
 
       -- simple.lua
       local args = require ('pl.lapp') [[
@@ -192,7 +235,11 @@ This script shows the relation between the specified parameter names and the fie
           print(k,v)
       end
 
-I've just dumped out all values of the args table; note that args.quiet has become true, because it's specified; args.p defaults to false. If there is a long name for an option, that will be used in preference as a field name. A type or default specifier is not necessary for simple flags, since the default type is boolean.
+I've just dumped out all values of the args table; note that args.quiet has
+become true, because it's specified; args.p defaults to false. If there is a long
+name for an option, that will be used in preference as a field name. A type or
+default specifier is not necessary for simple flags, since the default type is
+boolean.
 
       $ simple -o test -q simple.lua
       p       false
@@ -210,11 +257,17 @@ I've just dumped out all values of the args table; note that args.quiet has beco
       o       test
       input_name      simple.lua
 
-The parameter input has been set to an open read-only file object - we know it must be a read-only file since that is the type of the default value. The field input_name is automatically generated, since it's often useful to have access to the original filename.
+The parameter input has been set to an open read-only file object - we know it
+must be a read-only file since that is the type of the default value. The field
+input_name is automatically generated, since it's often useful to have access to
+the original filename.
 
-Notice that any extra parameters supplied will be put in the result table with integer indices, i.e. args[i] where i goes from 1 to #args.
+Notice that any extra parameters supplied will be put in the result table with
+integer indices, i.e. args[i] where i goes from 1 to #args.
 
-Files don't really have to be closed explicitly for short scripts with a quick well-defined mission, since the result of garbage-collecting file objects is to close them.
+Files don't really have to be closed explicitly for short scripts with a quick
+well-defined mission, since the result of garbage-collecting file objects is to
+close them.
 
 #### Enforcing a Range for a Parameter
 
@@ -229,7 +282,8 @@ The type specifier can also be of the form '(' MIN '..' MAX ')'.
 
     print(args.x,args.y)
 
-Here the meaning is that the value is greater or equal to MIN and less or equal to MAX; there is no provision for forcing a parameter to be a whole number.
+Here the meaning is that the value is greater or equal to MIN and less or equal
+to MAX; there is no provision for forcing a parameter to be a whole number.
 
 You may also define custom types that can be used in the type specifier:
 
@@ -247,7 +301,11 @@ You may also define custom types that can be used in the type specifier:
 
     print(args.ival)
 
-`lapp.add_type` takes three parameters, a type name, a converter and a constraint function. The constraint function is expected to throw an assertion if some condition is not true; we use lapp.assert because it fails in the standard way for a command-line script. The converter argument can either be a type name known to Lapp, or a function which takes a string and generates a value.
+`lapp.add_type` takes three parameters, a type name, a converter and a constraint
+function. The constraint function is expected to throw an assertion if some
+condition is not true; we use lapp.assert because it fails in the standard way
+for a command-line script. The converter argument can either be a type name known
+to Lapp, or a function which takes a string and generates a value.
 
 #### 'varargs' Parameter Arrays
 
@@ -263,7 +321,9 @@ You may also define custom types that can be used in the type specifier:
     end
     print ('sum is '..sum)
 
-The parameter number has a trailing '...', which indicates that this parameter is a 'varargs' parameter. It must be the last parameter, and args.number will be an array.
+The parameter number has a trailing '...', which indicates that this parameter is
+a 'varargs' parameter. It must be the last parameter, and args.number will be an
+array.
 
 Consider this implementation of the head utility from Mac OS X:
 
@@ -297,11 +357,17 @@ Consider this implementation of the head utility from Mac OS X:
             end
         end
 
-Note how we have access to all the filenames, because the auto-generated field `files_name` is also an array!
+Note how we have access to all the filenames, because the auto-generated field
+`files_name` is also an array!
 
-(This is probably not a very considerate script, since Lapp will open all the files provided, and only close them at the end of the script. See the `xhead.lua` example for another implementation.)
+(This is probably not a very considerate script, since Lapp will open all the
+files provided, and only close them at the end of the script. See the `xhead.lua`
+example for another implementation.)
 
-Flags and options may also be declared as vararg arrays, and can occur anywhere. Bear in mind that short options can be combined (like 'tar -xzf'), so it's perfectly legal to have '-vvv'. But normally the value of args.v is just a simple `true` value.
+Flags and options may also be declared as vararg arrays, and can occur anywhere.
+Bear in mind that short options can be combined (like 'tar -xzf'), so it's
+perfectly legal to have '-vvv'. But normally the value of args.v is just a simple
+`true` value.
 
     local args = require ('pl.lapp') [[
        -v...  Verbosity level; can be -v, -vv or -vvv
@@ -318,7 +384,10 @@ The vlevel assigment is a bit of Lua voodoo, so consider the cases:
 
 #### Defining a Parameter Callback
 
-If a script implements `lapp.callback`, then Lapp will call it after each argument is parsed. The callback is passed the parameter name, the raw unparsed value, and the result table. It is called immediately after assignment of the value, so the corresponding field is available.
+If a script implements `lapp.callback`, then Lapp will call it after each
+argument is parsed. The callback is passed the parameter name, the raw unparsed
+value, and the result table. It is called immediately after assignment of the
+value, so the corresponding field is available.
 
     lapp = require ('pl.lapp')
 
@@ -360,5 +429,6 @@ This produces the following output:
     o       name
     n       2
 
-Callbacks are needed when you want to take action immediately on parsing an argument.
+Callbacks are needed when you want to take action immediately on parsing an
+argument.
 

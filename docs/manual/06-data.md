@@ -2,9 +2,13 @@
 
 ### Reading Data Files
 
-The first thing to consider is this: do you actually need to write a custom file reader? And if the answer is yes, the next question is: can you write the reader in as clear a way as possible? Correctness, Robustness, and Speed; pick the first two and the third can be sorted out later, _if necessary_.
+The first thing to consider is this: do you actually need to write a custom file
+reader? And if the answer is yes, the next question is: can you write the reader
+in as clear a way as possible? Correctness, Robustness, and Speed; pick the first
+two and the third can be sorted out later, _if necessary_.
 
-A common sort of data file is the configuration file format commonly used on Unix systems. This format is often called a _property_ file in the Java world.
+A common sort of data file is the configuration file format commonly used on Unix
+systems. This format is often called a _property_ file in the Java world.
 
     # Read timeout in seconds
     read.timeout=10
@@ -23,7 +27,10 @@ Here is a simple Lua implementation:
         end
     end
 
-Very compact, but it suffers from a similar disease in equivalent Perl programs; it uses odd string patterns which are 'lexically noisy'. Noisy code like this slows the casual reader down. (For an even more direct way of doing this, see the next section, 'Reading Configuration Files')
+Very compact, but it suffers from a similar disease in equivalent Perl programs;
+it uses odd string patterns which are 'lexically noisy'. Noisy code like this
+slows the casual reader down. (For an even more direct way of doing this, see the
+next section, 'Reading Configuration Files')
 
 Another implementation, using the Penlight libraries:
 
@@ -38,11 +45,18 @@ Another implementation, using the Penlight libraries:
         end
     end
 
-This is more self-documenting; it is generally better to make the code express the _intention_, rather than having to scatter comments everywhere - comments are necessary, of course, but mostly to give the higher view of your intention that cannot be expressed in code. It is slightly slower, true, but in practice the speed of this script is determined by I/O, so further optimization is unnecessary.
+This is more self-documenting; it is generally better to make the code express
+the _intention_, rather than having to scatter comments everywhere - comments are
+necessary, of course, but mostly to give the higher view of your intention that
+cannot be expressed in code. It is slightly slower, true, but in practice the
+speed of this script is determined by I/O, so further optimization is unnecessary.
 
 ### Reading Unstructured Text Data
 
-Text data is sometimes unstructured, for example a file containing words. The `pl.input` module has a number of functions which makes processing such files easier. For example, a script to count the number of words in standard input using `import.words`:
+Text data is sometimes unstructured, for example a file containing words. The
+`pl.input` module has a number of functions which makes processing such files
+easier. For example, a script to count the number of words in standard input
+using `import.words`:
 
     -- countwords.lua
     require 'pl'
@@ -64,20 +78,26 @@ Or this script to calculate the average of a set of numbers using `input.numbers
     end
     print('average',sum/k)
 
-These scripts can be improved further by _eliminating loops_ In the last case, there is a perfectly good function `seq.sum` which can already take a sequence of numbers and calculate these numbers for us:
+These scripts can be improved further by _eliminating loops_ In the last case,
+there is a perfectly good function `seq.sum` which can already take a sequence of
+numbers and calculate these numbers for us:
 
     -- average2.lua
     require 'pl'
     local total,n = seq.sum(input.numbers())
     print('average',total/n)
 
-A further simplification here is that if `numbers` or `words` are not passed an argument, they will grab their input from standard input.  The first script can be rewritten:
+A further simplification here is that if `numbers` or `words` are not passed an
+argument, they will grab their input from standard input.  The first script can
+be rewritten:
 
     -- countwords2.lua
     require 'pl'
     print('count',seq.count(input.words()))
 
-A useful feature of a sequence generator like `numbers` is that it can read from a string source. Here is a script to calculate the sums of the numbers on each line in a file:
+A useful feature of a sequence generator like `numbers` is that it can read from
+a string source. Here is a script to calculate the sums of the numbers on each
+line in a file:
 
     -- sums.lua
     for line in io.lines() do
@@ -86,7 +106,8 @@ A useful feature of a sequence generator like `numbers` is that it can read from
 
 ### Reading Columnar Data
 
-It is very common to find data in columnar form, either space or comma-separated, perhaps with an initial set of column headers. Here is a typical example:
+It is very common to find data in columnar form, either space or comma-separated,
+perhaps with an initial set of column headers. Here is a typical example:
 
     EventID	Magnitude	LocationX	LocationY	LocationZ
     981124001	2.0	18988.4	10047.1	4149.7
@@ -94,7 +115,9 @@ It is very common to find data in columnar form, either space or comma-separated
     981127003	0.5	19012.5	9946.9	3831.2
     ...
 
-`input.fields` is designed to extract several columns, given some delimiter (default to whitespace).  Here is a script to calculate the average X location of all the events:
+`input.fields` is designed to extract several columns, given some delimiter
+(default to whitespace).  Here is a script to calculate the average X location of
+all the events:
 
     -- avg-x.lua
     require 'pl'
@@ -102,46 +125,65 @@ It is very common to find data in columnar form, either space or comma-separated
     local sum,count = seq.sum(input.fields {3})
     print(sum/count)
 
-`input.fields` is passed either a field count, or a list of column indices, starting at one as usual. So in this case we're only interested in column 3.  If you pass it a field count, then you get every field up to that count:
+`input.fields` is passed either a field count, or a list of column indices,
+starting at one as usual. So in this case we're only interested in column 3.  If
+you pass it a field count, then you get every field up to that count:
 
     for id,mag,locX,locY,locZ in input.fields (5) do
     ....
     end
 
-`input.fields` by default tries to convert each field to a number. It will skip lines which clearly don't match the pattern, but will abort the script if there are any fields which cannot be converted to numbers.
+`input.fields` by default tries to convert each field to a number. It will skip
+lines which clearly don't match the pattern, but will abort the script if there
+are any fields which cannot be converted to numbers.
 
-The second parameter is a delimiter, by default spaces. ' ' is understood to mean 'any number of spaces', i.e. '%s+'. Any Lua string pattern can be used.
+The second parameter is a delimiter, by default spaces. ' ' is understood to mean
+'any number of spaces', i.e. '%s+'. Any Lua string pattern can be used.
 
-The third parameter is a _data source_, by default standard input (defined by `input.create_getter`.) It assumes that the data source has a `read` method which brings in the next line, i.e. it is a 'file-like' object. As a special case, a string will be split into its lines:
+The third parameter is a _data source_, by default standard input (defined by
+`input.create_getter`.) It assumes that the data source has a `read` method which
+brings in the next line, i.e. it is a 'file-like' object. As a special case, a
+string will be split into its lines:
 
     > for x,y in input.fields(2,' ','10 20\n30 40\n') do print(x,y) end
     10      20
     30      40
 
-Note the default behaviour for bad fields, which is to show the offending line number:
+Note the default behaviour for bad fields, which is to show the offending line
+number:
 
     > for x,y in input.fields(2,' ','10 20\n30 40x\n') do print(x,y) end
     10      20
     line 2: cannot convert '40x' to number
 
-This behaviour of `input.fields` is appropriate for a script which you want to fail immediately with an appropriate _user_ error message if conversion fails. The fourth optional parameter is an options table: `{no_fail=true}` means that conversion is attempted but if it fails it just returns the string, rather as AWK would operate. You are then responsible for checking the type of the returned field. `{no_convert=true}` switches off conversion altogether and all fields are returned as strings.
+This behaviour of `input.fields` is appropriate for a script which you want to
+fail immediately with an appropriate _user_ error message if conversion fails.
+The fourth optional parameter is an options table: `{no_fail=true}` means that
+conversion is attempted but if it fails it just returns the string, rather as AWK
+would operate. You are then responsible for checking the type of the returned
+field. `{no_convert=true}` switches off conversion altogether and all fields are
+returned as strings.
 
 @lookup pl.data
 
-Sometimes it is useful to bring a whole dataset into memory, for operations such as extracting columns. Penlight provides a flexible reader specifically for reading this kind of data, using the `data` module. Given a file looking like this:
+Sometimes it is useful to bring a whole dataset into memory, for operations such
+as extracting columns. Penlight provides a flexible reader specifically for
+reading this kind of data, using the `data` module. Given a file looking like this:
 
     x,y
     10,20
     2,5
     40,50
 
-Then `data.read` will create a table like this, with each row represented by a sublist:
+Then `data.read` will create a table like this, with each row represented by a
+sublist:
 
     > t = data.read 'test.txt'
     > pretty.dump(t)
     {{10,20},{2,5},{40,50},fieldnames={'x','y'},delim=','}
 
-You can now analyze this returned table using the supplied methods. For instance, the method `column_by_name` returns a table of all the values of that column.
+You can now analyze this returned table using the supplied methods. For instance,
+the method `column_by_name` returns a table of all the values of that column.
 
     -- testdata.lua
     require 'pl'
@@ -154,7 +196,14 @@ You can now analyze this returned table using the supplied methods. For instance
         end
     end
 
-`data.read` tries to be clever when given data; by default it expects a first line of column names, unless any of them are numbers. It tries to deduce the column delimiter by looking at the first line. Sometimes it guesses wrong; these things can be specified explicitly. The second optional parameter is an options table: can override `delim` (a string pattern), `fieldnames` (a list or comma-separated string), specify `no_convert` (default is to convert), numfields (indices of columns known to be numbers, as a list) and `thousands_dot` (when the thousands separator in Excel CSV is '.')
+`data.read` tries to be clever when given data; by default it expects a first
+line of column names, unless any of them are numbers. It tries to deduce the
+column delimiter by looking at the first line. Sometimes it guesses wrong; these
+things can be specified explicitly. The second optional parameter is an options
+table: can override `delim` (a string pattern), `fieldnames` (a list or
+comma-separated string), specify `no_convert` (default is to convert), numfields
+(indices of columns known to be numbers, as a list) and `thousands_dot` (when the
+thousands separator in Excel CSV is '.')
 
 A very powerful feature is a way to execute SQL-like queries on such data:
 
@@ -170,11 +219,17 @@ Please note that the format of queries is restricted to the following syntax:
 
     FIELDLIST [ 'where' CONDITION ] [ 'sort by' FIELD [asc|desc]]
 
-Any valid Lua code can appear in `CONDITION`; remember it is _not_ SQL and you have to use `==` (this warning comes from experience.)
+Any valid Lua code can appear in `CONDITION`; remember it is _not_ SQL and you
+have to use `==` (this warning comes from experience.)
 
-For this to work, _field names must be Lua identifiers_. So `read` will massage fieldnames so that all non-alphanumeric chars are replaced with underscores.
+For this to work, _field names must be Lua identifiers_. So `read` will massage
+fieldnames so that all non-alphanumeric chars are replaced with underscores.
 
-`read` can handle standard CSV files fine, although doesn't try to be a full-blown CSV parser. Spreadsheet programs are not always the best tool to process such data, strange as this might seem to some people. This is a toy CSV file; to appreciate the problem, imagine thousands of rows and dozens of columns like this:
+`read` can handle standard CSV files fine, although doesn't try to be a
+full-blown CSV parser. Spreadsheet programs are not always the best tool to
+process such data, strange as this might seem to some people. This is a toy CSV
+file; to appreciate the problem, imagine thousands of rows and dozens of columns
+like this:
 
     Department Name,Employee ID,Project,Hours Booked
     sales,1231,overhead,4
@@ -183,7 +238,11 @@ For this to work, _field names must be Lua identifiers_. So `read` will massage 
     engineering,1501,maintenance,3
     engineering,1433,maintenance,10
 
-The task is to reduce the dataset to a relevant set of rows and columns, perhaps do some processing on row data, and write the result out to a new CSV file. The `write_row` method uses the delimiter to write the row to a file; `Data.select_row` is like `Data.select`, except it iterates over _rows_, not fields; this is necessary if we are dealing with a lot of columns!
+The task is to reduce the dataset to a relevant set of rows and columns, perhaps
+do some processing on row data, and write the result out to a new CSV file. The
+`write_row` method uses the delimiter to write the row to a file;
+`Data.select_row` is like `Data.select`, except it iterates over _rows_, not
+fields; this is necessary if we are dealing with a lot of columns!
 
     names = {[1501]='don',[1433]='dilbert'}
     keepcols = {'Employee_ID','Hours_Booked'}
@@ -197,9 +256,18 @@ The task is to reduce the dataset to a relevant set of rows and columns, perhaps
         t:write_row(outf,row)
     end
 
-`Data.select_row` and `Data.select` can be passed a table specifying the query; a list of field names, a function defining the condition and an optional parameter `sort_by`. It isn't really necessary here, but if we had a more complicated row condition (such as belonging to a specified set) then it is not generally possible to express such a condition as a query string, without resorting to hackery such as global variables.
+`Data.select_row` and `Data.select` can be passed a table specifying the query; a
+list of field names, a function defining the condition and an optional parameter
+`sort_by`. It isn't really necessary here, but if we had a more complicated row
+condition (such as belonging to a specified set) then it is not generally
+possible to express such a condition as a query string, without resorting to
+hackery such as global variables.
 
-Data does not have to come from files, nor does it necessarily come from the lab or the accounts department. On Linux, `ps aux` gives you a full listing of all processes running on your machine. It is straightforward to feed the output of this command into `data.read` and perform useful queries on it. Notice that non-identifier characters like '%' get converted into underscores:
+Data does not have to come from files, nor does it necessarily come from the lab
+or the accounts department. On Linux, `ps aux` gives you a full listing of all
+processes running on your machine. It is straightforward to feed the output of
+this command into `data.read` and perform useful queries on it. Notice that
+non-identifier characters like '%' get converted into underscores:
 
         require 'pl'
         f = io.popen 'ps aux'
@@ -212,30 +280,46 @@ Data does not have to come from files, nor does it necessarily come from the lab
             print(mem,name)
         end
 
-I've always been an admirer of the AWK programming language; with `filter` you can get Lua programs which are just as compact:
+I've always been an admirer of the AWK programming language; with `filter` you
+can get Lua programs which are just as compact:
 
     -- printxy.lua
     require 'pl'
     data.filter 'x,y where x > 3'
 
-It is common enough to have data files without headers of field names. `data.read` makes a special exception for such files if all fields are numeric. Since there are no column names to use in query expressions, you can use AWK-like column indexes, e.g. '$1,$2 where $1 > 3'.  I have a little executable script on my system called `lf` which looks like this:
+It is common enough to have data files without headers of field names.
+`data.read` makes a special exception for such files if all fields are numeric.
+Since there are no column names to use in query expressions, you can use AWK-like
+column indexes, e.g. '$1,$2 where $1 > 3'.  I have a little executable script on
+my system called `lf` which looks like this:
 
     #!/usr/bin/env lua
     require 'pl.data'.filter(arg[1])
 
-And it can be used generally as a filter command to extract columns from data. (The column specifications may be expressions or even constants.)
+And it can be used generally as a filter command to extract columns from data.
+(The column specifications may be expressions or even constants.)
 
     $ lf '$1,$5/10' < test.dat
 
-(As with AWK, please note the single-quotes used in this command; this prevents the shell trying to expand the column indexes. If you are on Windows, then you are fine, but it is still necessary to quote the expression in double-quotes so it is passed as one argument to your batch file.)
+(As with AWK, please note the single-quotes used in this command; this prevents
+the shell trying to expand the column indexes. If you are on Windows, then you
+are fine, but it is still necessary to quote the expression in double-quotes so
+it is passed as one argument to your batch file.)
 
-As a tutorial resource, have a look at `test-data.lua` in the PL tests directory for other examples of use, plus comments.
+As a tutorial resource, have a look at `test-data.lua` in the PL tests directory
+for other examples of use, plus comments.
 
-The data returned by `read` or constructed by `Data.copy_select` from a query is basically just an array of rows: `{{1,2},{3,4}}`. So you may use `read` to pull in any array-like dataset, and process with any function that expects such a implementation. In particular, the functions in `array2d` will work fine with this data. In fact, these functions are available as methods; e.g. `array2d.flatten` can be called directly like so to give us a one-dimensional list:
+The data returned by `read` or constructed by `Data.copy_select` from a query is
+basically just an array of rows: `{{1,2},{3,4}}`. So you may use `read` to pull
+in any array-like dataset, and process with any function that expects such a
+implementation. In particular, the functions in `array2d` will work fine with
+this data. In fact, these functions are available as methods; e.g.
+`array2d.flatten` can be called directly like so to give us a one-dimensional list:
 
     v = data.read('dat.txt'):flatten()
 
-The data is also in exactly the right shape to be treated as matrices by [LuaMatrix](http://lua-users.org/wiki/LuaMatrix):
+The data is also in exactly the right shape to be treated as matrices by
+[LuaMatrix](http://lua-users.org/wiki/LuaMatrix):
 
     > matrix = require 'matrix'
     > m = matrix(data.read 'mat.txt')
@@ -250,9 +334,13 @@ The data is also in exactly the right shape to be treated as matrices by [LuaMat
 
 `write` will write matrices back to files for you.
 
-Finally, for the curious, the global variable `_DEBUG` can be used to print out the actual iterator function which a query generates and dynamically compiles. By using code generation, we can get pretty much optimal performance out of arbitrary queries.
+Finally, for the curious, the global variable `_DEBUG` can be used to print out
+the actual iterator function which a query generates and dynamically compiles. By
+using code generation, we can get pretty much optimal performance out of
+arbitrary queries.
 
-    > lua -lpl -e "_DEBUG=true" -e "data.filter 'x,y where x > 4 sort by x'" < test.txt
+    > lua -lpl -e "_DEBUG=true" -e "data.filter 'x,y where x > 4 sort by x'" <
+test.txt
     return function (t)
             local i = 0
             local v
@@ -279,7 +367,8 @@ Finally, for the curious, the global variable `_DEBUG` can be used to print out 
 
 ### Reading Configuration Files
 
-The `config` module provides a simple way to convert several kinds of configuration files into a Lua table. Consider the simple example:
+The `config` module provides a simple way to convert several kinds of
+configuration files into a Lua table. Consider the simple example:
 
     # test.config
     # Read timeout in seconds
@@ -291,7 +380,8 @@ The `config` module provides a simple way to convert several kinds of configurat
     #acceptable ports
     ports = 1002,1003,1004
 
-This can be easily brought in using `config.read` and the result shown using `pretty.write`:
+This can be easily brought in using `config.read` and the result shown using
+`pretty.write`:
 
     -- readconfig.lua
     local config = require 'pl.config'
@@ -312,16 +402,22 @@ and the output of `lua readconfig.lua test.config` is:
       read_timeout = 10
     }
 
-That is, `config.read` will bring in all key/value pairs, ignore # comments, and ensure that the key names are proper Lua identifiers by replacing non-identifier characters with '_'. If the values are numbers, then they will be converted. (So the value of `t.write_timeout` is the number 5). In addition, any values which are separated by commas will be converted likewise into an array.
+That is, `config.read` will bring in all key/value pairs, ignore # comments, and
+ensure that the key names are proper Lua identifiers by replacing non-identifier
+characters with '_'. If the values are numbers, then they will be converted. (So
+the value of `t.write_timeout` is the number 5). In addition, any values which
+are separated by commas will be converted likewise into an array.
 
-Any line can be continued with a backslash. So this will all be considered one line:
+Any line can be continued with a backslash. So this will all be considered one
+line:
 
     names=one,two,three, \
     four,five,six,seven, \
     eight,nine,ten
 
 
-Windows-style INI files are also supported. The section structure of INI files translates naturally to nested tables in Lua:
+Windows-style INI files are also supported. The section structure of INI files
+translates naturally to nested tables in Lua:
 
     ; test.ini
     [timeouts]
@@ -348,7 +444,8 @@ Windows-style INI files are also supported. The section structure of INI files t
 
 You can now refer to the write timeout as `t.timeouts.write`.
 
-As a final example of the flexibility of `config.read`, if passed this simple comma-delimited file
+As a final example of the flexibility of `config.read`, if passed this simple
+comma-delimited file
 
     one,two,three
     10,20,30
@@ -364,9 +461,14 @@ it will produce the following table:
       { 1, 2, 3 }
     }
 
-`config.read` isn't designed to read all CSV files in general, but intended to support some Unix configuration files not structured as key-value pairs, such as '/etc/passwd'.
+`config.read` isn't designed to read all CSV files in general, but intended to
+support some Unix configuration files not structured as key-value pairs, such as
+'/etc/passwd'.
 
-This function is intended to be a Swiss Army Knife of configuration readers, but it does have to make assumptions, and you may not like them. So there is an optional extra parameter which allows some control, which is table that may have the following fields:
+This function is intended to be a Swiss Army Knife of configuration readers, but
+it does have to make assumptions, and you may not like them. So there is an
+optional extra parameter which allows some control, which is table that may have
+the following fields:
 
     {
        variablilize = true,
@@ -378,9 +480,15 @@ This function is intended to be a Swiss Army Knife of configuration readers, but
        keysep = '='
     }
 
-`variablilize` is the option that converted `write.timeout` in the first example to the valid Lua identifier `write_timeout`.  If `convert_numbers` is true, then an attempt is made to convert any string that starts like a number. You can specify your own function (say one that will convert a string like '5224 kb' into a number.)
+`variablilize` is the option that converted `write.timeout` in the first example
+to the valid Lua identifier `write_timeout`.  If `convert_numbers` is true, then
+an attempt is made to convert any string that starts like a number. You can
+specify your own function (say one that will convert a string like '5224 kb' into
+a number.)
 
-`trim_space` ensures that there is no starting or trailing whitespace with values, and `list_delim` is the character that will be used to decide whether to split a value up into a list (it may be a Lua string pattern such as '%s+'.)
+`trim_space` ensures that there is no starting or trailing whitespace with
+values, and `list_delim` is the character that will be used to decide whether to
+split a value up into a list (it may be a Lua string pattern such as '%s+'.)
 
 For instance, the password file in Unix is colon-delimited:
 
@@ -410,7 +518,8 @@ This produces the following output on my system (only last two lines shown):
       }
     }
 
-You can get this into a more sensible format, where the usernames are the keys, with:
+You can get this into a more sensible format, where the usernames are the keys,
+with:
 
     t = tablex.pairmap(function(k,v) return v,v[1] end,t)
 
@@ -429,7 +538,11 @@ and you get:
     ...
     }
 
-Many common Unix configuration files can be read by tweaking these parameters. For `/etc/fstab`, the options `{list_delim='%s+',ignore_assign=true}` will correctly separate the columns.  It's common to find 'KEY VALUE' assignments in files such as `/etc/ssh/ssh_config`; the options `{keysep=' '}` make `config.read` return a table where each KEY has a value VALUE.
+Many common Unix configuration files can be read by tweaking these parameters.
+For `/etc/fstab`, the options `{list_delim='%s+',ignore_assign=true}` will
+correctly separate the columns.  It's common to find 'KEY VALUE' assignments in
+files such as `/etc/ssh/ssh_config`; the options `{keysep=' '}` make
+`config.read` return a table where each KEY has a value VALUE.
 
 Files in the Linux `procfs` usually use ':` as the field delimiter:
 
@@ -437,16 +550,24 @@ Files in the Linux `procfs` usually use ':` as the field delimiter:
     > = t.MemFree
     220140 kB
 
-That result is a string, since `tonumber` doesn't like it, but defining the `convert_numbers` option as `function(s) return tonumber((s:gsub(' kB$',''))) end` will get the memory figures as actual numbers in the result. (The extra parentheses are necessary so that `tonumber` only gets the first result from `gsub`)
+That result is a string, since `tonumber` doesn't like it, but defining the
+`convert_numbers` option as `function(s) return tonumber((s:gsub(' kB$','')))
+end` will get the memory figures as actual numbers in the result. (The extra
+parentheses are necessary so that `tonumber` only gets the first result from
+`gsub`)
 
-Please note that `config.read` can be passed a _file-like object_; if it's not a string and supports the `read` method, then that will be used. For instance, to read a configuration from a string, use `stringio.open`.
+Please note that `config.read` can be passed a _file-like object_; if it's not a
+string and supports the `read` method, then that will be used. For instance, to
+read a configuration from a string, use `stringio.open`.
 
 
 <a id="lexer"/>
 
 ### Lexical Scanning
 
-Although Lua's string pattern matching is very powerful, there are times when something more powerful is needed.  `pl.lexer.scan` provides lexical scanners which _tokenizes_ a string, classifying tokens into numbers, strings, etc.
+Although Lua's string pattern matching is very powerful, there are times when
+something more powerful is needed.  `pl.lexer.scan` provides lexical scanners
+which _tokenizes_ a string, classifying tokens into numbers, strings, etc.
 
     > lua -lpl
     Lua 5.1.4  Copyright (C) 1994-2008 Lua.org, PUC-Rio
@@ -466,9 +587,15 @@ Although Lua's string pattern matching is very powerful, there are times when so
     > = tok()
     (nil)
 
-The scanner is a function, which is repeatedly called and returns the _type_ and _value_ of the token.  Recognized basic types are 'iden','string','number', and 'space'. and everything else is represented by itself. Note that by default the scanner will skip any 'space' tokens.
+The scanner is a function, which is repeatedly called and returns the _type_ and
+_value_ of the token.  Recognized basic types are 'iden','string','number', and
+'space'. and everything else is represented by itself. Note that by default the
+scanner will skip any 'space' tokens.
 
-'comment' and 'keyword' aren't applicable to the plain scanner, which is not language-specific, but a scanner which understands Lua is available. It recognizes the Lua keywords, and understands both short and long comments and strings.
+'comment' and 'keyword' aren't applicable to the plain scanner, which is not
+language-specific, but a scanner which understands Lua is available. It
+recognizes the Lua keywords, and understands both short and long comments and
+strings.
 
     > for t,v in lexer.lua 'for i=1,n do' do print(t,v) end
     keyword for
@@ -479,9 +606,12 @@ The scanner is a function, which is repeatedly called and returns the _type_ and
     iden    n
     keyword do
 
-A lexical scanner is useful where you have highly-structured data which is not nicely delimited by newlines. For example, here is a snippet of a in-house file format which it was my task to maintain:
+A lexical scanner is useful where you have highly-structured data which is not
+nicely delimited by newlines. For example, here is a snippet of a in-house file
+format which it was my task to maintain:
 
-    points	(818344.1,-20389.7,-0.1),(818337.9,-20389.3,-0.1),(818332.5,-20387.8,-0.1)
+    points
+(818344.1,-20389.7,-0.1),(818337.9,-20389.3,-0.1),(818332.5,-20387.8,-0.1)
         ,(818327.4,-20388,-0.1),(818322,-20387.7,-0.1),(818316.3,-20388.6,-0.1)
         ,(818309.7,-20389.4,-0.1),(818303.5,-20390.6,-0.1),(818295.8,-20388.3,-0.1)
         ,(818290.5,-20386.9,-0.1),(818285.2,-20386.1,-0.1),(818279.3,-20383.6,-0.1)
@@ -512,11 +642,18 @@ Here is code to extract the points using `pl.lexer`:
         append(points,c)
     end
 
-The `expecting` function grabs the next token and if the type doesn't match, it throws an error. (`pl.lexer`, unlike other PL libraries, raises errors if something goes wrong, so you should wrap your code in `pcall` to catch the error gracefully.)
+The `expecting` function grabs the next token and if the type doesn't match, it
+throws an error. (`pl.lexer`, unlike other PL libraries, raises errors if
+something goes wrong, so you should wrap your code in `pcall` to catch the error
+gracefully.)
 
-The scanners all have a second optional argument, which is a table which controls whether you want to exclude spaces and/or comments. The default for `lexer.lua` is `{space=true,comments=true}`.  There is a third optional argument which determines how string and number tokens are to be processsed.
+The scanners all have a second optional argument, which is a table which controls
+whether you want to exclude spaces and/or comments. The default for `lexer.lua`
+is `{space=true,comments=true}`.  There is a third optional argument which
+determines how string and number tokens are to be processsed.
 
-The ultimate highly-structured data is of course, program source. Here is a snippet from 'text-lexer.lua':
+The ultimate highly-structured data is of course, program source. Here is a
+snippet from 'text-lexer.lua':
 
     require 'pl'
 
@@ -537,7 +674,8 @@ The ultimate highly-structured data is of course, program source. Here is a snip
     end
     test.asserteq(ls,List{'for','in','do','if','then','else','end','end'})
 
-Here is a useful little utility that identifies all common global variables found in a lua module:
+Here is a useful little utility that identifies all common global variables found
+in a lua module:
 
     -- testglobal.lua
     require 'pl'
@@ -553,7 +691,10 @@ Here is a useful little utility that identifies all common global variables foun
     end
     pretty.dump(seq.count_map(globals))
 
-Rather then dumping the whole list, with its duplicates, we pass it through `seq.count_map` which turns the list into a table where the keys are the values, and the associated values are the number of times those values occur in the sequence. Typical output looks like this:
+Rather then dumping the whole list, with its duplicates, we pass it through
+`seq.count_map` which turns the list into a table where the keys are the values,
+and the associated values are the number of times those values occur in the
+sequence. Typical output looks like this:
 
     {
       type = 2,
@@ -565,19 +706,30 @@ Rather then dumping the whole list, with its duplicates, we pass it through `seq
       ipairs = 4
     }
 
-You could further pass this through `tablex.keys` to get a unique list of symbols. This can be useful when writing 'strict' Lua modules, where all global symbols must be defined as locals at the top of the file.
+You could further pass this through `tablex.keys` to get a unique list of
+symbols. This can be useful when writing 'strict' Lua modules, where all global
+symbols must be defined as locals at the top of the file.
 
-For a more detailed use of `lexer.scan`, please look at `testxml.lua` in the examples directory.
+For a more detailed use of `lexer.scan`, please look at `testxml.lua` in the
+examples directory.
 
 ### XML
 
-New in the 0.9.7 release is some support for XML. This is a large topic, and Penlight does not provide a full XML stack, which is properly the task of a more specialized library.
+New in the 0.9.7 release is some support for XML. This is a large topic, and
+Penlight does not provide a full XML stack, which is properly the task of a more
+specialized library.
 
 #### Parsing and Pretty-Printing
 
-The semi-standard XML parser in the Lua universe is [lua-expat](). In particular, it has a function called `lxp.lom.parse` which will parse XML into the Lua Object Model (LOM) format. However, it does not provide a way to convert this data back into XML text.  `xml.parse` will use this function, _if_ `lua-expat` is available, and otherwise switches back to a pure Lua parser originally written by Roberto Ierusalimschy.
+The semi-standard XML parser in the Lua universe is [lua-expat](). In particular,
+it has a function called `lxp.lom.parse` which will parse XML into the Lua Object
+Model (LOM) format. However, it does not provide a way to convert this data back
+into XML text.  `xml.parse` will use this function, _if_ `lua-expat` is
+available, and otherwise switches back to a pure Lua parser originally written by
+Roberto Ierusalimschy.
 
-The resulting document object knows how to render itself as a string, which is useful for debugging:
+The resulting document object knows how to render itself as a string, which is
+useful for debugging:
 
     > d = xml.parse "<nodes><node id='1'>alice</node></nodes>"
     > = d
@@ -600,14 +752,24 @@ The resulting document object knows how to render itself as a string, which is u
 Looking at the actual shape of the data reveals the structure of LOM:
 
   * every element has a `tag` field with its name
-  * plus a `attr` field which is a table containing the attributes as fields, and also as an array. It is always present.
-  * the children of the element are the array part of the element, so `d[1]` is the first child of `d`, etc.
+  * plus a `attr` field which is a table containing the attributes as fields, and
+also as an array. It is always present.
+  * the children of the element are the array part of the element, so `d[1]` is
+the first child of `d`, etc.
 
-It could be argued that having attributes also as the array part of `attr` is not essential (you generally cannot depend on attribute order in XML) but that's how it goes with this standard.
+It could be argued that having attributes also as the array part of `attr` is not
+essential (you generally cannot depend on attribute order in XML) but that's how
+it goes with this standard.
 
-`lua-expat` is another _soft dependency_ of Penlight; generally, the fallback parser is good enough for straightforward XML as is commonly found in configuration files, etc. `doc.basic_parse` is not intended to be a proper conforming parser (it's only sixty lines) but it handles simple kinds of documents that do not have comments or DTD directives. It is intelligent enough to ignore the `<?xml` directive and that is about it.
+`lua-expat` is another _soft dependency_ of Penlight; generally, the fallback
+parser is good enough for straightforward XML as is commonly found in
+configuration files, etc. `doc.basic_parse` is not intended to be a proper
+conforming parser (it's only sixty lines) but it handles simple kinds of
+documents that do not have comments or DTD directives. It is intelligent enough
+to ignore the `<?xml` directive and that is about it.
 
-You can get pretty-printing by explicitly calling `xml.tostring` and passing it the initial indent and the per-element indent:
+You can get pretty-printing by explicitly calling `xml.tostring` and passing it
+the initial indent and the per-element indent:
 
     > = xml.tostring(d,'','  ')
 
@@ -628,7 +790,8 @@ There is a fourth argument which is the _attribute indent_:
 
 #### Parsing and Working with Configuration Files
 
-It's common to find configurations expressed with XML these days. It's straightforward to 'walk' the LOM data and extract the data in the form you want:
+It's common to find configurations expressed with XML these days. It's
+straightforward to 'walk' the LOM data and extract the data in the form you want:
 
     require 'pl'
 
@@ -654,9 +817,12 @@ It's common to find configurations expressed with XML these days. It's straightf
       name = "bozo"
     }
 
-The only gotcha is that here we must use the `Doc:childtags` method, which will skip over any text elements.
+The only gotcha is that here we must use the `Doc:childtags` method, which will
+skip over any text elements.
 
-A more involved example is this excerpt from `serviceproviders.xml`, which is usually found at `/usr/share/mobile-broadband-provider-info/serviceproviders.xml` on Debian/Ubuntu Linux systems.
+A more involved example is this excerpt from `serviceproviders.xml`, which is
+usually found at `/usr/share/mobile-broadband-provider-info/serviceproviders.xml`
+on Debian/Ubuntu Linux systems.
 
     d = xml.parse [[
     <serviceproviders format="2.0">
@@ -735,7 +901,10 @@ Getting the names of the providers per-country is straightforward:
 
 #### Generating XML with 'xmlification'
 
-This feature is inspired by the `htmlify` function used by [Orbit](http://keplerproject.github.com/orbit/) to simplify HTML generation, except that no function environment magic is used; the `tags` function returns a set of _constructors_ for elements of the given tag names.
+This feature is inspired by the `htmlify` function used by
+[Orbit](http://keplerproject.github.com/orbit/) to simplify HTML generation,
+except that no function environment magic is used; the `tags` function returns a
+set of _constructors_ for elements of the given tag names.
 
     > nodes, node = xml.tags 'nodes, node'
     > = node 'alice'
@@ -743,11 +912,16 @@ This feature is inspired by the `htmlify` function used by [Orbit](http://kepler
     > = nodes { node {id='1','alice'}}
     <nodes><node id='1'>alice</node></nodes>
 
-The flexibility of Lua tables is very useful here, since both the attributes and the children of an element can be encoded naturally. The argument to these tag constructors is either a single value (like a string) or a table where the attributes are the named keys and the children are the array values.
+The flexibility of Lua tables is very useful here, since both the attributes and
+the children of an element can be encoded naturally. The argument to these tag
+constructors is either a single value (like a string) or a table where the
+attributes are the named keys and the children are the array values.
 
 #### Generating XML using Templates
 
-A template is a little XML document which contains dollar-variables. The `subst` method on a document is fed an array of tables containing values for these variables. Note how the parent tag name is specified:
+A template is a little XML document which contains dollar-variables. The `subst`
+method on a document is fed an array of tables containing values for these
+variables. Note how the parent tag name is specified:
 
     > templ = xml.parse "<node id='$id'>$name</node>"
     > = templ:subst {tag='nodes', {id=1,name='alice'},{id=2,name='john'}}
@@ -755,12 +929,19 @@ A template is a little XML document which contains dollar-variables. The `subst`
 
 #### Extracting Data using Templates
 
-Matching goes in the opposite direction.  We have a document, and would like to extract values from it using a pattern.
+Matching goes in the opposite direction.  We have a document, and would like to
+extract values from it using a pattern.
 
-A common use of this is parsing the XML result of API queries.  The [(undocumented) Google Weather API](http://blog.programmableweb.com/2010/02/08/googles-secret-weather-api/) is a good example. Grabbing the result of `http://www.google.com/ig/api?weather=Johannesburg,ZA" we get something like this, after pretty-printing:
+A common use of this is parsing the XML result of API queries.  The
+[(undocumented) Google Weather
+API](http://blog.programmableweb.com/2010/02/08/googles-secret-weather-api/) is a
+good example. Grabbing the result of
+`http://www.google.com/ig/api?weather=Johannesburg,ZA" we get something like
+this, after pretty-printing:
 
     <xml_api_reply version='1'>
-      <weather module_id='0' tab_id='0' mobile_zipped='1' section='0' row='0' mobile_row='0'>
+      <weather module_id='0' tab_id='0' mobile_zipped='1' section='0' row='0'
+mobile_row='0'>
         <forecast_information>
           <city data='Johannesburg, Gauteng'/>
           <postal_code data='Johannesburg,ZA'/>
@@ -789,7 +970,8 @@ A common use of this is parsing the XML result of API queries.  The [(undocument
        </weather>
     </xml_api_reply>
 
-Assume that the above XML has been read into `google`. The idea is to write a pattern looking like a template, and use it to extract some values of interest:
+Assume that the above XML has been read into `google`. The idea is to write a
+pattern looking like a template, and use it to extract some values of interest:
 
     t = [[
       <weather>
@@ -810,6 +992,8 @@ And the output is:
       temp = "24"
     }
 
-The `match` method can be passed a LOM document or some text, which will be parsed first. Note that `$NUMBER` is treated specially as a numerical index, so that `$1` is the first element of the resulting array, etc.
+The `match` method can be passed a LOM document or some text, which will be
+parsed first. Note that `$NUMBER` is treated specially as a numerical index, so
+that `$1` is the first element of the resulting array, etc.
 
 
