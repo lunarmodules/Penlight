@@ -36,7 +36,7 @@ end
 -- any occurance of the keyword 'function' will be considered a problem.
 -- in the given environment - the return value may be `nil`.
 -- @param s {string} string of the form '{...}', with perhaps some whitespace
---		before or after the curly braces.
+-- before or after the curly braces.
 -- @return a table
 function pretty.read(s)
     assert_arg(1,s,'string')
@@ -125,15 +125,15 @@ end
 --  you want output on one line.
 --	@param tbl {table} Table to serialize to a string.
 --	@param space {string} (optional) The indent to use.
---		Defaults to two spaces; make it the empty string for no indentation
+--	Defaults to two spaces; make it the empty string for no indentation
 --	@param not_clever {bool} (optional) Use for plain output, e.g {['key']=1}.
---		Defaults to false.
+--	Defaults to false.
 --  @return a string
 --  @return a possible error message
 function pretty.write (tbl,space,not_clever)
     if type(tbl) ~= 'table' then
         local res = tostring(tbl)
-        if type(tbl) == 'string' then res = '"'..res..'"' end
+        if type(tbl) == 'string' then return quote(tbl) end
         return res, 'not a table'
     end
     if not keywords then
@@ -215,6 +215,7 @@ function pretty.write (tbl,space,not_clever)
                     end
                 end
             end
+            tables[t] = nil
             eat_last_comma()
             putln(oldindent..'},')
         else
@@ -229,7 +230,7 @@ end
 ---	Dump a Lua table out to a file or stdout.
 --	@param t {table} The table to write to a file or stdout.
 --	@param ... {string} (optional) File name to write too. Defaults to writing
---		to stdout.
+--	to stdout.
 function pretty.dump (t,...)
     if select('#',...)==0 then
         print(pretty.write(t))

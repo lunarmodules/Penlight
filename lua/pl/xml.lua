@@ -481,14 +481,38 @@ function _M.walk (doc, depth_first, operation)
     if depth_first then operation(doc.tag,doc) end
 end
 
+local html_empty_elements = { --lists all HTML empty (void) elements
+	br      = true,
+	img     = true,
+	meta    = true,
+	META    = true,
+	frame   = true,
+	area    = true,
+	hr      = true,
+	base    = true,
+	col     = true,
+	link    = true,
+	input   = true,
+	option  = true,
+	param   = true,
+}
+
 local escapes = { quot = "\"", apos = "'", lt = "<", gt = ">", amp = "&" }
 local function unescape(str) return (str:gsub( "&(%a+);", escapes)); end
 
 local function parseargs(s)
+  local html = _M.parsehtml
   local arg = {}
   s:gsub("([%w:]+)%s*=%s*([\"'])(.-)%2", function (w, _, a)
+    if html then w = w:lower() end
     arg[w] = unescape(a)
   end)
+  if html then
+    s:gsub("([%w:]+)%s*=%s*([^\"']+)%s*", function (w, a)
+      w = w:lower()
+      arg[w] = unescape(a)
+    end)
+  end
   return arg
 end
 
@@ -496,6 +520,7 @@ end
 -- @param s the XML document to be parsed.
 -- @param all_text  if true, preserves all whitespace. Otherwise only text containing non-whitespace is included.
 function _M.basic_parse(s,all_text)
+  local html = _M.parsehtml
   local t_insert,t_remove = table.insert,table.remove
   local s_find,s_sub = string.find,string.sub
   local stack = {}
@@ -510,6 +535,10 @@ function _M.basic_parse(s,all_text)
     ni,j,c,label,xarg, empty = s_find(s, "<(%/?)([%w:%-_]+)(.-)(%/?)>", i)
     if not ni then break end
     local text = s_sub(s, i, ni-1)
+    if html then
+      label = label:lower()
+      if html_empty_elements[label] then empty = "/" end
+    end
     if all_text or not s_find(text, "^%s*$") then
        t_insert(top, unescape(text))
     end

@@ -34,11 +34,33 @@ or informally like:
     require 'pl'
     utils.printf("%s\n","That feels better")
 
-`require 'pl'` makes all the separate Penlight modules available, without needing to require them each individually..   Generally, the formal way is better when writing modules, since then there are no global side-effects and the dependencies of your module are made explicit.
+`require 'pl'` makes all the separate Penlight modules available, without needing to require them each individually.
+
+Generally, the formal way is better when writing modules, since then there are no global side-effects and the dependencies of your module are made explicit.
+
+Andrew Starks has contributed another way, which balances nicely between the formal need to keep the global table uncluttered and the informal need for convenience. `require'pl.import_into'` returns a function, which accepts a table for injecting Penlight into, or if no table is given, it passes back a new one.
+
+
+    local pl = require'pl.import_into'()
+
+The table `pl` is a 'lazy table' which loads modules as needed, so we can then use `pl.utils.printf` and so forth, without an explicit `require' or harming any globals.
+
+If you are using `_ENV` with Lua 5.2 to define modules, then here is a way to make Penlight available within a module:
+
+    local _ENV,M = require 'pl.import_into' ()
+
+    function answer ()
+        -- all the Penlight modules are available!
+        return pretty.write(utils.split '10 20  30', '')
+    end
+
+    return M
+
+The default is to put Penlight into `_ENV`, which has the unintended effect of making it available from the module (much as `module(...,package.seeall)` does). To satisfy both convenience and safety, you may pass `true` to this function, and then the _module_ `M` is not the same as `_ENV`, but only contains the exported functions.
 
 With Penlight after 0.9, please note that `require 'pl.utils'` no longer implies that a global table `pl.utils` exists, since these new modules are no longer created with `module()`.
 
-Penlight will not bring in functions into the global table, or clobber standard tables like 'io'.  require('pl') will bring tables like 'utils','tablex',etc into the global table _if they are used_. This 'load-on-demand' strategy ensures that the whole kitchen sink is not loaded up front,  so this method is as efficient as explicitly loading required modules.
+Otherwise, Penlight will _not_ bring in functions into the global table, or clobber standard tables like 'io'.  require('pl') will bring tables like 'utils','tablex',etc into the global table _if they are used_. This 'load-on-demand' strategy ensures that the whole kitchen sink is not loaded up front,  so this method is as efficient as explicitly loading required modules.
 
 You have an option to bring the `pl.stringx` methods into the standard string table. All strings have a metatable that allows for automatic lookup in `string`, so we can say `s:upper()`. Importing `stringx` allows for its functions to also be called as methods: `s:strip()`,etc:
 
@@ -69,9 +91,25 @@ Keeping the global scope simple is very necessary with dynamic languages. Using 
 
 The `strict` module provided by Penlight is compatible with the 'load-on-demand' scheme used by `require 'pl`.
 
-`strict` also disallows assignment to global variables, except in the main program. Generally, modules have no business messing with global scope; if you must do it, then use a call to `rawset`. Similarly, if you have to check for the existance of a global, use `rawget`.
+`strict` also disallows assignment to global variables, except in the main program. Generally, modules have no business messing with global scope; if you must do it, then use a call to `rawset`. Similarly, if you have to check for the existence of a global, use `rawget`.
 
-If you wish to enforce strictness globally, then just add `require 'pl.strict'` at the end of `pl/init.lua`.
+If you wish to enforce strictness globally, then just add `require 'pl.strict'` at the end of `pl/init.lua`, otherwise call it from your main program.
+
+As from 1.1.0, this module provides a `strict.module` function which creates (or modifies) modules so that accessing an unknown function or field causes an error.
+
+For example,
+
+    -- mymod.lua
+    local strict = require 'pl.strict'
+    local M = strict.module (...)
+
+    function M.answer ()
+        return 42
+    end
+
+    return M
+
+If you were to accidently type `mymod.Answer()`, then you would get a runtime error: "variable 'Answer' is not declared in 'mymod'".
 
 ### What are function arguments in Penlight?
 

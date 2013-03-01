@@ -63,6 +63,8 @@ function Date:_init(t,...)
             end
             time = os_time(t)
         end
+    else
+        error("bad type for Date constructor: "..type(t),2)
     end
     self:set(time)
 end

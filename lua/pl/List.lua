@@ -26,10 +26,7 @@ local filter,imap,imap2,reduce,transform,tremovevalues = tablex.filter,tablex.im
 local tablex = tablex
 local tsub = tablex.sub
 local utils = require 'pl.utils'
-local function_arg = utils.function_arg
-local is_type = utils.is_type
-local split = utils.split
-local assert_arg = utils.assert_arg
+local array_tostring,split,is_type,assert_arg,function_arg = utils.array_tostring,utils.split,utils.is_type,utils.assert_arg,utils.function_arg
 local normalize_slice = tablex._normalize_slice
 
 --[[
@@ -382,7 +379,7 @@ end
 function List:join (delim)
     delim = delim or ''
     assert_arg(1,delim,'string')
-    return concat(imap(tostring,self),delim)
+    return concat(array_tostring(self),delim)
 end
 
 --- join a list of strings. <br>

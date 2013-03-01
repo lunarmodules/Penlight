@@ -16,17 +16,17 @@
 --     > = fruit*colours
 --     [orange]
 --
--- Depdencies: `pl.utils`, `pl.tablex`, `pl.class`
+-- Depdencies: `pl.utils`, `pl.tablex`, `pl.class`, (`pl.List` if __tostring is used)
 -- @module pl.Set
 
 local tablex = require 'pl.tablex'
 local utils = require 'pl.utils'
-local stdmt = utils.stdmt
+local array_tostring, concat = utils.array_tostring, table.concat
 local tmakeset,deepcompare,merge,keys,difference,tupdate = tablex.makeset,tablex.deepcompare,tablex.merge,tablex.keys,tablex.difference,tablex.update
 local Map = require 'pl.Map'
-local Set = stdmt.Set
-local List = stdmt.List
 local class = require 'pl.class'
+local stdmt = utils.stdmt
+local Set = stdmt.Set
 
 -- the Set class --------------------
 class(Map,nil,Set)
@@ -52,7 +52,7 @@ function Set:_init (t)
 end
 
 function Set:__tostring ()
-    return '['..Set.values(self):join ','..']'
+    return '['..concat(array_tostring(Set.values(self)),',')..']'
 end
 
 --- get a list of the values in a set.

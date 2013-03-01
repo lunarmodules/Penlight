@@ -142,5 +142,24 @@ asserteq(
     '$A & $B' % subst,'ay & bee'
 )
 
+t = [[
+a whole lot
+of love
+]]
+
+asserteq(T.indent(t,4),[[
+    a whole lot
+    of love
+]])
+
+asserteq(T.indent([[
+easy
+
+enough!
+]],2,'*'),[[
+**easy
+**
+**enough!
+]])
 
 
