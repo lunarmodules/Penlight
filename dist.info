@@ -1,7 +1,7 @@
 --- This file is part of LuaDist project
 
 name = "penlight"
-version = "1.0.2"
+version = "1.1"
 
 desc = "A portable, pure-Lua standard library covering common patterns."
 author = "Steve Donovan, David Manura"
