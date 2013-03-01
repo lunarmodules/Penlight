@@ -21,7 +21,7 @@ local concat,append = table.concat,table.insert
 
 local stringio = {}
 
---- Writer class
+-- Writer class
 local SW = {}
 SW.__index = SW
 
@@ -58,7 +58,7 @@ end
 function SW:seek()
 end
 
---- Reader class
+-- Reader class
 local SR = {}
 SR.__index = SR
 

@@ -10,7 +10,7 @@ local collisions = {}
 
 local utils = {}
 
-utils._VERSION = "1.0.3"
+utils._VERSION = "1.1.0"
 
 local lua51 = rawget(_G,'setfenv')
 
@@ -203,6 +203,20 @@ end
 -- @see split
 function utils.splitv (s,re)
     return unpack(utils.split(s,re))
+end
+
+--- convert an array of values to strings.
+-- @param t a list-like table
+-- @param temp buffer to use, otherwise allocate
+-- @param tostr custom tostring function, called with (value,index).
+-- Otherwise use `tostring`
+-- @return the converted buffer
+function utils.array_tostring (t,temp,tostr)
+    temp, tostr = temp or {}, tostr or tostring
+    for i = 1,#t do
+        temp[i] = tostr(t[i],i)
+    end
+    return temp
 end
 
 local lua51_load = load
@@ -503,7 +517,13 @@ local err_mode = 'default'
 -- @param mode - either 'default', 'quit'  or 'error'
 -- @see utils.raise
 function utils.on_error (mode)
-    err_mode = mode
+    if ({['default'] = 1, ['quit'] = 2, ['error'] = 3})[mode] then
+      err_mode = mode
+    else
+      -- fail loudly
+      if err_mode == 'default' then err_mode = 'error' end
+      utils.raise("Bad argument expected string; 'default', 'quit', or 'error'. Got '"..tostring(mode).."'")
+    end
 end
 
 --- used by Penlight functions to return errors.  Its global behaviour is controlled

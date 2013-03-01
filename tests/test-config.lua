@@ -202,5 +202,109 @@ testconfig ([[
   }
 })
 
+--- new with 1.0.3: smart configuration file reading
+-- handles a number of common Unix file formats automatically
 
+function smart(f)
+    f = stringio.open(f)
+    return config.read(f,{smart=true})
+end
+
+-- /etc/fstab
+asserteq (smart[[
+# /etc/fstab: static file system information.
+#
+# Use 'blkid -o value -s UUID' to print the universally unique identifier
+# for a device; this may be used with UUID= as a more robust way to name
+# devices that works even if disks are added and removed. See fstab(5).
+#
+# <file system> <mount point>   <type>  <options>       <dump>  <pass>
+proc            /proc           proc    nodev,noexec,nosuid 0       0
+/dev/sdb2       /               ext2    errors=remount-ro 0       1
+/dev/fd0        /media/floppy0  auto    rw,user,noauto,exec,utf8 0       0
+]],{
+  proc = {
+    "/proc",
+    "proc",
+    "nodev,noexec,nosuid",
+    0,
+    0
+  },
+  ["/dev/sdb2"] = {
+    "/",
+    "ext2",
+    "errors=remount-ro",
+    0,
+    1
+  },
+  ["/dev/fd0"] = {
+    "/media/floppy0",
+    "auto",
+    "rw,user,noauto,exec,utf8",
+    0,
+    0
+  }
+})
+
+-- /proc/XXXX/status
+asserteq (smart[[
+Name:	bash
+State:	S (sleeping)
+Tgid:	30071
+Pid:	30071
+PPid:	1587
+TracerPid:	0
+Uid:	1000	1000	1000	1000
+Gid:	1000	1000	1000	1000
+FDSize:	256
+Groups:	4 20 24 46 105 119 122 1000
+VmPeak:	    6780 kB
+VmSize:	    6716 kB
+]],{
+  Pid = 30071,
+  VmSize = 6716,
+  PPid = 1587,
+  Tgid = 30071,
+  State = "S (sleeping)",
+  Uid = "1000	1000	1000	1000",
+  Name = "bash",
+  Gid = "1000	1000	1000	1000",
+  Groups = "4 20 24 46 105 119 122 1000",
+  FDSize = 256,
+  VmPeak = 6780,
+  TracerPid = 0
+})
+
+-- ssh_config
+asserteq (smart[[
+Host *
+#   ForwardAgent no
+#   ForwardX11 no
+#   Tunnel no
+#   TunnelDevice any:any
+#   PermitLocalCommand no
+#   VisualHostKey no
+    SendEnv LANG LC_*
+    HashKnownHosts yes
+    GSSAPIAuthentication yes
+    GSSAPIDelegateCredentials no
+]],{
+  Host = "*",
+  GSSAPIAuthentication = "yes",
+  SendEnv = "LANG LC_*",
+  HashKnownHosts = "yes",
+  GSSAPIDelegateCredentials = "no"
+})
+
+-- updatedb.conf
+asserteq (smart[[
+PRUNE_BIND_MOUNTS="yes"
+# PRUNENAMES=".git .bzr .hg .svn"
+PRUNEPATHS="/tmp /var/spool /media"
+PRUNEFS="NFS nfs nfs4 rpc_pipefs afs binfmt_misc proc smbfs autofs iso9660 ncpfs coda devpts ftpfs devfs mfs shfs sysfs cifs lustre_lite tmpfs usbfs udf fuse.glusterfs fuse.sshfs ecryptfs fusesmb devtmpfs"
+]],{
+  PRUNEPATHS = "/tmp /var/spool /media",
+  PRUNE_BIND_MOUNTS = "yes",
+  PRUNEFS = "NFS nfs nfs4 rpc_pipefs afs binfmt_misc proc smbfs autofs iso9660 ncpfs coda devpts ftpfs devfs mfs shfs sysfs cifs lustre_lite tmpfs usbfs udf fuse.glusterfs fuse.sshfs ecryptfs fusesmb devtmpfs"
+})
 
