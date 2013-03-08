@@ -224,9 +224,15 @@ have to use `==` (this warning comes from experience.)
 
 For this to work, _field names must be Lua identifiers_. So `read` will massage
 fieldnames so that all non-alphanumeric chars are replaced with underscores.
+However, the `original_fieldnames` field always contains the original un-massaged
+fieldnames.
 
 `read` can handle standard CSV files fine, although doesn't try to be a
-full-blown CSV parser. Spreadsheet programs are not always the best tool to
+full-blown CSV parser.  With the `csv=true` option, it's possible to have
+double-quoted fields, which may contain commas; then trailing commas become
+significant as well.
+
+Spreadsheet programs are not always the best tool to
 process such data, strange as this might seem to some people. This is a toy CSV
 file; to appreciate the problem, imagine thousands of rows and dozens of columns
 like this:
@@ -262,6 +268,34 @@ list of field names, a function defining the condition and an optional parameter
 condition (such as belonging to a specified set) then it is not generally
 possible to express such a condition as a query string, without resorting to
 hackery such as global variables.
+
+With 1.0.3, you can specify explicit conversion functions for selected columns.
+For instance, this is a log file with a Unix date stamp:
+
+    Time Message
+    1266840760 +# EE7C0600006F0D00C00F06010302054000000308010A00002B00407B00
+    1266840760 closure data 0.000000 1972 1972 0
+    1266840760 ++ 1266840760 EE 1
+    1266840760 +# EE7C0600006F0D00C00F06010302054000000408020A00002B00407B00
+    1266840764 closure data 0.000000 1972 1972 0
+
+We would like the first column as an actual date object, so the `convert`
+field sets an explicit conversion for column 1. (Note that we have to explicitly
+convert the string to a number first.)
+
+    Date = require 'pl.Date'
+
+    function date_convert (ds)
+        return Date(tonumber(ds))
+    end
+
+    d = data.read(f,{convert={[1]=date_convert},last_field_collect=true})
+
+This gives us a two-column dataset, where the first column contains `Date` objects
+and the second column contains the rest of the line. Queries can then easily
+pick out events on a day of the week:
+
+    q = d:select "Time,Message where Time:weekday_name()=='Sun'"
 
 Data does not have to come from files, nor does it necessarily come from the lab
 or the accounts department. On Linux, `ps aux` gives you a full listing of all
@@ -303,7 +337,7 @@ And it can be used generally as a filter command to extract columns from data.
 
 (As with AWK, please note the single-quotes used in this command; this prevents
 the shell trying to expand the column indexes. If you are on Windows, then you
-are fine, but it is still necessary to quote the expression in double-quotes so
+must quote the expression in double-quotes so
 it is passed as one argument to your batch file.)
 
 As a tutorial resource, have a look at `test-data.lua` in the PL tests directory
@@ -477,7 +511,8 @@ the following fields:
        list_delim = ',',
        trim_quotes = true,
        ignore_assign = false,
-       keysep = '='
+       keysep = '=',
+       smart = false,
     }
 
 `variablilize` is the option that converted `write.timeout` in the first example
@@ -554,7 +589,27 @@ That result is a string, since `tonumber` doesn't like it, but defining the
 `convert_numbers` option as `function(s) return tonumber((s:gsub(' kB$','')))
 end` will get the memory figures as actual numbers in the result. (The extra
 parentheses are necessary so that `tonumber` only gets the first result from
-`gsub`)
+`gsub`). From `tests/test-config.lua':
+
+    testconfig([[
+    MemTotal:        1024748 kB
+    MemFree:          220292 kB
+    ]],
+    { MemTotal = 1024748, MemFree = 220292 },
+    {
+     keysep = ':',
+     convert_numbers = function(s)
+        s = s:gsub(' kB$','')
+        return tonumber(s)
+      end
+     }
+    )
+
+
+The `smart` option lets `config.read` make a reasonable guess for you; there
+are examples in `tests/test-config.lua`, but basically these common file
+formats (and those following the same pattern) can be processed directly in
+smart mode: 'etc/fstab', '/proc/XXXX/status', 'ssh_config' and 'pdatedb.conf'.
 
 Please note that `config.read` can be passed a _file-like object_; if it's not a
 string and supports the `read` method, then that will be used. For instance, to
@@ -675,7 +730,7 @@ snippet from 'text-lexer.lua':
     test.asserteq(ls,List{'for','in','do','if','then','else','end','end'})
 
 Here is a useful little utility that identifies all common global variables found
-in a lua module:
+in a lua module (ignoring those declared locally for the moment):
 
     -- testglobal.lua
     require 'pl'
@@ -721,7 +776,8 @@ specialized library.
 
 #### Parsing and Pretty-Printing
 
-The semi-standard XML parser in the Lua universe is [lua-expat](). In particular,
+The semi-standard XML parser in the Lua universe is [lua-expat](http://matthewwild.co.uk/projects/luaexpat/).
+In particular,
 it has a function called `lxp.lom.parse` which will parse XML into the Lua Object
 Model (LOM) format. However, it does not provide a way to convert this data back
 into XML text.  `xml.parse` will use this function, _if_ `lua-expat` is
@@ -758,7 +814,7 @@ also as an array. It is always present.
 the first child of `d`, etc.
 
 It could be argued that having attributes also as the array part of `attr` is not
-essential (you generally cannot depend on attribute order in XML) but that's how
+essential (you cannot depend on attribute order in XML) but that's how
 it goes with this standard.
 
 `lua-expat` is another _soft dependency_ of Penlight; generally, the fallback
@@ -826,6 +882,7 @@ on Debian/Ubuntu Linux systems.
 
     d = xml.parse [[
     <serviceproviders format="2.0">
+    ...
     <country code="za">
         <provider>
             <name>Cell-c</name>
@@ -873,7 +930,7 @@ on Debian/Ubuntu Linux systems.
             </gsm>
         </provider>
     </country>
-
+    ....
     </serviceproviders>
     ]]
 
@@ -882,7 +939,7 @@ Getting the names of the providers per-country is straightforward:
     local t = {}
     for country in d:childtags() do
         local providers = {}
-        t[country.tag] = providers
+        t[country.attr.code] = providers
         for provider in country:childtags() do
             table.insert(providers,provider:child_with_name('name'):get_text())
         end
@@ -891,12 +948,13 @@ Getting the names of the providers per-country is straightforward:
     pretty.dump(t)
     -->
     {
-      country = {
+      za = {
         "Cell-c",
         "MTN",
         "Vodacom",
         "Virgin Mobile"
       }
+      ....
     }
 
 #### Generating XML with 'xmlification'
@@ -995,5 +1053,27 @@ And the output is:
 The `match` method can be passed a LOM document or some text, which will be
 parsed first. Note that `$NUMBER` is treated specially as a numerical index, so
 that `$1` is the first element of the resulting array, etc.
+
+#### HTML Parsing
+
+HTML is an ususally slack dialect of XML, and Dennis Schridde has contributed
+a feature which makes parsing it easier.  For instance, from the tests:
+
+    xml.parsehtml = true
+
+    doc = xml.parse [[
+    <BODY>
+    Hello dolly<br>
+    HTML is <b>slack</b><br>
+    </BODY>
+    ]]
+
+    asserteq(xml.tostring(doc),[[
+    <body>
+    Hello dolly<br/>
+    HTML is <b>slack</b><br/></body>]])
+
+That is, all tags are converted to lowercase, and some elements like `br`
+are properly closed.
 
 

@@ -93,7 +93,6 @@ formal need to keep the global table uncluttered and the informal need for
 convenience. `require'pl.import_into'` returns a function, which accepts a table
 for injecting Penlight into, or if no table is given, it passes back a new one.
 
-
     local pl = require'pl.import_into'()
 
 The table `pl` is a 'lazy table' which loads modules as needed, so we can then
@@ -194,6 +193,14 @@ For example,
 If you were to accidently type `mymod.Answer()`, then you would get a runtime
 error: "variable 'Answer' is not declared in 'mymod'".
 
+This can be applied to existing modules. You may desire to have the same level
+of checking for the Lua standard libraries:
+
+    strict.make_all_strict(_G)
+
+Thereafter a typo such as `math.cosine` will give you an explicit error, rather
+than merely returning a `nil` that will cause problems later.
+
 ### What are function arguments in Penlight?
 
 Many functions in Penlight themselves take function arguments, like `map` which
@@ -273,6 +280,8 @@ The function `printf` discussed earlier is included in `pl.utils` because it
 makes properly formatted output easier. (There is an equivalent `fprintf` which
 also takes a file object parameter, just like the C function.)
 
+Splitting a string using a delimiter is a fairly common operation, hence `split`.
+
 Utility functions like `is_callable` and `is_type` help with identifying what
 kind of animal you are dealing with. Obviously, a function is callable, but an
 object can be callable as well if it has overriden the `__call` metamethod. The
@@ -319,7 +328,7 @@ upfront, since in general you won't know what values are needed.
 
 Penlight is fully compatible with Lua 5.1, 5.2 and LuaJIT 2. To ensure this,
 `utils` also defines the global Lua 5.2
-[load](http://www.lua.org/work/doc/manual.html#pdf-load) function when needed.
+[load](http://www.lua.org/work/doc/manual.html#pdf-load) function as `utils.load`
 
  * the input (either a string or a function)
  * the source name used in debug information
@@ -327,8 +336,14 @@ Penlight is fully compatible with Lua 5.1, 5.2 and LuaJIT 2. To ensure this,
 whether the source is a binary chunk or text code (default is 'bt')
  * the environment for the compiled chunk
 
-Using `load` should reduce the need to call the deprecated function `setfenv`,
+Using `utils.load` should reduce the need to call the deprecated function `setfenv`,
 and make your Lua 5.1 code 5.2-friendly.
+
+Currently, the `utils` module does define a global `getfenv` and `setfenv` for
+Lua 5.2, based on code by Sergey Rozhenko.  Note that these functions can fail
+for functions which don't access any globals. (whether it's wise to directly
+inject these functions into global or not, I'll leave for a later version to
+decide)
 
 ### Application Support
 

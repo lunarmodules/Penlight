@@ -39,7 +39,8 @@ easily at hand. Note that can be injected into the `string` table if you use
 `stringx.import`, but a simple alias like `local stringx = require 'pl.stringx'`
 is preferrable. This is the recommended practice when writing modules for
 consumption by other people, since it is bad manners to change the global state
-of the rest of the system.
+of the rest of the system. Magic may be used for convenience, but there is always
+a cost.
 
 
 ### String Templates

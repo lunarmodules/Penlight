@@ -391,4 +391,31 @@ t = SP{country{code="$country",provider{
    name '$name', gsm{apn {value="$apn",dns '196.43.46.190'}}
    }}}
 
-print(xml.tostring(t,' ','  '))
+out = xml.tostring(t,' ','  ')
+asserteq(out,[[
+
+ <serviceprovider>
+   <country code='$country'>
+     <provider>
+       <name>$name</name>
+       <gsm>
+         <apn value='$apn'>
+           <dns>196.43.46.190</dns>
+         </apn>
+       </gsm>
+     </provider>
+   </country>
+ </serviceprovider>]])
+
+xml.parsehtml = true
+doc = parse [[
+<BODY>
+Hello dolly<br>
+HTML is <b>slack</b><br>
+</BODY>
+]]
+
+asserteq(xml.tostring(doc),[[
+<body>
+Hello dolly<br/>
+HTML is <b>slack</b><br/></body>]])
