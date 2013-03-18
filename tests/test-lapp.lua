@@ -1,6 +1,8 @@
 
 local test = require 'pl.test'
 local lapp = require 'pl.lapp'
+local utils = require 'pl.utils'
+local tablex = require 'pl.tablex'
 
 local k = 1
 function check (spec,args,match)
@@ -103,4 +105,20 @@ local optional = [[
 check(optional,{'-p', 'test'},{p='test'})
 check(optional,{},{})
 
+local addtype = [[
+  -l (intlist) List of items
+]]
 
+lapp.add_type('intlist',
+              function(x)
+                 return tablex.imap(tonumber, utils.split(x, '%s*,%s*'))
+              end,
+              function(x)
+                 for _,v in ipairs(x) do
+                    lapp.assert(math.ceil(v) == v,'not an integer!')
+                 end
+              end)
+
+check(addtype,{'-l', '1,2,3'},{l={1,2,3}})
+
+check_error(addtype,{'-l', '1.5,2,3'},"not an integer!")

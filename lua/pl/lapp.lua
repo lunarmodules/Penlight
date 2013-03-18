@@ -108,7 +108,7 @@ local function xtonumber(s)
     return val
 end
 
-local types
+local types = {}
 
 local builtin_types = {string=true,number=true,['file-in']='file',['file-out']='file',boolean=true}
 
@@ -173,7 +173,6 @@ function lapp.process_options_string(str,args)
     parms = {}
     aliases = {}
     parmlist = {}
-    types = {}
 
     local function check_varargs(s)
         local res,cnt = s:gsub('^%.%.%.%s*','')
