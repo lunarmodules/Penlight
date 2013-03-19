@@ -402,6 +402,21 @@ compare the two sets, as above:
 (Note the special string '==' above; instead of saying `ops.gt` or `ops.eq` we
 can use the strings '>' or '==' respectively.)
 
+`sort` and `sortv` return iterators that will iterate through the
+sorted elements of a table. `sort` iterates by sorted key order, and
+`sortv` iterates by sorted value order. For example, given a table
+with names and ages, it is trivial to iterate over the elements:
+
+    > t = {john=27,jane=31,mary=24}
+    > for name,age in tablex.sort(t) do print(name,age) end
+    jane    31
+    john    27
+    mary    24
+    > for name,age in tablex.sortv(t) do print(name,age) end
+    mary    24
+    john    27
+    jane    31
+
 There are several ways to merge tables in PL. If they are list-like, then see the
 operations defined by `pl.List`, like concatenation. If they are map-like, then
 `merge` provides two basic operations. If the third arg is false, then the result
