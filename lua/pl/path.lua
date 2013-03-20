@@ -379,7 +379,7 @@ end
 
 --- return the full path where a particular Lua module would be found.
 -- Both package.path and package.cpath is searched, so the result may
--- either be a Lua file or a shared libarary.
+-- either be a Lua file or a shared library.
 -- @param mod name of the module
 -- @return on success: path of module, lua or binary
 -- @return on error: nil,error string
