@@ -19,13 +19,13 @@ local function call_ctor (c,obj,...)
     if base then
         local parent_ctor = rawget(base,'_init')
         if parent_ctor then
-            obj.super = function(obj,...)
+            rawset(obj,'super',function(obj,...)
                 call_ctor(base,obj,...)
-            end
+            end)
         end
     end
     local res = c._init(obj,...)
-    obj.super = nil
+    rawset(obj,'super',nil)
     return res
 end
 
