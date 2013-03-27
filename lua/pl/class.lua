@@ -44,6 +44,18 @@ local function class_of(klass,obj)
     return klass.is_a(obj,klass)
 end
 
+local function base_method(self,method,...)
+    local m = getmetatable(self)
+    if not m then return nil end
+    if not method then return setmetatable({},{
+        __index = function(tbl,key)
+            return function(...) return m._base[key](self,...) end
+        end
+    }) else
+        return m._base[method](self,...)
+    end
+end
+
 local function _class_tostring (obj)
     local mt = obj._class
     local name = rawget(mt,'_name')
@@ -116,6 +128,7 @@ local function _class(base,c_arg,c)
     end
     c.is_a = is_a
     c.class_of = class_of
+    c.base = base_method
     c._class = c
 
     return c
