@@ -6,7 +6,7 @@
 -- @module pl.tablex
 local utils = require ('pl.utils')
 local getmetatable,setmetatable,require = getmetatable,setmetatable,require
-local append,remove = table.insert,table.remove
+local tsort,append,remove = table.sort,table.insert,table.remove
 local min,max = math.min,math.max
 local pairs,type,unpack,next,select,tostring = pairs,type,unpack,next,select,tostring
 local function_arg = utils.function_arg
@@ -816,5 +816,38 @@ function tablex.search (t,value,exclude)
     end
     return _find(t,value,tables)
 end
+
+--- return an iterator to a table sorted by its keys
+-- @param t the table
+-- @param comp an optional comparison function (comp(x,y) is true if x < y)
+-- @usage for k,v in tablex.sort(t) do print(k,v) end
+-- @return an iterator to traverse elements sorted by the keys
+function tablex.sort(t,f)
+   local keys = {}
+   for k in pairs(t) do keys[#keys + 1] = k end
+   tsort(keys,f)
+   local i = 0
+   return function()
+      i = i + 1
+      return keys[i], t[keys[i]]
+   end
+end
+
+--- return an iterator to a table sorted by its values
+-- @param t the table
+-- @param comp an optional comparison function (comp(x,y) is true if x < y)
+-- @usage for k,v in tablex.sortv(t) do print(k,v) end
+-- @return an iterator to traverse elements sorted by the values
+function tablex.sortv(t,f)
+   local rev = {}
+   for k,v in pairs(t) do rev[v] = k end
+   local next = tablex.sort(rev,f)
+   return function()
+      local value,key = next()
+      return key,value
+   end
+end
+
+
 
 return tablex
