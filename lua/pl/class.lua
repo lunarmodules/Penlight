@@ -19,13 +19,13 @@ local function call_ctor (c,obj,...)
     if base then
         local parent_ctor = rawget(base,'_init')
         if parent_ctor then
-            obj.super = function(obj,...)
+            rawset(obj,'super',function(obj,...)
                 call_ctor(base,obj,...)
-            end
+            end)
         end
     end
     local res = c._init(obj,...)
-    obj.super = nil
+    rawset(obj,'super',nil)
     return res
 end
 
@@ -42,6 +42,18 @@ end
 local function class_of(klass,obj)
     if type(klass) ~= 'table' or not rawget(klass,'is_a') then return false end
     return klass.is_a(obj,klass)
+end
+
+local function base_method(self,method,...)
+    local m = getmetatable(self)
+    if not m then return nil end
+    if not method then return setmetatable({},{
+        __index = function(tbl,key)
+            return function(...) return m._base[key](self,...) end
+        end
+    }) else
+        return m._base[method](self,...)
+    end
 end
 
 local function _class_tostring (obj)
@@ -116,6 +128,7 @@ local function _class(base,c_arg,c)
     end
     c.is_a = is_a
     c.class_of = class_of
+    c.base = base_method
     c._class = c
 
     return c

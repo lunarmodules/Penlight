@@ -4,9 +4,12 @@
 
 ### Manipulating Dates
 
-The `Date` class provides a simplified way to work with [date and time](http://www.lua.org/pil/22.1.html) in Lua; it leans heavily on the functions `os.date` and `os.time`.
+The `Date` class provides a simplified way to work with [date and
+time](http://www.lua.org/pil/22.1.html) in Lua; it leans heavily on the functions
+`os.date` and `os.time`.
 
-A `Date` object can be constructed from a table, just like with `os.time`. Methods are provided to get and set the various parts of the date.
+A `Date` object can be constructed from a table, just like with `os.time`.
+Methods are provided to get and set the various parts of the date.
 
     > d = Date {year = 2011, month = 3, day = 2 }
     > = d
@@ -29,7 +32,8 @@ A `Date` object can be constructed from a table, just like with `os.time`. Metho
     > = d:month_name(true)
     April
 
-There is a default conversion to text for date objects, but `Date.Format` gives you full control of the format for both parsing and displaying dates:
+There is a default conversion to text for date objects, but `Date.Format` gives
+you full control of the format for both parsing and displaying dates:
 
     > iso = Date.Format 'yyyy-mm-dd'
     > d = iso:parse '2010-04-10'
@@ -37,7 +41,8 @@ There is a default conversion to text for date objects, but `Date.Format` gives 
     > = amer:tostring(d)
     04/10/2010
 
-With the 0.9.7 relase, the `Date` constructor has become more flexible. You may omit any of the 'year', 'month' or 'day' fields:
+With the 0.9.7 relase, the `Date` constructor has become more flexible. You may
+omit any of the 'year', 'month' or 'day' fields:
 
     > = Date { year = 2008 }
     2008-01-01 12:00:00
@@ -50,7 +55,8 @@ With the 0.9.7 relase, the `Date` constructor has become more flexible. You may 
 
 If 'year' is omitted, then the current year is assumed, and likewise for 'month'.
 
-To set the time on such a partial date, you can use the fact that the 'setter' methods return the date object and so you can 'chain' these methods.
+To set the time on such a partial date, you can use the fact that the 'setter'
+methods return the date object and so you can 'chain' these methods.
 
     > d = Date { day = 03 }
     > = d:hour(18):min(30)
@@ -63,7 +69,10 @@ Finally, `Date` also now accepts positional arguments:
     > = Date(2011,10,3,18,30,23)
     2011-10-03 18:30:23
 
-`Date.format` has been extended. If you construct an instance without a pattern, then it will try to match against a set of known formats. This is useful for human-input dates since keeping to a strict format is not one of the strong points of users. It assumes that there will be a date, and then a date.
+`Date.format` has been extended. If you construct an instance without a pattern,
+then it will try to match against a set of known formats. This is useful for
+human-input dates since keeping to a strict format is not one of the strong
+points of users. It assumes that there will be a date, and then a date.
 
     > df = Date.Format()
     > = df:parse '5.30pm'
@@ -85,12 +94,14 @@ Finally, `Date` also now accepts positional arguments:
     > = df:parse '2008-10-03 15:30:23'
     2008-10-03 15:30:23
 
-ISO date format is of course a good idea if you need to deal with users from different countries. Here is the default behaviour for 'short' dates:
+ISO date format is of course a good idea if you need to deal with users from
+different countries. Here is the default behaviour for 'short' dates:
 
     > = df:parse '24/02/12'
     2012-02-24 12:00:00
 
-That's not what Americans expect! It's tricky to work out in a cross-platform way exactly what the expected format is, so there is an explicit flag:
+That's not what Americans expect! It's tricky to work out in a cross-platform way
+exactly what the expected format is, so there is an explicit flag:
 
     > df:US_order(true)
     > = df:parse '9/11/01'

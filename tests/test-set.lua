@@ -108,7 +108,6 @@ o1:update(o2)
 asserteq(tostring(o1),'{z=4,beta=1.1,name="alice",extra="dolly"}')
 
 o1:set('beta',nil)
-
 asserteq(o1,OrderedMap{{z=4},{name='alice'},{extra='dolly'}})
 
 o3 = OrderedMap()
@@ -155,6 +154,22 @@ asserteq(tostring(o3),'{mouse=30,cat=21,bird=5}')
 o3:insert(3,'alligator')
 asserteq(tostring(o3),'{mouse=30,cat=21,bird=5}')
 
+---- short-cut notation
+
+o5 = OrderedMap()
+o5.alpha = 1
+o5.beta = 2
+o5.gamma = 3
+
+asserteq(o5,OrderedMap{{alpha=1},{beta=2},{gamma=3}})
+
+o5.alpha = 10
+o5.beta = 20
+o5.gamma = 30
+o5.delta = 40
+o5.checked = false
+
+asserteq(o5,OrderedMap{{alpha=10},{beta=20},{gamma=30},{delta=40},{checked=false}})
 
 
 

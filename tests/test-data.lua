@@ -210,7 +210,11 @@ Time Message
 -- else into one field
 local Date = require 'pl.Date'
 
-d = data.read(f,{convert={[1]=Date},last_field_collect=true})
+local function date_convert (ds)
+    return Date(tonumber(ds))
+end
+
+d = data.read(f,{convert={[1]=date_convert},last_field_collect=true})
 
 asserteq(#d[1],2)
-asserteq(d[2][1]:year(),2012)
+asserteq(d[2][1]:year(),2010)
