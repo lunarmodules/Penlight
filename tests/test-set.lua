@@ -23,6 +23,22 @@ asserteq(S{1,2} ^ S{2,3}, S{1,3})
 --asserteq(tostring(S{1,2}),'[1,2]')
 --asserteq(tostring(S{1,S{2,3}}),'[1,[2,3]]')
 
+s3 = S()
+asserteq(S.isempty(s3),true)
+
+s4 = S{1,2,3}
+
+-- subsets/supersets
+asserteq(s4 > s1,true)
+
+-- union and intersection
+asserteq(S{1,2}+S{2,3},S{1,2,3})
+asserteq(S{1,2}*S{2,3},S{2})
+
+S.set(s3,'one',true)
+s3.two = true
+asserteq(s3,S{'one','two'})
+
 m = M{one=1,two=2}
 asserteq(m,M{one=1,two=2})
 m:update {three=3,four=4}

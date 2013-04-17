@@ -43,6 +43,7 @@ end
 -- @class function
 -- @name Set
 function Set:_init (t)
+    t = t or {}
     local mt = getmetatable(t)
     if mt == Set or mt == Map then
         for k in pairs(t) do self[k] = true end
@@ -120,12 +121,12 @@ function Set.issubset (self,set)
     end
     return true
 end
-Set.__lt = Set.subset
+Set.__lt = Set.issubset
 
 --- is the set empty?.
 -- @param self a Set
 -- @return true or false
-function Set.issempty (self)
+function Set.isempty (self)
     return next(self) == nil
 end
 
