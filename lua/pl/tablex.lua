@@ -333,7 +333,7 @@ function tablex.transform (fun,t,...)
     assert_arg_iterable(1,t)
     fun = function_arg(1,fun)
     for k,v in pairs(t) do
-        t[v] = fun(v,...)
+        t[k] = fun(v,...)
     end
 end
 
