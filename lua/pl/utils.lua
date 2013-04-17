@@ -370,6 +370,20 @@ function utils.is_integer (x)
     return math.ceil(x)==x
 end
 
+--- Check if the object is "empty".
+-- An object is considered empty if it is nil, a table with out any items (key,
+-- value pairs or indexes), or a string with no content ("").
+-- @param o The object to check if it is empty.
+-- @param ignore_spaces If the object is a string and this is true the string is
+-- considered empty is it only contains spaces.
+-- @return true if the object is empty, otherwise false.
+function utils.is_empty(o, ignore_spaces)
+	if o == nil or (type(o) == "table" and not next(o)) or (type(o) == "string" and (o == "" or (ignore_spaces and o:match("^%s+$")))) then
+		return true
+	end
+	return false
+end
+
 utils.stdmt = {
     List = {_name='List'}, Map = {_name='Map'},
     Set = {_name='Set'}, MultiMap = {_name='MultiMap'}
