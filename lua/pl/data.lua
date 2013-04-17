@@ -282,6 +282,7 @@ function data.read(file,cnfg)
     elseif type(cnfg.fieldnames) == 'string' then
         cnfg.fieldnames = split(cnfg.fieldnames,delim,csv)
     end
+    local nfields
     -- at this point, the column headers have been read in. If the first
     -- row consisted of numbers, it has already been added to the dataset.
     if cnfg.fieldnames then

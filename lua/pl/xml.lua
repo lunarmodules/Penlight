@@ -292,7 +292,7 @@ end
 function Doc:matching_tags(tag, xmlns)
     xmlns = xmlns or self.attr.xmlns;
     local tags = self;
-    local start_i, max_i = 1, #tags;
+    local start_i, max_i, v = 1, #tags;
     return function ()
             for i=start_i,max_i do
                 v = tags[i];
@@ -302,7 +302,7 @@ function Doc:matching_tags(tag, xmlns)
                     return v;
                 end
             end
-        end, tags, i;
+        end, tags, start_i;
 end
 
 --- iterate over all child elements of a document node.
