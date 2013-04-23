@@ -407,15 +407,41 @@ asserteq(out,[[
    </country>
  </serviceprovider>]])
 
+----- HTML is a degenerate form of XML ;)
+-- attribute values don't need to be quoted, tags are case insensitive,
+-- and some are treated as self-closing
 xml.parsehtml = true
 doc = parse [[
-<BODY>
+<BODY a=1>
 Hello dolly<br>
 HTML is <b>slack</b><br>
 </BODY>
 ]]
 
 asserteq(xml.tostring(doc),[[
-<body>
+<body a='1'>
 Hello dolly<br/>
 HTML is <b>slack</b><br/></body>]])
+
+xml.parsehtml = false
+
+-- test attribute order
+
+local test_attrlist = xml.new('AttrList',{
+   Attr3="Value3",
+    ['Attr1'] = "Value1",
+    ['Attr2'] = "Value2",
+    [1] = 'Attr1', [2] = 'Attr2', [3] = 'Attr3'
+})
+asserteq(
+xml.tostring(test_attrlist),
+"<AttrList Attr1='Value1' Attr2='Value2' Attr3='Value3'/>"
+)
+
+str = [[
+<frodo>
+Baggins is <i a='1' b='2'>his</i> name
+</frodo>]]
+
+doc = parse(str)
+asserteq(xml.tostring(doc),str)

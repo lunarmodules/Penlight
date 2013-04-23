@@ -355,15 +355,23 @@ local function _dostring(t, buf, self, xml_escape, parentns, idn, indent, attr_i
     if indent then lf = '\n'..idn end
     if attr_indent then alf = '\n'..idn..attr_indent end
     t_insert(buf, lf.."<"..tag);
-    for k, v in pairs(t.attr) do
-        if type(k) ~= 'number' then -- LOM attr table has list-like part
-            if s_find(k, "\1", 1, true) then
-                local ns, attrk = s_match(k, "^([^\1]*)\1?(.*)$");
-                nsid = nsid + 1;
-                t_insert(buf, " xmlns:ns"..nsid.."='"..xml_escape(ns).."' ".."ns"..nsid..":"..attrk.."='"..xml_escape(v).."'");
-            elseif not(k == "xmlns" and v == parentns) then
-                t_insert(buf, alf..k.."='"..xml_escape(v).."'");
-            end
+    local function write_attr(k,v)
+        if s_find(k, "\1", 1, true) then
+            local ns, attrk = s_match(k, "^([^\1]*)\1?(.*)$");
+            nsid = nsid + 1;
+            t_insert(buf, " xmlns:ns"..nsid.."='"..xml_escape(ns).."' ".."ns"..nsid..":"..attrk.."='"..xml_escape(v).."'");
+        elseif not(k == "xmlns" and v == parentns) then
+            t_insert(buf, alf..k.."='"..xml_escape(v).."'");
+        end
+    end
+    -- it's useful for testing to have predictable attribute ordering, if available
+    if #t.attr > 0 then
+        for _,k in ipairs(t.attr) do
+            write_attr(k,t.attr[k])
+        end
+    else
+        for k, v in pairs(t.attr) do
+            write_attr(k,v)
         end
     end
     local len,has_children = #t;
@@ -485,7 +493,6 @@ local html_empty_elements = { --lists all HTML empty (void) elements
 	br      = true,
 	img     = true,
 	meta    = true,
-	META    = true,
 	frame   = true,
 	area    = true,
 	hr      = true,
@@ -495,6 +502,8 @@ local html_empty_elements = { --lists all HTML empty (void) elements
 	input   = true,
 	option  = true,
 	param   = true,
+    isindex = true,
+    embed = true,
 }
 
 local escapes = { quot = "\"", apos = "'", lt = "<", gt = ">", amp = "&" }
@@ -554,7 +563,7 @@ function _M.basic_parse(s,all_text)
         error("nothing to close with "..label)
       end
       if toclose.tag ~= label then
-        error("trying to close "..toclose.tag.." with "..label)
+        error("trying to close "..toclose.tag.." with "..label.." "..text)
       end
       t_insert(top, toclose)
     end
