@@ -535,37 +535,48 @@ function _M.basic_parse(s,all_text)
   local stack = {}
   local top = {}
   t_insert(stack, top)
-  local ni,c,label,xarg, empty
+  local ni,c,label,xarg, empty, _
   local i, j = 1, 1
   -- we're not interested in <?xml version="1.0"?>
   local _,istart = s_find(s,'^%s*<%?[^%?]+%?>%s*')
   if istart then i = istart+1 end
   while true do
-    ni,j,c,label,xarg, empty = s_find(s, "<(%/?)([%w:%-_]+)(.-)(%/?)>", i)
+    ni,j,c,label,xarg, empty = s_find(s, "<([%/!]?)([%w:%-_]+)(.-)(%/?)>", i)
     if not ni then break end
-    local text = s_sub(s, i, ni-1)
-    if html then
-      label = label:lower()
-      if html_empty_elements[label] then empty = "/" end
-    end
-    if all_text or not s_find(text, "^%s*$") then
-       t_insert(top, unescape(text))
-    end
-    if empty == "/" then  -- empty element tag
-      t_insert(top, setmetatable({tag=label, attr=parseargs(xarg), empty=1},Doc))
-    elseif c == "" then   -- start tag
-      top = setmetatable({tag=label, attr=parseargs(xarg)},Doc)
-      t_insert(stack, top)   -- new level
-    else  -- end tag
-      local toclose = t_remove(stack)  -- remove top
-      top = stack[#stack]
-      if #stack < 1 then
-        error("nothing to close with "..label)
-      end
-      if toclose.tag ~= label then
-        error("trying to close "..toclose.tag.." with "..label.." "..text)
-      end
-      t_insert(top, toclose)
+    if c == "!" then -- comment
+        -- case where there's no space inside comment
+        if not (label:match '%-%-$' and xarg == '') then
+            if xarg:match '%-%-$' then -- we've grabbed it all
+                j = j - 2
+            end
+            -- match end of comment
+            _,j = s_find(s, "-->", j, true)
+        end
+    else
+        local text = s_sub(s, i, ni-1)
+        if html then
+          label = label:lower()
+          if html_empty_elements[label] then empty = "/" end
+        end
+        if all_text or not s_find(text, "^%s*$") then
+           t_insert(top, unescape(text))
+        end
+        if empty == "/" then  -- empty element tag
+          t_insert(top, setmetatable({tag=label, attr=parseargs(xarg), empty=1},Doc))
+        elseif c == "" then   -- start tag
+          top = setmetatable({tag=label, attr=parseargs(xarg)},Doc)
+          t_insert(stack, top)   -- new level
+        else  -- end tag
+          local toclose = t_remove(stack)  -- remove top
+          top = stack[#stack]
+          if #stack < 1 then
+            error("nothing to close with "..label..':'..text)
+          end
+          if toclose.tag ~= label then
+            error("trying to close "..toclose.tag.." with "..label.." "..text)
+          end
+          t_insert(top, toclose)
+        end
     end
     i = j+1
   end

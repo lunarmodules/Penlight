@@ -438,10 +438,16 @@ xml.tostring(test_attrlist),
 "<AttrList Attr1='Value1' Attr2='Value2' Attr3='Value3'/>"
 )
 
+---- commments ----
 str = [[
-<frodo>
-Baggins is <i a='1' b='2'>his</i> name
-</frodo>]]
-
+<hello>
+<!-- any <i>momentous</i> stuff here -->
+dolly
+</hello>
+]]
 doc = parse(str)
-asserteq(xml.tostring(doc),str)
+asserteq(xml.tostring(doc),[[
+<hello>
+dolly
+</hello>]])
+
