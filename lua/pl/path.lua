@@ -33,9 +33,21 @@ end
 attrib = attributes
 path.attrib = attrib
 path.link_attrib = link_attrib
+
+--- Lua iterator over the entries of a given directory.
+-- The [lfs.dir](http://keplerproject.github.io/luafilesystem/manual.html) function, exported for convenience.
 path.dir = lfs.dir
+
+--- Creates a directory. 
+-- The [lfs.mkdir](http://keplerproject.github.io/luafilesystem/manual.html) function, exported for convenience.
 path.mkdir = lfs.mkdir
+
+--- Removes a directory.
+-- The [lfs.rmdir](http://keplerproject.github.io/luafilesystem/manual.html) function, exported for convenience.
 path.rmdir = lfs.rmdir
+
+--- Changes the working directory.
+-- The [lfs.chdir](http://keplerproject.github.io/luafilesystem/manual.html) function, exported for convenience.
 path.chdir = lfs.chdir
 
 --- is this a directory?
