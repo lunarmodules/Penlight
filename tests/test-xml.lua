@@ -423,6 +423,19 @@ asserteq(xml.tostring(doc),[[
 Hello dolly<br/>
 HTML is <b>slack</b><br/></body>]])
 
+doc = parse [[
+<!DOCTYPE html>
+<html lang=en>
+<head><!--head man-->
+</head>
+<body>
+</body>
+</html>
+]]
+
+asserteq(xml.tostring(doc),"<html lang='en'><head/><body/></html>")
+
+
 xml.parsehtml = false
 
 -- test attribute order

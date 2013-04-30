@@ -535,10 +535,13 @@ function _M.basic_parse(s,all_text)
   local stack = {}
   local top = {}
   t_insert(stack, top)
-  local ni,c,label,xarg, empty, _
+  local ni,c,label,xarg, empty, _, istart
   local i, j = 1, 1
-  -- we're not interested in <?xml version="1.0"?>
-  local _,istart = s_find(s,'^%s*<%?[^%?]+%?>%s*')
+  if not html then -- we're not interested in <?xml version="1.0"?>
+    _,istart = s_find(s,'^%s*<%?[^%?]+%?>%s*')
+  else -- or <!DOCTYPE ...>
+    _,istart = s_find(s,'^%s*<!DOCTYPE.->%s*')
+  end
   if istart then i = istart+1 end
   while true do
     ni,j,c,label,xarg, empty = s_find(s, "<([%/!]?)([%w:%-_]+)(.-)(%/?)>", i)
