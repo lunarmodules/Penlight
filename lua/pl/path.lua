@@ -357,10 +357,10 @@ end
 
 
 ---Return a suitable full path to a new temporary file name.
--- unlike os.tmpnam(), it always gives you a writeable path (uses %TMP% on Windows)
+-- unlike os.tmpnam(), it always gives you a writeable path (uses TEMP environment variable on Windows)
 function path.tmpname ()
     local res = tmpnam()
-    if path.is_windows then res = getenv('TMP')..res end
+    if path.is_windows then res = getenv('TEMP')..res end
     return res
 end
 
