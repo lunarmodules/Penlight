@@ -307,14 +307,14 @@ function utils.executeex(cmd)
 
   local outcontent, errcontent, fh
   
-  fh = io.open(outfile)
+  fh = io.open(outfile, "rb")
   if fh then
     outcontent = fh:read("*a")
     fh:close()
   end
   os.remove(outfile)
   
-  fh = io.open(errfile)
+  fh = io.open(errfile, "rb")
   if fh then
     errcontent = fh:read("*a")
     fh:close()
