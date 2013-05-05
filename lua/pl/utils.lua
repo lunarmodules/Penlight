@@ -287,15 +287,18 @@ end
 --- execute a shell command and return the output.
 -- This function redirects the output to tempfiles and returns the content of those files.
 -- @param cmd a shell command
+-- @param bin boolean, if true, read as binary file ('rb'), otherwise as text ('r')
 -- @return true if successful
 -- @return actual return code
 -- @return stdout output (string)
 -- @return errout output (string)
-function utils.executeex(cmd)
+function utils.executeex(cmd, bin)
+  local mode
   local outfile = os.tmpname()
   local errfile = os.tmpname()
 	os.remove(outfile)
 	os.remove(errfile)
+  if bin then mode = "rb" else mode = "r" end
   
   if is_windows then 
     outfile = os.getenv('TEMP')..outfile
@@ -307,14 +310,14 @@ function utils.executeex(cmd)
 
   local outcontent, errcontent, fh
   
-  fh = io.open(outfile, "rb")
+  fh = io.open(outfile, mode)
   if fh then
     outcontent = fh:read("*a")
     fh:close()
   end
   os.remove(outfile)
   
-  fh = io.open(errfile, "rb")
+  fh = io.open(errfile, mode)
   if fh then
     errcontent = fh:read("*a")
     fh:close()
