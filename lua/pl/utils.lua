@@ -21,6 +21,7 @@ if not lua51 then -- Lua 5.2 compatibility
 end
 
 utils.dir_separator = _G.package.config:sub(1,1)
+local is_windows = utils.dir_separator == '\\'
 
 --- end this program gracefully.
 -- @param code The exit code or a message to be printed
@@ -281,6 +282,33 @@ function utils.execute (cmd)
     else
         return res1,res2
     end
+end
+
+--- execute a shell command and return the output.
+-- This function redirects the output to tempfiles and returns the content of those files.
+-- @param cmd a shell command
+-- @param bin boolean, if true, read output as binary file
+-- @return true if successful
+-- @return actual return code
+-- @return stdout output (string)
+-- @return errout output (string)
+function utils.executeex(cmd, bin)
+  local mode
+  local outfile = os.tmpname()
+  local errfile = os.tmpname()
+  
+  if is_windows then 
+    outfile = os.getenv('TEMP')..outfile
+    errfile = os.getenv('TEMP')..errfile
+  end
+  cmd = cmd .. [[ >"]]..outfile..[[" 2>"]]..errfile..[["]]
+  
+	local success, retcode = utils.execute(cmd)
+  local outcontent = utils.readfile(outfile, bin)
+  local errcontent = utils.readfile(errfile, bin)
+  os.remove(outfile)
+  os.remove(errfile)
+  return success, retcode, (outcontent or ""), (errcontent or "")
 end
 
 if lua51 then
