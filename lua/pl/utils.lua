@@ -287,7 +287,7 @@ end
 --- execute a shell command and return the output.
 -- This function redirects the output to tempfiles and returns the content of those files.
 -- @param cmd a shell command
--- @param bin boolean, if true, read as binary file ('rb'), otherwise as text ('r')
+-- @param bin boolean, if true, read output as binary file
 -- @return true if successful
 -- @return actual return code
 -- @return stdout output (string)
@@ -296,9 +296,6 @@ function utils.executeex(cmd, bin)
   local mode
   local outfile = os.tmpname()
   local errfile = os.tmpname()
-	os.remove(outfile)
-	os.remove(errfile)
-  if bin then mode = "rb" else mode = "r" end
   
   if is_windows then 
     outfile = os.getenv('TEMP')..outfile
@@ -307,23 +304,10 @@ function utils.executeex(cmd, bin)
   cmd = cmd .. [[ >"]]..outfile..[[" 2>"]]..errfile..[["]]
   
 	local success, retcode = utils.execute(cmd)
-
-  local outcontent, errcontent, fh
-  
-  fh = io.open(outfile, mode)
-  if fh then
-    outcontent = fh:read("*a")
-    fh:close()
-  end
+  local outcontent = utils.readfile(outfile, bin)
+  local errcontent = utils.readfile(errfile, bin)
   os.remove(outfile)
-  
-  fh = io.open(errfile, mode)
-  if fh then
-    errcontent = fh:read("*a")
-    fh:close()
-  end
   os.remove(errfile)
-
   return success, retcode, (outcontent or ""), (errcontent or "")
 end
 
