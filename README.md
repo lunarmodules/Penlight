@@ -1,6 +1,6 @@
-Penlight Lua Libraries
+#Penlight Lua Libraries
 
-1. Why a new set of libraries?
+##Why a new set of libraries?
 
 Penlight brings together a set of generally useful pure Lua modules,
 focussing on input data handling (such as reading configuration files),
@@ -8,13 +8,13 @@ functional programming (such as map, reduce, placeholder expressions,etc),
 and OS path management.  Much of the functionality is inspired by the
 Python standard libraries.
 
-2. Requirements
+##Requirements
 
 The file and directory functions depend on LuaFileSystem (lfs). If you want
 dir.copyfile to work elegantly on Windows, then you need Alien. (Both are
 present in Lua for Windows.)
 
-3. Known Issues
+##Known Issues
 
 Error handling is still hit and miss.
 
@@ -23,7 +23,7 @@ which is not an ideal ratio.
 
 Formal documentation for comprehension and luabalanced is missing.
 
-4. Installation
+##Installation
 
 The directory structure is
 
@@ -48,7 +48,7 @@ With Lua for Windows,  if LUA stands for 'c:\Program Files\Lua\5.1',
 then pl goes into LUA\lua, docs goes into LUA\examples\penlight and
 both examples and tests goes into LUA\examples
 
-5. Building the Documentation
+##Building the Documentation
 
 The Users Guide is processed by markdown.lua. If you like the section headers,
 you'll need to download my modified version:
@@ -60,9 +60,9 @@ and use markdown.
 
 gen_modules.bat does the LuaDoc stuff.
 
-6. What's new with 0.8b ?
+###What's new with 0.8b ?
 
-Features:
+####Features:
 
 pl.app provides useful stuff like simple command-line argument parsing and require_here(), which 
 makes subsequent require() calls look in the local directory by preference.
@@ -81,7 +81,7 @@ utils.readfile,writefile now insist on being given filenames. This will cause le
 tablex.search() is new: will look recursively in an arbitrary table; can specify tables not to follow.
 tablex.move() will work with source and destination tables the same, with overlapping ranges.
 
-Bug Fixes:
+####Bug Fixes:
 
 dir.copyfile() now works fine without Alien on Windows
 
@@ -90,9 +90,9 @@ dir.makepath() and rmtree() had problems.
 tablex.compare_no_order() is now O(NlogN), as expected.
 tablex.move() had a problem with source size
 
-7. What's New with 0.7.0b?
+###What's New with 0.7.0b?
 
-Features:
+####Features:
 
 utils.is_type(v,tp) can say is_type(s,'string') and is_type(l,List).
 utils.is_callable(v) either a function, or has a __call metamethod.
@@ -128,7 +128,7 @@ and attempts to be paranoid about its contents.
 
 sip.match_at_start(). Convenience function for anchored SIP matches.
 
-Bug Fixes:
+####Bug Fixes:
 
 tablex.deepcompare() was confused by false boolean values, which
 it thought were synonymous with being nil.
@@ -146,7 +146,7 @@ table arguments.
 dir.copyfile() returns the wrong result for *nix operations.
 dir.makepath() was broken for non-Windows paths.
 
-8. What's New with 0.6.3?
+###What's New with 0.6.3?
 
 The map and reduce functions now take the function first, as Nature intended.
 
