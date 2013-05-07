@@ -1,5 +1,5 @@
-Contributing to Busted
-======================
+Contributing to Penlight
+========================
 
 So you want to contribute to Penlight? Fantastic! Here's a brief overview on
 how best to do so.
