@@ -79,7 +79,6 @@ local extended = [[
 ]]
 
 
-
 check(extended,{},{foo='1',speed='medium',n=1,p=false,v=false})
 check(extended,{'-pv'},{foo='1',speed='medium',n=1,p=true,v=true})
 check(extended,{'--foo','2','-s','fast'},{foo='2',speed='fast',n=1,p=false,v=false})
@@ -98,6 +97,7 @@ local with_dashes = [[
 
 check(with_dashes,{'--first-dash'},{first_dash=true,second_dash=false})
 
+-- optional parameters don't have to be set
 local optional = [[
   -p (optional string)
 ]]
@@ -105,10 +105,19 @@ local optional = [[
 check(optional,{'-p', 'test'},{p='test'})
 check(optional,{},{})
 
+-- boolean flags may have a true default...
+local false_flag = [[
+    -g group results
+    -f (default true) force result
+]]
+
+check (false_flag,{},{f=true,g=false})
+
 local addtype = [[
   -l (intlist) List of items
 ]]
 
+-- defining a custom type
 lapp.add_type('intlist',
               function(x)
                  return tablex.imap(tonumber, utils.split(x, '%s*,%s*'))
@@ -122,3 +131,4 @@ lapp.add_type('intlist',
 check(addtype,{'-l', '1,2,3'},{l={1,2,3}})
 
 check_error(addtype,{'-l', '1.5,2,3'},"not an integer!")
+

@@ -143,6 +143,7 @@ local function force_short(short)
     lapp.assert(#short==1,short..": short parameters should be one character")
 end
 
+-- deducing type of variable from default value;
 local function process_default (sval,vtype)
     local val
     if not vtype or vtype == 'number' then
@@ -154,6 +155,9 @@ local function process_default (sval,vtype)
         local ft = filetypes[sval]
         return ft[1],ft[2]
     else
+        if sval == 'true' and not vtype then
+            return true, 'boolean'
+        end
         if sval:match '^["\']' then sval = sval:sub(2,-2) end
         return sval,vtype or 'string'
     end
