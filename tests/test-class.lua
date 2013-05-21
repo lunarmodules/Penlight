@@ -22,6 +22,10 @@ function B:_init ()
     self.b = 2
 end
 
+function B:foo ()
+    self.eee = 1
+end
+
 asserteq(B(),{a=1,b=2})
 
 -- can continue this chain
@@ -32,6 +36,16 @@ function C:_init ()
     self:super()
     self.c = 3
 end
+
+function C:foo ()
+    self:base('foo')
+    self:base():foo()  -- more convenient, but also more expensive
+end
+
+c = C()
+c:foo()
+
+asserteq(c,{a=1,b=2,c=3,eee=1})
 
 --- metamethods!
 
