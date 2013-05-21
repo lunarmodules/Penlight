@@ -117,7 +117,7 @@ local d = parse(joburg)
 
 function match(t,xpect)
     local res,ret = d:match(t)
-    asserteq(res,xpect)
+    asserteq(res,xpect,0,1) ---> note extra level, so we report on calls to this function!
 end
 
 t1 = [[
@@ -383,6 +383,29 @@ asserteq(res,{
   apn = "internet"
 })
 
+d = parse[[
+<params>
+<param>
+  <name>XXX</name>
+  <value></value>
+</param>
+<param>
+  <name>YYY</name>
+  <value>1</value>
+</param>
+</params>
+]]
+
+match([[
+<params>
+{{<param>
+    <name>$_</name>
+    <value>$0</value>
+</param>}}
+</params>
+]],{XXX = '',YYY = '1'})
+
+
 -- can always use xmlification to generate your templates...
 
 local SP, country, provider, gsm, apn, dns = xml.tags 'serviceprovider, country, provider, gsm, apn, dns'
@@ -436,6 +459,7 @@ doc = parse [[
 asserteq(xml.tostring(doc),"<html lang='en'><head/><body/></html>")
 
 
+
 xml.parsehtml = false
 
 -- test attribute order
@@ -463,4 +487,5 @@ asserteq(xml.tostring(doc),[[
 <hello>
 dolly
 </hello>]])
+
 
