@@ -354,7 +354,6 @@ end
 -- @param p A directory path
 -- @return true on success, nil + errormsg on failure
 -- @raise failure to create
--- @raise p must be a string
 function dir.makepath (p)
     assert_string(1,p)
     return _makepath(path.normcase(path.abspath(p)))

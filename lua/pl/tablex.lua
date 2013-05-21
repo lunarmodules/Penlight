@@ -819,7 +819,7 @@ end
 
 --- return an iterator to a table sorted by its keys
 -- @param t the table
--- @param comp an optional comparison function (comp(x,y) is true if x < y)
+-- @param f an optional comparison function (f(x,y) is true if x < y)
 -- @usage for k,v in tablex.sort(t) do print(k,v) end
 -- @return an iterator to traverse elements sorted by the keys
 function tablex.sort(t,f)
@@ -835,7 +835,7 @@ end
 
 --- return an iterator to a table sorted by its values
 -- @param t the table
--- @param comp an optional comparison function (comp(x,y) is true if x < y)
+-- @param f an optional comparison function (f(x,y) is true if x < y)
 -- @usage for k,v in tablex.sortv(t) do print(k,v) end
 -- @return an iterator to traverse elements sorted by the values
 function tablex.sortv(t,f)
