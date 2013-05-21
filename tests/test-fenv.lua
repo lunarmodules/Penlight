@@ -3,6 +3,7 @@
 local utils = require 'pl.utils'
 local asserteq = require 'pl.test'.asserteq
 local _,lua = require 'pl.app'. lua()
+local setfenv,getfenv = utils.setfenv, utils.getfenv
 
 -- utils.execute is a compromise between 5.1 and 5.2 for os.execute changes
 -- can we call Lua ?

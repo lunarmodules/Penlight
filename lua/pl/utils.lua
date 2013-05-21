@@ -220,9 +220,8 @@ function utils.array_tostring (t,temp,tostr)
     return temp
 end
 
-local lua51_load = load
-
 if utils.lua51 then -- define Lua 5.2 style load()
+    local lua51_load = load
     function utils.load(str,src,mode,env)
         local chunk,err
         if type(str) == 'string' then
@@ -233,6 +232,7 @@ if utils.lua51 then -- define Lua 5.2 style load()
         if chunk and env then setfenv(chunk,env) end
         return chunk,err
     end
+    utils.setfenv, utils.getfenv = setfenv, getfenv
 else
     utils.load = load
     -- setfenv/getfenv replacements for Lua 5.2
@@ -241,7 +241,7 @@ else
     -- Roberto Ierusalimschy notes that it is possible for getfenv to return nil
     -- in the case of a function with no globals:
     -- http://lua-users.org/lists/lua-l/2010-06/msg00315.html
-    function setfenv(f, t)
+    function utils.setfenv(f, t)
         f = (type(f) == 'function' and f or debug.getinfo(f + 1, 'f').func)
         local name
         local up = 0
@@ -256,7 +256,7 @@ else
         if f ~= 0 then return f end
     end
 
-    function getfenv(f)
+    function utils.getfenv(f)
         local f = f or 0
         f = (type(f) == 'function' and f or debug.getinfo(f + 1, 'f').func)
         local name, val
@@ -268,7 +268,6 @@ else
         return val
     end
 end
-
 
 --- execute a shell command.
 -- This is a compatibility function that returns the same for Lua 5.1 and Lua 5.2
@@ -296,13 +295,13 @@ function utils.executeex(cmd, bin)
   local mode
   local outfile = os.tmpname()
   local errfile = os.tmpname()
-  
-  if is_windows then 
+
+  if is_windows then
     outfile = os.getenv('TEMP')..outfile
     errfile = os.getenv('TEMP')..errfile
   end
   cmd = cmd .. [[ >"]]..outfile..[[" 2>"]]..errfile..[["]]
-  
+
 	local success, retcode = utils.execute(cmd)
   local outcontent = utils.readfile(outfile, bin)
   local errcontent = utils.readfile(errfile, bin)
@@ -311,11 +310,12 @@ function utils.executeex(cmd, bin)
   return success, retcode, (outcontent or ""), (errcontent or "")
 end
 
-if lua51 then
+if not table.pack then
     function table.pack (...)
-        local n = select('#',...)
-        return {n=n; ...}
+        return {n=select('#',...); ...}
     end
+end
+if not package.searchpath then
     local sep = package.config:sub(1,1)
     function package.searchpath (mod,path)
         mod = mod:gsub('%.',sep)
@@ -327,15 +327,8 @@ if lua51 then
     end
 end
 
-if not table.pack then table.pack = _G.pack end
-if not rawget(_G,"pack") then _G.pack = table.pack end
-
---- take an arbitrary set of arguments and make into a table.
--- This returns the table and the size; works fine for nil arguments
--- @param ... arguments
--- @return table
--- @return table size
--- @usage local t,n = utils.args(...)
+--if not table.pack then table.pack = _G.pack end
+--if not rawget(_G,"pack") then _G.pack = table.pack end
 
 --- 'memoize' a function (cache returned value for next call).
 -- This is useful if you have a function which is relatively expensive,
