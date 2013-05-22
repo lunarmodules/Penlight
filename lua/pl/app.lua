@@ -1,14 +1,12 @@
 --- Application support functions.
 -- See @{01-introduction.md.Application_Support|the Guide}
 --
--- Dependencies: `pl.utils`, `pl.path`, `lfs`
+-- Dependencies: `pl.utils`, `pl.path`
 -- @module pl.app
 
 local io,package,require = _G.io, _G.package, _G.require
 local utils = require 'pl.utils'
 local path = require 'pl.path'
-local lfs = require 'lfs'
-
 
 local app = {}
 
@@ -28,7 +26,7 @@ end
 function app.require_here (base)
     local p = path.dirname(check_script_name())
     if not path.isabs(p) then
-        p = path.join(lfs.currentdir(),p)
+        p = path.join(path.currentdir(),p)
     end
     if p:sub(-1,-1) ~= path.sep then
         p = p..path.sep
@@ -55,7 +53,7 @@ function app.appfile (file)
     local name,ext = path.splitext(sname)
     local dir = path.join(path.expanduser('~'),'.'..name)
     if not path.isdir(dir) then
-        local ret = lfs.mkdir(dir)
+        local ret = path.mkdir(dir)
         if not ret then return utils.raise ('cannot create '..dir) end
     end
     return path.join(dir,file)
