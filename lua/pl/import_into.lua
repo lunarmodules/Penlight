@@ -33,7 +33,7 @@ return function(env)
 	    Date = true,
 	    -- classes --
 	}
-	env.utils = require 'pl.utils'
+	rawset(env,'utils',require 'pl.utils')
 
 	for name,klass in pairs(env.utils.stdmt) do
 	    klass.__index = function(t,key)

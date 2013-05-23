@@ -3,7 +3,7 @@ local test = require 'pl.test'
 -- if STRICT is true, then M is distinct from _ENV, and ONLY contains
 -- the exported functions!
 
-local _ENV,M = require 'pl.import_into' (STRICT)
+local _ENV,M = require 'pl.import_into' (rawget(_G,'STRICT'))
 
 function answer ()
     -- of course, you don't have the usual global environment available
