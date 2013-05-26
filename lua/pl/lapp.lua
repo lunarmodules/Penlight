@@ -121,7 +121,7 @@ local function convert_parameter(ps,val)
     elseif builtin_types[ps.type] == 'file' then
         val = lapp.open(val,(ps.type == 'file-in' and 'r') or 'w' )
     elseif ps.type == 'boolean' then
-        val = true
+        return val
     end
     if ps.constraint then
         ps.constraint(val)
@@ -272,7 +272,6 @@ function lapp.process_options_string(str,args)
                 if default or match('default $r{rest}',typespec,res) then
                     defval,vtype = process_default(res.rest,vtype)
                 end
-                --print('val',optparm,defval,vtype)
             else -- must be a plain flag, no extra parameter required
                 defval = false
                 vtype = 'boolean'
@@ -370,6 +369,8 @@ function lapp.process_options_string(str,args)
                 val = arg[i]
             end
             lapp.assert(val,parm.." was expecting a value")
+        else -- toggle boolean flags (usually false -> true)
+            val = not ps.defval
         end
         ps.used = true
         val = convert_parameter(ps,val)

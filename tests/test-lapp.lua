@@ -10,7 +10,7 @@ function check (spec,args,match)
     for k,v in pairs(args) do
         if type(v) == 'userdata' then args[k]:close(); args[k] = '<file>' end
     end
-    test.asserteq(args,match)
+    test.asserteq(args,match,nil,1)
 end
 
 -- force Lapp to throw an error, rather than just calling os.exit()
@@ -112,6 +112,8 @@ local false_flag = [[
 ]]
 
 check (false_flag,{},{f=true,g=false})
+
+check (false_flag,{'-g','-f'},{f=false,g=true})
 
 local addtype = [[
   -l (intlist) List of items
