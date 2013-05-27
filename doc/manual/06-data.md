@@ -1056,12 +1056,10 @@ that `$1` is the first element of the resulting array, etc.
 
 #### HTML Parsing
 
-HTML is an ususally slack dialect of XML, and Dennis Schridde has contributed
+HTML is an unusually slack dialect of XML, and Dennis Schridde has contributed
 a feature which makes parsing it easier.  For instance, from the tests:
 
-    xml.parsehtml = true
-
-    doc = xml.parse [[
+    doc = xml.parsehtml [[
     <BODY>
     Hello dolly<br>
     HTML is <b>slack</b><br>
@@ -1073,7 +1071,11 @@ a feature which makes parsing it easier.  For instance, from the tests:
     Hello dolly<br/>
     HTML is <b>slack</b><br/></body>]])
 
-That is, all tags are converted to lowercase, and some elements like `br`
-are properly closed.
+That is, all tags are converted to lowercase, and empty HTML elements like `br`
+are properly closed; attributes do not need to be quoted.
+
+Also, DOCTYPE directives and comments are skipped. For truly badly formed HTML,
+this is not the tool for you!
+
 
 

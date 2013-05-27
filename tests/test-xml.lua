@@ -433,8 +433,8 @@ asserteq(out,[[
 ----- HTML is a degenerate form of XML ;)
 -- attribute values don't need to be quoted, tags are case insensitive,
 -- and some are treated as self-closing
-xml.parsehtml = true
-doc = parse [[
+
+doc = xml.parsehtml [[
 <BODY a=1>
 Hello dolly<br>
 HTML is <b>slack</b><br>
@@ -446,7 +446,7 @@ asserteq(xml.tostring(doc),[[
 Hello dolly<br/>
 HTML is <b>slack</b><br/></body>]])
 
-doc = parse [[
+doc = xml.parsehtml [[
 <!DOCTYPE html>
 <html lang=en>
 <head><!--head man-->
@@ -458,9 +458,22 @@ doc = parse [[
 
 asserteq(xml.tostring(doc),"<html lang='en'><head/><body/></html>")
 
+-- note that HTML mode currently barfs if there isn't whitespace around things
+-- like '<' and '>' in scripts.
+doc = xml.parsehtml [[
+<html>
+<head>
+<script>function less(a,b) { return a < b; }</script>
+</head>
+<body>
+<h2>hello dammit</h2>
+</body>
+</html>
+]]
 
+script = doc:get_elements_with_name 'script'
+asserteq(script[1]:get_text(), 'function less(a,b) { return a < b; }')
 
-xml.parsehtml = false
 
 -- test attribute order
 

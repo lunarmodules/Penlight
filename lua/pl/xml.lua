@@ -509,89 +509,98 @@ local html_empty_elements = { --lists all HTML empty (void) elements
 local escapes = { quot = "\"", apos = "'", lt = "<", gt = ">", amp = "&" }
 local function unescape(str) return (str:gsub( "&(%a+);", escapes)); end
 
-local function parseargs(s)
-  local html = _M.parsehtml
-  local arg = {}
-  s:gsub("([%w:]+)%s*=%s*([\"'])(.-)%2", function (w, _, a)
-    if html then w = w:lower() end
-    arg[w] = unescape(a)
-  end)
-  if html then
-    s:gsub("([%w:]+)%s*=%s*([^\"']+)%s*", function (w, a)
-      w = w:lower()
-      arg[w] = unescape(a)
-    end)
-  end
-  return arg
+--- Parse a well-formed HTML file as a string.
+-- Tags are case-insenstive, DOCTYPE is ignored, and empty elements can be .. empty.
+-- @param s the HTML
+function _M.parsehtml (s)
+    return _M.basic_parse(s,false,true)
 end
 
 --- Parse a simple XML document using a pure Lua parser based on Robero Ierusalimschy's original version.
 -- @param s the XML document to be parsed.
 -- @param all_text  if true, preserves all whitespace. Otherwise only text containing non-whitespace is included.
-function _M.basic_parse(s,all_text)
-  local html = _M.parsehtml
-  local t_insert,t_remove = table.insert,table.remove
-  local s_find,s_sub = string.find,string.sub
-  local stack = {}
-  local top = {}
-  t_insert(stack, top)
-  local ni,c,label,xarg, empty, _, istart
-  local i, j = 1, 1
-  if not html then -- we're not interested in <?xml version="1.0"?>
-    _,istart = s_find(s,'^%s*<%?[^%?]+%?>%s*')
-  else -- or <!DOCTYPE ...>
-    _,istart = s_find(s,'^%s*<!DOCTYPE.->%s*')
-  end
-  if istart then i = istart+1 end
-  while true do
-    ni,j,c,label,xarg, empty = s_find(s, "<([%/!]?)([%w:%-_]+)(.-)(%/?)>", i)
-    if not ni then break end
-    if c == "!" then -- comment
-        -- case where there's no space inside comment
-        if not (label:match '%-%-$' and xarg == '') then
-            if xarg:match '%-%-$' then -- we've grabbed it all
-                j = j - 2
-            end
-            -- match end of comment
-            _,j = s_find(s, "-->", j, true)
-        end
-    else
-        local text = s_sub(s, i, ni-1)
-        if html then
-          label = label:lower()
-          if html_empty_elements[label] then empty = "/" end
-        end
-        if all_text or not s_find(text, "^%s*$") then
-           t_insert(top, unescape(text))
-        end
-        if empty == "/" then  -- empty element tag
-          t_insert(top, setmetatable({tag=label, attr=parseargs(xarg), empty=1},Doc))
-        elseif c == "" then   -- start tag
-          top = setmetatable({tag=label, attr=parseargs(xarg)},Doc)
-          t_insert(stack, top)   -- new level
-        else  -- end tag
-          local toclose = t_remove(stack)  -- remove top
-          top = stack[#stack]
-          if #stack < 1 then
-            error("nothing to close with "..label..':'..text)
-          end
-          if toclose.tag ~= label then
-            error("trying to close "..toclose.tag.." with "..label.." "..text)
-          end
-          t_insert(top, toclose)
-        end
+-- @param html if true, uses relaxed HTML rules for parsing
+function _M.basic_parse(s,all_text,html)
+    local t_insert,t_remove = table.insert,table.remove
+    local s_find,s_sub = string.find,string.sub
+    local stack = {}
+    local top = {}
+
+    local function parseargs(s)
+      local arg = {}
+      s:gsub("([%w:]+)%s*=%s*([\"'])(.-)%2", function (w, _, a)
+        if html then w = w:lower() end
+        arg[w] = unescape(a)
+      end)
+      if html then
+        s:gsub("([%w:]+)%s*=%s*([^\"']+)%s*", function (w, a)
+          w = w:lower()
+          arg[w] = unescape(a)
+        end)
+      end
+      return arg
     end
+
+    t_insert(stack, top)
+    local ni,c,label,xarg, empty, _, istart
+    local i, j = 1, 1
+    if not html then -- we're not interested in <?xml version="1.0"?>
+        _,istart = s_find(s,'^%s*<%?[^%?]+%?>%s*')
+    else -- or <!DOCTYPE ...>
+        _,istart = s_find(s,'^%s*<!DOCTYPE.->%s*')
+    end
+    if istart then i = istart+1 end
+    while true do
+        ni,j,c,label,xarg, empty = s_find(s, "<([%/!]?)([%w:%-_]+)(.-)(%/?)>", i)
+        if not ni then break end
+        if c == "!" then -- comment
+            -- case where there's no space inside comment
+            if not (label:match '%-%-$' and xarg == '') then
+                if xarg:match '%-%-$' then -- we've grabbed it all
+                    j = j - 2
+                end
+                -- match end of comment
+                _,j = s_find(s, "-->", j, true)
+            end
+        else
+            local text = s_sub(s, i, ni-1)
+            if html then
+                label = label:lower()
+                if html_empty_elements[label] then empty = "/" end
+                if label == 'script' then
+                end
+            end
+            if all_text or not s_find(text, "^%s*$") then
+                t_insert(top, unescape(text))
+            end
+            if empty == "/" then  -- empty element tag
+                t_insert(top, setmetatable({tag=label, attr=parseargs(xarg), empty=1},Doc))
+            elseif c == "" then   -- start tag
+                top = setmetatable({tag=label, attr=parseargs(xarg)},Doc)
+                t_insert(stack, top)   -- new level
+            else  -- end tag
+                local toclose = t_remove(stack)  -- remove top
+                top = stack[#stack]
+                if #stack < 1 then
+                    error("nothing to close with "..label..':'..text)
+                end
+                if toclose.tag ~= label then
+                    error("trying to close "..toclose.tag.." with "..label.." "..text)
+                end
+                t_insert(top, toclose)
+            end
+        end
     i = j+1
-  end
-  local text = s_sub(s, i)
-  if all_text or  not s_find(text, "^%s*$") then
-    t_insert(stack[#stack], unescape(text))
-  end
-  if #stack > 1 then
-    error("unclosed "..stack[#stack].tag)
-  end
-  local res = stack[1]
-  return type(res[1])=='string' and res[2] or res[1]
+    end
+    local text = s_sub(s, i)
+    if all_text or  not s_find(text, "^%s*$") then
+        t_insert(stack[#stack], unescape(text))
+    end
+    if #stack > 1 then
+        error("unclosed "..stack[#stack].tag)
+    end
+    local res = stack[1]
+    return type(res[1])=='string' and res[2] or res[1]
 end
 
 local function empty(attr) return not attr or not next(attr) end
