@@ -59,7 +59,7 @@ function strict.module (name,mod,predeclared)
         rawset(t, n, v)
     end
     mt.__index = function(t,n)
-        if not mt.__declared[n] then
+        if not mt.__declared[n] and what() ~= "C" then
             if old_index then
                 local res = old_index(t, n)
                 if res then return res end
