@@ -399,9 +399,11 @@ end
 --- @param idn an initial indent (indents are all strings)
 --- @param indent an indent for each level
 --- @param attr_indent if given, indent each attribute pair and put on a separate line
+--- @param xml force prefacing with <?xml...>
 --- @return a string representation
-function _M.tostring(t,idn,indent, attr_indent)
+function _M.tostring(t,idn,indent, attr_indent, xml)
     local buf = {};
+    if xml then buf[1] = "<?xml version='1.0'?>" end
     _dostring(t, buf, _dostring, xml_escape, nil,idn,indent, attr_indent);
     return t_concat(buf);
 end
