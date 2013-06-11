@@ -4,13 +4,16 @@
 --    B = class(A)
 --    class.B(A)
 --
--- The latter form creates a named class.
+-- The latter form creates a named class within the current environment. Note
+-- that this implicitly brings in `pl.utils` as a dependency.
 --
 -- See the Guide for further @{01-introduction.md.Simplifying_Object_Oriented_Programming_in_Lua|discussion}
 -- @module pl.class
 
 local error, getmetatable, io, pairs, rawget, rawset, setmetatable, tostring, type =
     _G.error, _G.getmetatable, _G.io, _G.pairs, _G.rawget, _G.rawset, _G.setmetatable, _G.tostring, _G.type
+local utils
+
 -- this trickery is necessary to prevent the inheritance of 'super' and
 -- the resulting recursive call problems.
 local function call_ctor (c,obj,...)
@@ -151,7 +154,8 @@ class = setmetatable({},{
             io.stderr:write('require("pl.class").class is deprecated. Use require("pl.class")\n')
             return class
         end
-        local env = _G
+        utils = utils or require 'pl.utils'
+        local env = utils.getfenv(2) --_G
         return function(...)
             local c = _class(...)
             c._name = key

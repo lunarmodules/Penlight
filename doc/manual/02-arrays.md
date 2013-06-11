@@ -125,6 +125,19 @@ the other stack operation (size) is simply the size operator `#`.  Queues can
 also be implemented; you use `pop` to take values out of the queue, and `put` to
 insert a value at the begining.
 
+You may derive classes from `List`, and since the list-returning methods
+are covariant, the result of `slice` etc will return lists of the derived type,
+not `List`. For instance, consider the specialization of a `List` type that contains
+numbers in `tests/test-list.lua`:
+
+    n1 = NA{10,20,30}
+    n2 = NA{1,2,3}
+    ns = n1 + 2*n2
+    asserteq(ns,{12,24,36})
+    min,max = ns:slice(1,2):minmax()
+    asserteq(T(min,max),T(12,24))
+    asserteq(n1:normalize():sum(),1,1e-8)
+
 
 ### Map and Set classes
 

@@ -495,7 +495,30 @@ So `Alice = class(); Alice._name = 'Alice'` is exactly the same as `class.Alice(
 
 This useful notation is borrowed from Hugo Etchegoyen's
 [classlib](http://lua-users.org/wiki/MultipleInheritanceClasses) which further
-extends this concept to allow for multiple inheritance.
+extends this concept to allow for multiple inheritance. Notice that the
+more convenient form puts the class name in the _current environment_!
+
+There is always more than one way of doing things in Lua; some may prefer this
+style for creating classes:
+
+    local class = require 'pl.class'
+
+    class.Named {
+        _init = function(self,name)
+            self.name = name
+        end;
+
+        __tostring = function(self)
+            return 'boo '..self.name
+        end;
+    }
+
+    b = Named 'dog'
+    print(b)
+    --> boo dog
+
+Note that you have to explicitly declare `self` and end each function definition
+with a semi-colon or comma, since this is a Lua table.
 
 Penlight provides a number of useful classes; there is `List`, which is a Lua
 clone of the standard Python list object, and `Set` which represents sets. There
