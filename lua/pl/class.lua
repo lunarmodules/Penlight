@@ -4,7 +4,7 @@
 --    B = class(A)
 --    class.B(A)
 --
--- The latter form creates a named class.
+-- The latter form creates a named class (and a global).
 --
 -- See the Guide for further @{01-introduction.md.Simplifying_Object_Oriented_Programming_in_Lua|discussion}
 -- @module pl.class
@@ -29,6 +29,27 @@ local function call_ctor (c,obj,...)
     return res
 end
 
+--- initializes an __instance__ upon creation.
+-- @function class:_init
+-- @param ... parameters passed to the constructor
+-- @usage local Cat = class()
+-- function Cat:_init(name)
+--   --self:super(name)   -- call the ancestor initializer if needed
+--   self.name = name
+-- end
+-- 
+-- local pussycat = Cat("pussycat")
+-- print(pussycat.name)  --> pussycat
+
+--- checks whether an __instance__ is derived from some class.
+-- Works the other way around as `class_of`.
+-- @function instance:is_a
+-- @param some_class class to check against
+-- @return `true` if the __instance__ is derived from `some_class`
+-- @usage local pussycat = Lion()  -- assuming Lion derives from Cat
+-- if pussycat:is_a(Cat) then
+--   -- it's true
+-- end
 local function is_a(self,klass)
     local m = getmetatable(self)
     if not m then return false end --*can't be an object!
@@ -39,11 +60,37 @@ local function is_a(self,klass)
     return false
 end
 
+--- checks whether an __instance__ is derived from some class.
+-- Works the other way around as `is_a`.
+-- @function class:class_of
+-- @param some_instance instance to check against
+-- @return `true` if the __instance__ is derived from `class`
+-- @usage local pussycat = Lion()  -- assuming Lion derives from Cat
+-- if Cat:class_of(pussycat) then
+--   -- it's true
+-- end
 local function class_of(klass,obj)
     if type(klass) ~= 'table' or not rawget(klass,'is_a') then return false end
     return klass.is_a(obj,klass)
 end
 
+--- Access to base class methods.
+-- NOTE: the initializer `_init` has a different way to call its ancestor
+-- @function instance:base
+-- @param method_name Name of the method to call on the base class
+-- @param ... parameters passed to the base class method
+-- @usage local Cat = class()
+-- function Cat:say(text)
+--   print(text)
+-- end
+-- 
+-- local Lion = class(Cat)
+-- function Lion:say(text)
+--   self:base("say", "roar... "..text)
+-- end
+--
+-- local pussycat = Lion()
+-- pussycat:say("hello world")  --> 'roar... hello world'
 local function base_method(self,method,...)
     local m = getmetatable(self)
     if not m then return nil end
@@ -122,7 +169,11 @@ local function _class(base,c_arg,c)
         return obj
     end
     -- Call Class.catch to set a handler for methods/properties not found in the class!
-    c.catch = function(handler)
+    c.catch = function(self, handler)
+        if type(self) == "function" then
+          -- called using . notation instead of : notation
+          handler = self
+        end
         c._handler = handler
         mt.__index = handler
     end
@@ -136,10 +187,12 @@ end
 
 --- create a new class, derived from a given base class.
 -- Supporting two class creation syntaxes:
--- either `Name = class(base)` or `class.Name(base)`
+-- either `Name = class(base)` or `class.Name(base)`. The latter syntax
+-- creates a global `Name`, the former only creates a global if `Name` hasn't been 
+-- declared `local`.
 -- @function class
 -- @param base optional base class
--- @param c_arg optional parameter to class ctor
+-- @param c_arg optional parameter to class constructor
 -- @param c optional table to be used as class
 local class
 class = setmetatable({},{
