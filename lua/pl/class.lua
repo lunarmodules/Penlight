@@ -12,7 +12,7 @@
 
 local error, getmetatable, io, pairs, rawget, rawset, setmetatable, tostring, type =
     _G.error, _G.getmetatable, _G.io, _G.pairs, _G.rawget, _G.rawset, _G.setmetatable, _G.tostring, _G.type
-local utils
+local compat
 
 -- this trickery is necessary to prevent the inheritance of 'super' and
 -- the resulting recursive call problems.
@@ -75,6 +75,14 @@ end
 local function class_of(klass,obj)
     if type(klass) ~= 'table' or not rawget(klass,'is_a') then return false end
     return klass.is_a(obj,klass)
+end
+
+--- cast an object to another class.
+-- It is not clever (or safe!) so use carefully.
+-- @param some_instance the object to be changed
+-- @function some_class:cast(some_instance)
+local function cast (klass, obj)
+    return setmetatable(obj,klass)
 end
 
 --- Access to base class methods.
@@ -157,7 +165,9 @@ local function _class(base,c_arg,c)
 
     -- expose a ctor which can be called by <classname>(<args>)
     mt.__call = function(class_tbl,...)
-        local obj = {}
+        local obj
+        if rawget(c,'_create') then obj = c._create(...) end
+        if not obj then obj = {} end
         setmetatable(obj,c)
 
         if rawget(c,'_init') then -- explicit constructor
@@ -191,6 +201,7 @@ local function _class(base,c_arg,c)
     end
     c.is_a = is_a
     c.class_of = class_of
+    c.cast = cast
     c.base = base_method
     c._class = c
 
@@ -217,8 +228,8 @@ class = setmetatable({},{
             io.stderr:write('require("pl.class").class is deprecated. Use require("pl.class")\n')
             return class
         end
-        utils = utils or require 'pl.utils'
-        local env = utils.getfenv(2) --_G
+        compat = compat or require 'pl.compat'
+        local env = compat.getfenv(2)
         return function(...)
             local c = _class(...)
             c._name = key

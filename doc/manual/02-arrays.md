@@ -118,6 +118,12 @@ mind that you can always call a `List` method on a plain table argument, so
 `List.partition(t,type)` works as expected. But these functions will only operate
 on the array part of the table.
 
+The 'nominal' type of the returned table is `pl.Multimap`, which describes a mapping
+between keys and multiple values. This does not mean that `pl.Multimap` is automatically
+loaded whenever you use `partition` (or `List` for that matter); this is one of the
+standard metatables which are only filled out when the appropriate module is loaded.
+This allows tables to be tagged appropriately without causing excessive coupling.
+
 Stacks occur everywhere in computing. `List` supports stack-like operations;
 there is already `pop` (remove and return last value) and `append` acts like
 `push` (add a value to the end). `push` is provided as an alias for `append`, and

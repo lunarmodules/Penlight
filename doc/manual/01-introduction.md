@@ -462,10 +462,16 @@ syntactic sugar, it is straightforward to implement classic object orientation.
 All Animal does is define `__tostring`, which Lua will use whenever a string
 representation is needed of the object. In turn, this relies on `speak`, which is
 not defined. So it's what C++ people would call an abstract base class; the
-specific derived classes like Dog define `speak`. (Please note that if derived
+specific derived classes like Dog define `speak`. Please note that _if_ derived
 classes have their own constructors, they must explicitly call the base
 constructor for their base class; this is conveniently available as the `super`
-method.)
+method.
+
+Note that (as always) there are multiple ways to implement OOP in Lua; this method
+uses the classic 'a class is the __index of its objects' but does 'fat inheritance';
+methods from the base class are copied into the new class. The advantage of this is
+that you are not penalized for long inheritance chains, for the price of larger classes,
+but generally objects outnumber classes! (If not, something odd is going on with your design.)
 
 All such objects will have a `is_a` method, which looks up the inheritance chain
 to find a match.  Another form is `class_of`, which can be safely called on all
@@ -496,7 +502,9 @@ So `Alice = class(); Alice._name = 'Alice'` is exactly the same as `class.Alice(
 This useful notation is borrowed from Hugo Etchegoyen's
 [classlib](http://lua-users.org/wiki/MultipleInheritanceClasses) which further
 extends this concept to allow for multiple inheritance. Notice that the
-more convenient form puts the class name in the _current environment_!
+more convenient form puts the class name in the _current environment_! That is,
+you may use it safely within modules using the old-fashioned `module()`
+or the new `_ENV` mechanism.
 
 There is always more than one way of doing things in Lua; some may prefer this
 style for creating classes:
@@ -518,13 +526,70 @@ style for creating classes:
     --> boo dog
 
 Note that you have to explicitly declare `self` and end each function definition
-with a semi-colon or comma, since this is a Lua table.
+with a semi-colon or comma, since this is a Lua table. To inherit from a base class,
+set the special field `_base` to the class in this table.
 
 Penlight provides a number of useful classes; there is `List`, which is a Lua
 clone of the standard Python list object, and `Set` which represents sets. There
 are three kinds of _map_ defined: `Map`, `MultiMap` (where a key may have
 multiple values) and `OrderedMap` (where the order of insertion is remembered.).
 There is nothing special about these classes and you may inherit from them.
+
+A powerful thing about dynamic languages is that you can redefine existing classes
+and functions, which is often called 'monkey patching`. It's entertaining and convenient,
+but ultimately anti-social; you may modify `List` but then any other modules using
+this _shared_ resource can no longer be sure about its behaviour. (This is why you
+must say `stringx.import()` explicitly if you want the extended string methods - it
+would be a bad default.)  Lua is particularly open to modification but the
+community is not as tolerant of monkey-patching as the Ruby community, say. You may
+wish to add some new methods to `List`? Cool, but that's what subclassing is for.
+
+    class.Strings(List)
+
+    function Strings:my_method()
+    ...
+    end
+
+It's definitely more useful to define exactly how your objects behave
+in _unknown_ conditions. All classes have a `catch` method you can use to set
+a handler for unknown lookups; the function you pass looks exactly like the
+`__index` metamethod.
+
+    Strings:catch(function(self,name)
+        return function() error("no such method "..name,2) end
+    end)
+
+In this case we're just customizing the error message, but
+creative things can be done. Consider this code from `test-vector.lua`:
+
+    Strings:catch(List.default_map_with(string))
+
+    ls = Strings{'one','two','three'}
+    asserteq(ls:upper(),{'ONE','TWO','THREE'})
+    asserteq(ls:sub(1,2),{'on','tw','th'})
+
+So we've converted a unknown method invocation into a map using the function of
+that name found in `string`.  So for a `Vector` (which is a specialization of `List`
+for numbers) it makes sense to make `math` the default map so that `v:sin()` makes
+sense.
+
+Note that `map` operations return a object of the same type - this is often called
+_covariance_. So `ls:upper()` itself returns a `Strings` object.
+
+This is not _always_ what you want, but objects can always be cast to the desired type.
+(`cast` doesn't create a new object, but returns the object passed.)
+
+    local sizes = ls:map '#'
+    asserteq(sizes, {3,3,5})
+    asserteq(utils.type(sizes),'Strings')
+    asserteq(sizes:is_a(Strings),true)
+    sizes = Vector:cast(sizes)
+    asserteq(utils.type(sizes),'Vector')
+    asserteq(sizes+1,{4,4,6})
+
+About `utils.type`: it can only return a string for a class type if that class does
+in fact have a `_name` field.
+
 
 _Properties_ are a useful object-oriented pattern. We wish to control access to a
 field, but don't wish to force the user of the class to say `obj:get_field()`
