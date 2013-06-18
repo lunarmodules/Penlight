@@ -8,7 +8,8 @@ local setfenv,getfenv = utils.setfenv, utils.getfenv
 -- utils.execute is a compromise between 5.1 and 5.2 for os.execute changes
 -- can we call Lua ?
 local ok,code = utils.execute(lua..' -v')
-assert(ok == true and code == 0)
+asserteq(ok,true)
+asserteq(code,0)
 
 -- table.pack is defined for 5.1
 local t = table.pack(1,nil,'hello')

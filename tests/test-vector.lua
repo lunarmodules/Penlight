@@ -1,7 +1,6 @@
 ---- deriving specialized classes from List
 -- illustrating covariance of List methods
 require 'pl'
-local L = utils.string_lambda
 local asserteq = test.asserteq
 
 class.Vector(List)
@@ -44,7 +43,7 @@ function Vector.__unm (v)
    return v:map(operator.unm)
 end
 
-Vector.catch(List.default_map_with(math))
+Vector:catch(List.default_map_with(math))
 
 v = Vector()
 
@@ -56,7 +55,7 @@ v:append(20)
 asserteq(1+v,v+1)
 
 -- covariance: the inherited Vector.map returns a Vector
-asserteq(List{1,2} + v:map (L'2*_'),{21,42})
+asserteq(List{1,2} + v:map '2*_',{21,42})
 
 u = Vector{1,2}
 
@@ -99,17 +98,21 @@ asserteq((
 
 class.Strings(List)
 
-Strings.catch(List.default_map_with(string))
+Strings:catch(List.default_map_with(string))
 
 ls = Strings{'one','two','three'}
 asserteq(ls:upper(),{'ONE','TWO','THREE'})
 asserteq(ls:sub(1,2),{'on','tw','th'})
 
--- an issue with covariance: not all map operations on specialized lists
--- results in another list of that type!
+-- all map operations on specialized lists
+-- results in another list of that type! This isn't necessarily
+-- what you want.
 local sizes = ls:map '#'
 asserteq(sizes, {3,3,5})
 asserteq(utils.type(sizes),'Strings')
-
+asserteq(sizes:is_a(Strings),true)
+sizes = Vector:cast(sizes)
+asserteq(utils.type(sizes),'Vector')
+asserteq(sizes+1,{4,4,6})
 
 

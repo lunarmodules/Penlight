@@ -3,6 +3,11 @@ local class = require 'pl.class'
 local test = require 'pl.test'
 local asserteq, T = test.asserteq, test.tuple
 
+-- note that a _plain table_ is made directly into a list
+local t = {10,20,30}
+local ls = List(t)
+asserteq(t,ls)
+
 -- you may derive classes from pl.List, and the result is covariant.
 -- That is, slice() etc will return a list of the derived type, not List.
 
@@ -46,6 +51,10 @@ end
 n1 = NA{10,20,30}
 n2 = NA{1,2,3}
 ns = n1 + 2*n2
+
+asserteq(List:class_of(ns),true)
+asserteq(NA:class_of(ns),true)
+asserteq(ns:is_a(NA),true)
 asserteq(ns,{12,24,36})
 min,max = ns:slice(1,2):minmax()
 asserteq(T(min,max),T(12,24))
