@@ -147,7 +147,7 @@ t2 = [[
   </weather>
 ]]
 
-match(t2,{
+local conditions = {
   {
     low = "60",
     high = "89",
@@ -172,7 +172,10 @@ match(t2,{
     day = "Tue",
     condition = "Clear",
   }
-})
+}
+
+match(t2,conditions)
+
 
 config = [[
 <config>

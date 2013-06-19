@@ -554,7 +554,7 @@ This produces the following output on my system (only last two lines shown):
     }
 
 You can get this into a more sensible format, where the usernames are the keys,
-with:
+with this (the `tablex.pairmap` function must return value, key!)
 
     t = tablex.pairmap(function(k,v) return v,v[1] end,t)
 
@@ -847,7 +847,8 @@ There is a fourth argument which is the _attribute indent_:
 #### Parsing and Working with Configuration Files
 
 It's common to find configurations expressed with XML these days. It's
-straightforward to 'walk' the LOM data and extract the data in the form you want:
+straightforward to 'walk' the [LOM](http://matthewwild.co.uk/projects/luaexpat/lom.html)
+data and extract the data in the form you want:
 
     require 'pl'
 
@@ -991,7 +992,7 @@ Matching goes in the opposite direction.  We have a document, and would like to
 extract values from it using a pattern.
 
 A common use of this is parsing the XML result of API queries.  The
-[(undocumented) Google Weather
+[(undocumented and subsequently discontinued) Google Weather
 API](http://blog.programmableweb.com/2010/02/08/googles-secret-weather-api/) is a
 good example. Grabbing the result of
 `http://www.google.com/ig/api?weather=Johannesburg,ZA" we get something like
@@ -1051,12 +1052,138 @@ And the output is:
     }
 
 The `match` method can be passed a LOM document or some text, which will be
-parsed first. Note that `$NUMBER` is treated specially as a numerical index, so
-that `$1` is the first element of the resulting array, etc.
+parsed first.
+
+But what if we need to extract values from repeated elements? Match templates may
+contain 'array matches' which are enclosed in '{{..}}':
+
+      <weather>
+        {{<forecast_conditions>
+          <day_of_week data='$day'/>
+          <low data='$low'/>
+          <high data='$high'/>
+          <condition data='$condition'/>
+        </forecast_conditions>}}
+      </weather>
+
+And the match result is:
+
+    {
+      {
+        low = "60",
+        high = "89",
+        day = "Sat",
+        condition = "Clear",
+      },
+      {
+        low = "53",
+        high = "86",
+        day = "Sun",
+        condition = "Clear",
+      },
+      {
+        low = "57",
+        high = "87",
+        day = "Mon",
+        condition = "Clear",
+      },
+      {
+        low = "60",
+        high = "84",
+        day = "Tue",
+        condition = "Clear",
+      }
+    }
+
+With this array of tables, you can use `tablex` or `List`
+to reshape into the desired form, if you choose.  Just as with reading a Unix password
+file with `config`, you can make the array into a map of days to conditions using:
+
+    `tablex.pairmap`('|k,v| v,v.day',conditions)
+
+(Here using the alternative string lambda option)
+
+However, xml matches can shape the structure of the output. By replacing the `day_of_week`
+line of the template with `<day_of_week data='$_'/>` we get the same effect; `$_` is
+a special symbol that means that this captured value (or simply _capture_) becomes the key.
+
+Note that `$NUMBER` means a numerical index, so
+that `$1` is the first element of the resulting array, and so forth. You can mix
+numbered and named captures, but it's strongly advised to make the numbered captures
+form a proper array sequence (everything from `1` to `n` inclusive). `$0` has a
+special meaning; if it is the only capture (`{[0]='foo'}`) then the table is
+collapsed into 'foo'.
+
+      <weather>
+        {{<forecast_conditions>
+          <day_of_week data='$_'/>
+          <low data='$1'/>
+          <high data='$2'/>
+          <condition data='$3'/>
+        </forecast_conditions>}}
+      </weather>
+
+Now the result is:
+
+    {
+      Tue = {
+        "60",
+        "84",
+        "Clear"
+      },
+      Sun = {
+        "53",
+        "86",
+        "Clear"
+      },
+      Sat = {
+        "60",
+        "89",
+        "Clear"
+      },
+      Mon = {
+        "57",
+        "87",
+        "Clear"
+      }
+    }
+
+Applying matches to this config file poses another problem, because the actual
+tags matched are themselves meaningful.
+
+    <config>
+        <alpha>1.3</alpha>
+        <beta>10</beta>
+        <name>bozo</name>
+    </config>
+
+So there are tag 'wildcards' which are element names ending with a hyphen.
+
+    <config>
+        {{<key->$value</key->}}
+    </config>
+
+You will then get `{{alpha='1.3'},...}`. The most convenient format would be
+returned by this (note that `_-` behaves just like `$_`):
+
+    <config>
+        {{<_->$0</_->}}
+    </config>
+
+which would return `{alpha='1.3',beta='10',name='bozo'}`.
+
+We could play this game endlessly, and encode ways of converting captures, but
+the scheme is complex enough, and it's easy to do the conversion later
+
+    local numbers = {alpha=true,beta=true}
+    for k,v in pairs(res) do
+        if numbers[v] then res[k] = tonumber(v) end
+    end
+
 
 #### HTML Parsing
 
-HTML is an unusually slack dialect of XML, and Dennis Schridde has contributed
+HTML is an unusually degenerate form of XML, and Dennis Schridde has contributed
 a feature which makes parsing it easier.  For instance, from the tests:
 
     doc = xml.parsehtml [[
