@@ -159,17 +159,19 @@ function Doc:get_attribs()
     return self.attr
 end
 
+local function is_text(s) return type(s) == 'string' end
+
 --- function to create an element with a given tag name and a set of children.
 -- @param tag a tag name
 -- @param items either text or a table where the hash part is the attributes and the list part is the children.
 function _M.elem(tag,items)
     local s = _M.new(tag)
-    if type(items) == 'string' then items = {items} end
+    if is_text(items) then items = {items} end
     if _M.is_tag(items) then
        t_insert(s,items)
     elseif type(items) == 'table' then
        for k,v in pairs(items) do
-           if type(k) == 'string' then
+           if is_text(k) then
                s.attr[k] = v
                t_insert(s.attr,k)
            else
@@ -187,7 +189,7 @@ end
 function _M.tags(list)
     local ctors = {}
     local elem = _M.elem
-    if type(list) == 'string' then list = split(list,'%s*,%s*') end
+    if is_text(list) then list = split(list,'%s*,%s*') end
     for _,tag in ipairs(list) do
         local ctor = function(items) return _M.elem(tag,items) end
         t_insert(ctors,ctor)
@@ -196,6 +198,22 @@ function _M.tags(list)
 end
 
 local templ_cache = {}
+
+local function template_cache (templ)
+    if is_text(templ) then
+        if templ_cache[templ] then
+            templ = templ_cache[templ]
+        else
+            local str,err = templ
+            templ,err = _M.parse(str,false,true)
+            if not templ then return nil,err end
+            templ_cache[str] = templ
+        end
+    elseif not _M.is_tag(templ) then
+        return nil, "template is not a document"
+    end
+    return templ
+end
 
 local function is_data(data)
     return #data == 0 or type(data[1]) ~= 'table'
@@ -214,20 +232,13 @@ end
 -- @param data  a table of name-value pairs or a list of such tables
 -- @return an XML document
 function Doc.subst(templ, data)
+    local err
     if type(data) ~= 'table' or not next(data) then return nil, "data must be a non-empty table" end
     if is_data(data) then
         prepare_data(data)
     end
-    if type(templ) == 'string' then
-        if templ_cache[templ] then
-            templ = templ_cache[templ]
-        else
-            local str,err = templ
-            templ,err = _M.parse(str)
-            if not templ then return nil,err end
-            templ_cache[str] = templ
-        end
-    end
+    templ,err = template_cache(templ)
+    if err then return nil, err end
     local function _subst(item)
         return _M.clone(templ,function(s)
             return s:gsub('%$(%w+)',item)
@@ -414,7 +425,7 @@ Doc.__tostring = _M.tostring
 function Doc:get_text()
     local res = {}
     for i,el in ipairs(self) do
-        if type(el) == 'string' then t_insert(res,el) end
+        if is_text(el) then t_insert(res,el) end
     end
     return t_concat(res);
 end
@@ -424,24 +435,36 @@ end
 -- @param strsubst an optional function for handling string copying which could do substitution, etc.
 function _M.clone(doc, strsubst)
     local lookup_table = {};
-    local function _copy(object)
+    local function _copy(object,kind,parent)
         if type(object) ~= "table" then
-            if strsubst and type(object) == 'string' then return strsubst(object)
-            else return object;
+            if strsubst and is_text(object) then return strsubst(object,kind,parent)
+            else return object
             end
         elseif lookup_table[object] then
-            return lookup_table[object];
+            return lookup_table[object]
         end
         local new_table = {};
-        lookup_table[object] = new_table;
-        for index, value in pairs(object) do
-            new_table[_copy(index)] = _copy(value);  -- is cloning keys much use, hm?
+        lookup_table[object] = new_table
+        local tag = object.tag
+        new_table.tag = _copy(tag,'*TAG',parent)
+        if object.attr then
+            local res = {}
+            for attr,value in pairs(object.attr) do
+                res[attr] = _copy(value,attr,object)
+            end
+            new_table.attr = res
         end
-        return setmetatable(new_table, getmetatable(object));
+        for index = 1,#object do
+            local v = _copy(object[index],'*TEXT',object)
+            t_insert(new_table,v)
+        end
+        return setmetatable(new_table, getmetatable(object))
     end
 
     return _copy(doc)
 end
+
+Doc.filter = _M.clone -- also available as method
 
 --- compare two documents.
 -- @param t1 any value
@@ -474,7 +497,7 @@ end
 --- is this value a document element?
 -- @param d any value
 function _M.is_tag(d)
-    return type(d) == 'table' and type(d.tag) == 'string'
+    return type(d) == 'table' and is_text(d.tag)
 end
 
 --- call the desired function recursively over the document.
@@ -602,11 +625,10 @@ function _M.basic_parse(s,all_text,html)
         error("unclosed "..stack[#stack].tag)
     end
     local res = stack[1]
-    return type(res[1])=='string' and res[2] or res[1]
+    return is_text(res[1]) and res[2] or res[1]
 end
 
 local function empty(attr) return not attr or not next(attr) end
-local function is_text(s) return type(s) == 'string' end
 local function is_element(d) return type(d) == 'table' and d.tag ~= nil end
 
 -- returns the key,value pair from a table if it has exactly one entry
@@ -654,8 +676,8 @@ function match(d,pat,res,keep_going)
     if d == nil then d = '' end --return false end
     -- attribute string matching is straight equality, except if the pattern is a $ capture,
     -- which always succeeds.
-    if type(d) == 'string' then
-        if type(pat) ~= 'string' then return false end
+    if is_text(d) then
+        if not is_text(pat) then return false end
         if _M.debug then print(d,pat) end
         if pat:find '^%$' then
             return capture_attrib(res,pat,d)
@@ -730,9 +752,9 @@ function match(d,pat,res,keep_going)
 end
 
 function Doc:match(pat)
-    if is_text(pat) then
-        pat = _M.parse(pat,false,true)
-    end
+    local err
+    pat,err = template_cache(pat)
+    if not pat then return nil, err end
     _M.walk(pat,false,function(_,d)
         if is_text(d[1]) and is_element(d[2]) and is_text(d[3]) and
            d[1]:find '%s*{{' and d[3]:find '}}%s*' then

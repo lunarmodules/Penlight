@@ -986,6 +986,61 @@ variables. Note how the parent tag name is specified:
     > = templ:subst {tag='nodes', {id=1,name='alice'},{id=2,name='john'}}
     <nodes><node id='1'>alice</node><node id='2'>john</node></nodes>
 
+Substitution is very related to _filtering_ documents. One of the annoying things
+about XML is that it is a document markup language first, and a data language
+second. Standard parsers will assume you really care about all those extra
+text elements. Consider this fragment, which has been changed by a five-year old:
+
+    T = [[
+      <weather>
+        boops!
+        <current_conditions>
+          <condition data='$condition'/>
+          <temp_c data='$temp'/>
+          <bo>whoops!</bo>
+        </current_conditions>
+      </weather>
+    ]]
+
+Conformant parsers will give you text elements with the line feed after `<current_conditions>`
+although it makes handling the data more irritating.
+
+    local function parse (str)
+        return xml.parse(str,false,true)
+    end
+
+Second argument means 'string, not file' and third argument means use the built-in
+Lua parser (instead of LuaExpat if available) which _by default_ is not interested in
+keeping such strings.
+
+How to remove the string `boops!`?  `clone` (also called `filter` when called as a
+method) copies a LOM document. It can be passed a filter function, which is applied
+to each string found. The powerful thing about this is that this function receives
+structural information - the parent node, and whether this was a tag name, a text
+element or a attribute name:
+
+    d = parse (T)
+    c = d:filter(function(s,kind,parent)
+        print(stringx.strip(s),kind,parent and parent.tag or '?')
+        if kind == '*TEXT' and #parent > 1 then return nil end
+        return s
+    end)
+    --->
+    weather	*TAG	?
+    boops!	*TEXT	weather
+    current_conditions	*TAG	weather
+    condition	*TAG	current_conditions
+    $condition	data	condition
+    temp_c	*TAG	current_conditions
+    $temp	data	temp_c
+    bo	*TAG	current_conditions
+    whoops!	*TEXT	bo
+
+We can pull out 'boops' and not 'whoops' by discarding text elements which are not
+the single child of an element.
+
+
+
 #### Extracting Data using Templates
 
 Matching goes in the opposite direction.  We have a document, and would like to
