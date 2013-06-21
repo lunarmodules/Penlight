@@ -214,7 +214,7 @@ function lapp.process_options_string(str,args)
             else
                 optparm = res.short
             end
-            if res.short then force_short(res.short) end
+            if res.short and not lapp.slack then force_short(res.short) end
             res.rest, varargs = check_varargs(res.rest)
         elseif check '$<{name} $'  then -- is it <parameter_name>?
             -- so <input file...> becomes input_file ...
@@ -314,6 +314,10 @@ function lapp.process_options_string(str,args)
         return parm,eqi
     end
 
+    local function is_flag (parm)
+        return parms[aliases[parm] or parm] ~= nil
+    end
+
     while i <= #arg do
         local theArg = arg[i]
         local res = {}
@@ -321,7 +325,7 @@ function lapp.process_options_string(str,args)
         if match('--$S{long}',theArg,res) or match('-$S{short}',theArg,res) then
             if res.long then -- long option
                 parm = check_parm(res.long)
-            elseif #res.short == 1 then
+            elseif #res.short == 1 or is_flag(res.short) then
                 parm = res.short
             else
                 local parmstr,eq = check_parm(res.short)

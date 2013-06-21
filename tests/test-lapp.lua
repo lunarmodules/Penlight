@@ -134,3 +134,27 @@ check(addtype,{'-l', '1,2,3'},{l={1,2,3}})
 
 check_error(addtype,{'-l', '1.5,2,3'},"not an integer!")
 
+-- ok, introducing _slack_ mode ;)
+-- 'short' flags may have multiple characters! (this is otherwise an error)
+-- Note that in _any case_ flags may contain hyphens, but these are turned
+-- into underscores for convenience.
+lapp.slack = true
+local spec = [[
+Does some calculations
+   -vs,--video-set              (string)             Use the German road sign dataset
+   -w,--width              (default 256)        Width of the video
+   -h,--height             (default 144)        Height of the video
+   -t,--time               (default 10)         Seconds of video to process
+   -sk,--seek               (default 0)          Seek number of seconds
+   -dbg                   Debug!
+]]
+
+test.asserteq(lapp(spec,{'-vs',200,'-sk',1}),{
+  video_set = 200,
+  time = 10,
+  height = 144,
+  seek = 1,
+  dbg = false,
+  width = 256
+})
+
