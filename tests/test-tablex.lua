@@ -148,15 +148,32 @@ function assert_iter_order(iter,l)
       asserteq(k,l[i][1])
       asserteq(v,l[i][2])
    end
-end   
+end
 
 local t = {a=10,b=9,c=8,d=7,e=6,f=5,g=4,h=3,i=2,j=1}
 
 assert_iter_order(
-   sort(t), 
+   sort(t),
    {{'a',10},{'b',9},{'c',8},{'d',7},{'e',6},{'f',5},{'g',4},{'h',3},{'i',2},{'j',1}})
-                    
+
 assert_iter_order(
-   sortv(t), 
+   sortv(t),
    {{'j',1},{'i',2},{'h',3},{'g',4},{'f',5},{'e',6},{'d',7},{'c',8},{'b',9},{'a',10}})
+
+
+asserteq(difference({a = true, b = true},{a = true, b = true}),{})
+
+-- no longer confused by false values ;)
+asserteq(difference({v = false},{v = false}),{})
+
+asserteq(difference({a = true},{b = true}),{a=true})
+
+-- symmetric difference
+asserteq(difference({a = true},{b = true},true),{a=true,b=true})
+
+
+
+
+
+
 

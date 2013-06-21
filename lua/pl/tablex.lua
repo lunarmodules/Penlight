@@ -565,11 +565,11 @@ function tablex.difference (s1,s2,symm)
     assert_arg_iterable(2,s2)
     local res = {}
     for k,v in pairs(s1) do
-        if not s2[k] then res[k] = v end
+        if s2[k] == nil then res[k] = v end
     end
     if symm then
         for k,v in pairs(s2) do
-            if not s1[k] then res[k] = v end
+            if s1[k] == nil then res[k] = v end
         end
     end
     return setmeta(res,s1,Map)
