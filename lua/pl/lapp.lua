@@ -341,10 +341,10 @@ function lapp.process_options_string(str,args)
                     parm = parmstr
                 end
             end
-            if parm == 'h' or parm == 'help' then
+            if aliases[parm] then parm = aliases[parm] end
+            if not parms[parm] and (parm == 'h' or parm == 'help') then
                 lapp.quit()
             end
-            if aliases[parm] then parm = aliases[parm] end
         else -- a parameter
             parm = parmlist[iparm]
             if not parm then
