@@ -46,6 +46,14 @@ c = C()
 c:foo()
 
 asserteq(c,{a=1,b=2,c=3,eee=1})
+--- class methods!
+assert(c:is_a(C))
+assert(c:is_a(B))
+assert(c:is_a(A))
+assert(c:is_a() == C)
+assert(C:class_of(c))
+assert(B:class_of(c))
+assert(A:class_of(c))
 
 --- metamethods!
 
