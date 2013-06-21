@@ -51,6 +51,9 @@ if compat.lua51 then -- define Lua 5.2 style load()
         function compat.load(str,src,mode,env)
             local chunk,err
             if type(str) == 'string' then
+                if str:byte(1) == 27 and not (mode or 'bt'):find 'b' then
+                    return nil,"attempt to load a binary chunk"
+                end
                 chunk,err = loadstring(str,src)
             else
                 chunk,err = lua51_load(str,src)
