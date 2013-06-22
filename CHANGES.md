@@ -1,3 +1,42 @@
+## 1.1.1
+
+### Changes
+
+  - utils.set(get)fenv always defined (_not_ set as globals for 5.2 anymore!).
+    These are defined in new module pl.compat, but still available through utils.
+  - class.Frodo now puts 'Frodo' in _current environment_
+
+### Fixes
+
+  - lapp.add_type was broken (Pete Kazmier)
+  - class broke with classes that redefined __newindex
+  - Set.isdisjoint was broken because of misspelling; default ctor Set() now works as expected
+  - tablex.transform was broken; result now has same keys as original (CoolistheName007)
+  - xml match not handling empty matches (royalbee)
+  - pl.strict: assigning nil to global declares it, as God intended. (Pierre Chapuis)
+  - tests all work with pl.strict
+  - 5.2 compatible load now respects mode
+  - tablex.difference thought that a value of `false` meant 'not present' (Andrew Starke)
+
+## Features
+
+  - tablex.sort(t) iterates over sorted keys, tablex.sortv(t) iterates over sorted values (Pete Kazmier)
+  - tablex.readonly(t) creates a read-only proxy for a table (John Schember)
+  - utils.is_empty(o) true if o==nil, o is an empty table, or o is an empty string (John Schember)
+  - utils.executeex(cmd,bin) returns true if successful, return code, plus stdout and stderr output as strings. (tieske)
+  - class method base for calling inherited methods (theypsilon)
+  - class supports pre-constructor _create for making a custom self (used in pl.List)
+  - xml HTML mode improvements - can parse non-trivial well-formed HTML documents.
+    xml.parsehtml is a parse function, no longer a flag
+  - if a LOM document has ordered attributes, use these when stringifying
+  - xml.tostring has yet another extra parm to force prefacing with <?xml...>
+  - lapp boolean flags may have `true` default
+  - lapp slack mode where 'short' flags can be multi-char
+  - test.asserteq etc take extra arg, which is extra level where error must be reported at
+  - path.currentdir,chdir,rmdir,mkdir and dir as alias to lfs are exported; no dependencies on luafilesystem outside pl.path, making it easier to plug in different implementations.
+
+
+
 ## 0.9.7
 
 ### Lua 5.2 compatibility
@@ -68,4 +107,3 @@ if the argument is not a table. Non-integer indices between 1 and #t are no long
  - UNC paths recognized as absolute; dir.makedir() works here
  - utils.quit() varargs broken, e.g. utils.quit("answer was %d",42)
  - some stray globals caused trouble with 'strict'
- 
