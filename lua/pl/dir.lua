@@ -341,7 +341,8 @@ function _makepath(p)
     end
    if not path.isdir(p) then
     local subp = p:match(dirpat)
-    if not _makepath(subp) then return raise ('cannot create '..subp) end
+    local ok, err = _makepath(subp)
+    if not ok then return nil, err end
     return mkdir(p)
    else
     return true
@@ -351,8 +352,8 @@ end
 --- create a directory path.
 -- This will create subdirectories as necessary!
 -- @param p A directory path
--- @return a valid created path
--- @raise p must be a string
+-- @return true on success, nil + errormsg on failure
+-- @raise failure to create
 function dir.makepath (p)
     assert_string(1,p)
     return _makepath(path.normcase(path.abspath(p)))

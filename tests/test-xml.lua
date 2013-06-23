@@ -117,7 +117,7 @@ local d = parse(joburg)
 
 function match(t,xpect)
     local res,ret = d:match(t)
-    asserteq(res,xpect)
+    asserteq(res,xpect,0,1) ---> note extra level, so we report on calls to this function!
 end
 
 t1 = [[
@@ -147,7 +147,7 @@ t2 = [[
   </weather>
 ]]
 
-match(t2,{
+local conditions = {
   {
     low = "60",
     high = "89",
@@ -172,7 +172,10 @@ match(t2,{
     day = "Tue",
     condition = "Clear",
   }
-})
+}
+
+match(t2,conditions)
+
 
 config = [[
 <config>
@@ -383,6 +386,29 @@ asserteq(res,{
   apn = "internet"
 })
 
+d = parse[[
+<params>
+<param>
+  <name>XXX</name>
+  <value></value>
+</param>
+<param>
+  <name>YYY</name>
+  <value>1</value>
+</param>
+</params>
+]]
+
+match([[
+<params>
+{{<param>
+    <name>$_</name>
+    <value>$0</value>
+</param>}}
+</params>
+]],{XXX = '',YYY = '1'})
+
+
 -- can always use xmlification to generate your templates...
 
 local SP, country, provider, gsm, apn, dns = xml.tags 'serviceprovider, country, provider, gsm, apn, dns'
@@ -391,4 +417,91 @@ t = SP{country{code="$country",provider{
    name '$name', gsm{apn {value="$apn",dns '196.43.46.190'}}
    }}}
 
-print(xml.tostring(t,' ','  '))
+out = xml.tostring(t,' ','  ')
+asserteq(out,[[
+
+ <serviceprovider>
+   <country code='$country'>
+     <provider>
+       <name>$name</name>
+       <gsm>
+         <apn value='$apn'>
+           <dns>196.43.46.190</dns>
+         </apn>
+       </gsm>
+     </provider>
+   </country>
+ </serviceprovider>]])
+
+----- HTML is a degenerate form of XML ;)
+-- attribute values don't need to be quoted, tags are case insensitive,
+-- and some are treated as self-closing
+
+doc = xml.parsehtml [[
+<BODY a=1>
+Hello dolly<br>
+HTML is <b>slack</b><br>
+</BODY>
+]]
+
+asserteq(xml.tostring(doc),[[
+<body a='1'>
+Hello dolly<br/>
+HTML is <b>slack</b><br/></body>]])
+
+doc = xml.parsehtml [[
+<!DOCTYPE html>
+<html lang=en>
+<head><!--head man-->
+</head>
+<body>
+</body>
+</html>
+]]
+
+asserteq(xml.tostring(doc),"<html lang='en'><head/><body/></html>")
+
+-- note that HTML mode currently barfs if there isn't whitespace around things
+-- like '<' and '>' in scripts.
+doc = xml.parsehtml [[
+<html>
+<head>
+<script>function less(a,b) { return a < b; }</script>
+</head>
+<body>
+<h2>hello dammit</h2>
+</body>
+</html>
+]]
+
+script = doc:get_elements_with_name 'script'
+asserteq(script[1]:get_text(), 'function less(a,b) { return a < b; }')
+
+
+-- test attribute order
+
+local test_attrlist = xml.new('AttrList',{
+   Attr3="Value3",
+    ['Attr1'] = "Value1",
+    ['Attr2'] = "Value2",
+    [1] = 'Attr1', [2] = 'Attr2', [3] = 'Attr3'
+})
+asserteq(
+xml.tostring(test_attrlist),
+"<AttrList Attr1='Value1' Attr2='Value2' Attr3='Value3'/>"
+)
+
+---- commments ----
+str = [[
+<hello>
+<!-- any <i>momentous</i> stuff here -->
+dolly
+</hello>
+]]
+doc = parse(str)
+asserteq(xml.tostring(doc),[[
+<hello>
+dolly
+</hello>]])
+
+

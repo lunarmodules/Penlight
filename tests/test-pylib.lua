@@ -1,6 +1,5 @@
 -- test-pylib.lua
 local List = require 'pl.List'
-require 'pl.stringx'.import()
 local text = require 'pl.text'
 local Template = text.Template
 local asserteq = require 'pl.test' . asserteq
@@ -9,7 +8,7 @@ l = List{10,20,30,40,50}
 s = List{1,2,3,4,5}
 
 -- test using: lua pylist.lua
-local lst = List:new()
+local lst = List()
 lst:append(10)
 lst:extend{20,30,40,50}
 asserteq (lst,List{10,20,30,40,50})
@@ -38,13 +37,14 @@ seq = List{0,1,2,3,4,5,6,7,8,9}
 asserteq(List.range(0,8,2),{0,2,4,6,8})
 asserteq(List.range(0,1,0.2),{0,0.2,0.4,0.6,0.8,1},1e-9)
 
-
 asserteq(lst, seq)
 asserteq (List('abcd'),List{'a','b','c','d'})
 ls = List{10,20,30,40}
 ls:slice_assign(2,3,{21,31})
 asserteq (ls , List{10,21,31,40})
+
 -- strings ---
+require 'pl.stringx'.import() ---> convenient!
 s = '123'
 assert (s:isdigit())
 assert (not s:isspace())

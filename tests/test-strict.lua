@@ -8,8 +8,16 @@ test.assertraise(function()
    print 'ok?'
 end,"variable 'x' is not declared")
 
--- can assign to globals in main (or from C extensions) But not anywhere else!
+-- can assign to globals in main (or from C extensions) but not anywhere else!
+test.assertraise(function()
+   Boo = 3
+end,"assign to undeclared global 'Boo'")
+
 Boo = true
+Boo2 = nil
+
+-- once declared, you can assign to globals from anywhere
+(function() Boo = 42; Boo2 = 6*7 end)()
 
 --- a module may use strict.module() to generate a simularly strict environment
 -- (see lua/mymod.lua)

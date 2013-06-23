@@ -16,20 +16,26 @@ function test (e)
     print(rep)
 end
 
+function teste (e,rs,ve)
+	local v = {}
+	collect_values(e,v)
+	if #v > 0 then asserteq(v,ve,nil,2) end
+	local rep = repr(e)
+    asserteq(rep,rs)
+end
+
 import ('math')
 
-test(_1+_2('hello'))
-test(sin(_1))
-test(_1:method())
-test(Not(_1))
+teste(_1+_2('hello'),'_1 + _2(_C1)',{"hello"})
+teste(_1:method(),'_1[_C1](_1)',{"method"})
+teste(Not(_1),'not _1')
 
 asserteq(instantiate(_1+_2)(10,20),30)
 asserteq(instantiate(_1+20)(10),30)
 asserteq(instantiate(Or(Not(_1),_2))(true,true),true)
-test(_1() + _2() + _3())
-print(I(_1+_2)(10,20))
-test(sin(_1)+cos(_2))
 
+teste(_1() + _2() + _3(),'_1() + _2() + _3()',30)
+asserteq(I(_1+_2)(10,20),30)
 
 asserteq(instantiate(_1+_2)(10,20),30)
 

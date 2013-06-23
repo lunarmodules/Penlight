@@ -6,7 +6,7 @@
 -- @module pl.tablex
 local utils = require ('pl.utils')
 local getmetatable,setmetatable,require = getmetatable,setmetatable,require
-local append,remove = table.insert,table.remove
+local tsort,append,remove = table.sort,table.insert,table.remove
 local min,max = math.min,math.max
 local pairs,type,unpack,next,select,tostring = pairs,type,unpack,next,select,tostring
 local function_arg = utils.function_arg
@@ -333,7 +333,7 @@ function tablex.transform (fun,t,...)
     assert_arg_iterable(1,t)
     fun = function_arg(1,fun)
     for k,v in pairs(t) do
-        t[v] = fun(v,...)
+        t[k] = fun(v,...)
     end
 end
 
@@ -565,11 +565,11 @@ function tablex.difference (s1,s2,symm)
     assert_arg_iterable(2,s2)
     local res = {}
     for k,v in pairs(s1) do
-        if not s2[k] then res[k] = v end
+        if s2[k] == nil then res[k] = v end
     end
     if symm then
         for k,v in pairs(s2) do
-            if not s1[k] then res[k] = v end
+            if s1[k] == nil then res[k] = v end
         end
     end
     return setmeta(res,s1,Map)
@@ -816,5 +816,55 @@ function tablex.search (t,value,exclude)
     end
     return _find(t,value,tables)
 end
+
+--- return an iterator to a table sorted by its keys
+-- @param t the table
+-- @param f an optional comparison function (f(x,y) is true if x < y)
+-- @usage for k,v in tablex.sort(t) do print(k,v) end
+-- @return an iterator to traverse elements sorted by the keys
+function tablex.sort(t,f)
+   local keys = {}
+   for k in pairs(t) do keys[#keys + 1] = k end
+   tsort(keys,f)
+   local i = 0
+   return function()
+      i = i + 1
+      return keys[i], t[keys[i]]
+   end
+end
+
+--- return an iterator to a table sorted by its values
+-- @param t the table
+-- @param f an optional comparison function (f(x,y) is true if x < y)
+-- @usage for k,v in tablex.sortv(t) do print(k,v) end
+-- @return an iterator to traverse elements sorted by the values
+function tablex.sortv(t,f)
+   local rev = {}
+   for k,v in pairs(t) do rev[v] = k end
+   local next = tablex.sort(rev,f)
+   return function()
+      local value,key = next()
+      return key,value
+   end
+end
+
+--- modifies a table to be read only.
+-- This only offers weak protection. Tables can still be modified with
+-- table.insert and rawset.
+-- @param t the table
+-- @return the table read only.
+function tablex.readonly(t)
+    local mt = {
+        __index=t,
+        __newindex=function(t, k, v) error("Attempt to modify read-only table", 2) end,
+        __pairs=function() return pairs(t) end,
+        __ipairs=function() return ipairs(t) end,
+        __len=function() return #t end,
+        __metatable=false
+    }
+    return setmetatable({}, mt)
+end
+
+
 
 return tablex

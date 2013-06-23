@@ -108,7 +108,7 @@ local function xtonumber(s)
     return val
 end
 
-local types
+local types = {}
 
 local builtin_types = {string=true,number=true,['file-in']='file',['file-out']='file',boolean=true}
 
@@ -121,7 +121,7 @@ local function convert_parameter(ps,val)
     elseif builtin_types[ps.type] == 'file' then
         val = lapp.open(val,(ps.type == 'file-in' and 'r') or 'w' )
     elseif ps.type == 'boolean' then
-        val = true
+        return val
     end
     if ps.constraint then
         ps.constraint(val)
@@ -143,6 +143,7 @@ local function force_short(short)
     lapp.assert(#short==1,short..": short parameters should be one character")
 end
 
+-- deducing type of variable from default value;
 local function process_default (sval,vtype)
     local val
     if not vtype or vtype == 'number' then
@@ -154,6 +155,9 @@ local function process_default (sval,vtype)
         local ft = filetypes[sval]
         return ft[1],ft[2]
     else
+        if sval == 'true' and not vtype then
+            return true, 'boolean'
+        end
         if sval:match '^["\']' then sval = sval:sub(2,-2) end
         return sval,vtype or 'string'
     end
@@ -173,7 +177,6 @@ function lapp.process_options_string(str,args)
     parms = {}
     aliases = {}
     parmlist = {}
-    types = {}
 
     local function check_varargs(s)
         local res,cnt = s:gsub('^%.%.%.%s*','')
@@ -211,7 +214,7 @@ function lapp.process_options_string(str,args)
             else
                 optparm = res.short
             end
-            if res.short then force_short(res.short) end
+            if res.short and not lapp.slack then force_short(res.short) end
             res.rest, varargs = check_varargs(res.rest)
         elseif check '$<{name} $'  then -- is it <parameter_name>?
             -- so <input file...> becomes input_file ...
@@ -269,7 +272,6 @@ function lapp.process_options_string(str,args)
                 if default or match('default $r{rest}',typespec,res) then
                     defval,vtype = process_default(res.rest,vtype)
                 end
-                --print('val',optparm,defval,vtype)
             else -- must be a plain flag, no extra parameter required
                 defval = false
                 vtype = 'boolean'
@@ -312,6 +314,10 @@ function lapp.process_options_string(str,args)
         return parm,eqi
     end
 
+    local function is_flag (parm)
+        return parms[aliases[parm] or parm] ~= nil
+    end
+
     while i <= #arg do
         local theArg = arg[i]
         local res = {}
@@ -319,7 +325,7 @@ function lapp.process_options_string(str,args)
         if match('--$S{long}',theArg,res) or match('-$S{short}',theArg,res) then
             if res.long then -- long option
                 parm = check_parm(res.long)
-            elseif #res.short == 1 then
+            elseif #res.short == 1 or is_flag(res.short) then
                 parm = res.short
             else
                 local parmstr,eq = check_parm(res.short)
@@ -339,10 +345,10 @@ function lapp.process_options_string(str,args)
                     parm = parmstr
                 end
             end
-            if parm == 'h' or parm == 'help' then
+            if aliases[parm] then parm = aliases[parm] end
+            if not parms[parm] and (parm == 'h' or parm == 'help') then
                 lapp.quit()
             end
-            if aliases[parm] then parm = aliases[parm] end
         else -- a parameter
             parm = parmlist[iparm]
             if not parm then
@@ -367,6 +373,8 @@ function lapp.process_options_string(str,args)
                 val = arg[i]
             end
             lapp.assert(val,parm.." was expecting a value")
+        else -- toggle boolean flags (usually false -> true)
+            val = not ps.defval
         end
         ps.used = true
         val = convert_parameter(ps,val)

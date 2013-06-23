@@ -26,7 +26,7 @@
 --      read_timeout = 10
 --    }
 --
--- @module config
+-- @module pl.config
 
 local type,tonumber,ipairs,io, table = _G.type,_G.tonumber,_G.ipairs,_G.io,_G.table
 

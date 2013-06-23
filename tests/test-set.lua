@@ -23,6 +23,22 @@ asserteq(S{1,2} ^ S{2,3}, S{1,3})
 --asserteq(tostring(S{1,2}),'[1,2]')
 --asserteq(tostring(S{1,S{2,3}}),'[1,[2,3]]')
 
+s3 = S()
+asserteq(S.isempty(s3),true)
+
+s4 = S{1,2,3}
+
+-- subsets/supersets
+asserteq(s4 > s1,true)
+
+-- union and intersection
+asserteq(S{1,2}+S{2,3},S{1,2,3})
+asserteq(S{1,2}*S{2,3},S{2})
+
+S.set(s3,'one',true)
+s3.two = true
+asserteq(s3,S{'one','two'})
+
 m = M{one=1,two=2}
 asserteq(m,M{one=1,two=2})
 m:update {three=3,four=4}
@@ -108,7 +124,6 @@ o1:update(o2)
 asserteq(tostring(o1),'{z=4,beta=1.1,name="alice",extra="dolly"}')
 
 o1:set('beta',nil)
-
 asserteq(o1,OrderedMap{{z=4},{name='alice'},{extra='dolly'}})
 
 o3 = OrderedMap()
@@ -155,6 +170,22 @@ asserteq(tostring(o3),'{mouse=30,cat=21,bird=5}')
 o3:insert(3,'alligator')
 asserteq(tostring(o3),'{mouse=30,cat=21,bird=5}')
 
+---- short-cut notation
+
+o5 = OrderedMap()
+o5.alpha = 1
+o5.beta = 2
+o5.gamma = 3
+
+asserteq(o5,OrderedMap{{alpha=1},{beta=2},{gamma=3}})
+
+o5.alpha = 10
+o5.beta = 20
+o5.gamma = 30
+o5.delta = 40
+o5.checked = false
+
+asserteq(o5,OrderedMap{{alpha=10},{beta=20},{gamma=30},{delta=40},{checked=false}})
 
 
 

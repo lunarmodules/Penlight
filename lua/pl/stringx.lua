@@ -322,7 +322,8 @@ end
 
 --- trim any whitespace on the left of s.
 -- @param self the string
--- @param chrs default space, can be a string of characters to be trimmed
+-- @param chrs default any whitespace character (%s),
+--             can be a string of characters to be trimmed
 function stringx.lstrip(self,chrs)
     assert_string(1,self)
     return _strip(self,true,false,chrs)
@@ -331,7 +332,8 @@ lstrip = stringx.lstrip
 
 --- trim any whitespace on the right of s.
 -- @param s the string
--- @param chrs default space, can be a string of characters to be trimmed
+-- @param chrs default any whitespace character (%s),
+--             can be a string of characters to be trimmed
 function stringx.rstrip(s,chrs)
     assert_string(1,s)
     return _strip(s,false,true,chrs)
@@ -339,7 +341,8 @@ end
 
 --- trim any whitespace on both left and right of s.
 -- @param self the string
--- @param chrs default space, can be a string of characters to be trimmed
+-- @param chrs default any whitespace character (%s),
+--             can be a string of characters to be trimmed
 function stringx.strip(self,chrs)
     assert_string(1,self)
     return _strip(self,true,true,chrs)

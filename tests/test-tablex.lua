@@ -137,3 +137,43 @@ asserteq(t,{10,20,1,0,0,4,5,6})
 
 asserteq(merge({10,20,30},{nil, nil, 30, 40}), {[3]=30})
 asserteq(merge({10,20,30},{nil, nil, 30, 40}, true), {10,20,30,40})
+
+
+-- Function to check that the order of elements returned by the iterator
+-- match the order of the elements in the list.
+function assert_iter_order(iter,l)
+   local i = 0
+   for k,v in iter do
+      i = i + 1
+      asserteq(k,l[i][1])
+      asserteq(v,l[i][2])
+   end
+end
+
+local t = {a=10,b=9,c=8,d=7,e=6,f=5,g=4,h=3,i=2,j=1}
+
+assert_iter_order(
+   sort(t),
+   {{'a',10},{'b',9},{'c',8},{'d',7},{'e',6},{'f',5},{'g',4},{'h',3},{'i',2},{'j',1}})
+
+assert_iter_order(
+   sortv(t),
+   {{'j',1},{'i',2},{'h',3},{'g',4},{'f',5},{'e',6},{'d',7},{'c',8},{'b',9},{'a',10}})
+
+
+asserteq(difference({a = true, b = true},{a = true, b = true}),{})
+
+-- no longer confused by false values ;)
+asserteq(difference({v = false},{v = false}),{})
+
+asserteq(difference({a = true},{b = true}),{a=true})
+
+-- symmetric difference
+asserteq(difference({a = true},{b = true},true),{a=true,b=true})
+
+
+
+
+
+
+

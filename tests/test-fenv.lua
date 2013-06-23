@@ -1,13 +1,16 @@
 --- testing Lua 5.1/5.2 compatibility functions
 -- these are global side-effects of pl.utils
 local utils = require 'pl.utils'
-local asserteq = require 'pl.test'.asserteq
+local test = require 'pl.test'
+local asserteq = test.asserteq
 local _,lua = require 'pl.app'. lua()
+local setfenv,getfenv = utils.setfenv, utils.getfenv
 
 -- utils.execute is a compromise between 5.1 and 5.2 for os.execute changes
 -- can we call Lua ?
 local ok,code = utils.execute(lua..' -v')
-assert(ok == true and code == 0)
+asserteq(ok,true)
+asserteq(code,0)
 
 -- table.pack is defined for 5.1
 local t = table.pack(1,nil,'hello')
@@ -21,6 +24,11 @@ assert(a == 10 and b == 'wow')
 -- utils.load() is Lua 5.2 style
 chunk = utils.load('return x+y','tmp','t',{x=1,y=2})
 asserteq(chunk(),3)
+
+-- can only load a binary chunk if the mode permits!
+local f = string.dump(function() end)
+local res,err = utils.load(f,'tmp','t')
+test.assertmatch(err,'attempt to load')
 
 -- package.searchpath for Lua 5.1
 -- nota bene: depends on ./?.lua being in the package.path!

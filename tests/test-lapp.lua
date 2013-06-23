@@ -1,6 +1,8 @@
 
 local test = require 'pl.test'
 local lapp = require 'pl.lapp'
+local utils = require 'pl.utils'
+local tablex = require 'pl.tablex'
 
 local k = 1
 function check (spec,args,match)
@@ -8,7 +10,7 @@ function check (spec,args,match)
     for k,v in pairs(args) do
         if type(v) == 'userdata' then args[k]:close(); args[k] = '<file>' end
     end
-    test.asserteq(args,match)
+    test.asserteq(args,match,nil,1)
 end
 
 -- force Lapp to throw an error, rather than just calling os.exit()
@@ -77,7 +79,6 @@ local extended = [[
 ]]
 
 
-
 check(extended,{},{foo='1',speed='medium',n=1,p=false,v=false})
 check(extended,{'-pv'},{foo='1',speed='medium',n=1,p=true,v=true})
 check(extended,{'--foo','2','-s','fast'},{foo='2',speed='fast',n=1,p=false,v=false})
@@ -96,6 +97,7 @@ local with_dashes = [[
 
 check(with_dashes,{'--first-dash'},{first_dash=true,second_dash=false})
 
+-- optional parameters don't have to be set
 local optional = [[
   -p (optional string)
 ]]
@@ -103,4 +105,56 @@ local optional = [[
 check(optional,{'-p', 'test'},{p='test'})
 check(optional,{},{})
 
+-- boolean flags may have a true default...
+local false_flag = [[
+    -g group results
+    -f (default true) force result
+]]
+
+check (false_flag,{},{f=true,g=false})
+
+check (false_flag,{'-g','-f'},{f=false,g=true})
+
+local addtype = [[
+  -l (intlist) List of items
+]]
+
+-- defining a custom type
+lapp.add_type('intlist',
+              function(x)
+                 return tablex.imap(tonumber, utils.split(x, '%s*,%s*'))
+              end,
+              function(x)
+                 for _,v in ipairs(x) do
+                    lapp.assert(math.ceil(v) == v,'not an integer!')
+                 end
+              end)
+
+check(addtype,{'-l', '1,2,3'},{l={1,2,3}})
+
+check_error(addtype,{'-l', '1.5,2,3'},"not an integer!")
+
+-- ok, introducing _slack_ mode ;)
+-- 'short' flags may have multiple characters! (this is otherwise an error)
+-- Note that in _any case_ flags may contain hyphens, but these are turned
+-- into underscores for convenience.
+lapp.slack = true
+local spec = [[
+Does some calculations
+   -vs,--video-set              (string)             Use the German road sign dataset
+   -w,--width              (default 256)        Width of the video
+   -h,--height             (default 144)        Height of the video
+   -t,--time               (default 10)         Seconds of video to process
+   -sk,--seek               (default 0)          Seek number of seconds
+   -dbg                   Debug!
+]]
+
+test.asserteq(lapp(spec,{'-vs',200,'-sk',1}),{
+  video_set = 200,
+  time = 10,
+  height = 144,
+  seek = 1,
+  dbg = false,
+  width = 256
+})
 

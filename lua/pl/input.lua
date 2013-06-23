@@ -12,14 +12,12 @@ local strfind = string.find
 local strsub = string.sub
 local strmatch = string.match
 local utils = require 'pl.utils'
-local pairs,type,unpack,tonumber = pairs,type,unpack or table.unpack,tonumber
+local unpack = rawget(_G,'unpack') or rawget(table,'unpack')
+local pairs,type,tonumber = pairs,type,tonumber
 local patterns = utils.patterns
 local io = io
 local assert_arg = utils.assert_arg
 
---[[
-module ('pl.input',utils._module)
-]]
 
 local input = {}
 

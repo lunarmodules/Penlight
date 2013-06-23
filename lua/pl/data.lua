@@ -24,7 +24,7 @@ local patterns,function_arg,usplit,array_tostring = utils.patterns,utils.functio
 local append,concat = table.insert,table.concat
 local gsub = string.gsub
 local io = io
-local _G,print,type,tonumber,ipairs,setmetatable,pcall,error,setfenv = _G,print,type,tonumber,ipairs,setmetatable,pcall,error,setfenv
+local _G,print,type,tonumber,ipairs,setmetatable,pcall,error = _G,print,type,tonumber,ipairs,setmetatable,pcall,error
 
 
 local data = {}
@@ -282,6 +282,7 @@ function data.read(file,cnfg)
     elseif type(cnfg.fieldnames) == 'string' then
         cnfg.fieldnames = split(cnfg.fieldnames,delim,csv)
     end
+    local nfields
     -- at this point, the column headers have been read in. If the first
     -- row consisted of numbers, it has already been added to the dataset.
     if cnfg.fieldnames then
@@ -603,7 +604,7 @@ function data.query(data,condn,context,return_row)
         -- 'injected'into the condition's custom context
         append(context,_G)
         local lookup = {}
-        setfenv(qfun,lookup)
+        utils.setfenv(qfun,lookup)
         setmetatable(lookup,{
             __index = function(tbl,key)
                -- _G.print(tbl,key)
