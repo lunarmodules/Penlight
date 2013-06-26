@@ -21,6 +21,10 @@ local function call_ctor (c,obj,...)
     local base = rawget(c,'_base')
     if base then
         local parent_ctor = rawget(base,'_init')
+        while base and not parent_ctor do
+            base = rawget(base,'_base')
+            parent_ctor = rawget(base,'_init')
+        end
         if parent_ctor then
             rawset(obj,'super',function(obj,...)
                 call_ctor(base,obj,...)
@@ -104,6 +108,7 @@ end
 -- pussycat:say("hello world")  --> 'roar... hello world'
 local function base_method(self,method,...)
     local m = getmetatable(self)
+    print('name',m._name,m._base._name); os.exit()
     if not m then return nil end
     if not method then return setmetatable({},{
         __index = function(tbl,key)
