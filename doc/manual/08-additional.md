@@ -432,3 +432,45 @@ This produces the following output:
 Callbacks are needed when you want to take action immediately on parsing an
 argument.
 
+#### Slack
+If you'd like to use a multi-letter single-dash parameter you need to set `true` the `lapp.slack` variable. 
+In the following example we also see how default-`false` and default-`true` flags can be used and how to overwrite 
+the default `-h` help flag (`--help` still works fine).
+
+```lua
+-- Parsing the command line ----------------------------------------------------
+lapp = require 'pl.lapp'
+lapp.slack = true
+args = lapp [[
+Does some calculations
+   -v, --video              (string)             Specify input video
+   -w, --width              (default 256)        Width of the video
+   -h, --height             (default 144)        Height of the video
+   -t, --time               (default 10)         Seconds of video to process
+   -sk,--seek               (default 0)          Seek number of seconds
+   -f1,--flag1                                   A false flag
+   -f2,--flag2                                   A false flag
+   -f3,--flag3              (default true)       A true flag
+   -f4,--flag4              (default true)       A true flag
+]]
+
+-- Visualisation code has been omitted
+```
+And here we can see how to run this `test.lua` script and what it outputs
+```ruby
+lua test.lua -v abc --time 40 -h 20 -sk 15 --flag1 -f3
+```
+```lua
+args =
+{ 
+  width : 256
+  flag1 : true
+  flag3 : false
+  seek : 15
+  flag2 : false
+  video : abc
+  time : 40
+  height : 20
+  flag4 : true
+}
+```
