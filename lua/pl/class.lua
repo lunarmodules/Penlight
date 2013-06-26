@@ -21,8 +21,9 @@ local function call_ctor (c,obj,...)
     local base = rawget(c,'_base')
     if base then
         local parent_ctor = rawget(base,'_init')
-        while base and not parent_ctor do
+        while not parent_ctor do
             base = rawget(base,'_base')
+            if not base then break end
             parent_ctor = rawget(base,'_init')
         end
         if parent_ctor then
@@ -89,35 +90,6 @@ local function cast (klass, obj)
     return setmetatable(obj,klass)
 end
 
---- Access to base class methods.
--- NOTE: the initializer `_init` has a different way to call its ancestor
--- @function instance:base
--- @param method_name Name of the method to call on the base class
--- @param ... parameters passed to the base class method
--- @usage local Cat = class()
--- function Cat:say(text)
---   print(text)
--- end
---
--- local Lion = class(Cat)
--- function Lion:say(text)
---   self:base("say", "roar... "..text)
--- end
---
--- local pussycat = Lion()
--- pussycat:say("hello world")  --> 'roar... hello world'
-local function base_method(self,method,...)
-    local m = getmetatable(self)
-    print('name',m._name,m._base._name); os.exit()
-    if not m then return nil end
-    if not method then return setmetatable({},{
-        __index = function(tbl,key)
-            return function(...) return m._base[key](self,...) end
-        end
-    }) else
-        return m._base[method](self,...)
-    end
-end
 
 local function _class_tostring (obj)
     local mt = obj._class
@@ -207,7 +179,6 @@ local function _class(base,c_arg,c)
     c.is_a = is_a
     c.class_of = class_of
     c.cast = cast
-    c.base = base_method
     c._class = c
 
     return c

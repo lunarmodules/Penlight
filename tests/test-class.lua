@@ -38,8 +38,8 @@ function C:_init ()
 end
 
 function C:foo ()
-    self:base('foo')
-    self:base():foo()  -- more convenient, but also more expensive
+    -- recommended way to call inherited version of method...
+    B.foo(self)
 end
 
 c = C()
