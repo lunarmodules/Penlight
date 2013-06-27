@@ -432,3 +432,45 @@ This produces the following output:
 Callbacks are needed when you want to take action immediately on parsing an
 argument.
 
+#### Slack Mode
+
+If you'd like to use a multi-letter 'short' parameter you need to set
+the `lapp.slack` variable to `true`.
+In the following example we also see how default`false` and default`true` flags can be used
+and how to overwrite the default `-h` help flag (`--help` still works fine).
+
+    -- Parsing the command line ----------------------------------------------------
+    -- test.lua
+    local lapp = require 'pl.lapp'
+    local pretty = require 'pl.pretty'
+    lapp.slack = true
+    local args = lapp [[
+    Does some calculations
+       -v, --video              (string)             Specify input video
+       -w, --width              (default 256)        Width of the video
+       -h, --height             (default 144)        Height of the video
+       -t, --time               (default 10)         Seconds of video to process
+       -sk,--seek               (default 0)          Seek number of seconds
+       -f1,--flag1                                   A false flag
+       -f2,--flag2                                   A false flag
+       -f3,--flag3              (default true)       A true flag
+       -f4,--flag4              (default true)       A true flag
+    ]]
+
+    pretty.dump(args)
+
+And here we can see the output of `test.lua`:
+
+    $> lua test.lua -v abc --time 40 -h 20 -sk 15 --flag1 -f3
+    ---->
+    {
+      width = 256,
+      flag1 = true,
+      flag3 = false,
+      seek = 15,
+      flag2 = false,
+      video = abc,
+      time = 40,
+      height = 20,
+      flag4 = true
+    }
