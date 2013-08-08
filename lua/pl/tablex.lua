@@ -655,11 +655,11 @@ function _copy (dest,src,idest,isrc,nsrc,clean_tail)
     return dest
 end
 
---- copy an array into another one, resizing the destination if necessary. <br>
+--- copy an array into another one, clearing dest after idest+nsrc, if necessary. <br>
 -- @param dest a list-like table
 -- @param src a list-like table
--- @param idest where to start copying values from source (default 1)
--- @param isrc where to start copying values into destination (default 1)
+-- @param idest where to start copying values into destination (default 1)
+-- @param isrc where to start copying values from source (default 1)
 -- @param nsrc number of elements to copy from source (default source size)
 function tablex.icopy (dest,src,idest,isrc,nsrc)
     assert_arg_indexable(1,dest)
@@ -670,8 +670,8 @@ end
 --- copy an array into another one. <br>
 -- @param dest a list-like table
 -- @param src a list-like table
--- @param idest where to start copying values from source (default 1)
--- @param isrc where to start copying values into destination (default 1)
+-- @param idest where to start copying values into destination (default 1)
+-- @param isrc where to start copying values from source (default 1)
 -- @param nsrc number of elements to copy from source (default source size)
 function tablex.move (dest,src,idest,isrc,nsrc)
     assert_arg_indexable(1,dest)
