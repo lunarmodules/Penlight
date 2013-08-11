@@ -85,7 +85,7 @@ end
 --- cast an object to another class.
 -- It is not clever (or safe!) so use carefully.
 -- @param some_instance the object to be changed
--- @function some_class:cast(some_instance)
+-- @function some_class:cast
 local function cast (klass, obj)
     return setmetatable(obj,klass)
 end
@@ -121,6 +121,7 @@ local function _class(base,c_arg,c)
     else
         c = c or {}
     end
+   
     if type(base) == 'table' then
         -- our new class is a shallow copy of the base class!
         -- but be careful not to wipe out any methods we have been given at this point!
@@ -134,7 +135,7 @@ local function _class(base,c_arg,c)
 
     c.__index = c
     setmetatable(c,mt)
-    c._init = nil
+--    c._init = nil
 
     if base and rawget(base,'_class_init') then
         base._class_init(c,c_arg)

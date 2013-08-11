@@ -6,7 +6,7 @@
 --      Does some calculations
 --        -o,--offset (default 0.0)  Offset to add to scaled number
 --        -s,--scale  (number)  Scaling factor
---         &lt;number&gt; (number )  Number to be scaled
+--         <number>; (number )  Number to be scaled
 --      ]]
 --
 --      print(args.offset + args.scale * args.number)
@@ -15,7 +15,7 @@
 -- lines begining wih '<var>' are arguments.  Anything in parens after
 -- the flag/argument is either a default, a type name or a range constraint.
 --
--- >See @{08-additional.md.Command_line_Programs_with_Lapp|the Guide}
+-- See @{08-additional.md.Command_line_Programs_with_Lapp|the Guide}
 --
 -- Dependencies: `pl.sip`
 -- @module pl.lapp

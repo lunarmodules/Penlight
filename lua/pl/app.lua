@@ -73,8 +73,8 @@ function app.platform()
     end
 end
 
---- return the full command-line used to invoke this script
--- any extra flags occupy slots, so that 'lua -lpl' gives us {[-2]='lua',[-1]='-lpl')
+--- return the full command-line used to invoke this script.
+-- Any extra flags occupy slots, so that `lua -lpl` gives us `{[-2]='lua',[-1]='-lpl'}`
 -- @return command-line
 -- @return name of Lua program used
 function app.lua ()

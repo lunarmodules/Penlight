@@ -1,6 +1,6 @@
 --- Reads configuration files into a Lua table.
 --  Understands INI files, classic Unix config files, and simple
--- delimited columns of values.
+-- delimited columns of values. See @{06-data.md.Reading_Configuration_Files|the Guide}
 --
 --    # test.config
 --    # Read timeout in seconds
@@ -91,14 +91,16 @@ end
 --- read a configuration file into a table
 -- @param file either a file-like object or a string, which must be a filename
 -- @param cnfg a configuration table that may contain these fields:
--- <ul>
--- <li> variablilize make names into valid Lua identifiers (default true)</li>
--- <li> convert_numbers try to convert values into numbers (default true)</li>
--- <li> trim_space ensure that there is no starting or trailing whitespace with values (default true)</li>
--- <li> trim_quotes remove quotes from strings (default false)</li>
--- <li> list_delim delimiter to use when separating columns (default ',')</li>
--- </ul>
--- @return a table containing items, or nil
+--
+--  * `smart`  try to deduce what kind of config file we have (default false)
+--  * `variablilize` make names into valid Lua identifiers (default true)
+--  * `convert_numbers` try to convert values into numbers (default true)
+--  * `trim_space` ensure that there is no starting or trailing whitespace with values (default true)
+--  * `trim_quotes` remove quotes from strings (default false)
+--  * `list_delim` delimiter to use when separating columns (default ',')
+--  * `keysep` separator between key and value pairs (default '=')
+-- 
+-- @return a table containing items, or `nil`
 -- @return error message (same as @{config.lines}
 function config.read(file,cnfg)
     local f,openf,err,auto
