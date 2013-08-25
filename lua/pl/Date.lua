@@ -49,7 +49,7 @@ function Date:_init(t,...)
         if getmetatable(t) == Date then -- copy ctor
             time = t.time
         else
-            if not (t.year and t.month and t.year) then
+            if not (t.year and t.month) then
                 local lt = os.date('*t')
                 if not t.year and not t.month and not t.day then
                     t.year = lt.year
@@ -61,6 +61,7 @@ function Date:_init(t,...)
                     t.day = t.day or 1
                 end
             end
+            t.day = t.day or 1
             time = os_time(t)
         end
     else
@@ -206,7 +207,7 @@ end
 
 --- is this day on a weekend?.
 function Date:is_weekend()
-    return self.tab.wday == 0 or self.tab.wday == 6
+    return self.tab.wday == 0 or self.tab.wday == 7
 end
 
 --- add to a date object.
@@ -292,24 +293,25 @@ local formats = {
 --
 
 --- Date.Format constructor.
--- @param fmt. A string where the following fields are significant: <ul>
--- <li>d day (either d or dd)</li>
--- <li>y year (either yy or yyy)</li>
--- <li>m month (either m or mm)</li>
--- <li>H hour (either H or HH)</li>
--- <li>M minute (either M or MM)</li>
--- <li>S second (either S or SS)</li>
--- </ul>
+-- @param fmt. A string where the following fields are significant: 
+-- 
+--   * d day (either d or dd)
+--   * y year (either yy or yyy)
+--   * m month (either m or mm)
+--   * H hour (either H or HH)
+--   * M minute (either M or MM)
+--   * S second (either S or SS)
+--
 -- Alternatively, if fmt is nil then this returns a flexible date parser
 -- that tries various date/time schemes in turn:
--- <ol>
--- <li> <a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a>,
---    like 2010-05-10 12:35:23Z or 2008-10-03T14:30+02<li>
--- <li> times like 15:30 or 8.05pm  (assumed to be today's date)</li>
--- <li> dates like 28/10/02 (European order!) or 5 Feb 2012 </li>
--- <li> month name like march or Mar (case-insensitive, first 3 letters);
--- here the day will be 1 and the year this current year </li>
--- </ol>
+-- 
+--   # [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601),
+--    like `2010-05-10 12:35:23Z` or `2008-10-03T14:30+02`
+--   # times like 15:30 or 8.05pm  (assumed to be today's date)
+--   # dates like 28/10/02 (European order!) or 5 Feb 2012 
+--   # month name like march or Mar (case-insensitive, first 3 letters);
+-- here the day will be 1 and the year this current year 
+-- 
 -- A date in format 3 can be optionally followed by a time in format 2.
 -- Please see test-date.lua in the tests folder for more examples.
 -- @usage df = Date.Format("yyyy-mm-dd HH:MM:SS")
@@ -326,12 +328,12 @@ function Date.Format:_init(fmt)
         local ch = fmt:sub(i,i)
         local df = formats[ch]
         if df then
-            if used[ch] then error("field appeared twice: "..ch,2) end
+            if used[ch] then error("field appeared twice: "..ch,4) end
             used[ch] = true
             -- this field may be repeated
             local _,inext = fmt:find(ch..'+',i+1)
             local cnt = not _ and 1 or inext-i+1
-            if not df[2][cnt] then error("wrong number of fields: "..ch,2) end
+            if not df[2][cnt] then error("wrong number of fields: "..ch,4) end
             -- single chars mean 'accept more than one digit'
             local p = cnt==1 and (D..PLUS) or (D):rep(cnt)
             append(patt,OPENP..p..CLOSEP)
@@ -349,13 +351,13 @@ function Date.Format:_init(fmt)
         end
     end
     -- escape any magic characters
-    fmt = table.concat(patt):gsub('[%-%.%+%[%]%(%)%$%^%%%?%*]','%%%1')
+    fmt = utils.escape(table.concat(patt))
+   -- fmt = table.concat(patt):gsub('[%-%.%+%[%]%(%)%$%^%%%?%*]','%%%1')
     -- replace markers with their magic equivalents
     fmt = fmt:gsub(D,'%%d'):gsub(PLUS,'+'):gsub(OPENP,'('):gsub(CLOSEP,')')
     self.fmt = fmt
     self.outf = table.concat(outf)
     self.vars = vars
-
 end
 
 local parse_date
@@ -389,7 +391,6 @@ function Date.Format:parse(str)
     elseif not Y then
         tab.year = 1970
     end
-    --dump(tab)
     return Date(tab)
 end
 
@@ -405,11 +406,13 @@ function Date.Format:tostring(d)
     end
 end
 
+--- force US order in dates like 9/11/2001
 function Date.Format:US_order(yesno)
     self.us = yesno
 end
 
-local months = {jan=1,feb=2,mar=3,apr=4,may=5,jun=6,jul=7,aug=8,sep=9,oct=10,nov=11,dec=12}
+--local months = {jan=1,feb=2,mar=3,apr=4,may=5,jun=6,jul=7,aug=8,sep=9,oct=10,nov=11,dec=12}
+local months
 
 --[[
 Allowed patterns:
@@ -475,11 +478,25 @@ local function parse_date_unsafe (s,US)
         end
     end
     if p and not year and is_number(p) then -- has to be date
-        day = p
-        nextp()
+        if #p < 4 then
+            day = p
+            nextp()
+        else -- unless it looks like a 24-hour time
+            year = true
+        end
     end
     if p and is_word(p) then
         p = p:sub(1,3)
+        if not months then 
+            local ld, day1 = parse_date_unsafe '2000-12-31', {day=1}
+            months = {}
+            for i = 1,12 do
+                ld = ld:last_day()
+                ld:add(day1)
+                local mon = ld:month_name():lower() 
+                months [mon] = i 
+            end
+        end
         local mon = months[p]
         if mon then
             month = mon
@@ -517,6 +534,7 @@ local function parse_date_unsafe (s,US)
         end
     end
     local today
+    if year == true then year = nil end
     if not (year and month and day) then
         today = Date()
     end
