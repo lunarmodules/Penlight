@@ -135,7 +135,9 @@ local function _class(base,c_arg,c)
 
     c.__index = c
     setmetatable(c,mt)
---    c._init = nil
+    if not plain then
+        c._init = nil
+    end
 
     if base and rawget(base,'_class_init') then
         base._class_init(c,c_arg)
