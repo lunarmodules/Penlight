@@ -6,6 +6,7 @@ local compat = require 'pl.compat'
 local clock = os.clock
 local stdout = io.stdout
 local append = table.insert
+local unpack = rawget(_G,'unpack') or rawget(table,'unpack')
 
 local collisions = {}
 
@@ -16,7 +17,8 @@ local utils = {
     getfenv = compat.getfenv,
     load = compat.load,
     execute = compat.execute,
-    dir_separator = _G.package.config:sub(1,1)
+    dir_separator = _G.package.config:sub(1,1),
+    unpack = unpack
 }
 
 --- end this program gracefully.
@@ -345,7 +347,7 @@ local function _string_lambda(f)
             if not args then return raise 'bad string lambda' end
         end
         local fstr = 'return function('..args..') return '..body..' end'
-        local fn,err = loadstring(fstr)
+        local fn,err = utils.load(fstr)
         if not fn then return raise(err) end
         fn = fn()
         return fn

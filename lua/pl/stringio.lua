@@ -13,8 +13,7 @@
 -- @module pl.stringio
 
 local unpack = rawget(_G,'unpack') or rawget(table,'unpack')
-
-local getmetatable,tostring,unpack,tonumber = getmetatable,tostring,unpack,tonumber
+local getmetatable,tostring,tonumber = getmetatable,tostring,tonumber
 local concat,append = table.concat,table.insert
 
 local stringio = {}

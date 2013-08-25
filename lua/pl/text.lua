@@ -22,6 +22,7 @@ local gsub = string.gsub
 local concat,append = table.concat,table.insert
 local utils = require 'pl.utils'
 local bind1,usplit,assert_arg,is_callable = utils.bind1,utils.split,utils.assert_arg,utils.is_callable
+local unpack = utils.unpack
 
 local function lstrip(str)  return (str:gsub('^%s+',''))  end
 local function strip(str)  return (lstrip(str):gsub('%s+$','')) end

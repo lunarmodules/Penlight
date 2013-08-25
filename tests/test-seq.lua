@@ -3,6 +3,7 @@ local seq = require 'pl.seq'
 local asserteq = require('pl.test').asserteq
 local utils = require 'pl.utils'
 local stringio = require 'pl.stringio'
+local unpack = utils.unpack
 
 local L = utils.string_lambda
 local S = seq.list

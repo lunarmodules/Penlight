@@ -11,7 +11,7 @@
 local utils = require 'pl.utils'
 local string = string
 local find = string.find
-local type,setmetatable,getmetatable,ipairs,unpack = type,setmetatable,getmetatable,ipairs,unpack
+local type,setmetatable,getmetatable,ipairs,unpack = type,setmetatable,getmetatable,ipairs,utils.unpack
 local error,tostring = error,tostring
 local gsub = string.gsub
 local rep = string.rep

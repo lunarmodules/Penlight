@@ -17,8 +17,9 @@ local t = table.pack(1,nil,'hello')
 asserteq(t.n,3)
 assert(t[1] == 1 and t[3] == 'hello')
 
--- unpack is globally available for 5.2
-local a,b = unpack{10,'wow'}
+-- unpack is not globally available for 5.2 unless in compat mode.
+-- But utils.unpack is always defined.
+local a,b = utils.unpack{10,'wow'}
 assert(a == 10 and b == 'wow')
 
 -- utils.load() is Lua 5.2 style
