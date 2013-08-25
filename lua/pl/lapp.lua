@@ -315,7 +315,7 @@ function lapp.process_options_string(str,args)
     end
 
     local function is_flag (parm)
-        return parms[aliases[parm] or parm] ~= nil
+        return parms[aliases[parm] or parm]
     end
 
     while i <= #arg do
@@ -331,7 +331,9 @@ function lapp.process_options_string(str,args)
                 local parmstr,eq = check_parm(res.short)
                 if not eq then
                     parm = at(parmstr,1)
-                    if isdigit(at(parmstr,2)) then
+                    local flag = is_flag(parm)
+                    if flag.type ~= 'boolean' then
+                    --if isdigit(at(parmstr,2)) then
                         -- a short option followed by a digit is an exception (for AW;))
                         -- push ahead into the arg array
                         tinsert(arg,i+1,parmstr:sub(2))
