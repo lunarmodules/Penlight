@@ -877,16 +877,12 @@ function tablex.create_case_insensitive()
 	local lookup = {} -- For case preservation.
 	local mt = {
 		__index=function(t, k)
-			local v
+			local v = nil
 			if type(k) == "string" then
 				-- Try to get the value for the key normalized.
 				v = rawget(t, k:lower())
-				-- If we don't have a normalized key we might be dealing with a rawset
-				-- so try to get it non-normalized.
-				if v == nil then
-					v = rawget(t, k)
-				end
-			else
+			end
+			if v == nil then
 				v = rawget(t, k)
 			end
 			return v
