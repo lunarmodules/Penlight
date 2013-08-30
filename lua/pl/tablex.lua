@@ -865,6 +865,61 @@ function tablex.readonly(t)
     return setmetatable({}, mt)
 end
 
-
+--- Creates a case table with case insensitive string lookup.
+-- Table can be used to store and lookup non-string keys as well.
+-- Keys are case preserved while iterating (calling pairs).
+-- The case will be updated after a set operation.
+-- E.g:
+-- * keys "ABC", "abc" and "aBc" are all considered the same key.
+-- * Setting "ABC", "abc" then "aBc" the case returned when iterating will be "aBc".
+-- @return A table with case insensitive lookup.
+function tablex.create_case_insensitive()
+	local lookup = {} -- For case preservation.
+	local mt = {
+		__index=function(t, k)
+			local v
+			if type(k) == "string" then
+				-- Try to get the value for the key normalized.
+				v = rawget(t, k:lower())
+				-- If we don't have a normalized key we might be dealing with a rawset
+				-- so try to get it non-normalized.
+				if v == nil then
+					v = rawget(t, k)
+				end
+			else
+				v = rawget(t, k)
+			end
+			return v
+		end,
+		__newindex=function(t, k, v)
+			-- Store all strings normalized as lowercase.
+			if type(k) == "string" then
+				lookup[k:lower()] = k
+				k = k:lower()
+			end
+			rawset(t, k, v)
+		end,
+		__pairs=function(t)
+			local function n(t, i)
+				if i ~= nil then
+					-- Check that strings that have been normalized exist in the table. If they don't
+					-- the value could have been set exactly using rawset.
+					if type(i) == "string" and t[i:lower()] ~= nil then
+						i = i:lower()
+					end
+					-- Ensure the value exists in the table. Either due to a rawset or it's not a string
+					-- and we still need to check it exists.
+					if t[i] == nil then
+						return nil
+					end
+				end
+				local k,v = next(t, i)
+				return lookup[k] or k, v
+			end
+			return n, t, nil
+		end
+	}
+	return setmetatable({}, mt)
+end
 
 return tablex
