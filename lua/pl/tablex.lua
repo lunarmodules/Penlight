@@ -890,7 +890,7 @@ function tablex.create_case_insensitive()
 		__newindex=function(t, k, v)
 			-- Store all strings normalized as lowercase.
 			if type(k) == "string" then
-				lookup[k:lower()] = k
+				lookup[k:lower()] = v ~= nil and k or nil
 				k = k:lower()
 			end
 			rawset(t, k, v)
