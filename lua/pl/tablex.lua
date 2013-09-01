@@ -904,13 +904,11 @@ function tablex.create_case_insensitive()
         __pairs=function(t)
             local function n(t, i)
                 if i ~= nil then
-                    -- Check that strings that have been normalized exist in the table. If they don't
-                    -- the value could have been set exactly using rawset.
+                    -- Check that strings that have been normalized exist in the table.
                     if type(i) == "string" and values[i:lower()] ~= nil then
                         i = i:lower()
                     end
-                    -- Ensure the value exists in the table. Either due to a rawset or it's not a string
-                    -- and we still need to check it exists.
+                    -- Ensure the value exists in the table.
                     if values[i] == nil then
                         return nil
                     end
