@@ -874,48 +874,54 @@ end
 -- * Setting "ABC", "abc" then "aBc" the case returned when iterating will be "aBc".
 -- @return A table with case insensitive lookup.
 function tablex.create_case_insensitive()
-	local lookup = {} -- For case preservation.
-	local mt = {
-		__index=function(t, k)
-			local v = nil
-			if type(k) == "string" then
-				-- Try to get the value for the key normalized.
-				v = rawget(t, k:lower())
-			end
-			if v == nil then
-				v = rawget(t, k)
-			end
-			return v
-		end,
-		__newindex=function(t, k, v)
-			-- Store all strings normalized as lowercase.
-			if type(k) == "string" then
-				lookup[k:lower()] = v ~= nil and k or nil
-				k = k:lower()
-			end
-			rawset(t, k, v)
-		end,
-		__pairs=function(t)
-			local function n(t, i)
-				if i ~= nil then
-					-- Check that strings that have been normalized exist in the table. If they don't
-					-- the value could have been set exactly using rawset.
-					if type(i) == "string" and t[i:lower()] ~= nil then
-						i = i:lower()
-					end
-					-- Ensure the value exists in the table. Either due to a rawset or it's not a string
-					-- and we still need to check it exists.
-					if t[i] == nil then
-						return nil
-					end
-				end
-				local k,v = next(t, i)
-				return lookup[k] or k, v
-			end
-			return n, t, nil
-		end
-	}
-	return setmetatable({}, mt)
+    -- For case preservation.
+    local lookup = {}
+    -- Stores the values so we can properly update. We need the main table to always return nil on lookup
+    -- so __newindex is called when setting a value. If this doesn't happen then a case change (FOO to foo)
+    -- won't happen because __newindex is only called when the lookup fails (there isn't a metamethod for 
+    -- lookup we can use).
+    local values = {}
+    local mt = {
+        __index=function(t, k)
+            local v = nil
+            if type(k) == "string" then
+                -- Try to get the value for the key normalized.
+                v = rawget(values, k:lower())
+            end
+            if v == nil then
+                v = rawget(values, k)
+            end
+            return v
+        end,
+        __newindex=function(t, k, v)
+            -- Store all strings normalized as lowercase.
+            if type(k) == "string" then
+                lookup[k:lower()] = v ~= nil and k or nil -- Clear the lookup value if we're setting to nil.
+                k = k:lower()
+            end
+            rawset(values, k, v)
+        end,
+        __pairs=function(t)
+            local function n(t, i)
+                if i ~= nil then
+                    -- Check that strings that have been normalized exist in the table. If they don't
+                    -- the value could have been set exactly using rawset.
+                    if type(i) == "string" and values[i:lower()] ~= nil then
+                        i = i:lower()
+                    end
+                    -- Ensure the value exists in the table. Either due to a rawset or it's not a string
+                    -- and we still need to check it exists.
+                    if values[i] == nil then
+                        return nil
+                    end
+                end
+                local k,v = next(values, i)
+                return lookup[k] or k, v
+            end
+            return n, t, nil
+        end
+    }
+    return setmetatable({}, mt)
 end
 
 return tablex
