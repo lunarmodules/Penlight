@@ -886,10 +886,10 @@ function tablex.create_case_insensitive()
             local v = nil
             if type(k) == "string" then
                 -- Try to get the value for the key normalized.
-                v = rawget(values, k:lower())
+                v = values[k:lower()]
             end
             if v == nil then
-                v = rawget(values, k)
+                v = values[k]
             end
             return v
         end,
@@ -899,7 +899,7 @@ function tablex.create_case_insensitive()
                 lookup[k:lower()] = v ~= nil and k or nil -- Clear the lookup value if we're setting to nil.
                 k = k:lower()
             end
-            rawset(values, k, v)
+            values[k] = v
         end,
         __pairs=function(t)
             local function n(t, i)
