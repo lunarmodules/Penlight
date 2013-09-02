@@ -79,11 +79,8 @@ function Date.tzone ()
         local now = os.time()
         local utc = os.date('!*t',now)
         local lcl = os.date('*t',now)
-        local unow = os.time(utc)
-        tzone_ = os.difftime(now,unow)
-        if lcl.isdst then
-            tzone_ = tzone_ + 3600
-        end
+        lcl.isdst = false
+        tzone_ = os.difftime(os.time(lcl), os.time(utc))
     end
     return tzone_
 end
