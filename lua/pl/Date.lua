@@ -82,11 +82,7 @@ function Date.tzone ()
         local unow = os.time(utc)
         tzone_ = os.difftime(now,unow)
         if lcl.isdst then
-            if tzone_ > 0 then
-                tzone_ = tzone_ - 3600
-            else
-                tzone_ = tzone_ + 3600
-            end
+            tzone_ = tzone_ + 3600
         end
     end
     return tzone_
@@ -293,8 +289,8 @@ local formats = {
 --
 
 --- Date.Format constructor.
--- @param fmt. A string where the following fields are significant: 
--- 
+-- @param fmt. A string where the following fields are significant:
+--
 --   * d day (either d or dd)
 --   * y year (either yy or yyy)
 --   * m month (either m or mm)
@@ -304,14 +300,14 @@ local formats = {
 --
 -- Alternatively, if fmt is nil then this returns a flexible date parser
 -- that tries various date/time schemes in turn:
--- 
+--
 --   # [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601),
 --    like `2010-05-10 12:35:23Z` or `2008-10-03T14:30+02`
 --   # times like 15:30 or 8.05pm  (assumed to be today's date)
---   # dates like 28/10/02 (European order!) or 5 Feb 2012 
+--   # dates like 28/10/02 (European order!) or 5 Feb 2012
 --   # month name like march or Mar (case-insensitive, first 3 letters);
--- here the day will be 1 and the year this current year 
--- 
+-- here the day will be 1 and the year this current year
+--
 -- A date in format 3 can be optionally followed by a time in format 2.
 -- Please see test-date.lua in the tests folder for more examples.
 -- @usage df = Date.Format("yyyy-mm-dd HH:MM:SS")
@@ -487,14 +483,14 @@ local function parse_date_unsafe (s,US)
     end
     if p and is_word(p) then
         p = p:sub(1,3)
-        if not months then 
+        if not months then
             local ld, day1 = parse_date_unsafe '2000-12-31', {day=1}
             months = {}
             for i = 1,12 do
                 ld = ld:last_day()
                 ld:add(day1)
-                local mon = ld:month_name():lower() 
-                months [mon] = i 
+                local mon = ld:month_name():lower()
+                months [mon] = i
             end
         end
         local mon = months[p]
