@@ -314,10 +314,46 @@ end
 -- considered empty is it only contains spaces.
 -- @return true if the object is empty, otherwise false.
 function utils.is_empty(o, ignore_spaces)
-	if o == nil or (type(o) == "table" and not next(o)) or (type(o) == "string" and (o == "" or (ignore_spaces and o:match("^%s+$")))) then
-		return true
-	end
-	return false
+    if o == nil or (type(o) == "table" and not next(o)) or (type(o) == "string" and (o == "" or (ignore_spaces and o:match("^%s+$")))) then
+        return true
+    end
+    return false
+end
+
+--- Convert to a boolean value.
+-- True values are:
+-- * string: yes, y, true, t, 1 or additional strings specified by true_strs.
+-- * number: Any non-zero value.
+-- * table: Is not empty.
+-- * object: Is not nil.
+-- * boolean: true (doesn't make sense to pass a boolean to a to boolean function though...).
+-- @param o The object to evaluate.
+-- @param true_strs Additional strings that when matched should evaluate to true. E.g. "ja" to support German.
+-- @param ignore_objs True if objects should not be evaluated. Default is to evaluate objects as true if not nil.
+-- @return true if the input evaluates to true, otherwise false.
+function utils.to_bool(o, true_strs, ignore_objs)
+    if type(o) == "boolean" then
+        return 0
+    elseif type(o) == "string" then
+        o = o:lower()
+        if o == "yes" or o == "y" or o == "true" or o == "t" or o == "1" then
+            return true
+        end
+        if true_strs and type(true_strs) == "table" then
+            for _,v in ipairs(true_strs) do
+                if type(v) == "string" and o == v:lower() then
+                    return true
+                end
+            end
+        end
+    elseif type(o) == "number" and o ~= 0 then
+        return true
+    elseif type(o) == "table" and next(o) then
+        return true
+    elseif not ignore_objs and o ~= nil then
+        return true
+    end
+    return false
 end
 
 utils.stdmt = {
