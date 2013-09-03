@@ -328,24 +328,26 @@ end
 -- * object: Is not nil.
 -- * boolean: true (doesn't make sense to pass a boolean to a to boolean function though...).
 -- @param o The object to evaluate.
--- @param true_strs Additional strings that when matched should evaluate to true. E.g. "ja" to support German.
--- @param ignore_objs True if objects should not be evaluated. Default is to evaluate objects as true if not nil.
+-- @param true_strs optional Additional strings that when matched should evaluate to true. Comparison is case insensitive.
+-- This should be a List of strings. E.g. "ja" to support German.
+-- @param optional ignore_objs True if objects should not be evaluated. Default is to evaluate objects as true if not nil.
 -- @return true if the input evaluates to true, otherwise false.
 function utils.to_bool(o, true_strs, ignore_objs)
+    if true_strs then
+        utils.assert_arg(2, true_strs, "table")
+    end
     if type(o) == "boolean" then
-        return 0
+        return o
     elseif type(o) == "string" then
         o = o:lower()
         if o == "yes" or o == "y" or o == "true" or o == "t" or o == "1" then
             return true
         end
-        if true_strs and type(true_strs) == "table" then
-            for _,v in ipairs(true_strs) do
-                if type(v) == "string" and o == v:lower() then
-                    return true
-                end
-            end
-        end
+		for _,v in ipairs(true_strs or {}) do
+			if type(v) == "string" and o == v:lower() then
+				return true
+			end
+		end
     elseif type(o) == "number" and o ~= 0 then
         return true
     elseif type(o) == "table" and next(o) then
