@@ -70,32 +70,32 @@ function Date:_init(t,...)
     self:set(time)
 end
 
-local tzone_
-
 --- get the time zone offset from UTC.
 -- @return seconds ahead of UTC
-function Date.tzone ()
-    if not tzone_ then
-        local now = os.time()
-        local utc = os.date('!*t',now)
-        local lcl = os.date('*t',now)
-        local unow = os.time(utc)
-        tzone_ = os.difftime(now,unow)
-        if lcl.isdst then
-            tzone_ = tzone_ + 3600
+function Date.tzone (ts)
+    if ts == nil then
+        ts = os.time()
+    elseif type(ts) == "table" then
+        if getmetatable(ts) == Date then
+        	ts = ts.time
+        else
+        	ts = Date(ts).time
         end
     end
-    return tzone_
+    local utc = os.date('!*t',ts)
+    local lcl = os.date('*t',ts)
+    lcl.isdst = false
+    return os.difftime(os.time(lcl), os.time(utc))
 end
 
 --- convert this date to UTC.
 function Date:toUTC ()
-    self:add { sec = -Date.tzone() }
+    self:add { sec = -Date.tzone(self) }
 end
 
 --- convert this UTC date to local.
 function Date:toLocal ()
-    self:add { sec = Date.tzone() }
+    self:add { sec = Date.tzone(self) }
 end
 
 --- set the current time of this Date object.
