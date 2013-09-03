@@ -333,12 +333,13 @@ end
 -- @param optional ignore_objs True if objects should not be evaluated. Default is to evaluate objects as true if not nil.
 -- @return true if the input evaluates to true, otherwise false.
 function utils.to_bool(o, true_strs, ignore_objs)
+    local o_type = type(o)
     if true_strs then
         utils.assert_arg(2, true_strs, "table")
     end
-    if type(o) == "boolean" then
+    if o_type == "boolean" then
         return o
-    elseif type(o) == "string" then
+    elseif o_type == "string" then
         o = o:lower()
         if o == "yes" or o == "y" or o == "true" or o == "t" or o == "1" then
             return true
@@ -348,9 +349,9 @@ function utils.to_bool(o, true_strs, ignore_objs)
 				return true
 			end
 		end
-    elseif type(o) == "number" and o ~= 0 then
+    elseif o_type == "number" and o ~= 0 then
         return true
-    elseif type(o) == "table" and next(o) then
+    elseif o_type == "table" and next(o) then
         return true
     elseif not ignore_objs and o ~= nil then
         return true
