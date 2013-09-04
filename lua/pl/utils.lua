@@ -320,6 +320,26 @@ function utils.is_empty(o, ignore_spaces)
     return false
 end
 
+-- Strings that should evaluate to true.
+local trues  = { yes=true, y=true, ["true"]=true, t=true, ["1"]=true }
+-- Conditions types should evaluate to true.
+local true_types = {
+    boolean=function(o, true_strs, ignore_spaces) return o end,
+    string=function(o, true_strs, ignore_spaces)
+        if trues[o:lower()] then
+            return true
+        end
+        -- Check alternative user provided strings.
+        for _,v in ipairs(true_strs or {}) do
+            if type(v) == "string" and o == v:lower() then
+                return true
+            end
+        end
+        return false
+    end,
+    number=function(o, true_strs, ignore_spaces) return o ~= 0 end,
+    table=function(o, true_strs, ignore_spaces) return next(o) ~= nil end
+}
 --- Convert to a boolean value.
 -- True values are:
 -- * string: yes, y, true, t, 1 or additional strings specified by true_strs.
@@ -333,26 +353,13 @@ end
 -- @param optional ignore_objs True if objects should not be evaluated. Default is to evaluate objects as true if not nil.
 -- @return true if the input evaluates to true, otherwise false.
 function utils.to_bool(o, true_strs, ignore_objs)
-    local o_type = type(o)
+    local true_func
     if true_strs then
         utils.assert_arg(2, true_strs, "table")
     end
-    if o_type == "boolean" then
-        return o
-    elseif o_type == "string" then
-        o = o:lower()
-        if o == "yes" or o == "y" or o == "true" or o == "t" or o == "1" then
-            return true
-        end
-		for _,v in ipairs(true_strs or {}) do
-			if type(v) == "string" and o == v:lower() then
-				return true
-			end
-		end
-    elseif o_type == "number" and o ~= 0 then
-        return true
-    elseif o_type == "table" and next(o) then
-        return true
+    true_func = true_types[type(o)]
+    if true_func then
+        return true_func(o, true_strs, ignore_objs)
     elseif not ignore_objs and o ~= nil then
         return true
     end
