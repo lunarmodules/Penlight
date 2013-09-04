@@ -324,8 +324,8 @@ end
 local trues  = { yes=true, y=true, ["true"]=true, t=true, ["1"]=true }
 -- Conditions types should evaluate to true.
 local true_types = {
-    boolean=function(o, true_strs, ignore_spaces) return o end,
-    string=function(o, true_strs, ignore_spaces)
+    boolean=function(o, true_strs, ignore_objs) return o end,
+    string=function(o, true_strs, ignore_objs)
         if trues[o:lower()] then
             return true
         end
@@ -337,8 +337,8 @@ local true_types = {
         end
         return false
     end,
-    number=function(o, true_strs, ignore_spaces) return o ~= 0 end,
-    table=function(o, true_strs, ignore_spaces) return next(o) ~= nil end
+    number=function(o, true_strs, ignore_objs) return o ~= 0 end,
+    table=function(o, true_strs, ignore_objs) return next(o) ~= nil end
 }
 --- Convert to a boolean value.
 -- True values are:
