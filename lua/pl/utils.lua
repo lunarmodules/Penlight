@@ -314,10 +314,57 @@ end
 -- considered empty is it only contains spaces.
 -- @return true if the object is empty, otherwise false.
 function utils.is_empty(o, ignore_spaces)
-	if o == nil or (type(o) == "table" and not next(o)) or (type(o) == "string" and (o == "" or (ignore_spaces and o:match("^%s+$")))) then
-		return true
-	end
-	return false
+    if o == nil or (type(o) == "table" and not next(o)) or (type(o) == "string" and (o == "" or (ignore_spaces and o:match("^%s+$")))) then
+        return true
+    end
+    return false
+end
+
+-- Strings that should evaluate to true.
+local trues  = { yes=true, y=true, ["true"]=true, t=true, ["1"]=true }
+-- Conditions types should evaluate to true.
+local true_types = {
+    boolean=function(o, true_strs, check_objs) return o end,
+    string=function(o, true_strs, check_objs)
+        if trues[o:lower()] then
+            return true
+        end
+        -- Check alternative user provided strings.
+        for _,v in ipairs(true_strs or {}) do
+            if type(v) == "string" and o == v:lower() then
+                return true
+            end
+        end
+        return false
+    end,
+    number=function(o, true_strs, check_objs) return o ~= 0 end,
+    table=function(o, true_strs, check_objs) if check_objs and next(o) ~= nil then return true end return false end
+}
+--- Convert to a boolean value.
+-- True values are:
+-- * boolean: true (doesn't make sense to pass a boolean to a to boolean function though...).
+-- * string: yes, y, true, t, 1 or additional strings specified by true_strs.
+-- * number: Any non-zero value.
+-- * table: Is not empty and check_objs is true.
+-- * object: Is not nil and check_objs is true.
+-- @param o The object to evaluate.
+-- @param true_strs optional Additional strings that when matched should evaluate to true. Comparison is case insensitive.
+-- This should be a List of strings. E.g. "ja" to support German.
+-- @param optional check_objs True if objects should be evaluated. Default is to evaluate objects as true if not nil
+-- or if it is a table and it is not empty.
+-- @return true if the input evaluates to true, otherwise false.
+function utils.to_bool(o, true_strs, check_objs)
+    local true_func
+    if true_strs then
+        utils.assert_arg(2, true_strs, "table")
+    end
+    true_func = true_types[type(o)]
+    if true_func then
+        return true_func(o, true_strs, check_objs)
+    elseif check_objs and o ~= nil then
+        return true
+    end
+    return false
 end
 
 utils.stdmt = {
