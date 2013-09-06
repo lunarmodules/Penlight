@@ -430,6 +430,16 @@ function utils.raise (err)
     end
 end
 
+--- is the object of the specified type?.
+-- If the type is a string, then use type, otherwise compare with metatable
+-- @param obj An object to check
+-- @param tp String of what type it should be
+function utils.is_type (obj,tp)
+    if type(tp) == 'string' then return type(obj) == tp end
+    local mt = getmetatable(obj)
+    return tp == mt
+end
+
 raise = utils.raise
 
 --- load a code string or bytecode chunk.

@@ -1,4 +1,6 @@
----- Dealing with Types
+---- Dealing with Detailed Type Information
+
+-- Dependencies `pl.utils`
 -- @module pl.types
 
 local utils = require 'pl.utils'
@@ -14,11 +16,8 @@ end
 -- If the type is a string, then use type, otherwise compare with metatable
 -- @param obj An object to check
 -- @param tp String of what type it should be
-function types.is_type (obj,tp)
-    if type(tp) == 'string' then return type(obj) == tp end
-    local mt = getmetatable(obj)
-    return tp == mt
-end
+-- @function is_type
+types.is_type = utils.is_type
 
 local fileMT = getmetatable(io.stdout)
 
@@ -67,18 +66,24 @@ local function check_meta (val)
     return getmetatable(val)
 end
 
+--- is an object 'array-like'?
+-- @param val any value.
 function types.is_indexable (val)
     local mt = check_meta(val)
     if mt == true then return true end
     return not(mt and mt.__len and mt.__index)
 end
 
+--- can an object be iterated over with `ipairs`?
+-- @param val any value.
 function types.is_iterable (idx,val)
     local mt = check_meta(val)
     if mt == true then return true end
     return not(mt and mt.__pairs)
 end
 
+--- can an object accept new key/pair values?
+-- @param val any value.
 function types.is_writeable (idx,val)
     local mt = check_meta(val)
     if mt == true then return true end

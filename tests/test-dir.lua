@@ -36,3 +36,6 @@ asserteq (path.exists( newFileName ) , newFileName)
 -- Clean up
 file.delete( newFileName )
 
+-- have NO idea why forcing the return code is necessary here (Windows 7 64-bit)
+os.exit(0)
+
