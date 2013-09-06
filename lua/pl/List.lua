@@ -28,7 +28,7 @@ local tsub = tablex.sub
 local utils = require 'pl.utils'
 local class = require 'pl.class'
 
-local array_tostring,split,is_type,assert_arg,function_arg = utils.array_tostring,utils.split,utils.is_type,utils.assert_arg,utils.function_arg
+local array_tostring,split,assert_arg,function_arg = utils.array_tostring,utils.split,utils.assert_arg,utils.function_arg
 local normalize_slice = tablex._normalize_slice
 
 -- metatable for our list and map objects has already been defined..
@@ -269,7 +269,7 @@ function List.range(start,finish,incr)
     end
     if incr then
     assert_arg(3,incr,'number')
-    if not utils.is_integer(incr) then finish = finish + eps end
+    if math.ceil(incr) ~= incr then finish = finish + eps end
     else
         incr = 1
     end

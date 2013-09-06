@@ -1,7 +1,7 @@
 --- Operations on two-dimensional arrays.
 -- See @{02-arrays.md.Operations_on_two_dimensional_tables|The Guide}
 --
--- Dependencies: `pl.utils`, `pl.tablex`
+-- Dependencies: `pl.utils`, `pl.tablex`, `pl.types`
 -- @module pl.array2d
 
 local require, type,tonumber,assert,tostring,io,ipairs,string,table =
@@ -10,7 +10,7 @@ local setmetatable,getmetatable = setmetatable,getmetatable
 
 local tablex = require 'pl.tablex'
 local utils = require 'pl.utils'
-
+local types = require 'pl.types'
 local imap,tmap,reduce,keys,tmap2,tset,index_by = tablex.imap,tablex.map,tablex.reduce,tablex.keys,tablex.map2,tablex.set,tablex.index_by
 local remove = table.remove
 local splitv,fprintf,assert_arg = utils.splitv,utils.fprintf,utils.assert_arg
@@ -483,7 +483,7 @@ end
 -- @return new 2d array
 function array2d.new(rows,cols,val)
     local res = {}
-    local fun = utils.is_callable(val)
+    local fun = types.is_callable(val)
     for i = 1,rows do
         local row = {}
         if fun then

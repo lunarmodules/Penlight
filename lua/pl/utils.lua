@@ -262,63 +262,6 @@ function utils.memoize(func)
     })
 end
 
---- is the object either a function or a callable object?.
--- @param obj Object to check.
-function utils.is_callable (obj)
-    return type(obj) == 'function' or getmetatable(obj) and getmetatable(obj).__call
-end
-
---- is the object of the specified type?.
--- If the type is a string, then use type, otherwise compare with metatable
--- @param obj An object to check
--- @param tp String of what type it should be
-function utils.is_type (obj,tp)
-    if type(tp) == 'string' then return type(obj) == tp end
-    local mt = getmetatable(obj)
-    return tp == mt
-end
-
-local fileMT = getmetatable(io.stdout)
-
---- a string representation of a type.
--- For tables with metatables, we assume that the metatable has a `_name`
--- field. Knows about Lua file objects.
--- @param obj an object
--- @return a string like 'number', 'table' or 'List'
-function utils.type (obj)
-    local t = type(obj)
-    if t == 'table' or t == 'userdata' then
-        local mt = getmetatable(obj)
-        if mt == fileMT then
-            return 'file'
-        else
-            return mt._name or "unknown "..t
-        end
-    else
-        return t
-    end
-end
-
---- is this number an integer?
--- @param x a number
--- @raise error if x is not a number
-function utils.is_integer (x)
-    return math.ceil(x)==x
-end
-
---- Check if the object is "empty".
--- An object is considered empty if it is nil, a table with out any items (key,
--- value pairs or indexes), or a string with no content ("").
--- @param o The object to check if it is empty.
--- @param ignore_spaces If the object is a string and this is true the string is
--- considered empty is it only contains spaces.
--- @return true if the object is empty, otherwise false.
-function utils.is_empty(o, ignore_spaces)
-	if o == nil or (type(o) == "table" and not next(o)) or (type(o) == "string" and (o == "" or (ignore_spaces and o:match("^%s+$")))) then
-		return true
-	end
-	return false
-end
 
 utils.stdmt = {
     List = {_name='List'}, Map = {_name='Map'},

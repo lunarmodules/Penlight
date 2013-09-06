@@ -11,7 +11,6 @@ local List = require 'pl.List'
 local index_by,tsort,concat = tablex.index_by,table.sort,table.concat
 local append,extend,slice = List.append,List.extend,List.slice
 local append = table.insert
-local is_type = utils.is_type
 
 local class = require 'pl.class'
 local Map = require 'pl.Map'

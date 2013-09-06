@@ -12,7 +12,6 @@
 local tablex = require 'pl.tablex'
 local utils = require 'pl.utils'
 local stdmt = utils.stdmt
-local is_callable = utils.is_callable
 local tmakeset,deepcompare,merge,keys,difference,tupdate = tablex.makeset,tablex.deepcompare,tablex.merge,tablex.keys,tablex.difference,tablex.update
 
 local pretty_write = require 'pl.pretty' . write
