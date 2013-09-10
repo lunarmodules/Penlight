@@ -203,7 +203,7 @@ end
 
 --- is this day on a weekend?.
 function Date:is_weekend()
-    return self.tab.wday == 0 or self.tab.wday == 7
+    return self.tab.wday == 1 or self.tab.wday == 7
 end
 
 --- add to a date object.
