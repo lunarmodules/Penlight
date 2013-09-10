@@ -216,8 +216,8 @@ function Date:is_weekend()
 end
 
 --- add to a date object.
--- @param t a table containing one of the following keys and a value:<br>
--- year,month,day,hour,min,sec
+-- @param t a table containing one of the following keys and a value:
+-- one of `year`,`month`,`day`,`hour`,`min`,`sec`
 -- @return this date
 function Date:add(t)
     local key,val = next(t)
@@ -258,9 +258,24 @@ function Date:__eq(other)
     return self.time == other.time
 end
 
---- equality between Date objects.
+--- ordering between Date objects.
 function Date:__lt(other)
     return self.time < other.time
+end
+
+--- difference between Date objects.
+Date.__sub = Date.diff
+
+--- add a date and an interval.
+-- @param other either a `Date.Interval` object or a table such as
+-- passed to `Date:add`
+function Date:__add(other)
+    local nd = Date(self)
+    if Date.Interval:class_of(other) then
+        other = {sec=other.time}
+    end
+    nd:add(other)
+    return nd
 end
 
 Date.Interval = class(Date)
@@ -277,16 +292,22 @@ function Date.Interval:set(t)
     self.tab = os_date('!*t',self.time)
 end
 
+local function ess(n)
+    if n > 1 then return 's '
+    else return ' '
+    end
+end
+
 --- If it's an interval then the format is '2 hours 29 sec' etc.
 function Date.Interval:__tostring()
     local t, res = self.tab, ''
     local y,m,d = t.year - 1970, t.month - 1, t.day - 1
-    if y > 0 then res = res .. y .. ' years ' end
-    if m > 0 then res = res .. m .. ' months ' end
-    if d > 0 then res = res .. d .. ' days ' end
+    if y > 0 then res = res .. y .. ' year'..ess(y) end
+    if m > 0 then res = res .. m .. ' month'..ess(m) end
+    if d > 0 then res = res .. d .. ' day'..ess(d) end
     if y == 0 and m == 0 then
         local h = t.hour
-        if h > 0 then res = res .. h .. ' hours ' end
+        if h > 0 then res = res .. h .. ' hours'..ess(h) end
         if t.min > 0 then res = res .. t.min .. ' min ' end
         if t.sec > 0 then res = res .. t.sec .. ' sec ' end
     end
@@ -304,8 +325,6 @@ local formats = {
     M = {'min',{true,true}},
     S = {'sec',{true,true}},
 }
-
---
 
 --- Date.Format constructor.
 -- @param fmt. A string where the following fields are significant:

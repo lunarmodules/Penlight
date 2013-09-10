@@ -96,4 +96,9 @@ end
 assertmatch(err(parse_date('2005-10-40 01:30')),'40 is not between 1 and 31')
 assertmatch(err(parse_date('14.20pm')),'14 is not between 0 and 12')
 
+local d = parse_date '2007-08-10'
+-- '+' works like add, but can also work with intervals
+local nxt = d + {month=1}
+-- '-' is an alias for diff method
+asserteq(tostring(nxt - d), '1 month ')
 
