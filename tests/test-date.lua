@@ -50,9 +50,9 @@ d:add { day = 1 }  -- tomorrow
 assert(d > Date())
 
 --------- Time intervals -----
--- new constructor makes an interval; also returned by Date:diff
-d1 = Date(1202,true)
-d2 = Date(1500,true)
+-- new explicit Date.Interval class; also returned by Date:diff
+d1 = Date.Interval(1202)
+d2 = Date.Interval(1500)
 asserteq(tostring(d2:diff(d1)),"4 min 58 sec ")
 
 -------- testing 'flexible' date parsing ---------

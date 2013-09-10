@@ -43,8 +43,6 @@ function Date:_init(t,...)
         time = os_time()
     elseif type(t) == 'number' then
         time = t
-        local next = ...
-        self.interval = next == true or next == 'interval'
     elseif type(t) == 'table' then
         if getmetatable(t) == Date then -- copy ctor
             time = t.time
@@ -69,6 +67,18 @@ function Date:_init(t,...)
     end
     self:set(time)
 end
+
+--- set the current time of this Date object.
+-- @param t seconds since epoch
+function Date:set(t)
+    self.time = t
+    if self.utc then
+        self.tab = os_date('!*t',self.time)
+    else
+        self.tab = os_date('*t',self.time)
+    end
+end
+
 
 --- get the time zone offset from UTC.
 -- @return seconds ahead of UTC
@@ -106,17 +116,6 @@ function Date:toLocal ()
         ndate.utc = false
     end
     return ndate
-end
-
---- set the current time of this Date object.
--- @param t seconds since epoch
-function Date:set(t)
-    self.time = t
-    if self.interval then
-        self.tab = os_date('!*t',self.time)
-    else
-        self.tab = os_date('*t',self.time)
-    end
 end
 
 --- set the year.
@@ -241,36 +240,17 @@ function Date:last_day()
 end
 
 --- difference between two Date objects.
--- Note: currently the result is a regular @{Date} object,
--- but also has `interval` field set, which means a more
--- appropriate string rep is used.
 -- @param other Date object
--- @return a Date object
+-- @treturn Date.Interval object
 function Date:diff(other)
     local dt = self.time - other.time
     if dt < 0 then error("date difference is negative!",2) end
-    return Date(dt,true)
+    return Date.Interval(dt)
 end
 
 --- long numerical ISO data format version of this date.
--- If it's an interval then the format is '2 hours 29 sec' etc.
 function Date:__tostring()
-    if not self.interval then
-        return os_date('%Y-%m-%d %H:%M:%S',self.time)
-    else
-        local t, res = self.tab, ''
-        local y,m,d = t.year - 1970, t.month - 1, t.day - 1
-        if y > 0 then res = res .. y .. ' years ' end
-        if m > 0 then res = res .. m .. ' months ' end
-        if d > 0 then res = res .. d .. ' days ' end
-        if y == 0 and m == 0 then
-            local h = t.hour
-            if h > 0 then res = res .. h .. ' hours ' end
-            if t.min > 0 then res = res .. t.min .. ' min ' end
-            if t.sec > 0 then res = res .. t.sec .. ' sec ' end
-        end
-        return res
-    end
+    return os_date('%Y-%m-%d %H:%M:%S',self.time)
 end
 
 --- equality between Date objects.
@@ -283,6 +263,35 @@ function Date:__lt(other)
     return self.time < other.time
 end
 
+Date.Interval = class(Date)
+
+---- Date.Interval constructor
+-- @param t an interval in seconds
+-- @function Date.Interval
+function Date.Interval:_init(t)
+    self:set(t)
+end
+
+function Date.Interval:set(t)
+    self.time = t
+    self.tab = os_date('!*t',self.time)
+end
+
+--- If it's an interval then the format is '2 hours 29 sec' etc.
+function Date.Interval:__tostring()
+    local t, res = self.tab, ''
+    local y,m,d = t.year - 1970, t.month - 1, t.day - 1
+    if y > 0 then res = res .. y .. ' years ' end
+    if m > 0 then res = res .. m .. ' months ' end
+    if d > 0 then res = res .. d .. ' days ' end
+    if y == 0 and m == 0 then
+        local h = t.hour
+        if h > 0 then res = res .. h .. ' hours ' end
+        if t.min > 0 then res = res .. t.min .. ' min ' end
+        if t.sec > 0 then res = res .. t.sec .. ' sec ' end
+    end
+    return res
+end
 
 ------------ Date.Format class: parsing and renderinig dates ------------
 
