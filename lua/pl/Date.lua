@@ -90,12 +90,22 @@ end
 
 --- convert this date to UTC.
 function Date:toUTC ()
-    self:add { sec = -Date.tzone(self) }
+    local ndate = Date(self)
+    if not self.utc then
+        ndate:add { sec = -Date.tzone(self) }
+        ndate.utc = true
+    end
+    return ndate
 end
 
 --- convert this UTC date to local.
 function Date:toLocal ()
-    self:add { sec = Date.tzone(self) }
+    local ndate = Date(self)
+    if self.utc then
+        ndate:add { sec = Date.tzone(self) }
+        ndate.utc = false
+    end
+    return ndate
 end
 
 --- set the current time of this Date object.
@@ -550,9 +560,10 @@ local function parse_date_unsafe (s,US)
     if tz then -- ISO 8601 UTC time
         res:add {hour = -tz.h}
         if tz.m ~= 0 then res:add {min = -tz.m} end
+        res.utc = true
         -- we're in UTC, so let's go local...
-        res:toLocal()
-    end
+        res = res:toLocal()
+    end    
     return res
 end
 

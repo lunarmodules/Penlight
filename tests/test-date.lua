@@ -68,9 +68,8 @@ end
 -- specified as UTC plus/minus offset
 
 function parse_utc (s)
-    local d = parse_date(s)
-    d:toUTC()
-    return d
+    local d = parse_date(s)    
+    return d:toUTC()
 end
 
 asserteq(parse_utc '2010-05-10 12:35:23Z', Date(2010,05,10,12,35,23))
