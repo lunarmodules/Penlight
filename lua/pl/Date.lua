@@ -18,16 +18,17 @@ Date.Format = class()
 -- @param t this can be either
 --
 --   * `nil` or empty - use current date and time
---   * number - seconds since epoch (as returned by @{os.time})
---   * `Date` - copy constructor
+--   * number - seconds since epoch (as returned by `os.time`). Resulting time is UTC
+--   * `Date` - make a copy of this date
 --   * table - table containing year, month, etc as for `os.time`. You may leave out year, month or day,
--- in which case current values will be used.
---   *three to six numbers: year, month, day, hour, min, sec
+-- in which case current values will be used.  
+--   * year (will be followed by month, day etc)
 --
+-- @param ...  true if  Universal Coordinated Time, or two to five numbers: month,day,hour,min,sec
 -- @function Date
 function Date:_init(t,...)
-    local time
-    if select('#',...) > 2 then
+    local nargs = select('#',...), time
+    if nargs > 2 then
         local extra = {...}
         local year = t
         t = {
@@ -39,16 +40,22 @@ function Date:_init(t,...)
             sec = extra[5]
         }
     end
-    if t == nil then
+    if nargs == 1 then
+        self.utc = select(1,...) == true
+    end
+    if t == nil or t == 'utc' then
         time = os_time()
+        self.utc = t == 'utc'
     elseif type(t) == 'number' then
         time = t
+        if self.utc == nil then self.utc = true end
     elseif type(t) == 'table' then
         if getmetatable(t) == Date then -- copy ctor
             time = t.time
+            self.utc = t.utc
         else
             if not (t.year and t.month) then
-                local lt = os.date('*t')
+                local lt = os_date('*t')
                 if not t.year and not t.month and not t.day then
                     t.year = lt.year
                     t.month = lt.month
@@ -73,18 +80,17 @@ end
 function Date:set(t)
     self.time = t
     if self.utc then
-        self.tab = os_date('!*t',self.time)
+        self.tab = os_date('!*t',t)
     else
-        self.tab = os_date('*t',self.time)
+        self.tab = os_date('*t',t)
     end
 end
-
 
 --- get the time zone offset from UTC.
 -- @return seconds ahead of UTC
 function Date.tzone (ts)
     if ts == nil then
-        ts = os.time()
+        ts = os_time()
     elseif type(ts) == "table" then
         if getmetatable(ts) == Date then
         	ts = ts.time
@@ -92,18 +98,18 @@ function Date.tzone (ts)
         	ts = Date(ts).time
         end
     end
-    local utc = os.date('!*t',ts)
-    local lcl = os.date('*t',ts)
+    local utc = os_date('!*t',ts)
+    local lcl = os_date('*t',ts)
     lcl.isdst = false
-    return os.difftime(os.time(lcl), os.time(utc))
+    return os.difftime(os_time(lcl), os_time(utc))
 end
 
 --- convert this date to UTC.
 function Date:toUTC ()
     local ndate = Date(self)
     if not self.utc then
-        ndate:add { sec = -Date.tzone(self) }
         ndate.utc = true
+        ndate:set(ndate.time)
     end
     return ndate
 end
@@ -112,8 +118,9 @@ end
 function Date:toLocal ()
     local ndate = Date(self)
     if self.utc then
-        ndate:add { sec = Date.tzone(self) }
         ndate.utc = false
+        ndate:set(ndate.time)
+--~         ndate:add { sec = Date.tzone(self) }
     end
     return ndate
 end
@@ -220,9 +227,14 @@ end
 -- one of `year`,`month`,`day`,`hour`,`min`,`sec`
 -- @return this date
 function Date:add(t)
+    local old_dst = self.tab.isdst
     local key,val = next(t)
     self.tab[key] = self.tab[key] + val
     self:set(os_time(self.tab))
+    if old_dst ~= self.tab.isdst then
+        self.tab.hour = self.tab.hour - (old_dist and 1 or -1)
+        self:set(os_time(self.tab))
+    end
     return self
 end
 
@@ -250,7 +262,23 @@ end
 
 --- long numerical ISO data format version of this date.
 function Date:__tostring()
-    return os_date('%Y-%m-%d %H:%M:%S',self.time)
+    local t = os_date('%Y-%m-%dT%H:%M:%S',self.time)
+    if self.utc then    
+        return  t .. 'Z'
+    else
+        local offs = self:tzone()
+        if offs == 0 then
+            return t .. 'Z'
+        end
+        local sign = offs > 0 and '+' or '-'
+        local h = math.ceil(offs/3600)
+        local m = (offs % 3600)/60
+        if m == 0 then
+            return t .. ('%s%02d'):format(sign,h)
+        else
+            return t .. ('%s%02d:%02d'):format(sign,h,m)
+        end
+    end
 end
 
 --- equality between Date objects.
@@ -307,10 +335,11 @@ function Date.Interval:__tostring()
     if d > 0 then res = res .. d .. ' day'..ess(d) end
     if y == 0 and m == 0 then
         local h = t.hour
-        if h > 0 then res = res .. h .. ' hours'..ess(h) end
+        if h > 0 then res = res .. h .. ' hour'..ess(h) end
         if t.min > 0 then res = res .. t.min .. ' min ' end
         if t.sec > 0 then res = res .. t.sec .. ' sec ' end
     end
+    if res == '' then res = 'zero' end
     return res
 end
 
@@ -352,7 +381,12 @@ local formats = {
 -- @class function
 -- @name Date.Format
 function Date.Format:_init(fmt)
-    if not fmt then return end
+    if not fmt then
+        self.fmt = '%Y-%m-%d %H:%M:%S'
+        self.outf = self.fmt
+        self.plain = true
+        return
+    end
     local append = table.insert
     local D,PLUS,OPENP,CLOSEP = '\001','\002','\003','\004'
     local vars,used = {},{}
@@ -401,7 +435,7 @@ local parse_date
 -- @return date object
 function Date.Format:parse(str)
     assert_string(1,str)
-    if not self.fmt then
+    if self.plain then
         return parse_date(str,self.us)
     end
     local res = {str:match(self.fmt)}
@@ -433,11 +467,7 @@ end
 -- @return string
 function Date.Format:tostring(d)
     local tm = type(d) == 'number' and d or d.time
-    if self.outf then
-        return os.date(self.outf,tm)
-    else
-        return tostring(Date(d))
-    end
+    return os_date(self.outf,tm)
 end
 
 --- force US order in dates like 9/11/2001

@@ -1,4 +1,6 @@
 local test = require 'pl.test'
+local app = require 'pl.app'
+local utils = require 'pl.utils'
 local asserteq, assertmatch = test.asserteq, test.assertmatch
 local dump = require 'pl.pretty'.dump
 local T = require 'pl.test'.tuple
@@ -102,3 +104,12 @@ local nxt = d + {month=1}
 -- '-' is an alias for diff method
 asserteq(tostring(nxt - d), '1 month ')
 
+--- Can explicitly get UTC date; these of course refer to same time
+local now,utc  = Date(), Date 'utc'
+asserteq(tostring(now - utc),'zero')
+
+if app.platform() ~= 'Windows' then
+    if not utils.execute ("TZ='Europe/London' "..app.lua().." test-tzone.lua") then
+        error "buggered!"
+    end
+end
