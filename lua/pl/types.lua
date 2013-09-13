@@ -76,7 +76,7 @@ end
 
 --- can an object be iterated over with `ipairs`?
 -- @param val any value.
-function types.is_iterable (idx,val)
+function types.is_iterable (val)
     local mt = check_meta(val)
     if mt == true then return true end
     return not(mt and mt.__pairs)
@@ -84,7 +84,7 @@ end
 
 --- can an object accept new key/pair values?
 -- @param val any value.
-function types.is_writeable (idx,val)
+function types.is_writeable (val)
     local mt = check_meta(val)
     if mt == true then return true end
     return not(mt and mt.__newindex)
@@ -112,15 +112,17 @@ local true_types = {
 }
 --- Convert to a boolean value.
 -- True values are:
--- * boolean: true (doesn't make sense to pass a boolean to a to boolean function though...).
--- * string: yes, y, true, t, 1 or additional strings specified by true_strs.
+--
+-- * boolean: true.
+-- * string: 'yes', 'y', 'true', 't', '1' or additional strings specified by `true_strs`.
 -- * number: Any non-zero value.
--- * table: Is not empty and check_objs is true.
--- * object: Is not nil and check_objs is true.
+-- * table: Is not empty and `check_objs` is true.
+-- * object: Is not `nil` and `check_objs` is true.
+--
 -- @param o The object to evaluate.
--- @param true_strs optional Additional strings that when matched should evaluate to true. Comparison is case insensitive.
+-- @param[opt] true_strs optional Additional strings that when matched should evaluate to true. Comparison is case insensitive.
 -- This should be a List of strings. E.g. "ja" to support German.
--- @param optional check_objs True if objects should be evaluated. Default is to evaluate objects as true if not nil
+-- @param[opt] check_objs True if objects should be evaluated. Default is to evaluate objects as true if not nil
 -- or if it is a table and it is not empty.
 -- @return true if the input evaluates to true, otherwise false.
 function types.to_bool(o, true_strs, check_objs)

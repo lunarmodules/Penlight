@@ -21,7 +21,7 @@ Date.Format = class()
 --   * number - seconds since epoch (as returned by `os.time`). Resulting time is UTC
 --   * `Date` - make a copy of this date
 --   * table - table containing year, month, etc as for `os.time`. You may leave out year, month or day,
--- in which case current values will be used.  
+-- in which case current values will be used.
 --   * year (will be followed by month, day etc)
 --
 -- @param ...  true if  Universal Coordinated Time, or two to five numbers: month,day,hour,min,sec
@@ -263,7 +263,7 @@ end
 --- long numerical ISO data format version of this date.
 function Date:__tostring()
     local t = os_date('%Y-%m-%dT%H:%M:%S',self.time)
-    if self.utc then    
+    if self.utc then
         return  t .. 'Z'
     else
         local offs = self:tzone()
@@ -292,6 +292,7 @@ function Date:__lt(other)
 end
 
 --- difference between Date objects.
+-- @function Date:__sub
 Date.__sub = Date.diff
 
 --- add a date and an interval.
@@ -368,12 +369,11 @@ local formats = {
 -- Alternatively, if fmt is nil then this returns a flexible date parser
 -- that tries various date/time schemes in turn:
 --
---   # [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601),
---    like `2010-05-10 12:35:23Z` or `2008-10-03T14:30+02`
---   # times like 15:30 or 8.05pm  (assumed to be today's date)
---   # dates like 28/10/02 (European order!) or 5 Feb 2012
---   # month name like march or Mar (case-insensitive, first 3 letters);
--- here the day will be 1 and the year this current year
+--  * [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601), like `2010-05-10 12:35:23Z` or `2008-10-03T14:30+02`
+--  * times like 15:30 or 8.05pm  (assumed to be today's date)
+--  * dates like 28/10/02 (European order!) or 5 Feb 2012
+--  * month name like march or Mar (case-insensitive, first 3 letters); here the
+-- day will be 1 and the year this current year
 --
 -- A date in format 3 can be optionally followed by a time in format 2.
 -- Please see test-date.lua in the tests folder for more examples.
@@ -621,7 +621,7 @@ local function parse_date_unsafe (s,US)
         res.utc = true
         -- we're in UTC, so let's go local...
         res = res:toLocal()
-    end    
+    end
     return res
 end
 

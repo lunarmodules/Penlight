@@ -319,7 +319,6 @@ local ops
 -- @param msg optional error message
 -- @return a callable
 -- @raise if idx is not a number or if f is not callable
--- @see utils.is_callable
 function utils.function_arg (idx,f,msg)
     utils.assert_arg(1,idx,'number')
     local tp = type(f)
