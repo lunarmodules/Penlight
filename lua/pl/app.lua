@@ -95,11 +95,11 @@ function app.lua ()
 end
 
 --- parse command-line arguments into flags and parameters.
--- Understands GNU-style command-line flags; short (-f) and long (--flag).
--- These may be given a value with either '=' or ':' (-k:2,--alpha=3.2,-n2);
+-- Understands GNU-style command-line flags; short (`-f`) and long (`--flag`).
+-- These may be given a value with either '=' or ':' (`-k:2`,`--alpha=3.2`,`-n2`);
 -- note that a number value can be given without a space.
--- Multiple short args can be combined like so: (-abcd).
--- @param args an array of strings (default is the global 'arg')
+-- Multiple short args can be combined like so: ( `-abcd`).
+-- @param args an array of strings (default is the global `arg`)
 -- @param flags_with_values any flags that take values, e.g. <code>{out=true}</code>
 -- @return a table of flags (flag=value pairs)
 -- @return an array of parameters

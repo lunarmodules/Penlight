@@ -1,3 +1,29 @@
+## 1.3.0
+
+### Changes
+
+  - class: RIP base method - not possible to implement correctly
+  - lapp: short flags can now always be followed directly by their value, for instance,
+`-I/usr/include/lua/5.1`
+  - Date: new explicit `Date.Interval` class; `toUTC/toLocal` return new object; `Date.__tostring`
+always returns ISO 8601 times for exact serialization.  `+/-` explicit operators. Date objects
+are explicitly flagged as being UTC or not.
+
+### Fixes
+
+  - class: super method fixed.
+  - Date: DST is now accounted for properly.
+  - Date: weekday calculation borked.
+
+### Features
+
+  - All tests pass with no-5.1-compatible Lua 5.2; now always uses `utils.load` and
+`utils.unpack` is always available.
+  - types: new module containing `utils.is_xxx` methods plus new `to_bool`.
+  - class: can be passed methods in a table (see `test=klass.lua`). This is
+particularly convenient for using from Moonscript.
+  - general documentation improvements, e.g `class`
+
 ## 1.2.1
 
 ### Changes
@@ -18,7 +44,7 @@
   - 5.2 compatible load now respects mode
   - tablex.difference thought that a value of `false` meant 'not present' (Andrew Starke)
 
-## Features
+### Features
 
   - tablex.sort(t) iterates over sorted keys, tablex.sortv(t) iterates over sorted values (Pete Kazmier)
   - tablex.readonly(t) creates a read-only proxy for a table (John Schember)

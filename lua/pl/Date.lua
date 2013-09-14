@@ -2,7 +2,7 @@
 -- See  @{05-dates.md|the Guide}.
 --
 -- Dependencies: `pl.class`, `pl.stringx`
--- @module pl.Date
+-- @classmod pl.Date
 -- @pragma nostrip
 
 local class = require 'pl.class'

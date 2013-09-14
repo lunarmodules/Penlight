@@ -7,7 +7,7 @@
 --    true
 --
 -- Dependencies: `pl.utils`, `pl.class`, `pl.tablex`, `pl.pretty`
--- @module pl.Map
+-- @classmod pl.Map
 
 local tablex = require 'pl.tablex'
 local utils = require 'pl.utils'
@@ -100,11 +100,16 @@ end
 -- @function Map:update
 Map.update = tablex.update
 
+--- equality between maps.
+-- @within metamethods
+-- @param m another map.
 function Map:__eq (m)
     -- note we explicitly ask deepcompare _not_ to use __eq!
     return deepcompare(self,m,true)
 end
 
+--- string representation of a map.
+-- @within metamethods
 function Map:__tostring ()
     return pretty_write(self,'')
 end
