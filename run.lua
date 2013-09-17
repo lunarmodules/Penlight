@@ -12,12 +12,20 @@ end
 -- get the Lua command-line used to invoke this script
 local cmd = app.lua()
 
+function print_exit(msg)
+    print()
+    print(string.rep("*",#msg + 4))
+    print("* "..msg.." *")
+    print(string.rep("*",#msg + 4))
+end
+
 function do_lua_files ()
     for _,f in ipairs(dir.getfiles('.','*.lua')) do
         print(cmd..' '..f)
+
         local res,code = utils.execute(cmd..' '..f)
         if not res then
-            print ('process failed with non-zero result: ['..code..'] '..f)
+            print_exit('process failed with non-zero result: ['..code..'] '..f)
             os.exit(1)
         end
     end
@@ -31,4 +39,6 @@ for _,dir in ipairs(arg) do
     do_lua_files()
     lfs.chdir('..')
 end
+
+print_exit ('Testrun completed succesfully')
 
