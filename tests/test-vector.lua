@@ -109,10 +109,10 @@ asserteq(ls:sub(1,2),{'on','tw','th'})
 -- what you want.
 local sizes = ls:map '#'
 asserteq(sizes, {3,3,5})
-asserteq(utils.type(sizes),'Strings')
+asserteq(types.type(sizes),'Strings')
 asserteq(sizes:is_a(Strings),true)
 sizes = Vector:cast(sizes)
-asserteq(utils.type(sizes),'Vector')
+asserteq(types.type(sizes),'Vector')
 asserteq(sizes+1,{4,4,6})
 
 

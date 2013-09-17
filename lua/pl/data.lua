@@ -592,7 +592,7 @@ function data.query(data,condn,context,return_row)
     end
     if _DEBUG then print(query) end
 
-    local fn,err = loadstring(query,'tmp')
+    local fn,err = utils.load(query,'tmp')
     if not fn then return nil,err end
     fn = fn() -- get the function
     if condn.where then

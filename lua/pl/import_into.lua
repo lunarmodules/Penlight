@@ -1,17 +1,14 @@
---import_into.lua
 --------------
 -- PL loader, for loading all PL libraries, only on demand.
--- Whenever a module is implicitly accesssed, the table will have the module automaticaly injected.
+-- Whenever a module is implicitly accesssed, the table will have the module automatically injected.
 -- (e.g. `_ENV.tablex`)
 -- then that module is dynamically loaded. The submodules are all brought into
 -- the table that is provided as the argument, or returned in a new table.
 -- If a table is provided, that table's metatable is clobbered, but the values are not.
--- @module pl.import_into
+-- This module returns a single function, which is passed the environment.
+-- If this is `true`, then return a 'shadow table' as the module
+-- See @{01-introduction.md.To_Inject_or_not_to_Inject_|the Guide}
 
----Inject PL modules into a given table, or an empty one if none is provided.
---
--- `env` is a table to enject the environment into. (default return empty table)
---  If this is `true`, then return a 'shadow table' as the module
 -- @module pl.import_into
 
 return function(env)
@@ -27,7 +24,7 @@ return function(env)
 	    input=true,seq=true,lexer=true,stringx=true,
 	    config=true,pretty=true,data=true,func=true,text=true,
 	    operator=true,lapp=true,array2d=true,
-	    comprehension=true,xml=true,
+	    comprehension=true,xml=true,types=true,
 	    test = true, app = true, file = true, class = true, List = true,
 	    Map = true, Set = true, OrderedMap = true, MultiMap = true,
 	    Date = true,

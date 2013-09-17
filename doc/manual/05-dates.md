@@ -2,7 +2,7 @@
 
 <a id="date"></a>
 
-### Manipulating Dates
+### Creating and Displaying Dates
 
 The `Date` class provides a simplified way to work with [date and
 time](http://www.lua.org/pil/22.1.html) in Lua; it leans heavily on the functions

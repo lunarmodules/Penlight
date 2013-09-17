@@ -2,13 +2,14 @@
 --
 -- See @{02-arrays.md.Useful_Operations_on_Tables|the Guide}
 --
--- Dependencies: `pl.utils`
+-- Dependencies: `pl.utils`, `pl.types`
 -- @module pl.tablex
 local utils = require ('pl.utils')
+local types = require ('pl.types')
 local getmetatable,setmetatable,require = getmetatable,setmetatable,require
 local tsort,append,remove = table.sort,table.insert,table.remove
 local min,max = math.min,math.max
-local pairs,type,unpack,next,select,tostring = pairs,type,unpack,next,select,tostring
+local pairs,type,unpack,next,select,tostring = pairs,type,utils.unpack,next,select,tostring
 local function_arg = utils.function_arg
 local Set = utils.stdmt.Set
 local List = utils.stdmt.List
@@ -29,39 +30,27 @@ local function makelist (res)
     return setmetatable(res,List)
 end
 
-local function check_meta (val)
-    if type(val) == 'table' then return true end
-    return getmetatable(val)
-end
-
 local function complain (idx,msg)
     error(('argument %d is not %s'):format(idx,msg),3)
 end
 
 local function assert_arg_indexable (idx,val)
-    local mt = check_meta(val)
-    if mt == true then return end
-    if not(mt and mt.__len and mt.__index) then
+    if not types.is_indexable(val) then
         complain(idx,"indexable")
     end
 end
 
 local function assert_arg_iterable (idx,val)
-    local mt = check_meta(val)
-    if mt == true then return end
-    if not(mt and mt.__pairs) then
+    if not types.is_iterable(val) then
         complain(idx,"iterable")
     end
 end
 
 local function assert_arg_writeable (idx,val)
-    local mt = check_meta(val)
-    if mt == true then return end
-    if not(mt and mt.__newindex) then
+    if not types.is_writeable(val) then
         complain(idx,"writeable")
     end
 end
-
 
 --- copy a table into another, in-place.
 -- @param t1 destination table
@@ -655,11 +644,11 @@ function _copy (dest,src,idest,isrc,nsrc,clean_tail)
     return dest
 end
 
---- copy an array into another one, resizing the destination if necessary. <br>
+--- copy an array into another one, clearing dest after idest+nsrc, if necessary. <br>
 -- @param dest a list-like table
 -- @param src a list-like table
--- @param idest where to start copying values from source (default 1)
--- @param isrc where to start copying values into destination (default 1)
+-- @param idest where to start copying values into destination (default 1)
+-- @param isrc where to start copying values from source (default 1)
 -- @param nsrc number of elements to copy from source (default source size)
 function tablex.icopy (dest,src,idest,isrc,nsrc)
     assert_arg_indexable(1,dest)
@@ -670,8 +659,8 @@ end
 --- copy an array into another one. <br>
 -- @param dest a list-like table
 -- @param src a list-like table
--- @param idest where to start copying values from source (default 1)
--- @param isrc where to start copying values into destination (default 1)
+-- @param idest where to start copying values into destination (default 1)
+-- @param isrc where to start copying values from source (default 1)
 -- @param nsrc number of elements to copy from source (default source size)
 function tablex.move (dest,src,idest,isrc,nsrc)
     assert_arg_indexable(1,dest)
@@ -714,7 +703,7 @@ end
 function tablex.set (t,val,i1,i2)
     assert_arg_indexable(1,t)
     i1,i2 = i1 or 1,i2 or #t
-    if utils.is_callable(val) then
+    if types.is_callable(val) then
         for i = i1,i2 do
             t[i] = val(i)
         end

@@ -1,4 +1,6 @@
 local test = require 'pl.test'
+local app = require 'pl.app'
+local utils = require 'pl.utils'
 local asserteq, assertmatch = test.asserteq, test.assertmatch
 local dump = require 'pl.pretty'.dump
 local T = require 'pl.test'.tuple
@@ -50,9 +52,9 @@ d:add { day = 1 }  -- tomorrow
 assert(d > Date())
 
 --------- Time intervals -----
--- new constructor makes an interval; also returned by Date:diff
-d1 = Date(1202,true)
-d2 = Date(1500,true)
+-- new explicit Date.Interval class; also returned by Date:diff
+d1 = Date.Interval(1202)
+d2 = Date.Interval(1500)
 asserteq(tostring(d2:diff(d1)),"4 min 58 sec ")
 
 -------- testing 'flexible' date parsing ---------
@@ -68,9 +70,8 @@ end
 -- specified as UTC plus/minus offset
 
 function parse_utc (s)
-    local d = parse_date(s)
-    d:toUTC()
-    return d
+    local d = parse_date(s)    
+    return d:toUTC()
 end
 
 asserteq(parse_utc '2010-05-10 12:35:23Z', Date(2010,05,10,12,35,23))
@@ -97,4 +98,18 @@ end
 assertmatch(err(parse_date('2005-10-40 01:30')),'40 is not between 1 and 31')
 assertmatch(err(parse_date('14.20pm')),'14 is not between 0 and 12')
 
+local d = parse_date '2007-08-10'
+-- '+' works like add, but can also work with intervals
+local nxt = d + {month=1}
+-- '-' is an alias for diff method
+asserteq(tostring(nxt - d), '1 month ')
 
+--- Can explicitly get UTC date; these of course refer to same time
+local now,utc  = Date(), Date 'utc'
+asserteq(tostring(now - utc),'zero')
+
+if app.platform() ~= 'Windows' then
+    if not utils.execute ("TZ='Europe/London' "..app.lua().." test-tzone.lua") then
+        error "buggered!"
+    end
+end

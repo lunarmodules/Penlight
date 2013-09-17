@@ -26,10 +26,11 @@ function compat.execute (cmd)
 end
 
 ----------------
+-- Load Lua code as a text or binary chunk.
 -- @param ld code string or loader
--- @param [opt] source name of chunk for errors
--- @param [opt] mode 'b', 't' or 'bt'
--- @param [opt] env environment to load the chunk in
+-- @param[opt] source name of chunk for errors
+-- @param[opt] mode 'b', 't' or 'bt'
+-- @param[opt] env environment to load the chunk in
 -- @function compat.load
 
 ---------------
@@ -101,7 +102,7 @@ else
     end
 end
 
---- Lua 5.2 Functions Available for Lua 5.1
+--- Lua 5.2 Functions Available for 5.1
 -- @section lua52
 
 --- pack an argument list into a table.

@@ -22,9 +22,10 @@ end
 function do_lua_files ()
     for _,f in ipairs(dir.getfiles('.','*.lua')) do
         print(cmd..' '..f)
-        local res = utils.execute(cmd..' '..f)
+
+        local res,code = utils.execute(cmd..' '..f)
         if not res then
-            print_exit('process failed with non-zero result: '..f)
+            print_exit('process failed with non-zero result: ['..code..'] '..f)
             os.exit(1)
         end
     end

@@ -6,7 +6,7 @@
 --      Does some calculations
 --        -o,--offset (default 0.0)  Offset to add to scaled number
 --        -s,--scale  (number)  Scaling factor
---         &lt;number&gt; (number )  Number to be scaled
+--         <number>; (number )  Number to be scaled
 --      ]]
 --
 --      print(args.offset + args.scale * args.number)
@@ -15,7 +15,7 @@
 -- lines begining wih '<var>' are arguments.  Anything in parens after
 -- the flag/argument is either a default, a type name or a range constraint.
 --
--- >See @{08-additional.md.Command_line_Programs_with_Lapp|the Guide}
+-- See @{08-additional.md.Command_line_Programs_with_Lapp|the Guide}
 --
 -- Dependencies: `pl.sip`
 -- @module pl.lapp
@@ -315,7 +315,7 @@ function lapp.process_options_string(str,args)
     end
 
     local function is_flag (parm)
-        return parms[aliases[parm] or parm] ~= nil
+        return parms[aliases[parm] or parm]
     end
 
     while i <= #arg do
@@ -331,7 +331,9 @@ function lapp.process_options_string(str,args)
                 local parmstr,eq = check_parm(res.short)
                 if not eq then
                     parm = at(parmstr,1)
-                    if isdigit(at(parmstr,2)) then
+                    local flag = is_flag(parm)
+                    if flag.type ~= 'boolean' then
+                    --if isdigit(at(parmstr,2)) then
                         -- a short option followed by a digit is an exception (for AW;))
                         -- push ahead into the arg array
                         tinsert(arg,i+1,parmstr:sub(2))

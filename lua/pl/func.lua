@@ -21,9 +21,9 @@ local type,select,setmetatable,getmetatable,rawset = type,select,setmetatable,ge
 local concat,append = table.concat,table.insert
 local max = math.max
 local print,tostring = print,tostring
-local pairs,ipairs,loadstring,rawget,unpack  = pairs,ipairs,loadstring,rawget,unpack
-local _G = _G
 local utils = require 'pl.utils'
+local pairs,ipairs,loadstring,rawget,unpack  = pairs,ipairs,loadstring,rawget,utils.unpack
+local _G = _G
 local tablex = require 'pl.tablex'
 local map = tablex.map
 local _DEBUG = rawget(_G,'_DEBUG')
@@ -290,7 +290,7 @@ function func.instantiate (e)
     rep = repr(e)
     local fstr = ('return function(%s) return function(%s) return %s end end'):format(consts,parms,rep)
     if _DEBUG then print(fstr) end
-    fun,err = loadstring(fstr,'fun')
+    fun,err = utils.load(fstr,'fun')
     if not fun then return nil,err end
     fun = fun()  -- get wrapper
     fun = fun(unpack(values)) -- call wrapper (values could be empty)
@@ -366,7 +366,7 @@ return function (%s)
 end
 ]]):format(bvalues,parms,holders)
     if _DEBUG then print(fstr) end
-    local res,err = loadstring(fstr)
+    local res,err = utils.load(fstr)
     res = res()
     return res(fn,unpack(values))
 end

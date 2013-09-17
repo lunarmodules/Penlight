@@ -212,8 +212,8 @@ Penlight allows these to be referred to by name, so `operator.gt` can be more
 concisely expressed as '>'.
 
 Note that the `map` functions pass any extra arguments to the function, so we can
-have `ls:filter('>',0)`, which is a shortcut for `ls:filter(function(x) return x
-> 0 end)`.
+have `ls:filter('>',0)`, which is a shortcut for
+`ls:filter(function(x) return x > 0 end)`.
 
 Finally, `pl.func` supports _placeholder expressions_ in the Boost lambda style,
 so that an anonymous function to multiply the two arguments can be expressed as

@@ -1,7 +1,12 @@
 -- Module containing classes
 local class = require 'pl.class'
+local utils = require 'pl.utils'
 local error = error
-module 'animal'
+if utils.lua51 then
+    module 'animal'
+else
+    _ENV = {}
+end
 
 class.Animal()
 
@@ -43,3 +48,7 @@ class.Lion {
 Lion:catch(function(self,name)
     return function() error("no such method "..name,2) end
 end)
+
+if not utils.lua51 then
+   return _ENV
+end

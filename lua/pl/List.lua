@@ -15,7 +15,7 @@
 -- Written for Lua version Nick Trout 4.0; Redone for Lua 5.1, Steve Donovan.
 --
 -- Dependencies: `pl.utils`, `pl.tablex`
--- @module pl.List
+-- @classmod pl.List
 -- @pragma nostrip
 
 local tinsert,tremove,concat,tsort = table.insert,table.remove,table.concat,table.sort
@@ -28,7 +28,7 @@ local tsub = tablex.sub
 local utils = require 'pl.utils'
 local class = require 'pl.class'
 
-local array_tostring,split,is_type,assert_arg,function_arg = utils.array_tostring,utils.split,utils.is_type,utils.assert_arg,utils.function_arg
+local array_tostring,split,assert_arg,function_arg = utils.array_tostring,utils.split,utils.assert_arg,utils.function_arg
 local normalize_slice = tablex._normalize_slice
 
 -- metatable for our list and map objects has already been defined..
@@ -269,7 +269,7 @@ function List.range(start,finish,incr)
     end
     if incr then
     assert_arg(3,incr,'number')
-    if not utils.is_integer(incr) then finish = finish + eps end
+    if math.ceil(incr) ~= incr then finish = finish + eps end
     else
         incr = 1
     end
@@ -328,6 +328,7 @@ function List:slice_assign(i1,i2,seq)
 end
 
 --- concatenation operator.
+-- @within metamethods
 -- @param L another List
 -- @return a new list consisting of the list with the elements of the new list appended
 function List:__concat(L)
@@ -338,6 +339,7 @@ function List:__concat(L)
 end
 
 --- equality operator ==.  True iff all elements of two lists are equal.
+-- @within metamethods
 -- @param L another List
 -- @return true or false
 function List:__eq(L)
@@ -375,6 +377,7 @@ local function tostring_q(val)
 end
 
 --- how our list should be rendered as a string. Uses join().
+-- @within metamethods
 -- @see List:join
 function List:__tostring()
     return '{'..self:join(',',tostring_q)..'}'

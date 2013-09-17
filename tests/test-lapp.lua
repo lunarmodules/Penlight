@@ -134,6 +134,16 @@ check(addtype,{'-l', '1,2,3'},{l={1,2,3}})
 
 check_error(addtype,{'-l', '1.5,2,3'},"not an integer!")
 
+-- short flags may be immediately followed by their value
+-- (previously only true for numerical values)
+local short_args = [[
+    -n (default 10)
+    -I,--include (string)
+]]
+
+check(short_args,{'-Ifrodo','-n5'},{include='frodo',n=5})
+check(short_args,{'-I/usr/local/lua/5.1'},{include='/usr/local/lua/5.1',n=10})
+
 -- ok, introducing _slack_ mode ;)
 -- 'short' flags may have multiple characters! (this is otherwise an error)
 -- Note that in _any case_ flags may contain hyphens, but these are turned
