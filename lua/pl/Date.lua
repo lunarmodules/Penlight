@@ -451,7 +451,7 @@ function Date.Format:parse(str)
         local today = Date()
         tab.year = tab.year or today:year()
         tab.month = tab.month or today:month()
-        tab.day = tab.day or today:month()
+        tab.day = tab.day or today:day()
     end
     local Y = tab.year
     if Y < 100 then -- classic Y2K pivot
