@@ -311,13 +311,13 @@ end
 utils.add_function_factory(_PEMT,func.I)
 
 --- bind the first parameter of the function to a value.
--- @class function
--- @name func.curry
+-- @function func.bind1
 -- @param fn a function of one or more arguments
 -- @param p a value
 -- @return a function of one less argument
--- @usage (curry(math.max,10))(20) == math.max(10,20)
-func.curry = utils.bind1
+-- @usage (bind1(math.max,10))(20) == math.max(10,20)
+func.bind1 = utils.bind1
+func.curry = func.bind1
 
 --- create a function which chains two functions.
 -- @param f a function of at least one argument

@@ -9,6 +9,13 @@ local function quote_if_needed (s)
     return s
 end
 
+local function print_exit(msg)
+    print()
+    print(string.rep("*",#msg + 4))
+    print("* "..msg.." *")
+    print(string.rep("*",#msg + 4))
+end
+
 -- get the Lua command-line used to invoke this script
 local cmd = app.lua()
 
@@ -17,7 +24,7 @@ function do_lua_files ()
         print(cmd..' '..f)
         local res,code = utils.execute(cmd..' '..f)
         if not res then
-            print ('process failed with non-zero result: ['..code..'] '..f)
+            print_exit ('process failed with non-zero result: ['..code..'] '..f)
             os.exit(1)
         end
     end

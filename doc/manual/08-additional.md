@@ -164,8 +164,8 @@ command-line parsing easier and intuitive. It implements the standard GNU style,
 i.e. short flags with one letter start with '-', and there may be an additional
 long flag which starts with '--'. Generally options which take an argument expect
 to find it as the next parameter (e.g. 'gcc test.c -o test') but single short
-options taking a numerical parameter can dispense with the space (e.g. 'head -n4
-test.c')
+options taking a value can dispense with the space (e.g. 'head -n4
+test.c' or `gcc -I/usr/include/lua/5.1 ...`)
 
 As far as possible, Lapp will convert parameters into their equivalent Lua types,
 i.e. convert numbers and convert filenames into file objects. If any conversion
@@ -436,8 +436,10 @@ argument.
 
 If you'd like to use a multi-letter 'short' parameter you need to set
 the `lapp.slack` variable to `true`.
-In the following example we also see how default`false` and default`true` flags can be used
-and how to overwrite the default `-h` help flag (`--help` still works fine).
+
+In the following example we also see how default `false` and default `true` flags can be used
+and how to overwrite the default `-h` help flag (`--help` still works fine) - this applies
+to non-slack mode as well.
 
     -- Parsing the command line ----------------------------------------------------
     -- test.lua

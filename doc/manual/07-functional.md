@@ -354,22 +354,23 @@ values of a sequence or as a callback. Often useful functions have the wrong
 number of arguments. So there is a need to construct a function of one argument
 from one of two arguments, _binding_ the extra argument to a given value.
 
-_currying_ takes a function of n arguments and returns a function of n-1
+_partial application_ takes a function of n arguments and returns a function of n-1
 arguments where the first argument is bound to some value:
 
-    > p2 = func.curry(print,'start>')
+    > p2 = func.bind1(print,'start>')
     > p2('hello',2)
     start>  hello   2
     > ops = require 'pl.operator'
-    > = tablex.filter({1,-2,10,-1,2},curry(ops.gt,0))
+    > = tablex.filter({1,-2,10,-1,2},bind1(ops.gt,0))
     {-2,-1}
-    > tablex.filter({1,-2,10,-1,2},curry(ops.le,0))
+    > tablex.filter({1,-2,10,-1,2},bind1(ops.le,0))
     {1,10,2}
 
-The last example unfortunately reads backwards, because `curry` alway binds the
-first argument!
+The last example unfortunately reads backwards, because `bind1` alway binds the
+first argument!  Also unfortunately, in my youth I confused 'currying' with
+'partial application', so the old name for `bind1` is `curry` - this alias still exists.
 
-Currying is a specialized form of function argument binding. Here is another way
+This is a specialized form of function argument binding. Here is another way
 to say the `print` example:
 
     > p2 = func.bind(print,'start>',func._1,func._2)
@@ -387,7 +388,6 @@ way around:
     > tablex.filter({1,-2,10,-1,2},bind(ops.gt, _1, 0))
     {1,10,2}
 
-
 `tablex.merge` does a general merge of two tables. This example shows the
 usefulness of binding the last argument of a function.
 
@@ -400,7 +400,7 @@ usefulness of binding the last argument of a function.
     > = union(S1,S2)
     {mary=24,jane=31,john=27,jones=50}
 
-When using `bind` to curry `print`, we got a function of precisely two arguments,
+When using `bind` with `print`, we got a function of precisely two arguments,
 whereas we really want our function to use varargs like `print`. This is the role
 of `_0`:
 

@@ -4,7 +4,7 @@
 -- (e.g. `utils.split`)
 -- then that module is dynamically loaded. The submodules are all brought into
 -- the global space.
---Updated to use pl.import_into
+--Updated to use @{pl.import_into}
 -- @module pl
 require'pl.import_into'(_G)
 

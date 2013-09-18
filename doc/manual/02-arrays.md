@@ -227,7 +227,7 @@ are fruits and colours but not both?'
     [blue,green,apple,red,banana]
 
 Adding elements to a set is simply `fruit['peach'] = true` and removing is
-`fruit['apple'] = nil` . To make this simplicity properly, the `Set` class has no
+`fruit['apple'] = nil` . To make this simplicity work properly, the `Set` class has no
 methods - either you use the operator forms or explicitly use `Set.intersect`
 etc. In this way we avoid the ambiguity that plagues `Map`.
 

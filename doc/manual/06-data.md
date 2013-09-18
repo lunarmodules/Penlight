@@ -21,7 +21,7 @@ Here is a simple Lua implementation:
     -- property file parsing with Lua string patterns
     props = []
     for line in io.lines() do
-        if line:find('#,1,true) ~= 1 and not line:find('^%s*$') then
+        if line:find('#',1,true) ~= 1 and not line:find('^%s*$') then
             local var,value = line:match('([^=]+)=(.*)')
             props[var] = value
         end
@@ -373,8 +373,7 @@ the actual iterator function which a query generates and dynamically compiles. B
 using code generation, we can get pretty much optimal performance out of
 arbitrary queries.
 
-    > lua -lpl -e "_DEBUG=true" -e "data.filter 'x,y where x > 4 sort by x'" <
-test.txt
+    > lua -lpl -e "_DEBUG=true" -e "data.filter 'x,y where x > 4 sort by x'" < test.txt
     return function (t)
             local i = 0
             local v
@@ -622,7 +621,7 @@ read a configuration from a string, use `stringio.open`.
 
 Although Lua's string pattern matching is very powerful, there are times when
 something more powerful is needed.  `pl.lexer.scan` provides lexical scanners
-which _tokenizes_ a string, classifying tokens into numbers, strings, etc.
+which _tokenize_ a string, classifying tokens into numbers, strings, etc.
 
     > lua -lpl
     Lua 5.1.4  Copyright (C) 1994-2008 Lua.org, PUC-Rio

@@ -40,7 +40,7 @@ easily at hand. Note that can be injected into the `string` table if you use
 is preferrable. This is the recommended practice when writing modules for
 consumption by other people, since it is bad manners to change the global state
 of the rest of the system. Magic may be used for convenience, but there is always
-a cost.
+a price.
 
 
 ### String Templates
@@ -116,6 +116,9 @@ will also expand `$` variables using named fields:
     > = '$animal[$num]' % {animal='dog',num=1}
     dog[1]
 
+As with `stringx.import` you have to do this explicitly, since all strings share the same
+metatable. But in your own scripts you can feel free to do this.
+
 ### Another Style of Template
 
 A new module is `template`, which is a version of Rici Lake's [Lua
@@ -149,8 +152,8 @@ and we get
 
 There is a single function, `template.substitute` which is passed a template
 string and an environment table.   This table may contain some special fields,
-like `_parent` which can be set to a table representing a 'fallback' environment
-in case a symbol was not found. `_brackets` is usually '()' and `_escape` is
+like `\_parent` which can be set to a table representing a 'fallback' environment
+in case a symbol was not found. `\_brackets` is usually '()' and `\_escape` is
 usually '#' but it's sometimes necessary to redefine these if the defaults
 interfere with the target language - for instance, `$(V)` has another meaning in
 Make, and `#` means a preprocessor line in C/C++.

@@ -31,9 +31,6 @@ useful message. This is more appropriate behaviour for a _script_ than providing
 a stack trace. (However, this default can be changed.) The lexer functions always
 throw errors, to simplify coding, and so should be wrapped in `pcall`.
 
-By default, the error stacktrace starts with your code, since you are not usually
-interested in the internal details of the library. ??
-
 If you are used to Python conventions, please note that all indices consistently
 start at 1.
 
@@ -49,14 +46,6 @@ The only important external dependence of Penlight is
 either [alien](http://alien.luaforge.net/) or be using
 [LuaJIT](http://luajit.org) as well. (The fallback is to call the equivalent
 shell commands.)
-
-Some of the examples in this guide were created using
-[ilua](http://lua-users.org/wiki/InteractiveLua), which doesn't require '=' to
-print out expressions, and will attempt to print out table results as nicely as
-possible.  This is also available under Lua for Windows, as a library, so the
-command `lua -lilua -s` will work (the s option switches off 'strict' variable
-checking, which is annoying and conflicts with the use of `_DEBUG` in some of
-these libraries.
 
 ### To Inject or not to Inject?
 
@@ -111,15 +100,11 @@ make Penlight available within a module:
 
     return M
 
-The default is to put Penlight into `_ENV`, which has the unintended effect of
+The default is to put Penlight into `\_ENV`, which has the unintended effect of
 making it available from the module (much as `module(...,package.seeall)` does).
 To satisfy both convenience and safety, you may pass `true` to this function, and
-then the _module_ `M` is not the same as `_ENV`, but only contains the exported
+then the _module_ `M` is not the same as `\_ENV`, but only contains the exported
 functions.
-
-With Penlight after 0.9, please note that `require 'pl.utils'` no longer implies
-that a global table `pl.utils` exists, since these new modules are no longer
-created with `module()`.
 
 Otherwise, Penlight will _not_ bring in functions into the global table, or
 clobber standard tables like 'io'.  require('pl') will bring tables like
@@ -206,7 +191,7 @@ than merely returning a `nil` that will cause problems later.
 Many functions in Penlight themselves take function arguments, like `map` which
 applies a function to a list, element by element.  You can use existing
 functions, like `math.max`, anonymous functions (like `function(x,y) return x > y
-end`), or operations by name (e.g '*' or '..').  The module `pl.operator` exports
+end` ), or operations by name (e.g '*' or '..').  The module `pl.operator` exports
 all the standard Lua operations, like the Python module of the same name.
 Penlight allows these to be referred to by name, so `operator.gt` can be more
 concisely expressed as '>'.
@@ -217,7 +202,7 @@ have `ls:filter('>',0)`, which is a shortcut for
 
 Finally, `pl.func` supports _placeholder expressions_ in the Boost lambda style,
 so that an anonymous function to multiply the two arguments can be expressed as
-`_1*_2`.
+`\_1*\_2`.
 
 To use them directly, note that _all_ function arguments in Penlight go through
 `utils.function_arg`. `pl.func` registers itself with this function, so that you
@@ -228,10 +213,9 @@ can directly use placeholder expressions with standard methods:
     {11,21,31}
 
 Another option for short anonymous functions is provided by
-`utils.string_lambda`; since 0.9 you have to explicitly ask for this feature:
+`utils.string_lambda`; this is invoked automatically:
 
-    > L = require 'pl.utils'.string_lambda
-    > = List{10,20,30}:map (L'|x| x + 1')
+    > = List{10,20,30}:map '|x| x + 1'
     {11,21,31}
 
 ### Pros and Cons of Loopless Programming
@@ -254,7 +238,7 @@ then you have failed to express yourself clearly. Similarly, `ls:filter('>',0)`
 will give you all the values in a list greater than zero. (Of course, if you
 don't feel like using `List`, or have non-list-like tables, then `pl.tablex`
 offers the same facilities. In fact, the `List` methods are implemented using
-`tablex' functions.)
+`tablex` functions.)
 
 A common observation is that loopless programming is less efficient, particularly
 in the way it uses memory. `ls1:map2('*',ls2):reduce '+'` will give you the dot
@@ -282,10 +266,9 @@ also takes a file object parameter, just like the C function.)
 
 Splitting a string using a delimiter is a fairly common operation, hence `split`.
 
-Utility functions like `is_callable` and `is_type` help with identifying what
-kind of animal you are dealing with. Obviously, a function is callable, but an
-object can be callable as well if it has overriden the `__call` metamethod. The
-Lua `type` function handles the basic types, but can't distinguish between
+Utility functions like `is_type` help with identifying what
+kind of animal you are dealing with.
+The Lua `type` function handles the basic types, but can't distinguish between
 different kinds of objects, which are all tables. So `is_type` handles both
 cases, like `is_type(s,"string")` and `is_type(ls,List)`.
 
@@ -339,11 +322,9 @@ whether the source is a binary chunk or text code (default is 'bt')
 Using `utils.load` should reduce the need to call the deprecated function `setfenv`,
 and make your Lua 5.1 code 5.2-friendly.
 
-Currently, the `utils` module does define a global `getfenv` and `setfenv` for
-Lua 5.2, based on code by Sergey Rozhenko.  Note that these functions can fail
-for functions which don't access any globals. (whether it's wise to directly
-inject these functions into global or not, I'll leave for a later version to
-decide)
+The `utils` module exports `getfenv` and `setfenv` for
+Lua 5.2 as well, based on code by Sergey Rozhenko.  Note that these functions can fail
+for functions which don't access any globals.
 
 ### Application Support
 
@@ -361,7 +342,7 @@ integer.  Or you may specify upfront that some flags have associated values, and
 then the values will follow the flag.
 
 	> require 'pl'
-	> flags,args = utils.parse_args({'-o','fred','-n10','fred.txt'},{o=true})
+	> flags,args = app.parse_args({'-o','fred','-n10','fred.txt'},{o=true})
 	> pretty.dump(flags)
 	{o='fred',n='10'}
 
@@ -380,10 +361,12 @@ private data, based on the script name. For example, `app.appfile "test.txt"`
 from a script called `testapp.lua` produces the following file on my Windows
 machine:
 
+    @plain
 	C:\Documents and Settings\SJDonova\.testapp\test.txt
 
 and the equivalent on my Linux machine:
 
+    @plain
 	/home/sdonovan/.testapp/test.txt
 
 If `.testapp` does not exist, it will be created.
@@ -400,7 +383,7 @@ Lua is similar to JavaScript in that the concept of class is not directly
 supported by the language. In fact, Lua has a very general mechanism for
 extending the behaviour of tables which makes it straightforward to implement
 classes. A table's behaviour is controlled by its metatable. If that metatable
-has a `__index` function or table, this will handle looking up anything which is
+has a `\_\_index` function or table, this will handle looking up anything which is
 not found in the original table. A class is just a table with an `__index` key
 pointing to itself. Creating an object involves making a table and setting its
 metatable to the class; then when handling `obj.fun`, Lua first looks up `fun` in
@@ -459,7 +442,7 @@ syntactic sugar, it is straightforward to implement classic object orientation.
     > = leo:is_a(Cat)
     true
 
-All Animal does is define `__tostring`, which Lua will use whenever a string
+All Animal does is define `\_\_tostring`, which Lua will use whenever a string
 representation is needed of the object. In turn, this relies on `speak`, which is
 not defined. So it's what C++ people would call an abstract base class; the
 specific derived classes like Dog define `speak`. Please note that _if_ derived
@@ -536,7 +519,7 @@ multiple values) and `OrderedMap` (where the order of insertion is remembered.).
 There is nothing special about these classes and you may inherit from them.
 
 A powerful thing about dynamic languages is that you can redefine existing classes
-and functions, which is often called 'monkey patching`. It's entertaining and convenient,
+and functions, which is often called 'monkey patching' It's entertaining and convenient,
 but ultimately anti-social; you may modify `List` but then any other modules using
 this _shared_ resource can no longer be sure about its behaviour. (This is why you
 must say `stringx.import()` explicitly if you want the extended string methods - it
@@ -627,7 +610,7 @@ when reading `mp.a`, first a check for an explicit _getter_ `get_a` and then onl
 look for `_a`. Simularly, writing `mp.a` causes the _setter_ `set_a` to be used.
 
 This is cool behaviour, but like much Lua metaprogramming, it is not free. Method
-lookup on such objects goes through `__index` as before, but now `__index` is a
+lookup on such objects goes through `\_\_index` as before, but now `\_\_index` is a
 function which has to explicitly look up methods in the class, before doing any
 property indexing, which is not going to be as fast as field lookup. If however,
 your accessors actually do non-trivial things, then the extra overhead could be
@@ -635,5 +618,4 @@ worth it.
 
 This is not really intended for _access control_ because external code can write
 to `mp._a` directly. It is possible to have this kind of control in Lua, but it
-again comes with run-time costs, and in this case a simple audit of code will
-reveal any naughty use of 'protected' fields.
+again comes with run-time costs.
