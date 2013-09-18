@@ -15,7 +15,7 @@
 -- Written for Lua version Nick Trout 4.0; Redone for Lua 5.1, Steve Donovan.
 --
 -- Dependencies: `pl.utils`, `pl.tablex`
--- @module pl.List
+-- @classmod pl.List
 -- @pragma nostrip
 
 local tinsert,tremove,concat,tsort = table.insert,table.remove,table.concat,table.sort
@@ -328,6 +328,7 @@ function List:slice_assign(i1,i2,seq)
 end
 
 --- concatenation operator.
+-- @within metamethods
 -- @param L another List
 -- @return a new list consisting of the list with the elements of the new list appended
 function List:__concat(L)
@@ -338,6 +339,7 @@ function List:__concat(L)
 end
 
 --- equality operator ==.  True iff all elements of two lists are equal.
+-- @within metamethods
 -- @param L another List
 -- @return true or false
 function List:__eq(L)
@@ -375,6 +377,7 @@ local function tostring_q(val)
 end
 
 --- how our list should be rendered as a string. Uses join().
+-- @within metamethods
 -- @see List:join
 function List:__tostring()
     return '{'..self:join(',',tostring_q)..'}'

@@ -3,7 +3,7 @@
 -- Derived from `pl.Map`.
 --
 -- Dependencies: `pl.utils`, `pl.tablex`, `pl.List`
--- @module pl.OrderedMap
+-- @classmod pl.OrderedMap
 
 local tablex = require 'pl.tablex'
 local utils = require 'pl.utils'
@@ -140,8 +140,13 @@ function OrderedMap:iter ()
     end
 end
 
+--- iterate over an ordered map (5.2).
+-- @within metamethods
+-- @function OrderedMap:__pairs
 OrderedMap.__pairs = OrderedMap.iter
 
+--- string representation of an ordered map.
+-- @within metamethods
 function OrderedMap:__tostring ()
     local res = {}
     for i,v in ipairs(self._keys) do
