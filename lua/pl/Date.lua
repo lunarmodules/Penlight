@@ -2,7 +2,7 @@
 -- See  @{05-dates.md|the Guide}.
 --
 -- Dependencies: `pl.class`, `pl.stringx`
--- @classmod pl.Date
+-- @module pl.Date
 -- @pragma nostrip
 
 local class = require 'pl.class'
@@ -447,7 +447,7 @@ function Date.Format:parse(str)
     end
     -- os.date() requires these fields; if not present, we assume
     -- that the time set is for the current day.
-    if not (tab.year and tab.month and tab.year) then
+    if not (tab.year and tab.month and tab.day) then
         local today = Date()
         tab.year = tab.year or today:year()
         tab.month = tab.month or today:month()
