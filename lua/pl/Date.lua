@@ -27,7 +27,8 @@ Date.Format = class()
 -- @param ...  true if  Universal Coordinated Time, or two to five numbers: month,day,hour,min,sec
 -- @function Date
 function Date:_init(t,...)
-    local nargs = select('#',...), time
+    local time
+    local nargs = select('#',...)
     if nargs > 2 then
         local extra = {...}
         local year = t
