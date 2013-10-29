@@ -208,10 +208,11 @@ local function file_op (is_copy,src,dest,flag)
             dest = path.normcase(dest)
             local cmd = is_copy and 'copy' or 'rename'
             local res, err = execute_command('copy',two_arguments(src,dest))
-            if not res then return nil,err end
+            if not res then return false,err end
             if not is_copy then
                 return execute_command('del',quote_argument(src))
             end
+            return true
         else
             if path.isdir(dest) then
                 dest = path.join(dest,path.basename(src))
