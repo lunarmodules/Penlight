@@ -23,7 +23,7 @@ end
 -- @param predeclared - table of variables that are to be considered predeclared.
 -- @return the given table, or a new table
 function strict.module (name,mod,predeclared)
-    local mt, old_newindex, old_index, global, closed
+    local mt, old_newindex, old_index, old_index_type, global, closed
     if predeclared then
         global = predeclared.__global
         closed = predeclared.__closed
@@ -40,6 +40,7 @@ function strict.module (name,mod,predeclared)
     else
         old_newindex = mt.__newindex
         old_index = mt.__index
+        old_index_type = type(old_index)
     end
     mt.__declared = predeclared or {}
     mt.__newindex = function(t, n, v)
@@ -61,8 +62,15 @@ function strict.module (name,mod,predeclared)
     mt.__index = function(t,n)
         if not mt.__declared[n] and what() ~= "C" then
             if old_index then
-                local res = old_index(t, n)
-                if res then return res end
+                if old_index_type == "table" then
+                    local fallback = old_index[n]
+                    if fallback ~= nil then
+                        return fallback
+                    end 
+                else
+                    local res = old_index(t, n)
+                    if res then return res end 
+                end 
             end
             local msg = "variable '"..n.."' is not declared"
             if name then
