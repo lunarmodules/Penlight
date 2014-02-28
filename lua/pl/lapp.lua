@@ -401,7 +401,10 @@ function lapp.process_options_string(str,args)
 end
 
 if arg then
-    script = arg[0]:gsub('.+[\\/]',''):gsub('%.%a+$','')
+    script = arg[0]
+    script = script or rawget(_G,"LAPP_SCRIPT") or "unknown"
+    -- strip dir and extension to get current script name
+    script = script:gsub('.+[\\/]',''):gsub('%.%a+$','')
 else
     script = "inter"
 end
