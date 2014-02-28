@@ -582,7 +582,13 @@ function tablex.count_map (t,cmp)
             res[v] = 1  -- there's at least one instance
             for j = i+1,n do
                 local w = t[j]
-                if cmp and cmp(v,w) or v == w then
+                local ok
+                if cmp then
+                    ok = cmp(v,w)
+                else
+                    ok = v == w
+                end
+                if ok then
                     res[v] = res[v] + 1
                     mask[w] = true
                 end
