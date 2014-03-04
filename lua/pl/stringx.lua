@@ -455,6 +455,54 @@ function stringx.shorten(self,sz,tail)
     return self
 end
 
+--- Utility function that finds any patterns that match a long string's an open or close.
+-- Note that having this function use the least number of equal signs that is possible is a harder algorithm to come up with.
+-- Right now, it simply returns the greatest number of them found.
+-- @param s The string
+-- @return 'nil' if not found. If found, the maximum number of equal signs found within all matches.
+local function has_lquote(s)
+    local lstring_pat = '([%[%]])(=*)%1'
+    local start, finish, bracket, equals, next_equals = nil, 0, nil, nil, nil
+    -- print("checking lquote for", s)
+    repeat
+        start, finish, bracket, next_equals =  s:find(lstring_pat, finish + 1)
+        if start then
+            -- print("found start", start, finish, bracket, next_equals)
+            --length of captured =. Ex: [==[ is 2, ]] is 0.
+            next_equals = #next_equals 
+            equals = next_equals >= (equals or 0) and next_equals or equals
+        end
+    until not start
+    --next_equals will be nil if there was no match.
+    return   equals 
+end
+
+--- Quote the given string and preserve any control or escape characters, such that reloading the string in Lua returns the same result.
+-- @param s The string to be quoted.
+-- @return The quoted string.
+function stringx.quote_string(s)
+    --find out if there are any embedded long-quote
+    --sequences that may cause issues.
+    --This is important when strings are embedded within strings, like when serializing.
+    local equal_signs = has_lquote(s) 
+    if  s:find("\n") or equal_signs then 
+        -- print("going with long string:", s)
+        equal_signs =  ("="):rep((equal_signs or -1) + 1)
+        --long strings strip out leading \n. We want to retain that, when quoting.
+        if s:find("^\n") then s = "\n" .. s end
+        --if there is an embedded sequence that matches a long quote, then
+        --find the one with the maximum number of = signs and add one to that number
+        local lbracket, rbracket =  
+            "[" .. equal_signs .. "[",  
+            "]" .. equal_signs .. "]"
+        s = lbracket .. s .. rbracket
+    else
+        --Escape funny stuff.
+        s = ("%q"):format(s)
+    end
+    return s
+end
+
 function stringx.import(dont_overload)
     utils.import(stringx,string)
 end
