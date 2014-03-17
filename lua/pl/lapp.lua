@@ -332,7 +332,7 @@ function lapp.process_options_string(str,args)
                 if not eq then
                     parm = at(parmstr,1)
                     local flag = is_flag(parm)
-                    if flag.type ~= 'boolean' then
+                    if flag and flag.type ~= 'boolean' then
                     --if isdigit(at(parmstr,2)) then
                         -- a short option followed by a digit is an exception (for AW;))
                         -- push ahead into the arg array
