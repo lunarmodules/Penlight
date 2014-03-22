@@ -21,7 +21,7 @@ function compat.execute (cmd)
     if compat.lua51 then
         return res1==0,res1
     else
-        return res1,res2
+        return not not res1,res2
     end
 end
 
