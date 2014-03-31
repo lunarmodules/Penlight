@@ -233,7 +233,7 @@ function Date:add(t)
     self.tab[key] = self.tab[key] + val
     self:set(os_time(self.tab))
     if old_dst ~= self.tab.isdst then
-        self.tab.hour = self.tab.hour - (old_dist and 1 or -1)
+        self.tab.hour = self.tab.hour - (old_dst and 1 or -1)
         self:set(os_time(self.tab))
     end
     return self
