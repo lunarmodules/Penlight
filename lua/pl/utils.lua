@@ -273,8 +273,8 @@ local _function_factories = {}
 --- associate a function factory with a type.
 -- A function factory takes an object of the given type and
 -- returns a function for evaluating it
--- @param mt metatable
--- @param fun a callable that returns a function
+-- @tab mt metatable
+-- @func fun a callable that returns a function
 function utils.add_function_factory (mt,fun)
     _function_factories[mt] = fun
 end

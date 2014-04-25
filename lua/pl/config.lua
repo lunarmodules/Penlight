@@ -90,7 +90,7 @@ end
 
 --- read a configuration file into a table
 -- @param file either a file-like object or a string, which must be a filename
--- @param cnfg a configuration table that may contain these fields:
+-- @tab[opt] cnfg a configuration table that may contain these fields:
 --
 --  * `smart`  try to deduce what kind of config file we have (default false)
 --  * `variablilize` make names into valid Lua identifiers (default true)

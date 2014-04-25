@@ -300,8 +300,8 @@ function sip.fields (spec,f)
 end
 
 --- register a match which will be used in the read function.
--- @param spec a SIP pattern
--- @param fun a function to be called with the results of the match
+-- @string spec a SIP pattern
+-- @func fun a function to be called with the results of the match
 -- @see read
 function sip.pattern (spec,fun)
     assert_arg(1,spec,'string')

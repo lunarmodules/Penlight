@@ -364,7 +364,7 @@ function seq.filter (iter,pred,arg)
 end
 
 --- 'reduce' a sequence using a binary function.
--- @param fun a function of two arguments
+-- @func fun a function of two arguments
 -- @param iter a sequence
 -- @param oldval optional initial value
 -- @usage seq.reduce(operator.add,seq.list{1,2,3,4}) == 10

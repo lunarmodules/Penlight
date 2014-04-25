@@ -133,9 +133,9 @@ end
 
 --- Time a function. Call the function a given number of times, and report the number of seconds taken,
 -- together with a message.  Any extra arguments will be passed to the function.
--- @param msg a descriptive message
--- @param n number of times to call the function
--- @param fun the function
+-- @string msg a descriptive message
+-- @int n number of times to call the function
+-- @func fun the function
 -- @param ... optional arguments to fun
 function test.timer(msg,n,fun,...)
     local start = clock()

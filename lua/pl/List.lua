@@ -20,10 +20,8 @@
 
 local tinsert,tremove,concat,tsort = table.insert,table.remove,table.concat,table.sort
 local setmetatable, getmetatable,type,tostring,assert,string,next = setmetatable,getmetatable,type,tostring,assert,string,next
-local write = io.write
 local tablex = require 'pl.tablex'
 local filter,imap,imap2,reduce,transform,tremovevalues = tablex.filter,tablex.imap,tablex.imap2,tablex.reduce,tablex.transform,tablex.removevalues
-local tablex = tablex
 local tsub = tablex.sub
 local utils = require 'pl.utils'
 local class = require 'pl.class'
@@ -71,7 +69,7 @@ end
 -- we pass anything which isn't a simple table to iterate() to work out
 -- an appropriate iterator
 --  @see List.iterate
--- @param t An optional list-like table
+-- @param[opt] t An optional list-like table
 -- @return a new List
 -- @usage ls = List();  ls = List {1,2,3,4}
 -- @function List.new
@@ -99,7 +97,7 @@ List.push = tinsert
 
 --- Extend the list by appending all the items in the given list.
 -- equivalent to 'a[len(a):] = L'.
--- @param L Another List
+-- @tparam List L Another List
 -- @return the list
 function List:extend(L)
     assert_arg(1,L,'table')
@@ -109,7 +107,7 @@ end
 
 --- Insert an item at a given position. i is the index of the
 -- element before which to insert.
--- @param i index of element before whichh to insert
+-- @int i index of element before whichh to insert
 -- @param x A data item
 -- @return the list
 function List:insert(i, x)
@@ -127,7 +125,7 @@ end
 
 --- Remove an element given its index.
 -- (equivalent of Python's del s[i])
--- @param i the index
+-- @int i the index
 -- @return the list
 function List:remove (i)
     assert_arg(1,i,'number')
@@ -151,7 +149,7 @@ function List:remove_value(x)
 --- Remove the item at the given position in the list, and return it.
 -- If no index is specified, a:pop() returns the last item in the list.
 -- The item is also removed from the list.
--- @param i An index
+-- @int[opt] i An index
 -- @return the item
 function List:pop(i)
     if not i then i = #self end
@@ -163,10 +161,9 @@ List.get = List.pop
 
 --- Return the index in the list of the first item whose value is given.
 -- Return nil if there is no such item.
--- @class function
--- @name List:index
+-- @function List:index
 -- @param x A data value
--- @param idx where to start search (default 1)
+-- @int[opt=1] idx where to start search
 -- @return the index, or nil if not found.
 
 local tfind = tablex.find
@@ -191,7 +188,7 @@ function List:count(x)
 end
 
 --- Sort the items of the list, in place.
--- @param cmp an optional comparison function, default '<'
+-- @func[opt='<'] cmp an optional comparison function
 -- @return the list
 function List:sort(cmp)
     if cmp then cmp = function_arg(1,cmp) end
@@ -200,7 +197,7 @@ function List:sort(cmp)
 end
 
 --- return a sorted copy of this list.
--- @param cmp an optional comparison function, default '<'
+-- @func[opt='<'] cmp an optional comparison function
 -- @return a new list
 function List:sorted(cmp)
     return List(self):sort(cmp)
@@ -254,10 +251,10 @@ local eps = 1.0e-10
 
 --- Emulate Python's range(x) function.
 -- Include it in List table for tidiness
--- @param start A number
--- @param finish A number greater than start; if absent,
+-- @int start A number
+-- @int[opt] finish A number greater than start; if absent,
 -- then start is 1 and finish is start
--- @param incr an optional increment (may be less than 1)
+-- @int[opt=1] incr an increment (may be less than 1)
 -- @return a List from start .. finish
 -- @usage List.range(0,3) == List{0,1,2,3}
 -- @usage List.range(4) = List{1,2,3,4}
@@ -289,8 +286,8 @@ end
 
 --- Remove a subrange of elements.
 -- equivalent to 'del s[i1:i2]' in Python.
--- @param i1 start of range
--- @param i2 end of range
+-- @int i1 start of range
+-- @int i2 end of range
 -- @return the list
 function List:chop(i1,i2)
     return tremovevalues(self,i1,i2)
@@ -298,8 +295,8 @@ end
 
 --- Insert a sublist into a list
 -- equivalent to 's[idx:idx] = list' in Python
--- @param idx index
--- @param list list to insert
+-- @int idx index
+-- @tparam List list list to insert
 -- @return the list
 -- @usage  l = List{10,20}; l:splice(2,{21,22});  assert(l == List{10,21,22,20})
 function List:splice(idx,list)
@@ -314,9 +311,9 @@ function List:splice(idx,list)
 end
 
 --- general slice assignment s[i1:i2] = seq.
--- @param i1  start index
--- @param i2  end index
--- @param seq a list
+-- @int i1  start index
+-- @int i2  end index
+-- @tparam List seq a list
 -- @return the list
 function List:slice_assign(i1,i2,seq)
     assert_arg(1,i1,'number')
@@ -329,7 +326,7 @@ end
 
 --- concatenation operator.
 -- @within metamethods
--- @param L another List
+-- @tparam List L another List
 -- @return a new list consisting of the list with the elements of the new list appended
 function List:__concat(L)
     assert_arg(1,L,'table')
@@ -340,7 +337,7 @@ end
 
 --- equality operator ==.  True iff all elements of two lists are equal.
 -- @within metamethods
--- @param L another List
+-- @tparam List L another List
 -- @return true or false
 function List:__eq(L)
     if #self ~= #L then return false end
@@ -350,9 +347,9 @@ function List:__eq(L)
     return true
 end
 
---- join the elements of a list using a delimiter. <br>
+--- join the elements of a list using a delimiter. 
 -- This method uses tostring on all elements.
--- @param delim a delimiter string, can be empty.
+-- @string[opt=''] delim a delimiter string, can be empty.
 -- @return a string
 function List:join (delim)
     delim = delim or ''
@@ -361,10 +358,9 @@ function List:join (delim)
 end
 
 --- join a list of strings. <br>
--- Uses table.concat directly.
--- @class function
--- @name List:concat
--- @param delim a delimiter
+-- Uses `table.concat` directly.
+-- @function List:concat
+-- @string[opt=''] delim a delimiter
 -- @return a string
 List.concat = concat
 
@@ -383,8 +379,8 @@ function List:__tostring()
     return '{'..self:join(',',tostring_q)..'}'
 end
 
---- call the function for each element of the list.
--- @param fun a function or callable object
+--- call the function on each element of the list.
+-- @func fun a function or callable object
 -- @param ... optional values to pass to function
 function List:foreach (fun,...)
     fun = function_arg(1,fun)
@@ -399,6 +395,9 @@ local function lookup_fun (obj,name)
     return f
 end
 
+--- call the named method on each element of the list.
+-- @string name the method name
+-- @param ... optional values to pass to function
 function List:foreachm (name,...)
     for i = 1,#self do
         local obj = self[i]
@@ -408,16 +407,16 @@ function List:foreachm (name,...)
 end
 
 --- create a list of all elements which match a function.
--- @param fun a boolean function
--- @param arg optional argument to be passed as second argument of the predicate
+-- @func fun a boolean function
+-- @param[opt] arg optional argument to be passed as second argument of the predicate
 -- @return a new filtered list.
 function List:filter (fun,arg)
     return makelist(filter(self,fun,arg),self)
 end
 
 --- split a string using a delimiter.
--- @param s the string
--- @param delim the delimiter (default spaces)
+-- @string s the string
+-- @string[opt] delim the delimiter (default spaces)
 -- @return a List of strings
 -- @see pl.utils.split
 function List.split (s,delim)
@@ -427,7 +426,7 @@ end
 
 --- apply a function to all elements.
 -- Any extra arguments will be passed to the function.
--- @param fun a function of at least one argument
+-- @func fun a function of at least one argument
 -- @param ... arbitrary extra arguments.
 -- @return a new list: {f(x) for x in self}
 -- @usage List{'one','two'}:map(string.upper) == {'ONE','TWO'}
@@ -438,7 +437,7 @@ end
 
 --- apply a function to all elements, in-place.
 -- Any extra arguments are passed to the function.
--- @param fun A function that takes at least one argument
+-- @func fun A function that takes at least one argument
 -- @param ... arbitrary extra arguments.
 -- @return the list.
 function List:transform (fun,...)
@@ -448,8 +447,8 @@ end
 
 --- apply a function to elements of two lists.
 -- Any extra arguments will be passed to the function
--- @param fun a function of at least two arguments
--- @param ls another list
+-- @func fun a function of at least two arguments
+-- @tparam List ls another list
 -- @param ... arbitrary extra arguments.
 -- @return a new list: {f(x,y) for x in self, for x in arg1}
 -- @see pl.tablex.imap2
@@ -459,7 +458,7 @@ end
 
 --- apply a named method to all elements.
 -- Any extra arguments will be passed to the method.
--- @param name name of method
+-- @string name name of method
 -- @param ... extra arguments
 -- @return a new list of the results
 -- @see pl.seq.mapmethod
@@ -496,7 +495,7 @@ end
 List.default_map = List.default_map_with
 
 --- 'reduce' a list using a binary function.
--- @param fun a function of two arguments
+-- @func fun a function of two arguments
 -- @return result of the function
 -- @see pl.tablex.reduce
 function List:reduce (fun)
@@ -505,10 +504,10 @@ end
 
 --- partition a list using a classifier function.
 -- The function may return nil, but this will be converted to the string key '<nil>'.
--- @param fun a function of at least one argument
+-- @func fun a function of at least one argument
 -- @param ... will also be passed to the function
--- @return a table where the keys are the returned values, and the values are Lists
--- of values where the function returned that key. It is given the type of Multimap.
+-- @treturn MultiMap a table where the keys are the returned values, and the values are Lists
+-- of values where the function returned that key.
 -- @see pl.MultiMap
 function List:partition (fun,...)
     fun = function_arg(1,fun)

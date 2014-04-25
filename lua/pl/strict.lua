@@ -4,7 +4,12 @@
 -- anywhere or assigned to inside a function.  Existing metatables `__newindex` and `__index`
 -- metamethods are respected.
 --
--- You can set any table to have strict behaviour using `strict.module`
+-- You can set any table to have strict behaviour using `strict.module`. Creating a new
+-- module with `strict.closed_module` makes the module immune to monkey-patching, if
+-- you don't wish to encourage monkey business.
+--
+-- If the global `PENLIGHT_NO_GLOBAL_STRICT` is defined, then this module won't make the
+-- global environment strict - if you just want to explicitly set table strictness.
 --
 -- @module pl.strict
 
@@ -18,9 +23,9 @@ local function what ()
 end
 
 --- make an existing table strict.
--- @param name name of table (optional)
--- @param mod table - if `nil` then we'll return a new table
--- @param predeclared - table of variables that are to be considered predeclared.
+-- @string name name of table (optional)
+-- @tab[opt] mod table - if `nil` then we'll return a new table
+-- @tab[opt] predeclared - table of variables that are to be considered predeclared.
 -- @return the given table, or a new table
 function strict.module (name,mod,predeclared)
     local mt, old_newindex, old_index, old_index_type, global, closed
@@ -83,6 +88,10 @@ function strict.module (name,mod,predeclared)
     return mod
 end
 
+--- make all tables in a table strict.
+-- So `strict.make_all_strict(_G)` prevents monkey-patching
+-- of any global table
+-- @tab T
 function strict.make_all_strict (T)
     for k,v in pairs(T) do
         if type(v) == 'table' and v ~= T then
@@ -91,8 +100,10 @@ function strict.make_all_strict (T)
     end
 end
 
+--- make a new module table which is closed to further changes.
 function strict.closed_module (mod,name)
     local M = {}
+    mod = mod or {}
     local mt = getmetatable(mod)
     if not mt then
         mt = {}
@@ -104,7 +115,9 @@ function strict.closed_module (mod,name)
     return strict.module(name,M)
 end
 
-strict.module(nil,_G,{_PROMPT=true,__global=true})
+if not rawget(_G,'PENLIGHT_NO_GLOBAL_STRICT') then
+    strict.module(nil,_G,{_PROMPT=true,__global=true})
+end
 
 return strict
 

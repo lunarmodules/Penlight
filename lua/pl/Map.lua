@@ -96,13 +96,13 @@ function Map:getvalues (keys)
 end
 
 --- update the map using key/value pairs from another table.
--- @param table
+-- @tab table
 -- @function Map:update
 Map.update = tablex.update
 
 --- equality between maps.
 -- @within metamethods
--- @param m another map.
+-- @tparam Map m another map.
 function Map:__eq (m)
     -- note we explicitly ask deepcompare _not_ to use __eq!
     return deepcompare(self,m,true)

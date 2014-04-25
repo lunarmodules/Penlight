@@ -51,8 +51,8 @@ local filetypes = {
 lapp.show_usage_error = true
 
 --- quit this script immediately.
--- @param msg optional message
--- @param no_usage suppress 'usage' display
+-- @string msg optional message
+-- @bool no_usage suppress 'usage' display
 function lapp.quit(msg,no_usage)
     if no_usage == 'throw' then
         error(msg)
@@ -67,8 +67,8 @@ function lapp.quit(msg,no_usage)
 end
 
 --- print an error to stderr and quit.
--- @param msg a message
--- @param no_usage suppress 'usage' display
+-- @string msg a message
+-- @bool no_usage suppress 'usage' display
 function lapp.error(msg,no_usage)
     if not lapp.show_usage_error then
         no_usage = true
@@ -80,8 +80,8 @@ end
 
 --- open a file.
 -- This will quit on error, and keep a list of file objects for later cleanup.
--- @param file filename
--- @param opt same as second parameter of <code>io.open</code>
+-- @string file filename
+-- @string[opt] opt same as second parameter of `io.open`
 function lapp.open (file,opt)
     local val,err = io.open(file,opt)
     if not val then lapp.error(err,true) end
@@ -90,8 +90,8 @@ function lapp.open (file,opt)
 end
 
 --- quit if the condition is false.
--- @param condn a condition
--- @param msg an optional message
+-- @bool condn a condition
+-- @string msg message text
 function lapp.assert(condn,msg)
     if not condn then
         lapp.error(msg)
@@ -131,9 +131,9 @@ end
 
 --- add a new type to Lapp. These appear in parens after the value like
 -- a range constraint, e.g. '<ival> (integer) Process PID'
--- @param name name of type
+-- @string name name of type
 -- @param converter either a function to convert values, or a Lua type name.
--- @param constraint optional function to verify values, should use lapp.error
+-- @func[opt] constraint optional function to verify values, should use lapp.error
 -- if failed.
 function lapp.add_type (name,converter,constraint)
     types[name] = {converter=converter,constraint=constraint}
@@ -164,9 +164,9 @@ local function process_default (sval,vtype)
 end
 
 --- process a Lapp options string.
--- Usually called as lapp().
--- @param str the options text
--- @param args a table of arguments (default is `_G.arg`)
+-- Usually called as `lapp()`.
+-- @string str the options text
+-- @tparam {string} args a table of arguments (default is `_G.arg`)
 -- @return a table with parameter-value pairs
 function lapp.process_options_string(str,args)
     local results = {}

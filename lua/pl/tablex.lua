@@ -53,8 +53,9 @@ local function assert_arg_writeable (idx,val)
 end
 
 --- copy a table into another, in-place.
--- @param t1 destination table
--- @param t2 source (any iterable object)
+-- @within Copying
+-- @tab t1 destination table
+-- @tab t2 source (actually any iterable object)
 -- @return first table
 function tablex.update (t1,t2)
     assert_arg_writeable(1,t1)
@@ -71,7 +72,7 @@ end
 -- be greater or equal. The difference gives the size of
 -- the hash part, for practical purposes. Works for any
 -- object with a __pairs metamethod.
--- @param t a table
+-- @tab t a table
 -- @return the size
 function tablex.size (t)
     assert_arg_iterable(1,t)
@@ -81,7 +82,8 @@ function tablex.size (t)
 end
 
 --- make a shallow copy of a table
--- @param t an iterable source
+-- @within Copying
+-- @tab t an iterable source
 -- @return new table
 function tablex.copy (t)
     assert_arg_iterable(1,t)
@@ -94,7 +96,8 @@ end
 
 --- make a deep copy of a table, recursively copying all the keys and fields.
 -- This will also set the copied table's metatable to that of the original.
---  @param t A table
+-- @within Copying
+-- @tab t A table
 -- @return new table
 function tablex.deepcopy(t)
     if type(t) ~= 'table' then return t end
@@ -115,10 +118,11 @@ local abs, deepcompare = math.abs
 
 --- compare two values.
 -- if they are tables, then compare their keys and fields recursively.
+-- @within Comparing
 -- @param t1 A value
 -- @param t2 A value
--- @param ignore_mt if true, ignore __eq metamethod (default false)
--- @param eps if defined, then used for any number comparisons
+-- @bool[opt] ignore_mt if true, ignore __eq metamethod (default false)
+-- @number[opt] eps if defined, then used for any number comparisons
 -- @return true or false
 function tablex.deepcompare(t1,t2,ignore_mt,eps)
     local ty1 = type(t1)
@@ -149,9 +153,10 @@ end
 deepcompare = tablex.deepcompare
 
 --- compare two arrays using a predicate.
--- @param t1 an array
--- @param t2 an array
--- @param cmp A comparison function
+-- @within Comparing
+-- @array t1 an array
+-- @array t2 an array
+-- @func cmp A comparison function
 function tablex.compare (t1,t2,cmp)
     assert_arg_indexable(1,t1)
     assert_arg_indexable(2,t2)
@@ -164,8 +169,9 @@ function tablex.compare (t1,t2,cmp)
 end
 
 --- compare two list-like tables using an optional predicate, without regard for element order.
--- @param t1 a list-like table
--- @param t2 a list-like table
+-- @within Comparing
+-- @array t1 a list-like table
+-- @array t2 a list-like table
 -- @param cmp A comparison function (may be nil)
 function tablex.compare_no_order (t1,t2,cmp)
     assert_arg_indexable(1,t1)
@@ -194,9 +200,10 @@ end
 --- return the index of a value in a list.
 -- Like string.find, there is an optional index to start searching,
 -- which can be negative.
--- @param t A list-like table (i.e. with numerical indices)
+-- @within Finding
+-- @array t A list-like table
 -- @param val A value
--- @param idx index to start; -1 means last element,etc (default 1)
+-- @int idx index to start; -1 means last element,etc (default 1)
 -- @return index of value or nil if not found
 -- @usage find({10,20,30},20) == 2
 -- @usage find({'a','b','a','c'},'a',2) == 3
@@ -213,7 +220,8 @@ end
 --- return the index of a value in a list, searching from the end.
 -- Like string.find, there is an optional index to start searching,
 -- which can be negative.
--- @param t A list-like table (i.e. with numerical indices)
+-- @within Finding
+-- @array t A list-like table
 -- @param val A value
 -- @param idx index to start; -1 means last element,etc (default 1)
 -- @return index of value or nil if not found
@@ -230,8 +238,9 @@ end
 
 
 --- return the index (or key) of a value in a table using a comparison function.
--- @param t A table
--- @param cmp A comparison function
+-- @within Finding
+-- @tab t A table
+-- @func cmp A comparison function
 -- @param arg an optional second argument to the function
 -- @return index of value, or nil if not found
 -- @return value returned by comparison function
@@ -246,8 +255,8 @@ function tablex.find_if(t,cmp,arg)
 end
 
 --- return a list of all values in a table indexed by another list.
--- @param tbl a table
--- @param idx an index table (a list of keys)
+-- @tab tbl a table
+-- @array idx an index table (a list of keys)
 -- @return a list-like table
 -- @usage index_by({10,20,30,40},{2,4}) == {20,40}
 -- @usage index_by({one=1,two=2,three=3},{'one','three'}) == {1,3}
@@ -264,8 +273,9 @@ end
 --- apply a function to all values of a table.
 -- This returns a table of the results.
 -- Any extra arguments are passed to the function.
--- @param fun A function that takes at least one argument
--- @param t A table
+-- @within MappingAndFiltering
+-- @func fun A function that takes at least one argument
+-- @tab t A table
 -- @param ... optional arguments
 -- @usage map(function(v) return v*v end, {10,20,30,fred=2}) is {100,400,900,fred=4}
 function tablex.map(fun,t,...)
@@ -281,8 +291,9 @@ end
 --- apply a function to all values of a list.
 -- This returns a table of the results.
 -- Any extra arguments are passed to the function.
--- @param fun A function that takes at least one argument
--- @param t a table (applies to array part)
+-- @within MappingAndFiltering
+-- @func fun A function that takes at least one argument
+-- @array t a table (applies to array part)
 -- @param ... optional arguments
 -- @return a list-like table
 -- @usage imap(function(v) return v*v end, {10,20,30,fred=2}) is {100,400,900}
@@ -297,8 +308,9 @@ function tablex.imap(fun,t,...)
 end
 
 --- apply a named method to values from a table.
--- @param name the method name
--- @param t a list-like table
+-- @within MappingAndFiltering
+-- @string name the method name
+-- @array t a list-like table
 -- @param ... any extra arguments to the method
 function tablex.map_named_method (name,t,...)
     utils.assert_string(1,name)
@@ -312,11 +324,10 @@ function tablex.map_named_method (name,t,...)
     return setmeta(res,t,List)
 end
 
-
 --- apply a function to all values of a table, in-place.
 -- Any extra arguments are passed to the function.
--- @param fun A function that takes at least one argument
--- @param t a table
+-- @func fun A function that takes at least one argument
+-- @tab t a table
 -- @param ... extra arguments
 function tablex.transform (fun,t,...)
     assert_arg_iterable(1,t)
@@ -327,9 +338,9 @@ function tablex.transform (fun,t,...)
 end
 
 --- generate a table of all numbers in a range
--- @param start  number
--- @param finish number
--- @param step optional increment (default 1 for increasing, -1 for decreasing)
+-- @int start  number
+-- @int finish number
+-- @int[opt=1] step  (-1 for decreasing)
 function tablex.range (start,finish,step)
     if start == finish then return {start}
     elseif start > finish then return {}
@@ -344,9 +355,10 @@ function tablex.range (start,finish,step)
 end
 
 --- apply a function to values from two tables.
--- @param fun a function of at least two arguments
--- @param t1 a table
--- @param t2 a table
+-- @within MappingAndFiltering
+-- @func fun a function of at least two arguments
+-- @tab t1 a table
+-- @tab t2 a table
 -- @param ... extra arguments
 -- @return a table
 -- @usage map2('+',{1,2,3,m=4},{10,20,30,m=40}) is {11,22,23,m=44}
@@ -363,9 +375,10 @@ end
 
 --- apply a function to values from two arrays.
 -- The result will be the length of the shortest array.
--- @param fun a function of at least two arguments
--- @param t1 a list-like table
--- @param t2 a list-like table
+-- @within MappingAndFiltering
+-- @func fun a function of at least two arguments
+-- @array t1 a list-like table
+-- @array t2 a list-like table
 -- @param ... extra arguments
 -- @usage imap2('+',{1,2,3,m=4},{10,20,30,m=40}) is {11,22,23}
 function tablex.imap2 (fun,t1,t2,...)
@@ -380,8 +393,8 @@ function tablex.imap2 (fun,t1,t2,...)
 end
 
 --- 'reduce' a list using a binary function.
--- @param fun a function of two arguments
--- @param t a list-like table
+-- @func fun a function of two arguments
+-- @array t a list-like table
 -- @return the result of the function
 -- @usage reduce('+',{1,2,3,4}) == 10
 function tablex.reduce (fun,t)
@@ -397,10 +410,11 @@ end
 
 --- apply a function to all elements of a table.
 -- The arguments to the function will be the value,
--- the key and <i>finally</i> any extra arguments passed to this function.
--- Note that the Lua 5.0 function table.foreach passed the <i>key</i> first.
--- @param t a table
--- @param fun a function with at least one argument
+-- the key and _finally_ any extra arguments passed to this function.
+-- Note that the Lua 5.0 function table.foreach passed the _key_ first.
+-- @within Iterating
+-- @tab t a table
+-- @func fun a function with at least one argument
 -- @param ... extra arguments
 function tablex.foreach(t,fun,...)
     assert_arg_iterable(1,t)
@@ -412,9 +426,10 @@ end
 
 --- apply a function to all elements of a list-like table in order.
 -- The arguments to the function will be the value,
--- the index and <i>finally</i> any extra arguments passed to this function
--- @param t a table
--- @param fun a function with at least one argument
+-- the index and _finally_ any extra arguments passed to this function
+-- @within Iterating
+-- @array t a table
+-- @func fun a function with at least one argument
 -- @param ... optional arguments
 function tablex.foreachi(t,fun,...)
     assert_arg_indexable(1,t)
@@ -424,13 +439,13 @@ function tablex.foreachi(t,fun,...)
     end
 end
 
-
 --- Apply a function to a number of tables.
 -- A more general version of map
 -- The result is a table containing the result of applying that function to the
 -- ith value of each table. Length of output list is the minimum length of all the lists
--- @param fun a function of n arguments
--- @param ... n tables
+-- @within MappingAndFiltering
+-- @func fun a function of n arguments
+-- @tab ... n tables
 -- @usage mapn(function(x,y,z) return x+y+z end, {1,2,3},{10,20,30},{100,200,300}) is {111,222,333}
 -- @usage mapn(math.max, {1,20,300},{10,2,3},{100,200,100}) is	{100,200,300}
 -- @param fun A function that takes as many arguments as there are tables
@@ -457,8 +472,9 @@ end
 -- The function can return a value and a key (note the order!). If both
 -- are not nil, then this pair is inserted into the result. If only value is not nil, then
 -- it is appended to the result.
--- @param fun A function which will be passed each key and value as arguments, plus any extra arguments to pairmap.
--- @param t A table
+-- @within MappingAndFiltering
+-- @func fun A function which will be passed each key and value as arguments, plus any extra arguments to pairmap.
+-- @tab t A table
 -- @param ... optional arguments
 -- @usage pairmap(function(k,v) return v end,{fred=10,bonzo=20}) is {10,20} _or_ {20,10}
 -- @usage pairmap(function(k,v) return {k,v},k end,{one=1,two=2}) is {one={'one',1},two={'two',2}}
@@ -480,7 +496,8 @@ end
 local function keys_op(i,v) return i end
 
 --- return all the keys of a table in arbitrary order.
---  @param t A table
+-- @within Extraction
+--  @tab t A table
 function tablex.keys(t)
     assert_arg_iterable(1,t)
     return makelist(tablex.pairmap(keys_op,t))
@@ -489,7 +506,8 @@ end
 local function values_op(i,v) return v end
 
 --- return all the values of the table in arbitrary order
---  @param t A table
+-- @within Extraction
+--  @tab t A table
 function tablex.values(t)
     assert_arg_iterable(1,t)
     return makelist(tablex.pairmap(values_op,t))
@@ -499,7 +517,7 @@ local function index_map_op (i,v) return i,v end
 
 --- create an index map from a list-like table. The original values become keys,
 -- and the associated values are the indices into the original list.
--- @param t a list-like table
+-- @array t a list-like table
 -- @return a map-like table
 function tablex.index_map (t)
     assert_arg_indexable(1,t)
@@ -510,20 +528,20 @@ local function set_op(i,v) return true,v end
 
 --- create a set from a list-like table. A set is a table where the original values
 -- become keys, and the associated values are all true.
--- @param t a list-like table
+-- @array t a list-like table
 -- @return a set (a map-like table)
 function tablex.makeset (t)
     assert_arg_indexable(1,t)
     return setmetatable(tablex.pairmap(set_op,t),Set)
 end
 
-
 --- combine two tables, either as union or intersection. Corresponds to
 -- set operations for sets () but more general. Not particularly
 -- useful for list-like tables.
--- @param t1 a table
--- @param t2 a table
--- @param dup true for a union, false for an intersection.
+-- @within Merging
+-- @tab t1 a table
+-- @tab t2 a table
+-- @bool dup true for a union, false for an intersection.
 -- @usage merge({alice=23,fred=34},{bob=25,fred=34}) is {fred=34}
 -- @usage merge({alice=23,fred=34},{bob=25,fred=34},true) is {bob=25,fred=34,alice=23}
 -- @see tablex.index_map
@@ -545,9 +563,10 @@ end
 --- a new table which is the difference of two tables.
 -- With sets (where the values are all true) this is set difference and
 -- symmetric difference depending on the third parameter.
--- @param s1 a map-like table or set
--- @param s2 a map-like table or set
--- @param symm symmetric difference (default false)
+-- @within Merging
+-- @tab s1 a map-like table or set
+-- @tab s2 a map-like table or set
+-- @bool symm symmetric difference (default false)
 -- @return a map-like table or set
 function tablex.difference (s1,s2,symm)
     assert_arg_iterable(1,s1)
@@ -565,8 +584,8 @@ function tablex.difference (s1,s2,symm)
 end
 
 --- A table where the key/values are the values and value counts of the table.
--- @param t a list-like table
--- @param cmp a function that defines equality (otherwise uses ==)
+-- @array t a list-like table
+-- @func cmp a function that defines equality (otherwise uses ==)
 -- @return a map-like table
 -- @see seq.count_map
 function tablex.count_map (t,cmp)
@@ -598,9 +617,10 @@ function tablex.count_map (t,cmp)
     return setmetatable(res,Map)
 end
 
---- filter a table's values using a predicate function
--- @param t a list-like table
--- @param pred a boolean function
+--- filter an array's values using a predicate function
+-- @within MappingAndFiltering
+-- @array t a list-like table
+-- @func pred a boolean function
 -- @param arg optional argument to be passed as second argument of the predicate
 function tablex.filter (t,pred,arg)
     assert_arg_indexable(1,t)
@@ -618,7 +638,9 @@ end
 
 --- return a table where each element is a table of the ith values of an arbitrary
 -- number of tables. It is equivalent to a matrix transpose.
+-- @within Merging
 -- @usage zip({10,20,30},{100,200,300}) is {{10,100},{20,200},{30,300}}
+-- @array ... arrays to be zipped
 function tablex.zip(...)
     return tablex.mapn(function(...) return {...} end,...)
 end
@@ -650,24 +672,26 @@ function _copy (dest,src,idest,isrc,nsrc,clean_tail)
     return dest
 end
 
---- copy an array into another one, clearing dest after idest+nsrc, if necessary. <br>
--- @param dest a list-like table
--- @param src a list-like table
--- @param idest where to start copying values into destination (default 1)
--- @param isrc where to start copying values from source (default 1)
--- @param nsrc number of elements to copy from source (default source size)
+--- copy an array into another one, clearing `dest` after `idest+nsrc`, if necessary.
+-- @within Copying
+-- @array dest a list-like table
+-- @array src a list-like table
+-- @int[opt=1] idest where to start copying values into destination
+-- @int[opt=1] isrc where to start copying values from source
+-- @int[opt=#src] nsrc number of elements to copy from source
 function tablex.icopy (dest,src,idest,isrc,nsrc)
     assert_arg_indexable(1,dest)
     assert_arg_indexable(2,src)
     return _copy(dest,src,idest,isrc,nsrc,true)
 end
 
---- copy an array into another one. <br>
--- @param dest a list-like table
--- @param src a list-like table
--- @param idest where to start copying values into destination (default 1)
--- @param isrc where to start copying values from source (default 1)
--- @param nsrc number of elements to copy from source (default source size)
+--- copy an array into another one.
+-- @within Copying
+-- @array dest a list-like table
+-- @array src a list-like table
+-- @int[opt=1] idest where to start copying values into destination
+-- @int[opt=1] isrc where to start copying values from source
+-- @int[opt=#src] nsrc number of elements to copy from source
 function tablex.move (dest,src,idest,isrc,nsrc)
     assert_arg_indexable(1,dest)
     assert_arg_indexable(2,src)
@@ -688,9 +712,10 @@ end
 -- If first or last are negative then they are relative to the end of the list
 -- eg. sub(t,-2) gives last 2 entries in a list, and
 -- sub(t,-4,-2) gives from -4th to -2nd
--- @param t a list-like table
--- @param first An index
--- @param last An index
+-- @within Extraction
+-- @array t a list-like table
+-- @int first An index
+-- @int last An index
 -- @return a new List
 function tablex.sub(t,first,last)
     assert_arg_indexable(1,t)
@@ -702,10 +727,10 @@ end
 
 --- set an array range to a value. If it's a function we use the result
 -- of applying it to the indices.
--- @param t a list-like table
+-- @array t a list-like table
 -- @param val a value
--- @param i1 start range (default 1)
--- @param i2 end range (default table size)
+-- @int[opt=1] i1 start range
+-- @int[opt=#t] i2 end range
 function tablex.set (t,val,i1,i2)
     assert_arg_indexable(1,t)
     i1,i2 = i1 or 1,i2 or #t
@@ -721,8 +746,8 @@ function tablex.set (t,val,i1,i2)
 end
 
 --- create a new array of specified size with initial value.
--- @param n size
--- @param val initial value (can be nil, but don't expect # to work!)
+-- @int n size
+-- @param val initial value (can be `nil`, but don't expect `#` to work!)
 -- @return the table
 function tablex.new (n,val)
     local res = {}
@@ -731,17 +756,20 @@ function tablex.new (n,val)
 end
 
 --- clear out the contents of a table.
--- @param t a table
+-- @array t a list
 -- @param istart optional start position
 function tablex.clear(t,istart)
     istart = istart or 1
     for i = istart,#t do remove(t) end
 end
 
---- insert values into a table. <br>
--- insertvalues(t, [pos,] values) <br>
--- similar to table.insert but inserts values from given table "values",
--- not the object itself, into table "t" at position "pos".
+--- insert values into a table.
+-- similar to `table.insert` but inserts values from given table `values`,
+-- not the object itself, into table `t` at position `pos`.
+-- @within Copying
+-- @array t the list
+-- @int[opt] position (default is at end)
+-- @array values
 function tablex.insertvalues(t, ...)
     assert_arg(1,t,'table')
     local pos, values
@@ -763,9 +791,10 @@ function tablex.insertvalues(t, ...)
 end
 
 --- remove a range of values from a table.
--- @param t a list-like table
--- @param i1 start index
--- @param i2 end index
+-- End of range may be negative.
+-- @array t a list-like table
+-- @int i1 start index
+-- @int i2 end index
 -- @return the table
 function tablex.removevalues (t,i1,i2)
     assert_arg(1,t,'table')
@@ -798,9 +827,10 @@ _find = function (t,value,tables)
 end
 
 --- find a value in a table by recursive search.
--- @param t the table
+-- @within Finding
+-- @tab t the table
 -- @param value the value
--- @param exclude any tables to avoid searching
+-- @array[opt] exclude any tables to avoid searching
 -- @usage search(_G,math.sin,{package.path}) == 'math.sin'
 -- @return a fieldspec, e.g. 'a.b' or 'math.sin'
 function tablex.search (t,value,exclude)
@@ -813,40 +843,42 @@ function tablex.search (t,value,exclude)
 end
 
 --- return an iterator to a table sorted by its keys
--- @param t the table
--- @param f an optional comparison function (f(x,y) is true if x < y)
+-- @within Iterating
+-- @tab t the table
+-- @func f an optional comparison function (f(x,y) is true if x < y)
 -- @usage for k,v in tablex.sort(t) do print(k,v) end
 -- @return an iterator to traverse elements sorted by the keys
 function tablex.sort(t,f)
-   local keys = {}
-   for k in pairs(t) do keys[#keys + 1] = k end
-   tsort(keys,f)
-   local i = 0
-   return function()
-      i = i + 1
-      return keys[i], t[keys[i]]
-   end
+    local keys = {}
+    for k in pairs(t) do keys[#keys + 1] = k end
+    tsort(keys,f)
+    local i = 0
+    return function()
+        i = i + 1
+        return keys[i], t[keys[i]]
+    end
 end
 
 --- return an iterator to a table sorted by its values
--- @param t the table
--- @param f an optional comparison function (f(x,y) is true if x < y)
+-- @within Iterating
+-- @tab t the table
+-- @func f an optional comparison function (f(x,y) is true if x < y)
 -- @usage for k,v in tablex.sortv(t) do print(k,v) end
 -- @return an iterator to traverse elements sorted by the values
 function tablex.sortv(t,f)
-   local rev = {}
-   for k,v in pairs(t) do rev[v] = k end
-   local next = tablex.sort(rev,f)
-   return function()
-      local value,key = next()
-      return key,value
-   end
+    local rev = {}
+    for k,v in pairs(t) do rev[v] = k end
+    local next = tablex.sort(rev,f)
+    return function()
+        local value,key = next()
+        return key,value
+    end
 end
 
 --- modifies a table to be read only.
 -- This only offers weak protection. Tables can still be modified with
--- table.insert and rawset.
--- @param t the table
+-- `table.insert` and `rawset`.
+-- @tab t the table
 -- @return the table read only.
 function tablex.readonly(t)
     local mt = {
@@ -859,7 +891,5 @@ function tablex.readonly(t)
     }
     return setmetatable({}, mt)
 end
-
-
 
 return tablex

@@ -19,11 +19,9 @@
 -- @module pl.func
 local type,select,setmetatable,getmetatable,rawset = type,select,setmetatable,getmetatable,rawset
 local concat,append = table.concat,table.insert
-local max = math.max
-local print,tostring = print,tostring
+local tostring = tostring
 local utils = require 'pl.utils'
 local pairs,ipairs,loadstring,rawget,unpack  = pairs,ipairs,loadstring,rawget,utils.unpack
-local _G = _G
 local tablex = require 'pl.tablex'
 local map = tablex.map
 local _DEBUG = rawget(_G,'_DEBUG')
@@ -124,8 +122,8 @@ end
 
 --- wrap a table of functions. This makes them available for use in
 -- placeholder expressions.
--- @param tname a table name
--- @param context context to put results, defaults to environment of caller
+-- @string tname a table name
+-- @tab context context to put results, defaults to environment of caller
 function func.import(tname,context)
     assert_arg(1,tname,'string',is_global_table,'arg# 1: not a name of a global table')
     local t = _G[tname]
@@ -137,8 +135,8 @@ function func.import(tname,context)
 end
 
 --- register a function for use in placeholder expressions.
--- @param fun a function
--- @param name an optional name
+-- @func fun a function
+-- @string[opt] name an optional name
 -- @return a placeholder functiond
 function func.register (fun,name)
     assert_arg(1,fun,'function')
@@ -182,7 +180,7 @@ binreg (_PEMT,{__add='+',__sub='-',__mul='*',__div='/',__mod='%',__pow='^',__con
 binreg (_PEMT,{__eq='=='})
 
 --- all elements of a table except the first.
--- @param ls a list-like table.
+-- @tab ls a list-like table.
 function func.tail (ls)
     assert_arg(1,ls,'table')
     local res = {}
@@ -250,7 +248,7 @@ function collect_values (e,vlist)
                         subx = subx.repr
                         pe = false
                     else
-                        m = max(m,collect_values(subx,vlist))
+                        m = math.max(m,collect_values(subx,vlist))
                     end
                 end
                 if not pe then
@@ -312,7 +310,7 @@ utils.add_function_factory(_PEMT,func.I)
 
 --- bind the first parameter of the function to a value.
 -- @function func.bind1
--- @param fn a function of one or more arguments
+-- @func fn a function of one or more arguments
 -- @param p a value
 -- @return a function of one less argument
 -- @usage (bind1(math.max,10))(20) == math.max(10,20)
@@ -320,8 +318,8 @@ func.bind1 = utils.bind1
 func.curry = func.bind1
 
 --- create a function which chains two functions.
--- @param f a function of at least one argument
--- @param g a function of at least one argument
+-- @func f a function of at least one argument
+-- @func g a function of at least one argument
 -- @return a function
 -- @usage printf = compose(io.write,string.format)
 function func.compose (f,g)
@@ -329,8 +327,8 @@ function func.compose (f,g)
 end
 
 --- bind the arguments of a function to given values.
--- bind(fn,v,_2) is equivalent to curry(fn,v).
--- @param fn a function of at least one argument
+-- `bind(fn,v,_2)` is equivalent to `bind1(fn,v)`.
+-- @func fn a function of at least one argument
 -- @param ... values or placeholder variables
 -- @return a function
 -- @usage (bind(f,_1,a))(b) == f(a,b)
@@ -343,7 +341,7 @@ function func.bind(fn,...)
         local a = args[i]
         if isPE(a) and a.op == 'X' then
             append(holders,a.repr)
-            maxplace = max(maxplace,a.index)
+            maxplace = math.max(maxplace,a.index)
             if a.index == 0 then varargs = true end
         else
             local v = '_v'..nv

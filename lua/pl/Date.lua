@@ -77,7 +77,7 @@ function Date:_init(t,...)
 end
 
 --- set the current time of this Date object.
--- @param t seconds since epoch
+-- @int t seconds since epoch
 function Date:set(t)
     self.time = t
     if self.utc then
@@ -88,7 +88,7 @@ function Date:set(t)
 end
 
 --- get the time zone offset from UTC.
--- @return seconds ahead of UTC
+-- @int ts seconds ahead of UTC
 function Date.tzone (ts)
     if ts == nil then
         ts = os_time()
@@ -127,42 +127,42 @@ function Date:toLocal ()
 end
 
 --- set the year.
--- @param y Four-digit year
+-- @int y Four-digit year
 -- @class function
 -- @name Date:year
 
 --- set the month.
--- @param m month
+-- @int m month
 -- @class function
 -- @name Date:month
 
 --- set the day.
--- @param d day
+-- @int d day
 -- @class function
 -- @name Date:day
 
 --- set the hour.
--- @param h hour
+-- @int h hour
 -- @class function
 -- @name Date:hour
 
 --- set the minutes.
--- @param min minutes
+-- @int min minutes
 -- @class function
 -- @name Date:min
 
 --- set the seconds.
--- @param sec seconds
+-- @int sec seconds
 -- @class function
 -- @name Date:sec
 
 --- set the day of year.
 -- @class function
--- @param yday day of year
+-- @int yday day of year
 -- @name Date:yday
 
 --- get the year.
--- @param y Four-digit year
+-- @int y Four-digit year
 -- @class function
 -- @name Date:year
 
@@ -205,15 +205,15 @@ for _,c in ipairs{'year','month','day','hour','min','sec','yday'} do
 end
 
 --- name of day of week.
--- @param full abbreviated if true, full otherwise.
--- @return string name
+-- @bool full abbreviated if true, full otherwise.
+-- @ret string name
 function Date:weekday_name(full)
     return os_date(full and '%A' or '%a',self.time)
 end
 
 --- name of month.
--- @param full abbreviated if true, full otherwise.
--- @return string name
+-- @int full abbreviated if true, full otherwise.
+-- @ret string name
 function Date:month_name(full)
     return os_date(full and '%B' or '%b',self.time)
 end
@@ -253,7 +253,7 @@ function Date:last_day()
 end
 
 --- difference between two Date objects.
--- @param other Date object
+-- @tparam Date other Date object
 -- @treturn Date.Interval object
 function Date:diff(other)
     local dt = self.time - other.time
@@ -311,7 +311,7 @@ end
 Date.Interval = class(Date)
 
 ---- Date.Interval constructor
--- @param t an interval in seconds
+-- @int t an interval in seconds
 -- @function Date.Interval
 function Date.Interval:_init(t)
     self:set(t)
@@ -358,7 +358,7 @@ local formats = {
 }
 
 --- Date.Format constructor.
--- @param fmt. A string where the following fields are significant:
+-- @string fmt. A string where the following fields are significant:
 --
 --   * d day (either d or dd)
 --   * y year (either yy or yyy)
@@ -432,7 +432,7 @@ end
 local parse_date
 
 --- parse a string into a Date object.
--- @param str a date string
+-- @string str a date string
 -- @return date object
 function Date.Format:parse(str)
     assert_string(1,str)
@@ -635,7 +635,6 @@ function parse_date (s)
         return d
     end
 end
-
 
 return Date
 

@@ -134,16 +134,16 @@ end
 -- @function Data.column_by_name
 
 --- return a query iterator on this data (method).
--- @param condn the query expression
+-- @string condn the query expression
 -- @function Data.select
 -- @see data.query
 
 --- return a row iterator on this data (method).
--- @param condn the query expression
+-- @string condn the query expression
 -- @function Data.select_row
 
 --- return a new data object based on this query (method).
--- @param condn the query expression
+-- @string condn the query expression
 -- @function Data.copy_select
 
 --- return the field names of this data object (method).
@@ -202,7 +202,7 @@ end
 --- read a delimited file in a Lua table.
 -- By default, attempts to treat first line as separated list of fieldnames.
 -- @param file a filename or a file-like object (default stdin)
--- @param cnfg options table: can override `delim` (a string pattern), `fieldnames` (a list),
+-- @tab cnfg options table: can override `delim` (a string pattern), `fieldnames` (a list),
 -- specify `no_convert` (default is to conversion), `numfields` (indices of columns known
 -- to be numbers) and `thousands_dot` (thousands separator in Excel CSV is '.').
 -- If `csv` is set then fields may be double-quoted and contain commas;
@@ -344,8 +344,8 @@ end
 -- generated with `new` or `read`.
 -- @param data 2D array
 -- @param file filename or file-like object
--- @param fieldnames list of fields (optional)
--- @param delim delimiter (default tab)
+-- @tparam[opt] {string} fieldnames list of fields (optional)
+-- @string[opt='\t'] delim delimiter (default tab)
 function data.write (data,file,fieldnames,delim)
     local f,err,opened = open_file(file,'w')
     if not f then return nil, err end
@@ -381,7 +381,7 @@ end
 -- If the table does not have a field called 'delim', then an attempt will be
 -- made to guess it from the fieldnames string, defaults otherwise to tab.
 -- @param d the table.
--- @param fieldnames optional fieldnames
+-- @tparam[opt] {string} fieldnames optional fieldnames
 -- @return the table.
 function data.new (d,fieldnames)
     d.fieldnames = d.fieldnames or fieldnames or ''
@@ -624,10 +624,10 @@ DataMT.select_row = function(d,condn,context)
 end
 
 --- Filter input using a query.
--- @param Q a query string
+-- @string Q a query string
 -- @param infile filename or file-like object
 -- @param outfile filename or file-like object
--- @param dont_fail true if you want to return an error, not just fail
+-- @bool dont_fail true if you want to return an error, not just fail
 function data.filter (Q,infile,outfile,dont_fail)
     local err
     local d = data.read(infile or 'stdin')
