@@ -418,7 +418,7 @@ function _M.tostring(t,idn,indent, attr_indent, xml)
     if xml then
         if type(xml) == "string" then
             buf[1] = xml
-    	else
+        else
             buf[1] = "<?xml version='1.0'?>"
         end
     end
