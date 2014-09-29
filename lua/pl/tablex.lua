@@ -337,21 +337,24 @@ function tablex.transform (fun,t,...)
     end
 end
 
---- generate a table of all numbers in a range
+--- generate a table of all numbers in a range.
+-- This is consistent with a numerical for loop.
 -- @int start  number
 -- @int finish number
--- @int[opt=1] step  (-1 for decreasing)
+-- @int[opt=1] step  make this negative for start < finish
 function tablex.range (start,finish,step)
-    if start == finish then return {start}
-    elseif start > finish then return {}
+    local res
+    step = step or 1
+    if start == finish then
+        res = {start}
+    elseif (start > finish and step > 0) or (finish > start and step < 0) then
+        res = {}
+    else
+        local k = 1
+        res = {}
+        for i=start,finish,step do res[k]=i; k=k+1 end
     end
-    local res = {}
-    local k = 1
-    if not step then
-        if finish > start then step = finish > start and 1 or -1 end
-    end
-    for i=start,finish,step do res[k]=i; k=k+1 end
-    return res
+    return makelist(res)
 end
 
 --- apply a function to values from two tables.

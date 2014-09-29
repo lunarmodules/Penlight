@@ -14,7 +14,7 @@ file = '../lua/pl'
 kind_names={topic='Manual',module='Libraries'}
 tparam_alias('array','array')
 tparam_alias('array2d','array')
-alias('ret','treturn')
+alias('ret',{'return',modifiers={type="$1"}})
 
 
 
