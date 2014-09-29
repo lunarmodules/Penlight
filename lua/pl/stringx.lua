@@ -98,10 +98,10 @@ local function _find_all(s,sub,first,last)
     local res
     local k = 0
     while i1 do
+        if last and i1 > last then break end
         res = i1
         k = k + 1
         i1,i2 = find(s,sub,i2+1,true)
-        if last and i1 > last then break end
     end
     return res,k
 end
