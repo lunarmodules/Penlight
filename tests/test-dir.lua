@@ -57,8 +57,8 @@ assert( err, msg )
 asserteq( path.exists( newFileName ) , newFileName )
 
 -- Try to move a non-existant file (which should fail)
-local fileName2 = path.tmpname()
-local newFileName2 = path.tmpname()
+local fileName2 = 'blub'
+local newFileName2 = 'snortsh'
 local err, msg = dir.copyfile( fileName2, newFileName2 )
 asserteq( err, false )
 
