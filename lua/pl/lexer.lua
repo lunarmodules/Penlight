@@ -152,6 +152,7 @@ function lexer.scan (s,matches,filter,options)
         matches = plain_matches
     end
     local function lex ()
+        if type(s)=='string' and s=='' then return end
         local findres,i1,i2,idx,res1,res2,tok,pat,fun,capt
         local line = 1
         if file then s = file:read()..'\n' end
