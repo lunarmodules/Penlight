@@ -68,9 +68,13 @@ local function sdump(tok,options)
 end
 
 -- long Lua strings need extra work to get rid of the quotes
-local function sdump_l(tok,options)
+local function sdump_l(tok,options,findres)
     if options and options.string then
-        tok = tok:sub(3,-3)
+        local quotelen = 3
+        if findres[3] then
+            quotelen = quotelen + findres[3]:len()
+        end
+        tok = tok:sub(quotelen,-1 * quotelen)
     end
     return yield("string",tok)
 end
@@ -148,7 +152,8 @@ function lexer.scan (s,matches,filter,options)
         matches = plain_matches
     end
     local function lex ()
-        local i1,i2,idx,res1,res2,tok,pat,fun,capt
+        if type(s)=='string' and s=='' then return end
+        local findres,i1,i2,idx,res1,res2,tok,pat,fun,capt
         local line = 1
         if file then s = file:read()..'\n' end
         local sz = #s
@@ -158,13 +163,15 @@ function lexer.scan (s,matches,filter,options)
             for _,m in ipairs(matches) do
                 pat = m[1]
                 fun = m[2]
-                i1,i2 = strfind(s,pat,idx)
+                findres = { strfind(s,pat,idx) }
+                i1 = findres[1]
+                i2 = findres[2]
                 if i1 then
                     tok = strsub(s,i1,i2)
                     idx = i2 + 1
                     if not (filter and filter[fun]) then
                         lexer.finished = idx > sz
-                        res1,res2 = fun(tok,options)
+                        res1,res2 = fun(tok,options,findres)
                     end
                     if res1 then
                         local tp = type(res1)
@@ -296,9 +303,9 @@ function lexer.lua(s,filter,options)
             {STRING3,sdump},
             {STRING0,sdump},
             {STRING1,sdump},
-            {'^%-%-%[%[.-%]%]',cdump},
+            {'^%-%-%[(=*)%[.-%]%1%]',cdump},
             {'^%-%-.-\n',cdump},
-            {'^%[%[.-%]%]',sdump_l},
+            {'^%[(=*)%[.-%]%1%]',sdump_l},
             {'^==',tdump},
             {'^~=',tdump},
             {'^<=',tdump},
