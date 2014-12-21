@@ -45,6 +45,10 @@ testnorm('a/b/../c/../../d','d')
 testnorm('a/.','a/.')
 testnorm('a/./','a/')
 testnorm('a/b/.././..','.')
+testnorm('../../a/b','../../a/b')
+testnorm('../../a/b/../../','../../')
+testnorm('../../a/b/../c','../../a/c')
+testnorm('./../../a/b/../c','../../a/c')
 
 if path.is_windows then
   asserteq(norm [[\a\.\b]],p)

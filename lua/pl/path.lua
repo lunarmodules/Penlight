@@ -277,7 +277,7 @@ function path.normcase(P)
     end
 end
 
-local np_gen1,np_gen2 = '[^SEP]+SEP%.%.SEP?','SEP+%.?SEP'
+local np_gen1,np_gen2 = '([^SEP]+)SEP(%.%.SEP?)','SEP+%.?SEP'
 local np_pat1, np_pat2
 
 --- normalize a path name.
@@ -300,8 +300,13 @@ function path.normpath(P)
         P,k = P:gsub(np_pat2,sep)
     until k == 0
     repeat -- A/../ -> (empty)
-        P,k = P:gsub(np_pat1,'')
-    until k == 0
+        local oldP = P
+        P,k = P:gsub(np_pat1,function(D, up)
+            if D == '..' then return nil end
+            if D == '.' then return up end
+            return ''
+        end)
+    until k == 0 or oldP == P
     if P == '' then P = '.' end
     return P
 end
