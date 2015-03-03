@@ -1,4 +1,5 @@
 local stringx = require 'pl.stringx'
+local utils = require 'pl.utils'
 local asserteq = require 'pl.test' . asserteq
 local T = require 'pl.test'.tuple
 
@@ -270,13 +271,12 @@ asserteq(stringx.strip('    hello         '),'hello')
 asserteq(stringx.strip('--[hello] -- - ','-[] '),'hello')
 asserteq(stringx.rstrip('--[hello] -- - ','-[] '),'--[hello')
 
--- 
-
+--
 
 local assert_str_round_trip = function(s)
-	
+
 	local qs = stringx.quote_string(s)
-	local compiled, err = load("return "..qs)
+	local compiled, err = utils.load("return "..qs)
 
 	if not compiled then
 		print(
@@ -313,13 +313,12 @@ assert_str_round_trip( '"balance [======[ doesn\'t ]====] mater when searching f
 assert_str_round_trip( "Any\0 \t control character other than a return will be handled by the %q mechanism.")
 assert_str_round_trip( "This\tincludes\ttabs.")
 assert_str_round_trip( "But not returns.\n Returns are easier to see using long quotes.")
-assert_str_round_trip( "The \z 
-  escape does not trigger a control pattern, however.")
+assert_str_round_trip( "The \z escape does not trigger a control pattern, however.")
 
 assert_str_round_trip( "[==[If a string is long-quoted, escaped \\\" quotes have to stay! ]==]")
 assert_str_round_trip('"A quoted string looks like what?"')
 assert_str_round_trip( "'I think that it should be quoted, anyway.'")
-assert_str_round_trip( "[[Even if they're long quoted.]]") 
+assert_str_round_trip( "[[Even if they're long quoted.]]")
 
 assert_str_round_trip( "\"\\\"\\' pathalogical:starts with a quote ]\"\\']=]]==][[]]]=========]")
 assert_str_round_trip( "\\\"\\\"\\' pathalogical: quote is after this text with a quote ]\"\\']=]]==][[]]]=========]")
