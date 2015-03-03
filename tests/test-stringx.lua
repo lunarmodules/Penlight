@@ -270,3 +270,63 @@ asserteq(stringx.strip('    hello         '),'hello')
 asserteq(stringx.strip('--[hello] -- - ','-[] '),'hello')
 asserteq(stringx.rstrip('--[hello] -- - ','-[] '),'--[hello')
 
+-- 
+
+
+local assert_str_round_trip = function(s)
+	
+	local qs = stringx.quote_string(s)
+	local compiled, err = load("return "..qs)
+
+	if not compiled then
+		print(
+			("stringx.quote_string assert failed: invalid string created: Received:\n%s\n\nCompiled to\n%s\n\nError:\t%s\n"):
+			format(s, qs, err)
+		)
+		error()
+	else
+		compiled = compiled()
+	end
+
+	if compiled ~= s then
+		print("strinx.quote_string assert Failed: String compiled but did not round trip.")
+		print("input string:\t\t",s, #s)
+		print("compiled string:\t", compiled, #compiled)
+		print("output string:\t\t",qs, #qs)
+		error()
+	else
+		-- print("input string:\t\t",s)
+		-- print("compiled string:\t", compiled)
+		-- print("output string:\t\t",qs)
+	end
+end
+
+assert_str_round_trip( "normal string with nothing weird.")
+assert_str_round_trip( "Long string quoted with escaped quote \\\" and a long string pattern match [==[ found near the end.")
+
+assert_str_round_trip( "Unescapped quote \" in the middle")
+assert_str_round_trip( "[[Embedded long quotes \\\". Escaped must stay! ]]")
+assert_str_round_trip( [[Long quoted string with a slash prior to quote \\\". ]])
+assert_str_round_trip( "[[Completely normal\n long quote. ]]")
+assert_str_round_trip( "\n[[Completely normal\n long quote. Except that we lead with a return! Tricky! ]]")
+assert_str_round_trip( '"balance [======[ doesn\'t ]====] mater when searching for embedded long-string quotes.')
+assert_str_round_trip( "Any\0 \t control character other than a return will be handled by the %q mechanism.")
+assert_str_round_trip( "This\tincludes\ttabs.")
+assert_str_round_trip( "But not returns.\n Returns are easier to see using long quotes.")
+assert_str_round_trip( "The \z 
+  escape does not trigger a control pattern, however.")
+
+assert_str_round_trip( "[==[If a string is long-quoted, escaped \\\" quotes have to stay! ]==]")
+assert_str_round_trip('"A quoted string looks like what?"')
+assert_str_round_trip( "'I think that it should be quoted, anyway.'")
+assert_str_round_trip( "[[Even if they're long quoted.]]") 
+
+assert_str_round_trip( "\"\\\"\\' pathalogical:starts with a quote ]\"\\']=]]==][[]]]=========]")
+assert_str_round_trip( "\\\"\\\"\\' pathalogical: quote is after this text with a quote ]\"\\']=]]==][[]]]=========]")
+assert_str_round_trip( "\\\"\\\"\\' pathalogical: quotes are all escaped. ]\\\"\\']=]]==][[]]]=========]")
+assert_str_round_trip( "")
+assert_str_round_trip( " ")
+assert_str_round_trip( "\n") --tricky.
+assert_str_round_trip( "[[")
+assert_str_round_trip( "''")
+assert_str_round_trip( '""')

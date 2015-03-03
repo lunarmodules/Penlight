@@ -47,9 +47,12 @@ asserteq(res,{a=2,bonzo='dog',t={1,2,3}})
 res,err = pretty.read [[
 {s = ('woo'):gsub('w','wwwwww'):gsub('w','wwwwww')}
 ]]
-
-assertmatch(err,utils.lua51 and 'attempt to index a string value' or "attempt to index constant 'woo'")
-
+--AAS
+if _VERSION == "Lua 5.3" then
+  assertmatch(err, [=[attempt to index a string value]=])
+else
+  assertmatch(err,utils.lua51 and 'attempt to index a string value'  or "attempt to index constant 'woo'")
+end
 ---- pretty.load has a _paranoid_ option
 res,err = pretty.load([[
 k = 0
