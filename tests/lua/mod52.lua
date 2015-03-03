@@ -10,7 +10,7 @@ function answer ()
     -- so define it as a local up above, or use utils.import(_G).
     test.assertraise(function()
         print 'hello'
-    end,"attempt to call global 'print'")
+    end,(_VERSION=="Lua 5.2") and "attempt to call global 'print'" or "attempt to call a nil value")
 
     -- but all the Penlight modules are available
     return pretty.write(utils.split '10 20  30', '')

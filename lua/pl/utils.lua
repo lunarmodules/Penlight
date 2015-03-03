@@ -57,7 +57,8 @@ local function import_symbol(T,k,v,libname)
     local key = rawget(T,k)
     -- warn about collisions!
     if key and k ~= '_M' and k ~= '_NAME' and k ~= '_PACKAGE' and k ~= '_VERSION' then
-        utils.printf("warning: '%s.%s' overrides existing symbol\n",libname,k)
+        utils.printf("warning: '%s.%s' will not override existing symbol\n",libname,k)
+        return
     end
     rawset(T,k,v)
 end
