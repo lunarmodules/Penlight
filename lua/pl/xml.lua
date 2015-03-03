@@ -576,9 +576,9 @@ function _M.basic_parse(s,all_text,html)
     t_insert(stack, top)
     local ni,c,label,xarg, empty, _, istart
     local i, j = 1, 1
-    if not html then -- we're not interested in <?xml version="1.0"?>
-        _,istart = s_find(s,'^%s*<%?[^%?]+%?>%s*')
-    else -- or <!DOCTYPE ...>
+    -- we're not interested in <?xml version="1.0"?>
+    _,istart = s_find(s,'^%s*<%?[^%?]+%?>%s*')    
+    if not istart then -- or <!DOCTYPE ...>
         _,istart = s_find(s,'^%s*<!DOCTYPE.->%s*')
     end
     if istart then i = istart+1 end

@@ -55,6 +55,7 @@ assert(xml.compare(d1,d2))
 -- Parsing Google Weather service results --
 
 local joburg = [[
+<?xml version="1.0"?>
 <xml_api_reply version='1'>
   <weather module_id='0' tab_id='0' mobile_zipped='1' section='0' row='0' mobile_row='0'>
     <forecast_information>
@@ -387,6 +388,7 @@ asserteq(res,{
 })
 
 d = parse[[
+<!DOCTYPE xml>
 <params>
 <param>
   <name>XXX</name>
