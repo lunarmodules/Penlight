@@ -52,7 +52,7 @@ end
 -- An empty environment is used, and
 -- any occurance of the keyword 'function' will be considered a problem.
 -- in the given environment - the return value may be `nil`.
--- @param s {string} string of the form '{...}', with perhaps some whitespace
+-- @string s string of the form '{...}', with perhaps some whitespace
 -- before or after the curly braces.
 -- @return a table
 function pretty.read(s)
@@ -60,7 +60,7 @@ function pretty.read(s)
     if s:find '^%s*%-%-' then -- may start with a comment..
         s = s:gsub('%-%-.-\n','')
     end
-    if not s:find '^%s*%b{}%s*$' then return nil,"not a Lua table" end
+    if not s:find '^%s*{' then return nil,"not a Lua table" end
     if s:find '[^\'"%w_]function[^\'"%w_]' then
         local tok = lexer.lua(s)
         for t,v in tok do
@@ -82,9 +82,9 @@ function pretty.read(s)
 end
 
 --- read a Lua chunk.
--- @param s Lua code
+-- @string s Lua code
 -- @param env optional environment
--- @param paranoid prevent any looping constructs and disable string methods
+-- @bool paranoid prevent any looping constructs and disable string methods
 -- @return the environment
 function pretty.load (s, env, paranoid)
     env = env or {}
@@ -146,10 +146,10 @@ end
 --  extra value. Normally puts out one item per line, using
 --  the provided indent; set the second parameter to '' if
 --  you want output on one line.
---	@param tbl {table} Table to serialize to a string.
---	@param space {string} (optional) The indent to use.
+--	@table tbl Table to serialize to a string.
+--	@string space (optional) The indent to use.
 --	Defaults to two spaces; make it the empty string for no indentation
---	@param not_clever {bool} (optional) Use for plain output, e.g {['key']=1}.
+--	@bool not_clever (optional) Use for plain output, e.g {['key']=1}.
 --	Defaults to false.
 --  @return a string
 --  @return a possible error message
