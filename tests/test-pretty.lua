@@ -48,7 +48,7 @@ res,err = pretty.read [[
 {s = ('woo'):gsub('w','wwwwww'):gsub('w','wwwwww')}
 ]]
 
-assertmatch(err,utils.lua51 and 'attempt to index a string value' or "attempt to index constant 'woo'")
+assertmatch(err,(_VERSION ~= "Lua 5.1") and 'attempt to index a string value' or "attempt to index constant 'woo'")
 
 ---- pretty.load has a _paranoid_ option
 res,err = pretty.load([[

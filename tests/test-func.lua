@@ -24,8 +24,6 @@ function teste (e,rs,ve)
     asserteq(rep,rs)
 end
 
-import ('math')
-
 teste(_1+_2('hello'),'_1 + _2(_C1)',{"hello"})
 teste(_1:method(),'_1[_C1](_1)',{"method"})
 teste(Not(_1),'not _1')

@@ -61,8 +61,8 @@ func._0 = P{op='X',repr='...',index=0}
 function func.Var (name)
     local ls = utils.split(name,'[%s,]+')
     local res = {}
-    for _,n in ipairs(ls) do
-        append(res,P{op='X',repr=n,index=0})
+    for i = 1, #ls do
+        append(res,P{op='X',repr=ls[i],index=0})
     end
     return unpack(res)
 end
@@ -241,7 +241,8 @@ function collect_values (e,vlist)
     if isPE(e) then
         if e.op ~= 'X' then
             local m = 0
-            for i,subx in ipairs(e) do
+            for i = 1,#e do
+                local subx = e[i]
                 local pe = isPE(subx)
                 if pe then
                     if subx.op == 'X' and subx.index == 'wrap' then
