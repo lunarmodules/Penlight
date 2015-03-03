@@ -554,12 +554,12 @@ function _M.basic_parse(s,all_text,html)
 
     local function parseargs(s)
       local arg = {}
-      s:gsub("([%w:]+)%s*=%s*([\"'])(.-)%2", function (w, _, a)
+      s:gsub("([%w:%-_]+)%s*=%s*([\"'])(.-)%2", function (w, _, a)
         if html then w = w:lower() end
         arg[w] = unescape(a)
       end)
       if html then
-        s:gsub("([%w:]+)%s*=%s*([^\"']+)%s*", function (w, a)
+        s:gsub("([%w:%-_]+)%s*=%s*([^\"']+)%s*", function (w, a)
           w = w:lower()
           arg[w] = unescape(a)
         end)
