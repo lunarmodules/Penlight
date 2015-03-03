@@ -456,7 +456,7 @@ raise = utils.raise
 -- With Lua 5.2, may return nil for a function with no global references!
 -- Based on code by [Sergey Rozhenko](http://lua-users.org/lists/lua-l/2010-06/msg00313.html)
 -- @param f a function or a call stack reference
--- @function utils.setfenv
+-- @function utils.getfenv
 
 ---------------
 -- Set environment of a function

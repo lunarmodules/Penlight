@@ -491,7 +491,8 @@ xml.tostring(test_attrlist),
 "<AttrList Attr1='Value1' Attr2='Value2' Attr3='Value3'/>"
 )
 
----- commments ----
+
+-- commments
 str = [[
 <hello>
 <!-- any <i>momentous</i> stuff here -->
@@ -503,5 +504,21 @@ asserteq(xml.tostring(doc),[[
 <hello>
 dolly
 </hello>]])
+
+
+-- underscores and dashes in attributes
+
+str = [[
+<hello>
+    <tag my_attribute='my_value'>dolly</tag>
+</hello>
+]]
+doc = parse(str)
+
+print(doc)
+print(xml.tostring(doc))
+
+asserteq(xml.tostring(doc),[[
+<hello><tag my_attribute='my_value'>dolly</tag></hello>]])
 
 
