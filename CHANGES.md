@@ -1,3 +1,34 @@
+## 1.3.2
+
+### Changes
+
+  - now works and passes tests with Lua 5.3
+  - utils.import will NOT override global symbols (import 'math' caused global type() to be clobbered)
+  - Updated pl.dir.file_op to return true on success and false on failure...
+  - workaround for issues with pl.lapp with amalg.lua - will look at global LAPP_SCRIPT if arg[0] is nil
+
+### Fixes
+
+  - func was broken: do NOT use ipairs to iterate if __index is overriden!
+  - issue #133 pretty.read (naively) confused by unbalanced brackets
+  - xml attribute underscore fix for simple parser
+  - Fix path.normpath
+  - lexer: fix parsing block comments/string. fix hang on empty string.
+  -  Fixed utils.execute returning different values for Lua 5.1 and Lua 5.2
+  - Issue #97; fixed attempt to put a month into a day
+  -  problem with tablex.count_map with custom comparison
+
+### Features
+
+  -  Add Python style url module for quote and unquote.
+  -  stringx.quote_string, which scans for embedded long-string quote matches and escapes them by creating a long-string quote. 
+  -  issue #117: tablex.range now works with decreasing numbers, consistent with numerical for loop
+  -  utils.import will NOT override global symbols (import 'math' caused global type() to be clobbered)
+  - issue #125: DOCTYPE ignored in xml documents as well 
+  - Allow XML tostring() function to customize the default prefacing with <?xml...>
+  - More Robust Quoted Strings
+  - lapp: improved detection of unsupported short flags
+
 ## 1.3.0
 
 ### Changes

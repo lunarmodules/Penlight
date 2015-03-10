@@ -17,7 +17,7 @@
 --     [orange]
 --
 -- Depdencies: `pl.utils`, `pl.tablex`, `pl.class`, (`pl.List` if __tostring is used)
--- @classmod pl.Set
+-- @module pl.Set
 
 local tablex = require 'pl.tablex'
 local utils = require 'pl.utils'
@@ -61,6 +61,7 @@ end
 --- get a list of the values in a set.
 -- @param self a Set
 -- @function Set.values
+-- @return a list
 Set.values = Map.keys
 
 --- map a function over the values of a set.
@@ -94,6 +95,16 @@ Set.__add = Set.union
 -- @param self a Set
 -- @param set another set
 -- @return a new set
+-- @usage
+-- > s = Set{10,20,30}
+-- > t = Set{20,30,40}
+-- > = t
+-- [20,30,40]
+-- > = Set.intersection(s,t)
+-- [30,20]
+-- > = s*t
+-- [30,20]
+
 function Set.intersection (self,set)
     return merge(self,set,false)
 end

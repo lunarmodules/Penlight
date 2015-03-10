@@ -146,7 +146,7 @@ end
 --  extra value. Normally puts out one item per line, using
 --  the provided indent; set the second parameter to '' if
 --  you want output on one line.
---	@table tbl Table to serialize to a string.
+--	@tab tbl Table to serialize to a string.
 --	@string space (optional) The indent to use.
 --	Defaults to two spaces; make it the empty string for no indentation
 --	@bool not_clever (optional) Use for plain output, e.g {['key']=1}.
