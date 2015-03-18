@@ -11,7 +11,7 @@ local unpack = rawget(_G,'unpack') or rawget(table,'unpack')
 local collisions = {}
 
 local utils = {
-    _VERSION = "1.2.1",
+    _VERSION = "1.3.2",
     lua51 = compat.lua51,
     setfenv = compat.setfenv,
     getfenv = compat.getfenv,
