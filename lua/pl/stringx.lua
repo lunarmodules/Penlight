@@ -169,6 +169,47 @@ function stringx.split(self,re,n)
 	return setmetatable(res,list_MT)
 end
 
+local buildline = function(words, size, overflow)
+  -- if overflow is set, a word longer than size, will overflow the size
+  -- otherwise it will be chopped in line-length pieces
+  local line = {}
+  if #words[1] > size then
+    -- word longer than line
+    if overflow then
+      line[1] = words[1]
+      table.remove(words, 1)
+    else
+      line[1] = words[1]:sub(1, size)
+      words[1] = words[1]:sub(size + 1, -1)
+    end
+  else
+    local len = 0
+    while words[1] and (len + #words[1] + 1 <= size) or (len == 0 and #words[1] == size) do
+      line[#line+1] = words[1]
+      len = len + #words[1] + 1
+      table.remove(words, 1)
+    end
+  end
+  return table.concat(line, " "), words
+end
+
+--- split a string into a list of strings wordwrapping on a specified 
+-- line length. It wraps on spaces
+-- @function wordwrap
+-- @string self the string to wrap
+-- @int size maximum line length
+-- @param overflow if `true` words longer than `size` will not be broken
+-- @return a list-like table with lines
+stringx.wordwrap = function(self, size, overflow)
+  -- if overflow is set, then words longer than a line will overflow
+  -- otherwise, they'll be chopped in pieces
+  local out, words = {}, stringx.split(self)
+  while words[1] do
+    out[#out+1], words = buildline(words, size, overflow)
+  end
+  return out
+end
+
 local function tab_expand (self,n)
     return (gsub(self,'([^\t]*)\t', function(s)
             return s..(' '):rep(n - #s % n)
