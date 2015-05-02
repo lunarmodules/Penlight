@@ -254,8 +254,8 @@ local function _just(s,w,ch,left,right)
         if not ch then ch = ' ' end
         local f1,f2
         if left and right then
-            local ln = ceil((w-n)/2)
-            local rn = w - n - ln
+            local rn = ceil((w-n)/2)
+            local ln = w - n - rn
             f1 = rep(ch,ln)
             f2 = rep(ch,rn)
         elseif right then

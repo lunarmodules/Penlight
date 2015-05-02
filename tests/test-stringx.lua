@@ -177,7 +177,7 @@ asserteq(T(stringx.center('', 0)), T(''))
 asserteq(T(stringx.center('', 1)), T(' '))
 asserteq(T(stringx.center('', 2)), T('  '))
 asserteq(T(stringx.center('a', 1)), T('a'))
-asserteq(T(stringx.center('a', 2)), T(' a'))
+asserteq(T(stringx.center('a', 2)), T('a '))
 asserteq(T(stringx.center('a', 3)), T(' a '))
 
 
