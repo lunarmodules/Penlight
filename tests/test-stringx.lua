@@ -114,9 +114,14 @@ asserteq(T(stringx.lfind('abcbcbbc', 'bc', nil, 5)), T(2))
 -- rfind
 asserteq(T(stringx.rfind('', '')), T(1))
 asserteq(T(stringx.rfind('ab', '')), T(3))
+asserteq(T(stringx.rfind('abc', 'cd')), T(nil))
 asserteq(T(stringx.rfind('abcbc', 'bc')), T(4))
 asserteq(T(stringx.rfind('abcbcb', 'bc')), T(4))
 asserteq(T(stringx.rfind('ab..cd', '.')), T(4)) -- pattern char
+asserteq(T(stringx.rfind('abcbcbbc', 'bc', 3)), T(7))
+asserteq(T(stringx.rfind('abcbcbbc', 'bc', 3, 4)), T(nil))
+asserteq(T(stringx.rfind('abcbcbbc', 'bc', 3, 5)), T(4))
+asserteq(T(stringx.rfind('abcbcbbc', 'bc', nil, 5)), T(4))
 
 -- replace
 asserteq(T(stringx.replace('', '', '')), T(''))

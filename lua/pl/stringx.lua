@@ -180,12 +180,14 @@ end
 -- @section find
 
 local function _find_all(s,sub,first,last)
-    if sub == '' then return #s+1,#s end
+    first = first or 1
+    last = last or #s
+    if sub == '' then return last+1,last-first+1 end
     local i1,i2 = find(s,sub,first,true)
     local res
     local k = 0
     while i1 do
-        if last and i1 > last then break end
+        if last and i2 > last then break end
         res = i1
         k = k + 1
         i1,i2 = find(s,sub,i2+1,true)
