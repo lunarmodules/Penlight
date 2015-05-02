@@ -198,11 +198,18 @@ end
 --- find index of first instance of sub in s from the left.
 -- @string self the string
 -- @string sub substring
--- @int[opt] first start index
-function stringx.lfind(self,sub,first)
+-- @int[opt] first first index
+-- @int[opt] last last index
+function stringx.lfind(self,sub,first,last)
     assert_string(1,self)
     assert_string(2,sub)
-    return (find(self,sub,first,true))
+    local i1, i2 = find(self,sub,first,true)
+
+    if i1 and (not last or i2 <= last) then
+        return i1
+    else
+        return nil
+    end
 end
 
 --- find index of first instance of sub in s from the right.

@@ -101,6 +101,11 @@ asserteq(T(stringx.lfind('a', '')), T(1))
 asserteq(T(stringx.lfind('ab', 'b')), T(2))
 asserteq(T(stringx.lfind('abc', 'cd')), T(nil))
 asserteq(T(stringx.lfind('abcbc', 'bc')), T(2))
+asserteq(T(stringx.lfind('ab..cd', '.')), T(3)) -- pattern char
+asserteq(T(stringx.lfind('abcbcbbc', 'bc', 3)), T(4))
+asserteq(T(stringx.lfind('abcbcbbc', 'bc', 3, 4)), T(nil))
+asserteq(T(stringx.lfind('abcbcbbc', 'bc', 3, 5)), T(4))
+asserteq(T(stringx.lfind('abcbcbbc', 'bc', nil, 5)), T(2))
 
 -- rfind
 asserteq(T(stringx.rfind('', '')), T(1))
