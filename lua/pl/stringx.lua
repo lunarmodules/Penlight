@@ -202,8 +202,7 @@ end
 function stringx.lfind(self,sub,i1)
     assert_string(1,self)
     assert_string(2,sub)
-    local idx = find(self,sub,i1,true)
-    if idx then return idx else return nil end
+    return (find(self,sub,i1,true))
 end
 
 --- find index of first instance of sub in s from the right.
@@ -214,8 +213,7 @@ end
 function stringx.rfind(self,sub,first,last)
     assert_string(1,self)
     assert_string(2,sub)
-    local idx = _find_all(self,sub,first,last)
-    if idx then return idx else return nil end
+    return (_find_all(self,sub,first,last))
 end
 
 --- replace up to n instances of old by new in the string s.
@@ -230,10 +228,6 @@ function stringx.replace(s,old,new,n)
     assert_string(1,s)
     assert_string(1,old)
     return (gsub(s,escape(old),new:gsub('%%','%%%%'),n))
-end
-
-local function copy(self)
-    return self..''
 end
 
 --- count all instances of substring in string.
@@ -267,7 +261,7 @@ local function _just(s,w,ch,left,right)
         end
         return f1..s..f2
     else
-        return copy(s)
+        return s
     end
 end
 
