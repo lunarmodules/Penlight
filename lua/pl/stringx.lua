@@ -431,21 +431,25 @@ end
 
 stringx.capitalize = stringx.title
 
-local elipsis = '...'
-local n_elipsis = #elipsis
+local ellipsis = '...'
+local n_ellipsis = #ellipsis
 
---- return a shorted version of a string.
+--- Return a shortened version of a string.
+-- Fits string within w characters. Removed characters are marked with ellipsis.
 -- @string s the string
--- @int sz the maxinum size allowed
+-- @int w the maxinum size allowed
 -- @bool tail true if we want to show the end of the string (head otherwise)
-function stringx.shorten(s,sz,tail)
-    if #s > sz then
-        if sz < n_elipsis then return elipsis:sub(1,sz) end
+-- @usage ('1234567890'):shorten(8) == '12345...'
+-- @usage ('1234567890'):shorten(8, true) == '...67890'
+-- @usage ('1234567890'):shorten(20) == '1234567890'
+function stringx.shorten(s,w,tail)
+    if #s > w then
+        if w < n_ellipsis then return ellipsis:sub(1,w) end
         if tail then
-            local i = #s - sz + 1 + n_elipsis
-            return elipsis .. s:sub(i)
+            local i = #s - w + 1 + n_ellipsis
+            return ellipsis .. s:sub(i)
         else
-            return s:sub(1,sz-n_elipsis) .. elipsis
+            return s:sub(1,w-n_ellipsis) .. ellipsis
         end
     end
     return s
