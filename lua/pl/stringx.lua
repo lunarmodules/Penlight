@@ -151,6 +151,7 @@ end
 -- @usage ('one,two,three'):split(',') == List{'one','two','three'}
 -- @usage ('one,two,three'):split(',',2) == List{'one','two,three'}
 function stringx.split(s,re,n)
+    assert_string(1,s)
     local plain = true
     if not re then -- default spaces
         s = lstrip(s)
@@ -232,7 +233,8 @@ end
 -- @return result string
 function stringx.replace(s,old,new,n)
     assert_string(1,s)
-    assert_string(1,old)
+    assert_string(2,old)
+    assert_string(3,new)
     return (gsub(s,escape(old),new:gsub('%%','%%%%'),n))
 end
 
@@ -426,6 +428,7 @@ end
 -- @string s the string
 -- @return a string with each word's first letter uppercase
 function stringx.title(s)
+    assert_string(1,s)
     return (s:gsub('(%S)(%S*)',function(f,r)
         return f:upper()..r:lower()
     end))
@@ -445,6 +448,7 @@ local n_ellipsis = #ellipsis
 -- @usage ('1234567890'):shorten(8, true) == '...67890'
 -- @usage ('1234567890'):shorten(20) == '1234567890'
 function stringx.shorten(s,w,tail)
+    assert_string(1,s)
     if #s > w then
         if w < n_ellipsis then return ellipsis:sub(1,w) end
         if tail then
@@ -481,6 +485,7 @@ end
 -- @param s The string to be quoted.
 -- @return The quoted string.
 function stringx.quote_string(s)
+    assert_string(1,s)
     -- Find out if there are any embedded long-quote sequences that may cause issues.
     -- This is important when strings are embedded within strings, like when serializing.
     local equal_signs = has_lquote(s)
