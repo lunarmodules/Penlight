@@ -52,6 +52,10 @@ asserteq(T(startswith('abc', 'bc')), T(false)) -- off by one
 asserteq(T(startswith('abc', '.')), T(false)) -- Lua pattern char
 asserteq(T(startswith('a\0bc', 'a\0b')), T(true)) -- '\0'
 
+asserteq(startswith('abcfoo',{'abc','def'}),true)
+asserteq(startswith('deffoo',{'abc','def'}),true)
+asserteq(startswith('cdefoo',{'abc','def'}),false)
+
 
 -- endswith
 -- http://snippets.luacode.org/sputnik.lua?p=snippets/Check_string_ends_with_other_string_74

@@ -82,45 +82,41 @@ function stringx.isupper(s)
     return find(s,'^[%u%s]+$') == 1
 end
 
---- does string start with the substring?
--- @string s the string
--- @string s2 a string
-function stringx.startswith(s,s2)
-    assert_string(1,s)
-    assert_string(2,s2)
-    return find(s,s2,1,true) == 1
+local function raw_startswith(s, prefix)
+    return find(s,prefix,1,true) == 1
 end
 
-local function _find_all(s,sub,first,last)
-    if sub == '' then return #s+1,#s end
-    local i1,i2 = find(s,sub,first,true)
-    local res
-    local k = 0
-    while i1 do
-        if last and i1 > last then break end
-        res = i1
-        k = k + 1
-        i1,i2 = find(s,sub,i2+1,true)
-    end
-    return res,k
+local function raw_endswith(s, suffix)
+    return #s >= #suffix and find(s, suffix, #s-#suffix+1, true) and true or false
 end
 
---- does string end with the given substring?.
--- @string s a string
--- @param send a substring or a table of suffixes
-function stringx.endswith(s,send)
-    assert_string(1,s)
-    if type(send) == 'string' then
-        return #s >= #send and s:find(send, #s-#send+1, true) and true or false
-    elseif type(send) == 'table' then
-        local endswith = stringx.endswith
-        for _,suffix in ipairs(send) do
-            if endswith(s,suffix) then return true end
+local function test_affixes(s, affixes, fn)
+    if type(affixes) == 'string' then
+        return fn(s,affixes)
+    elseif type(affixes) == 'table' then
+        for _,affix in ipairs(affixes) do
+            if fn(s,affix) then return true end
         end
         return false
     else
-        error('argument #2: either a substring or a table of suffixes expected')
+        error(("argument #2 expected a 'string' or a 'table', got a '%s'"):format(type(affixes)))
     end
+end
+
+--- does s start with prefix or one of prefixes?
+-- @string s a string
+-- @param prefix a string or an array of strings
+function stringx.startswith(s,prefix)
+    assert_string(1,s)
+    return test_affixes(s,prefix,raw_startswith)
+end
+
+--- does s end with suffix or one of suffixes?
+-- @string s a string
+-- @param suffix a string or an array of strings
+function stringx.endswith(s,suffix)
+    assert_string(1,s)
+    return test_affixes(s,suffix,raw_endswith)
 end
 
 --- Strings and Lists
@@ -182,6 +178,20 @@ end
 
 --- Finding and Replacing
 -- @section find
+
+local function _find_all(s,sub,first,last)
+    if sub == '' then return #s+1,#s end
+    local i1,i2 = find(s,sub,first,true)
+    local res
+    local k = 0
+    while i1 do
+        if last and i1 > last then break end
+        res = i1
+        k = k + 1
+        i1,i2 = find(s,sub,i2+1,true)
+    end
+    return res,k
+end
 
 --- find index of first instance of sub in s from the left.
 -- @string s the string
