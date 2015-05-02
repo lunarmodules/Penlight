@@ -324,6 +324,7 @@ assert_str_round_trip( "[==[If a string is long-quoted, escaped \\\" quotes have
 assert_str_round_trip('"A quoted string looks like what?"')
 assert_str_round_trip( "'I think that it should be quoted, anyway.'")
 assert_str_round_trip( "[[Even if they're long quoted.]]")
+assert_str_round_trip( "]=]==]")
 
 assert_str_round_trip( "\"\\\"\\' pathalogical:starts with a quote ]\"\\']=]]==][[]]]=========]")
 assert_str_round_trip( "\\\"\\\"\\' pathalogical: quote is after this text with a quote ]\"\\']=]]==][[]]]=========]")
@@ -331,6 +332,9 @@ assert_str_round_trip( "\\\"\\\"\\' pathalogical: quotes are all escaped. ]\\\"\
 assert_str_round_trip( "")
 assert_str_round_trip( " ")
 assert_str_round_trip( "\n") --tricky.
+assert_str_round_trip( "\r")
+assert_str_round_trip( "\r\n")
+assert_str_round_trip( "\r1\n")
 assert_str_round_trip( "[[")
 assert_str_round_trip( "''")
 assert_str_round_trip( '""')

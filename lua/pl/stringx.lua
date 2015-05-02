@@ -18,7 +18,7 @@ local rep = string.rep
 local sub = string.sub
 local concat = table.concat
 local escape = utils.escape
-local ceil = math.ceil
+local ceil, max = math.ceil, math.max
 local assert_arg,usplit,list_MT = utils.assert_arg,utils.split,utils.stdmt.List
 local lstrip
 
@@ -462,43 +462,42 @@ end
 -- @return 'nil' if not found. If found, the maximum number of equal signs found within all matches.
 local function has_lquote(s)
     local lstring_pat = '([%[%]])(=*)%1'
-    local start, finish, bracket, equals, next_equals = nil, 0, nil, nil, nil
-    -- print("checking lquote for", s)
+    local equals
+    local start, finish, bracket, new_equals = nil, 1, nil, nil
+
     repeat
-        start, finish, bracket, next_equals =  s:find(lstring_pat, finish + 1)
-        if start then
-            -- print("found start", start, finish, bracket, next_equals)
-            --length of captured =. Ex: [==[ is 2, ]] is 0.
-            next_equals = #next_equals 
-            equals = next_equals >= (equals or 0) and next_equals or equals
+        start, finish, bracket, new_equals = s:find(lstring_pat, finish)
+        if new_equals then
+            equals = max(equals or 0, #new_equals)
         end
-    until not start
-    --next_equals will be nil if there was no match.
-    return   equals 
+    until not new_equals
+
+    return equals 
 end
 
 --- Quote the given string and preserve any control or escape characters, such that reloading the string in Lua returns the same result.
 -- @param s The string to be quoted.
 -- @return The quoted string.
 function stringx.quote_string(s)
-    --find out if there are any embedded long-quote
-    --sequences that may cause issues.
-    --This is important when strings are embedded within strings, like when serializing.
-    local equal_signs = has_lquote(s) 
-    if  s:find("\n") or equal_signs then 
-        -- print("going with long string:", s)
-        equal_signs =  ("="):rep((equal_signs or -1) + 1)
-        --long strings strip out leading \n. We want to retain that, when quoting.
+    -- Find out if there are any embedded long-quote sequences that may cause issues.
+    -- This is important when strings are embedded within strings, like when serializing.
+    local equal_signs = has_lquote(s)
+
+    -- Note that strings containing "\r" can't be quoted using long brackets
+    -- as Lua lexer converts all newlines to "\n" within long strings.
+    if (s:find("\n") or equal_signs) and not s:find("\r") then
+        -- If there is an embedded sequence that matches a long quote, then
+        -- find the one with the maximum number of = signs and add one to that number.
+        equal_signs = ("="):rep((equal_signs or -1) + 1)
+        -- Long strings strip out leading newline. We want to retain that, when quoting.
         if s:find("^\n") then s = "\n" .. s end
-        --if there is an embedded sequence that matches a long quote, then
-        --find the one with the maximum number of = signs and add one to that number
         local lbracket, rbracket =  
             "[" .. equal_signs .. "[",  
             "]" .. equal_signs .. "]"
         s = lbracket .. s .. rbracket
     else
-        --Escape funny stuff.
-        s = ("%q"):format(s)
+        -- Escape funny stuff. Lua 5.1 does not handle "\r" correctly.
+        s = ("%q"):format(s):gsub("\r", "\\r")
     end
     return s
 end
