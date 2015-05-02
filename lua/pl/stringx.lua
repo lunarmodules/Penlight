@@ -11,15 +11,14 @@
 local utils = require 'pl.utils'
 local string = string
 local find = string.find
-local type,setmetatable,getmetatable,ipairs,unpack = type,setmetatable,getmetatable,ipairs,utils.unpack
-local error,tostring = error,tostring
+local type,setmetatable,ipairs = type,setmetatable,ipairs
+local error = error
 local gsub = string.gsub
 local rep = string.rep
 local sub = string.sub
 local concat = table.concat
 local escape = utils.escape
 local ceil = math.ceil
-local _G = _G
 local assert_arg,usplit,list_MT = utils.assert_arg,utils.split,utils.stdmt.List
 local lstrip
 
@@ -502,7 +501,7 @@ function stringx.quote_string(s)
     return s
 end
 
-function stringx.import(dont_overload)
+function stringx.import()
     utils.import(stringx,string)
 end
 
