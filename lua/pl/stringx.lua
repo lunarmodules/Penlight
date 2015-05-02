@@ -167,27 +167,17 @@ function stringx.split(s,re,n)
 	return setmetatable(res,list_MT)
 end
 
-local function tab_expand (self,n)
-    return (gsub(self,'([^\t]*)\t', function(s)
-            return s..(' '):rep(n - #s % n)
-    end))
-end
-
---- replace all tabs in s with n spaces. If not specified, n defaults to 8.
+--- replace all tabs in s with tabsize spaces. If not specified, tabsize defaults to 8.
 -- with 0.9.5 this now correctly expands to the next tab stop (if you really
 -- want to just replace tabs, use :gsub('\t','  ') etc)
 -- @string s the string
--- @int n[opt=8] number of spaces to expand each tab
-function stringx.expandtabs(s,n)
+-- @int tabsize[opt=8] number of spaces to expand each tab
+function stringx.expandtabs(s,tabsize)
     assert_string(1,s)
-    n = n or 8
-    if not s:find '\n' then return tab_expand(s,n) end
-    local res,i = {},1
-    for line in stringx.lines(s) do
-        res[i] = tab_expand(line,n)
-        i = i + 1
-    end
-    return table.concat(res,'\n')
+    tabsize = tabsize or 8
+    return (s:gsub("([^\t\r\n]*)\t", function(before_tab)
+        return before_tab .. (" "):rep(tabsize - #before_tab % tabsize)
+    end))
 end
 
 --- Finding and Replacing
