@@ -83,12 +83,12 @@ function stringx.isupper(s)
 end
 
 --- does string start with the substring?
--- @string self the string
+-- @string s the string
 -- @string s2 a string
-function stringx.startswith(self,s2)
-    assert_string(1,self)
+function stringx.startswith(s,s2)
+    assert_string(1,s)
     assert_string(2,s2)
-    return find(self,s2,1,true) == 1
+    return find(s,s2,1,true) == 1
 end
 
 local function _find_all(s,sub,first,last)
@@ -127,20 +127,20 @@ end
 -- @section lists
 
 --- concatenate the strings using this string as a delimiter.
--- @string self the string
+-- @string s the string
 -- @param seq a table of strings or numbers
 -- @usage (' '):join {1,2,3} == '1 2 3'
-function stringx.join (self,seq)
-    assert_string(1,self)
-    return concat(seq,self)
+function stringx.join(s,seq)
+    assert_string(1,s)
+    return concat(seq,s)
 end
 
 --- break string into a list of lines
--- @string self the string
+-- @string s the string
 -- @param keepends (currently not used)
-function stringx.splitlines (self,keepends)
-    assert_string(1,self)
-    local res = usplit(self,'[\r\n]')
+function stringx.splitlines (s,keepends)
+    assert_string(1,s)
+    local res = usplit(s,'[\r\n]')
     -- we are currently hacking around a problem with utils.split (see stringx.split)
     if #res == 0 then res = {''} end
     return setmetatable(res,list_MT)
@@ -148,14 +148,13 @@ end
 
 --- split a string into a list of strings using a delimiter.
 -- @function split
--- @string self the string
+-- @string s the string
 -- @string[opt] re a delimiter (defaults to whitespace)
 -- @int[opt] n maximum number of results
 -- @usage #(('one two'):split()) == 2
 -- @usage ('one,two,three'):split(',') == List{'one','two','three'}
 -- @usage ('one,two,three'):split(',',2) == List{'one','two,three'}
-function stringx.split(self,re,n)
-    local s = self
+function stringx.split(s,re,n)
     local plain = true
     if not re then -- default spaces
         s = lstrip(s)
@@ -177,14 +176,14 @@ end
 --- replace all tabs in s with n spaces. If not specified, n defaults to 8.
 -- with 0.9.5 this now correctly expands to the next tab stop (if you really
 -- want to just replace tabs, use :gsub('\t','  ') etc)
--- @string self the string
+-- @string s the string
 -- @int n[opt=8] number of spaces to expand each tab
-function stringx.expandtabs(self,n)
-    assert_string(1,self)
+function stringx.expandtabs(s,n)
+    assert_string(1,s)
     n = n or 8
-    if not self:find '\n' then return tab_expand(self,n) end
+    if not s:find '\n' then return tab_expand(s,n) end
     local res,i = {},1
-    for line in stringx.lines(self) do
+    for line in stringx.lines(s) do
         res[i] = tab_expand(line,n)
         i = i + 1
     end
@@ -195,14 +194,14 @@ end
 -- @section find
 
 --- find index of first instance of sub in s from the left.
--- @string self the string
+-- @string s the string
 -- @string sub substring
 -- @int[opt] first first index
 -- @int[opt] last last index
-function stringx.lfind(self,sub,first,last)
-    assert_string(1,self)
+function stringx.lfind(s,sub,first,last)
+    assert_string(1,s)
     assert_string(2,sub)
-    local i1, i2 = find(self,sub,first,true)
+    local i1, i2 = find(s,sub,first,true)
 
     if i1 and (not last or i2 <= last) then
         return i1
@@ -212,14 +211,14 @@ function stringx.lfind(self,sub,first,last)
 end
 
 --- find index of first instance of sub in s from the right.
--- @string self the string
+-- @string s the string
 -- @string sub substring
 -- @int[opt] first first index
 -- @int[opt] last last index
-function stringx.rfind(self,sub,first,last)
-    assert_string(1,self)
+function stringx.rfind(s,sub,first,last)
+    assert_string(1,s)
     assert_string(2,sub)
-    return (_find_all(self,sub,first,last))
+    return (_find_all(s,sub,first,last))
 end
 
 --- replace up to n instances of old by new in the string s.
@@ -236,11 +235,11 @@ function stringx.replace(s,old,new,n)
 end
 
 --- count all instances of substring in string.
--- @string self the string
+-- @string s the string
 -- @string sub substring
-function stringx.count(self,sub)
-    assert_string(1,self)
-    local i,k = _find_all(self,sub,1)
+function stringx.count(s,sub)
+    assert_string(1,s)
+    local i,k = _find_all(s,sub,1)
     return k
 end
 
@@ -271,13 +270,13 @@ local function _just(s,w,ch,left,right)
 end
 
 --- left-justify s with width w.
--- @string self the string
+-- @string s the string
 -- @int w width of justification
 -- @string[opt=' '] ch padding character
-function stringx.ljust(self,w,ch)
-    assert_string(1,self)
+function stringx.ljust(s,w,ch)
+    assert_string(1,s)
     assert_arg(2,w,'number')
-    return _just(self,w,ch,true,false)
+    return _just(s,w,ch,true,false)
 end
 
 --- right-justify s with width w.
@@ -322,12 +321,12 @@ local function _strip(s,left,right,chrs)
 end
 
 --- trim any whitespace on the left of s.
--- @string self the string
+-- @string s the string
 -- @string[opt='%s'] chrs default any whitespace character,
 --  but can be a string of characters to be trimmed
-function stringx.lstrip(self,chrs)
-    assert_string(1,self)
-    return _strip(self,true,false,chrs)
+function stringx.lstrip(s,chrs)
+    assert_string(1,s)
+    return _strip(s,true,false,chrs)
 end
 lstrip = stringx.lstrip
 
@@ -341,25 +340,25 @@ function stringx.rstrip(s,chrs)
 end
 
 --- trim any whitespace on both left and right of s.
--- @string self the string
+-- @string s the string
 -- @string[opt='%s'] chrs default any whitespace character,
 --  but can be a string of characters to be trimmed
-function stringx.strip(self,chrs)
-    assert_string(1,self)
-    return _strip(self,true,true,chrs)
+function stringx.strip(s,chrs)
+    assert_string(1,s)
+    return _strip(s,true,true,chrs)
 end
 
 --- Partioning Strings
 -- @section partioning
 
 --- split a string using a pattern. Note that at least one value will be returned!
--- @string self the string
+-- @string s the string
 -- @string[opt='%s'] re a Lua string pattern (defaults to whitespace)
 -- @return the parts of the string
 -- @usage  a,b = line:splitv('=')
-function stringx.splitv (self,re)
-    assert_string(1,self)
-    return utils.splitv(self,re)
+function stringx.splitv(s,re)
+    assert_string(1,s)
+    return utils.splitv(s,re)
 end
 
 -- The partition functions split a string  using a delimiter into three parts:
@@ -375,58 +374,57 @@ local function _partition(p,delim,fn)
 end
 
 --- partition the string using first occurance of a delimiter
--- @string self the string
+-- @string s the string
 -- @string ch delimiter
 -- @return part before ch
 -- @return ch
 -- @return part after ch
-function stringx.partition(self,ch)
-    assert_string(1,self)
+function stringx.partition(s,ch)
+    assert_string(1,s)
     assert_nonempty_string(2,ch)
-    return _partition(self,ch,stringx.lfind)
+    return _partition(s,ch,stringx.lfind)
 end
 
 --- partition the string p using last occurance of a delimiter
--- @string self the string
+-- @string s the string
 -- @string ch delimiter
 -- @return part before ch
 -- @return ch
 -- @return part after ch
-function stringx.rpartition(self,ch)
-    assert_string(1,self)
+function stringx.rpartition(s,ch)
+    assert_string(1,s)
     assert_nonempty_string(2,ch)
-    return _partition(self,ch,stringx.rfind)
+    return _partition(s,ch,stringx.rfind)
 end
 
 --- return the 'character' at the index.
--- @string self the string
+-- @string s the string
 -- @int idx an index (can be negative)
 -- @return a substring of length 1 if successful, empty string otherwise.
-function stringx.at(self,idx)
-    assert_string(1,self)
+function stringx.at(s,idx)
+    assert_string(1,s)
     assert_arg(2,idx,'number')
-    return sub(self,idx,idx)
+    return sub(s,idx,idx)
 end
 
 --- Miscelaneous
 -- @section misc
 
 --- return an iterator over all lines in a string
--- @string self the string
+-- @string s the string
 -- @return an iterator
-function stringx.lines(self)
-    assert_string(1,self)
-    local s = self
+function stringx.lines(s)
+    assert_string(1,s)
     if not s:find '\n$' then s = s..'\n' end
     return s:gmatch('([^\n]*)\n')
 end
 
 --- iniital word letters uppercase ('title case').
 -- Here 'words' mean chunks of non-space characters.
--- @string self the string
+-- @string s the string
 -- @return a string with each word's first letter uppercase
-function stringx.title(self)
-    return (self:gsub('(%S)(%S*)',function(f,r)
+function stringx.title(s)
+    return (s:gsub('(%S)(%S*)',function(f,r)
         return f:upper()..r:lower()
     end))
 end
@@ -437,20 +435,20 @@ local elipsis = '...'
 local n_elipsis = #elipsis
 
 --- return a shorted version of a string.
--- @string self the string
+-- @string s the string
 -- @int sz the maxinum size allowed
 -- @bool tail true if we want to show the end of the string (head otherwise)
-function stringx.shorten(self,sz,tail)
-    if #self > sz then
+function stringx.shorten(s,sz,tail)
+    if #s > sz then
         if sz < n_elipsis then return elipsis:sub(1,sz) end
         if tail then
-            local i = #self - sz + 1 + n_elipsis
-            return elipsis .. self:sub(i)
+            local i = #s - sz + 1 + n_elipsis
+            return elipsis .. s:sub(i)
         else
-            return self:sub(1,sz-n_elipsis) .. elipsis
+            return s:sub(1,sz-n_elipsis) .. elipsis
         end
     end
-    return self
+    return s
 end
 
 --- Utility function that finds any patterns that match a long string's an open or close.
