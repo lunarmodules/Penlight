@@ -41,49 +41,49 @@ local stringx = {}
 -- String Predicates
 -- @section predicates
 
---- does s only contain alphabetic characters?.
+--- does s only contain alphabetic characters?
 -- @string s a string
 function stringx.isalpha(s)
     assert_string(1,s)
     return find(s,'^%a+$') == 1
 end
 
---- does s only contain digits?.
+--- does s only contain digits?
 -- @string s a string
 function stringx.isdigit(s)
     assert_string(1,s)
     return find(s,'^%d+$') == 1
 end
 
---- does s only contain alphanumeric characters?.
+--- does s only contain alphanumeric characters?
 -- @string s a string
 function stringx.isalnum(s)
     assert_string(1,s)
     return find(s,'^%w+$') == 1
 end
 
---- does s only contain spaces?.
+--- does s only contain spaces?
 -- @string s a string
 function stringx.isspace(s)
     assert_string(1,s)
     return find(s,'^%s+$') == 1
 end
 
---- does s only contain lower case characters?.
+--- does s only contain lower case characters?
 -- @string s a string
 function stringx.islower(s)
     assert_string(1,s)
     return find(s,'^[%l%s]+$') == 1
 end
 
---- does s only contain upper case characters?.
+--- does s only contain upper case characters?
 -- @string s a string
 function stringx.isupper(s)
     assert_string(1,s)
     return find(s,'^[%u%s]+$') == 1
 end
 
---- does string start with the substring?.
+--- does string start with the substring?
 -- @string self the string
 -- @string s2 a string
 function stringx.startswith(self,s2)
@@ -151,7 +151,7 @@ end
 -- @function split
 -- @string self the string
 -- @string[opt] re a delimiter (defaults to whitespace)
--- @int n maximum number of results
+-- @int[opt] n maximum number of results
 -- @usage #(('one two'):split()) == 2
 -- @usage ('one,two,three'):split(',') == List{'one','two','three'}
 -- @usage ('one,two,three'):split(',',2) == List{'one','two,three'}
@@ -179,7 +179,7 @@ end
 -- with 0.9.5 this now correctly expands to the next tab stop (if you really
 -- want to just replace tabs, use :gsub('\t','  ') etc)
 -- @string self the string
--- @int n number of spaces to expand each tab, (default 8)
+-- @int n[opt=8] number of spaces to expand each tab
 function stringx.expandtabs(self,n)
     assert_string(1,self)
     n = n or 8
@@ -198,18 +198,18 @@ end
 --- find index of first instance of sub in s from the left.
 -- @string self the string
 -- @string sub substring
--- @int  i1 start index
-function stringx.lfind(self,sub,i1)
+-- @int[opt] first start index
+function stringx.lfind(self,sub,first)
     assert_string(1,self)
     assert_string(2,sub)
-    return (find(self,sub,i1,true))
+    return (find(self,sub,first,true))
 end
 
 --- find index of first instance of sub in s from the right.
 -- @string self the string
 -- @string sub substring
--- @int first first index
--- @int last last index
+-- @int[opt] first first index
+-- @int[opt] last last index
 function stringx.rfind(self,sub,first,last)
     assert_string(1,self)
     assert_string(2,sub)
@@ -223,7 +223,6 @@ end
 -- @string new the substitution
 -- @int[opt] n optional maximum number of substitutions
 -- @return result string
--- @return the number of substitutions
 function stringx.replace(s,old,new,n)
     assert_string(1,s)
     assert_string(1,old)
@@ -268,7 +267,7 @@ end
 --- left-justify s with width w.
 -- @string self the string
 -- @int w width of justification
--- @string[opt=''] ch padding character
+-- @string[opt=' '] ch padding character
 function stringx.ljust(self,w,ch)
     assert_string(1,self)
     assert_arg(2,w,'number')
@@ -278,7 +277,7 @@ end
 --- right-justify s with width w.
 -- @string s the string
 -- @int w width of justification
--- @string[opt=''] ch padding character
+-- @string[opt=' '] ch padding character
 function stringx.rjust(s,w,ch)
     assert_string(1,s)
     assert_arg(2,w,'number')
@@ -288,7 +287,7 @@ end
 --- center-justify s with width w.
 -- @string s the string
 -- @int w width of justification
--- @string[opt=''] ch padding character
+-- @string[opt=' '] ch padding character
 function stringx.center(s,w,ch)
     assert_string(1,s)
     assert_arg(2,w,'number')
@@ -318,7 +317,7 @@ end
 
 --- trim any whitespace on the left of s.
 -- @string self the string
--- @string[opt='%x'] chrs default any whitespace character,
+-- @string[opt='%s'] chrs default any whitespace character,
 --  but can be a string of characters to be trimmed
 function stringx.lstrip(self,chrs)
     assert_string(1,self)
@@ -328,7 +327,7 @@ lstrip = stringx.lstrip
 
 --- trim any whitespace on the right of s.
 -- @string s the string
--- @string[opt='%x'] chrs default any whitespace character,
+-- @string[opt='%s'] chrs default any whitespace character,
 --  but can be a string of characters to be trimmed
 function stringx.rstrip(s,chrs)
     assert_string(1,s)
@@ -337,7 +336,7 @@ end
 
 --- trim any whitespace on both left and right of s.
 -- @string self the string
--- @string[opt='%x'] chrs default any whitespace character,
+-- @string[opt='%s'] chrs default any whitespace character,
 --  but can be a string of characters to be trimmed
 function stringx.strip(self,chrs)
     assert_string(1,self)
@@ -406,10 +405,10 @@ end
 --- Miscelaneous
 -- @section misc
 
---- return an interator over all lines in a string
+--- return an iterator over all lines in a string
 -- @string self the string
 -- @return an iterator
-function stringx.lines (self)
+function stringx.lines(self)
     assert_string(1,self)
     local s = self
     if not s:find '\n$' then s = s..'\n' end
