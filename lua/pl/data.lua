@@ -349,8 +349,11 @@ end
 function data.write (data,file,fieldnames,delim)
     local f,err,opened = open_file(file,'w')
     if not f then return nil, err end
+    if not fieldnames then
+        fieldnames = data.fieldnames
+    end
     if fieldnames and #fieldnames > 0 then
-        f:write(concat(data.fieldnames,delim),'\n')
+        f:write(concat(fieldnames,delim),'\n')
     end
     delim = delim or '\t'
     for i = 1,#data do
