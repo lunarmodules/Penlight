@@ -52,6 +52,10 @@ asserteq(T(startswith('abc', 'bc')), T(false)) -- off by one
 asserteq(T(startswith('abc', '.')), T(false)) -- Lua pattern char
 asserteq(T(startswith('a\0bc', 'a\0b')), T(true)) -- '\0'
 
+asserteq(startswith('abcfoo',{'abc','def'}),true)
+asserteq(startswith('deffoo',{'abc','def'}),true)
+asserteq(startswith('cdefoo',{'abc','def'}),false)
+
 
 -- endswith
 -- http://snippets.luacode.org/sputnik.lua?p=snippets/Check_string_ends_with_other_string_74
@@ -101,13 +105,23 @@ asserteq(T(stringx.lfind('a', '')), T(1))
 asserteq(T(stringx.lfind('ab', 'b')), T(2))
 asserteq(T(stringx.lfind('abc', 'cd')), T(nil))
 asserteq(T(stringx.lfind('abcbc', 'bc')), T(2))
+asserteq(T(stringx.lfind('ab..cd', '.')), T(3)) -- pattern char
+asserteq(T(stringx.lfind('abcbcbbc', 'bc', 3)), T(4))
+asserteq(T(stringx.lfind('abcbcbbc', 'bc', 3, 4)), T(nil))
+asserteq(T(stringx.lfind('abcbcbbc', 'bc', 3, 5)), T(4))
+asserteq(T(stringx.lfind('abcbcbbc', 'bc', nil, 5)), T(2))
 
 -- rfind
 asserteq(T(stringx.rfind('', '')), T(1))
 asserteq(T(stringx.rfind('ab', '')), T(3))
+asserteq(T(stringx.rfind('abc', 'cd')), T(nil))
 asserteq(T(stringx.rfind('abcbc', 'bc')), T(4))
 asserteq(T(stringx.rfind('abcbcb', 'bc')), T(4))
 asserteq(T(stringx.rfind('ab..cd', '.')), T(4)) -- pattern char
+asserteq(T(stringx.rfind('abcbcbbc', 'bc', 3)), T(7))
+asserteq(T(stringx.rfind('abcbcbbc', 'bc', 3, 4)), T(nil))
+asserteq(T(stringx.rfind('abcbcbbc', 'bc', 3, 5)), T(4))
+asserteq(T(stringx.rfind('abcbcbbc', 'bc', nil, 5)), T(4))
 
 -- replace
 asserteq(T(stringx.replace('', '', '')), T(''))
@@ -163,7 +177,7 @@ asserteq(T(stringx.center('', 0)), T(''))
 asserteq(T(stringx.center('', 1)), T(' '))
 asserteq(T(stringx.center('', 2)), T('  '))
 asserteq(T(stringx.center('a', 1)), T('a'))
-asserteq(T(stringx.center('a', 2)), T(' a'))
+asserteq(T(stringx.center('a', 2)), T('a '))
 asserteq(T(stringx.center('a', 3)), T(' a '))
 
 
@@ -319,6 +333,7 @@ assert_str_round_trip( "[==[If a string is long-quoted, escaped \\\" quotes have
 assert_str_round_trip('"A quoted string looks like what?"')
 assert_str_round_trip( "'I think that it should be quoted, anyway.'")
 assert_str_round_trip( "[[Even if they're long quoted.]]")
+assert_str_round_trip( "]=]==]")
 
 assert_str_round_trip( "\"\\\"\\' pathalogical:starts with a quote ]\"\\']=]]==][[]]]=========]")
 assert_str_round_trip( "\\\"\\\"\\' pathalogical: quote is after this text with a quote ]\"\\']=]]==][[]]]=========]")
@@ -326,6 +341,9 @@ assert_str_round_trip( "\\\"\\\"\\' pathalogical: quotes are all escaped. ]\\\"\
 assert_str_round_trip( "")
 assert_str_round_trip( " ")
 assert_str_round_trip( "\n") --tricky.
+assert_str_round_trip( "\r")
+assert_str_round_trip( "\r\n")
+assert_str_round_trip( "\r1\n")
 assert_str_round_trip( "[[")
 assert_str_round_trip( "''")
 assert_str_round_trip( '""')
