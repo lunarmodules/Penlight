@@ -56,7 +56,7 @@ s = '  here we go    '
 asserteq (s:lstrip() , 'here we go    ')
 asserteq (s:rstrip() , '  here we go')
 asserteq (s:strip() , 'here we go')
-asserteq (('hello'):center(20,'+') , '++++++++hello+++++++')
+asserteq (('hello'):center(20,'+') , '+++++++hello++++++++')
 
 t = Template('${here} is the $answer')
 asserteq(t:substitute {here = 'one', answer = 'two'} , 'one is the two')
