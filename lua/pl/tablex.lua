@@ -594,7 +594,7 @@ end
 function tablex.count_map (t,cmp)
     assert_arg_indexable(1,t)
     local res,mask = {},{}
-    cmp = function_arg(2,cmp)
+    cmp = function_arg(2,cmp or '==')
     local n = #t
     for i = 1,#t do
         local v = t[i]
@@ -604,12 +604,7 @@ function tablex.count_map (t,cmp)
             res[v] = 1  -- there's at least one instance
             for j = i+1,n do
                 local w = t[j]
-                local ok
-                if cmp then
-                    ok = cmp(v,w)
-                else
-                    ok = v == w
-                end
+                local ok = cmp(v,w)
                 if ok then
                     res[v] = res[v] + 1
                     mask[w] = true
