@@ -218,3 +218,31 @@ d = data.read(f,{convert={[1]=date_convert},last_field_collect=true})
 
 asserteq(#d[1],2)
 asserteq(d[2][1]:year(),2010)
+
+d = {{1,2,3},{10,20,30}}
+out = stringio.create()
+data.write(d,out,{'A','B','C'},',')
+asserteq(out:value(),
+[[
+A,B,C
+1,2,3
+10,20,30
+]])
+
+out = stringio.create()
+d.fieldnames = {'A','B','C'}
+data.write(d,out)
+
+asserteq(out:value(),
+[[
+A	B	C
+1	2	3
+10	20	30
+]])
+
+
+d = data.read(stringio.open 'One,Two\n1,\n,20\n',{csv=true})
+asserteq(d,{
+    {1,0},{0,20},
+    original_fieldnames={"One","Two"},fieldnames={"One","Two"},delim=","
+})
