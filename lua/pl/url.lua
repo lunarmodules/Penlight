@@ -8,7 +8,7 @@ local M = {}
 -- @string s the string
 -- @bool quote_plus Use quote_plus rules
 function M.quote(s, quote_plus)
-    function url_quote_char(c)
+    local function url_quote_char(c)
         return string.format("%%%02X", string.byte(c))
     end
 
