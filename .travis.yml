@@ -1,0 +1,19 @@
+language: python
+sudo: false
+
+env:
+  - LUA="lua 5.1"
+  - LUA="lua 5.2"
+  - LUA="lua 5.3"
+  - LUA="luajit 2.0"
+
+before_install:
+  - pip install hererocks
+  - hererocks here -r^ --$LUA
+  - export PATH=$PATH:$PWD/here/bin
+
+install:
+  - luarocks make
+
+script:
+  - lua tests/tests.run
