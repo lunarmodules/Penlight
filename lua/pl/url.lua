@@ -2,7 +2,7 @@
 --
 -- @module pl.url
 
-local M = {}
+local url = {}
 
 local function quote_char(c)
     return string.format("%%%02X", string.byte(c))
@@ -11,9 +11,9 @@ end
 --- Quote the url, replacing special characters using the '%xx' escape.
 -- @string s the string
 -- @bool quote_plus Also escape slashes and replace spaces by plus signs.
-function M.quote(s, quote_plus)
+function url.quote(s, quote_plus)
     if not s or not type(s) == "string" then
-    	return s
+        return s
     end
 
     s = s:gsub("\n", "\r\n")
@@ -34,9 +34,9 @@ end
 
 --- Unquote the url, replacing '%xx' escapes and plus signs.
 -- @string s the string
-function M.unquote(s)
+function url.unquote(s)
     if not s or not type(s) == "string" then
-    	return s
+        return s
     end
 
     s = s:gsub("+", " ")
@@ -46,4 +46,4 @@ function M.unquote(s)
     return s
 end
 
-return M
+return url
