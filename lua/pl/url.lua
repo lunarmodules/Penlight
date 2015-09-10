@@ -8,9 +8,9 @@ local function quote_char(c)
     return string.format("%%%02X", string.byte(c))
 end
 
---- Quote the url.
+--- Quote the url, replacing special characters using the '%xx' escape.
 -- @string s the string
--- @bool quote_plus Use quote_plus rules
+-- @bool quote_plus Also escape slashes and replace spaces by plus signs.
 function M.quote(s, quote_plus)
     if not s or not type(s) == "string" then
     	return s
@@ -32,7 +32,7 @@ local function unquote_char(h)
     return string.char(tonumber(h, 16))
 end
 
---- Unquote the url.
+--- Unquote the url, replacing '%xx' escapes and plus signs.
 -- @string s the string
 function M.unquote(s)
     if not s or not type(s) == "string" then
