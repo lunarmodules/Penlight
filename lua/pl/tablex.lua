@@ -864,12 +864,14 @@ end
 -- @usage for k,v in tablex.sortv(t) do print(k,v) end
 -- @return an iterator to traverse elements sorted by the values
 function tablex.sortv(t,f)
-    local rev = {}
-    for k,v in pairs(t) do rev[v] = k end
-    local next = tablex.sort(rev,f)
+    f = function_arg(2, f or '<')
+    local keys = {}
+    for k in pairs(t) do keys[#keys + 1] = k end
+    tsort(keys,function(x, y) return f(t[x], t[y]) end)
+    local i = 0
     return function()
-        local value,key = next()
-        return key,value
+        i = i + 1
+        return keys[i], t[keys[i]]
     end
 end
 
