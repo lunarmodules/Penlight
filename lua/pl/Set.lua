@@ -86,10 +86,22 @@ function Set.union (self,set)
     return merge(self,set,true)
 end
 
+--- modifies '+' operator to allow addition of non-Set elements
+local function setadd(self,other)
+    local mt = getmetatable(other)
+    if mt == Set or mt == Map then
+        return Set.union(self,other)
+    else
+        self[other] = true
+        return self
+    end
+end
+
 --- union of sets.
 -- @within metamethods
 -- @function Set.__add
-Set.__add = Set.union
+
+Set.__add = setadd
 
 --- intersection of two sets (also *).
 -- @param self a Set
@@ -122,11 +134,21 @@ function Set.difference (self,set)
     return difference(self,set,false)
 end
 
+--- modifies "-" operator to remove non-Set values from set.
+local function setminus (self,other)
+    local mt = getmetatable(other)
+    if mt == Set or mt == Map then
+        return Set.difference(self,other)
+    else
+        self[other] = nil
+        return self
+    end
+end
 
 --- difference of sets.
 -- @within metamethods
 -- @function Set.__sub
-Set.__sub = Set.difference
+Set.__sub = setminus
 
 -- a new set with elements in _either_ the set _or_ other but not both (also ^).
 -- @param self a Set
