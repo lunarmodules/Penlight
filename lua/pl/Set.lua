@@ -13,8 +13,11 @@
 --     [apple,orange,banana]   [blue,green,orange,red]
 --     > = fruit+colours
 --     [blue,green,apple,red,orange,banana]
---     > = fruit*colours
 --     [orange]
+--     > more_fruits = fruit + 'apricot'
+--     > = fruit*colours
+--    > =  more_fruits, fruit
+--    [banana,apricot,apple,orange]	[banana,apple,orange]
 --
 -- Depdencies: `pl.utils`, `pl.tablex`, `pl.class`, (`pl.List` if __tostring is used)
 -- @module pl.Set
@@ -87,13 +90,15 @@ function Set.union (self,set)
 end
 
 --- modifies '+' operator to allow addition of non-Set elements
+--- Preserves +/- semantics - does not modify first argument.
 local function setadd(self,other)
     local mt = getmetatable(other)
     if mt == Set or mt == Map then
         return Set.union(self,other)
     else
-        self[other] = true
-        return self
+        local new = Set(self)
+        new[other] = true
+        return new
     end
 end
 
@@ -135,13 +140,15 @@ function Set.difference (self,set)
 end
 
 --- modifies "-" operator to remove non-Set values from set.
+--- Preserves +/- semantics - does not modify first argument.
 local function setminus (self,other)
     local mt = getmetatable(other)
     if mt == Set or mt == Map then
         return Set.difference(self,other)
     else
-        self[other] = nil
-        return self
+        local new = Set(self)
+        new[other] = nil
+        return new
     end
 end
 

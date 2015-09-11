@@ -13,9 +13,17 @@ s2 = S{1,2}
 -- equality
 asserteq(s1,s2)
 -- union
-asserteq(S{1,2} + S{2,3},S{1,2,3})
+asserteq(S{1,2} + S{2,3},  S{1,2,3})
+asserteq(S{1,2} + 3,   S{1,2,3})
 -- intersection
-asserteq(S{1,2} * S{2,3}, S{2})
+asserteq(S{1,2} * S{2,3},   S{2})
+-- difference
+fruit = S{'apple','banana','orange','apricots'}
+tropical = S{'banana','orange'}
+
+asserteq(fruit - tropical,  S{'apple','apricots'})
+asserteq(tropical - 'orange', S{'banana'})
+
 -- symmetric_difference
 asserteq(S{1,2} ^ S{2,3}, S{1,3})
 -- tostring - illustrative, because these assertions may or may not work,
@@ -30,10 +38,6 @@ s4 = S{1,2,3}
 
 -- subsets/supersets
 asserteq(s4 > s1,true)
-
--- union and intersection
-asserteq(S{1,2}+S{2,3},S{1,2,3})
-asserteq(S{1,2}*S{2,3},S{2})
 
 S.set(s3,'one',true)
 s3.two = true
