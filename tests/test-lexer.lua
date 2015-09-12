@@ -78,7 +78,7 @@ hello dammit
 test_scan(txt, {}, nil, {
     {'comment', '-- comment\n'},
     {'comment', '--[[\nblock\ncomment\n]]'},
-    {'string', '\nhello dammit\n'},  -- Incorrect, first newline should be removed.
+    {'string', 'hello dammit\n'},
     {'string', 'hello'},
     {'space', '\n'}
 }, 'lua')

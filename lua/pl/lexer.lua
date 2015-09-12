@@ -77,7 +77,10 @@ local function sdump_l(tok,options,findres)
         if findres[3] then
             quotelen = quotelen + findres[3]:len()
         end
-        tok = tok:sub(quotelen,-1 * quotelen)
+        tok = tok:sub(quotelen, -quotelen)
+        if tok:sub(1, 1) == "\n" then
+            tok = tok:sub(2)
+        end
     end
     return yield("string",tok)
 end
