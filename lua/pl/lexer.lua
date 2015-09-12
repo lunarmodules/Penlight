@@ -153,17 +153,21 @@ function lexer.scan(s,matches,filter,options)
         matches = plain_matches
     end
     local function lex()
-        local line = 0
+        local line_nr = 0
+        local next_line = file and file:read()
         local sz = file and 0 or #s
         local idx = 1
 
         while true do
             if idx > sz then
                 if file then
-                    line = line + 1
-                    s = file:read()
-                    if not s then return end
-                    s = s .. '\n'
+                    if not next_line then return end
+                    s = next_line
+                    line_nr = line_nr + 1
+                    next_line = file:read()
+                    if next_line then
+                        s = s .. '\n'
+                    end
                     idx, sz = 1, #s
                 else
                     return
@@ -202,7 +206,7 @@ function lexer.scan(s,matches,filter,options)
                                 idx = sz + 1
                             end
                         else
-                            yield(line,idx)
+                            yield(line_nr,idx)
                         end
                     end
 
