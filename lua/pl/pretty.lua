@@ -2,13 +2,14 @@
 -- Also provides a sandboxed Lua table reader and
 -- a function to present large numbers in human-friendly format.
 --
--- Dependencies: `pl.utils`, `pl.lexer`
+-- Dependencies: `pl.utils`, `pl.lexer`, `debug`
 -- @module pl.pretty
 
 local append = table.insert
 local concat = table.concat
 local utils = require 'pl.utils'
 local lexer = require 'pl.lexer'
+local debug = require 'debug'
 local quote_string = require'pl.stringx'.quote_string
 local assert_arg = utils.assert_arg
 
@@ -30,18 +31,19 @@ end
 
 local pretty = {}
 
-local function save_string_index ()
-    local SMT = getmetatable ''
-    if SMT then
-        SMT.old__index = SMT.__index
-        SMT.__index = nil
-    end
-    return SMT
+local function save_global_env()
+    local env = {}
+    env.hook, env.mask, env.count = debug.gethook()
+    debug.sethook()
+    env.string_mt = getmetatable("")
+    debug.setmetatable("", nil)
+    return env
 end
 
-local function restore_string_index (SMT)
-    if SMT then
-        SMT.__index = SMT.old__index
+local function restore_global_env(env)
+    if env then
+        debug.setmetatable("", env.string_mt)
+        debug.sethook(env.hook, env.mask, env.count)
     end
 end
 
@@ -72,9 +74,9 @@ function pretty.read(s)
     s = 'return '..s
     local chunk,err = utils.load(s,'tbl','t',{})
     if not chunk then return nil,err end
-    local SMT = save_string_index()
+    local global_env = save_global_env()
     local ok,ret = pcall(chunk)
-    restore_string_index(SMT)
+    restore_global_env(global_env)
     if ok then return ret
     else
         return nil,ret
@@ -100,9 +102,9 @@ function pretty.load (s, env, paranoid)
     end
     local chunk,err = utils.load(s,'tbl','t',env)
     if not chunk then return nil,err end
-    local SMT = paranoid and save_string_index()
+    local global_env = paranoid and save_global_env()
     local ok,err = pcall(chunk)
-    restore_string_index(SMT)
+    restore_global_env(global_env)
     if not ok then return nil,err end
     return env
 end
