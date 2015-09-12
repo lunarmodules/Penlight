@@ -1,7 +1,8 @@
 local asserteq = require('pl.test').asserteq
 local lexer = require 'pl.lexer'
 local seq = require 'pl.seq'
-local List = require ('pl.List')
+local List = require('pl.List')
+local open = require('pl.stringio').open
 local copy2 = seq.copy2
 
 local function test_scan(str, filter, options, expected_tokens, lang)
@@ -13,6 +14,9 @@ local function test_scan(str, filter, options, expected_tokens, lang)
     end
 
     asserteq(copy2(lexer[lang](str, matches, filter, options)), expected_tokens)
+    if lang == 'scan' then
+        asserteq(copy2(lexer[lang](open(str), matches, filter, options)), expected_tokens)
+    end
 end
 
 local s = '20 = hello'
