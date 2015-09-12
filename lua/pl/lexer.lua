@@ -119,13 +119,14 @@ local function cpp_vdump(tok)
 end
 
 --- create a plain token iterator from a string or file-like object.
--- @string s the string
--- @tab matches an optional match table (set of pattern-action pairs)
+-- @tparam string|file s a string or a file-like object with `:read()` method returning lines.
+-- @tab matches an optional match table - array of token descriptions.
+-- A token is described by a `{pattern, action}` pair, where `pattern` should match
+-- token body and `action` is a function called when a token of described type is found.
 -- @tab[opt] filter a table of token types to exclude, by default `{space=true}`
 -- @tab[opt] options a table of options; by default, `{number=true,string=true}`,
 -- which means convert numbers and strip string quotes.
-function lexer.scan (s,matches,filter,options)
-    --assert_arg(1,s,'string')
+function lexer.scan(s,matches,filter,options)
     local file = type(s) ~= 'string' and s
     filter = filter or {space=true}
     options = options or {number=true,string=true}
@@ -151,38 +152,47 @@ function lexer.scan (s,matches,filter,options)
         end
         matches = plain_matches
     end
-    local function lex ()
-        if type(s)=='string' and s=='' then return end
-        local findres,i1,i2,idx,res1,res2,tok,pat,fun,capt
-        local line = 1
-        if file then s = file:read()..'\n' end
-        local sz = #s
+    local function lex()
+        local line = 0
+        local sz = file and 0 or #s
         local idx = 1
-        --print('sz',sz)
+
         while true do
+            if idx > sz then
+                if file then
+                    line = line + 1
+                    s = file:read()
+                    if not s then return end
+                    s = s .. '\n'
+                    idx, sz = 1, #s
+                else
+                    return
+                end
+            end
+
             for _,m in ipairs(matches) do
-                pat = m[1]
-                fun = m[2]
-                findres = { strfind(s,pat,idx) }
-                i1 = findres[1]
-                i2 = findres[2]
+                local pat = m[1]
+                local fun = m[2]
+                local findres = {strfind(s,pat,idx)}
+                local i1, i2 = findres[1], findres[2]
                 if i1 then
-                    tok = strsub(s,i1,i2)
+                    local tok = strsub(s,i1,i2)
                     idx = i2 + 1
+                    local res
                     if not (filter and filter[fun]) then
                         lexer.finished = idx > sz
-                        res1,res2 = fun(tok,options,findres)
+                        res = fun(tok, options, findres)
                     end
-                    if res1 then
-                        local tp = type(res1)
+                    if res then
+                        local tp = type(res)
                         -- insert a token list
-                        if tp=='table' then
+                        if tp == 'table' then
                             yield('','')
-                            for _,t in ipairs(res1) do
+                            for _,t in ipairs(res) do
                                 yield(t[1],t[2])
                             end
                         elseif tp == 'string' then -- or search up to some special pattern
-                            i1,i2 = strfind(s,res1,idx)
+                            i1,i2 = strfind(s,res,idx)
                             if i1 then
                                 tok = strsub(s,i1,i2)
                                 idx = i2 + 1
@@ -191,25 +201,12 @@ function lexer.scan (s,matches,filter,options)
                                 yield('','')
                                 idx = sz + 1
                             end
-                            --if idx > sz then return end
                         else
                             yield(line,idx)
                         end
                     end
-                    if idx > sz then
-                        if file then
-                            --repeat -- next non-empty line
-                                line = line + 1
-                                s = file:read()
-                                if not s then return end
-                            --until not s:match '^%s*$'
-                            s = s .. '\n'
-                            idx ,sz = 1,#s
-                            break
-                        else
-                            return
-                        end
-                    else break end
+
+                    break
                 end
             end
         end
