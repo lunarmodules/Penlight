@@ -31,6 +31,21 @@ test_scan(s, nil, nil, {
     {'string', 'help'}, {'string', 'help'},
     {'string', "dolly you're fine"}, {'string', 'a \\\"quote\\\" here'}  -- Escapes are preserved literally.
 })
+test_scan([[\abc\]], nil, nil, {
+    {'\\', '\\'}, {'iden', 'abc'}, {'\\', '\\'}
+})
+test_scan([["" ""]], nil, nil, {
+    {'string', ''}, {'string', ''}
+})
+test_scan([["abc" "def\\"]], nil, nil, {
+    {'string', 'abc'}, {'string', 'def\\\\'}
+})
+test_scan([["abc\\" "def"]], nil, nil, {
+    {'string', 'abc\\\\'}, {'string', 'def'}
+})
+test_scan([["abc\\\" "]], nil, nil, {
+    {'string', 'abc\\\\\\" '}
+})
 
 local function test_roundtrip(str)
     test_scan(str, {}, {string=false}, {{'string', str}})
