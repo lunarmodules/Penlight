@@ -329,7 +329,7 @@ end
 -- @tab[opt] options a table of options; by default, `{number=true,string=true}`,
 -- which means convert numbers and strip string quotes.
 function lexer.cpp(s,filter,options)
-    filter = filter or {comments=true}
+    filter = filter or {space=true,comments=true}
     if not cpp_keyword then
         cpp_keyword = {
             ["class"] = true, ["break"] = true,  ["do"] = true, ["sizeof"] = true,

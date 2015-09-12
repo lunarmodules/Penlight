@@ -113,7 +113,7 @@ test_scan(txt, {}, nil, {
     {'comment', '// more\n'}
 }, 'cpp')
 
-test_scan([['' "" " \\" '\'' "'"]], {space=true}, nil, {
+test_scan([['' "" " \\" '\'' "'"]], nil, nil, {
     {'char', ''}, -- Char literals with no or more than one characters are not a lexing error.
     {'string', ''},
     {'string', ' \\\\'},
