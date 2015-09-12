@@ -43,6 +43,9 @@ local WSPACE = '^%s+'
 local STRING1 = "^(['\"])%1" -- empty string
 local STRING2 = [[^(['"])(\*)%2%1]]
 local STRING3 = [[^(['"]).-[^\](\*)%2%1]]
+local CHAR1 = "^''"
+local CHAR2 = [[^'(\*)%1']]
+local CHAR3 = [[^'.-[^\](\*)%1']]
 local PREPRO = '^#.-[^\\]\n'
 
 local plain_matches,lua_matches,cpp_matches,lua_keyword,cpp_keyword
@@ -351,9 +354,12 @@ function lexer.cpp(s,filter,options)
             {IDEN,cpp_vdump},
             {NUMBER4,ndump},
             {NUMBER5,ndump},
+            {CHAR1,chdump},
+            {CHAR2,chdump},
+            {CHAR3,chdump},
             {STRING1,sdump},
-            {STRING2,chdump},
-            {STRING3,chdump},
+            {STRING2,sdump},
+            {STRING3,sdump},
             {'^//.-\n',cdump},
             {'^/%*.-%*/',cdump},
             {'^==',tdump},
