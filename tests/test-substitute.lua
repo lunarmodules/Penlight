@@ -37,5 +37,5 @@ asserteq(subst([[
     cout << obj.gamma << endl;
 ]])
 
-
-
+-- handle templates with a lot of substitutions
+asserteq(subst(("$(x)\n"):rep(300), {x = "y"}), ("y\n"):rep(300))
