@@ -2,25 +2,25 @@
 --
 -- @module pl.url
 
-local M = {}
+local url = {}
 
---- Quote the url.
+local function quote_char(c)
+    return string.format("%%%02X", string.byte(c))
+end
+
+--- Quote the url, replacing special characters using the '%xx' escape.
 -- @string s the string
--- @bool quote_plus Use quote_plus rules
-function M.quote(s, quote_plus)
-    function url_quote_char(c)
-        return string.format("%%%02X", string.byte(c))
-    end
-
+-- @bool quote_plus Also escape slashes and replace spaces by plus signs.
+function url.quote(s, quote_plus)
     if not s or not type(s) == "string" then
-    	return s
+        return s
     end
 
     s = s:gsub("\n", "\r\n")
-    s = s:gsub("([^A-Za-z0-9 %-_%./])", url_quote_char)
+    s = s:gsub("([^A-Za-z0-9 %-_%./])", quote_char)
     if quote_plus then
         s = s:gsub(" ", "+")
-        s = s:gsub("/", url_quote_char)
+        s = s:gsub("/", quote_char)
     else
         s = s:gsub(" ", "%%20")
     end
@@ -28,18 +28,22 @@ function M.quote(s, quote_plus)
     return s
 end
 
---- Unquote the url.
+local function unquote_char(h)
+    return string.char(tonumber(h, 16))
+end
+
+--- Unquote the url, replacing '%xx' escapes and plus signs.
 -- @string s the string
-function M.unquote(s)
+function url.unquote(s)
     if not s or not type(s) == "string" then
-    	return s
+        return s
     end
 
     s = s:gsub("+", " ")
-    s = s:gsub("%%(%x%x)", function(h) return string.char(tonumber(h, 16)) end)
+    s = s:gsub("%%(%x%x)", unquote_char)
     s = s:gsub("\r\n", "\n")
 
     return s
 end
 
-return M
+return url
