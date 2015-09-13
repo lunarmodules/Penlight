@@ -40,9 +40,12 @@ local NUMBER4 = '^%d+%.?%d*[eE][%+%-]?%d+'
 local NUMBER5 = '^%d+%.?%d*'
 local IDEN = '^[%a_][%w_]*'
 local WSPACE = '^%s+'
-local STRING0 = [[^(['\"]).-\\%1]]
-local STRING1 = [[^(['\"]).-[^\]%1]]
-local STRING3 = "^((['\"])%2)" -- empty string
+local STRING1 = "^(['\"])%1" -- empty string
+local STRING2 = [[^(['"])(\*)%2%1]]
+local STRING3 = [[^(['"]).-[^\](\*)%2%1]]
+local CHAR1 = "^''"
+local CHAR2 = [[^'(\*)%1']]
+local CHAR3 = [[^'.-[^\](\*)%1']]
 local PREPRO = '^#.-[^\\]\n'
 
 local plain_matches,lua_matches,cpp_matches,lua_keyword,cpp_keyword
@@ -74,7 +77,10 @@ local function sdump_l(tok,options,findres)
         if findres[3] then
             quotelen = quotelen + findres[3]:len()
         end
-        tok = tok:sub(quotelen,-1 * quotelen)
+        tok = tok:sub(quotelen, -quotelen)
+        if tok:sub(1, 1) == "\n" then
+            tok = tok:sub(2)
+        end
     end
     return yield("string",tok)
 end
@@ -119,13 +125,14 @@ local function cpp_vdump(tok)
 end
 
 --- create a plain token iterator from a string or file-like object.
--- @string s the string
--- @tab matches an optional match table (set of pattern-action pairs)
+-- @tparam string|file s a string or a file-like object with `:read()` method returning lines.
+-- @tab matches an optional match table - array of token descriptions.
+-- A token is described by a `{pattern, action}` pair, where `pattern` should match
+-- token body and `action` is a function called when a token of described type is found.
 -- @tab[opt] filter a table of token types to exclude, by default `{space=true}`
 -- @tab[opt] options a table of options; by default, `{number=true,string=true}`,
 -- which means convert numbers and strip string quotes.
-function lexer.scan (s,matches,filter,options)
-    --assert_arg(1,s,'string')
+function lexer.scan(s,matches,filter,options)
     local file = type(s) ~= 'string' and s
     filter = filter or {space=true}
     options = options or {number=true,string=true}
@@ -143,46 +150,59 @@ function lexer.scan (s,matches,filter,options)
                 {IDEN,plain_vdump},
                 {NUMBER1,ndump},
                 {NUMBER2,ndump},
-                {STRING3,sdump},
-                {STRING0,sdump},
                 {STRING1,sdump},
+                {STRING2,sdump},
+                {STRING3,sdump},
                 {'^.',tdump}
             }
         end
         matches = plain_matches
     end
-    local function lex ()
-        if type(s)=='string' and s=='' then return end
-        local findres,i1,i2,idx,res1,res2,tok,pat,fun,capt
-        local line = 1
-        if file then s = file:read()..'\n' end
-        local sz = #s
+    local function lex()
+        local line_nr = 0
+        local next_line = file and file:read()
+        local sz = file and 0 or #s
         local idx = 1
-        --print('sz',sz)
+
         while true do
+            if idx > sz then
+                if file then
+                    if not next_line then return end
+                    s = next_line
+                    line_nr = line_nr + 1
+                    next_line = file:read()
+                    if next_line then
+                        s = s .. '\n'
+                    end
+                    idx, sz = 1, #s
+                else
+                    return
+                end
+            end
+
             for _,m in ipairs(matches) do
-                pat = m[1]
-                fun = m[2]
-                findres = { strfind(s,pat,idx) }
-                i1 = findres[1]
-                i2 = findres[2]
+                local pat = m[1]
+                local fun = m[2]
+                local findres = {strfind(s,pat,idx)}
+                local i1, i2 = findres[1], findres[2]
                 if i1 then
-                    tok = strsub(s,i1,i2)
+                    local tok = strsub(s,i1,i2)
                     idx = i2 + 1
+                    local res
                     if not (filter and filter[fun]) then
                         lexer.finished = idx > sz
-                        res1,res2 = fun(tok,options,findres)
+                        res = fun(tok, options, findres)
                     end
-                    if res1 then
-                        local tp = type(res1)
+                    if res then
+                        local tp = type(res)
                         -- insert a token list
-                        if tp=='table' then
+                        if tp == 'table' then
                             yield('','')
-                            for _,t in ipairs(res1) do
+                            for _,t in ipairs(res) do
                                 yield(t[1],t[2])
                             end
                         elseif tp == 'string' then -- or search up to some special pattern
-                            i1,i2 = strfind(s,res1,idx)
+                            i1,i2 = strfind(s,res,idx)
                             if i1 then
                                 tok = strsub(s,i1,i2)
                                 idx = i2 + 1
@@ -191,25 +211,12 @@ function lexer.scan (s,matches,filter,options)
                                 yield('','')
                                 idx = sz + 1
                             end
-                            --if idx > sz then return end
                         else
-                            yield(line,idx)
+                            yield(line_nr,idx)
                         end
                     end
-                    if idx > sz then
-                        if file then
-                            --repeat -- next non-empty line
-                                line = line + 1
-                                s = file:read()
-                                if not s then return end
-                            --until not s:match '^%s*$'
-                            s = s .. '\n'
-                            idx ,sz = 1,#s
-                            break
-                        else
-                            return
-                        end
-                    else break end
+
+                    break
                 end
             end
         end
@@ -300,9 +307,9 @@ function lexer.lua(s,filter,options)
             {IDEN,lua_vdump},
             {NUMBER4,ndump},
             {NUMBER5,ndump},
-            {STRING3,sdump},
-            {STRING0,sdump},
             {STRING1,sdump},
+            {STRING2,sdump},
+            {STRING3,sdump},
             {'^%-%-%[(=*)%[.-%]%1%]',cdump},
             {'^%-%-.-\n',cdump},
             {'^%[(=*)%[.-%]%1%]',sdump_l},
@@ -325,7 +332,7 @@ end
 -- @tab[opt] options a table of options; by default, `{number=true,string=true}`,
 -- which means convert numbers and strip string quotes.
 function lexer.cpp(s,filter,options)
-    filter = filter or {comments=true}
+    filter = filter or {space=true,comments=true}
     if not cpp_keyword then
         cpp_keyword = {
             ["class"] = true, ["break"] = true,  ["do"] = true, ["sizeof"] = true,
@@ -350,8 +357,12 @@ function lexer.cpp(s,filter,options)
             {IDEN,cpp_vdump},
             {NUMBER4,ndump},
             {NUMBER5,ndump},
+            {CHAR1,chdump},
+            {CHAR2,chdump},
+            {CHAR3,chdump},
+            {STRING1,sdump},
+            {STRING2,sdump},
             {STRING3,sdump},
-            {STRING1,chdump},
             {'^//.-\n',cdump},
             {'^/%*.-%*/',cdump},
             {'^==',tdump},

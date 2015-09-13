@@ -1,53 +1,69 @@
-asserteq = require('pl.test').asserteq
-T = require 'pl.test' . tuple
-lexer = require 'pl.lexer'
-seq = require 'pl.seq'
-List = require ('pl.List')
-copy2 = seq.copy2
+local asserteq = require('pl.test').asserteq
+local lexer = require 'pl.lexer'
+local seq = require 'pl.seq'
+local List = require('pl.List')
+local open = require('pl.stringio').open
+local copy2 = seq.copy2
 
-s = '20 = hello'
- asserteq(copy2(lexer.scan (s,nil,{space=false},{number=false})),
-    {{'number','20'},{'space',' '},{'=','='},{'space',' '},{'iden','hello'}})
-
- asserteq(copy2(lexer.scan (s,nil,{space=true},{number=true})),
-    {{'number',20},{'=','='},{'iden','hello'}})
-
-asserteq(copy2(lexer.lua('test(20 and a > b)',{space=true})),
-    {{'iden','test'},{'(','('},{'number',20},{'keyword','and'},{'iden','a'},
-      {'>','>'},{'iden','b'},{')',')'}} )
-
-lines = [[
-for k,v in pairs(t) do
-    if type(k) == 'number' then
-        print(v) -- array-like case
+local function test_scan(str, filter, options, expected_tokens, lang)
+    local matches
+    if lang then
+        matches, filter = filter, options
     else
-        print(k,v)
-    end -- if
+        lang = 'scan'
+    end
+
+    asserteq(copy2(lexer[lang](str, matches, filter, options)), expected_tokens)
+    if lang == 'scan' then
+        asserteq(copy2(lexer[lang](open(str), matches, filter, options)), expected_tokens)
+    end
 end
-]]
 
-ls = List()
-for tp,val in lexer.lua(lines,{space=true,comments=true}) do
-    assert(tp ~= 'space' and tp ~= 'comment')
-    if tp == 'keyword' then ls:append(val) end
+local s = '20 = hello'
+test_scan(s, {space=false}, {number=false}, {
+    {'number', '20'}, {'space', ' '}, {'=', '='}, {'space', ' '}, {'iden', 'hello'}
+})
+test_scan(s, {space=true}, {number=true}, {
+    {'number', 20}, {'=', '='}, {'iden', 'hello'}
+})
+s = [[    'help'  "help" "dolly you're fine" "a \"quote\" here"]]
+test_scan(s, nil, nil, {
+    {'string', 'help'}, {'string', 'help'},
+    {'string', "dolly you're fine"}, {'string', 'a \\\"quote\\\" here'}  -- Escapes are preserved literally.
+})
+test_scan([[\abc\]], nil, nil, {
+    {'\\', '\\'}, {'iden', 'abc'}, {'\\', '\\'}
+})
+test_scan([["" ""]], nil, nil, {
+    {'string', ''}, {'string', ''}
+})
+test_scan([["abc" "def\\"]], nil, nil, {
+    {'string', 'abc'}, {'string', 'def\\\\'}
+})
+test_scan([["abc\\" "def"]], nil, nil, {
+    {'string', 'abc\\\\'}, {'string', 'def'}
+})
+test_scan([["abc\\\" "]], nil, nil, {
+    {'string', 'abc\\\\\\" '}
+})
+
+local function test_roundtrip(str)
+    test_scan(str, {}, {string=false}, {{'string', str}})
 end
-asserteq(ls,List{'for','in','do','if','then','else','end','end'})
 
-tok = lexer.scan([[
-    'help'  "help" "dolly you're fine" "a \"quote\" here"
-]],nil,{space=true,string=true})
+test_roundtrip [["hello\\"]]
+test_roundtrip [["hello\"dolly"]]
+test_roundtrip [['hello\'dolly']]
+test_roundtrip [['']]
+test_roundtrip [[""]]
 
-function t2() local t,v = tok(); return v end
-
-asserteq(t2(),'help')
-asserteq(t2(),'help')
-asserteq(t2(),"dolly you're fine")
-asserteq(t2(),"a \\\"quote\\\" here")  --> NOT convinced this is correct!
-
-tok = lexer.lua('10+2.3') ---> '+' is no longer considered part of the number!
-asserteq(T(tok()),T('number',10))
-asserteq(T(tok()),T('+','+'))
-asserteq(T(tok()),T('number',2.3))
+test_scan('test(20 and a > b)', nil, nil, {
+    {'iden', 'test'}, {'(', '('}, {'number', 20}, {'keyword', 'and'},
+    {'iden', 'a'}, {'>', '>'}, {'iden', 'b'}, {')', ')'}
+}, 'lua')
+test_scan('10+2.3', nil, nil, {
+    {'number', 10}, {'+', '+'}, {'number', 2.3}
+}, 'lua')
 
 local txt = [==[
 -- comment
@@ -59,12 +75,30 @@ hello dammit
 ]][[hello]]
 ]==]
 
-tok = lexer.lua(txt,{})
-asserteq(tok(),'comment')
-asserteq(tok(),'comment')
-asserteq(tok(),'string')
-asserteq(tok(),'string')
-asserteq(tok(),'space')
+test_scan(txt, {}, nil, {
+    {'comment', '-- comment\n'},
+    {'comment', '--[[\nblock\ncomment\n]]'},
+    {'string', 'hello dammit\n'},
+    {'string', 'hello'},
+    {'space', '\n'}
+}, 'lua')
+
+local lines = [[
+for k,v in pairs(t) do
+    if type(k) == 'number' then
+        print(v) -- array-like case
+    else
+        print(k,v)
+    end -- if
+end
+]]
+
+local ls = List()
+for tp,val in lexer.lua(lines,{space=true,comments=true}) do
+    assert(tp ~= 'space' and tp ~= 'comment')
+    if tp == 'keyword' then ls:append(val) end
+end
+asserteq(ls,List{'for','in','do','if','then','else','end','end'})
 
 txt = [[
 // comment
@@ -72,23 +106,17 @@ txt = [[
 set of words */ // more
 ]]
 
-tok = lexer.cpp(txt,{})
-asserteq(tok(),'comment')
-asserteq(tok(),'comment')
-asserteq(tok(),'space')
-asserteq(tok(),'comment')
+test_scan(txt, {}, nil, {
+    {'comment', '// comment\n'},
+    {'comment', '/* a long\nset of words */'},
+    {'space', ' '},
+    {'comment', '// more\n'}
+}, 'cpp')
 
-local function teststring (s)
-    local tok = lexer.lua(s,{},{string=false})
-    local t,v = tok()
-    asserteq(t,"string")
-    asserteq(v,s)
-end
-
-teststring [["hello\\"]]
-teststring [["hello\"dolly"]]
-teststring [['hello\'dolly']]
-teststring [['']]
-teststring [[""]]
-
-
+test_scan([['' "" " \\" '\'' "'"]], nil, nil, {
+    {'char', ''}, -- Char literals with no or more than one characters are not a lexing error.
+    {'string', ''},
+    {'string', ' \\\\'},
+    {'char', "\\'"},
+    {'string', "'"}
+}, 'cpp')
