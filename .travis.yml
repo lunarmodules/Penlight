@@ -14,6 +14,10 @@ before_install:
 
 install:
   - luarocks make
+  - luarocks install luacov-coveralls
 
 script:
-  - lua tests/tests.run
+  - lua tests/tests.run --luacov
+
+after_success:
+  - mv tests/luacov.stats.out . && luacov-coveralls -c tests/.luacov
