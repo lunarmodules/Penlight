@@ -59,15 +59,6 @@ The file and directory functions depend on LuaFileSystem (lfs). If you want
 dir.copyfile to work elegantly on Windows, then you need Alien. (Both are
 present in Lua for Windows.)
 
-##Known Issues
-
-Error handling is still hit and miss.
-
-There are 7581 lines of source and 1764 lines of formal tests,
-which is not an ideal ratio.
-
-Formal documentation for comprehension and luabalanced is missing.
-
 ##Installation
 
 The directory structure is
