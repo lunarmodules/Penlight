@@ -1,9 +1,12 @@
 #Penlight Lua Libraries
 
+[![Build Status](https://travis-ci.org/stevedonovan/Penlight.svg)](https://travis-ci.org/stevedonovan/Penlight)
+[![Coverage Status](https://coveralls.io/repos/mpeterv/Penlight/badge.svg?branch=master&service=github)](https://coveralls.io/github/stevedonovan/Penlight?branch=master)
+
 ##Why a new set of libraries?
 
 Penlight brings together a set of generally useful pure Lua modules,
-focussing on input data handling (such as reading configuration files),
+focusing on input data handling (such as reading configuration files),
 functional programming (such as map, reduce, placeholder expressions,etc),
 and OS path management.  Much of the functionality is inspired by the
 Python standard libraries.
@@ -55,26 +58,26 @@ Python standard libraries.
 
 ##Requirements
 
-The file and directory functions depend on LuaFileSystem (lfs). If you want
-dir.copyfile to work elegantly on Windows, then you need Alien. (Both are
-present in Lua for Windows.)
+The file and directory functions depend on [LuaFileSystem](https://keplerproject.github.io/luafilesystem/) (lfs).
+If you want `dir.copyfile` to work elegantly on Windows, then you need [Alien](http://mascarenhas.github.io/alien/).
+Both are present in Lua for Windows.
 
 ##Installation
 
 The directory structure is
 
-  lua
-     pl
-       (module files)
-  examples
-      (examples)
-  tests
-      (tests)
-  docs
-    (index.html)
-    api
-       (index.html)
-       modules
+    lua
+        pl
+            (module files)
+    examples
+        (examples)
+    tests
+        (tests)
+    docs
+        (index.html)
+        api
+            (index.html)
+            modules
 
 All you need to do is copy the pl directory into your Lua module path, which
 is typically /usr/local/share/lua/5.1 on a Linux system (of course, you
