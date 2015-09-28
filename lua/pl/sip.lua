@@ -55,23 +55,24 @@ local function escape (spec)
     return (spec:gsub('[%-%.%+%[%]%(%)%^%%%?%*]','%%%0'):gsub('%$%%(%S)','$%1'))
 end
 
-local function imcompressible (s)
-    return s:gsub('%s+','\001')
-end
-
--- [handling of spaces in patterns]
--- spaces may be 'compressed' (i.e will match zero or more spaces)
--- unless this occurs within a number or an identifier. So we mark
--- the four possible imcompressible patterns first and then replace.
--- The possible alnum patterns are v,f,a,d,x,l and u.
-local function compress_spaces (s)
-    s = s:gsub('%$[vifadxlu]%s+%$[vfadxlu]',imcompressible)
-    s = s:gsub('[%w_]%s+[%w_]',imcompressible)
-    s = s:gsub('[%w_]%s+%$[vfadxlu]',imcompressible)
-    s = s:gsub('%$[vfadxlu]%s+[%w_]',imcompressible)
-    s = s:gsub('%s+','%%s*')
-    s = s:gsub('\001','%%s+')
-    return s
+-- Most spaces within patterns can match zero or more spaces.
+-- Spaces between alphanumeric characters or underscores or between
+-- patterns that can match these characters, however, must match at least
+-- one space. Otherwise '$v $v' would match 'abcd' as {'abc', 'd'}.
+-- This function replaces continuous spaces within a pattern with either
+-- '%s*' or '%s+' according to this rule. The pattern has already
+-- been stripped of pattern names by now.
+local function compress_spaces(patt)
+    return (patt:gsub("()%s+()", function(i1, i2)
+        local before = patt:sub(i1 - 2, i1 - 1)
+        if before:match('%$[vifadxlu]') or before:match('^[^%$]?[%w_]$') then
+            local after = patt:sub(i2, i2 + 1)
+            if after:match('%$[vifadxlu]') or after:match('^[%w_]') then
+                return '%s+'
+            end
+        end
+        return '%s*'
+    end))
 end
 
 local pattern_map = {

@@ -38,7 +38,9 @@ check('$v is $','bonzo is dog for sure',{'bonzo','dog for sure'})
 -- spaces
 check('$v $d','age 23',{'age',23})
 check('$v $d','age  23',{'age',23})
--- but this pattern will NOT match age23 - the space is 'imcompressible'
+check('$v $d','age23') -- the space is 'imcompressible'
+check('a b c $r', 'a bc d')
+check('a b c $r', 'a b c d',{'d'})
 
 -- the spaces in this pattern, however, are compressible.
 check('$v = $d','age=23',{'age',23})
