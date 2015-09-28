@@ -1,34 +1,20 @@
-sip = require 'pl.sip'
-tablex = require 'pl.tablex'
-utils = require 'pl.utils'
+local sip = require 'pl.sip'
+local tablex = require 'pl.tablex'
+local test = require 'pl.test'
 
-local function dump(t)
-	if not t or type(t) ~= 'table' then print '<nada>'; return end
-	for k,v in pairs(t) do
-		print(k,v,type(v))
-	end
-end
-
-function check(pat,line,tbl)
+local function check(pat,line,tbl)
     local parms = {}
-	if type(pat) == 'string' then
-		pat = sip.compile(pat)
-	end
-    local res = pat(line,parms)
-    if res then
-		if not tablex.deepcompare(parms,tbl) then
-			print 'parms'
-			dump(parms)
-			print 'tbl'
-			dump(tbl)
-			utils.quit(1,'failed!')
-		end
+    if type(pat) == 'string' then
+        pat = sip.compile(pat)
+    end
+    if pat(line,parms) then
+        test.asserteq(parms,tbl)
     else -- only should happen if we're passed a nil!
         assert(tbl == nil)
     end
 end
 
-c = sip.compile('ref=$S{file}:$d{line}')
+local c = sip.compile('ref=$S{file}:$d{line}')
 check(c,'ref=bonzo:23',{file='bonzo',line=23})
 check(c,'here we go ref=c:\\bonzo\\dog.txt:53',{file='c:\\bonzo\\dog.txt',line=53})
 check(c,'here is a line ref=xxxx:xx',nil)
@@ -57,9 +43,9 @@ check('$v $d','age  23',{'age',23})
 -- the spaces in this pattern, however, are compressible.
 check('$v = $d','age=23',{'age',23})
 
-months={"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"}
+local months={"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"}
 
-function adjust_and_check(res)
+local function adjust_year(res)
 	if res.year < 100 then
 		if res.year < 70 then
 			res.year = res.year + 2000
@@ -69,23 +55,23 @@ function adjust_and_check(res)
 	end
 end
 
-shortdate = sip.compile('$d{day}/$d{month}/$d{year}')
-longdate = sip.compile('$d{day} $v{mon} $d{year}')
-isodate = sip.compile('$d{year}-$d{month}-$d{day}')
+local shortdate = sip.compile('$d{day}/$d{month}/$d{year}')
+local longdate = sip.compile('$d{day} $v{month} $d{year}')
+local isodate = sip.compile('$d{year}-$d{month}-$d{day}')
 
-function dcheck (d1,d2)
-    adjust_and_check(d1)
-    assert(d1.day == d2.day and d1.month == d2.month and d1.year == d2.year)
+local function dcheck (d1,d2)
+    adjust_year(d1)
+    test.asserteq(d1, d2)
 end
 
-function dates(str,tbl)
+local function dates(str,tbl)
 	local res = {}
 	if shortdate(str,res) then
 		dcheck(res,tbl)
     elseif isodate(str,res) then
         dcheck(res,tbl)
 	elseif longdate(str,res) then
-		res.month = tablex.find(months,res.mon)
+		res.month = tablex.find(months,res.month)
 		dcheck(res,tbl)
 	else
 		assert(tbl == nil)
@@ -97,14 +83,14 @@ dates ('2006-03-01',{year=2006,month=3,day=1})
 dates ('25/07/05',{year=2005,month=7,day=25})
 dates ('20 Mar 1959',{year=1959,month=3,day=20})
 
-sio = require 'pl.stringio'
-lines = [[
+local sio = require 'pl.stringio'
+local lines = [[
 dodge much amazement
 kitteh cheezburger
 ]]
 sip.read(sio.open(lines),{
-    {'dodge $',function(rest) assert(rest,'much amazement') end},
-    {'kitteh $',function(rest) assert(rest,'cheezburger') end}
+    {'dodge $',function(rest) test.asserteq(rest,'much amazement') end},
+    {'kitteh $',function(rest) test.asserteq(rest,'cheezburger') end}
 })
 
 
