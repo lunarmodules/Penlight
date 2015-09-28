@@ -43,6 +43,10 @@ check('$v $d','age  23',{'age',23})
 -- the spaces in this pattern, however, are compressible.
 check('$v = $d','age=23',{'age',23})
 
+-- patterns without patterns
+check('just a string', 'just a string', {})
+check('just a string', 'not that string')
+
 local months={"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"}
 
 local function adjust_year(res)

@@ -194,6 +194,7 @@ function sip.create_spec_fun(spec,options)
     for i = 1,#fieldnames do
         append(ls,'mm'..i)
     end
+    ls[1] = ls[1] or "mm1" -- behave correctly if there are no patterns
     local fun = ('return (function(s,res)\n\tlocal %s = s:match(%q)\n'):format(concat(ls,','),spec)
     fun = fun..'\tif not mm1 then return false end\n'
     local k=1
