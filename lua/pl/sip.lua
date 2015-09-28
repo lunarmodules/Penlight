@@ -23,7 +23,7 @@ local loadstring = rawget(_G,'loadstring') or load
 local unpack = rawget(_G,'unpack') or rawget(table,'unpack')
 
 local append,concat = table.insert,table.concat
-local ipairs,loadstring,type,unpack = ipairs,loadstring,type,unpack
+local ipairs,type = ipairs,type
 local io,_G = io,_G
 local print,rawget = print,rawget
 
@@ -31,7 +31,6 @@ local patterns = {
     FLOAT = '[%+%-%d]%d*%.?%d*[eE]?[%+%-]?%d*',
     INTEGER = '[+%-%d]%d*',
     IDEN = '[%a_][%w_]*',
-    FILE = '[%a%.\\][:%][%w%._%-\\]*',
     OPTION = '[%a_][%w_%-]*',
 }
 
@@ -41,30 +40,19 @@ local function assert_arg(idx,val,tp)
     end
 end
 
-
---[[
-module ('pl.sip',utils._module)
-]]
-
 local sip = {}
 
 local brackets = {['<'] = '>', ['('] = ')', ['{'] = '}', ['['] = ']' }
 local stdclasses = {a=1,c=0,d=1,l=1,p=0,u=1,w=1,x=1,s=0}
-
-local _patterns = {}
-
 
 local function group(s)
     return '('..s..')'
 end
 
 -- escape all magic characters except $, which has special meaning
--- Also, un-escape any characters after $, so $( passes through as is.
+-- Also, un-escape any characters after $, so $( and $[ passes through as is.
 local function escape (spec)
-    --_G.print('spec',spec)
-    local res = spec:gsub('[%-%.%+%[%]%(%)%^%%%?%*]','%%%1'):gsub('%$%%(%S)','$%1')
-    --_G.print('res',res)
-    return res
+    return (spec:gsub('[%-%.%+%[%]%(%)%^%%%?%*]','%%%0'):gsub('%$%%(%S)','$%1'))
 end
 
 local function imcompressible (s)
@@ -122,15 +110,13 @@ function sip.create_pattern (spec,options)
     local kount = 1
 
     local function addfield (name,type)
-        if not name then name = kount end
-        if fieldnames then append(fieldnames,name) end
-        if fieldtypes then fieldtypes[name] = type end
+        name = name or kount
+        append(fieldnames,name)
+        fieldtypes[name] = type
         kount = kount + 1
     end
 
-    local named_vars, pattern
-    named_vars = spec:find('{%a+}')
-    pattern = '%$%S'
+    local named_vars = spec:find('{%a+}')
 
     if options and options.at_start then
         spec = '^'..spec
@@ -139,7 +125,6 @@ function sip.create_pattern (spec,options)
         spec = spec:sub(1,-2)..'$r'
         if named_vars then spec = spec..'{rest}' end
     end
-
 
     local names
 
@@ -154,7 +139,7 @@ function sip.create_pattern (spec,options)
 
     local k = 1
     local err
-    local r = (spec:gsub(pattern,function(s)
+    local r = (spec:gsub('%$%S',function(s)
         local type,name
         type = s:sub(2,2)
         if names then name = names[k]; k=k+1 end
@@ -187,7 +172,7 @@ function sip.create_pattern (spec,options)
         end
         return res
     end))
-    --print(r,err)
+
     if err then
         return nil,err
     else
@@ -299,6 +284,8 @@ function sip.fields (spec,f)
     end
 end
 
+local read_patterns = {}
+
 --- register a match which will be used in the read function.
 -- @string spec a SIP pattern
 -- @func fun a function to be called with the results of the match
@@ -306,7 +293,7 @@ end
 function sip.pattern (spec,fun)
     assert_arg(1,spec,'string')
     local pat,named = sip.compile(spec)
-    append(_patterns,{pat=pat,named=named,callback=fun or false})
+    append(read_patterns,{pat=pat,named=named,callback=fun})
 end
 
 --- enter a loop which applies all registered matches to the input file.
@@ -327,7 +314,7 @@ function sip.read (f,matches)
     end
     local res = {}
     for line in f:lines() do
-        for _,item in ipairs(_patterns) do
+        for _,item in ipairs(read_patterns) do
             if item.pat(line,res) then
                 if item.callback then
                     if item.named then
