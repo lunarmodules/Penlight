@@ -373,6 +373,7 @@ function lapp.process_options_string(str,args)
             if not val then
                 i = i + 1
                 val = arg[i]
+                theArg = val
             end
             lapp.assert(val,parm.." was expecting a value")
         else -- toggle boolean flags (usually false -> true)

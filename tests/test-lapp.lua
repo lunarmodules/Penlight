@@ -47,15 +47,32 @@ check(simple,
     {'-o','in'},
     {quiet=false,p=false,o='in',input='<file>'})
 
+-- Check lapp.callback.
+local calls = {}
+function lapp.callback(param, arg)
+    table.insert(calls, {param, arg})
+end
 check(simple,
     {'-o','help','-q','test-lapp.lua'},
     {quiet=true,p=false,o='help',input='<file>',input_name='test-lapp.lua'})
+test.asserteq(calls, {
+    {'o', 'help'},
+    {'quiet', '-q'},
+    {'input', 'test-lapp.lua'}
+})
+lapp.callback = nil
 
 local longs = [[
     --open (string)
 ]]
 
 check(longs,{'--open','folder'},{open='folder'})
+
+local long_file = [[
+    --open (default stdin)
+]]
+
+check(long_file,{'--open','test-lapp.lua'},{open='<file>',open_name='test-lapp.lua'})
 
 local extras1 = [[
     <files...> (string) A bunch of files
