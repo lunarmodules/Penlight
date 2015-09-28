@@ -47,8 +47,8 @@ captures, so that we're forced to use a slightly awkward nested if-statement.
 
 Verification issues will further cloud the picture, since regular expression
 people try to enforce constraints (like year cannot be more than four digits)
-using regular expressions, on the usual grounds that one shouldn't stop using a
-hammer when one is enjoying oneself.
+using regular expressions, on the usual grounds that you shouldn't stop using a
+hammer when you are enjoying yourself.
 
 `pl.sip` provides a simple, intuitive way to detect patterns in strings and
 extract relevant parts.
@@ -99,16 +99,15 @@ variable in curly braces.
 
     Type    Meaning
     v         variable, or identifier.
-    i          possibly signed integer
-    f          floating-point number
-    r          'rest of line'
+    i         possibly signed integer
+    f         floating-point number
+    r         rest of line
     q         quoted string (either ' or ")
     p         a path name
     (         anything inside (...)
     [         anything inside [...]
     {         anything inside {...}
     <         anything inside <...>
-    [---------------------------------]
     S         non-space
     d         digits
     ...
@@ -142,7 +141,7 @@ caches the result, so it is not much slower than explicitly using `sip.compile`.
 As a general rule, allow for whitespace in your patterns.
 
 Finally, putting a ' $' at the end of a pattern means 'capture the rest of the
-line, starting at the first non-space'.
+line, starting at the first non-space'.  It is short for a final '$r{rest}'.
 
     > sip.match('( $q , $q ) $','("jan", "smit") and a string',res)
     true

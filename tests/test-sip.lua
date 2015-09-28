@@ -48,8 +48,14 @@ check(m,'_fred="some text"',{name='_fred',str='some text'})
 -- some cases broken in 0.6b release
 check('$v is $v','bonzo is dog for sure',{'bonzo','dog'})
 check('$v is $','bonzo is dog for sure',{'bonzo','dog for sure'})
-check('$v $d','age 23',{'age',23})
 
+-- spaces
+check('$v $d','age 23',{'age',23})
+check('$v $d','age  23',{'age',23})
+-- but this pattern will NOT match age23 - the space is 'imcompressible'
+
+-- the spaces in this pattern, however, are compressible.
+check('$v = $d','age=23',{'age',23})
 
 months={"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"}
 
@@ -91,7 +97,15 @@ dates ('2006-03-01',{year=2006,month=3,day=1})
 dates ('25/07/05',{year=2005,month=7,day=25})
 dates ('20 Mar 1959',{year=1959,month=3,day=20})
 
-
+sio = require 'pl.stringio'
+lines = [[
+dodge much amazement
+kitteh cheezburger
+]]
+sip.read(sio.open(lines),{
+    {'dodge $',function(rest) assert(rest,'much amazement') end},
+    {'kitteh $',function(rest) assert(rest,'cheezburger') end}
+})
 
 
 

@@ -82,7 +82,7 @@ local function compress_spaces (s)
     s = s:gsub('[%w_]%s+%$[vfadxlu]',imcompressible)
     s = s:gsub('%$[vfadxlu]%s+[%w_]',imcompressible)
     s = s:gsub('%s+','%%s*')
-    s = s:gsub('\001',' ')
+    s = s:gsub('\001','%%s+')
     return s
 end
 
@@ -279,10 +279,10 @@ end
 
 --- given a pattern and a file object, return an iterator over the results
 -- @param spec a SIP pattern
--- @param f a file - use standard input if not specified.
+-- @param f a file-like object.
 function sip.fields (spec,f)
     assert_arg(1,spec,'string')
-    f = f or io.stdin
+    if not f then return nil,"no file object" end
     local fun,err = sip.compile(spec)
     if not fun then return nil,err end
     local res = {}
@@ -310,14 +310,20 @@ function sip.pattern (spec,fun)
 end
 
 --- enter a loop which applies all registered matches to the input file.
--- @param f a file object; if nil, then io.stdin is assumed.
-function sip.read (f)
+-- @param f a file-like object
+-- @array matches optional list of `{spec,fun}` pairs, as for `pattern` above.
+function sip.read (f,matches)
     local owned,err
-    f = f or io.stdin
+    if not f then return nil,"no file object" end
     if type(f) == 'string' then
         f,err = io.open(f)
         if not f then return nil,err end
         owned = true
+    end
+    if matches then
+        for _,p in ipairs(matches) do
+            sip.pattern(p[1],p[2])
+        end
     end
     local res = {}
     for line in f:lines() do
