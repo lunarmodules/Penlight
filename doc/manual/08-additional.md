@@ -67,9 +67,9 @@ extract relevant parts.
     > = c('ref=long name, no line',res)
     false
 
-`sip.compile` creates a pattern matcher function, which is given a string and a
-table. If it matches the string, then `true` is returned and the table is
-populated according to the _named fields_ in the pattern.
+`sip.compile` creates a pattern matcher function, which takes a string and a
+table as arguments. If the string matches the pattern, then `true` is returned
+and the table is populated according to the captures within the pattern.
 
 Here is another version of the date parser:
 
@@ -94,35 +94,35 @@ Here is another version of the date parser:
         end
     end
 
-SIP patterns start with '$', then a one-letter type, and then an optional
-variable in curly braces.
+SIP captures start with '$', then a one-character type, and then an
+optional variable name in curly braces.
 
-    Type    Meaning
-    v         variable, or identifier.
+    Type      Meaning
+    v         identifier
     i         possibly signed integer
     f         floating-point number
     r         rest of line
-    q         quoted string (either ' or ")
+    q         quoted string (quoted using either ' or ")
     p         a path name
-    (         anything inside (...)
-    [         anything inside [...]
-    {         anything inside {...}
-    <         anything inside <...>
-    S         non-space
-    d         digits
-    ...
+    (         anything inside balanced parentheses
+    [         anything inside balanced brackets
+    {         anything inside balanced curly brackets
+    <         anything inside balanced angle brackets
 
-If a type is not one of v,i,f,r or q, then it's assumed to be one of the standard
-Lua character classes.  Any spaces you leave in your pattern will match any
-number of spaces.  And any 'magic' string characters will be escaped.
+If a type is not one of the above, then it's assumed to be one of the standard
+Lua character classes, and will match one or more repetitions of that class.
+Any spaces you leave in your pattern will match any number of spaces, including
+zero, unless the spaces are between two identifier characters or patterns
+matching them; in that case, at least one space will be matched.
 
 SIP captures (like `$v{mon}`) do not have to be named. You can use just `$v`, but
 you have to be consistent; if a pattern contains unnamed captures, then all
 captures must be unnamed. In this case, the result table is a simple list of
 values.
 
-`sip.match` is a useful shortcut if you like your matches to be 'in place'. (It
-caches the result, so it is not much slower than explicitly using `sip.compile`.)
+`sip.match` is a useful shortcut if you want to compile and match in one call,
+without saving the compiled pattern. It caches the result, so it is not much
+slower than explicitly using `sip.compile`.
 
     > sip.match('($q{first},$q{second})','("john","smith")',res)
     true
@@ -140,8 +140,9 @@ caches the result, so it is not much slower than explicitly using `sip.compile`.
 
 As a general rule, allow for whitespace in your patterns.
 
-Finally, putting a ' $' at the end of a pattern means 'capture the rest of the
-line, starting at the first non-space'.  It is short for a final '$r{rest}'.
+Finally, putting a '$' at the end of a pattern means 'capture the rest of the
+line, starting at the first non-space'. It is a shortcut for '$r{rest}',
+or just '$r' if no named captures are used.
 
     > sip.match('( $q , $q ) $','("jan", "smit") and a string',res)
     true
