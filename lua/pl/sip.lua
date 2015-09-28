@@ -7,12 +7,12 @@
 --    sip.match('($q{first},$q{second})','("john","smith")',res)
 --    ==> res=={second='smith',first='john'}
 --
--- ''Type names''
+-- Type names:
 --
---    v    identifier
+--    v     identifier
 --    i     integer
 --    f     floating-point
---    q    quoted string
+--    q     quoted string
 --    ([{<  match up to closing bracket
 --
 -- See @{08-additional.md.Simple_Input_Patterns|the Guide}
@@ -91,7 +91,7 @@ end
 --- convert a SIP pattern into the equivalent Lua string pattern.
 -- @param spec a SIP pattern
 -- @param options a table; only the <code>at_start</code> field is
--- currently meaningful and esures that the pattern is anchored
+-- currently meaningful and ensures that the pattern is anchored
 -- at the start of the string.
 -- @return a Lua string pattern.
 function sip.create_pattern (spec,options)
@@ -158,7 +158,7 @@ function sip.create_pattern (spec,options)
             -- some Lua pattern matching voodoo; we want to match '...' as
             -- well as "...", and can use the fact that %n will match a
             -- previous capture. Adding the extra field above comes from needing
-            -- to accomodate the extra spurious match (which is either ' or ")
+            -- to accommodate the extra spurious match (which is either ' or ")
             addfield(name,type)
             res = '(["\'])(.-)%'..(kount-2)
         else
@@ -222,11 +222,12 @@ end
 
 --- convert a SIP pattern into a matching function.
 -- The returned function takes two arguments, the line and an empty table.
--- If the line matched the pattern, then this function return true
+-- If the line matched the pattern, then this function returns true
 -- and the table is filled with field-value pairs.
 -- @param spec a SIP pattern
--- @param options optional table; {anywhere=true} will stop pattern anchoring at start
--- @return a function if successful, or nil,<error>
+-- @param options optional table; {at_start=true} ensures that the pattern
+-- is anchored at the start of the string.
+-- @return a function if successful, or nil,error
 function sip.compile(spec,options)
     assert_arg(1,spec,'string')
     local fun,names = sip.create_spec_fun(spec,options)
