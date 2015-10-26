@@ -319,9 +319,11 @@ function dir.rmtree(fullpath)
     if path.islink(fullpath) then return false,'will not follow symlink' end
     for root,dirs,files in dir.walk(fullpath,true) do
         for i,f in ipairs(files) do
-            remove(path.join(root,f))
+            local res, err = remove(path.join(root,f))
+            if not res then return nil,err end
         end
-        rmdir(root)
+        local res, err = rmdir(root)
+        if not res then return nil,err end
     end
     return true
 end
