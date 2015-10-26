@@ -9,7 +9,7 @@ local types = {}
 --- is the object either a function or a callable object?.
 -- @param obj Object to check.
 function types.is_callable (obj)
-    return type(obj) == 'function' or getmetatable(obj) and getmetatable(obj).__call
+    return type(obj) == 'function' or getmetatable(obj) and getmetatable(obj).__call and true
 end
 
 --- is the object of the specified type?.
@@ -32,6 +32,8 @@ function types.type (obj)
         local mt = getmetatable(obj)
         if mt == fileMT then
             return 'file'
+        elseif mt == nil then
+            return t
         else
             return mt._name or "unknown "..t
         end
@@ -71,15 +73,15 @@ end
 function types.is_indexable (val)
     local mt = check_meta(val)
     if mt == true then return true end
-    return not(mt and mt.__len and mt.__index)
+    return mt and mt.__len and mt.__index and true
 end
 
---- can an object be iterated over with `ipairs`?
+--- can an object be iterated over with `pairs`?
 -- @param val any value.
 function types.is_iterable (val)
     local mt = check_meta(val)
     if mt == true then return true end
-    return not(mt and mt.__pairs)
+    return mt and mt.__pairs and true
 end
 
 --- can an object accept new key/pair values?
@@ -87,7 +89,7 @@ end
 function types.is_writeable (val)
     local mt = check_meta(val)
     if mt == true then return true end
-    return not(mt and mt.__newindex)
+    return mt and mt.__newindex and true
 end
 
 -- Strings that should evaluate to true.
