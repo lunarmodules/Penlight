@@ -7,12 +7,12 @@
 --    sip.match('($q{first},$q{second})','("john","smith")',res)
 --    ==> res=={second='smith',first='john'}
 --
--- ''Type names''
+-- Type names:
 --
---    v    identifier
+--    v     identifier
 --    i     integer
 --    f     floating-point
---    q    quoted string
+--    q     quoted string
 --    ([{<  match up to closing bracket
 --
 -- See @{08-additional.md.Simple_Input_Patterns|the Guide}
@@ -23,7 +23,7 @@ local loadstring = rawget(_G,'loadstring') or load
 local unpack = rawget(_G,'unpack') or rawget(table,'unpack')
 
 local append,concat = table.insert,table.concat
-local ipairs,loadstring,type,unpack = ipairs,loadstring,type,unpack
+local ipairs,type = ipairs,type
 local io,_G = io,_G
 local print,rawget = print,rawget
 
@@ -31,7 +31,6 @@ local patterns = {
     FLOAT = '[%+%-%d]%d*%.?%d*[eE]?[%+%-]?%d*',
     INTEGER = '[+%-%d]%d*',
     IDEN = '[%a_][%w_]*',
-    FILE = '[%a%.\\][:%][%w%._%-\\]*',
     OPTION = '[%a_][%w_%-]*',
 }
 
@@ -41,49 +40,39 @@ local function assert_arg(idx,val,tp)
     end
 end
 
-
---[[
-module ('pl.sip',utils._module)
-]]
-
 local sip = {}
 
 local brackets = {['<'] = '>', ['('] = ')', ['{'] = '}', ['['] = ']' }
 local stdclasses = {a=1,c=0,d=1,l=1,p=0,u=1,w=1,x=1,s=0}
-
-local _patterns = {}
-
 
 local function group(s)
     return '('..s..')'
 end
 
 -- escape all magic characters except $, which has special meaning
--- Also, un-escape any characters after $, so $( passes through as is.
+-- Also, un-escape any characters after $, so $( and $[ passes through as is.
 local function escape (spec)
-    --_G.print('spec',spec)
-    local res = spec:gsub('[%-%.%+%[%]%(%)%^%%%?%*]','%%%1'):gsub('%$%%(%S)','$%1')
-    --_G.print('res',res)
-    return res
+    return (spec:gsub('[%-%.%+%[%]%(%)%^%%%?%*]','%%%0'):gsub('%$%%(%S)','$%1'))
 end
 
-local function imcompressible (s)
-    return s:gsub('%s+','\001')
-end
-
--- [handling of spaces in patterns]
--- spaces may be 'compressed' (i.e will match zero or more spaces)
--- unless this occurs within a number or an identifier. So we mark
--- the four possible imcompressible patterns first and then replace.
--- The possible alnum patterns are v,f,a,d,x,l and u.
-local function compress_spaces (s)
-    s = s:gsub('%$[vifadxlu]%s+%$[vfadxlu]',imcompressible)
-    s = s:gsub('[%w_]%s+[%w_]',imcompressible)
-    s = s:gsub('[%w_]%s+%$[vfadxlu]',imcompressible)
-    s = s:gsub('%$[vfadxlu]%s+[%w_]',imcompressible)
-    s = s:gsub('%s+','%%s*')
-    s = s:gsub('\001','%%s+')
-    return s
+-- Most spaces within patterns can match zero or more spaces.
+-- Spaces between alphanumeric characters or underscores or between
+-- patterns that can match these characters, however, must match at least
+-- one space. Otherwise '$v $v' would match 'abcd' as {'abc', 'd'}.
+-- This function replaces continuous spaces within a pattern with either
+-- '%s*' or '%s+' according to this rule. The pattern has already
+-- been stripped of pattern names by now.
+local function compress_spaces(patt)
+    return (patt:gsub("()%s+()", function(i1, i2)
+        local before = patt:sub(i1 - 2, i1 - 1)
+        if before:match('%$[vifadxlu]') or before:match('^[^%$]?[%w_]$') then
+            local after = patt:sub(i2, i2 + 1)
+            if after:match('%$[vifadxlu]') or after:match('^[%w_]') then
+                return '%s+'
+            end
+        end
+        return '%s*'
+    end))
 end
 
 local pattern_map = {
@@ -102,7 +91,7 @@ end
 --- convert a SIP pattern into the equivalent Lua string pattern.
 -- @param spec a SIP pattern
 -- @param options a table; only the <code>at_start</code> field is
--- currently meaningful and esures that the pattern is anchored
+-- currently meaningful and ensures that the pattern is anchored
 -- at the start of the string.
 -- @return a Lua string pattern.
 function sip.create_pattern (spec,options)
@@ -122,15 +111,13 @@ function sip.create_pattern (spec,options)
     local kount = 1
 
     local function addfield (name,type)
-        if not name then name = kount end
-        if fieldnames then append(fieldnames,name) end
-        if fieldtypes then fieldtypes[name] = type end
+        name = name or kount
+        append(fieldnames,name)
+        fieldtypes[name] = type
         kount = kount + 1
     end
 
-    local named_vars, pattern
-    named_vars = spec:find('{%a+}')
-    pattern = '%$%S'
+    local named_vars = spec:find('{%a+}')
 
     if options and options.at_start then
         spec = '^'..spec
@@ -139,7 +126,6 @@ function sip.create_pattern (spec,options)
         spec = spec:sub(1,-2)..'$r'
         if named_vars then spec = spec..'{rest}' end
     end
-
 
     local names
 
@@ -154,7 +140,7 @@ function sip.create_pattern (spec,options)
 
     local k = 1
     local err
-    local r = (spec:gsub(pattern,function(s)
+    local r = (spec:gsub('%$%S',function(s)
         local type,name
         type = s:sub(2,2)
         if names then name = names[k]; k=k+1 end
@@ -172,7 +158,7 @@ function sip.create_pattern (spec,options)
             -- some Lua pattern matching voodoo; we want to match '...' as
             -- well as "...", and can use the fact that %n will match a
             -- previous capture. Adding the extra field above comes from needing
-            -- to accomodate the extra spurious match (which is either ' or ")
+            -- to accommodate the extra spurious match (which is either ' or ")
             addfield(name,type)
             res = '(["\'])(.-)%'..(kount-2)
         else
@@ -187,7 +173,7 @@ function sip.create_pattern (spec,options)
         end
         return res
     end))
-    --print(r,err)
+
     if err then
         return nil,err
     else
@@ -209,6 +195,7 @@ function sip.create_spec_fun(spec,options)
     for i = 1,#fieldnames do
         append(ls,'mm'..i)
     end
+    ls[1] = ls[1] or "mm1" -- behave correctly if there are no patterns
     local fun = ('return (function(s,res)\n\tlocal %s = s:match(%q)\n'):format(concat(ls,','),spec)
     fun = fun..'\tif not mm1 then return false end\n'
     local k=1
@@ -235,11 +222,12 @@ end
 
 --- convert a SIP pattern into a matching function.
 -- The returned function takes two arguments, the line and an empty table.
--- If the line matched the pattern, then this function return true
+-- If the line matched the pattern, then this function returns true
 -- and the table is filled with field-value pairs.
 -- @param spec a SIP pattern
--- @param options optional table; {anywhere=true} will stop pattern anchoring at start
--- @return a function if successful, or nil,<error>
+-- @param options optional table; {at_start=true} ensures that the pattern
+-- is anchored at the start of the string.
+-- @return a function if successful, or nil,error
 function sip.compile(spec,options)
     assert_arg(1,spec,'string')
     local fun,names = sip.create_spec_fun(spec,options)
@@ -299,6 +287,8 @@ function sip.fields (spec,f)
     end
 end
 
+local read_patterns = {}
+
 --- register a match which will be used in the read function.
 -- @string spec a SIP pattern
 -- @func fun a function to be called with the results of the match
@@ -306,7 +296,7 @@ end
 function sip.pattern (spec,fun)
     assert_arg(1,spec,'string')
     local pat,named = sip.compile(spec)
-    append(_patterns,{pat=pat,named=named,callback=fun or false})
+    append(read_patterns,{pat=pat,named=named,callback=fun})
 end
 
 --- enter a loop which applies all registered matches to the input file.
@@ -327,7 +317,7 @@ function sip.read (f,matches)
     end
     local res = {}
     for line in f:lines() do
-        for _,item in ipairs(_patterns) do
+        for _,item in ipairs(read_patterns) do
             if item.pat(line,res) then
                 if item.callback then
                     if item.named then
