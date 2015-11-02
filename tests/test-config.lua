@@ -82,6 +82,16 @@ alpha.dog=10
     alpha_dog="10"
 },{convert_numbers=false})
 
+-- convert strings to booleans
+testconfig ([[
+alpha.dog=false
+alpha.cat=true
+; comment here
+]],{
+    alpha_dog=false,
+    alpha_cat=true
+},{convert_boolean=true})
+
 -- don't split comma-lists by setting the list delimiter to something else
 testconfig ([[
 extra=10,'hello',42
@@ -258,8 +268,8 @@ Uid:	1000	1000	1000	1000
 Gid:	1000	1000	1000	1000
 FDSize:	256
 Groups:	4 20 24 46 105 119 122 1000
-VmPeak:	    6780 kB
-VmSize:	    6716 kB
+VmPeak:     6780 kB
+VmSize:     6716 kB
 ]],{
   Pid = 30071,
   VmSize = 6716,
@@ -307,4 +317,3 @@ PRUNEFS="NFS nfs nfs4 rpc_pipefs afs binfmt_misc proc smbfs autofs iso9660 ncpfs
   PRUNE_BIND_MOUNTS = "yes",
   PRUNEFS = "NFS nfs nfs4 rpc_pipefs afs binfmt_misc proc smbfs autofs iso9660 ncpfs coda devpts ftpfs devfs mfs shfs sysfs cifs lustre_lite tmpfs usbfs udf fuse.glusterfs fuse.sshfs ecryptfs fusesmb devtmpfs"
 })
-
