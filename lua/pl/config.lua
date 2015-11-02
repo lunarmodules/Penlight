@@ -155,7 +155,7 @@ function config.read(file,cnfg)
     end
 
     local function process_value(value)
-       if list_delim and value:find(list_delim) then
+        if list_delim and value:find(list_delim) then
             value = split(value,list_delim)
             for i,v in ipairs(value) do
                 value[i] = process_value(v)
