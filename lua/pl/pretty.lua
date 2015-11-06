@@ -226,7 +226,9 @@ function pretty.write (tbl,space,not_clever)
                     used[i] = true
                 end
             end
-            for key,val in pairs(t) do
+            local iterator = t.iter
+            if iterator == nil then iterator = pairs end
+            for key,val in iterator(t) do
                 local numkey = type(key) == 'number'
                 if not_clever then
                     key = tostring(key)
