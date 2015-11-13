@@ -28,8 +28,16 @@ assert(res)
 
 res,err = pretty.read [[
   {
-	['function'] = true,
-	['do'] = function() return end
+    ['function'] = true,
+    ['do'] = "no function here...",
+  }
+]]
+assert(res)
+
+res,err = pretty.read [[
+  {
+    ['function'] = true,
+    ['do'] = function() return end
   }
 ]]
 assertmatch(err,'cannot have functions in table definition')

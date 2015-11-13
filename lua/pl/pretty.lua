@@ -66,7 +66,7 @@ function pretty.read(s)
     if s:find '[^\'"%w_]function[^\'"%w_]' then
         local tok = lexer.lua(s)
         for t,v in tok do
-            if t == 'keyword' then
+            if t == 'keyword' and v == 'function' then
                 return nil,"cannot have functions in table definition"
             end
         end
