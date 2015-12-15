@@ -171,7 +171,10 @@ asserteq(difference({a = true},{b = true}),{a=true})
 -- symmetric difference
 asserteq(difference({a = true},{b = true},true),{a=true,b=true})
 
-
+--basic index_map test
+asserteq(index_map({10,20,30}), {[10]=1,[20]=2,[30]=3})
+--test that repeated values return multiple indices
+asserteq(index_map({10,20,30,30,30}), {[10]=1,[20]=2,[30]={3,4,5}})
 
 
 
