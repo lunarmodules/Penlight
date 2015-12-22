@@ -488,7 +488,8 @@ function stringx.quote_string(s)
     assert_string(1,s)
     -- Find out if there are any embedded long-quote sequences that may cause issues.
     -- This is important when strings are embedded within strings, like when serializing.
-    local equal_signs = has_lquote(s)
+    -- Append a closing bracket to catch unfinished long-quote sequences at the end of the string.
+    local equal_signs = has_lquote(s .. "]")
 
     -- Note that strings containing "\r" can't be quoted using long brackets
     -- as Lua lexer converts all newlines to "\n" within long strings.
