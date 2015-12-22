@@ -70,9 +70,9 @@ end
 -- @param val the value
 -- @return the map
 function OrderedMap:set (key,val)
-    if self[key] == nil and val ~= nil then -- new key
-       self._keys:append(key) -- we keep in order
-       rawset(self,key,val)  -- don't want to provoke __newindex!
+    if rawget(self, key) == nil and val ~= nil then -- new key
+        self._keys:append(key) -- we keep in order
+        rawset(self,key,val)  -- don't want to provoke __newindex!
     else -- existing key-value pair
         if val == nil then
             self._keys:remove_value(key)
