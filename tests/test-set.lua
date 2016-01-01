@@ -118,6 +118,10 @@ asserteq2 ('one',1,fn())
 asserteq2 ('two',2,fn())
 asserteq2 ('three',3,fn())
 
+-- Keys overriding methods can be used.
+m:set('set', 4)
+asserteq(m:values(),List{1,2,3,4})
+
 o1 = OrderedMap  {{z=2},{beta=1},{name='fred'}}
 asserteq(tostring(o1),'{z=2,beta=1,name="fred"}')
 
