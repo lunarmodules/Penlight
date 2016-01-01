@@ -125,8 +125,11 @@ local function execute_command(cmd,parms)
     cmd = cmd..' '..parms..err..cmd_tmpfile
     local ret = utils.execute(cmd)
     if not ret then
-        return false,(utils.readfile(cmd_tmpfile):gsub('\n(.*)',''))
+        local err = (utils.readfile(cmd_tmpfile):gsub('\n(.*)',''))
+        remove(cmd_tmpfile)
+        return false,err
     else
+        remove(cmd_tmpfile)
         return true
     end
 end
