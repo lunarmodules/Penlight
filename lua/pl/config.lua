@@ -99,7 +99,7 @@ end
 --  * `trim_quotes` remove quotes from strings (default false)
 --  * `list_delim` delimiter to use when separating columns (default ',')
 --  * `keysep` separator between key and value pairs (default '=')
--- 
+--
 -- @return a table containing items, or `nil`
 -- @return error message (same as @{config.lines}
 function config.read(file,cnfg)
@@ -139,6 +139,7 @@ function config.read(file,cnfg)
     local variablilize = check_cnfg ('variabilize',true)
     local list_delim = check_cnfg('list_delim',',')
     local convert_numbers = check_cnfg('convert_numbers',true)
+    local convert_boolean = check_cnfg('convert_boolean',false)
     local trim_space = check_cnfg('trim_space',true)
     local trim_quotes = check_cnfg('trim_quotes',false)
     local ignore_assign = check_cnfg('ignore_assign',false)
@@ -166,6 +167,10 @@ function config.read(file,cnfg)
                 val = tonumber(value)
             end
             if val then value = val end
+        elseif convert_boolean and value == 'true' then
+           return true
+        elseif convert_boolean and value == 'false' then
+           return false
         end
         if type(value) == 'string' then
            if trim_space then value = strip(value) end
@@ -200,4 +205,3 @@ function config.read(file,cnfg)
 end
 
 return config
-
