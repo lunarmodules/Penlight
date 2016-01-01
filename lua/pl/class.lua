@@ -50,15 +50,25 @@ end
 -- print(pussycat.name)  --> pussycat
 
 --- checks whether an __instance__ is derived from some class.
--- Works the other way around as `class_of`.
+-- Works the other way around as `class_of`. It has two ways of using;
+-- 1) call with a class to check against, 2) call without params.
 -- @function instance:is_a
--- @param some_class class to check against
--- @return `true` if `instance` is derived from `some_class`
+-- @param some_class class to check against, or `nil` to return the class
+-- @return `true` if `instance` is derived from `some_class`, or if `some_class == nil` then
+-- it returns the class table of the instance
 -- @usage local pussycat = Lion()  -- assuming Lion derives from Cat
 -- if pussycat:is_a(Cat) then
---   -- it's true
+--   -- it's true, it is a Lion, but also a Cat
+-- end
+-- 
+-- if pussycat:is_a() == Lion then
+--   -- It's true
 -- end
 local function is_a(self,klass)
+    if klass == nil then
+        -- no class provided, so return the class this instance is derived from
+        return getmetatable(self)
+    end
     local m = getmetatable(self)
     if not m then return false end --*can't be an object!
     while m do
