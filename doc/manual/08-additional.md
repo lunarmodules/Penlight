@@ -212,12 +212,22 @@ Here is a command-line session using this script:
 There are two kinds of lines in Lapp usage strings which are meaningful; option
 and parameter lines. An option line gives the short option, optionally followed
 by the corresponding long option. A type specifier in parentheses may follow.
-Similarly, a parameter line starts with '<' PARAMETER '>', followed by a type
-specifier. Type specifiers are either of the form '(default ' VALUE ')' or '('
-TYPE ')'; the default specifier means that the parameter or option has a default
-value and is not required. TYPE is one of 'string','number','file-in' or
-'file-out'; VALUE is a number, one of ('stdin','stdout','stderr') or a token. The
-rest of the line is not parsed and can be used for explanatory text.
+Similarly, a parameter line starts with '<NAME>', followed by a type
+specifier.
+
+Type specifiers usually start with a type name: one of 'boolean', 'string','number','file-in' or
+'file-out'.  You may leave this out, but then _must_ say 'default' followed by a value.
+If a flag or parameter has a default, it is not _required_ and is set to the default. The actual 
+type is deduced from this value (number, string, file or boolean) if not provided directly. 
+'Deduce' is a fancy word for 'guess' and it can be wrong, e.g '(default 1)'
+will always be a number. You can say '(string default 1)' to override the guess.
+There are file values for the predefined console streams: stdin, stdout, stderr.
+
+The boolean type is the default for flags. Not providing the type specifier is equivalent to
+'(boolean default false)`.  If the flag is meant to be 'turned off' then either the full
+'(boolean default true)` or the shortcut '(default true)' will work.
+
+The rest of the line is ignored and can be used for explanatory text.
 
 This script shows the relation between the specified parameter names and the
 fields in the output table.
@@ -228,7 +238,10 @@ fields in the output table.
         -p          A simple optional flag, defaults to false
         -q,--quiet  A simple flag with long name
         -o  (string)  A required option with argument
-        <input> (default stdin)  Optional input file parameter
+        -s  (default 'save') Optional string with default 'save' (single quotes ignored)
+        -n  (default 1) Optional numerical flag with default 1
+        -b  (string default 1)  Optional string flag with default '1' (type explicit)
+        <input> (default stdin)  Optional input file parameter, reads from stdin
       ]]
 
       for k,v in pairs(args) do
@@ -269,23 +282,29 @@ Files don't really have to be closed explicitly for short scripts with a quick
 well-defined mission, since the result of garbage-collecting file objects is to
 close them.
 
-#### Enforcing a Range for a Parameter
+#### Enforcing a Range and Enumerations
 
-The type specifier can also be of the form '(' MIN '..' MAX ')'.
+The type specifier can also be of the form '(' MIN '..' MAX ')' or a set of strings 
+separated by '|'.
 
     local lapp = require 'pl.lapp'
     local args = lapp [[
         Setting ranges
         <x> (1..10)  A number from 1 to 10
         <y> (-5..1e6) Bigger range
+        <z> (slow|medium|fast)
     ]]
 
     print(args.x,args.y)
 
-Here the meaning is that the value is greater or equal to MIN and less or equal
-to MAX; there is no provision for forcing a parameter to be a whole number.
+Here the meaning of ranges is that the value is greater or equal to MIN and less or equal
+to MAX.
+An 'enum' is a _string_ that can only have values from a specified set.
 
-You may also define custom types that can be used in the type specifier:
+#### Custom Types
+
+There is no builti-in way to force a parameter to be a whole number, but
+you may define a custom type that does this:
 
     lapp = require ('pl.lapp')
 
@@ -303,9 +322,21 @@ You may also define custom types that can be used in the type specifier:
 
 `lapp.add_type` takes three parameters, a type name, a converter and a constraint
 function. The constraint function is expected to throw an assertion if some
-condition is not true; we use lapp.assert because it fails in the standard way
+condition is not true; we use `lapp.assert` because it fails in the standard way
 for a command-line script. The converter argument can either be a type name known
 to Lapp, or a function which takes a string and generates a value.
+
+Here's a useful custom type that allows dates to be input as @{pl.Date} values:
+
+    local df = Date.Format()
+    
+    lapp.add_type('date',
+        function(s)
+            local d,e = df:parse(s)
+            lapp.assert(d,e)
+            return d
+        end
+    )
 
 #### 'varargs' Parameter Arrays
 
