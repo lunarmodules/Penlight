@@ -126,8 +126,14 @@ foo
 bar
 ]])
 
+asserteq(lexer.lineno(iter), 0)
 iter()
 asserteq(lexer.lineno(iter), 1)
 asserteq(lexer.lineno(iter), 1)
 iter()
 asserteq(lexer.lineno(iter), 2)
+iter()
+asserteq(lexer.lineno(iter), 3)
+iter()
+iter()
+asserteq(lexer.lineno(iter), 3)

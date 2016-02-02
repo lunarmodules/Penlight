@@ -158,11 +158,40 @@ function lexer.scan(s,matches,filter,options)
         end
         matches = plain_matches
     end
-    local function lex()
-        local line_nr = file and 0 or 1
+    local function lex(first_arg)
+        local line_nr = 0
         local next_line = file and file:read()
         local sz = file and 0 or #s
         local idx = 1
+
+        -- res is the value used to resume the coroutine.
+        local function handle_requests(res)
+            while res do
+                local tp = type(res)
+                -- insert a token list
+                if tp == 'table' then
+                    res = yield('','')
+                    for _,t in ipairs(res) do
+                        res = yield(t[1],t[2])
+                    end
+                elseif tp == 'string' then -- or search up to some special pattern
+                    local i1,i2 = strfind(s,res,idx)
+                    if i1 then
+                        local tok = strsub(s,i1,i2)
+                        idx = i2 + 1
+                        res = yield('',tok)
+                    else
+                        res = yield('','')
+                        idx = sz + 1
+                    end
+                else
+                    res = yield(line_nr,idx)
+                end
+            end
+        end
+
+        handle_requests(first_arg)
+        if not file then line_nr = 1 end
 
         while true do
             if idx > sz then
@@ -176,7 +205,9 @@ function lexer.scan(s,matches,filter,options)
                     end
                     idx, sz = 1, #s
                 else
-                    return
+                    while true do
+                        handle_requests(yield())
+                    end
                 end
             end
 
@@ -198,29 +229,7 @@ function lexer.scan(s,matches,filter,options)
                         local _, newlines = tok:gsub("\n", {})
                         line_nr = line_nr + newlines
                     end
-                    while res do
-                        local tp = type(res)
-                        -- insert a token list
-                        if tp == 'table' then
-                            res = yield('','')
-                            for _,t in ipairs(res) do
-                                res = yield(t[1],t[2])
-                            end
-                        elseif tp == 'string' then -- or search up to some special pattern
-                            i1,i2 = strfind(s,res,idx)
-                            if i1 then
-                                tok = strsub(s,i1,i2)
-                                idx = i2 + 1
-                                res = yield('',tok)
-                            else
-                                res = yield('','')
-                                idx = sz + 1
-                            end
-                        else
-                            res = yield(line_nr,idx)
-                        end
-                    end
-
+                    handle_requests(res)
                     break
                 end
             end
