@@ -198,26 +198,26 @@ function lexer.scan(s,matches,filter,options)
                         local _, newlines = tok:gsub("\n", {})
                         line_nr = line_nr + newlines
                     end
-                    if res then
+                    while res do
                         local tp = type(res)
                         -- insert a token list
                         if tp == 'table' then
-                            yield('','')
+                            res = yield('','')
                             for _,t in ipairs(res) do
-                                yield(t[1],t[2])
+                                res = yield(t[1],t[2])
                             end
                         elseif tp == 'string' then -- or search up to some special pattern
                             i1,i2 = strfind(s,res,idx)
                             if i1 then
                                 tok = strsub(s,i1,i2)
                                 idx = i2 + 1
-                                yield('',tok)
+                                res = yield('',tok)
                             else
-                                yield('','')
+                                res = yield('','')
                                 idx = sz + 1
                             end
                         else
-                            yield(line_nr,idx)
+                            res = yield(line_nr,idx)
                         end
                     end
 

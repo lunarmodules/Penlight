@@ -128,5 +128,6 @@ bar
 
 iter()
 asserteq(lexer.lineno(iter), 1)
+asserteq(lexer.lineno(iter), 1)
 iter()
 asserteq(lexer.lineno(iter), 2)
