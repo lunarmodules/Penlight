@@ -120,3 +120,13 @@ test_scan([['' "" " \\" '\'' "'"]], nil, nil, {
     {'char', "\\'"},
     {'string', "'"}
 }, 'cpp')
+
+local iter = lexer.lua([[
+foo
+bar
+]])
+
+iter()
+asserteq(lexer.lineno(iter), 1)
+iter()
+asserteq(lexer.lineno(iter), 2)

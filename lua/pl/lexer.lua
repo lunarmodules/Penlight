@@ -159,7 +159,7 @@ function lexer.scan(s,matches,filter,options)
         matches = plain_matches
     end
     local function lex()
-        local line_nr = 0
+        local line_nr = file and 0 or 1
         local next_line = file and file:read()
         local sz = file and 0 or #s
         local idx = 1
@@ -192,6 +192,11 @@ function lexer.scan(s,matches,filter,options)
                     if not (filter and filter[fun]) then
                         lexer.finished = idx > sz
                         res = fun(tok, options, findres)
+                    end
+                    if not file and tok:find("\n") then
+                        -- Update line number.
+                        local _, newlines = tok:gsub("\n", {})
+                        line_nr = line_nr + newlines
                     end
                     if res then
                         local tp = type(res)
@@ -258,9 +263,10 @@ function lexer.getline (tok)
 end
 
 --- get current line number.
--- Only available if the input source is a file-like object.
 -- @param tok a token stream
--- @return the line number and current column
+-- @return the line number.
+-- if the input source is a file-like object,
+-- also return the column.
 function lexer.lineno (tok)
     return tok(0)
 end
