@@ -377,7 +377,7 @@ end
 -- @param n argument index
 -- @param val the value
 -- @param tp the type
--- @param verify an optional verfication function
+-- @param verify an optional verification function
 -- @param msg an optional custom message
 -- @param lev optional stack position for trace, default 2
 -- @raise if the argument n is not the correct type
