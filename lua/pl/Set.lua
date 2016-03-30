@@ -19,7 +19,7 @@
 --    > =  more_fruits, fruit
 --    [banana,apricot,apple,orange]	[banana,apple,orange]
 --
--- Depdencies: `pl.utils`, `pl.tablex`, `pl.class`, (`pl.List` if __tostring is used)
+-- Dependencies: `pl.utils`, `pl.tablex`, `pl.class`, (`pl.List` if __tostring is used)
 -- @module pl.Set
 
 local tablex = require 'pl.tablex'
