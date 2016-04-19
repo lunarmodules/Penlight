@@ -175,9 +175,6 @@ local function _class(base,c_arg,c)
             base._post_init(obj)
         end
 
-        if not rawget(c,'__tostring') then
-            c.__tostring = _class_tostring
-        end
         return obj
     end
     -- Call Class.catch to set a handler for methods/properties not found in the class!
@@ -193,6 +190,10 @@ local function _class(base,c_arg,c)
     c.class_of = class_of
     c.cast = cast
     c._class = c
+
+    if not rawget(c,'__tostring') then
+        c.__tostring = _class_tostring
+    end
 
     return c
 end
