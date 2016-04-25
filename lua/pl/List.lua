@@ -208,10 +208,9 @@ end
 function List:reverse()
     local t = self
     local n = #t
-    local n2 = n/2
-    for i = 1,n2 do
-        local k = n-i+1
-        t[i],t[k] = t[k],t[i]
+    for i = 1,n/2 do
+        t[i],t[n] = t[n],t[i]
+        n = n - 1
     end
     return self
 end
