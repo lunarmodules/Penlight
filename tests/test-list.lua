@@ -8,6 +8,12 @@ local t = {10,20,30}
 local ls = List(t)
 asserteq(t,ls)
 
+asserteq(List({}):reverse(), {})
+asserteq(List({1}):reverse(), {1})
+asserteq(List({1,2}):reverse(), {2,1})
+asserteq(List({1,2,3}):reverse(), {3,2,1})
+asserteq(List({1,2,3,4}):reverse(), {4,3,2,1})
+
 -- you may derive classes from pl.List, and the result is covariant.
 -- That is, slice() etc will return a list of the derived type, not List.
 
