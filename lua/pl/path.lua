@@ -330,6 +330,9 @@ function path.relpath (P,start)
     start = normcase(start)
     local startl, Pl = split(start,sep), split(P,sep)
     local n = min(#startl,#Pl)
+    if path.is_windows and n > 0 and at(Pl[1],2) == ':' and Pl[1] ~= startl[1] then
+        return P
+    end
     local k = n+1 -- default value if this loop doesn't bail out!
     for i = 1,n do
         if startl[i] ~= Pl[i] then
