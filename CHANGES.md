@@ -17,6 +17,8 @@
   -  Fixed utils.execute returning different values for Lua 5.1 and Lua 5.2
   - Issue #97; fixed attempt to put a month into a day
   -  problem with tablex.count_map with custom comparison
+  - tablex.pairmap overwrites result if key already exists; instead, upon detection that key already exists
+	for a returned value, we modify the key's value to be a table and insert values into that table
 
 ### Features
 
