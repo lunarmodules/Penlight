@@ -13,7 +13,7 @@ local tmpnam = os.tmpname
 local attributes, currentdir, link_attrib
 local package = package
 local io = io
-local append = table.insert
+local append, concat, remove = table.insert, table.concat, table.remove
 local ipairs = ipairs
 local utils = require 'pl.utils'
 local assert_arg,assert_string,raise = utils.assert_arg,utils.assert_string,utils.raise
@@ -277,36 +277,53 @@ function path.normcase(P)
     end
 end
 
-local np_gen1,np_gen2 = '([^SEP]+)SEP(%.%.SEP?)','SEP+%.?SEP'
-local np_pat1, np_pat2
-
 --- normalize a path name.
 --  A//B, A/./B and A/foo/../B all become A/B.
 -- @string P a file path
 function path.normpath(P)
     assert_string(1,P)
+    -- Split path into anchor and relative path.
+    local anchor = ''
     if path.is_windows then
         if P:match '^\\\\' then -- UNC
-            return '\\\\'..path.normpath(P:sub(3))
+            anchor = '\\\\'
+            P = P:sub(3)
+        elseif at(P, 1) == '/' or at(P, 1) == '\\' then
+            anchor = '\\'
+            P = P:sub(2)
+        elseif at(P, 2) == ':' then
+            anchor = P:sub(1, 2)
+            P = P:sub(3)
+            if at(P, 1) == '/' or at(P, 1) == '\\' then
+                anchor = anchor..'\\'
+                P = P:sub(2)
+            end
         end
         P = P:gsub('/','\\')
+    else
+        -- According to POSIX, in path start '//' and '/' are distinct,
+        -- but '///+' is equivalent to '/'.
+        if P:match '^//' and at(P, 3) ~= '/' then 
+            anchor = '//'
+            P = P:sub(3)
+        elseif at(P, 1) == '/' then
+            anchor = '/'
+            P = P:match '^/*(.*)$'
+        end
     end
-    if not np_pat1 then
-        np_pat1 = np_gen1:gsub('SEP',sep)
-        np_pat2 = np_gen2:gsub('SEP',sep)
+    local parts = {}
+    for part in P:gmatch('[^'..sep..']+') do
+        if part == '..' then
+            if #parts ~= 0 and parts[#parts] ~= '..' then
+                remove(parts)
+            else
+                append(parts, part)
+            end
+        elseif part ~= '.' then
+            append(parts, part)
+        end
     end
-    local k
-    repeat -- /./ -> /
-        P,k = P:gsub(np_pat2,sep)
-    until k == 0
-    repeat -- A/../ -> (empty)
-        local oldP = P
-        P,k = P:gsub(np_pat1,function(D, up)
-            if D == '..' then return nil end
-            if D == '.' then return up end
-            return ''
-        end)
-    until k == 0 or oldP == P
+    P = anchor..concat(parts, sep)
     if P == '' then P = '.' end
     return P
 end
