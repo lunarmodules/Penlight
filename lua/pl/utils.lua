@@ -253,14 +253,15 @@ end
 -- @param func a function of at least one argument
 -- @return a function with at least one argument, which is used as the key.
 function utils.memoize(func)
-    return setmetatable({}, {
-        __index = function(self, k, ...)
-            local v = func(k,...)
-            self[k] = v
-            return v
-        end,
-        __call = function(self, k) return self[k] end
-    })
+    local cache = {}
+    return function(k)
+        local res = cache[k]
+        if res == nil then
+            res = func(k)
+            cache[k] = res
+        end
+        return res
+    end
 end
 
 
