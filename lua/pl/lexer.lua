@@ -158,11 +158,40 @@ function lexer.scan(s,matches,filter,options)
         end
         matches = plain_matches
     end
-    local function lex()
+    local function lex(first_arg)
         local line_nr = 0
         local next_line = file and file:read()
         local sz = file and 0 or #s
         local idx = 1
+
+        -- res is the value used to resume the coroutine.
+        local function handle_requests(res)
+            while res do
+                local tp = type(res)
+                -- insert a token list
+                if tp == 'table' then
+                    res = yield('','')
+                    for _,t in ipairs(res) do
+                        res = yield(t[1],t[2])
+                    end
+                elseif tp == 'string' then -- or search up to some special pattern
+                    local i1,i2 = strfind(s,res,idx)
+                    if i1 then
+                        local tok = strsub(s,i1,i2)
+                        idx = i2 + 1
+                        res = yield('',tok)
+                    else
+                        res = yield('','')
+                        idx = sz + 1
+                    end
+                else
+                    res = yield(line_nr,idx)
+                end
+            end
+        end
+
+        handle_requests(first_arg)
+        if not file then line_nr = 1 end
 
         while true do
             if idx > sz then
@@ -176,7 +205,9 @@ function lexer.scan(s,matches,filter,options)
                     end
                     idx, sz = 1, #s
                 else
-                    return
+                    while true do
+                        handle_requests(yield())
+                    end
                 end
             end
 
@@ -193,29 +224,12 @@ function lexer.scan(s,matches,filter,options)
                         lexer.finished = idx > sz
                         res = fun(tok, options, findres)
                     end
-                    if res then
-                        local tp = type(res)
-                        -- insert a token list
-                        if tp == 'table' then
-                            yield('','')
-                            for _,t in ipairs(res) do
-                                yield(t[1],t[2])
-                            end
-                        elseif tp == 'string' then -- or search up to some special pattern
-                            i1,i2 = strfind(s,res,idx)
-                            if i1 then
-                                tok = strsub(s,i1,i2)
-                                idx = i2 + 1
-                                yield('',tok)
-                            else
-                                yield('','')
-                                idx = sz + 1
-                            end
-                        else
-                            yield(line_nr,idx)
-                        end
+                    if not file and tok:find("\n") then
+                        -- Update line number.
+                        local _, newlines = tok:gsub("\n", {})
+                        line_nr = line_nr + newlines
                     end
-
+                    handle_requests(res)
                     break
                 end
             end
@@ -258,9 +272,10 @@ function lexer.getline (tok)
 end
 
 --- get current line number.
--- Only available if the input source is a file-like object.
 -- @param tok a token stream
--- @return the line number and current column
+-- @return the line number.
+-- if the input source is a file-like object,
+-- also return the column.
 function lexer.lineno (tok)
     return tok(0)
 end

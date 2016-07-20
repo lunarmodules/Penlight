@@ -232,7 +232,7 @@ function utils.executeex(cmd, bin)
     local outfile = os.tmpname()
     local errfile = os.tmpname()
 
-    if utils.dir_separator == '\\' then
+    if utils.dir_separator == '\\' and not outfile:find(':') then
         outfile = os.getenv('TEMP')..outfile
         errfile = os.getenv('TEMP')..errfile
     end
@@ -253,14 +253,15 @@ end
 -- @param func a function of at least one argument
 -- @return a function with at least one argument, which is used as the key.
 function utils.memoize(func)
-    return setmetatable({}, {
-        __index = function(self, k, ...)
-            local v = func(k,...)
-            self[k] = v
-            return v
-        end,
-        __call = function(self, k) return self[k] end
-    })
+    local cache = {}
+    return function(k)
+        local res = cache[k]
+        if res == nil then
+            res = func(k)
+            cache[k] = res
+        end
+        return res
+    end
 end
 
 
@@ -377,7 +378,7 @@ end
 -- @param n argument index
 -- @param val the value
 -- @param tp the type
--- @param verify an optional verfication function
+-- @param verify an optional verification function
 -- @param msg an optional custom message
 -- @param lev optional stack position for trace, default 2
 -- @raise if the argument n is not the correct type
