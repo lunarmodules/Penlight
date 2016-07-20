@@ -232,7 +232,7 @@ function utils.executeex(cmd, bin)
     local outfile = os.tmpname()
     local errfile = os.tmpname()
 
-    if utils.dir_separator == '\\' then
+    if utils.dir_separator == '\\' and not outfile:find(':') then
         outfile = os.getenv('TEMP')..outfile
         errfile = os.getenv('TEMP')..errfile
     end
