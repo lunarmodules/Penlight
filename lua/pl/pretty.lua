@@ -269,12 +269,9 @@ end
 
 local memp,nump = {'B','KiB','MiB','GiB'},{'','K','M','B'}
 
-local comma
-function comma (val)
+local function comma (val)
     local thou = math.floor(val/1000)
-    --AAS
-    if thou > 0 then return comma(tostring(thou))..','.. tostring(val % 1000)
-    -- if thou > 0 then return comma(thou)..','..(val % 1000)
+    if thou > 0 then return comma(thou)..','.. tostring(val % 1000)
     else return tostring(val) end
 end
 
