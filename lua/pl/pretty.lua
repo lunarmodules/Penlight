@@ -7,26 +7,38 @@
 
 local append = table.insert
 local concat = table.concat
+local mfloor, mhuge, mtype = math.floor, math.huge, math.type
 local utils = require 'pl.utils'
 local lexer = require 'pl.lexer'
 local debug = require 'debug'
 local quote_string = require'pl.stringx'.quote_string
 local assert_arg = utils.assert_arg
 
---AAS
---Perhaps this could be evolved into part of a "Compat5.3" library some day. 
---I didn't think that it was time for that, however.
-local tostring = tostring
-if _VERSION == "Lua 5.3" then
-    local _tostring = tostring
-    tostring = function(s)
-        if type(s) == "number" then
-            return ("%.f"):format(s)
-        else
-            return _tostring(s)
-        end
-    end
+local original_tostring = tostring
 
+-- Patch tostring to format numbers with better precision
+-- and to produce cross-platform results for
+-- infinite values and NaN.
+local function tostring(value)
+    if type(value) ~= "number" then
+        return original_tostring(value)
+    elseif value ~= value then
+        return "NaN"
+    elseif value == mhuge then
+        return "Inf"
+    elseif value == -mhuge then
+        return "-Inf"
+    elseif (_VERSION ~= "Lua 5.3" or mtype(value) == "integer") and mfloor(value) == value then
+        return ("%d"):format(value)
+    else
+        local res = ("%.17g"):format(value)
+        if _VERSION == "Lua 5.3" and mtype(value) == "float" and not res:find("%.") then
+            -- Number is internally a float but looks like an integer.
+            -- Insert ".0" after first run of digits.
+            res = res:gsub("%d+", "%0.0", 1)
+        end
+        return res
+    end
 end
 
 local pretty = {}
