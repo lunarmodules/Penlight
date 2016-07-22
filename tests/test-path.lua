@@ -54,14 +54,17 @@ testnorm('./a', 'a')
 testnorm('a/.', 'a')
 testnorm('a/', 'a')
 testnorm('/a', '/a')
-testnorm('//a', '//a')
-testnorm('///a', '/a')
 
 if path.is_windows then
-  asserteq(norm [[\a\.\b]],p)
-  -- UNC paths
-  asserteq(norm [[\\bonzo\..\dog]], [[\\dog]])
-  asserteq(norm [[\\?\c:\bonzo\dog\.\]],[[\\?\c:\bonzo\dog]])
+    testnorm('C://a', 'C:/a')
+    testnorm('C:/../a', 'C:/../a')
+    asserteq(norm [[\a\.\b]], p)
+    -- UNC paths
+    asserteq(norm [[\\bonzo\..\dog]], [[\\dog]])
+    asserteq(norm [[\\?\c:\bonzo\dog\.\]], [[\\?\c:\bonzo\dog]])
+else
+    testnorm('//a', '//a')
+    testnorm('///a', '/a')
 end
 
 asserteq(norm '1/2/../3/4/../5',norm '1/3/5')
