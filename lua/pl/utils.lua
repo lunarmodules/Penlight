@@ -122,11 +122,15 @@ local raise
 function utils.readfile(filename,is_bin)
     local mode = is_bin and 'b' or ''
     utils.assert_string(1,filename)
-    local f,err = io.open(filename,'r'..mode)
-    if not f then return utils.raise (err) end
-    local res,err = f:read('*a')
+    local f,open_err = io.open(filename,'r'..mode)
+    if not f then return utils.raise (open_err) end
+    local res,read_err = f:read('*a')
     f:close()
-    if not res then return raise (err) end
+    if not res then
+        -- Errors in io.open have "filename: " prefix,
+        -- error in file:read don't, add it.
+        return raise (filename..": "..read_err)
+    end
     return res
 end
 
