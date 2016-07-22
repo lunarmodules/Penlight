@@ -133,13 +133,15 @@ end
 --- write a string to a file
 -- @param filename The file path
 -- @param str The string
+-- @param is_bin open in binary mode
 -- @return true or nil
 -- @return error message
 -- @raise error if filename or str aren't strings
-function utils.writefile(filename,str)
+function utils.writefile(filename,str,is_bin)
+    local mode = is_bin and 'b' or ''
     utils.assert_string(1,filename)
     utils.assert_string(2,str)
-    local f,err = io.open(filename,'w')
+    local f,err = io.open(filename,'w'..mode)
     if not f then return raise(err) end
     f:write(str)
     f:close()
