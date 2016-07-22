@@ -388,7 +388,12 @@ end
 -- unlike os.tmpnam(), it always gives you a writeable path (uses TEMP environment variable on Windows)
 function path.tmpname ()
     local res = tmpnam()
-    if path.is_windows then res = getenv('TEMP')..res end
+    -- On Windows if Lua is compiled using MSVC14 os.tmpname
+    -- already returns an absolute path within TEMP env variable directory,
+    -- no need to prepend it.
+    if path.is_windows and not res:find(':') then
+        res = getenv('TEMP')..res
+    end
     return res
 end
 
