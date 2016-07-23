@@ -263,7 +263,11 @@ end
 
 --- long numerical ISO data format version of this date.
 function Date:__tostring()
-    local t = os_date('%Y-%m-%dT%H:%M:%S',self.time)
+    local fmt = '%Y-%m-%dT%H:%M:%S'
+    if self.utc then
+        fmt = "!"..fmt
+    end
+    local t = os_date(fmt,self.time)
     if self.utc then
         return  t .. 'Z'
     else
@@ -467,8 +471,17 @@ end
 -- @param d a date object, or a time value as returned by @{os.time}
 -- @return string
 function Date.Format:tostring(d)
-    local tm = type(d) == 'number' and d or d.time
-    return os_date(self.outf,tm)
+    local tm
+    local fmt = self.outf
+    if type(d) == 'number' then
+        tm = d
+    else
+        tm = d.time
+        if d.utc then
+            fmt = '!'..fmt
+        end
+    end
+    return os_date(fmt,tm)
 end
 
 --- force US order in dates like 9/11/2001
@@ -510,7 +523,9 @@ local function  parse_iso_end(p,ns,sec)
     end
     -- ISO 8601 dates may end in Z (for UTC) or [+-][isotime]
     -- (we're working with the date as lower case, hence 'z')
-    if p:match 'z$' then return sec, {h=0,m=0} end -- we're UTC!
+    if p:match 'z$' then -- we're UTC!
+        return  sec, {h=0,m=0}
+    end 
     p = p:gsub(':','') -- turn 00:30 to 0030
     local _,_,sign,offs = p:find('^([%+%-])(%d+)')
     if not sign then return sec, nil end -- not UTC
@@ -617,11 +632,14 @@ local function parse_date_unsafe (s,US)
     sec = sec and tonum(sec,0,60) or 0  --60 used to indicate leap second
     local res = Date {year = year, month = month, day = day, hour = hour, min = min, sec = sec}
     if tz then -- ISO 8601 UTC time
-        res:add {hour = -tz.h}
-        if tz.m ~= 0 then res:add {min = -tz.m} end
+        local corrected = false
+        if tz.h ~= 0 then res:add {hour = -tz.h}; corrected = true end
+        if tz.m ~= 0 then res:add {min = -tz.m}; corrected = true end
         res.utc = true
         -- we're in UTC, so let's go local...
-        res = res:toLocal()
+        if corrected then
+            res = res:toLocal()
+        end-- we're UTC!
     end
     return res
 end
