@@ -73,6 +73,7 @@ end
 Map.len = tablex.size
 
 --- put a value into the map.
+-- This will remove the key if the value is `nil`
 -- @param key the key
 -- @param val the value
 function Map:set (key,val)
