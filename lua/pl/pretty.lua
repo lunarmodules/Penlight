@@ -2,7 +2,7 @@
 -- Also provides a sandboxed Lua table reader and
 -- a function to present large numbers in human-friendly format.
 --
--- Dependencies: `pl.utils`, `pl.lexer`, `debug`
+-- Dependencies: `pl.utils`, `pl.lexer`, `pl.stringx`, `debug`
 -- @module pl.pretty
 
 local append = table.insert
@@ -59,16 +59,16 @@ local function restore_global_env(env)
     end
 end
 
---- read a string representation of a Lua table.
--- Uses load(), but tries to be cautious about loading arbitrary code!
--- It is expecting a string of the form '{...}', with perhaps some whitespace
--- before or after the curly braces. A comment may occur beforehand.
--- An empty environment is used, and
--- any occurance of the keyword 'function' will be considered a problem.
--- in the given environment - the return value may be `nil`.
--- @string s string of the form '{...}', with perhaps some whitespace
--- before or after the curly braces.
--- @return a table
+--- Read a string representation of a Lua table.
+-- This function loads and runs the string as Lua code, but bails out
+-- if it contains a function definition.
+-- Loaded string is executed in an empty environment.
+-- @string s string to read in `{...}` format, possibly with some whitespace
+-- before or after the curly braces. A single line comment may be present
+-- at the beginning.
+-- @return a table in case of success.
+-- If loading the string failed, return `nil` and error message.
+-- If executing loaded string failed, return `nil` and the error it raised.
 function pretty.read(s)
     assert_arg(1,s,'string')
     if s:find '^%s*%-%-' then -- may start with a comment..
@@ -95,11 +95,13 @@ function pretty.read(s)
     end
 end
 
---- read a Lua chunk.
--- @string s Lua code
--- @param env optional environment
--- @bool paranoid prevent any looping constructs and disable string methods
--- @return the environment
+--- Read a Lua chunk.
+-- @string s Lua code.
+-- @tab[opt] env environment used to run the code, empty by default.
+-- @bool[opt] paranoid abort loading if any looping constructs a found in the code
+-- and disable string methods.
+-- @return the environment in case of success or `nil` and syntax or runtime error
+-- if something went wrong.
 function pretty.load (s, env, paranoid)
     env = env or {}
     if paranoid then
@@ -156,17 +158,17 @@ end
 
 
 ---	Create a string representation of a Lua table.
---  This function never fails, but may complain by returning an
---  extra value. Normally puts out one item per line, using
---  the provided indent; set the second parameter to '' if
---  you want output on one line.
---	@tab tbl Table to serialize to a string.
---	@string space (optional) The indent to use.
---	Defaults to two spaces; make it the empty string for no indentation
---	@bool not_clever (optional) Use for plain output, e.g {['key']=1}.
---	Defaults to false.
---  @return a string
---  @return a possible error message
+-- This function never fails, but may complain by returning an
+-- extra value. Normally puts out one item per line, using
+-- the provided indent; set the second parameter to an empty string
+-- if you want output on one line.
+-- @tab tbl Table to serialize to a string.
+-- @string[opt] space The indent to use.
+-- Defaults to two spaces; pass an empty string for no indentation.
+-- @bool[opt] not_clever Pass `true` for plain output, e.g `{['key']=1}`.
+-- Defaults to `false`.
+-- @return a string
+-- @return an optional error message
 function pretty.write (tbl,space,not_clever)
     if type(tbl) ~= 'table' then
         local res = tostring(tbl)
@@ -287,11 +289,12 @@ local function comma (val)
     else return tostring(val) end
 end
 
---- format large numbers nicely for human consumption.
--- @param num a number
--- @param kind one of 'M' (memory in KiB etc), 'N' (postfixes are 'K','M' and 'B')
--- and 'T' (use commas as thousands separator)
--- @param prec number of digits to use for 'M' and 'N' (default 1)
+--- Format large numbers nicely for human consumption.
+-- @number num a number.
+-- @string[opt] kind one of `'M'` (memory in `KiB`, `MiB`, etc.),
+-- `'N'` (postfixes are `'K'`, `'M'` and `'B'`),
+-- or `'T'` (use commas as thousands separator), `'N'` by default.
+-- @int[opt] prec number of digits to use for `'M'` and `'N'`, `1` by default.
 function pretty.number (num,kind,prec)
     local fmt = '%.'..(prec or 1)..'f%s'
     if kind == 'T' then
