@@ -304,6 +304,7 @@ function lapp.process_options_string(str,args)
     local iextra = 1
     local i = 1
     local parm,ps,val
+    local end_of_flags = false
 
     local function check_parm (parm)
         local eqi = parm:find '='
@@ -321,8 +322,19 @@ function lapp.process_options_string(str,args)
     while i <= #arg do
         local theArg = arg[i]
         local res = {}
+        -- after '--' we don't parse args and they end up in 
+        -- the array part of the result (args[1] etc)
+        if theArg == '--' then
+            end_of_flags = true
+            iparm = #parmlist + 1
+            i = i + 1
+            theArg = arg[i]
+            if not theArg then
+                break
+            end
+        end
         -- look for a flag, -<short flags> or --<long flag>
-        if match('--$S{long}',theArg,res) or match('-$S{short}',theArg,res) then
+        if not end_of_flags and (match('--$S{long}',theArg,res) or match('-$S{short}',theArg,res)) then
             if res.long then -- long option
                 parm = check_parm(res.long)
             elseif #res.short == 1 or is_flag(res.short) then

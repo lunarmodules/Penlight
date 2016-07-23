@@ -132,6 +132,10 @@ check (false_flag,{},{f=true,g=false})
 
 check (false_flag,{'-g','-f'},{f=false,g=true})
 
+-- '--' indicates end of parameter parsing
+check (false_flag,{'-g','--'},{f=true,g=true})
+check (false_flag,{'-g','--','-a','frodo'},{f=true,g=true; '-a','frodo'})
+
 local addtype = [[
   -l (intlist) List of items
 ]]
