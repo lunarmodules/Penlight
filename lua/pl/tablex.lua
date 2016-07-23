@@ -571,6 +571,25 @@ function tablex.merge (t1,t2,dup)
     return setmeta(res,t1,Map)
 end
 
+--- the union of two map-like tables.
+-- If there are duplicate keys, the second table wins.
+-- @tab t1 a table
+-- @tab t2 a table
+-- @treturn tab
+-- @see tablex.merge
+function tablex.union(t1, t2)
+    return tablex.merge(t1, t2, true)
+end
+
+--- the intersection of two map-like tables.
+-- @tab t1 a table
+-- @tab t2 a table
+-- @treturn tab
+-- @see tablex.merge
+function tablex.intersection(t1, t2)
+    return tablex.merge(t1, t2, false)
+end
+
 --- a new table which is the difference of two tables.
 -- With sets (where the values are all true) this is set difference and
 -- symmetric difference depending on the third parameter.
