@@ -1,41 +1,62 @@
--- running the tests and examples
-require 'pl'
-local lfs = require 'lfs'
+-- Running tests and/or examples.
+local lfs = require "lfs"
 
-local function quote_if_needed (s)
-    if s:match '%s' then
-        s = '"'..s..'"'
+local directories = {}
+local luacov = false
+
+for _, argument in ipairs(arg) do
+    if argument == "--help" then
+        print("Usage: lua run.lua [--luacov] [<dir>]...")
+        os.exit(0)
+    elseif argument == "--luacov" then
+        luacov = true
+    else
+        table.insert(directories, argument)
     end
-    return s
 end
 
-local function print_exit(msg)
-    print()
-    print(string.rep("*",#msg + 4))
-    print("* "..msg.." *")
-    print(string.rep("*",#msg + 4))
+if #directories == 0 then
+    directories = {"tests", "examples"}
 end
 
--- get the Lua command-line used to invoke this script
-local cmd = app.lua()
+local lua = "lua"
+local i = -1
+while arg[i] do
+    lua = arg[i]
+    i = i - 1
+end
 
-function do_lua_files ()
-    for _,f in ipairs(dir.getfiles('.','*.lua')) do
-        print(cmd..' '..f)
-        local res,code = utils.execute(cmd..' '..f)
-        if not res then
-            print_exit ('process failed with non-zero result: ['..code..'] '..f)
+if luacov then
+    lua = lua .. " -lluacov"
+end
+
+local function run_current_directory()
+    local files = {}
+    for path in lfs.dir(".") do
+        if path:find("%.lua$") and lfs.attributes(path, "mode") == "file" then
+            table.insert(files, path)
+        end
+    end
+    table.sort(files)
+
+    for _, file in ipairs(files) do
+        local cmd = lua .. " " .. file
+        print(cmd)
+        local code1, _, code2 = os.execute(cmd)
+        local code = type(code1) == "number" and code1 or code2
+
+        if code ~= 0 then
+            print(("Running %s failed with code %d"):format(file, code))
             os.exit(1)
         end
     end
 end
 
-if #arg == 0 then arg[1] = 'tests'; arg[2] = 'examples' end
-
-for _,dir in ipairs(arg) do
-    print('directory',dir)
-    lfs.chdir(dir)
-    do_lua_files()
-    lfs.chdir('..')
+for _, dir in ipairs(directories) do
+    print("Running files in " .. dir)
+    assert(lfs.chdir(dir))
+    run_current_directory()
+    lfs.chdir("..")
 end
 
+print("Run completed successfully")

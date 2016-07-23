@@ -65,7 +65,7 @@ end
 function text.dedent (s)
     assert_arg(1,s,'string')
     local sl = split(s,'\n')
-    local i1,i2 = sl[1]:find('^%s*')
+    local i1,i2 = (#sl>0 and sl[1] or ''):find('^%s*')
     sl = imap(string.sub,sl,i2+1)
     return concat(sl,'\n')..'\n'
 end
