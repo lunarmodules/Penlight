@@ -396,6 +396,9 @@ files provided, and only close them at the end of the script. See the `xhead.lua
 example for another implementation.)
 
 Flags and options may also be declared as vararg arrays, and can occur anywhere.
+If there is both a short and long form, then the trailing "..." must happen after the long form,
+for example "-x,--network... (string)...",
+
 Bear in mind that short options can be combined (like 'tar -xzf'), so it's
 perfectly legal to have '-vvv'. But normally the value of args.v is just a simple
 `true` value.
