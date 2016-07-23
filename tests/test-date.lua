@@ -91,6 +91,18 @@ asserteq(parse_date 'march', Date {month=3})
 asserteq(parse_date '2010-05-23T0130', Date{year=2010,month=5,day=23,hour=1,min=30})
 asserteq(parse_date '2008-10-03T14:30:45', Date{year=2008,month=10,day=3,hour=14,min=30,sec=45})
 
+-- allow for a comma after the month...
+asserteq(parse_date '18 July, 2013 12:00:00', Date{year=2013,month=07,day=18,hour=12,min=0,sec=0})
+
+-- This ISO format must result in a UTC date
+local d = parse_date '2016-05-01T14:30:00Z'
+asserteq(d:year(),2016)
+asserteq(d:month(),5)
+asserteq(d:day(),1)
+asserteq(d:hour(),14)
+asserteq(d:min(),30)
+asserteq(d:sec(),0)
+
 function err (status,e)
     return e
 end

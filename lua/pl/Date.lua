@@ -491,6 +491,17 @@ end
 
 --local months = {jan=1,feb=2,mar=3,apr=4,may=5,jun=6,jul=7,aug=8,sep=9,oct=10,nov=11,dec=12}
 local months
+local parse_date_unsafe
+local function create_months()
+    local ld, day1 = parse_date_unsafe '2000-12-31', {day=1}
+    months = {}
+    for i = 1,12 do
+        ld = ld:last_day()
+        ld:add(day1)
+        local mon = ld:month_name():lower()
+        months [mon] = i
+    end
+end
 
 --[[
 Allowed patterns:
@@ -499,8 +510,9 @@ Allowed patterns:
 
 ]]
 
-
-local is_word = stringx.isalpha
+local function looks_like_a_month(w) 
+    return w:match '^%a+,*$' ~= nil
+end
 local is_number = stringx.isdigit
 local function tonum(s,l1,l2,kind)
     kind = kind or ''
@@ -536,7 +548,7 @@ local function  parse_iso_end(p,ns,sec)
     return sec, tz
 end
 
-local function parse_date_unsafe (s,US)
+function parse_date_unsafe (s,US)
     s = s:gsub('T',' ') -- ISO 8601
     local parts = stringx.split(s:lower())
     local i,p = 1,parts[1]
@@ -565,17 +577,10 @@ local function parse_date_unsafe (s,US)
             year = true
         end
     end
-    if p and is_word(p) then
+    if p and looks_like_a_month(p) then -- date followed by month
         p = p:sub(1,3)
         if not months then
-            local ld, day1 = parse_date_unsafe '2000-12-31', {day=1}
-            months = {}
-            for i = 1,12 do
-                ld = ld:last_day()
-                ld:add(day1)
-                local mon = ld:month_name():lower()
-                months [mon] = i
-            end
+            create_months()
         end
         local mon = months[p]
         if mon then
