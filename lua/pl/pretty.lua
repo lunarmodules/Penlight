@@ -266,16 +266,16 @@ function pretty.write (tbl,space,not_clever)
     return concat(lines,#space > 0 and '\n' or '')
 end
 
----	Dump a Lua table out to a file or stdout.
---	@param t {table} The table to write to a file or stdout.
---	@param ... {string} (optional) File name to write too. Defaults to writing
---	to stdout.
-function pretty.dump (t,...)
-    if select('#',...)==0 then
+--- Dump a Lua table out to a file or stdout.
+-- @tab t The table to write to a file or stdout.
+-- @string[opt] filename File name to write too. Defaults to writing
+-- to stdout.
+function pretty.dump (t, filename)
+    if not filename then
         print(pretty.write(t))
         return true
     else
-        return utils.writefile(...,pretty.write(t))
+        return utils.writefile(filename, pretty.write(t))
     end
 end
 
