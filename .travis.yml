@@ -10,14 +10,14 @@ env:
 before_install:
   - pip install hererocks
   - hererocks here -r^ --$LUA
-  - export PATH=$PATH:$PWD/here/bin
+  - source here/bin/activate
 
 install:
   - luarocks make
   - luarocks install luacov-coveralls
 
 script:
-  - lua tests/tests.run --luacov
+  - lua run.lua tests --luacov
 
 after_success:
   - mv tests/luacov.stats.out . && luacov-coveralls -c tests/.luacov
