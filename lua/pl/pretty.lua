@@ -31,7 +31,7 @@ local function tostring(value)
     elseif (_VERSION ~= "Lua 5.3" or mtype(value) == "integer") and mfloor(value) == value then
         return ("%d"):format(value)
     else
-        local res = ("%.17g"):format(value)
+        local res = ("%g"):format(value)
         if _VERSION == "Lua 5.3" and mtype(value) == "float" and not res:find("%.") then
             -- Number is internally a float but looks like an integer.
             -- Insert ".0" after first run of digits.
@@ -241,13 +241,17 @@ function pretty.write (tbl,space,not_clever)
                 end
             end
             for key,val in pairs(t) do
-                local numkey = type(key) == 'number'
+                local tkey = type(key)
+                local numkey = tkey == 'number'
                 if not_clever then
                     key = tostring(key)
                     put(indent..index(numkey,key)..set)
                     writeit(val,indent,newindent)
                 else
                     if not numkey or not used[key] then -- non-array indices
+                        if tkey ~= 'string' then
+                            key = tostring(key)
+                        end
                         if numkey or not is_identifier(key) then
                             key = index(numkey,key)
                         end
