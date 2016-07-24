@@ -510,3 +510,77 @@ And here we can see the output of `test.lua`:
       height = 20,
       flag4 = true
     }
+
+### Simple Test Framework
+
+`pl.test` was originally developed for the sole purpose of testing Penlight itself, 
+but you may find it useful for your own applications. ([There are many other options](http://lua-users.org/wiki/UnitTesting).)
+
+Most of the goodness is in `test.asserteq`.  It uses `tablex.deepcompare` on its two arguments, 
+and by default quits the test application with a non-zero exit code, and an informative
+message printed to stderr:
+
+    local test = require 'pl.test'
+
+    test.asserteq({10,20,30},{10,20,30.1})
+
+    --~ test-test.lua:3: assertion failed
+    --~ got:	{
+    --~  [1] = 10,
+    --~  [2] = 20,
+    --~  [3] = 30
+    --~ }
+    --~ needed:	{
+    --~  [1] = 10,
+    --~  [2] = 20,
+    --~  [3] = 30.1
+    --~ }
+    --~ these values were not equal
+    
+This covers most cases but it's also useful to compare strings using `string.match`
+
+    -- must start with bonzo the dog
+    test.assertmatch ('bonzo the dog is here','^bonzo the dog')
+    -- must end with an integer
+    test.assertmatch ('hello 42','%d+$')
+
+Since Lua errors are usually strings, this matching strategy is used to test 'exceptions':
+
+    test.assertraise(function()
+        local t = nil
+        print(t.bonzo)
+    end,'nil value')
+
+(Some care is needed to match the essential part of the thrown error if you care
+for portability, since in Lua 5.2
+the exact error is "attempt to index local 't' (a nil value)" and in Lua 5.3 the error
+is "attempt to index a nil value (local 't')")
+
+There is an extra optional argument to these test functions, which is helpful when writing
+test helper functions. There you want to highlight the failed line, not the actual call
+to `asserteq` or `assertmatch` - line 33 here is the call to `is_iden`
+
+    function is_iden(str)
+        test.assertmatch(str,'^[%a_][%w_]*$',1)
+    end
+
+    is_iden 'alpha_dog'
+    is_iden '$dollars'
+
+    --~ test-test.lua:33: assertion failed
+    --~ got:	"$dollars"
+    --~ needed:	"^[%a_][%w_]*$"
+    --~ these strings did not match
+
+Useful Lua functions often return multiple values, and `test.tuple` is a convenient way to
+capture these values, whether they contain nils or not.
+
+    T = test.tuple
+
+    --- common error pattern
+    function failing()
+        return nil,'failed'
+    end
+
+    test.asserteq(T(failing()),T(nil,'failed'))
+

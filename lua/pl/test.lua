@@ -111,7 +111,10 @@ end
 
 -- tuple type --
 
-local tuple_mt = {}
+local tuple_mt = {
+    unpack = table.unpack
+}
+tuple_mt.__index = tuple_mt
 
 function tuple_mt.__tostring(self)
     local ts = {}
@@ -130,9 +133,17 @@ function tuple_mt.__eq(a, b)
     return true
 end
 
+function tuple_mt.__len(self)
+    return self.n
+end
+
 --- encode an arbitrary argument list as a tuple.
 -- This can be used to compare to other argument lists, which is
 -- very useful for testing functions which return a number of values.
+-- Unlike regular array-like tables ('sequences') they may contain nils.
+-- Tuples understand equality and know how to print themselves out.
+-- The # operator is defined to be the size, irrespecive of any nils,
+-- and there is an `unpack` method.
 -- @usage asserteq(tuple( ('ab'):find 'a'), tuple(1,1))
 function test.tuple(...)
     return setmetatable(table.pack(...), tuple_mt)
