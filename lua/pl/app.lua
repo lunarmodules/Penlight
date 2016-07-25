@@ -123,7 +123,7 @@ function app.parse_args (args,flags_with_values)
                 v = v:sub(2)
             end
             if flags_with_values[v] then
-                if i == #_args or args[i+1]:find '^-' then
+                if i == #args or args[i+1]:find '^-' then
                     return utils.raise ("no value for '"..v.."'")
                 end
                 flags[v] = args[i+1]
