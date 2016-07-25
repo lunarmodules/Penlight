@@ -31,7 +31,7 @@ local function tostring(value)
     elseif (_VERSION ~= "Lua 5.3" or mtype(value) == "integer") and mfloor(value) == value then
         return ("%d"):format(value)
     else
-        local res = ("%g"):format(value)
+        local res = ("%.14g"):format(value)
         if _VERSION == "Lua 5.3" and mtype(value) == "float" and not res:find("%.") then
             -- Number is internally a float but looks like an integer.
             -- Insert ".0" after first run of digits.
@@ -149,8 +149,8 @@ end
 
 local function index (numkey,key)
     --AAS
-    if not numkey then 
-        key = quote(key) 
+    if not numkey then
+        key = quote(key)
          key = key:find("^%[") and (" " .. key .. " ") or key
     end
     return '['..key..']'
