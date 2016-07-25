@@ -1,0 +1,20 @@
+shallow_clone: true
+
+environment:
+  matrix:
+  - LUA: "lua 5.1"
+  - LUA: "lua 5.2"
+  - LUA: "lua 5.3"
+  - LUA: "luajit 2.0"
+
+before_build:
+  - set PATH=C:\Python27\Scripts;%PATH%
+  - pip install hererocks
+  - hererocks here --%LUA% -rlatest
+  - call here\bin\activate
+
+build_script:
+  - luarocks make
+
+test_script:
+  - lua run.lua tests
