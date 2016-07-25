@@ -32,35 +32,37 @@ local function assert_file (n,val)
 end
 
 local function filemask(mask)
-    mask = utils.escape(mask)
-    return mask:gsub('%%%*','.+'):gsub('%%%?','.')..'$'
+    mask = utils.escape(path.normcase(mask))
+    return '^'..mask:gsub('%%%*','.*'):gsub('%%%?','.')..'$'
 end
 
---- does the filename match the shell pattern?.
--- (cf. fnmatch.fnmatch in Python, 11.8)
--- @string file A file name
--- @string pattern A shell pattern
+--- Test whether a file name matches a shell pattern.
+-- Both parameters are case-normalized if operating system is
+-- case-insensitive.
+-- @string filename A file name.
+-- @string pattern A shell pattern. The only special characters are
+-- `'*'` and `'?'`: `'*'` matches any sequence of characters and
+-- `'?'` matches any single character.
 -- @treturn bool
--- @raise file and pattern must be strings
-function dir.fnmatch(file,pattern)
-    assert_string(1,file)
+-- @raise dir and mask must be strings
+function dir.fnmatch(filename,pattern)
+    assert_string(1,filename)
     assert_string(2,pattern)
-    return path.normcase(file):find(filemask(pattern)) ~= nil
+    return path.normcase(filename):find(filemask(pattern)) ~= nil
 end
 
---- return a list of all files which match the pattern.
--- (cf. fnmatch.filter in Python, 11.8)
--- @string files A table containing file names
+--- Return a list of all file names within an array which match a pattern.
+-- @tab filenames An array containing file names.
 -- @string pattern A shell pattern.
--- @treturn List(string) list of files
--- @raise file and pattern must be strings
-function dir.filter(files,pattern)
-    assert_arg(1,files,'table')
+-- @treturn List(string) List of matching file names.
+-- @raise dir and mask must be strings
+function dir.filter(filenames,pattern)
+    assert_arg(1,filenames,'table')
     assert_string(2,pattern)
     local res = {}
     local mask = filemask(pattern)
-    for i,f in ipairs(files) do
-        if f:find(mask) then append(res,f) end
+    for i,f in ipairs(filenames) do
+        if path.normcase(f):find(mask) then append(res,f) end
     end
     return setmetatable(res,List)
 end
@@ -92,7 +94,7 @@ function dir.getfiles(dir,mask)
     if mask then
         mask = filemask(mask)
         match = function(f)
-            return f:find(mask)
+            return path.normcase(f):find(mask)
         end
     end
     return _listfiles(dir,true,match)
