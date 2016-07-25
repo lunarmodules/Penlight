@@ -1,5 +1,6 @@
+--- Listing files in directories and creating/removing directory paths.
 --
--- Dependencies: `pl.utils`, `pl.path`, `pl.tablex`
+-- Dependencies: `pl.utils`, `pl.path`
 --
 -- Soft Dependencies: `alien`, `ffi` (either are used on Windows for copying/moving files)
 -- @module pl.dir
@@ -7,13 +8,11 @@
 local utils = require 'pl.utils'
 local path = require 'pl.path'
 local is_windows = path.is_windows
-local tablex = require 'pl.tablex'
 local ldir = path.dir
-local chdir = path.chdir
 local mkdir = path.mkdir
 local rmdir = path.rmdir
 local sub = string.sub
-local os,pcall,ipairs,pairs,require,setmetatable,_G = os,pcall,ipairs,pairs,require,setmetatable,_G
+local os,pcall,ipairs,pairs,require,setmetatable = os,pcall,ipairs,pairs,require,setmetatable
 local remove = os.remove
 local append = table.insert
 local wrap = coroutine.wrap
