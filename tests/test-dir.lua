@@ -4,15 +4,29 @@ local dir = require( "pl.dir" )
 local file = require( "pl.file" )
 local path = require( "pl.path" )
 local asserteq = require( "pl.test" ).asserteq
-local pretty = require( "pl.pretty" )
+
+asserteq(dir.fnmatch("foobar", "foo*bar"), true)
+asserteq(dir.fnmatch("afoobar", "foo*bar"), false)
+asserteq(dir.fnmatch("foobars", "foo*bar"), false)
+asserteq(dir.fnmatch("foonbar", "foo*bar"), true)
+asserteq(dir.fnmatch("foo'n'bar", "foo*bar"), true)
+asserteq(dir.fnmatch("foonbar", "foo?bar"), true)
+asserteq(dir.fnmatch("foo'n'bar", "foo?bar"), false)
+asserteq(dir.fnmatch("foo", "FOO"), path.is_windows)
+asserteq(dir.fnmatch("FOO", "foo"), path.is_windows)
+
+local filtered = dir.filter({"foobar", "afoobar", "foobars", "foonbar"}, "foo*bar")
+asserteq(filtered, {"foobar", "foonbar"})
 
 local normpath = path.normpath
 
 local expected = {normpath "../doc/config.ld"}
 
-local files = dir.getallfiles( normpath "../doc/", "*.ld" )
+local files = dir.getfiles( normpath "../doc/", "*.ld" )
+local all_files = dir.getallfiles( normpath "../doc/", "*.ld" )
 
 asserteq( files, expected )
+asserteq( all_files, expected )
 
 -- Test move files -----------------------------------------
 
