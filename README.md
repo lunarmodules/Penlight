@@ -1,14 +1,14 @@
-#Penlight Lua Libraries
+# Penlight Lua Libraries
 
 [![Build Status](https://travis-ci.org/stevedonovan/Penlight.svg)](https://travis-ci.org/stevedonovan/Penlight)
 [![Coverage Status](https://coveralls.io/repos/mpeterv/Penlight/badge.svg?branch=master&service=github)](https://coveralls.io/github/stevedonovan/Penlight?branch=master)
 [![AppVeyor status](https://ci.appveyor.com/api/projects/status/2ypffmsatb5rh9yw/branch/master?svg=true)](https://ci.appveyor.com/project/stevedonovan/penlight/branch/master)
 
-##Why a new set of libraries?
+## Why a new set of libraries?
 
 Penlight brings together a set of generally useful pure Lua modules,
 focusing on input data handling (such as reading configuration files),
-functional programming (such as map, reduce, placeholder expressions,etc),
+functional programming (such as map, reduce, placeholder expressions, etc),
 and OS path management.  Much of the functionality is inspired by the
 Python standard libraries.
 
@@ -45,11 +45,11 @@ Python standard libraries.
   * `pretty`: pretty-printing Lua tables, and various safe ways to load Lua as data
   * `List`: implementation of Python 'list' type - slices, concatenation and partitioning
   * `Map`, `Set`, `OrderedMap`: classes for specialized kinds of tables
-  * `Data`: reading tabular data into 2D arrays and efficient queries
+  * `data`: reading tabular data into 2D arrays and efficient queries
   * `array2d`: operations on 2D arrays
   * `permute`: generate permutations
 
- ### Iterators, OOP and Functional
+### Iterators, OOP and Functional
 
    * `seq`:  working with iterator pipelines; collecting iterators as tables
    * `class`: a simple reusable class framework
@@ -57,41 +57,30 @@ Python standard libraries.
    * `utils`: `utils.string_lambda` converts short strings like '|x| x^2' into functions
    * `comprehension`: list comprehensions: `C'x for x=1,4'()=={1,2,3,4}`
 
-##Requirements
+## Installation
 
-The file and directory functions depend on [LuaFileSystem](https://keplerproject.github.io/luafilesystem/) (lfs).
-If you want `dir.copyfile` to work elegantly on Windows, then you need [Alien](http://mascarenhas.github.io/alien/).
-Both are present in Lua for Windows.
+Using [LuaRocks](https://luarocks.org): simply run `luarocks install penlight`.
 
-##Installation
+Manually: copy `lua/pl` directory into your Lua module path. It's typically
+`/usr/local/share/lua/5.x` on a Linux system and `C:\Program Files\Lua\5.x\lua`
+for Lua for Windows.
 
-The directory structure is
+## Dependencies
 
-    lua
-        pl
-            (module files)
-    examples
-        (examples)
-    tests
-        (tests)
-    docs
-        (index.html)
-        api
-            (index.html)
-            modules
+The file and directory functions depend on [LuaFileSystem](https://keplerproject.github.io/luafilesystem/),
+which is installed automatically if you are using LuaRocks. Additionally, if you want `dir.copyfile` to work
+elegantly on Windows, then you need [Alien](http://mascarenhas.github.io/alien/). Both libraries are present
+in Lua for Windows.
 
-All you need to do is copy the pl directory into your Lua module path, which
-is typically /usr/local/share/lua/5.1 on a Linux system (of course, you
-can set LUA_PATH appropriately.)
-
-With Lua for Windows,  if LUA stands for 'c:\Program Files\Lua\5.1',
-then pl goes into LUA\lua, docs goes into LUA\examples\penlight and
-both examples and tests goes into LUA\examples
-
-##Building the Documentation
+## Building the Documentation
 
 Requires [ldoc](https://github.com/stevedonovan/LDoc), which is available
-through LuaRocks.  Then it's a simple matter of running ldoc in the docs folder.
+through LuaRocks.  Then it's a simple matter of running `ldoc` in the docs folder.
 
+```
 Penlight/docs$ ldoc .
+```
 
+## Running tests
+
+Execute `lua run.lua tests` to run the tests. Execute `lua run.lua examples` to run examples.
