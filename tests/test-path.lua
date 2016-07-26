@@ -23,11 +23,11 @@ testpath ([[../../alice/jones]],'../../alice','jones','')
 testpath ([[alice]],'','alice','')
 testpath ([[/path-to/dog/]],[[/path-to/dog]],'','')
 
-asserteq( path.isdir( "../doc" ), true )
-asserteq( path.isdir( "../doc/config.ld" ), false )
+asserteq( path.isdir( "doc" ), true )
+asserteq( path.isdir( "doc/config.ld" ), false )
 
-asserteq( path.isfile( "../doc" ), false )
-asserteq( path.isfile( "../doc/config.ld" ), true )
+asserteq( path.isfile( "doc" ), false )
+asserteq( path.isfile( "doc/config.ld" ), true )
 
 local norm = path.normpath
 local p = norm '/a/b'

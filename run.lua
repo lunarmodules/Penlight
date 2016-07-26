@@ -30,18 +30,24 @@ if luacov then
     lua = lua .. " -lluacov"
 end
 
-local function run_current_directory()
+local dir_sep = package.config:sub(1, 1)
+local quote = dir_sep == "/" and "'" or '"'
+local pl_src = "lua" .. dir_sep .. "?.lua"
+lua = lua .. " -e " .. quote .. "package.path=[[" .. pl_src .. ";]]..package.path" .. quote
+
+local function run_directory(dir)
     local files = {}
-    for path in lfs.dir(".") do
-        if path:find("%.lua$") and lfs.attributes(path, "mode") == "file" then
-            table.insert(files, path)
+    for path in lfs.dir(dir) do
+        local full_path = dir .. dir_sep .. path
+        if path:find("%.lua$") and lfs.attributes(full_path, "mode") == "file" then
+            table.insert(files, full_path)
         end
     end
     table.sort(files)
 
     for _, file in ipairs(files) do
         local cmd = lua .. " " .. file
-        print(cmd)
+        print("Running " .. file)
         local code1, _, code2 = os.execute(cmd)
         local code = type(code1) == "number" and code1 or code2
 
@@ -54,9 +60,7 @@ end
 
 for _, dir in ipairs(directories) do
     print("Running files in " .. dir)
-    assert(lfs.chdir(dir))
-    run_current_directory()
-    lfs.chdir("..")
+    run_directory(dir)
 end
 
 print("Run completed successfully")

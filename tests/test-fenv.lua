@@ -39,9 +39,10 @@ test.assertmatch(err,'attempt to load')
 if not package.path:find '.[/\\]%?' then
     package.path = './?.lua;'..package.path
 end
+
 asserteq(
-    package.searchpath('test-fenv',package.path):gsub('\\','/'),
-    './test-fenv.lua'
+    package.searchpath('tests.test-fenv',package.path):gsub('\\','/'),
+    './tests/test-fenv.lua'
 )
 
 -- testing getfenv and setfenv for both interpreters

@@ -121,7 +121,8 @@ local now,utc  = Date(), Date 'utc'
 asserteq(tostring(now - utc),'zero')
 
 if app.platform() ~= 'Windows' then
-    if not utils.execute ("TZ='Europe/London' "..app.lua().." test-tzone.lua") then
+    print(app.lua())
+    if not utils.execute ("TZ='Europe/London' "..app.lua().." tests/test-tzone.lua") then
         error "buggered!"
     end
 end

@@ -20,10 +20,10 @@ asserteq(filtered, {"foobar", "foonbar"})
 
 local normpath = path.normpath
 
-local expected = {normpath "../doc/config.ld"}
+local expected = {normpath "doc/config.ld"}
 
-local files = dir.getfiles( normpath "../doc/", "*.ld" )
-local all_files = dir.getallfiles( normpath "../doc/", "*.ld" )
+local files = dir.getfiles( normpath "doc/", "*.ld" )
+local all_files = dir.getallfiles( normpath "doc/", "*.ld" )
 
 asserteq( files, expected )
 asserteq( all_files, expected )
