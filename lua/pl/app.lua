@@ -85,11 +85,7 @@ function app.lua ()
     end
     local cmd, append = {}, table.insert
     for i = imin,-1 do
-        local a = args[i]
-        if a:match '%s' then
-            a = '"'..a..'"'
-        end
-        append(cmd,a)
+        append(cmd, utils.quote_arg(args[i]))
     end
     return table.concat(cmd,' '),args[imin]
 end

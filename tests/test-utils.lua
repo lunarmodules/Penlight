@@ -1,4 +1,5 @@
 local utils = require 'pl.utils'
+local path = require 'pl.path'
 local test = require 'pl.test'
 local asserteq, T = test.asserteq, test.tuple
 
@@ -102,6 +103,19 @@ asserteq(t.b,42)
 
 chunk,err = utils.load ('a = ?','<str>')
 assert(err,[[[string "<str>"]:1: unexpected symbol near '?']])
+
+asserteq(utils.quote_arg("foo"), [[foo]])
+if path.is_windows then
+    asserteq(utils.quote_arg(""), '^"^"')
+    asserteq(utils.quote_arg('"'), '^"')
+    asserteq(utils.quote_arg([[ \]]), [[^" \\^"]])
+    asserteq(utils.quote_arg([[foo\\ bar\\" baz\]]), [[^"foo\\ bar\\\\\^" baz\\^"]])
+    asserteq(utils.quote_arg("%path% ^^!()"), [[^"^%path^% ^^^^^!()^"]])
+else
+    asserteq(utils.quote_arg(""), "''")
+    asserteq(utils.quote_arg("'"), [[''\''']])
+    asserteq(utils.quote_arg([['a\'b]]), [[''\''a\'\''b']])
+end
 
 ----- importing module tables wholesale ---
 utils.import(math)
