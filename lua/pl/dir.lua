@@ -108,22 +108,12 @@ function dir.getdirectories(dir)
     return _listfiles(dir,false)
 end
 
-local function quote_argument (f)
-    f = path.normcase(f)
-    if f:find '%s' then
-        return '"'..f..'"'
-    else
-        return f
-    end
-end
-
-
 local alien,ffi,ffi_checked,CopyFile,MoveFile,GetLastError,win32_errors,cmd_tmpfile
 
 local function execute_command(cmd,parms)
    if not cmd_tmpfile then cmd_tmpfile = path.tmpname () end
    local err = path.is_windows and ' > ' or ' 2> '
-    cmd = cmd..' '..parms..err..cmd_tmpfile
+    cmd = cmd..' '..parms..err..utils.quote_arg(cmd_tmpfile)
     local ret = utils.execute(cmd)
     if not ret then
         local err = (utils.readfile(cmd_tmpfile):gsub('\n(.*)',''))
@@ -194,7 +184,7 @@ local function find_ffi_copyfile ()
 end
 
 local function two_arguments (f1,f2)
-    return quote_argument(f1)..' '..quote_argument(f2)
+    return utils.quote_arg(f1)..' '..utils.quote_arg(f2)
 end
 
 local function file_op (is_copy,src,dest,flag)
@@ -213,7 +203,7 @@ local function file_op (is_copy,src,dest,flag)
             local res, err = execute_command('copy',two_arguments(src,dest))
             if not res then return false,err end
             if not is_copy then
-                return execute_command('del',quote_argument(src))
+                return execute_command('del',utils.quote_arg(src))
             end
             return true
         else
