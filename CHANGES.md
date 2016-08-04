@@ -92,6 +92,7 @@
   - Allow XML tostring() function to customize the default prefacing with <?xml...>
   - More Robust Quoted Strings
   - lapp: improved detection of unsupported short flags
+  - `tablex.reduce` can take an optional initial memo
 
 ## 1.3.0
 
