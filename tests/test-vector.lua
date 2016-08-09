@@ -1,6 +1,11 @@
 ---- deriving specialized classes from List
 -- illustrating covariance of List methods
-require 'pl'
+local test = require 'pl.test'
+local class = require 'pl.class'
+local types = require 'pl.types'
+local operator = require 'pl.operator'
+local List = require 'pl.List'
+
 local asserteq = test.asserteq
 
 class.Vector(List)

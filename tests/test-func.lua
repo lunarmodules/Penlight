@@ -1,4 +1,6 @@
-require 'pl'
+local utils = require 'pl.utils'
+local List = require 'pl.List'
+local tablex = require 'pl.tablex'
 asserteq = require('pl.test').asserteq
 utils.import('pl.func')
 

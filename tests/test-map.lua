@@ -1,6 +1,8 @@
 -- testing Map functionality
 
-require 'pl'
+local test = require 'pl.test'
+local Map = require 'pl.Map'
+local tablex = require 'pl.tablex'
 
 local asserteq = test.asserteq
 

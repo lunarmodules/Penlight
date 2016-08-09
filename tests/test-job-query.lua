@@ -1,4 +1,7 @@
-require 'pl'
+local utils = require 'pl.utils'
+local stringio = require 'pl.stringio'
+local data = require 'pl.data'
+local test = require 'pl.test'
 
 utils.on_error 'quit'
 
