@@ -1,4 +1,5 @@
-require 'pl'
+local class = require 'pl.class'
+local test = require 'pl.test'
 asserteq = test.asserteq
 T = test.tuple
 

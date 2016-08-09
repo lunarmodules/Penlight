@@ -1,4 +1,6 @@
-require 'pl'
+local test = require 'pl.test'
+local pretty = require 'pl.pretty'
+
 function testm(x,s)
   test.asserteq(pretty.number(x,'M'),s)
 end

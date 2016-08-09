@@ -1,4 +1,5 @@
-require 'pl'
+local config = require 'pl.config'
+local stringio = require 'pl.stringio'
 asserteq = require 'pl.test'.asserteq
 
 function testconfig(test,tbl,cfg)

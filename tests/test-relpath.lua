@@ -1,4 +1,6 @@
-require 'pl'
+local path = require 'pl.path'
+local test = require 'pl.test'
+
 relpath = path.relpath
 
 path = '/a/b/c'
