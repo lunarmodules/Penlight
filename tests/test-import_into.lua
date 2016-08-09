@@ -25,3 +25,6 @@ assert(pl.utils)
 assert(pl.tablex)
 assert(pl.data)
 -- and so forth
+
+local pl_G = require 'pl.import_into'(_G)
+local pl_G_twice = require 'pl.import_into'(_G)
