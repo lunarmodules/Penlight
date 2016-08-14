@@ -453,7 +453,7 @@ end
 -- @raise start_path must be a directory
 function dir.getallfiles( start_path, pattern )
     assert_dir(1,start_path)
-    pattern = pattern or ""
+    pattern = pattern or "*"
 
     local files = {}
     local normcase = path.normcase
