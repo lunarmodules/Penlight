@@ -1,5 +1,5 @@
 ----------------
---- Lua 5.1/5.2 compatibility
+--- Lua 5.1/5.2/5.3 compatibility.
 -- Ensures that `table.pack` and `package.searchpath` are available
 -- for Lua 5.1 and LuaJIT.
 -- The exported function `load` is Lua 5.2 compatible.

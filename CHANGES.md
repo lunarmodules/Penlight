@@ -1,3 +1,34 @@
+## 1.4.0
+
+### Changes
+
+### Fixes
+
+  - `pl.path` covers edge cases better (e.g 'path.normpath` was broken)
+  - `p.dir` shell patterns fixed
+  - `os.tmpname` broken on modern Windows/MSVC14
+  - (likewise for `utils.executeex` which depends on it)
+  - `pretty.write` more robust and does not lose floating-point precision;
+    saves and restores debug hooks when loading.
+  - `pl.lexer` fixes: `cpp` lexer now filters space by default
+  - `tablex.sortv` no longer assumes that the values are all unique
+  - `stringx.center` is now consistent with Python; `stringx.rfind` and
+  `string.quote_string` fixed.
+  - `data.write` had a problem with default delimiter, properly returns error now.
+  - `pl.Set` `+` and `-` now have correct semantics
+
+### Features
+
+  - `pl.tablex` has `union` and `merge` convenience functions
+  - `pl.lapp` understands '--' meaning end of parsed arguments
+  - `utils.quote_arg` quotes command arguments for `os.execute`,
+  correctly handling all special characters.
+  - `utils.writefile` has optional `is_bin` argument
+  - 'pl.lexer' supports line numbers with string argument
+  - `stringx.endswith` may be passed an array of possible suffixes.
+  - `data.read` - in CSV mode, assume empty fields are numerical zero
+
+
 ## 1.3.2
 
 ### Changes
