@@ -28,7 +28,7 @@ local function obj (int,out)
 end
 
 local function makelist (res)
-    return setmetatable(res,utils.stdmt.List)
+    return setmetatable(res, require('pl.List'))
 end
 
 

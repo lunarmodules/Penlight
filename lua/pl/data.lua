@@ -45,10 +45,10 @@ local function strip (s)
     return (rstrip(s):gsub('^%s*',''))
 end
 
--- this gives `l` the standard List metatable, so that if you
--- do choose to pull in pl.List, you can use its methods on such lists.
-local function make_list(l)
-    return setmetatable(l,utils.stdmt.List)
+-- This gives `l` the standard List metatable,
+-- pulling in the List module.
+local function makelist(l)
+    return setmetatable(l, require('pl.List'))
 end
 
 local function map(fun,t)
@@ -79,7 +79,7 @@ local function split(line,delim,csv,n)
         -- in CSV mode trailiing commas are significant!
         if line:match ',$' then append(res,'') end
     end
-    return make_list(res)
+    return makelist(res)
 end
 
 local function find(t,v)
@@ -97,17 +97,17 @@ local DataMT = {
         for res in data.query(self,name) do
             append(arr,res)
         end
-        return make_list(arr)
+        return makelist(arr)
     end,
 
     copy_select = function(self,condn)
         condn = parse_select(condn,self)
         local iter = data.query(self,condn)
         local res = {}
-        local row = make_list{iter()}
+        local row = makelist{iter()}
         while #row > 0 do
             append(res,row)
-            row = make_list{iter()}
+            row = makelist{iter()}
         end
         res.delim = self.delim
         return data.new(res,split(condn.fields,','))
@@ -402,7 +402,7 @@ function data.new (d,fieldnames)
         d.delim = guess_delim(d.fieldnames)
         d.fieldnames = split(d.fieldnames,d.delim)
     end
-    d.fieldnames = make_list(d.fieldnames)
+    d.fieldnames = makelist(d.fieldnames)
     d.original_fieldnames = {}
     massage_fieldnames(d.fieldnames,d.original_fieldnames)
     setmetatable(d,DataMT)

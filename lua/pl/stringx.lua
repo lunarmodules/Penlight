@@ -19,7 +19,7 @@ local sub = string.sub
 local concat = table.concat
 local escape = utils.escape
 local ceil, max = math.ceil, math.max
-local assert_arg,usplit,list_MT = utils.assert_arg,utils.split,utils.stdmt.List
+local assert_arg,usplit = utils.assert_arg,utils.split
 local lstrip
 
 local function assert_string (n,s)
@@ -32,6 +32,10 @@ end
 
 local function assert_nonempty_string(n,s)
     assert_arg(n,s,'string',non_empty,'must be a non-empty string')
+end
+
+local function makelist(l)
+    return setmetatable(l, require('pl.List'))
 end
 
 local stringx = {}
@@ -139,7 +143,7 @@ function stringx.splitlines (s,keepends)
     local res = usplit(s,'[\r\n]')
     -- we are currently hacking around a problem with utils.split (see stringx.split)
     if #res == 0 then res = {''} end
-    return setmetatable(res,list_MT)
+    return makelist(res)
 end
 
 --- split a string into a list of strings using a delimiter.
@@ -161,7 +165,7 @@ function stringx.split(s,re,n)
     if re and re ~= '' and find(s,re,-#re,true) then
         res[#res+1] = ""
     end
-	return setmetatable(res,list_MT)
+	return makelist(res)
 end
 
 --- replace all tabs in s with tabsize spaces. If not specified, tabsize defaults to 8.

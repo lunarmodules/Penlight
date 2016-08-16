@@ -11,7 +11,6 @@
 
 local tablex = require 'pl.tablex'
 local utils = require 'pl.utils'
-local List = require 'pl.List'
 local stdmt = utils.stdmt
 local tmakeset,deepcompare,merge,keys,difference,tupdate = tablex.makeset,tablex.deepcompare,tablex.merge,tablex.keys,tablex.difference,tablex.update
 
@@ -24,10 +23,6 @@ local class = require 'pl.class'
 -- the Map class ---------------------
 class(nil,nil,Map)
 
-local function makemap (m)
-    return setmetatable(m,Map)
-end
-
 function Map:_init (t)
     local mt = getmetatable(t)
     if mt == Set or mt == Map then
@@ -39,7 +34,7 @@ end
 
 
 local function makelist(t)
-    return setmetatable(t,List)
+    return setmetatable(t, require('pl.List'))
 end
 
 --- list of keys.
