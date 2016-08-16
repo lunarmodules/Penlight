@@ -20,13 +20,21 @@ asserteq(filtered, {"foobar", "foonbar"})
 
 local normpath = path.normpath
 
-local expected = {normpath "doc/config.ld"}
+local doc_files = dir.getfiles(normpath "doc/", "*.ld")
+asserteq(doc_files, {normpath "doc/config.ld"})
 
-local files = dir.getfiles( normpath "doc/", "*.ld" )
-local all_files = dir.getallfiles( normpath "doc/", "*.ld" )
+local all_doc_files = dir.getallfiles(normpath "doc/", "*.ld")
+asserteq(all_doc_files, {normpath "doc/config.ld"})
 
-asserteq( files, expected )
-asserteq( all_files, expected )
+local test_samples = dir.getallfiles(normpath "tests/lua")
+table.sort(test_samples)
+asserteq(test_samples, {
+    normpath "tests/lua/animal.lua",
+    normpath "tests/lua/bar.lua",
+    normpath "tests/lua/foo/args.lua",
+    normpath "tests/lua/mod52.lua",
+    normpath "tests/lua/mymod.lua"
+})
 
 -- Test move files -----------------------------------------
 
