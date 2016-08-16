@@ -1,3 +1,15 @@
+## 1.4.1
+
+### Changes
+
+  - All functions that return instances of `pl.List`, `pl.Map` and `pl.Set` now require corresponding modules, so that their methods always work right away.
+
+### Fixes
+
+  - Fixed `dir.getallfiles` returning an empty array when called without `pattern` argument.
+
+### Features
+
 ## 1.4.0
 
 ### Changes
@@ -142,7 +154,7 @@ particularly convenient for using from Moonscript.
 
 ### Fixes
 
-- seq.reduce re-implemented to give correct order (Carl Ådahl)
+- seq.reduce re-implemented to give correct order (Carl Ã…dahl)
 - seq.unique was broken: new test
 - tablex.icopy broken for last argument; new test
 - utils.function_arg last parm 'msg' was missing
