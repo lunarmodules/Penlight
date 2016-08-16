@@ -11,9 +11,6 @@ local tsort,append,remove = table.sort,table.insert,table.remove
 local min,max = math.min,math.max
 local pairs,type,unpack,next,select,tostring = pairs,type,utils.unpack,next,select,tostring
 local function_arg = utils.function_arg
-local Set = utils.stdmt.Set
-local List = utils.stdmt.List
-local Map = utils.stdmt.Map
 local assert_arg = utils.assert_arg
 
 local tablex = {}
@@ -21,13 +18,17 @@ local tablex = {}
 -- generally, functions that make copies of tables try to preserve the metatable.
 -- However, when the source has no obvious type, then we attach appropriate metatables
 -- like List, Map, etc to the result.
-local function setmeta (res,tbl,def)
-    local mt = getmetatable(tbl) or def
-    return setmetatable(res, mt)
+local function setmeta (res,tbl,pl_class)
+    local mt = getmetatable(tbl) or pl_class and require('pl.' .. pl_class)
+    return mt and setmetatable(res, mt) or res
 end
 
-local function makelist (res)
-    return setmetatable(res,List)
+local function makelist(l)
+    return setmetatable(l, require('pl.List'))
+end
+
+local function makemap(m)
+    return setmetatable(m, require('pl.Map'))
 end
 
 local function complain (idx,msg)
@@ -267,7 +268,7 @@ function tablex.index_by(tbl,idx)
     for i = 1,#idx do
         res[i] = tbl[idx[i]]
     end
-    return setmeta(res,tbl,List)
+    return setmeta(res,tbl,'List')
 end
 
 --- apply a function to all values of a table.
@@ -304,7 +305,7 @@ function tablex.imap(fun,t,...)
     for i = 1,#t do
         res[i] = fun(t[i],...) or false
     end
-    return setmeta(res,t,List)
+    return setmeta(res,t,'List')
 end
 
 --- apply a named method to values from a table.
@@ -321,7 +322,7 @@ function tablex.map_named_method (name,t,...)
         local fun = val[name]
         res[i] = fun(val,...)
     end
-    return setmeta(res,t,List)
+    return setmeta(res,t,'List')
 end
 
 --- apply a function to all values of a table, in-place.
@@ -373,7 +374,7 @@ function tablex.map2 (fun,t1,t2,...)
     for k,v in pairs(t1) do
         res[k] = fun(v,t2[k],...)
     end
-    return setmeta(res,t1,List)
+    return setmeta(res,t1,'List')
 end
 
 --- apply a function to values from two arrays.
@@ -532,7 +533,7 @@ local function index_map_op (i,v) return i,v end
 -- @return a map-like table
 function tablex.index_map (t)
     assert_arg_indexable(1,t)
-    return setmetatable(tablex.pairmap(index_map_op,t),Map)
+    return makemap(tablex.pairmap(index_map_op,t))
 end
 
 local function set_op(i,v) return true,v end
@@ -543,7 +544,7 @@ local function set_op(i,v) return true,v end
 -- @return a set (a map-like table)
 function tablex.makeset (t)
     assert_arg_indexable(1,t)
-    return setmetatable(tablex.pairmap(set_op,t),Set)
+    return setmetatable(tablex.pairmap(set_op,t),require('pl.Set'))
 end
 
 --- combine two tables, either as union or intersection. Corresponds to
@@ -568,7 +569,7 @@ function tablex.merge (t1,t2,dup)
         res[k] = v
       end
     end
-    return setmeta(res,t1,Map)
+    return setmeta(res,t1,'Map')
 end
 
 --- the union of two map-like tables.
@@ -610,7 +611,7 @@ function tablex.difference (s1,s2,symm)
             if s1[k] == nil then res[k] = v end
         end
     end
-    return setmeta(res,s1,Map)
+    return setmeta(res,s1,'Map')
 end
 
 --- A table where the key/values are the values and value counts of the table.
@@ -639,7 +640,7 @@ function tablex.count_map (t,cmp)
             end
         end
     end
-    return setmetatable(res,Map)
+    return setmetatable(res,'Map')
 end
 
 --- filter an array's values using a predicate function
@@ -658,7 +659,7 @@ function tablex.filter (t,pred,arg)
             k = k + 1
         end
     end
-    return setmeta(res,t,List)
+    return setmeta(res,t,'List')
 end
 
 --- return a table where each element is a table of the ith values of an arbitrary
@@ -747,7 +748,7 @@ function tablex.sub(t,first,last)
     first,last = tablex._normalize_slice(t,first,last)
     local res={}
     for i=first,last do append(res,t[i]) end
-    return setmeta(res,t,List)
+    return setmeta(res,t,'List')
 end
 
 --- set an array range to a value. If it's a function we use the result

@@ -25,10 +25,13 @@ local bind1,usplit,assert_arg = utils.bind1,utils.split,utils.assert_arg
 local is_callable = require 'pl.types'.is_callable
 local unpack = utils.unpack
 
+local function makelist(l)
+    return setmetatable(l, require('pl.List'))
+end
+
 local function lstrip(str)  return (str:gsub('^%s+',''))  end
 local function strip(str)  return (lstrip(str):gsub('%s+$','')) end
-local function make_list(l)  return setmetatable(l,utils.stdmt.List) end
-local function split(s,delim)  return make_list(usplit(s,delim)) end
+local function split(s,delim)  return makelist(usplit(s,delim)) end
 
 local function imap(f,t,...)
     local res = {}
@@ -91,7 +94,7 @@ function text.wrap (s,width)
         i = i + #line
         append(lines,strip(line))
     end
-    return make_list(lines)
+    return makelist(lines)
 end
 
 --- format a paragraph so that it fits into a line width.
