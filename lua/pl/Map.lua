@@ -12,7 +12,7 @@
 local tablex = require 'pl.tablex'
 local utils = require 'pl.utils'
 local stdmt = utils.stdmt
-local tmakeset,deepcompare,merge,keys,difference,tupdate = tablex.makeset,tablex.deepcompare,tablex.merge,tablex.keys,tablex.difference,tablex.update
+local deepcompare = tablex.deepcompare
 
 local pretty_write = require 'pl.pretty' . write
 local Map = stdmt.Map

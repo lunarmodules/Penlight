@@ -17,11 +17,11 @@
 --
 -- Dependencies: `pl.utils`, `pl.tablex`
 -- @module pl.func
-local type,select,setmetatable,getmetatable,rawset = type,select,setmetatable,getmetatable,rawset
+local type,setmetatable,getmetatable,rawset = type,setmetatable,getmetatable,rawset
 local concat,append = table.concat,table.insert
 local tostring = tostring
 local utils = require 'pl.utils'
-local pairs,ipairs,loadstring,rawget,unpack  = pairs,ipairs,loadstring,rawget,utils.unpack
+local pairs,rawget,unpack = pairs,rawget,utils.unpack
 local tablex = require 'pl.tablex'
 local map = tablex.map
 local _DEBUG = rawget(_G,'_DEBUG')

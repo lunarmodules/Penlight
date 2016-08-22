@@ -8,11 +8,9 @@
 -- Operator strings like '>' and '{}' can be passed to most Penlight functions
 -- expecting a function argument.
 --
--- Dependencies: `pl.utils`
 -- @module pl.operator
 
 local strfind = string.find
-local utils = require 'pl.utils'
 
 local operator = {}
 

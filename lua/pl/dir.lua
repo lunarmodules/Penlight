@@ -29,10 +29,6 @@ local function assert_dir (n,val)
     assert_arg(n,val,'string',path.isdir,'not a directory',4)
 end
 
-local function assert_file (n,val)
-    assert_arg(n,val,'string',path.isfile,'not a file',4)
-end
-
 local function filemask(mask)
     mask = utils.escape(path.normcase(mask))
     return '^'..mask:gsub('%%%*','.*'):gsub('%%%?','.')..'$'

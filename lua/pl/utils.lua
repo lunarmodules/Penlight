@@ -1,14 +1,14 @@
 --- Generally useful routines.
 -- See  @{01-introduction.md.Generally_useful_functions|the Guide}.
+--
+-- Dependencies: `pl.compat`
+--
 -- @module pl.utils
-local format,gsub,byte = string.format,string.gsub,string.byte
+local format = string.format
 local compat = require 'pl.compat'
-local clock = os.clock
 local stdout = io.stdout
 local append = table.insert
 local unpack = rawget(_G,'unpack') or rawget(table,'unpack')
-
-local collisions = {}
 
 local utils = {
     _VERSION = "1.4.1",

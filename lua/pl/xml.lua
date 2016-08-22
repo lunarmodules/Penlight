@@ -34,7 +34,6 @@ local split         =   utils.split;
 local t_insert      =  table.insert;
 local t_concat      =  table.concat;
 local t_remove      =  table.remove;
-local s_format      = string.format;
 local s_match       =  string.match;
 local tostring      =      tostring;
 local setmetatable  =  setmetatable;
@@ -46,9 +45,7 @@ local next          =          next;
 local print         =         print;
 local unpack        =  utils.unpack;
 local s_gsub        =   string.gsub;
-local s_char        =   string.char;
 local s_find        =   string.find;
-local os            =            os;
 local pcall,require,io     =   pcall,require,io
 
 local _M = {}

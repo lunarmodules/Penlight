@@ -14,12 +14,12 @@
 --
 -- Written for Lua version Nick Trout 4.0; Redone for Lua 5.1, Steve Donovan.
 --
--- Dependencies: `pl.utils`, `pl.tablex`
+-- Dependencies: `pl.utils`, `pl.tablex`, `pl.class`
 -- @classmod pl.List
 -- @pragma nostrip
 
 local tinsert,tremove,concat,tsort = table.insert,table.remove,table.concat,table.sort
-local setmetatable, getmetatable,type,tostring,assert,string,next = setmetatable,getmetatable,type,tostring,assert,string,next
+local setmetatable, getmetatable,type,tostring,string = setmetatable,getmetatable,type,tostring,string
 local tablex = require 'pl.tablex'
 local filter,imap,imap2,reduce,transform,tremovevalues = tablex.filter,tablex.imap,tablex.imap2,tablex.reduce,tablex.transform,tablex.removevalues
 local tsub = tablex.sub

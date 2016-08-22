@@ -8,8 +8,8 @@ local utils = require ('pl.utils')
 local types = require ('pl.types')
 local getmetatable,setmetatable,require = getmetatable,setmetatable,require
 local tsort,append,remove = table.sort,table.insert,table.remove
-local min,max = math.min,math.max
-local pairs,type,unpack,next,select,tostring = pairs,type,utils.unpack,next,select,tostring
+local min = math.min
+local pairs,type,unpack,select,tostring = pairs,type,utils.unpack,select,tostring
 local function_arg = utils.function_arg
 local assert_arg = utils.assert_arg
 

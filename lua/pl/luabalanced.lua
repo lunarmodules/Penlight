@@ -20,7 +20,6 @@
 local M = {}
 
 local assert = assert
-local table_concat = table.concat
 
 -- map opening brace <-> closing brace.
 local ends = { ['('] = ')', ['{'] = '}', ['['] = ']' }

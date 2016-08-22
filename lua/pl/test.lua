@@ -12,10 +12,10 @@ local tablex = require 'pl.tablex'
 local utils = require 'pl.utils'
 local pretty = require 'pl.pretty'
 local path = require 'pl.path'
-local print,type,unpack = print,type,utils.pack
+local type,unpack = type,utils.pack
 local clock = os.clock
 local debug = require 'debug'
-local io,debug = io,debug
+local io = io
 
 local function dump(x)
     if type(x) == 'table' and not (getmetatable(x) and getmetatable(x).__tostring) then

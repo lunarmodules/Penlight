@@ -18,7 +18,6 @@ local unpack = utils.unpack
 local pairs,type,tonumber = pairs,type,tonumber
 local patterns = utils.patterns
 local io = io
-local assert_arg = utils.assert_arg
 
 local input = {}
 

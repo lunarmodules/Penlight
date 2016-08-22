@@ -12,11 +12,9 @@ local getenv = os.getenv
 local tmpnam = os.tmpname
 local attributes, currentdir, link_attrib
 local package = package
-local io = io
 local append, concat, remove = table.insert, table.concat, table.remove
-local ipairs = ipairs
 local utils = require 'pl.utils'
-local assert_arg,assert_string,raise = utils.assert_arg,utils.assert_string,utils.raise
+local assert_string,raise = utils.assert_string,utils.raise
 
 local attrib
 local path = {}
