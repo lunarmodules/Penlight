@@ -1,13 +1,12 @@
---_DEBUG=true
-data = require 'pl.data'
-List = require 'pl.List'
-array = require 'pl.array2d'
-seq = require 'pl.seq'
-utils = require 'pl.utils'
-stringio = require 'pl.stringio'
-open = stringio. open
-asserteq = require 'pl.test' . asserteq
-T = require 'pl.test'. tuple
+local data = require 'pl.data'
+local List = require 'pl.List'
+local array = require 'pl.array2d'
+local func = require 'pl.func'
+local seq = require 'pl.seq'
+local stringio = require 'pl.stringio'
+local open = stringio. open
+local asserteq = require 'pl.test' . asserteq
+local T = require 'pl.test'. tuple
 
 --[=[
 dat,err = data.read(open [[
@@ -22,7 +21,7 @@ os.exit(0)
 --]=]
 
 -- tab-separated data, explicit column names
-t1f = open [[
+local t1f = open [[
 EventID	Magnitude	LocationX	LocationY	LocationZ	LocationError	EventDate	DataFile
 981124001	2.0	18988.4	10047.1	4149.7	33.8	24/11/1998 11:18:05	981124DF.AAB
 981125001	0.8	19104.0	9970.4	5088.7	3.0	25/11/1998 05:44:54	981125DF.AAB
@@ -31,7 +30,7 @@ EventID	Magnitude	LocationX	LocationY	LocationZ	LocationError	EventDate	DataFile
 981127006	0.2	19109.9	9716.5	3612.0	11.8	27/11/1998 19:29:51	981127DF.AAG
 ]]
 
-t1 = data.read (t1f)
+local t1 = data.read (t1f)
 -- column_by_name returns a List
 asserteq(t1:column_by_name 'Magnitude',List{2,0.8,0.5,0.6,0.2})
 -- can use array.column as well
@@ -39,7 +38,7 @@ asserteq(array.column(t1,2),{2,0.8,0.5,0.6,0.2})
 
 -- only numerical columns (deduced from first data row) are converted by default
 -- can look up indices in the list fieldnames.
-EDI = t1.fieldnames:index 'EventDate'
+local EDI = t1.fieldnames:index 'EventDate'
 assert(type(t1[1][EDI]) == 'string')
 
 -- select method returns a sequence, in this case single-valued.
@@ -54,19 +53,19 @@ end
 --]]
 
 -- space-separated, but with last field containing spaces.
-t2f = open [[
+local t2f = open [[
 USER PID %MEM %CPU COMMAND
 sdonovan 2333  0.3 0.1 background --n=2
 root 2332  0.4  0.2 fred --start=yes
 root 2338  0.2  0.1 backyard-process
 ]]
 
-t2,err = data.read(t2f,{last_field_collect=true})
+local t2,err = data.read(t2f,{last_field_collect=true})
 if not t2 then return print (err) end
 
 -- the last_field_collect option is useful with space-delimited data where the last
 -- field may contain spaces. Otherwise, a record count mismatch should be an error!
-lt2 = List(t2[2])
+local lt2 = List(t2[2])
 asserteq(lt2:join ',','root,2332,0.4,0.2,fred --start=yes')
 
 -- fieldnames are converted into valid identifiers by substituting _
@@ -77,13 +76,13 @@ asserteq(t2.fieldnames,List{'USER','PID','_MEM','_CPU','COMMAND'})
 --s,err = t2:select('_MEM where USER="root"')
 --assert(err == [[[string "tmp"]:9: unexpected symbol near '=']])
 
-s = t2:select('_MEM where USER=="root"')
+local s = t2:select('_MEM where USER=="root"')
 assert(s() == 0.4)
 assert(s() == 0.2)
 assert(s() == nil)
 
 -- CSV, Excel style. Double-quoted fields are allowed, and they may contain commas!
-t3f = open [[
+local t3f = open [[
 "Department Name","Employee ID",Project,"Hours Booked"
 sales,1231,overhead,4
 sales,1255,overhead,3
@@ -92,7 +91,7 @@ engineering,1501,maintenance,3
 engineering,1433,maintenance,10
 ]]
 
-t3 = data.read(t3f,{csv=true})
+local t3 = data.read(t3f,{csv=true})
 
 -- although fieldnames are turned in valid Lua identifiers, there is always `original_fieldnames`
 asserteq(t3.fieldnames,List{'Department_Name','Employee_ID','Project','Hours_Booked'})
@@ -101,9 +100,9 @@ asserteq(t3.original_fieldnames,List{'Department Name','Employee ID','Project','
 -- a common operation is to select using a given list of columns, and each row
 -- on some explicit condition. The select() method can take a table with these
 -- parameters
-keepcols = {'Employee_ID','Hours_Booked'}
+local keepcols = {'Employee_ID','Hours_Booked'}
 
-q = t3:select { fields = keepcols,
+local q = t3:select { fields = keepcols,
     where = function(row) return row[1]=='engineering' end
     }
 
@@ -112,14 +111,12 @@ asserteq(seq.copy2(q),{{1501,5},{1501,3},{1433,10}})
 -- another pattern is doing a select to restrict rows & columns, process some
 -- fields and write out the modified rows.
 
-utils.import 'pl.func'
+local outf = stringio.create()
 
-outf = stringio.create()
-
-names = {[1501]='don',[1433]='dilbert'}
+local names = {[1501]='don',[1433]='dilbert'}
 
 t3:write_row (outf,{'Employee','Hours_Booked'})
-q = t3:select_row {fields=keepcols,where=Eq(_1[1],'engineering')}
+q = t3:select_row {fields=keepcols,where=func.Eq(func._1[1],'engineering')}
 for row in q do
     row[1] = names[row[1]]
     t3:write_row(outf,row)
@@ -191,7 +188,7 @@ if err then print(err) end
 
 asserteq(T(dat:flatten():minmax()),T(0.1,1.3))
 
-f = open [[
+local f = open [[
 Time Message
 1266840760 +# EE7C0600006F0D00C00F06010302054000000308010A00002B00407B00
 1266840760 closure data 0.000000 1972 1972 0
@@ -214,7 +211,7 @@ local function date_convert (ds)
     return Date(tonumber(ds))
 end
 
-d = data.read(f,{convert={[1]=date_convert},last_field_collect=true})
+local d = data.read(f,{convert={[1]=date_convert},last_field_collect=true})
 
 asserteq(#d[1],2)
 asserteq(d[2][1]:year(),2010)
