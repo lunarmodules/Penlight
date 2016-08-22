@@ -82,12 +82,15 @@ asserteq(endswith('dollar.txt',{'.dot','.txt'}),true)
 asserteq(endswith('dollar.rtxt',{'.dot','.txt'}),false)
 
 -- splitlines
-asserteq(T(stringx.splitlines('')), T({''}))
+asserteq(stringx.splitlines(''), {})
 asserteq(stringx.splitlines('a'), {'a'})
 asserteq(stringx.splitlines('\n'), {''})
 asserteq(stringx.splitlines('\n\n'), {'', ''})
 asserteq(stringx.splitlines('\r\r'), {'', ''})
+asserteq(stringx.splitlines('\r\n'), {''})
 asserteq(stringx.splitlines('ab\ncd\n'), {'ab', 'cd'})
+asserteq(stringx.splitlines('ab\ncd\n', true), {'ab\n', 'cd\n'})
+asserteq(stringx.splitlines('\nab\r\r\ncd\n', true), {'\n', 'ab\r', '\r\n', 'cd\n'})
 
 -- expandtabs
 ---FIX[[raises error

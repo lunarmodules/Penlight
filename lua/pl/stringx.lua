@@ -17,6 +17,7 @@ local gsub = string.gsub
 local rep = string.rep
 local sub = string.sub
 local concat = table.concat
+local append = table.insert
 local escape = utils.escape
 local ceil, max = math.ceil, math.max
 local assert_arg,usplit = utils.assert_arg,utils.split
@@ -135,14 +136,40 @@ function stringx.join(s,seq)
     return concat(seq,s)
 end
 
---- break string into a list of lines
--- @string s the string
--- @param keepends (currently not used)
-function stringx.splitlines (s,keepends)
-    assert_string(1,s)
-    local res = usplit(s,'[\r\n]')
-    -- we are currently hacking around a problem with utils.split (see stringx.split)
-    if #res == 0 then res = {''} end
+--- Split a string into a list of lines.
+-- `"\r"`, `"\n"`, and `"\r\n"` are considered line ends.
+-- They are not included in the lines unless `keepends` is passed.
+-- Terminal line end does not produce an extra line.
+-- Splitting an empty string results in an empty list.
+-- @string s the string.
+-- @bool[opt] keep_ends include line ends.
+function stringx.splitlines(s, keep_ends)
+    assert_string(1, s)
+    local res = {}
+    local pos = 1
+    while true do
+        local line_end_pos = find(s, '[\r\n]', pos)
+        if not line_end_pos then
+            break
+        end
+
+        local line_end = sub(s, line_end_pos, line_end_pos)
+        if line_end == '\r' and sub(s, line_end_pos + 1, line_end_pos + 1) == '\n' then
+            line_end = '\r\n'
+        end
+
+        local line = sub(s, pos, line_end_pos - 1)
+        if keep_ends then
+            line = line .. line_end
+        end
+        append(res, line)
+
+        pos = line_end_pos + #line_end
+    end
+
+    if pos <= #s then
+        append(res, sub(s, pos))
+    end
     return makelist(res)
 end
 
