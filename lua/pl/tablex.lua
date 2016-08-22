@@ -640,7 +640,7 @@ function tablex.count_map (t,cmp)
             end
         end
     end
-    return setmetatable(res,'Map')
+    return makemap(res)
 end
 
 --- filter an array's values using a predicate function
