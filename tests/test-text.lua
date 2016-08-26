@@ -86,6 +86,18 @@ asserteq(template.substitute(t,{_brackets='{}',_escape='>'}),[[
     print(4)
 ]])
 
+t = [[
+#@ for i = 1,3 do
+    print(@{i+1})
+#@ end
+]]
+
+asserteq(template.substitute(t,{_brackets='{}',_escape='#@',_inline_escape='@'}),[[
+    print(2)
+    print(3)
+    print(4)
+]])
+
 --- iteration using pairs is usually unordered. But using OrderedMap
 --- we can get the exact original ordering.
 
