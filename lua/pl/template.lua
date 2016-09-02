@@ -95,11 +95,12 @@ function template.substitute(str,env)
     if rawget(env,"_parent") then
         setmetatable(env,{__index = env._parent})
     end
+    local chunk_name = rawget(env,"_chunk_name") or 'TMP'
     local brackets = rawget(env,"_brackets") or '()'
     local escape = rawget(env,"_escape") or '#'
     local inline_escape = rawget(env,"_inline_escape") or '$'
     local code = parseHashLines(str,inline_escape,brackets,escape)
-    local fn,err = utils.load(code,'TMP','t',env)
+    local fn,err = utils.load(code,chunk_name,'t',env)
     if not fn then return nil,err end
     fn = fn()
     local out = {}
