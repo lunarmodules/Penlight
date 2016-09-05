@@ -74,7 +74,9 @@ function strict.module (name,mod,predeclared)
                     end 
                 else
                     local res = old_index(t, n)
-                    if res then return res end 
+                    if res ~= nil then
+                        return res
+                    end
                 end 
             end
             local msg = "variable '"..n.."' is not declared"
