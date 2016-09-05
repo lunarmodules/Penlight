@@ -91,6 +91,11 @@ asserteq(
 )
 
 asserteq(
+    count_map({"foo", "bar", "foo", "baz"}),
+    {foo = 2, bar = 1, baz = 1}
+)
+
+asserteq(
     zip({10,20,30},{100,200,300}),
     {{10,100},{20,200},{30,300}}
 )
