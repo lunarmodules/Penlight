@@ -84,9 +84,12 @@ local template = {}
 --- expand the template using the specified environment.
 -- There are three special fields in the environment table `env`
 --
---   * `_parent` continue looking up in this table (e.g. `_parent=_G`)
---   * `_brackets`; default is '()', can be any suitable bracket pair
---   * `_escape`; default is '#'
+--   * `_parent`: continue looking up in this table (e.g. `_parent=_G`).
+--   * `_brackets`: bracket pair that wraps inline Lua expressions,  default is '()'.
+--   * `_escape`: character marking Lua lines, default is '#'
+--   * `_inline_escape`: character marking inline Lua expression, default is '$'.
+--   * `_chunk_name`: chunk name for loaded templates, used if there
+--     is an error in Lua code. Default is 'TMP'.
 --
 -- @string str the template string
 -- @tab[opt] env the environment
