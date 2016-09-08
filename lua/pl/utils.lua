@@ -344,7 +344,7 @@ end
 -- @param lf function as a string
 -- @return a function
 -- @usage string_lambda '|x|x+1' (2) == 3
--- @usage string_lambda '_+1 (2) == 3
+-- @usage string_lambda '_+1' (2) == 3
 -- @function utils.string_lambda
 utils.string_lambda = utils.memoize(_string_lambda)
 
