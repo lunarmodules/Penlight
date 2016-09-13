@@ -307,7 +307,7 @@ function lapp.process_options_string(str,args)
     local end_of_flags = false
 
     local function check_parm (parm)
-        local eqi = parm:find '='
+        local eqi = parm:find '[=:]'
         if eqi then
             tinsert(arg,i+1,parm:sub(eqi+1))
             parm = parm:sub(1,eqi-1)
@@ -322,7 +322,7 @@ function lapp.process_options_string(str,args)
     while i <= #arg do
         local theArg = arg[i]
         local res = {}
-        -- after '--' we don't parse args and they end up in 
+        -- after '--' we don't parse args and they end up in
         -- the array part of the result (args[1] etc)
         if theArg == '--' then
             end_of_flags = true

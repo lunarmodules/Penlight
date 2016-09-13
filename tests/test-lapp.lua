@@ -49,6 +49,15 @@ check(simple,
     {'-o','in'},
     {quiet=false,p=false,o='in',input='<file>'})
 
+---- value of flag may be separated by '=' or ':'
+check(simple,
+    {'-o=in'},
+    {quiet=false,p=false,o='in',input='<file>'})
+
+check(simple,
+    {'-o:in'},
+    {quiet=false,p=false,o='in',input='<file>'})
+
 -- Check lapp.callback.
 local calls = {}
 function lapp.callback(param, arg)
