@@ -500,13 +500,19 @@ SMT = {
 }
 
 setmetatable(seq,{
-    __call = function(tbl,iter)
+    __call = function(tbl,iter,extra)
         if not callable(iter) then
             if type(iter) == 'table' then iter = seq.list(iter)
             else return iter
             end
         end
-        return setmetatable({iter=iter},SMT)
+        if extra then
+            return setmetatable({iter=function()
+                return iter(extra)
+            end},SMT)
+        else
+            return setmetatable({iter=iter},SMT)
+        end
     end
 })
 

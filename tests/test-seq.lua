@@ -65,6 +65,21 @@ asserteq(
     {1,2,3,4}
 )
 
+-- the seq() constructor can now take an iterator which consists of two parts,
+-- a function and an object - as returned e.g. by lfs.dir()
 
+local function my_iter(T)
+    local idx = 1
+    return function(self)
+        local res = self[idx]
+        idx = idx + 1
+        return res
+    end,
+    T
+end
 
+asserteq(
+    seq(my_iter{10,20,30}):copy(),
+    {10,20,30}
+)
 
