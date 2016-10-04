@@ -1,3 +1,22 @@
+## 1.5.0 [in progress]
+
+### Changes
+
+  - `pl.stringx.splitlines` considers `\r\n` a single line ending.
+  - `pl.stringx.splitlines` returns an empty list for an empty string.
+
+### Fixes
+
+  - `pl.tablex.count_map` no longer raises an error.
+  - `pl.strict.module` correctly handles existing `__index` metamethod returning `false`.
+  - `pl.app.parse_args` accepts colon as a separator between option name and value, as advertised.
+
+### Features
+
+  - `pl.template` supports customizing inline escape character and chunk name.
+  - `pl.seq` constructor supports iterators with a state object as the second argument.
+  - `pl.stringx.splitlines` has `keep_ends` argument.
+
 ## 1.4.1
 
 ### Changes
