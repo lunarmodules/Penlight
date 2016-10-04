@@ -20,4 +20,4 @@ script:
   - lua run.lua tests --luacov
 
 after_success:
-  - mv tests/luacov.stats.out . && luacov-coveralls -c tests/.luacov
+  - luacov-coveralls
