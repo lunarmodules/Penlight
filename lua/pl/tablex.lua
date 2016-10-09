@@ -399,13 +399,17 @@ end
 --- 'reduce' a list using a binary function.
 -- @func fun a function of two arguments
 -- @array t a list-like table
+-- @array memo optional initial memo value. Defaults to first value in table.
 -- @return the result of the function
 -- @usage reduce('+',{1,2,3,4}) == 10
-function tablex.reduce (fun,t)
+function tablex.reduce (fun,t,memo)
     assert_arg_indexable(2,t)
     fun = function_arg(1,fun)
     local n = #t
-    local res = t[1]
+    if n == 0 then
+        return memo
+    end
+    local res = memo and fun(memo, t[1]) or t[1]
     for i = 2,n do
         res = fun(res,t[i])
     end
