@@ -16,6 +16,7 @@
   - `pl.template` supports customizing inline escape character and chunk name.
   - `pl.seq` constructor supports iterators with a state object as the second argument.
   - `pl.stringx.splitlines` has `keep_ends` argument.
+  - `tablex.reduce` can take an optional initial value.
 
 ## 1.4.1
 
@@ -92,7 +93,6 @@
   - Allow XML tostring() function to customize the default prefacing with <?xml...>
   - More Robust Quoted Strings
   - lapp: improved detection of unsupported short flags
-  - `tablex.reduce` can take an optional initial memo
 
 ## 1.3.0
 
