@@ -395,7 +395,9 @@ end
 -- @param n number of items to skip
 function seq.skip (iter,n)
     n = n or 1
-    for i = 1,n do iter() end
+    for i = 1,n do
+        if iter() == nil then return list{} end
+    end
     return iter
 end
 

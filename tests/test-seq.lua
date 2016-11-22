@@ -51,6 +51,17 @@ asserteq(
 )
 
 asserteq(
+  seq{'one','two','three'}:skip(1):copy(),
+  {'two','three'}
+)
+
+-- test skipping pass sequence
+asserteq(
+  seq{'one','two','three'}:skip(4):copy(),
+  {}
+)
+
+asserteq(
   C(seq.unique(seq.list{1,2,3,2,1})),
   {1,2,3}
 )
