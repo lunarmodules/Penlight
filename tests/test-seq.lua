@@ -62,6 +62,26 @@ asserteq(
 )
 
 asserteq(
+  seq{7,8,9,10}:take(3):copy(),
+  {7,8,9}
+)
+
+asserteq(
+  seq{7,8,9,10}:take(6):copy(),
+  {7,8,9,10}
+)
+
+asserteq(
+  seq{7,8,9,10}:take(0):copy(),
+  {}
+)
+
+asserteq(
+  seq{7,8,9,10}:take(-1):copy(),
+  {}
+)
+
+asserteq(
   C(seq.unique(seq.list{1,2,3,2,1})),
   {1,2,3}
 )

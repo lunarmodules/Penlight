@@ -379,13 +379,12 @@ end
 -- @param n number of items to take
 -- @return a sequence of at most n items
 function seq.take (iter,n)
-    local i = 1
     iter = default_iter(iter)
     return function()
-        if i > n then return end
+        if n < 1 then return end
         local val1,val2 = iter()
         if not val1 then return end
-        i = i + 1
+        n = n - 1
         return val1,val2
     end
 end
