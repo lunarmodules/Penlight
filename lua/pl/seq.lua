@@ -335,9 +335,7 @@ function seq.map(fn,iter,arg)
     return function()
         local v1,v2 = iter()
         if v1 == nil then return nil end
-        if arg then return fn(v1,arg) or false
-        else return fn(v1,v2) or false
-        end
+        return fn(v1,arg or v2) or false
     end
 end
 
@@ -352,11 +350,7 @@ function seq.filter (iter,pred,arg)
         while true do
             v1,v2 = iter()
             if v1 == nil then return nil end
-            if arg then
-                if pred(v1,arg) then return v1,v2 end
-            else
-                if pred(v1,v2) then return v1,v2 end
-            end
+            if pred(v1,arg or v2) then return v1,v2 end
         end
     end
 end
