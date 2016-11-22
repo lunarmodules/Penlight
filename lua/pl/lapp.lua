@@ -11,8 +11,8 @@
 --
 --      print(args.offset + args.scale * args.number)
 --
--- Lines begining with '-' are flags; there may be a short and a long name;
--- lines begining wih '<var>' are arguments.  Anything in parens after
+-- Lines beginning with `'-'` are flags; there may be a short and a long name;
+-- lines beginning with `'<var>'` are arguments.  Anything in parens after
 -- the flag/argument is either a default, a type name or a range constraint.
 --
 -- See @{08-additional.md.Command_line_Programs_with_Lapp|the Guide}
