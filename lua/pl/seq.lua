@@ -326,11 +326,11 @@ end
 -- by a function. If you don't supply an argument, then the function will
 -- receive both values of a double-valued sequence, otherwise behaves rather like
 -- tablex.map.
--- @param fn a function to apply to elements; may take two arguments
 -- @param iter a sequence of one or two values
+-- @param fn a function to apply to elements; may take two arguments
 -- @param arg optional argument to pass to function.
-function seq.map(fn,iter,arg)
-    fn = function_arg(1,fn)
+function seq.map(iter,fn,arg)
+    fn = function_arg(2,fn)
     iter = default_iter(iter)
     return function()
         local v1,v2 = iter()
@@ -356,13 +356,13 @@ function seq.filter (iter,pred,arg)
 end
 
 --- 'reduce' a sequence using a binary function.
--- @func fn a function of two arguments
 -- @param iter a sequence
+-- @func fn a function of two arguments
 -- @param initval optional initial value
--- @usage seq.reduce(operator.add,seq.list{1,2,3,4}) == 10
--- @usage seq.reduce('-',{1,2,3,4,5}) == -13
-function seq.reduce (fn,iter,initval)
-   fn = function_arg(1,fn)
+-- @usage seq.reduce(seq.list{1,2,3,4},operator.add) == 10
+-- @usage seq.reduce({1,2,3,4,5},'-') == -13
+function seq.reduce (iter,fn,initval)
+   fn = function_arg(2,fn)
    iter = default_iter(iter)
    local val = initval or iter()
    if val == nil then return nil end
@@ -467,20 +467,11 @@ local function SW (iter,...)
 end
 
 
--- can't directly look these up in seq because of the wrong argument order...
-local map,reduce,mapmethod = seq.map, seq.reduce, seq.mapmethod
-local overrides = {
-    map = function(self,fun,arg)
-        return map(fun,self,arg)
-    end,
-    reduce = function(self,fun,initval)
-        return reduce(fun,self,initval)
-    end
-}
+local mapmethod = seq.mapmethod
 
 SMT = {
     __index = function (tbl,key)
-        local fn = overrides[key] or seq[key]
+        local fn = seq[key]
         if fn then
             return function(sw,...) return SW(fn(sw.iter,...)) end
         else
@@ -536,7 +527,7 @@ end
 function seq.import ()
     debug.setmetatable(function() end,{
         __index = function(tbl,key)
-            local s = overrides[key] or seq[key]
+            local s = seq[key]
             if s then return s
             else
                 return function(s,...) return seq.mapmethod(s,key,...) end
