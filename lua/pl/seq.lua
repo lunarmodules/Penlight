@@ -335,9 +335,7 @@ function seq.map(fn,iter,arg)
     return function()
         local v1,v2 = iter()
         if v1 == nil then return nil end
-        if arg then return fn(v1,arg) or false
-        else return fn(v1,v2) or false
-        end
+        return fn(v1,arg or v2) or false
     end
 end
 
@@ -352,30 +350,24 @@ function seq.filter (iter,pred,arg)
         while true do
             v1,v2 = iter()
             if v1 == nil then return nil end
-            if arg then
-                if pred(v1,arg) then return v1,v2 end
-            else
-                if pred(v1,v2) then return v1,v2 end
-            end
+            if pred(v1,arg or v2) then return v1,v2 end
         end
     end
 end
 
 --- 'reduce' a sequence using a binary function.
--- @func fun a function of two arguments
+-- @func fn a function of two arguments
 -- @param iter a sequence
--- @param oldval optional initial value
+-- @param initval optional initial value
 -- @usage seq.reduce(operator.add,seq.list{1,2,3,4}) == 10
 -- @usage seq.reduce('-',{1,2,3,4,5}) == -13
-function seq.reduce (fun,iter,oldval)
-   fun = function_arg(1,fun)
+function seq.reduce (fn,iter,initval)
+   fn = function_arg(1,fn)
    iter = default_iter(iter)
-   if not oldval then
-       oldval = iter()
-   end
-   local val = oldval
+   local val = initval or iter()
+   if val == nil then return nil end
    for v in iter do
-       val = fun(val,v)
+       val = fn(val,v)
    end
    return val
 end
@@ -385,13 +377,12 @@ end
 -- @param n number of items to take
 -- @return a sequence of at most n items
 function seq.take (iter,n)
-    local i = 1
     iter = default_iter(iter)
     return function()
-        if i > n then return end
+        if n < 1 then return end
         local val1,val2 = iter()
         if not val1 then return end
-        i = i + 1
+        n = n - 1
         return val1,val2
     end
 end
@@ -401,7 +392,9 @@ end
 -- @param n number of items to skip
 function seq.skip (iter,n)
     n = n or 1
-    for i = 1,n do iter() end
+    for i = 1,n do
+        if iter() == nil then return list{} end
+    end
     return iter
 end
 
@@ -480,8 +473,8 @@ local overrides = {
     map = function(self,fun,arg)
         return map(fun,self,arg)
     end,
-    reduce = function(self,fun)
-        return reduce(fun,self)
+    reduce = function(self,fun,initval)
+        return reduce(fun,self,initval)
     end
 }
 
