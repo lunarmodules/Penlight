@@ -356,20 +356,20 @@ function seq.filter (iter,pred,arg)
 end
 
 --- 'reduce' a sequence using a binary function.
--- @func fun a function of two arguments
+-- @func fn a function of two arguments
 -- @param iter a sequence
--- @param oldval optional initial value
+-- @param initval optional initial value
 -- @usage seq.reduce(operator.add,seq.list{1,2,3,4}) == 10
 -- @usage seq.reduce('-',{1,2,3,4,5}) == -13
-function seq.reduce (fun,iter,oldval)
-   fun = function_arg(1,fun)
+function seq.reduce (fn,iter,initval)
+   fn = function_arg(1,fn)
    iter = default_iter(iter)
-   if not oldval then
-       oldval = iter()
+   if not initval then
+       initval = iter()
    end
-   local val = oldval
+   local val = initval
    for v in iter do
-       val = fun(val,v)
+       val = fn(val,v)
    end
    return val
 end
