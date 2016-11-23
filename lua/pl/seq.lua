@@ -364,10 +364,8 @@ end
 function seq.reduce (fn,iter,initval)
    fn = function_arg(1,fn)
    iter = default_iter(iter)
-   if not initval then
-       initval = iter()
-   end
-   local val = initval
+   local val = initval or iter()
+   if val == nil then return nil end
    for v in iter do
        val = fn(val,v)
    end
@@ -475,8 +473,8 @@ local overrides = {
     map = function(self,fun,arg)
         return map(fun,self,arg)
     end,
-    reduce = function(self,fun)
-        return reduce(fun,self)
+    reduce = function(self,fun,initval)
+        return reduce(fun,self,initval)
     end
 }
 

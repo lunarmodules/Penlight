@@ -46,6 +46,32 @@ asserteq(
 )
 
 asserteq(
+  seq {1,2,3,4,5}:reduce ('*'), 120
+)
+
+-- test reduce with an initial value
+asserteq(
+  seq {1,2,3,4,5}:reduce ('+', 42), 57
+)
+
+-- test reduce with a short sequence
+asserteq(
+  seq {7}:reduce ('+'), 7
+)
+
+asserteq(
+  seq {5}:reduce ('/', 40), 8
+)
+
+asserteq(
+  seq {}:reduce ('+', 42), 42
+)
+
+asserteq(
+  seq {}:reduce ('-'), nil
+)
+
+asserteq(
   seq{'one','two'}:upper():copy(),
   {'ONE','TWO'}
 )
