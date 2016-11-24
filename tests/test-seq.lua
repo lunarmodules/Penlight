@@ -26,6 +26,31 @@ asserteq(
   {20,15}
 )
 
+asserteq(
+  seq.copy(seq.filter(seq.list{10,20,5,15},seq.less_than(15))),
+  {10,5}
+)
+
+asserteq(
+  #C(seq.filter(seq.list{10,20,5,10,15},seq.equal_to(10))),
+  2
+)
+
+asserteq(
+  seq{'apple','orange','pineapple'}:filter(seq.matching'apple'):copy(),
+  {'apple','pineapple'}
+)
+
+asserteq(
+  C(seq.sort(seq.keys{[11] = true, [17]= true, [23] = true})),
+  {11,17,23}
+)
+
+asserteq(
+  C(seq.range(2,5)),
+  {2,3,4,5}
+)
+
 asserteq(seq.reduce('-',{1,2,3,4,5}),-13)
 
 asserteq(seq.count(S{10,20,30,40},L'|x| x > 20'), 2)
