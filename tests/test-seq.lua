@@ -37,6 +37,11 @@ asserteq(
 )
 
 asserteq(
+  #seq{'green','yellow','red','blue','red'}:filter(seq.equal_to'red'):copy(),
+  2
+)
+
+asserteq(
   seq{'apple','orange','pineapple'}:filter(seq.matching'apple'):copy(),
   {'apple','pineapple'}
 )
@@ -142,6 +147,12 @@ asserteq(
 rand_seq = seq(seq.random(7, u))
 asserteq(
   #rand_seq:filter(seq.less_than(u+1)):filter(seq.greater_than(0)):copy(),
+  7
+)
+
+rand_seq = seq(seq.random(7))
+asserteq(
+  #rand_seq:filter(seq.less_than(1)):filter(seq.greater_than(0)):copy(),
   7
 )
 
