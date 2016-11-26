@@ -156,20 +156,38 @@ asserteq(
   7
 )
 
-test = {354,215,696,501,786}
+test = {275,127,286,590,961,687,802,453,705,182}
 asserteq(
   C(seq.sort{seq(test):minmax()}),
-  {215,786}
+  {127,961}
 )
 
 asserteq(
-  seq(test):enum():copy_tuples(),
-  {{1,354},{2,215},{3,696},{4,501},{5,786}}
+  seq(test):take(5):enum():copy_tuples(),
+  {{1,275},{2,127},{3,286},{4,590},{5,961}}
 )
 
 asserteq(
   C(seq.unique(seq.list{1,2,3,2,1})),
   {1,2,3}
+)
+
+local actualstr = {}
+local expectedstr = "275.00 127.00 286.00 590.00 961.00 687.00 802.00\n"..
+                    "453.00 705.00 182.00 \n"
+local function proxywrite_printall(head, ...)
+  table.insert(actualstr, tostring(head))
+  if select('#', ...) == 0 then return true end
+  return proxywrite_printall(...)
+end
+
+local iowrite = io.write
+io.write = proxywrite_printall
+seq(test):printall(nil,nil,'%.2f')
+io.write = iowrite
+asserteq(
+  table.concat(actualstr),
+  expectedstr
 )
 
 
@@ -186,11 +204,10 @@ asserteq(
 -- a function and an object - as returned e.g. by lfs.dir()
 
 local function my_iter(T)
-    local idx = 1
+    local idx = 0
     return function(self)
-        local res = self[idx]
         idx = idx + 1
-        return res
+        return self[idx]
     end,
     T
 end
