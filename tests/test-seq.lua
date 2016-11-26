@@ -132,6 +132,30 @@ asserteq(
   {}
 )
 
+local l, u = 50, 100
+local rand_seq = seq(seq.random(7, l, u))
+asserteq(
+  #rand_seq:filter(seq.less_than(u+1)):filter(seq.greater_than(l-1)):copy(),
+  7
+)
+
+rand_seq = seq(seq.random(7, u))
+asserteq(
+  #rand_seq:filter(seq.less_than(u+1)):filter(seq.greater_than(0)):copy(),
+  7
+)
+
+test = {354,215,696,501,786}
+asserteq(
+  C(seq.sort{seq(test):minmax()}),
+  {215,786}
+)
+
+asserteq(
+  seq(test):enum():copy_tuples(),
+  {{1,354},{2,215},{3,696},{4,501},{5,786}}
+)
+
 asserteq(
   C(seq.unique(seq.list{1,2,3,2,1})),
   {1,2,3}
