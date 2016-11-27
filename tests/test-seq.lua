@@ -26,6 +26,36 @@ asserteq(
   {20,15}
 )
 
+asserteq(
+  seq.copy(seq.filter(seq.list{10,20,5,15},seq.less_than(15))),
+  {10,5}
+)
+
+asserteq(
+  #C(seq.filter(seq.list{10,20,5,10,15},seq.equal_to(10))),
+  2
+)
+
+asserteq(
+  #seq{'green','yellow','red','blue','red'}:filter(seq.equal_to'red'):copy(),
+  2
+)
+
+asserteq(
+  seq{'apple','orange','pineapple'}:filter(seq.matching'apple'):copy(),
+  {'apple','pineapple'}
+)
+
+asserteq(
+  C(seq.sort(seq.keys{[11] = true, [17]= true, [23] = true})),
+  {11,17,23}
+)
+
+asserteq(
+  C(seq.range(2,5)),
+  {2,3,4,5}
+)
+
 asserteq(seq.reduce('-',{1,2,3,4,5}),-13)
 
 asserteq(seq.count(S{10,20,30,40},L'|x| x > 20'), 2)
@@ -107,9 +137,57 @@ asserteq(
   {}
 )
 
+local l, u = 50, 100
+local rand_seq = seq(seq.random(7, l, u))
+asserteq(
+  #rand_seq:filter(seq.less_than(u+1)):filter(seq.greater_than(l-1)):copy(),
+  7
+)
+
+rand_seq = seq(seq.random(7, u))
+asserteq(
+  #rand_seq:filter(seq.less_than(u+1)):filter(seq.greater_than(0)):copy(),
+  7
+)
+
+rand_seq = seq(seq.random(7))
+asserteq(
+  #rand_seq:filter(seq.less_than(1)):filter(seq.greater_than(0)):copy(),
+  7
+)
+
+test = {275,127,286,590,961,687,802,453,705,182}
+asserteq(
+  C(seq.sort{seq(test):minmax()}),
+  {127,961}
+)
+
+asserteq(
+  seq(test):take(5):enum():copy_tuples(),
+  {{1,275},{2,127},{3,286},{4,590},{5,961}}
+)
+
 asserteq(
   C(seq.unique(seq.list{1,2,3,2,1})),
   {1,2,3}
+)
+
+local actualstr = {}
+local expectedstr = "275.00 127.00 286.00 590.00 961.00 687.00 802.00\n"..
+                    "453.00 705.00 182.00 \n"
+local function proxywrite_printall(head, ...)
+  table.insert(actualstr, tostring(head))
+  if select('#', ...) == 0 then return true end
+  return proxywrite_printall(...)
+end
+
+local iowrite = io.write
+io.write = proxywrite_printall
+seq(test):printall(nil,nil,'%.2f')
+io.write = iowrite
+asserteq(
+  table.concat(actualstr),
+  expectedstr
 )
 
 
@@ -126,11 +204,10 @@ asserteq(
 -- a function and an object - as returned e.g. by lfs.dir()
 
 local function my_iter(T)
-    local idx = 1
+    local idx = 0
     return function(self)
-        local res = self[idx]
         idx = idx + 1
-        return res
+        return self[idx]
     end,
     T
 end
