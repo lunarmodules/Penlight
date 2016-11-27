@@ -196,7 +196,7 @@ end
 -- @param n the length of the sequence
 -- @param l same as the first optional argument to math.random
 -- @param u same as the second optional argument to math.random
--- @return a sequnce
+-- @return a sequence
 function seq.random(n,l,u)
   local rand
   assert(type(n) == 'number')
