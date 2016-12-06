@@ -17,11 +17,11 @@ compat.lua51 = _VERSION == 'Lua 5.1'
 -- @return true if successful
 -- @return actual return code
 function compat.execute (cmd)
-    local res1,res2,res2 = os.execute(cmd)
+    local res1,res2,res3 = os.execute(cmd)
     if compat.lua51 then
         return res1==0,res1
     else
-        return not not res1,res2
+        return not not res1,res3
     end
 end
 
