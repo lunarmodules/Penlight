@@ -11,14 +11,20 @@ local compat = {}
 
 compat.lua51 = _VERSION == 'Lua 5.1'
 
+local isJit = (tostring(assert):match('builtin') ~= nil)
+if isJit then
+    -- 'goto' is a keyword when 52 compatibility is enabled in LuaJit
+    compat.jit52 = not loadstring("local goto = 1")
+end
+
 --- execute a shell command.
 -- This is a compatibility function that returns the same for Lua 5.1 and Lua 5.2
 -- @param cmd a shell command
 -- @return true if successful
 -- @return actual return code
 function compat.execute (cmd)
-    local res1,res2,res3 = os.execute(cmd)
-    if compat.lua51 then
+    local res1,_,res3 = os.execute(cmd)
+    if compat.lua51 and not compat.jit52 then
         return res1==0,res1
     else
         return not not res1,res3
@@ -47,7 +53,7 @@ end
 -- @function compat.setfenv
 
 if compat.lua51 then -- define Lua 5.2 style load()
-    if not tostring(assert):match 'builtin' then -- but LuaJIT's load _is_ compatible
+    if not isJit then -- but LuaJIT's load _is_ compatible
         local lua51_load = load
         function compat.load(str,src,mode,env)
             local chunk,err
