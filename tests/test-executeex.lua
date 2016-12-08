@@ -1,12 +1,14 @@
-utils = require 'pl.utils'
-asserteq = require 'pl.test'.asserteq
+local compat = require 'pl.compat'
+local path = require 'pl.path'
+local utils = require 'pl.utils'
+local asserteq = require 'pl.test'.asserteq
 
 local echo_lineending = "\n"
 local retcode_multiplier = 1
-if require 'pl.path'.is_windows then
+if path.is_windows then
     echo_lineending = " \n"
 else
-    if require 'pl.compat'.lua51 then
+    if compat.lua51 and not compat.jit52 then
         retcode_multiplier = 256
     end
 end
