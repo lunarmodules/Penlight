@@ -445,20 +445,20 @@ end
 
 
 --- Recursively returns all the file starting at _path_. It can optionally take a shell pattern and
--- only returns files that match _pattern_. If a pattern is given it will do a case insensitive search.
+-- only returns files that match _shell_pattern_. If a pattern is given it will do a case insensitive search.
 -- @string start_path  A directory. If not given, all files in current directory are returned.
--- @string pattern A shell pattern. If not given, all files are returned.
--- @treturn List(string) containing all the files found recursively starting at _path_ and filtered by _pattern_.
+-- @string shell_pattern A shell pattern. If not given, all files are returned.
+-- @treturn List(string) containing all the files found recursively starting at _path_ and filtered by _shell_pattern_.
 -- @raise start_path must be a directory
-function dir.getallfiles( start_path, pattern )
+function dir.getallfiles( start_path, shell_pattern )
     assert_dir(1,start_path)
-    pattern = pattern or "*"
+    shell_pattern = shell_pattern or "*"
 
     local files = {}
     local normcase = path.normcase
     for filename, mode in dir.dirtree( start_path ) do
         if not mode then
-            local mask = filemask( pattern )
+            local mask = filemask( shell_pattern )
             if normcase(filename):find( mask ) then
                 files[#files + 1] = filename
             end
