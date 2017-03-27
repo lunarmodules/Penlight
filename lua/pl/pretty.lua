@@ -46,7 +46,12 @@ local pretty = {}
 local function save_global_env()
     local env = {}
     env.hook, env.mask, env.count = debug.gethook()
-    debug.sethook()
+    
+    -- env.hook is "external hook" if is a C hook function
+	if env.hook~="external hook" then
+	    debug.sethook()
+	end
+    
     env.string_mt = getmetatable("")
     debug.setmetatable("", nil)
     return env
@@ -55,7 +60,9 @@ end
 local function restore_global_env(env)
     if env then
         debug.setmetatable("", env.string_mt)
-        debug.sethook(env.hook, env.mask, env.count)
+        if env.hook~="external hook" then
+            debug.sethook(env.hook, env.mask, env.count)
+        end
     end
 end
 
