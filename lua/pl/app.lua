@@ -125,8 +125,8 @@ function app.parse_args (args,flags_with_values)
                 flags[v] = args[i+1]
                 i = i + 1
             else
-                -- a value can also be indicated with =
-                local var,val =  utils.splitv (v,'=')
+                -- a value can also be indicated with = or :
+                local var,val =  utils.splitv (v,'[=:]')
                 var = var or v
                 val = val or true
                 if not is_long then
