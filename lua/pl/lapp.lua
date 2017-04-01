@@ -229,6 +229,7 @@ function lapp.process_options_string(str,args)
         if check '-$v{short}, --$o{long} $' or check '-$v{short} $' or check '--$o{long} $' then
             if res.long then
                 optparm = res.long:gsub('[^%w%-]','_')  -- I'm not sure the $o pattern will let anything else through?
+                if #res.rest == 1 then optparm = optparm .. res.rest end
                 if res.short then aliases[res.short] = optparm  end
             else
                 optparm = res.short
