@@ -159,6 +159,18 @@ local function process_default (sval,vtype)
             return true, 'boolean'
         end
         if sval:match '^["\']' then sval = sval:sub(2,-2) end
+
+        local ps = types[vtype] or {}
+        ps.type = vtype
+
+        local show_usage_error = lapp.show_usage_error
+        lapp.show_usage_error = "throw"
+        success, val = pcall(convert_parameter, ps, sval)
+        lapp.show_usage_error = show_usage_error
+        if success then
+          return val, vtype
+        end
+
         return sval,vtype or 'string'
     end
 end
@@ -197,6 +209,13 @@ function lapp.process_options_string(str,args)
     end
 
     usage = str
+
+    for _,a in ipairs(arg) do
+      if a == "-h" or a == "--help" then
+        return lapp.quit()
+      end
+    end
+
 
     for line in lines(str) do
         local res = {}
