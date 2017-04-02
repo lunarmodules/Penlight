@@ -2,27 +2,30 @@
 
 ### Changes
 
-  - `pl.stringx.splitlines` considers `\r\n` a single line ending.
-  - `pl.stringx.splitlines` returns an empty list for an empty string.
+  - `stringx.splitlines` considers `\r\n` a single line ending.
+  - `stringx.splitlines` returns an empty list for an empty string.
 
 ### Fixes
 
-  - `pl.tablex.count_map` no longer raises an error.
-  - `pl.strict.module` correctly handles existing `__index` metamethod returning `false`.
-  - `pl.app.parse_args` accepts colon as a separator between option name and value, as advertised.
+  - `tablex.count_map` no longer raises an error.
+  - `strict.module` correctly handles existing `__index` metamethod returning `false`.
+  - `app.parse_args` accepts colon as a separator between option name and value, as advertised.
+  - `pretty.load` handles case where a C hook is present.
+  ' `os.execute` had issue with LuaJIT in 5.2 compat mode.
 
 ### Features
 
-  - `pl.template` supports customizing inline escape character and chunk name.
-  - `pl.seq` constructor supports iterators with a state object as the second argument.
-  - `pl.stringx.splitlines` has `keep_ends` argument.
+  - `template` supports customizing inline escape character and chunk name.
+  - `seq` constructor supports iterators with a state object as the second argument.
+  - `stringx.splitlines` has `keep_ends` argument.
   - `tablex.reduce` can take an optional initial value.
 
 ## 1.4.1
 
 ### Changes
 
-  - All functions that return instances of `pl.List`, `pl.Map` and `pl.Set` now require corresponding modules, so that their methods always work right away.
+  - All functions that return instances of `pl.List`, `pl.Map` and `pl.Set` now require corresponding modules,
+   so that their methods always work right away.
 
 ### Fixes
 
