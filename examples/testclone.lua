@@ -1,5 +1,5 @@
 --cloning a directory tree.
-
+local lfs = require 'lfs'
 require 'pl'
 p1 = [[examples]]
 p2 = [[copy/of/examples]]
