@@ -72,7 +72,7 @@ local function _listfiles(dir,filemode,match)
     for f in ldir(dir) do
         if f ~= '.' and f ~= '..' then
             local p = path.join(dir,f)
-            if check(p) and (not match or match(p)) then
+            if check(p) and (not match or match(f)) then
                 append(res,p)
             end
         end
