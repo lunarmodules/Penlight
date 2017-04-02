@@ -168,7 +168,7 @@ local function process_default (sval,vtype)
         success, val = pcall(convert_parameter, ps, sval)
         lapp.show_usage_error = show_usage_error
         if success then
-          return val, vtype
+          return val, vtype or 'string'
         end
 
         return sval,vtype or 'string'
@@ -305,6 +305,7 @@ function lapp.process_options_string(str,args)
                 varargs = varargs
             }
             varargs = nil
+            print(optparm,vtype)
             if types[vtype] then
                 local converter = types[vtype].converter
                 if type(converter) == 'string' then
