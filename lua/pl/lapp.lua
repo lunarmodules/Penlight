@@ -305,7 +305,6 @@ function lapp.process_options_string(str,args)
                 varargs = varargs
             }
             varargs = nil
-            print(optparm,vtype)
             if types[vtype] then
                 local converter = types[vtype].converter
                 if type(converter) == 'string' then
