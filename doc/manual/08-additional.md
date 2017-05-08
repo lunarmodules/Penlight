@@ -186,7 +186,7 @@ An example will make this clearer:
       Does some calculations
         -o,--offset (default 0.0)  Offset to add to scaled number
         -s,--scale  (number)  Scaling factor
-         <number> (number )  Number to be scaled
+        <number> (number)  Number to be scaled
       ]]
 
       print(args.offset + args.scale * args.number)
@@ -217,8 +217,8 @@ specifier.
 
 Type specifiers usually start with a type name: one of 'boolean', 'string','number','file-in' or
 'file-out'.  You may leave this out, but then _must_ say 'default' followed by a value.
-If a flag or parameter has a default, it is not _required_ and is set to the default. The actual 
-type is deduced from this value (number, string, file or boolean) if not provided directly. 
+If a flag or parameter has a default, it is not _required_ and is set to the default. The actual
+type is deduced from this value (number, string, file or boolean) if not provided directly.
 'Deduce' is a fancy word for 'guess' and it can be wrong, e.g '(default 1)'
 will always be a number. You can say '(string default 1)' to override the guess.
 There are file values for the predefined console streams: stdin, stdout, stderr.
@@ -284,7 +284,7 @@ close them.
 
 #### Enforcing a Range and Enumerations
 
-The type specifier can also be of the form '(' MIN '..' MAX ')' or a set of strings 
+The type specifier can also be of the form '(' MIN '..' MAX ')' or a set of strings
 separated by '|'.
 
     local lapp = require 'pl.lapp'
@@ -329,7 +329,7 @@ to Lapp, or a function which takes a string and generates a value.
 Here's a useful custom type that allows dates to be input as @{pl.Date} values:
 
     local df = Date.Format()
-    
+
     lapp.add_type('date',
         function(s)
             local d,e = df:parse(s)
@@ -513,10 +513,10 @@ And here we can see the output of `test.lua`:
 
 ### Simple Test Framework
 
-`pl.test` was originally developed for the sole purpose of testing Penlight itself, 
+`pl.test` was originally developed for the sole purpose of testing Penlight itself,
 but you may find it useful for your own applications. ([There are many other options](http://lua-users.org/wiki/UnitTesting).)
 
-Most of the goodness is in `test.asserteq`.  It uses `tablex.deepcompare` on its two arguments, 
+Most of the goodness is in `test.asserteq`.  It uses `tablex.deepcompare` on its two arguments,
 and by default quits the test application with a non-zero exit code, and an informative
 message printed to stderr:
 
@@ -536,7 +536,7 @@ message printed to stderr:
     --~  [3] = 30.1
     --~ }
     --~ these values were not equal
-    
+
 This covers most cases but it's also useful to compare strings using `string.match`
 
     -- must start with bonzo the dog
