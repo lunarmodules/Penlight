@@ -227,6 +227,20 @@ The boolean type is the default for flags. Not providing the type specifier is e
 '(boolean default false)`.  If the flag is meant to be 'turned off' then either the full
 '(boolean default true)` or the shortcut '(default true)' will work.
 
+An alternative to `default` is `optional`:
+
+    local lapp = require 'pl.lapp'
+    local args = lapp [[
+       --cmd (optional string) Command to run.
+    ]]
+
+    if args.cmd then
+      os.execute(args.cmd)
+    end
+
+Here we're implying that `cmd` need not be specified (just as with `default`) but if not
+present, then `args.cmd` is `nil`, which will always test false.
+
 The rest of the line is ignored and can be used for explanatory text.
 
 This script shows the relation between the specified parameter names and the
