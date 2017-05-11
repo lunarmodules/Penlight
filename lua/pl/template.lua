@@ -32,29 +32,17 @@ local utils = require 'pl.utils'
 
 local append,format,strsub,strfind = table.insert,string.format,string.sub,string.find
 
--- If expression nesting is too deep, loading will result in
--- "chunk has too many syntax levels " error.
--- By default the limit is 200, but it can be also consumed by nested blocks
--- added in raw Lua code, so it's better to stop earlier.
-local max_concatenations = 100
+local APPENDER = "\n__R_size = __R_size + 1; __R_table[__R_size] = "
 
 local function parseDollarParen(pieces, chunk, exec_pat)
-    local concatenations = 0
     local s = 1
     for term, executed, e in chunk:gmatch(exec_pat) do
         executed = '('..strsub(executed,2,-2)..')'
-        concatenations = concatenations + 2
-        if concatenations > max_concatenations then
-            append(pieces, format("%q)_put((%s or '')..",
-                strsub(chunk,s, term - 1), executed))
-            concatenations = 1
-        else
-            append(pieces, format("%q..(%s or '')..",
-                strsub(chunk,s, term - 1), executed))
-        end
+        append(pieces, APPENDER..format("%q", strsub(chunk,s, term - 1)))
+        append(pieces, APPENDER..format("(%s or '')", executed))
         s = e
     end
-    append(pieces, format("%q", strsub(chunk,s)))
+    append(pieces, APPENDER..format("%q", strsub(chunk,s)))
 end
 
 local function parseHashLines(chunk,inline_escape,brackets,esc)
@@ -62,27 +50,25 @@ local function parseHashLines(chunk,inline_escape,brackets,esc)
 
     local esc_pat = esc.."+([^\n]*\n?)"
     local esc_pat1, esc_pat2 = "^"..esc_pat, "\n"..esc_pat
-    local  pieces, s = {"return function(_put) ", n = 1}, 1
+    local  pieces, s = {"return function()\nlocal __R_size, __R_table = 0, {}", n = 1}, 1
     while true do
         local ss, e, lua = strfind(chunk,esc_pat1, s)
         if not e then
             ss, e, lua = strfind(chunk,esc_pat2, s)
-            append(pieces, "_put(")
             parseDollarParen(pieces, strsub(chunk,s, ss), exec_pat)
-            append(pieces, ")")
             if not e then break end
         end
-        append(pieces, lua)
+        append(pieces, "\n"..lua)
         s = e + 1
     end
-    append(pieces, " end")
+    append(pieces, "\nreturn __R_table\nend")
     return table.concat(pieces)
 end
 
 local template = {}
 
 --- expand the template using the specified environment.
--- There are three special fields in the environment table `env`
+-- There are six special fields in the environment table `env`
 --
 --   * `_parent`: continue looking up in this table (e.g. `_parent=_G`).
 --   * `_brackets`: bracket pair that wraps inline Lua expressions,  default is '()'.
@@ -90,31 +76,78 @@ local template = {}
 --   * `_inline_escape`: character marking inline Lua expression, default is '$'.
 --   * `_chunk_name`: chunk name for loaded templates, used if there
 --     is an error in Lua code. Default is 'TMP'.
+--   * `_debug`: if thruthy, the generated code will be printed upon a render error
 --
 -- @string str the template string
 -- @tab[opt] env the environment
+-- @return `rendered template + nil + code`, or `nil + error + code`. The last return value
+-- `code` is only returned if the debug option is used.
 function template.substitute(str,env)
     env = env or {}
-    if rawget(env,"_parent") then
-        setmetatable(env,{__index = env._parent})
+    local t, err = template.compile(str, 
+        rawget(env,"_chunk_name"),
+        rawget(env,"_escape"),
+        rawget(env,"_inline_escape"),
+        rawget(env,"_brackets"),
+        rawget(env,"_debug"))
+    if not t then return t, err end
+    
+    return t:render(env, rawget(env,"_parent"), rawget(env,"_debug"))
+end
+
+--- executes the previously compiled template and renders it.
+-- @tab[opt] env the environment.
+-- @tab[opt] parent continue looking up in this table (e.g. `_parent=_G`).
+-- @bool[opt] db if thruthy, it will print the code upon a render error. Note:
+-- the template must have been compiled with the debug option as well! (only
+-- here for backward compatibility, as the function will return the generated
+-- code anyway if available)
+-- @return `rendered template + nil + code`, or `nil + error + code`. The last return value
+-- `code` is only returned if the template was compiled with the debug option.
+local render = function(self, env, parent, db)
+    env = env or {}
+    if parent then  -- parent is a bit silly, but for backward compatibility retained
+        setmetatable(env, {__index = parent})
     end
-    local chunk_name = rawget(env,"_chunk_name") or 'TMP'
-    local brackets = rawget(env,"_brackets") or '()'
-    local escape = rawget(env,"_escape") or '#'
-    local inline_escape = rawget(env,"_inline_escape") or '$'
-    local code = parseHashLines(str,inline_escape,brackets,escape)
-    local fn,err = utils.load(code,chunk_name,'t',env)
-    if not fn then return nil,err end
-    fn = fn()
-    local out = {}
-    local res,err = xpcall(function() fn(function(s)
-        out[#out+1] = s
-    end) end,debug.traceback)
+    setmetatable(self.env, {__index = env})
+
+    local res, out = xpcall(self.fn, debug.traceback)
     if not res then
-        if env._debug then print(code) end
-        return nil,err
+        if self.code and db then print(self.code) end
+        return nil, err, self.code
     end
-    return table.concat(out)
+    return table.concat(out), nil, self.code
+end
+
+--- compiles the template.
+-- Returns an object that can repeatedly be run without parsing the template
+-- again.
+-- @string str the template string
+-- @string[opt] chunk_name chunk name for loaded templates, used if there is an error in Lua code. Default is 'TMP'.
+-- @string[opt] escape character marking Lua lines, default is '#'.
+-- @string[opt] inline_escape character marking inline Lua expression, default is '$'.
+-- @string[opt] inline_brackets bracket pair that wraps inline Lua expressions, default is '()'.
+-- @bool[opt] db if thruthy, the generated code will be printed upon rendering errors
+-- @return template object, or nil + error
+-- @usage
+-- local t, err = template.compile(my_template)
+-- local rendered , err = t:render(my_env, parent)
+function template.compile(str, chunk_name, escape, inline_escape, inline_brackets, db)
+    chunk_name = chunk_name or 'TMP'
+    escape = escape or '#'
+    inline_escape = inline_escape or '$'
+    inline_brackets = inline_brackets or '()'
+    
+    local code = parseHashLines(str,inline_escape,inline_brackets,escape)
+    local env = {}
+    local fn, err = utils.load(code, chunk_name,'t',env)
+    if not fn then return nil, err end
+    return {
+        fn = fn(),
+        env = env,
+        render = render,
+        code = db and code or nil,
+    }
 end
 
 return template

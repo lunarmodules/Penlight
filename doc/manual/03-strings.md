@@ -140,7 +140,11 @@ So a template generating an HTML list would look like this:
 Assume the text is inside `tmpl`, then the template can be expanded using:
 
     local template = require 'pl.template'
-    res = template.substitute(tmpl,{T = {'one','two','three'}})
+    local my_env = {
+      ipairs = ipairs,
+      T = {'one','two','three'}
+    }
+    res = template.substitute(tmpl, my_env)
 
 and we get
 
