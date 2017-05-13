@@ -1,4 +1,55 @@
 local template = require 'pl.template'
+local subst = template.substitute
+local List = require 'pl.List'
+local asserteq = require 'pl.test'.asserteq
+local utils = require 'pl.utils'
+
+
+
+asserteq(subst([[
+# for i = 1,2 do
+<p>Hello $(tostring(i))</p>
+# end
+]],_G),[[
+<p>Hello 1</p>
+<p>Hello 2</p>
+]])
+
+
+
+asserteq(subst([[
+<ul>
+# for name in ls:iter() do
+   <li>$(name)</li>
+#end
+</ul>
+]],{ls = List{'john','alice','jane'}}),[[
+<ul>
+   <li>john</li>
+   <li>alice</li>
+   <li>jane</li>
+</ul>
+]])
+
+
+
+-- can change the default escape from '#' so we can do C/C++ output.
+-- note that the environment can have a parent field.
+asserteq(subst([[
+> for i,v in ipairs{'alpha','beta','gamma'} do
+    cout << obj.${v} << endl;
+> end
+]],{_parent=_G, _brackets='{}', _escape='>'}),[[
+    cout << obj.alpha << endl;
+    cout << obj.beta << endl;
+    cout << obj.gamma << endl;
+]])
+
+
+
+-- handle templates with a lot of substitutions
+asserteq(subst(("$(x)\n"):rep(300), {x = "y"}), ("y\n"):rep(300))
+
 
 
 --------------------------------------------------
@@ -16,8 +67,8 @@ local my_env = {
 }
 local res, err = template.substitute(tmpl, my_env)
 
-print(res, err)
-assert(res == [[<ul>
+--print(res, err)
+asserteq(res, [[<ul>
 <li>1 = ONE</li>
 <li>2 = TWO</li>
 <li>3 = THREE</li>
@@ -42,14 +93,15 @@ local my_env = {
 }
 local res, err = template.substitute(tmpl, my_env)
 
-print(res, err)
-assert(res == [[
+--print(res, err)
+asserteq(res, [[
 <ul>
 <li>1 = ONE</li>
 <li>2 = TWO</li>
 <li>3 = THREE</li>
 </ul>
 ]])
+
 
 
 --------------------------------------------------
@@ -66,10 +118,10 @@ local my_env = {
   ipairs = ipairs,
   T = {'one','two','three'}
 }
-local t, err = template.compile(tmpl, nil, nil, nil, nil, true)
+local t, err = template.compile(tmpl, { debug = true })
 local res, err, code = t:render(my_env)
-print(res, err, code)
-assert(res == [[
+--print(res, err, code)
+asserteq(res, [[
 <ul>
 <li>1 = ONE</li>
 <li>2 = TWO</li>
@@ -78,18 +130,73 @@ assert(res == [[
 ]])
 
 
--- reuse with different env
+-- now reuse with different env
 local my_env = {
   ipairs = ipairs,
   T = {'four','five','six'}
 }
-local t, err = template.compile(tmpl, nil, nil, nil, nil, true)
+local t, err = template.compile(tmpl, { debug = true })
 local res, err, code = t:render(my_env)
-print(res, err, code)
-assert(res == [[
+--print(res, err, code)
+asserteq(res, [[
 <ul>
 <li>1 = FOUR</li>
 <li>2 = FIVE</li>
 <li>3 = SIX</li>
 </ul>
 ]])
+
+
+
+--------------------------------------------------
+-- Test the newline parameter
+local tmpl = [[
+some list: $(T[1]:upper())
+# for i = 2, #T do
+,$(T[i]:upper())
+# end
+]]
+
+local my_env = {
+  ipairs = ipairs,
+  T = {'one','two','three'}
+}
+local t, err = template.compile(tmpl, { debug = true, newline = "" })
+local res, err, code = t:render(my_env)
+--print(res, err, code)
+asserteq(res, [[some list: ONE,TWO,THREE]])
+
+
+
+--------------------------------------------------
+-- Test template run-time error
+local tmpl = [[
+header: $("hello" * 10)
+]]
+
+local t, err = template.compile(tmpl, { debug = true, newline = "" })
+local res, err, code = t:render()
+--print(res, err, code)
+assert(res == nil, "expected nil here because of the runtime error")
+asserteq(type(err), "string")
+asserteq(type(utils.load(code)), "function")
+
+
+
+--------------------------------------------------
+-- Test template compile-time error
+local tmpl = [[
+header: $(this doesn't work)
+]]
+
+local my_env = {
+  ipairs = ipairs,
+  T = {'one','two','three'}
+}
+local t, err, code = template.compile(tmpl, { debug = true, newline = "" })
+--print(t, err, code)
+assert(t==nil, "expected t to be nil here because of the syntax error")
+asserteq(type(err), "string")
+asserteq(type(code), "string")
+
+
