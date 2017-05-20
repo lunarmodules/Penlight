@@ -198,15 +198,10 @@ end
 -- @param u same as the second optional argument to math.random
 -- @return a sequence
 function seq.random(n,l,u)
-  local rand
   assert(type(n) == 'number')
-  if u then
-     rand = function() return mrandom(l,u) end
-  elseif l then
-     rand = function() return mrandom(l) end
-  else
-     rand = mrandom
-  end
+  local unpack = unpack or table.unpack
+  local bounds = {l, u}
+  local rand = function() return mrandom( unpack(bounds) ) end
 
   return function()
      if n == 0 then return nil
