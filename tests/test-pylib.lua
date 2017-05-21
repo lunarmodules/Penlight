@@ -9,12 +9,16 @@ s = List{1,2,3,4,5}
 
 -- test using: lua pylist.lua
 local lst = List()
-lst:append(10)
-lst:extend{20,30,40,50}
+lst:append(20)
+lst:extend{30,40,50}
+lst:put(10)
 asserteq (lst,List{10,20,30,40,50})
+asserteq (lst:len(),5)
 lst:insert(3,11)
 lst:remove_value(40)
 asserteq (lst,List{10,20,11,30,50})
+asserteq (lst:contains(11),true)
+asserteq (lst:contains(40),false)
 local q=lst:pop()
 asserteq( lst:index(30),4 )
 asserteq( lst:count(10),1 )
@@ -42,6 +46,9 @@ asserteq (List('abcd'),List{'a','b','c','d'})
 ls = List{10,20,30,40}
 ls:slice_assign(2,3,{21,31})
 asserteq (ls , List{10,21,31,40})
+asserteq (ls:remove(2), List{10,31,40})
+asserteq (ls:clear(), List{})
+asserteq (ls:len(), 0)
 
 -- strings ---
 require 'pl.stringx'.import() ---> convenient!
