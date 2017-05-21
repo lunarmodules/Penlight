@@ -38,15 +38,20 @@ asserteq (lst:slice(-4,-2),{20,30,40})
 
 lst = List.range(0,9)
 seq = List{0,1,2,3,4,5,6,7,8,9}
+asserteq(List.range(4),{1,2,3,4})
 asserteq(List.range(0,8,2),{0,2,4,6,8})
 asserteq(List.range(0,1,0.2),{0,0.2,0.4,0.6,0.8,1},1e-9)
 asserteq(lst, seq)
+asserteq(lst:reduce '+', 45)
 
 local part = seq:partition(function(v) return v % 2 end)
 asserteq (part[0], List{0,2,4,6,8})
 asserteq (part[1], List{1,3,5,7,9})
 
 asserteq (List('abcd'),List{'a','b','c','d'})
+local caps = List()
+List('abcd'):foreach(function(v) caps:append(v:upper()) end)
+asserteq (caps,List{'A','B','C','D'})
 ls = List{10,20,30,40}
 ls:slice_assign(2,3,{21,31})
 asserteq (ls , List{10,21,31,40})
