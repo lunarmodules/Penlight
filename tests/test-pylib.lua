@@ -59,6 +59,8 @@ s = 'here the dog is just a dog'
 assert (s:startswith('here'))
 assert (s:endswith('dog'))
 assert (s:count('dog') == 2)
+assert (List.split(s) == List{'here', 'the', 'dog', 'is', 'just', 'a', 'dog'})
+assert (List.split('foo;bar;baz', ';') == List{'foo', 'bar', 'baz'})
 s = '  here we go    '
 asserteq (s:lstrip() , 'here we go    ')
 asserteq (s:rstrip() , '  here we go')
