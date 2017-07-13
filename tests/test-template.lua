@@ -200,3 +200,30 @@ asserteq(type(err), "string")
 asserteq(type(code), "string")
 
 
+
+--------------------------------------------------
+-- Test using template being a single static string
+local tmpl = [[
+<ul>
+<p>a paragraph</p>
+<p>a paragraph</p>
+</ul>
+]]
+
+local t, err = template.compile(tmpl, { debug = true })
+local res, err, code = t:render(my_env)
+--print(res, err, code)
+
+asserteq(res, [[<ul>
+<p>a paragraph</p>
+<p>a paragraph</p>
+</ul>
+]])
+asserteq(code, [[return "<ul>\
+<p>a paragraph</p>\
+<p>a paragraph</p>\
+</ul>\
+"]])
+
+
+print("template: success")

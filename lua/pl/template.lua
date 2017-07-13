@@ -70,12 +70,24 @@ local function parseHashLines(chunk,inline_escape,brackets,esc,newline)
         s = e + 1
     end
     append(pieces, "\nreturn __R_table\nend")
-    return table.concat(pieces)
+    
+    -- let's check for a special case where there is nothing to template, but it's
+    -- just a single static string
+    local short = false
+    if (#pieces == 3) and (pieces[2]:find(APPENDER, 1, true) == 1) then
+        pieces = { "return " .. pieces[2]:sub(#APPENDER+1,-1) }
+        short = true
+    end
+    -- if short == true, the generated function will not return a table of strings,
+    -- but a single string
+    return table.concat(pieces), short
 end
 
 local template = {}
 
 --- expand the template using the specified environment.
+-- This function will compile and render the template. For more performant
+-- recurring usage use the two step approach by using `compile` and `ct:render`.
 -- There are six special fields in the environment table `env`
 --
 --   * `_parent`: continue looking up in this table (e.g. `_parent=_G`).
@@ -84,12 +96,12 @@ local template = {}
 --   * `_inline_escape`: character marking inline Lua expression, default is '$'.
 --   * `_chunk_name`: chunk name for loaded templates, used if there
 --     is an error in Lua code. Default is 'TMP'.
---   * `_debug`: if thruthy, the generated code will be printed upon a render error
+--   * `_debug`: if truthy, the generated code will be printed upon a render error
 --
 -- @string str the template string
 -- @tab[opt] env the environment
--- @return `rendered template + nil + code`, or `nil + error + code`. The last return value
--- `code` is only returned if the debug option is used.
+-- @return `rendered template + nil + source_code`, or `nil + error + source_code`. The last
+-- return value (`source_code`) is only returned if the debug option is used.
 function template.substitute(str,env)
     env = env or {}
     local t, err = template.compile(str, {
@@ -106,14 +118,16 @@ function template.substitute(str,env)
 end
 
 --- executes the previously compiled template and renders it.
+-- @function ct:render
 -- @tab[opt] env the environment.
--- @tab[opt] parent continue looking up in this table (e.g. `_parent=_G`).
--- @bool[opt] db if thruthy, it will print the code upon a render error. Note:
--- the template must have been compiled with the debug option as well! (only
--- here for backward compatibility, as the function will return the generated
--- code anyway if available)
--- @return `rendered template + nil + code`, or `nil + error + code`. The last return value
--- `code` is only returned if the template was compiled with the debug option.
+-- @tab[opt] parent continue looking up in this table (e.g. `parent=_G`).
+-- @bool[opt] db if thruthy, it will print the code upon a render error
+-- (provided the template was compiled with the debug option).
+-- @return `rendered template + nil + source_code`, or `nil + error + source_code`. The last return value
+-- (`source_code`) is only returned if the template was compiled with the debug option.
+-- @usage
+-- local ct, err = template.compile(my_template)
+-- local rendered , err = ct:render(my_env, parent)
 local render = function(self, env, parent, db)
     env = env or {}
     if parent then  -- parent is a bit silly, but for backward compatibility retained
@@ -130,8 +144,8 @@ local render = function(self, env, parent, db)
 end
 
 --- compiles the template.
--- Returns an object that can repeatedly be run without parsing the template
--- again.
+-- Returns an object that can repeatedly be rendered without parsing/compiling
+-- the template again.
 -- The options passed in the `opts` table support the following options:
 --
 --   * `chunk_name`: chunk name for loaded templates, used if there
@@ -140,14 +154,14 @@ end
 --   * `inline_escape`: character marking inline Lua expression, default is '$'.
 --   * `inline_brackets`: bracket pair that wraps inline Lua expressions, default is '()'.
 --   * `newline`: string to replace newline characters, default is `nil` (not replacing newlines).
---   * `debug`: if thruthy, the generated code will be printed upon a render error, default is `nil`.
+--   * `debug`: if truthy, the generated source code will be retained within the compiled template object, default is `nil`.
 --
 -- @string str the template string
--- @table[opt] opts the compliation options to use
--- @return template object, or nil + error + code
+-- @tab[opt] opts the compilation options to use
+-- @return template object, or `nil + error + source_code`
 -- @usage
--- local t, err = template.compile(my_template)
--- local rendered , err = t:render(my_env, parent)
+-- local ct, err = template.compile(my_template)
+-- local rendered , err = ct:render(my_env, parent)
 function template.compile(str, opts)
     opts = opts or {}
     local chunk_name = opts.chunk_name or 'TMP'
@@ -155,10 +169,26 @@ function template.compile(str, opts)
     local inline_escape = opts.inline_escape or '$'
     local inline_brackets = opts.inline_brackets or '()'
     
-    local code = parseHashLines(str,inline_escape,inline_brackets,escape,opts.newline)
+    local code, short = parseHashLines(str,inline_escape,inline_brackets,escape,opts.newline)
     local env = {}
     local fn, err = utils.load(code, chunk_name,'t',env)
     if not fn then return nil, err, code end
+
+    if short then
+        -- the template returns a single constant string, let's optimize for that
+        local constant_string = fn()
+        return {
+            fn = fn(),
+            env = env,
+            render = function(self) -- additional params can be ignored
+                -- skip the metatable magic and error handling in the render
+                -- function above for this special case
+                return constant_string, nil, self.code
+            end,
+            code = opts.debug and code or nil,
+        }
+    end
+
     return {
         fn = fn(),
         env = env,
