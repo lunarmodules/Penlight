@@ -313,8 +313,8 @@ function lapp.process_options_string(str,args)
                     ps.converter = converter
                 end
                 ps.constraint = types[vtype].constraint
-            elseif not builtin_types[vtype] then
-                lapp.error(vtype.." is unknown type")
+            elseif not builtin_types[vtype] and vtype then
+                lapp.error(vtype.." is unknown type")          
             end
             parms[optparm] = ps
         end
