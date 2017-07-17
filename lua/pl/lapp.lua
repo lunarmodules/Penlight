@@ -145,7 +145,7 @@ end
 
 -- deducing type of variable from default value;
 local function process_default (sval,vtype)
-    local val
+    local val, success
     if not vtype or vtype == 'number' then
         val = tonumber(sval)
     end
