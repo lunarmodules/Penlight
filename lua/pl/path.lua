@@ -117,7 +117,7 @@ local function at(s,i)
     return sub(s,i,i)
 end
 
-path.is_windows = utils.dir_separator == '\\'
+path.is_windows = utils.is_windows
 
 local other_sep
 -- !constant sep is the directory separator for this platform.
@@ -301,7 +301,7 @@ function path.normpath(P)
     else
         -- According to POSIX, in path start '//' and '/' are distinct,
         -- but '///+' is equivalent to '/'.
-        if P:match '^//' and at(P, 3) ~= '/' then 
+        if P:match '^//' and at(P, 3) ~= '/' then
             anchor = '//'
             P = P:sub(3)
         elseif at(P, 1) == '/' then

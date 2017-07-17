@@ -17,7 +17,8 @@ local utils = {
     getfenv = compat.getfenv,
     load = compat.load,
     execute = compat.execute,
-    dir_separator = _G.package.config:sub(1,1),
+    dir_separator = compat.dir_separator,
+    is_windows = compat.is_windows,
     unpack = unpack
 }
 
@@ -225,7 +226,7 @@ function utils.array_tostring (t,temp,tostr)
     return temp
 end
 
-local is_windows = package.config:sub(1, 1) == "\\"
+local is_windows = utils.is_windows
 
 --- Quote an argument of a command.
 -- Quotes a single argument of a command to be passed

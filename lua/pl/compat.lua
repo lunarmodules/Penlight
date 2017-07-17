@@ -17,6 +17,9 @@ if isJit then
     compat.jit52 = not loadstring("local goto = 1")
 end
 
+compat.dir_separator = _G.package.config:sub(1,1)
+compat.is_windows = compat.dir_separator == '\\'
+
 --- execute a shell command.
 -- This is a compatibility function that returns the same for Lua 5.1 and Lua 5.2
 -- @param cmd a shell command
@@ -25,9 +28,20 @@ end
 function compat.execute (cmd)
     local res1,_,res3 = os.execute(cmd)
     if compat.lua51 and not compat.jit52 then
-        return res1==0,res1
+        if compat.is_windows then
+            res1 = res1 > 255 and res1 % 256 or res1
+            return res1==0,res1
+        else
+            res1 = res1 > 255 and res1 / 256 or res1
+            return res1==0,res1
+        end
     else
-        return not not res1,res3
+        if compat.is_windows then
+            res3 = res3 > 255 and res3 % 256 or res3
+            return res3==0,res3
+        else
+            return not not res1,res3
+        end
     end
 end
 
