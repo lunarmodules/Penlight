@@ -434,15 +434,12 @@ end
 -- @param iter a sequence
 function seq.last (iter)
     iter = default_iter(iter)
-    local l = iter()
-    if l == nil then return nil end
+    local val, l = iter(), nil
+    if val == nil then return list{} end
     return function ()
-        local val,ll
-        val = iter()
+        val,l = iter(),val
         if val == nil then return nil end
-        ll = l
-        l = val
-        return val,ll
+        return val,l
     end
 end
 

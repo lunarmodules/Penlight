@@ -68,7 +68,11 @@ asserteq(C(seq.map(L'#_',{'one','tw'})),{3,2})
 
 --for l1,l2 in seq.last{10,20,30} do print(l1,l2) end
 
-asserteq(C2(seq.last{10,20,30}),{{20,10},{30,20}} )
+asserteq( C2(seq.last{10,20,30}),{{20,10},{30,20}} )
+
+asserteq( C2(seq.last{40}),{} )
+
+asserteq( C2(seq.last{}),{} )
 
 asserteq(
   seq{10,20,30}:map(L'_+1'):copy(),
