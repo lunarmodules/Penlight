@@ -39,7 +39,7 @@ local function parseDollarParen(pieces, chunk, exec_pat, newline)
     for term, executed, e in chunk:gmatch(exec_pat) do
         executed = '('..strsub(executed,2,-2)..')'
         append(pieces, APPENDER..format("%q", strsub(chunk,s, term - 1)))
-        append(pieces, APPENDER..format("(%s or '')", executed))
+        append(pieces, APPENDER..format("__tostring(%s or '')", executed))
         s = e
     end
     local r
@@ -58,7 +58,7 @@ local function parseHashLines(chunk,inline_escape,brackets,esc,newline)
 
     local esc_pat = esc.."+([^\n]*\n?)"
     local esc_pat1, esc_pat2 = "^"..esc_pat, "\n"..esc_pat
-    local  pieces, s = {"return function()\nlocal __R_size, __R_table = 0, {}", n = 1}, 1
+    local  pieces, s = {"return function()\nlocal __R_size, __R_table, __tostring = 0, {}, __tostring", n = 1}, 1
     while true do
         local ss, e, lua = strfind(chunk,esc_pat1, s)
         if not e then
@@ -170,7 +170,7 @@ function template.compile(str, opts)
     local inline_brackets = opts.inline_brackets or '()'
     
     local code, short = parseHashLines(str,inline_escape,inline_brackets,escape,opts.newline)
-    local env = {}
+    local env = { __tostring = tostring }
     local fn, err = utils.load(code, chunk_name,'t',env)
     if not fn then return nil, err, code end
 

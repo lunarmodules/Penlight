@@ -184,6 +184,22 @@ asserteq(type(utils.load(code)), "function")
 
 
 --------------------------------------------------
+-- Test template run-time, doesn't fail on table value
+-- table.concat fails if we insert a non-string (table) value
+local tmpl = [[
+header: $(myParam)
+]]
+
+local t, err = template.compile(tmpl, { debug = true, newline = "" })
+local myParam = {}
+local res, err, code = t:render( {myParam = myParam } ) -- insert a table
+--print(res, err, code)
+asserteq(res, "header: "..tostring(myParam))
+asserteq(type(err), "nil")
+
+
+
+--------------------------------------------------
 -- Test template compile-time error
 local tmpl = [[
 header: $(this doesn't work)
