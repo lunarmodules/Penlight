@@ -51,8 +51,8 @@ end
 --- return a List of all key-value pairs, sorted by the keys.
 function Map:items()
     local ls = makelist(tablex.pairmap (function (k,v) return makelist {k,v} end, self))
-	ls:sort(function(t1,t2) return t1[1] < t2[1] end)
-	return ls
+    ls:sort(function(t1,t2) return t1[1] < t2[1] end)
+    return ls
 end
 
 -- Will return the existing value, or if it doesn't exist it will set

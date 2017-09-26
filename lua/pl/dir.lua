@@ -209,7 +209,7 @@ local function file_op (is_copy,src,dest,flag)
             if path.isdir(dest) then
                 dest = path.join(dest,path.basename(src))
             end
-			local ret
+            local ret
             if is_copy then ret = CopyFile(src,dest,flag)
             else ret = MoveFile(src,dest) end
             if ret == 0 then

@@ -52,7 +52,7 @@ path.chdir = lfs.chdir
 --- is this a directory?
 -- @string P A file path
 function path.isdir(P)
-	assert_string(1,P)
+    assert_string(1,P)
     if P:match("\\$") then
         P = P:sub(1,-2)
     end
@@ -62,14 +62,14 @@ end
 --- is this a file?.
 -- @string P A file path
 function path.isfile(P)
-	assert_string(1,P)
+    assert_string(1,P)
     return attrib(P,'mode') == 'file'
 end
 
 -- is this a symbolic link?
 -- @string P A file path
 function path.islink(P)
-	assert_string(1,P)
+    assert_string(1,P)
     if link_attrib then
         return link_attrib(P,'mode')=='link'
     else
@@ -80,7 +80,7 @@ end
 --- return size of a file.
 -- @string P A file path
 function path.getsize(P)
-	assert_string(1,P)
+    assert_string(1,P)
     return attrib(P,'size')
 end
 
@@ -88,14 +88,14 @@ end
 -- @string P A file path
 -- @return the file path if it exists, nil otherwise
 function path.exists(P)
-	assert_string(1,P)
+    assert_string(1,P)
     return attrib(P,'mode') ~= nil and P
 end
 
 --- Return the time of last access as the number of seconds since the epoch.
 -- @string P A file path
 function path.getatime(P)
-	assert_string(1,P)
+    assert_string(1,P)
     return attrib(P,'access')
 end
 
@@ -108,7 +108,7 @@ end
 ---Return the system's ctime.
 -- @string P A file path
 function path.getctime(P)
-	assert_string(1,P)
+    assert_string(1,P)
     return path.attrib(P,'change')
 end
 
@@ -165,7 +165,7 @@ end
 -- @string[opt] pwd optional start path to use (default is current dir)
 function path.abspath(P,pwd)
     assert_string(1,P)
-	if pwd then assert_string(2,pwd) end
+    if pwd then assert_string(2,pwd) end
     local use_pwd = pwd ~= nil
     if not use_pwd and not currentdir then return P end
     P = P:gsub('[\\/]$','')
@@ -338,7 +338,7 @@ end
 -- @string[opt] start optional start point (default current directory)
 function path.relpath (P,start)
     assert_string(1,P)
-	if start then assert_string(2,start) end
+    if start then assert_string(2,start) end
     local split,normcase,min,append = utils.split, path.normcase, math.min, table.insert
     P = normcase(path.abspath(P,start))
     start = start or currentdir()

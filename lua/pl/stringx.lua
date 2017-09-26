@@ -192,7 +192,7 @@ function stringx.split(s,re,n)
     if re and re ~= '' and find(s,re,-#re,true) then
         res[#res+1] = ""
     end
-	return makelist(res)
+    return makelist(res)
 end
 
 --- replace all tabs in s with tabsize spaces. If not specified, tabsize defaults to 8.
