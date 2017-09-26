@@ -25,6 +25,27 @@ asserteq(
     {10,20,{30,40}}
 )
 
+local t = {
+    a = "hello",
+    b = {
+        c = "world"
+    }
+}
+t.b.d = t.b
+
+local tcopy = {
+    a = "hello",
+    b = {
+        c = "world"
+    }
+}
+tcopy.b.d = tcopy.b
+
+asserteq(
+	deepcopy(t),
+	tcopy
+)
+
 asserteq(
     pairmap(function(i,v) return v end,{10,20,30}),
     {10,20,30}
