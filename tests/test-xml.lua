@@ -7,11 +7,11 @@ local dump = require 'pl.pretty'.dump
 d = xml.new 'top' : addtag 'child' : text 'alice' : up() : addtag 'child' : text 'bob'
 
 d = xml.new 'children' :
-	addtag 'child' :
-	addtag 'name' : text 'alice' : up() : addtag 'age' : text '5' : up() : addtag('toy',{type='fluffy'}) : up() :
-	up() :
-	addtag 'child':
-	addtag 'name' : text 'bob' : up() : addtag 'age' : text '6' : up() : addtag('toy',{type='squeaky'})
+    addtag 'child' :
+    addtag 'name' : text 'alice' : up() : addtag 'age' : text '5' : up() : addtag('toy',{type='fluffy'}) : up() :
+    up() :
+    addtag 'child':
+    addtag 'name' : text 'bob' : up() : addtag 'age' : text '6' : up() : addtag('toy',{type='squeaky'})
 
 asserteq(
 xml.tostring(d,'','  '),
@@ -133,8 +133,8 @@ t1 = [[
 
 
 match(t1,{
-  condition = "Clear",
-  temp = "24",
+    condition = "Clear",
+    temp = "24",
 } )
 
 t2 = [[
@@ -149,30 +149,30 @@ t2 = [[
 ]]
 
 local conditions = {
-  {
-    low = "60",
-    high = "89",
-    day = "Sat",
-    condition = "Clear",
-  },
-  {
-    low = "53",
-    high = "86",
-    day = "Sun",
-    condition = "Clear",
-  },
-  {
-    low = "57",
-    high = "87",
-    day = "Mon",
-    condition = "Clear",
-  },
-  {
-    low = "60",
-    high = "84",
-    day = "Tue",
-    condition = "Clear",
-  }
+    {
+        low = "60",
+        high = "89",
+        day = "Sat",
+        condition = "Clear",
+    },
+    {
+        low = "53",
+        high = "86",
+        day = "Sun",
+        condition = "Clear",
+    },
+    {
+        low = "57",
+        high = "87",
+        day = "Mon",
+        condition = "Clear",
+    },
+    {
+        low = "60",
+        high = "84",
+        day = "Tue",
+        condition = "Clear",
+    }
 }
 
 match(t2,conditions)
@@ -195,9 +195,9 @@ match([[
     {{<key->$value</key->}}
 </config>
 ]],{
-  {key="alpha", value = "1.3"},
-  {key="beta", value = "10"},
-  {key="name",value = "bozo"},
+    {key="alpha", value = "1.3"},
+    {key="beta", value = "10"},
+    {key="name",value = "bozo"},
 })
 -- can be numerical indices
 match([[
@@ -205,9 +205,9 @@ match([[
     {{<1->$2</1->}}
 </config>
 ]],{
-  {"alpha","1.3"},
-  {"beta","10"},
-  {"name","bozo"},
+    {"alpha","1.3"},
+    {"beta","10"},
+    {"name","bozo"},
 })
 -- _ is special; means 'this value is key of captured table'
 match([[
@@ -215,9 +215,9 @@ match([[
     {{<_->$1</_->}}
 </config>
 ]],{
-  alpha = {"1.3"},
-  beta = {"10"},
-  name = {"bozo"},
+    alpha = {"1.3"},
+    beta = {"10"},
+    name = {"bozo"},
 })
 
 -- the numerical index 0 is special: a capture of {[0]=val} becomes simply the value val
@@ -226,9 +226,9 @@ match([[
     {{<_->$0</_->}}
 </config>
 ]],{
-  alpha = "1.3",
-  name = "bozo",
-  beta = "10"
+    alpha = "1.3",
+    name = "bozo",
+    beta = "10"
 })
 
 -- this can of course also work with attributes, but then we don't want to collapse!
@@ -248,9 +248,9 @@ match([[
     {{<_- type='$1'>$2</_->}}
 </config>
 ]],{
-  alpha = {"number","1.3"},
-  beta = {"number","10"},
-  name = {"string","bozo"},
+    alpha = {"number","1.3"},
+    beta = {"number","10"},
+    name = {"string","bozo"},
 })
 
 d,err = parse [[
@@ -279,16 +279,16 @@ res,err = d:match [[
 ]]
 
 asserteq(res,{
-  HOST = "windows-unknown-linux-gnu",
-  COPYRIGHT = "Copyright (C) 1999-2009 ImageMagick Studio LLC",
-  NAME = "ImageMagick",
-  LIB_VERSION = "0x651",
-  VERSION = "6.5.1",
-  RELEASE_DATE = "2009-05-01",
-  WEBSITE = "http://www.imagemagick.org",
-  LIB_VERSION_NUMBER = "6,5,1,3",
-  CC = "vs7",
-  DELEGATES = "bzlib freetype jpeg jp2 lcms png tiff x11 xml wmf zlib"
+    HOST = "windows-unknown-linux-gnu",
+    COPYRIGHT = "Copyright (C) 1999-2009 ImageMagick Studio LLC",
+    NAME = "ImageMagick",
+    LIB_VERSION = "0x651",
+    VERSION = "6.5.1",
+    RELEASE_DATE = "2009-05-01",
+    WEBSITE = "http://www.imagemagick.org",
+    LIB_VERSION_NUMBER = "6,5,1,3",
+    CC = "vs7",
+    DELEGATES = "bzlib freetype jpeg jp2 lcms png tiff x11 xml wmf zlib"
 })
 
 -- short excerpt from

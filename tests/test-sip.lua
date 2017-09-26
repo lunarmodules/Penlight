@@ -52,13 +52,13 @@ check('just a string', 'not that string')
 local months={"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"}
 
 local function adjust_year(res)
-	if res.year < 100 then
-		if res.year < 70 then
-			res.year = res.year + 2000
-		else
-			res.year = res.year + 1900
-		end
-	end
+    if res.year < 100 then
+        if res.year < 70 then
+            res.year = res.year + 2000
+        else
+            res.year = res.year + 1900
+        end
+    end
 end
 
 local shortdate = sip.compile('$d{day}/$d{month}/$d{year}')
@@ -71,17 +71,17 @@ local function dcheck (d1,d2)
 end
 
 local function dates(str,tbl)
-	local res = {}
-	if shortdate(str,res) then
-		dcheck(res,tbl)
+    local res = {}
+    if shortdate(str,res) then
+        dcheck(res,tbl)
     elseif isodate(str,res) then
         dcheck(res,tbl)
-	elseif longdate(str,res) then
-		res.month = tablex.find(months,res.month)
-		dcheck(res,tbl)
-	else
-		assert(tbl == nil)
-	end
+    elseif longdate(str,res) then
+        res.month = tablex.find(months,res.month)
+        dcheck(res,tbl)
+    else
+        assert(tbl == nil)
+    end
 end
 
 dates ('10/12/2007',{year=2007,month=12,day=10})
