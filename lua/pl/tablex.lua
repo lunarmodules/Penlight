@@ -95,37 +95,36 @@ function tablex.copy (t)
     return res
 end
 
---- make a deep copy of a table, recursively copying all the keys and fields.
--- This will also set the copied table's metatable to that of the original.
--- @within Copying
--- @tab t A table
--- @return new table
-function tablex.deepcopy(t)
+local function cycle_aware_copy(t, cache)
     if type(t) ~= 'table' then return t end
+    if cache[t] then return cache[t] end
     assert_arg_iterable(1,t)
-    local mt = getmetatable(t)
     local res = {}
+    cache[t] = res
+    local mt = getmetatable(t)
     for k,v in pairs(t) do
-        if type(v) == 'table' then
-            v = tablex.deepcopy(v)
-        end
+        k = cycle_aware_copy(k, cache)
+        v = cycle_aware_copy(v, cache)
         res[k] = v
     end
     setmetatable(res,mt)
     return res
 end
 
-local abs, deepcompare = math.abs
+--- make a deep copy of a table, recursively copying all the keys and fields.
+-- This supports cycles in tables; cycles will be reproduced in the copy.
+-- This will also set the copied table's metatable to that of the original.
+-- @within Copying
+-- @tab t A table
+-- @return new table
+function tablex.deepcopy(t)
+    return cycle_aware_copy(t,{})
+end
 
---- compare two values.
--- if they are tables, then compare their keys and fields recursively.
--- @within Comparing
--- @param t1 A value
--- @param t2 A value
--- @bool[opt] ignore_mt if true, ignore __eq metamethod (default false)
--- @number[opt] eps if defined, then used for any number comparisons
--- @return true or false
-function tablex.deepcompare(t1,t2,ignore_mt,eps)
+local abs = math.abs
+
+local function cycle_aware_compare(t1,t2,ignore_mt,eps,cache)
+    if cache[t1] and cache[t1][t2] then return true end
     local ty1 = type(t1)
     local ty2 = type(t2)
     if ty1 ~= ty2 then return false end
@@ -143,15 +142,26 @@ function tablex.deepcompare(t1,t2,ignore_mt,eps)
     for k2 in pairs(t2) do
         if t1[k2]==nil then return false end
     end
+    cache[t1] = cache[t1] or {}
+    cache[t1][t2] = true
     for k1,v1 in pairs(t1) do
         local v2 = t2[k1]
-        if not deepcompare(v1,v2,ignore_mt,eps) then return false end
+        if not cycle_aware_compare(v1,v2,ignore_mt,eps,cache) then return false end
     end
-
     return true
 end
 
-deepcompare = tablex.deepcompare
+--- compare two values.
+-- if they are tables, then compare their keys and fields recursively.
+-- @within Comparing
+-- @param t1 A value
+-- @param t2 A value
+-- @bool[opt] ignore_mt if true, ignore __eq metamethod (default false)
+-- @number[opt] eps if defined, then used for any number comparisons
+-- @return true or false
+function tablex.deepcompare(t1,t2,ignore_mt,eps)
+    return cycle_aware_compare(t1,t2,ignore_mt,eps,{})
+end
 
 --- compare two arrays using a predicate.
 -- @within Comparing
