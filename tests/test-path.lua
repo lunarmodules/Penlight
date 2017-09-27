@@ -2,11 +2,11 @@ local path = require 'pl.path'
 asserteq = require 'pl.test'.asserteq
 
 function quote(s)
-	return '"'..s..'"'
+    return '"'..s..'"'
 end
 
 function print2(s1,s2)
-	print(quote(s1),quote(s2))
+    print(quote(s1),quote(s2))
 end
 
 function testpath(pth,p1,p2,p3)

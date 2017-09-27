@@ -11,18 +11,18 @@ function pprint (t)
 end
 
 function test (e)
-	local v = {}
-	print('test',collect_values(e,v))
-	if #v > 0 then pprint(v) end
-	local rep = repr(e)
+    local v = {}
+    print('test',collect_values(e,v))
+    if #v > 0 then pprint(v) end
+    local rep = repr(e)
     print(rep)
 end
 
 function teste (e,rs,ve)
-	local v = {}
-	collect_values(e,v)
-	if #v > 0 then asserteq(v,ve,nil,2) end
-	local rep = repr(e)
+    local v = {}
+    collect_values(e,v)
+    if #v > 0 then asserteq(v,ve,nil,2) end
+    local rep = repr(e)
     asserteq(rep,rs)
 end
 

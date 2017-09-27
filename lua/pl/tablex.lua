@@ -455,7 +455,7 @@ end
 -- @func fun a function of n arguments
 -- @tab ... n tables
 -- @usage mapn(function(x,y,z) return x+y+z end, {1,2,3},{10,20,30},{100,200,300}) is {111,222,333}
--- @usage mapn(math.max, {1,20,300},{10,2,3},{100,200,100}) is	{100,200,300}
+-- @usage mapn(math.max, {1,20,300},{10,2,3},{100,200,100}) is    {100,200,300}
 -- @param fun A function that takes as many arguments as there are tables
 function tablex.mapn(fun,...)
     fun = function_arg(1,fun)
@@ -493,15 +493,15 @@ function tablex.pairmap(fun,t,...)
     for k,v in pairs(t) do
         local rv,rk = fun(k,v,...)
         if rk then
-			if res[rk] then
-				if type(res[rk]) == 'table' then
-					table.insert(res[rk],rv)
-				else
-					res[rk] = {res[rk], rv}
-				end
-			else
-            	res[rk] = rv
-			end
+            if res[rk] then
+                if type(res[rk]) == 'table' then
+                    table.insert(res[rk],rv)
+                else
+                    res[rk] = {res[rk], rv}
+                end
+            else
+                res[rk] = rv
+            end
         else
             res[#res+1] = rv
         end

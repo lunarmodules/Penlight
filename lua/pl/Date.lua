@@ -94,9 +94,9 @@ function Date.tzone (ts)
         ts = os_time()
     elseif type(ts) == "table" then
         if getmetatable(ts) == Date then
-        	ts = ts.time
+            ts = ts.time
         else
-        	ts = Date(ts).time
+            ts = Date(ts).time
         end
     end
     local utc = os_date('!*t',ts)

@@ -176,21 +176,21 @@ function Template:indent_substitute(tbl)
     -- then we split that into lines and adjust the indent before inserting.
     local function subst(line)
         return line:gsub('(%s*)%$([%w_]+)',function(sp,f)
-			local subtmpl
+            local subtmpl
             local s = tbl[f]
             if not s then error("not present in table "..f) end
-			if getmetatable(s) == Template then
-				subtmpl = s
-				s = s.tmpl
-			else
-				s = tostring(s)
-			end
+            if getmetatable(s) == Template then
+                subtmpl = s
+                s = s.tmpl
+            else
+                s = tostring(s)
+            end
             if s:find '\n' then
                 s = _indent(s,sp)
             end
-			if subtmpl then return _substitute(s,tbl)
-			else return s
-			end
+            if subtmpl then return _substitute(s,tbl)
+            else return s
+            end
         end)
     end
     local lines = imap(subst,self.strings)

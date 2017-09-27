@@ -292,30 +292,30 @@ asserteq(stringx.rstrip('--[hello] -- - ','-[] '),'--[hello')
 
 local assert_str_round_trip = function(s)
 
-	local qs = stringx.quote_string(s)
-	local compiled, err = utils.load("return "..qs)
+    local qs = stringx.quote_string(s)
+    local compiled, err = utils.load("return "..qs)
 
-	if not compiled then
-		print(
-			("stringx.quote_string assert failed: invalid string created: Received:\n%s\n\nCompiled to\n%s\n\nError:\t%s\n"):
-			format(s, qs, err)
-		)
-		error()
-	else
-		compiled = compiled()
-	end
+    if not compiled then
+        print(
+            ("stringx.quote_string assert failed: invalid string created: Received:\n%s\n\nCompiled to\n%s\n\nError:\t%s\n"):
+            format(s, qs, err)
+        )
+        error()
+    else
+        compiled = compiled()
+    end
 
-	if compiled ~= s then
-		print("strinx.quote_string assert Failed: String compiled but did not round trip.")
-		print("input string:\t\t",s, #s)
-		print("compiled string:\t", compiled, #compiled)
-		print("output string:\t\t",qs, #qs)
-		error()
-	else
-		-- print("input string:\t\t",s)
-		-- print("compiled string:\t", compiled)
-		-- print("output string:\t\t",qs)
-	end
+    if compiled ~= s then
+        print("strinx.quote_string assert Failed: String compiled but did not round trip.")
+        print("input string:\t\t",s, #s)
+        print("compiled string:\t", compiled, #compiled)
+        print("output string:\t\t",qs, #qs)
+        error()
+    else
+        -- print("input string:\t\t",s)
+        -- print("compiled string:\t", compiled)
+        -- print("output string:\t\t",qs)
+    end
 end
 
 assert_str_round_trip( "normal string with nothing weird.")

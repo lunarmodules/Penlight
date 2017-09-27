@@ -48,9 +48,9 @@ local function save_global_env()
     env.hook, env.mask, env.count = debug.gethook()
     
     -- env.hook is "external hook" if is a C hook function
-	if env.hook~="external hook" then
-	    debug.sethook()
-	end
+    if env.hook~="external hook" then
+        debug.sethook()
+    end
     
     env.string_mt = getmetatable("")
     debug.setmetatable("", nil)
@@ -164,7 +164,7 @@ local function index (numkey,key)
 end
 
 
----	Create a string representation of a Lua table.
+--- Create a string representation of a Lua table.
 -- This function never fails, but may complain by returning an
 -- extra value. Normally puts out one item per line, using
 -- the provided indent; set the second parameter to an empty string

@@ -16,49 +16,49 @@ end
 
 
 asserteq(
-	copy {10,20,30},
-	{10,20,30}
+    copy {10,20,30},
+    {10,20,30}
 )
 
 asserteq(
-	deepcopy {10,20,{30,40}},
-	{10,20,{30,40}}
+    deepcopy {10,20,{30,40}},
+    {10,20,{30,40}}
 )
 
 asserteq(
-	pairmap(function(i,v) return v end,{10,20,30}),
-	{10,20,30}
+    pairmap(function(i,v) return v end,{10,20,30}),
+    {10,20,30}
 )
 
 asserteq_no_order(
-	pairmap(L'_',{fred=10,bonzo=20}),
-	{'fred','bonzo'}
+    pairmap(L'_',{fred=10,bonzo=20}),
+    {'fred','bonzo'}
 )
 
 asserteq_no_order(
-	pairmap(function(k,v) return v end,{fred=10,bonzo=20}),
-	{10,20}
+    pairmap(function(k,v) return v end,{fred=10,bonzo=20}),
+    {10,20}
 )
 
 asserteq_no_order(
-	pairmap(function(i,v) return v,i end,{10,20,30}),
-	{10,20,30}
+    pairmap(function(i,v) return v,i end,{10,20,30}),
+    {10,20,30}
 )
 
 asserteq(
-	pairmap(function(k,v) return {k,v},k end,{one=1,two=2}),
-	{one={'one',1},two={'two',2}}
+    pairmap(function(k,v) return {k,v},k end,{one=1,two=2}),
+    {one={'one',1},two={'two',2}}
 )
 -- same as above, using string lambdas
 asserteq(
-	pairmap(L'|k,v|{k,v},k',{one=1,two=2}),
-	{one={'one',1},two={'two',2}}
+    pairmap(L'|k,v|{k,v},k',{one=1,two=2}),
+    {one={'one',1},two={'two',2}}
 )
 
 
 asserteq(
-	map(function(v) return v*v end,{10,20,30}),
-	{100,400,900}
+    map(function(v) return v*v end,{10,20,30}),
+    {100,400,900}
 )
 
 -- extra arguments to map() are passed to the function; can use
@@ -81,13 +81,13 @@ asserteq(
 
 -- mapn operates over an arbitrary number of input tables (but use map2 for n=2)
 asserteq(
-	mapn(function(x,y,z) return x+y+z end, {1,2,3},{10,20,30},{100,200,300}),
-	{111,222,333}
+    mapn(function(x,y,z) return x+y+z end, {1,2,3},{10,20,30},{100,200,300}),
+    {111,222,333}
 )
 
 asserteq(
-	mapn(math.max, {1,20,300},{10,2,3},{100,200,100}),
-	{100,200,300}
+    mapn(math.max, {1,20,300},{10,2,3},{100,200,100}),
+    {100,200,300}
 )
 
 asserteq(
