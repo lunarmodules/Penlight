@@ -68,7 +68,7 @@ end
 -- this will return a plain table with an appropriate metatable.
 -- we pass anything which isn't a simple table to iterate() to work out
 -- an appropriate iterator
---  @see List.iterate
+-- @see List.iterate
 -- @param[opt] t An optional list-like table
 -- @return a new List
 -- @usage ls = List();  ls = List {1,2,3,4}
@@ -85,7 +85,7 @@ function List:clone()
     return ls
 end
 
----Add an item to the end of the list.
+--- Add an item to the end of the list.
 -- @param i An item
 -- @return the list
 function List:append(i)
@@ -169,7 +169,7 @@ List.get = List.pop
 local tfind = tablex.find
 List.index = tfind
 
---- does this list contain the value?.
+--- Does this list contain the value?
 -- @param x A data value
 -- @return true or false
 function List:contains(x)
@@ -196,7 +196,7 @@ function List:sort(cmp)
     return self
 end
 
---- return a sorted copy of this list.
+--- Return a sorted copy of this list.
 -- @func[opt='<'] cmp an optional comparison function
 -- @return a new list
 function List:sorted(cmp)
@@ -215,7 +215,7 @@ function List:reverse()
     return self
 end
 
---- return the minimum and the maximum value of the list.
+--- Return the minimum and the maximum value of the list.
 -- @return minimum value
 -- @return maximum value
 function List:minmax()
@@ -239,7 +239,7 @@ function List:slice(first,last)
     return tsub(self,first,last)
 end
 
---- empty the list.
+--- Empty the list.
 -- @return the list
 function List:clear()
     for i=1,#self do tremove(self) end
@@ -309,7 +309,7 @@ function List:splice(idx,list)
     return self
 end
 
---- general slice assignment s[i1:i2] = seq.
+--- General slice assignment s[i1:i2] = seq.
 -- @int i1  start index
 -- @int i2  end index
 -- @tparam List seq a list
@@ -323,7 +323,7 @@ function List:slice_assign(i1,i2,seq)
     return self
 end
 
---- concatenation operator.
+--- Concatenation operator.
 -- @within metamethods
 -- @tparam List L another List
 -- @return a new list consisting of the list with the elements of the new list appended
@@ -334,7 +334,7 @@ function List:__concat(L)
     return ls
 end
 
---- equality operator ==.  True iff all elements of two lists are equal.
+--- Equality operator ==.  True iff all elements of two lists are equal.
 -- @within metamethods
 -- @tparam List L another List
 -- @return true or false
@@ -346,7 +346,7 @@ function List:__eq(L)
     return true
 end
 
---- join the elements of a list using a delimiter. 
+--- Join the elements of a list using a delimiter. 
 -- This method uses tostring on all elements.
 -- @string[opt=''] delim a delimiter string, can be empty.
 -- @return a string
@@ -356,7 +356,7 @@ function List:join (delim)
     return concat(array_tostring(self),delim)
 end
 
---- join a list of strings. <br>
+--- Join a list of strings. <br>
 -- Uses `table.concat` directly.
 -- @function List:concat
 -- @string[opt=''] delim a delimiter
@@ -371,14 +371,14 @@ local function tostring_q(val)
     return s
 end
 
---- how our list should be rendered as a string. Uses join().
+--- How our list should be rendered as a string. Uses join().
 -- @within metamethods
 -- @see List:join
 function List:__tostring()
     return '{'..self:join(',',tostring_q)..'}'
 end
 
---- call the function on each element of the list.
+--- Call the function on each element of the list.
 -- @func fun a function or callable object
 -- @param ... optional values to pass to function
 function List:foreach (fun,...)
@@ -394,7 +394,7 @@ local function lookup_fun (obj,name)
     return f
 end
 
---- call the named method on each element of the list.
+--- Call the named method on each element of the list.
 -- @string name the method name
 -- @param ... optional values to pass to function
 function List:foreachm (name,...)
@@ -405,7 +405,7 @@ function List:foreachm (name,...)
     end
 end
 
---- create a list of all elements which match a function.
+--- Create a list of all elements which match a function.
 -- @func fun a boolean function
 -- @param[opt] arg optional argument to be passed as second argument of the predicate
 -- @return a new filtered list.
@@ -413,7 +413,7 @@ function List:filter (fun,arg)
     return makelist(filter(self,fun,arg),self)
 end
 
---- split a string using a delimiter.
+--- Split a string using a delimiter.
 -- @string s the string
 -- @string[opt] delim the delimiter (default spaces)
 -- @return a List of strings
@@ -423,7 +423,7 @@ function List.split (s,delim)
     return makelist(split(s,delim))
 end
 
---- apply a function to all elements.
+--- Apply a function to all elements.
 -- Any extra arguments will be passed to the function.
 -- @func fun a function of at least one argument
 -- @param ... arbitrary extra arguments.
@@ -434,7 +434,7 @@ function List:map (fun,...)
     return makelist(imap(fun,self,...),self)
 end
 
---- apply a function to all elements, in-place.
+--- Apply a function to all elements, in-place.
 -- Any extra arguments are passed to the function.
 -- @func fun A function that takes at least one argument
 -- @param ... arbitrary extra arguments.
@@ -444,7 +444,7 @@ function List:transform (fun,...)
     return self
 end
 
---- apply a function to elements of two lists.
+--- Apply a function to elements of two lists.
 -- Any extra arguments will be passed to the function
 -- @func fun a function of at least two arguments
 -- @tparam List ls another list
@@ -501,7 +501,7 @@ function List:reduce (fun)
     return reduce(fun,self)
 end
 
---- partition a list using a classifier function.
+--- Partition a list using a classifier function.
 -- The function may return nil, but this will be converted to the string key '<nil>'.
 -- @func fun a function of at least one argument
 -- @param ... will also be passed to the function
