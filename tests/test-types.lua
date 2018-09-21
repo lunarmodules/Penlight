@@ -29,6 +29,7 @@ asserteq(types.is_indexable(10),nil)
 
 asserteq(types.is_empty(nil),true)
 asserteq(types.is_empty({}),true)
+asserteq(types.is_empty({[false] = false}),false)
 asserteq(types.is_empty(""),true)
 asserteq(types.is_empty("   ",true),true)
 

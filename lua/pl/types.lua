@@ -57,10 +57,15 @@ end
 -- considered empty is it only contains spaces.
 -- @return true if the object is empty, otherwise false.
 function types.is_empty(o, ignore_spaces)
-    if o == nil or (type(o) == "table" and not next(o)) or (type(o) == "string" and (o == "" or (ignore_spaces and o:match("^%s+$")))) then
+    if o == nil then
+        return true
+    elseif type(o) == "table" then
+        return next(o) == nil
+    elseif type(o) == "string" then
+        return o == "" or (ignore_spaces and not not o:find("^%s+$"))
+    else
         return true
     end
-    return false
 end
 
 local function check_meta (val)
