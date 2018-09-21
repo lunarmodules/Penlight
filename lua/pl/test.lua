@@ -85,13 +85,13 @@ end
 -- @param e a string to match the error against
 -- @param where extra level offset
 function test.assertraise(fn,e,where)
-    local _, err
+    local ok, err
     if type(fn) == 'table' then
-        _, err = pcall(unpack(fn))
+        ok, err = pcall(unpack(fn))
     else
-        _, err = pcall(fn)
+        ok, err = pcall(fn)
     end
-    if not err or err:match(e)==nil then
+    if ok or err:match(e)==nil then
         complain (err,e,"these errors did not match",where)
     end
 end
