@@ -21,9 +21,9 @@ end
 function teste (e,rs,ve)
     local v = {}
     collect_values(e,v)
-    if #v > 0 then asserteq(v,ve,nil,2) end
+    if #v > 0 then asserteq(v,ve,nil,1) end
     local rep = repr(e)
-    asserteq(rep,rs)
+    asserteq(rep,rs, nil, 1)
 end
 
 teste(_1+_2('hello'),'_1 + _2(_C1)',{"hello"})
@@ -36,6 +36,9 @@ asserteq(instantiate(Or(Not(_1),_2))(true,true),true)
 
 teste(_1() + _2() + _3(),'_1() + _2() + _3()',30)
 asserteq(I(_1+_2)(10,20),30)
+
+teste(_1() - -_2() % _3(), '_1() - - _2() % _3()')
+teste((_1() - -_2()) % _3(), '(_1() - - _2()) % _3()')
 
 asserteq(instantiate(_1+_2)(10,20),30)
 

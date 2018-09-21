@@ -89,7 +89,7 @@ function _PEMT.__tostring (e)
 end
 
 function _PEMT.__unm(arg)
-    return P{op='-',arg}
+    return P{op='unm',arg}
 end
 
 function func.Not (arg)
@@ -160,15 +160,15 @@ function func.Args (...)
     return P{op='()',_arg,...}
 end
 
--- binary and unary operators, with their precedences (see 2.5.6)
+-- binary and unary operators, with their precedences (see Lua manual)
 local operators = {
     ['or'] = 0,
     ['and'] = 1,
     ['=='] = 2, ['~='] = 2, ['<'] = 2, ['>'] = 2,  ['<='] = 2,   ['>='] = 2,
     ['..'] = 3,
-    ['+'] = 4, ['-'] = 4,               -- luacheck: ignore
+    ['+'] = 4, ['-'] = 4,
     ['*'] = 5, ['/'] = 5, ['%'] = 5,
-    ['not'] = 6, ['#'] = 6, ['-'] = 6,  -- TODO: fix the LuaCheck ignore above!
+    ['not'] = 6, ['#'] = 6, ['unm'] = 6,
     ['^'] = 7
 }
 
@@ -207,7 +207,8 @@ function repr (e,lastpred)
                 end
                 return s
             else
-                return e.op..' '..ls[1]
+                local op = e.op == 'unm' and '-' or e.op
+                return op..' '..ls[1]
             end
         else -- either postfix, or a placeholder
             if e.op == '[]' then
