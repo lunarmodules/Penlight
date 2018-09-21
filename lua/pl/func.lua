@@ -160,16 +160,22 @@ function func.Args (...)
     return P{op='()',_arg,...}
 end
 
--- binary and unary operators, with their precedences (see Lua manual)
-local operators = {
+-- binary operators with their precedences (see Lua manual)
+-- precedences might be incremented by one before use depending on
+-- left- or right-associativity, space them out
+local binary_operators = {
     ['or'] = 0,
-    ['and'] = 1,
-    ['=='] = 2, ['~='] = 2, ['<'] = 2, ['>'] = 2,  ['<='] = 2,   ['>='] = 2,
-    ['..'] = 3,
-    ['+'] = 4, ['-'] = 4,
-    ['*'] = 5, ['/'] = 5, ['%'] = 5,
-    ['not'] = 6, ['#'] = 6, ['unm'] = 6,
-    ['^'] = 7
+    ['and'] = 2,
+    ['=='] = 4, ['~='] = 4, ['<'] = 4, ['>'] = 4,  ['<='] = 4,   ['>='] = 4,
+    ['..'] = 6,
+    ['+'] = 8, ['-'] = 8,
+    ['*'] = 10, ['/'] = 10, ['%'] = 10,
+    ['^'] = 14
+}
+
+-- unary operators with their precedences
+local unary_operators = {
+    ['not'] = 12, ['#'] = 12, ['unm'] = 12
 }
 
 -- comparisons (as prefix functions)
@@ -197,20 +203,31 @@ end
 function repr (e,lastpred)
     local tail = func.tail
     if isPE(e) then
-        local pred = operators[e.op]
-        local ls = map(repr,e,pred)
-        if pred then --unary or binary operator
-            if #ls ~= 1 then
-                local s = concat(ls,' '..e.op..' ')
-                if lastpred and lastpred > pred then
-                    s = '('..s..')'
+        local pred = binary_operators[e.op] or unary_operators[e.op]
+        if pred then
+            -- binary or unary operator
+            local s
+            if binary_operators[e.op] then
+                local left_pred = pred
+                local right_pred = pred
+                if e.op == '..' or e.op == '^' then
+                    left_pred = left_pred + 1
+                else
+                    right_pred = right_pred + 1
                 end
-                return s
+                local left_arg = repr(e[1], left_pred)
+                local right_arg = repr(e[2], right_pred)
+                s = left_arg..' '..e.op..' '..right_arg
             else
                 local op = e.op == 'unm' and '-' or e.op
-                return op..' '..ls[1]
+                s = op..' '..repr(e[1], pred)
             end
+            if lastpred and lastpred > pred then
+                s = '('..s..')'
+            end
+            return s
         else -- either postfix, or a placeholder
+            local ls = map(repr,e)
             if e.op == '[]' then
                 return ls[1]..'['..ls[2]..']'
             elseif e.op == '()' then

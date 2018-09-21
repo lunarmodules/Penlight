@@ -11,6 +11,8 @@
   - Fixed `types.is_empty` returning `true` on tables containing `false` key (#267).
   - Fixed `test.assertraise` throwing an error when passes an array with a function to call plus its arguments (#272).
   - Fixed placeholder expressions being evaluated with wrong precedence of binary and unary negation.
+  - Fixed placeholder expressions being evaluated assuming wrong binary operator associativity (e.g. `_1-(_2+_3)` was evaluated as `(_1-_2)+_3`.
+  - Fixed placeholder expressions being evaluated as if unary operators take precedence over power operator (e.g. `(-_1)^_2`) was evaluated as `-(_1^2)`).
 
 ## 1.5.4 (2017-07-17)
 
