@@ -1,4 +1,16 @@
-## 1.5.0 [in progress]
+# Changelog
+
+## 1.5.5 (unreleased)
+
+## 1.5.4 (2017-07-17)
+
+## 1.5.3 (2017-07-16)
+
+## 1.5.2 (2017-04-08)
+
+## 1.5.1 (2017-04-02)
+
+## 1.5.0 (2017-04-01)
 
 ### Changes
 
@@ -20,7 +32,7 @@
   - `stringx.splitlines` has `keep_ends` argument.
   - `tablex.reduce` can take an optional initial value.
 
-## 1.4.1
+## 1.4.1 (2016-08-16)
 
 ### Changes
 
@@ -33,13 +45,13 @@
 
 ### Features
 
-## 1.4.0
+## 1.4.0 (2016-08-14)
 
 ### Changes
 
 ### Fixes
 
-  - `pl.path` covers edge cases better (e.g 'path.normpath` was broken)
+  - `pl.path` covers edge cases better (e.g `path.normpath` was broken)
   - `p.dir` shell patterns fixed
   - `os.tmpname` broken on modern Windows/MSVC14
   - (likewise for `utils.executeex` which depends on it)
@@ -64,7 +76,7 @@
   - `data.read` - in CSV mode, assume empty fields are numerical zero
 
 
-## 1.3.2
+## 1.3.2 (2015-05-10)
 
 ### Changes
 
@@ -93,11 +105,13 @@
   -  issue #117: tablex.range now works with decreasing numbers, consistent with numerical for loop
   -  utils.import will NOT override global symbols (import 'math' caused global type() to be clobbered)
   - issue #125: DOCTYPE ignored in xml documents as well
-  - Allow XML tostring() function to customize the default prefacing with <?xml...>
+  - Allow XML tostring() function to customize the default prefacing with `<?xml...>`
   - More Robust Quoted Strings
   - lapp: improved detection of unsupported short flags
 
-## 1.3.0
+## 1.3.1 (2013-09-24)
+
+## 1.3.0 (2013-09-14)
 
 ### Changes
 
@@ -123,7 +137,7 @@ are explicitly flagged as being UTC or not.
 particularly convenient for using from Moonscript.
   - general documentation improvements, e.g `class`
 
-## 1.2.1
+## 1.2.1 (2013-06-21)
 
 ### Changes
 
@@ -154,15 +168,29 @@ particularly convenient for using from Moonscript.
   - xml HTML mode improvements - can parse non-trivial well-formed HTML documents.
     xml.parsehtml is a parse function, no longer a flag
   - if a LOM document has ordered attributes, use these when stringifying
-  - xml.tostring has yet another extra parm to force prefacing with <?xml...>
+  - xml.tostring has yet another extra parm to force prefacing with `<?xml...>`
   - lapp boolean flags may have `true` default
   - lapp slack mode where 'short' flags can be multi-char
   - test.asserteq etc take extra arg, which is extra level where error must be reported at
   - path.currentdir,chdir,rmdir,mkdir and dir as alias to lfs are exported; no dependencies on luafilesystem outside pl.path, making it easier to plug in different implementations.
 
+## 1.2.0 (2013-05-28)
 
+## 1.1.1 (2013-05-14)
 
-## 0.9.7
+## 1.1.0 (2013-03-18)
+
+## 1.0.3 (2012-12-07)
+
+## 1.0.2 (2012-05-12)
+
+## 1.0.1 (2012-05-26)
+
+## 1.0.0 (2012-04-26)
+
+## 0.9.8 (2011-11-27)
+
+## 0.9.7 (2011-11-27)
 
 ### Lua 5.2 compatibility
 
@@ -187,7 +215,7 @@ particularly convenient for using from Moonscript.
 - a few occurances of non-existent function utils.error removed
 
 
-## 0.9.6
+## 0.9.6 (2011-09-11)
 
 ### Lua 5.2 compatibility
 
@@ -209,7 +237,7 @@ particularly convenient for using from Moonscript.
 - OrderedMap.set broken when value was nil and key did not exist in map; ctor throws
   error if unhappy
 
-## 0.9.5
+## 0.9.5 (2011-07-05)
 
 ### Lua 5.2 compatibility
 
@@ -233,9 +261,21 @@ if the argument is not a table. Non-integer indices between 1 and #t are no long
  - utils.quit() varargs broken, e.g. utils.quit("answer was %d",42)
  - some stray globals caused trouble with 'strict'
 
-###What's new with 0.8b ?
+## 0.9.4 (2011-04-08)
 
-####Features:
+## 0.9.3 (2011-03-05)
+
+## 0.9.2 (2011-02-16)
+
+## 0.9.1 (2011-02-12)
+
+## 0.9.0 (2010-12-20)
+
+## 0.8.5 (2010-12-16)
+
+### What's new with 0.8b ?
+
+#### Features:
 
 pl.app provides useful stuff like simple command-line argument parsing and require_here(), which
 makes subsequent require() calls look in the local directory by preference.
@@ -247,14 +287,14 @@ Custom error trace will only show the functions in user code.
 
 More robust argument checking.
 
-In function arguments, now supports 'string lambdas', e.g. '|x| 2*x'
+In function arguments, now supports 'string lambdas', e.g. `'|x| 2*x'`
 
 utils.readfile,writefile now insist on being given filenames. This will cause less confusion.
 
 tablex.search() is new: will look recursively in an arbitrary table; can specify tables not to follow.
 tablex.move() will work with source and destination tables the same, with overlapping ranges.
 
-####Bug Fixes:
+#### Bug Fixes:
 
 dir.copyfile() now works fine without Alien on Windows
 
@@ -263,12 +303,12 @@ dir.makepath() and rmtree() had problems.
 tablex.compare_no_order() is now O(NlogN), as expected.
 tablex.move() had a problem with source size
 
-###What's New with 0.7.0b?
+### What's New with 0.7.0b?
 
-####Features:
+#### Features:
 
 utils.is_type(v,tp) can say is_type(s,'string') and is_type(l,List).
-utils.is_callable(v) either a function, or has a __call metamethod.
+utils.is_callable(v) either a function, or has a `__call` metamethod.
 
 Sequence wrappers: can write things like this:
 
@@ -301,7 +341,7 @@ and attempts to be paranoid about its contents.
 
 sip.match_at_start(). Convenience function for anchored SIP matches.
 
-####Bug Fixes:
+#### Bug Fixes:
 
 tablex.deepcompare() was confused by false boolean values, which
 it thought were synonymous with being nil.
@@ -316,14 +356,14 @@ seq.map() was broken for double-valued sequences.
 seq.copy_tuples() did not use default_iter(), so did not e.g. like
 table arguments.
 
-dir.copyfile() returns the wrong result for *nix operations.
+dir.copyfile() returns the wrong result for \*nix operations.
 dir.makepath() was broken for non-Windows paths.
 
-###What's New with 0.6.3?
+### What's New with 0.6.3?
 
 The map and reduce functions now take the function first, as Nature intended.
 
-The Python-like overloading of '*' for strings has been dropped, since it
+The Python-like overloading of '\*' for strings has been dropped, since it
 is silly. Also, strings are no longer callable; use 's:at(1)' instead of
 's(1)' - this tended to cause Obscure Error messages.
 
