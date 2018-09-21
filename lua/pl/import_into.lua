@@ -25,9 +25,10 @@ return function(env)
         config=true,pretty=true,data=true,func=true,text=true,
         operator=true,lapp=true,array2d=true,
         comprehension=true,xml=true,types=true,
-        test = true, app = true, file = true, class = true, List = true,
-        Map = true, Set = true, OrderedMap = true, MultiMap = true,
-        Date = true,
+        test = true, app = true, file = true, class = true,
+        luabalanced = true, permute = true, template = true,
+        url = true, compat = true, List = true, Map = true, Set = true,
+        OrderedMap = true, MultiMap = true, Date = true,
         -- classes --
     }
     rawset(env,'utils',require 'pl.utils')
