@@ -65,11 +65,16 @@ end
 --   -- It's true
 -- end
 local function is_a(self,klass)
+    local ok, m = pcall(function()
+        return self:is_a()
+    end)
+    if not ok then
+        m = getmetatable(self)
+    end
     if klass == nil then
         -- no class provided, so return the class this instance is derived from
-        return getmetatable(self)
+        return m
     end
-    local m = getmetatable(self)
     if not m then return false end --*can't be an object!
     while m do
         if m == klass then return true end
