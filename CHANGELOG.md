@@ -1,6 +1,14 @@
 # Changelog
 
-## 1.5.5 (not released yet)
+## 1.6.0 (not released yet)
+
+### New features
+
+  - `pl.compat` now provides `unpack` as `table.unpack` on Lua 5.1
+
+### Changes
+
+  - `utils.unpack` is now documented and respects `.n` field of its argument.
 
 ### Fixes
 
