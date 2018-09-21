@@ -12,10 +12,11 @@ local tablex = require 'pl.tablex'
 local utils = require 'pl.utils'
 local pretty = require 'pl.pretty'
 local path = require 'pl.path'
-local type,unpack = type,utils.pack
+local type,unpack = type,utils.unpack
 local clock = os.clock
 local debug = require 'debug'
 local io = io
+local pack = table.pack or function(...) return { select("#", ...), ...} end
 
 local function dump(x)
     if type(x) == 'table' and not (getmetatable(x) and getmetatable(x).__tostring) then
@@ -85,11 +86,11 @@ end
 -- @param e a string to match the error against
 -- @param where extra level offset
 function test.assertraise(fn,e,where)
-    local ok, err
+    local _, err
     if type(fn) == 'table' then
-        ok, err = pcall(unpack(fn))
+        _, err = pcall(unpack(fn))
     else
-        ok, err = pcall(fn)
+        _, err = pcall(fn)
     end
     if not err or err:match(e)==nil then
         complain (err,e,"these errors did not match",where)
@@ -112,7 +113,7 @@ end
 -- tuple type --
 
 local tuple_mt = {
-    unpack = table.unpack
+    unpack = unpack
 }
 tuple_mt.__index = tuple_mt
 
@@ -146,7 +147,7 @@ end
 -- and there is an `unpack` method.
 -- @usage asserteq(tuple( ('ab'):find 'a'), tuple(1,1))
 function test.tuple(...)
-    return setmetatable(table.pack(...), tuple_mt)
+    return setmetatable(pack(...), tuple_mt)
 end
 
 --- Time a function. Call the function a given number of times, and report the number of seconds taken,

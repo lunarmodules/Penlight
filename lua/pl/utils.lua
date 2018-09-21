@@ -268,7 +268,6 @@ end
 -- @return stdout output (string)
 -- @return errout output (string)
 function utils.executeex(cmd, bin)
-    local mode
     local outfile = os.tmpname()
     local errfile = os.tmpname()
 

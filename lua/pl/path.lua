@@ -128,7 +128,7 @@ else
     path.sep = '/'
     path.dirsep = ':'
 end
-local sep,dirsep = path.sep,path.dirsep
+local sep = path.sep
 
 --- are we running Windows?
 -- @class field
@@ -205,7 +205,7 @@ end
 -- @string P A file path
 function path.dirname(P)
     assert_string(1,P)
-    local p1,p2 = path.splitpath(P)
+    local p1 = path.splitpath(P)
     return p1
 end
 
@@ -213,7 +213,7 @@ end
 -- @string P A file path
 function path.basename(P)
     assert_string(1,P)
-    local p1,p2 = path.splitpath(P)
+    local _,p2 = path.splitpath(P)
     return p2
 end
 
@@ -221,7 +221,7 @@ end
 -- @string P A file path
 function path.extension(P)
     assert_string(1,P)
-    local p1,p2 = path.splitext(P)
+    local _,p2 = path.splitext(P)
     return p2
 end
 
@@ -324,13 +324,6 @@ function path.normpath(P)
     P = anchor..concat(parts, sep)
     if P == '' then P = '.' end
     return P
-end
-
-local function ATS (P)
-    if at(P,#P) ~= path.sep then
-        P = P..path.sep
-    end
-    return path.normcase(P)
 end
 
 --- relative path from current directory or optional start point

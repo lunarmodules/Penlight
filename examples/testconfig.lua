@@ -1,7 +1,7 @@
 local stringio = require 'pl.stringio'
 local config = require 'pl.config'
 
-function dump(t,indent)
+local function dump(t,indent)
     if type(t) == 'table' then
         io.write(indent,'{\n')
         local newindent = indent..'  '
@@ -17,7 +17,7 @@ function dump(t,indent)
 end
 
 
-function testconfig(test)
+local function testconfig(test)
     local f = stringio.open(test)
     local c = config.read(f)
     f:close()

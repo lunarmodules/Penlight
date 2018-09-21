@@ -4,10 +4,11 @@
 -- or 'pl.seq.map' (a function reference); these cases must be distinguished
 -- and a Markdown link generated pointing to the LuaDoc file.
 
-require 'pl'
+local sip = require 'pl.sip'
+local stringx = require 'pl.stringx'
 
 local res = {}
-s = [[
+local s = [[
 (@see pl.bonzo.dog)
 remember about @see pl.bonzo
 
@@ -15,7 +16,7 @@ remember about @see pl.bonzo
 
 local _gsub_patterns = {}
 
-function gsub (s,pat,subst,start)
+local function gsub (s,pat,subst,start)
     local fpat = _gsub_patterns[pat]
     if not fpat then
         -- use SIP to generate a proper string pattern.

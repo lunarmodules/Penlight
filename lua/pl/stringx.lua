@@ -274,7 +274,7 @@ end
 -- @string sub substring
 function stringx.count(s,sub)
     assert_string(1,s)
-    local i,k = _find_all(s,sub,1)
+    local _,k = _find_all(s,sub,1)
     return k
 end
 
@@ -499,17 +499,16 @@ end
 -- @return 'nil' if not found. If found, the maximum number of equal signs found within all matches.
 local function has_lquote(s)
     local lstring_pat = '([%[%]])(=*)%1'
-    local equals
-    local start, finish, bracket, new_equals = nil, 1, nil, nil
-
+    local equals, new_equals, _
+    local finish = 1
     repeat
-        start, finish, bracket, new_equals = s:find(lstring_pat, finish)
+        _, finish, _, new_equals = s:find(lstring_pat, finish)
         if new_equals then
             equals = max(equals or 0, #new_equals)
         end
     until not new_equals
 
-    return equals 
+    return equals
 end
 
 --- Quote the given string and preserve any control or escape characters, such that reloading the string in Lua returns the same result.
@@ -530,8 +529,8 @@ function stringx.quote_string(s)
         equal_signs = ("="):rep((equal_signs or -1) + 1)
         -- Long strings strip out leading newline. We want to retain that, when quoting.
         if s:find("^\n") then s = "\n" .. s end
-        local lbracket, rbracket =  
-            "[" .. equal_signs .. "[",  
+        local lbracket, rbracket =
+            "[" .. equal_signs .. "[",
             "]" .. equal_signs .. "]"
         s = lbracket .. s .. rbracket
     else

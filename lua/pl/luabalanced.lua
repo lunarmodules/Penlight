@@ -130,6 +130,7 @@ local wordop = {['and']=true, ['or']=true, ['not']=true}
 local is_compare = {['>']=true, ['<']=true, ['~']=true}
 local function match_expression(s, pos)
   pos = pos or 1
+  local _
   local posa = pos
   local lastident
   local poscs, posce
@@ -149,7 +150,7 @@ local function match_expression(s, pos)
         posce = pos
       end
     elseif c == '(' or c == '{' or c == '[' then
-      local part; part, pos = match_bracketed(s, pos)
+      _, pos = match_bracketed(s, pos)
     elseif c == '=' and s:sub(pos+1,pos+1) == '=' then
       pos = pos + 2  -- skip over two-char op containing '='
     elseif c == '=' and is_compare[s:sub(pos-1,pos-1)] then

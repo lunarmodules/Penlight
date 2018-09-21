@@ -4,8 +4,8 @@
 -- Dependencies: `pl.utils`, `pl.tablex`, `pl.types`
 -- @module pl.array2d
 
-local type,tonumber,assert,tostring,io,ipairs,string,table =
-    _G.type,_G.tonumber,_G.assert,_G.tostring,_G.io,_G.ipairs,_G.string,_G.table
+local tonumber,assert,tostring,io,ipairs,string,table =
+    _G.tonumber,_G.assert,_G.tostring,_G.io,_G.ipairs,_G.string,_G.table
 local setmetatable,getmetatable = setmetatable,getmetatable
 
 local tablex = require 'pl.tablex'
@@ -16,6 +16,8 @@ local remove = table.remove
 local splitv,fprintf,assert_arg = utils.splitv,utils.fprintf,utils.assert_arg
 local byte = string.byte
 local stdout = io.stdout
+local min = math.min
+
 
 local array2d = {}
 
@@ -94,10 +96,6 @@ function array2d.reduce2 (opc,opr,a)
     assert_arg(3,a,'table')
     local tmp = array2d.reduce_rows(opr,a)
     return reduce(opc,tmp)
-end
-
-local function dimension (t)
-    return type(t[1])=='table' and 2 or 1
 end
 
 --- map a function over two arrays.
@@ -253,8 +251,6 @@ function array2d.remove_col (t,j)
     end
 end
 
-local Ai = byte 'A'
-
 local function _parse (s)
     local c,r
     if s:sub(1,1) == 'R' then
@@ -401,8 +397,6 @@ function array2d.forall (t,row_op,end_row_op,i1,j1,i2,j2)
     end
 end
 
-local min, max = math.min, math.max
-
 ---- move a block from the destination to the source.
 -- @array2d dest a 2D array
 -- @int di start row in dest
@@ -440,7 +434,7 @@ function array2d.iter (a,indices,i1,j1,i2,j2)
     assert_arg(1,a,'table')
     local norowset = not (i2 and j2)
     i1,j1,i2,j2 = default_range(a,i1,j1,i2,j2)
-    local n,i,j = i2-i1+1,i1-1,j1-1
+    local i,j = i1-1,j1-1
     local row,nr = nil,0
     local onr = j2 - j1 + 1
     return function()

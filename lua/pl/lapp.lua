@@ -33,11 +33,10 @@ local function lines(s) return s:gmatch('([^\n]*)\n') end
 local function lstrip(str)  return str:gsub('^%s+','')  end
 local function strip(str)  return lstrip(str):gsub('%s+$','') end
 local function at(s,k)  return s:sub(k,k) end
-local function isdigit(s) return s:find('^%d+$') == 1 end
 
 local lapp = {}
 
-local open_files,parms,aliases,parmlist,usage,windows,script
+local open_files,parms,aliases,parmlist,usage,script
 
 lapp.callback = false -- keep Strict happy
 
@@ -182,7 +181,6 @@ end
 -- @return a table with parameter-value pairs
 function lapp.process_options_string(str,args)
     local results = {}
-    local opts = {at_start=true}
     local varargs
     local arg = args or _G.arg
     open_files = {}
@@ -219,7 +217,7 @@ function lapp.process_options_string(str,args)
 
     for line in lines(str) do
         local res = {}
-        local optspec,optparm,i1,i2,defval,vtype,constraint,rest
+        local optparm,defval,vtype,constraint,rest
         line = lstrip(line)
         local function check(str)
             return match(str,line,res)
@@ -314,7 +312,7 @@ function lapp.process_options_string(str,args)
                 end
                 ps.constraint = types[vtype].constraint
             elseif not builtin_types[vtype] and vtype then
-                lapp.error(vtype.." is unknown type")          
+                lapp.error(vtype.." is unknown type")
             end
             parms[optparm] = ps
         end

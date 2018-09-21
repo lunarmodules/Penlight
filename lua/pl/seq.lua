@@ -79,9 +79,9 @@ end
 -- @return iterator over keys
 function seq.keys(t)
   assert_arg(1,t,'table')
-  local key,value
+  local key
   return function()
-    key,value = next(t,key)
+    key = next(t,key)
     return key
   end
 end
@@ -511,7 +511,6 @@ setmetatable(seq,{
 -- @param ... for Lua 5.2 only, optional format specifiers, as in `io.read`.
 -- @return a sequence wrapper
 function seq.lines (f,...)
-    local n = select('#',...)
     local iter,obj
     if f == 'STDIN' then
         f = io.stdin

@@ -15,7 +15,7 @@ local path = require 'pl.path'
 
 utils.on_error 'quit'
 
-local txt,err = file.read(arg[1] or path.normpath('examples/testglobal.lua'))
+local txt = file.read(arg[1] or path.normpath('examples/testglobal.lua'))
 local globals = List()
 for t,v in lexer.lua(txt) do
 	if t == 'iden' and rawget(_G,v) then

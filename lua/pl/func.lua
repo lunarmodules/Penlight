@@ -26,6 +26,7 @@ local tablex = require 'pl.tablex'
 local map = tablex.map
 local _DEBUG = rawget(_G,'_DEBUG')
 local assert_arg = utils.assert_arg
+local pack = table.pack or function(...) return { n = select("#", ...), ... } end
 
 local func = {}
 
@@ -165,9 +166,9 @@ local operators = {
     ['and'] = 1,
     ['=='] = 2, ['~='] = 2, ['<'] = 2, ['>'] = 2,  ['<='] = 2,   ['>='] = 2,
     ['..'] = 3,
-    ['+'] = 4, ['-'] = 4,
+    ['+'] = 4, ['-'] = 4,               -- luacheck: ignore
     ['*'] = 5, ['/'] = 5, ['%'] = 5,
-    ['not'] = 6, ['#'] = 6, ['-'] = 6,
+    ['not'] = 6, ['#'] = 6, ['-'] = 6,  -- TODO: fix the LuaCheck ignore above!
     ['^'] = 7
 }
 
@@ -335,7 +336,7 @@ end
 -- @usage (bind(f,_1,a))(b) == f(a,b)
 -- @usage (bind(f,_2,_1))(a,b) == f(b,a)
 function func.bind(fn,...)
-    local args = table.pack(...)
+    local args = pack(...)
     local holders,parms,bvalues,values = {},{},{'fn'},{}
     local nv,maxplace,varargs = 1,0,false
     for i = 1,args.n do
@@ -365,7 +366,7 @@ return function (%s)
 end
 ]]):format(bvalues,parms,holders)
     if _DEBUG then print(fstr) end
-    local res,err = utils.load(fstr)
+    local res = utils.load(fstr)
     res = res()
     return res(fn,unpack(values))
 end

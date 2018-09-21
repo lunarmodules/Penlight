@@ -1,8 +1,10 @@
 --cloning a directory tree.
 local lfs = require 'lfs'
-require 'pl'
-p1 = [[examples]]
-p2 = [[copy/of/examples]]
+local path = require 'pl.path'
+local dir = require 'pl.dir'
+
+local p1 = [[examples]]
+local p2 = [[copy/of/examples]]
 
 if not path.isfile 'examples/testclone.lua' then
 	return print 'please run this in the penlight folder (below examples)'
@@ -14,7 +16,7 @@ dir.clonetree(p1,p2,dir.copyfile)
 assert(path.isdir 'copy')
 
 print '---'
-t = os.time()
+local t = os.time()
 print(lfs.touch('examples/testclone.lua',t,t+10))
 
 -- this should only update this file

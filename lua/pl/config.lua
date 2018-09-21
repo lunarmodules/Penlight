@@ -103,7 +103,7 @@ end
 -- @return a table containing items, or `nil`
 -- @return error message (same as @{config.lines}
 function config.read(file,cnfg)
-    local f,openf,err,auto
+    local auto
 
     local iter,err = config.lines(file)
     if not iter then return nil,err end

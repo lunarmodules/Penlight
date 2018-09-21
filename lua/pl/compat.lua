@@ -131,7 +131,7 @@ end
 -- @return the length
 -- @function table.pack
 if not table.pack then
-    function table.pack (...)
+    function table.pack (...)       -- luacheck: ignore
         return {n=select('#',...); ...}
     end
 end
@@ -144,7 +144,7 @@ end
 -- @function package.searchpath
 if not package.searchpath then
     local sep = package.config:sub(1,1)
-    function package.searchpath (mod,path)
+    function package.searchpath (mod,path)    -- luacheck: ignore
         mod = mod:gsub('%.',sep)
         for m in path:gmatch('[^;]+') do
             local nm = m:gsub('?',mod)

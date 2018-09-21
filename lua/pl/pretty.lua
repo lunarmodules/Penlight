@@ -7,7 +7,8 @@
 
 local append = table.insert
 local concat = table.concat
-local mfloor, mhuge, mtype = math.floor, math.huge, math.type
+local mfloor, mhuge = math.floor, math.huge
+local mtype = math.type
 local utils = require 'pl.utils'
 local lexer = require 'pl.lexer'
 local debug = require 'debug'
@@ -46,12 +47,12 @@ local pretty = {}
 local function save_global_env()
     local env = {}
     env.hook, env.mask, env.count = debug.gethook()
-    
+
     -- env.hook is "external hook" if is a C hook function
     if env.hook~="external hook" then
         debug.sethook()
     end
-    
+
     env.string_mt = getmetatable("")
     debug.setmetatable("", nil)
     return env
@@ -210,7 +211,7 @@ function pretty.write (tbl,space,not_clever)
     end
 
     local function eat_last_comma ()
-        local n,lastch = #lines
+        local n = #lines
         local lastch = lines[n]:sub(-1,-1)
         if lastch == ',' then
             lines[n] = lines[n]:sub(1,-2)

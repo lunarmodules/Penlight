@@ -3,9 +3,10 @@
 -- pattern generated:
 -- SYNC%s*%[([+%-%d]%d*)%]%s*([+%-%d]%d*)%s*([+%-%d]%d*)
 
-require 'pl'
+local sip = require 'pl.sip'
+local stringx = require 'pl.stringx'
 
-s = [[
+local s = [[
 SYNC [1] 0 547 (14679 sec)
 SYNC [2] 0 555 (14679 sec)
 SYNC [3] 0 563 (14679 sec)
@@ -16,7 +17,7 @@ SYNC [6] 0 587 (14679 sec)
 
 
 local first = true
-local start
+local expected
 local res = {}
 local pat = 'SYNC [$i{seq}] $i{diff} $i{val}'
 print(sip.create_pattern(pat))

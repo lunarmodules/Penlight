@@ -50,7 +50,7 @@ end
 -- @return 'cannot create' error
 function app.appfile (file)
     local sname = path.basename(check_script_name())
-    local name,ext = path.splitext(sname)
+    local name = path.splitext(sname)
     local dir = path.join(path.expanduser('~'),'.'..name)
     if not path.isdir(dir) then
         local ret = path.mkdir(dir)
