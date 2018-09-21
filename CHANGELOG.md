@@ -1,14 +1,45 @@
 # Changelog
 
-## 1.5.5 (unreleased)
+## 1.5.5 (not released yet)
+
+### Fixes
+
+  - Fixed `seq.last` returning `nil` instead of an empty list when given an empty iterator (#253).
+  - `pl.template` now applies `tostring` when substituting values in templates, avoiding errors when they are not strings or numbers (#256).
+  - Fixed `pl.import_into` not importing some Penlight modules (#268).
+  - Fixed version number stuck at 1.5.2 (#260).
+  - Fixed `types.is_empty` returning `true` on tables containing `false` key (#267).
+  - Fixed `test.assertraise` throwing an error when passes an array with a function to call plus its arguments (#272).
 
 ## 1.5.4 (2017-07-17)
 
+### Fixes
+
+  - Fixed `compat.execute` behaving differently on Lua 5.1 and 5,1+.
+  - Fixed `lapp.process_options_string` setting global `success` variable.
+
 ## 1.5.3 (2017-07-16)
+
+### Changes
+
+  - Added `template.compile` function that allows caching compiled template and rendering it multiple times.
+  - Added special `_debug` field to environment table argument in `template.substitute` for printing generated template code upon render error.
+
+### Fixes
+
+  - Fixed error (`attempt to concatenate a nil value (local 'vtype')`) in `lapp.process_options_string`.
 
 ## 1.5.2 (2017-04-08)
 
+### Fixes
+
+  - Removed leftover debug pring in `lapp.process_options_string`.
+
 ## 1.5.1 (2017-04-02)
+
+### Fixes
+
+  - Fixed `dir.getfiles` matching given pattern against full paths from base directory instead of file names.
 
 ## 1.5.0 (2017-04-01)
 
