@@ -25,7 +25,6 @@ local utils = {
 --- pack an argument list into a table.
 -- @param ... any arguments
 -- @return a table with field n set to the length
--- @return table
 -- @function utils.pack
 utils.pack = table.pack  -- added here to be symmetrical with unpack
 
