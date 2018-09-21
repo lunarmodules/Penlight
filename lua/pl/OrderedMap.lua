@@ -32,7 +32,7 @@ end
 local assert_arg,raise = utils.assert_arg,utils.raise
 
 --- update an OrderedMap using a table.
--- If the table is itself an OrderedMap, then its entries will be appended. 
+-- If the table is itself an OrderedMap, then its entries will be appended.
 -- if it s a table of the form `{{key1=val1},{key2=val2},...}` these will be appended.
 --
 -- Otherwise, it is assumed to be a map-like table, and order of extra entries is arbitrary.
@@ -132,7 +132,7 @@ end
 function OrderedMap:iter ()
     local i = 0
     local keys = self._keys
-    local n,idx = #keys
+    local idx
     return function()
         i = i + 1
         if i > #keys then return nil end

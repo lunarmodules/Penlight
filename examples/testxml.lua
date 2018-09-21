@@ -3,12 +3,13 @@
 -- This is (clearly) not a professional XML parser, so don't use it
 -- on your homework!
 
-require 'pl'
+local lexer = require 'pl.lexer'
+local pretty = require 'pl.pretty'
 
 local append = table.insert
 local skipws,expecting = lexer.skipws,lexer.expecting
 
-function parse_element (tok,tag)
+local function parse_element (tok,tag)
 	local tbl,t,v,attrib
 	tbl = {}
 	tbl.tag = tag  -- LOM 'tag' is the element tag
@@ -51,21 +52,22 @@ function parse_element (tok,tag)
 	end
 end
 
-function parse_xml (tok)
-    local t,v = skipws(tok)
+local function parse_xml (tok)
+	local t = skipws(tok)
+	local v
 	while t == '<' do
 		t,v = tok()
 		if t == '?' or t == '!' then
 			-- skip meta stuff and commentary
 			repeat t = tok() until t == '>'
-			t,v = expecting(tok,'<')
+			t = expecting(tok,'<')
 		else
 			return parse_element(tok,v)
 		end
 	end
 end
 
-s = [[
+local s = [[
 <?xml version="1.0" encoding="UTF-8"?>
 <sensor name="closure-meter-2" id="7D7D0600006F0D00" loc="100,100,0" device="closure-meter" init="true">
 <detector name="closure-meter" phenomenon="closure" units="mm" id="1"

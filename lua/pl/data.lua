@@ -189,10 +189,6 @@ local function open_file (f,mode)
     return f,nil,opened
 end
 
-local function all_n ()
-
-end
-
 --- read a delimited file in a Lua table.
 -- By default, attempts to treat first line as separated list of fieldnames.
 -- @param file a filename or a file-like object
@@ -210,7 +206,7 @@ end
 -- @return error message. May be a file error, 'not a file-like object'
 -- or a conversion error
 function data.read(file,cnfg)
-    local err,opened,count,line
+    local count,line
     local D = {}
     if not cnfg then cnfg = {} end
     local f,err,opened = open_file(file,'r')
@@ -473,7 +469,6 @@ end
 
 local function process_select (data,parms)
     --- preparing fields ----
-    local res,ret
     field_error = nil
     local fields = parms.fields
     local numfields = fields:find '%$'  or #data.fieldnames == 0
@@ -495,7 +490,7 @@ local function process_select (data,parms)
         fields = rstrip(fields):gsub('[^,%w]','_')
     end
     local massage_fields = utils.bind1(massage_fields,data)
-    ret = gsub(fields,idpat,massage_fields)
+    local ret = gsub(fields,idpat,massage_fields)
     if field_error then return nil,field_error end
     parms.fields = fields
     parms.proc_fields = ret
@@ -555,7 +550,7 @@ function data.query(data,condn,context,return_row)
     else
         return nil, "condition must be a string or a table"
     end
-    local query, k
+    local query
     if condn.sort_by then -- use sorted_query
         query = sorted_query
     else
@@ -565,7 +560,7 @@ function data.query(data,condn,context,return_row)
     if return_row then
         fields = '{'..fields..'}'
     end
-    query,k = query:gsub('FIELDLIST',fields)
+    query = query:gsub('FIELDLIST',fields)
     if is_string(condn.where) then
         query = query:gsub('CONDITION',condn.where)
         condn.where = nil
@@ -636,7 +631,6 @@ end
 -- @param outfile filename or file-like object
 -- @bool dont_fail true if you want to return an error, not just fail
 function data.filter (Q,infile,outfile,dont_fail)
-    local err
     local d = data.read(infile or 'stdin')
     local out = open_file(outfile or 'stdout')
     local iter,err = d:select(Q)

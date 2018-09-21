@@ -267,7 +267,7 @@ end
 -- @param tok a token stream
 -- @return a string
 function lexer.getline (tok)
-    local t,v = tok('.-\n')
+    local _,v = tok('.-\n')
     return v
 end
 
@@ -284,7 +284,7 @@ end
 -- @param tok a token stream
 -- @return a string
 function lexer.getrest (tok)
-    local t,v = tok('.+')
+    local _,v = tok('.+')
     return v
 end
 

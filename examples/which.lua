@@ -7,7 +7,7 @@ local app = require 'pl.app'
 
 local pathl = List.split(os.getenv 'PATH',path.dirsep)
 
-function which (file)
+local function which (file)
     local res = pathl:map(path.join,file)
     res = res:filter(path.exists)
     if res then return res[1] end

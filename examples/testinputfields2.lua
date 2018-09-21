@@ -1,4 +1,5 @@
-require 'pl'
+local input = require 'pl.input'
+local seq = require 'pl.seq'
 local text = [[
     981124001	2.0	18988.4	10047.1	4149.7
     981125001	0.8	19104.0	9970.4	5088.7

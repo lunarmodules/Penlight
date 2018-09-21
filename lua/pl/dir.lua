@@ -198,7 +198,6 @@ local function file_op (is_copy,src,dest,flag)
         if not CopyFile then
             src = path.normcase(src)
             dest = path.normcase(dest)
-            local cmd = is_copy and 'copy' or 'rename'
             local res, err = execute_command('copy',two_arguments(src,dest))
             if not res then return false,err end
             if not is_copy then
@@ -379,7 +378,7 @@ function dir.clonetree (path1,path2,file_fun,verbose)
     if verbose then verbose('normalized:',path1,path2) end
     -- particularly NB that the new path isn't fully contained in the old path
     if path1 == path2 then return raise "paths are the same" end
-    local i1,i2 = path2:find(path1,1,true)
+    local _,i2 = path2:find(path1,1,true)
     if i2 == #path1 and path2:sub(i2+1,i2+1) == path.sep then
         return raise 'destination is a subdirectory of the source'
     end

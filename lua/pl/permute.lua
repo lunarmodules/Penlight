@@ -43,7 +43,7 @@ function permute.iter (a)
     local n = #a
     local co = coroutine.create(function () permgen(a, n, coroutine.yield) end)
     return function ()   -- iterator
-        local code, res = resume(co)
+        local _, res = resume(co)
         return res
     end
 end

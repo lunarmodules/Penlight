@@ -28,10 +28,9 @@ end
 -- @tab[opt] predeclared - table of variables that are to be considered predeclared.
 -- @return the given table, or a new table
 function strict.module (name,mod,predeclared)
-    local mt, old_newindex, old_index, old_index_type, global, closed
+    local mt, old_newindex, old_index, old_index_type, global
     if predeclared then
         global = predeclared.__global
-        closed = predeclared.__closed
     end
     if type(mod) == 'table' then
         mt = getmetatable(mod)
@@ -71,13 +70,13 @@ function strict.module (name,mod,predeclared)
                     local fallback = old_index[n]
                     if fallback ~= nil then
                         return fallback
-                    end 
+                    end
                 else
                     local res = old_index(t, n)
                     if res ~= nil then
                         return res
                     end
-                end 
+                end
             end
             local msg = "variable '"..n.."' is not declared"
             if name then

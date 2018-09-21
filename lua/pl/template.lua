@@ -60,8 +60,9 @@ local function parseHashLines(chunk,inline_escape,brackets,esc,newline)
     local esc_pat1, esc_pat2 = "^"..esc_pat, "\n"..esc_pat
     local  pieces, s = {"return function()\nlocal __R_size, __R_table, __tostring = 0, {}, __tostring", n = 1}, 1
     while true do
-        local ss, e, lua = strfind(chunk,esc_pat1, s)
+        local _, e, lua = strfind(chunk,esc_pat1, s)
         if not e then
+            local ss
             ss, e, lua = strfind(chunk,esc_pat2, s)
             parseDollarParen(pieces, strsub(chunk,s, ss), exec_pat, newline)
             if not e then break end

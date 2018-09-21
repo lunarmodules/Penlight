@@ -73,7 +73,6 @@ local ops = {
 -- @usage  "(x+y)^2 for x for y if x > y"  -- nested
 --
 local function parse_comprehension(expr)
-  local t = {}
   local pos = 1
 
   -- extract opname (if exists)

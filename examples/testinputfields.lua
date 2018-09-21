@@ -1,4 +1,4 @@
-require 'pl'
+local input = require 'pl.input'
 local sum = 0.0
 local count = 0
 local text = [[

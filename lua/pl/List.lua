@@ -346,7 +346,7 @@ function List:__eq(L)
     return true
 end
 
---- Join the elements of a list using a delimiter. 
+--- Join the elements of a list using a delimiter.
 -- This method uses tostring on all elements.
 -- @string[opt=''] delim a delimiter string, can be empty.
 -- @return a string
