@@ -11,7 +11,7 @@ local append = table.insert
 local unpack = rawget(_G,'unpack') or rawget(table,'unpack')
 
 local utils = {
-    _VERSION = "1.5.2",
+    _VERSION = "1.5.4",
     lua51 = compat.lua51,
     setfenv = compat.setfenv,
     getfenv = compat.getfenv,
