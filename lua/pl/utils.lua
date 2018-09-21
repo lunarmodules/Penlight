@@ -8,7 +8,7 @@ local format = string.format
 local compat = require 'pl.compat'
 local stdout = io.stdout
 local append = table.insert
-local unpack = rawget(_G,'unpack') or rawget(table,'unpack')
+local _unpack = table.unpack  -- always injected by 'compat'
 
 local utils = {
     _VERSION = "1.5.4",
@@ -19,8 +19,27 @@ local utils = {
     execute = compat.execute,
     dir_separator = compat.dir_separator,
     is_windows = compat.is_windows,
-    unpack = unpack
 }
+
+
+--- pack an argument list into a table.
+-- @param ... any arguments
+-- @return a table with field n set to the length
+-- @return table
+-- @function utils.pack
+utils.pack = table.pack  -- added here to be symmetrical with unpack
+
+--- unpack a table and return its contents.
+-- NOTE: this implementation differs from the Lua implementation in the way
+-- that this one DOES honor the n field in the table t, such that it is 'nil-safe'.
+-- @param t table to unpack
+-- @param[opt] i index from which to start unpacking, defaults to 1
+-- @param[opt] t index of the last element to unpack, defaults to `t.n` or #t
+-- @return multiple returns values from the table
+-- @function utils.unpack
+function utils.unpack(t, i, j)
+    return _unpack(t, i or 1, j or t.n or #t)
+end
 
 --- end this program gracefully.
 -- @param code The exit code or a message to be printed
@@ -209,7 +228,7 @@ end
 -- @usage first,next = splitv('jane:doe',':')
 -- @see split
 function utils.splitv (s,re)
-    return unpack(utils.split(s,re))
+    return _unpack(utils.split(s,re))
 end
 
 --- convert an array of values to strings.

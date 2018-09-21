@@ -128,12 +128,20 @@ end
 --- pack an argument list into a table.
 -- @param ... any arguments
 -- @return a table with field n set to the length
--- @return the length
 -- @function table.pack
 if not table.pack then
     function table.pack (...)       -- luacheck: ignore
         return {n=select('#',...); ...}
     end
+end
+
+--- unpack a table and return the elements.
+-- @param t table to unpack
+-- @param[opt] i index from which to start unpacking, defaults to 1
+-- @param[opt] t index of the last element to unpack, defaults to #t
+-- @return multiple returns values from the table
+if not table.unpack then
+    table.unpack = unpack           -- luacheck: ignore
 end
 
 ------

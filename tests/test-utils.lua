@@ -123,6 +123,16 @@ asserteq(type(sin),"function")
 asserteq(type(abs),"function")
 
 
+-- packing and unpacking arguments in a nil-safe way
+local t = utils.pack(nil, nil, "hello", nil)
+asserteq(t.n, 4) -- the last nil does count as an argument
+
+local arg1, arg2, arg3, arg4 = utils.unpack(t)
+assert(arg1 == nil)
+assert(arg2 == nil)
+asserteq("hello", arg3)
+assert(arg4 == nil)
+
 
 
 

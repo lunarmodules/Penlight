@@ -21,12 +21,11 @@ local type,setmetatable,getmetatable,rawset = type,setmetatable,getmetatable,raw
 local concat,append = table.concat,table.insert
 local tostring = tostring
 local utils = require 'pl.utils'
-local pairs,rawget,unpack = pairs,rawget,utils.unpack
+local pairs,rawget,unpack,pack = pairs,rawget,utils.unpack,utils.pack
 local tablex = require 'pl.tablex'
 local map = tablex.map
 local _DEBUG = rawget(_G,'_DEBUG')
 local assert_arg = utils.assert_arg
-local pack = table.pack or function(...) return { n = select("#", ...), ... } end
 
 local func = {}
 
