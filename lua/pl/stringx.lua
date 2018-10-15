@@ -16,6 +16,7 @@ local error = error
 local gsub = string.gsub
 local rep = string.rep
 local sub = string.sub
+local reverse = string.reverse
 local concat = table.concat
 local append = table.insert
 local escape = utils.escape
@@ -340,19 +341,29 @@ local function _strip(s,left,right,chrs)
     else
         chrs = '['..escape(chrs)..']'
     end
+    local f = 1
+    local t
     if left then
         local i1,i2 = find(s,'^'..chrs..'*')
         if i2 >= i1 then
-            s = sub(s,i2+1)
+            f = i2+1
         end
     end
     if right then
-        local i1,i2 = find(s,chrs..'*$')
-        if i2 >= i1 then
-            s = sub(s,1,i1-1)
+        if #s < 200 then
+            local i1,i2 = find(s,chrs..'*$',f)
+            if i2 >= i1 then
+                t = i1-1
+            end
+        else
+            local rs = reverse(s)
+            local i1,i2 = find(rs, '^'..chrs..'*')
+            if i2 >= i1 then
+                t = -i2
+            end
         end
     end
-    return s
+    return sub(s,f,t)
 end
 
 --- trim any whitespace on the left of s.
