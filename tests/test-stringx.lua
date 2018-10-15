@@ -229,6 +229,8 @@ asserteq(T(trim' a '), T'a')
 asserteq(T(trim'  a  '), T'a')
 asserteq(T(trim'  ab cd  '), T'ab cd')
 asserteq(T(trim' \t\r\n\f\va\000b \r\t\n\f\v'), T'a\000b')
+local long = 'a' .. string.rep(' ', 200000) .. 'a'
+asserteq(T(trim(long)), T(long))
 -- more
 
 
