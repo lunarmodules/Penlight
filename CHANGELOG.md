@@ -9,6 +9,7 @@
 ### Changes
 
   - `utils.unpack` is now documented and respects `.n` field of its argument.
+  - `tablex.deepcopy` and `tablex.deepcompare` are now cycle aware (#262)
 
 ### Fixes
 
@@ -22,6 +23,7 @@
   - Fixed placeholder expressions being evaluated with wrong precedence of binary and unary negation.
   - Fixed placeholder expressions being evaluated assuming wrong binary operator associativity (e.g. `_1-(_2+_3)` was evaluated as `(_1-_2)+_3`.
   - Fixed placeholder expressions being evaluated as if unary operators take precedence over power operator (e.g. `(-_1)^_2`) was evaluated as `-(_1^2)`).
+  - Fixed vulnerable backtracking pattern in `pl.stringx.strip` (#275)
 
 ## 1.5.4 (2017-07-17)
 
