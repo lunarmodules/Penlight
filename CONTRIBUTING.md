@@ -34,7 +34,7 @@ you're doing, such as _"added-klingon-cloacking-device"_ - from `master` branch.
 
 If you wanna be a rockstar;
 
-1. Update the [CHANGES.md](https://github.com/stevedonovan/Penlight/blob/master/CHANGES.md) file
+1. Update the [CHANGELOG.md](https://github.com/stevedonovan/Penlight/blob/master/CHANGELOG.md) file
 2. [Add tests](https://github.com/stevedonovan/Penlight/tree/master/tests) that show the defect your fix repairs, or that tests your new feature
 
 Please note - if you want to change multiple things that don't depend on each

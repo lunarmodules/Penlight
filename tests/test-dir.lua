@@ -20,11 +20,11 @@ asserteq(filtered, {"foobar", "foonbar"})
 
 local normpath = path.normpath
 
-local doc_files = dir.getfiles(normpath "doc/", "*.ld")
-asserteq(doc_files, {normpath "doc/config.ld"})
+local doc_files = dir.getfiles(normpath "docs/", "*.css")
+asserteq(doc_files, {normpath "docs/ldoc_fixed.css"})
 
-local all_doc_files = dir.getallfiles(normpath "doc/", "*.ld")
-asserteq(all_doc_files, {normpath "doc/config.ld"})
+local all_doc_files = dir.getallfiles(normpath "docs/", "*.css")
+asserteq(all_doc_files, {normpath "docs/ldoc_fixed.css"})
 
 local test_samples = dir.getallfiles(normpath "tests/lua")
 table.sort(test_samples)

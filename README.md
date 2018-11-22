@@ -57,6 +57,10 @@ Python standard libraries.
    * `utils`: `utils.string_lambda` converts short strings like '|x| x^2' into functions
    * `comprehension`: list comprehensions: `C'x for x=1,4'()=={1,2,3,4}`
 
+## License
+
+Penlight is distributed under the [MIT license](https://github.com/stevedonovan/Penlight/blob/master/LICENSE.md)
+
 ## Installation
 
 Using [LuaRocks](https://luarocks.org): simply run `luarocks install penlight`.
@@ -75,12 +79,17 @@ in Lua for Windows.
 ## Building the Documentation
 
 Requires [ldoc](https://github.com/stevedonovan/LDoc), which is available
-through LuaRocks.  Then it's a simple matter of running `ldoc` in the docs folder.
+through LuaRocks.  Then it's a simple matter of running `ldoc .` from the repo.
 
-```
-Penlight/docs$ ldoc .
-```
+## Contributing
+
+Contributions are most welcome, please check the [contribution guidelines](https://github.com/stevedonovan/Penlight/blob/master/CONTRIBUTING.md).
 
 ## Running tests
 
 Execute `lua run.lua tests` to run the tests. Execute `lua run.lua examples` to run examples.
+
+## History
+
+For a complete history of the development of Penlight, please check the
+[changelog](https://github.com/stevedonovan/Penlight/blob/master/CHANGELOG.md).
