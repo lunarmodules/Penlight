@@ -1,5 +1,5 @@
 package = "penlight"
-version = "scm-1"
+version = "scm-2"
 
 source = {
   url = "git://github.com/stevedonovan/Penlight.git",
@@ -64,5 +64,5 @@ build = {
     ["pl.types"] = "lua/pl/types.lua",
     ["pl.import_into"] = "lua/pl/import_into.lua"
   },
-  copy_directories = {"doc", "tests"}
+  copy_directories = {"docs", "tests"}
 }

@@ -1,0 +1,378 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Penlight Documentation</title>
+    <link rel="stylesheet" href="../ldoc_fixed.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>Penlight</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+</ul>
+
+
+<h2>Libraries</h2>
+<ul class="nowrap">
+  <li><a href="../libraries/pl.html">pl</a></li>
+  <li><a href="../libraries/pl.Set.html">pl.Set</a></li>
+  <li><a href="../libraries/pl.app.html">pl.app</a></li>
+  <li><a href="../libraries/pl.array2d.html">pl.array2d</a></li>
+  <li><a href="../libraries/pl.class.html">pl.class</a></li>
+  <li><a href="../libraries/pl.compat.html">pl.compat</a></li>
+  <li><a href="../libraries/pl.comprehension.html">pl.comprehension</a></li>
+  <li><a href="../libraries/pl.config.html">pl.config</a></li>
+  <li><a href="../libraries/pl.data.html">pl.data</a></li>
+  <li><a href="../libraries/pl.dir.html">pl.dir</a></li>
+  <li><a href="../libraries/pl.file.html">pl.file</a></li>
+  <li><a href="../libraries/pl.func.html">pl.func</a></li>
+  <li><a href="../libraries/pl.import_into.html">pl.import_into</a></li>
+  <li><a href="../libraries/pl.input.html">pl.input</a></li>
+  <li><a href="../libraries/pl.lapp.html">pl.lapp</a></li>
+  <li><a href="../libraries/pl.lexer.html">pl.lexer</a></li>
+  <li><a href="../libraries/pl.luabalanced.html">pl.luabalanced</a></li>
+  <li><a href="../libraries/pl.operator.html">pl.operator</a></li>
+  <li><a href="../libraries/pl.path.html">pl.path</a></li>
+  <li><a href="../libraries/pl.permute.html">pl.permute</a></li>
+  <li><a href="../libraries/pl.pretty.html">pl.pretty</a></li>
+  <li><a href="../libraries/pl.seq.html">pl.seq</a></li>
+  <li><a href="../libraries/pl.sip.html">pl.sip</a></li>
+  <li><a href="../libraries/pl.strict.html">pl.strict</a></li>
+  <li><a href="../libraries/pl.stringio.html">pl.stringio</a></li>
+  <li><a href="../libraries/pl.stringx.html">pl.stringx</a></li>
+  <li><a href="../libraries/pl.tablex.html">pl.tablex</a></li>
+  <li><a href="../libraries/pl.template.html">pl.template</a></li>
+  <li><a href="../libraries/pl.test.html">pl.test</a></li>
+  <li><strong>pl.text</strong></li>
+  <li><a href="../libraries/pl.types.html">pl.types</a></li>
+  <li><a href="../libraries/pl.url.html">pl.url</a></li>
+  <li><a href="../libraries/pl.utils.html">pl.utils</a></li>
+  <li><a href="../libraries/pl.xml.html">pl.xml</a></li>
+</ul>
+<h2>Classes</h2>
+<ul class="nowrap">
+  <li><a href="../classes/pl.Date.html">pl.Date</a></li>
+  <li><a href="../classes/pl.List.html">pl.List</a></li>
+  <li><a href="../classes/pl.Map.html">pl.Map</a></li>
+  <li><a href="../classes/pl.MultiMap.html">pl.MultiMap</a></li>
+  <li><a href="../classes/pl.OrderedMap.html">pl.OrderedMap</a></li>
+</ul>
+<h2>Manual</h2>
+<ul class="nowrap">
+  <li><a href="../manual/01-introduction.md.html">Introduction</a></li>
+  <li><a href="../manual/02-arrays.md.html">Tables and Arrays</a></li>
+  <li><a href="../manual/03-strings.md.html">Strings. Higher-level operations on strings.</a></li>
+  <li><a href="../manual/04-paths.md.html">Paths and Directories</a></li>
+  <li><a href="../manual/05-dates.md.html">Date and Time</a></li>
+  <li><a href="../manual/06-data.md.html">Data</a></li>
+  <li><a href="../manual/07-functional.md.html">Functional Programming</a></li>
+  <li><a href="../manual/08-additional.md.html">Additional Libraries</a></li>
+  <li><a href="../manual/09-discussion.md.html">Technical Choices</a></li>
+</ul>
+<h2>Examples</h2>
+<ul class="nowrap">
+  <li><a href="../examples/seesubst.lua.html">seesubst.lua</a></li>
+  <li><a href="../examples/sipscan.lua.html">sipscan.lua</a></li>
+  <li><a href="../examples/symbols.lua.html">symbols.lua</a></li>
+  <li><a href="../examples/test-cmp.lua.html">test-cmp.lua</a></li>
+  <li><a href="../examples/test-data.lua.html">test-data.lua</a></li>
+  <li><a href="../examples/test-listcallbacks.lua.html">test-listcallbacks.lua</a></li>
+  <li><a href="../examples/test-pretty.lua.html">test-pretty.lua</a></li>
+  <li><a href="../examples/test-symbols.lua.html">test-symbols.lua</a></li>
+  <li><a href="../examples/testapp.lua.html">testapp.lua</a></li>
+  <li><a href="../examples/testclone.lua.html">testclone.lua</a></li>
+  <li><a href="../examples/testconfig.lua.html">testconfig.lua</a></li>
+  <li><a href="../examples/testglobal.lua.html">testglobal.lua</a></li>
+  <li><a href="../examples/testinputfields.lua.html">testinputfields.lua</a></li>
+  <li><a href="../examples/testinputfields2.lua.html">testinputfields2.lua</a></li>
+  <li><a href="../examples/testxml.lua.html">testxml.lua</a></li>
+  <li><a href="../examples/which.lua.html">which.lua</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>pl.text</code></h1>
+<p>Text processing utilities.</p>
+<p> This provides a Template class (modeled after the same from the Python
+ libraries, see string.Template). It also provides similar functions to those
+ found in the textwrap module.</p>
+
+<p> See  <a href="../manual/03-strings.md.html#String_Templates">the Guide</a>.</p>
+
+<p> Calling <code>text.format_operator()</code> overloads the % operator for strings to give Python/Ruby style formated output.
+ This is extended to also do template-like substitution for map-like data.</p>
+
+<pre>
+&gt; <span class="global">require</span> <span class="string">'pl.text'</span>.format_operator()
+&gt; = <span class="string">'%s = %5.3f'</span> % {<span class="string">'PI'</span>,<span class="global">math</span>.pi}
+PI = <span class="number">3.142</span>
+&gt; = <span class="string">'$name = $value'</span> % {name=<span class="string">'dog'</span>,value=<span class="string">'Pluto'</span>}
+dog = Pluto
+</pre>
+
+
+<p> Dependencies: <a href="../libraries/pl.utils.html#">pl.utils</a>, <a href="../libraries/pl.types.html#">pl.types</a></p>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#indent">indent (s, n, ch)</a></td>
+	<td class="summary">indent a multiline string.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#dedent">dedent (s)</a></td>
+	<td class="summary">dedent a multiline string by removing any initial indent.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#wrap">wrap (s, width)</a></td>
+	<td class="summary">format a paragraph into lines so that they fit into a line width.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#fill">fill (s, width)</a></td>
+	<td class="summary">format a paragraph so that it fits into a line width.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Template:substitute">Template:substitute (tbl)</a></td>
+	<td class="summary">substitute values into a template, throwing an error.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Template:safe_substitute">Template:safe_substitute (tbl)</a></td>
+	<td class="summary">substitute values into a template.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Template:indent_substitute">Template:indent_substitute (tbl)</a></td>
+	<td class="summary">substitute values into a template, preserving indentation.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "indent"></a>
+    <strong>indent (s, n, ch)</strong>
+    </dt>
+    <dd>
+    indent a multiline string.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">s</span>
+         the string
+        </li>
+        <li><span class="parameter">n</span>
+         the size of the indent
+        </li>
+        <li><span class="parameter">ch</span>
+         the character to use when indenting (default &lsquo; &rsquo;)
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        indented string
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "dedent"></a>
+    <strong>dedent (s)</strong>
+    </dt>
+    <dd>
+    dedent a multiline string by removing any initial indent.
+ useful when working with [[..]] strings.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">s</span>
+         the string
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        a string with initial indent zero.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "wrap"></a>
+    <strong>wrap (s, width)</strong>
+    </dt>
+    <dd>
+    format a paragraph into lines so that they fit into a line width.
+ It will not break long words, so lines can be over the length
+ to that extent.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">s</span>
+         the string
+        </li>
+        <li><span class="parameter">width</span>
+         the margin width, default 70
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        a list of lines
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "fill"></a>
+    <strong>fill (s, width)</strong>
+    </dt>
+    <dd>
+    format a paragraph so that it fits into a line width.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">s</span>
+         the string
+        </li>
+        <li><span class="parameter">width</span>
+         the margin width, default 70
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        a string
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../libraries/pl.text.html#wrap">wrap</a>
+    </ul>
+
+
+</dd>
+    <dt>
+    <a name = "Template:substitute"></a>
+    <strong>Template:substitute (tbl)</strong>
+    </dt>
+    <dd>
+    substitute values into a template, throwing an error.
+ This will throw an error if no name is found.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">tbl</span>
+         a table of name-value pairs.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Template:safe_substitute"></a>
+    <strong>Template:safe_substitute (tbl)</strong>
+    </dt>
+    <dd>
+    substitute values into a template.
+ This version just passes unknown names through.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">tbl</span>
+         a table of name-value pairs.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Template:indent_substitute"></a>
+    <strong>Template:indent_substitute (tbl)</strong>
+    </dt>
+    <dd>
+    substitute values into a template, preserving indentation.  <br>
+ If the value is a multiline string <em>or</em> a template, it will insert
+ the lines at the correct indentation. <br>
+ Furthermore, if a template, then that template will be subsituted
+ using the same table.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">tbl</span>
+         a table of name-value pairs.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i style="float:right;">Last updated 2018-11-23 21:07:42 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

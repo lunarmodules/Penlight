@@ -11,7 +11,7 @@ local append = table.insert
 local _unpack = table.unpack  -- always injected by 'compat'
 
 local utils = {
-    _VERSION = "1.5.4",
+    _VERSION = "1.6.0",
     lua51 = compat.lua51,
     setfenv = compat.setfenv,
     getfenv = compat.getfenv,

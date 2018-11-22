@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.6.0 (not released yet)
+## 1.6.0 (2018-11-23)
 
 ### New features
 
@@ -10,6 +10,7 @@
 
   - `utils.unpack` is now documented and respects `.n` field of its argument.
   - `tablex.deepcopy` and `tablex.deepcompare` are now cycle aware (#262)
+  - Installing through LuaRocks will now include the full rendered documentation
 
 ### Fixes
 
@@ -29,7 +30,7 @@
 
 ### Fixes
 
-  - Fixed `compat.execute` behaving differently on Lua 5.1 and 5,1+.
+  - Fixed `compat.execute` behaving differently on Lua 5.1 and 5.1+.
   - Fixed `lapp.process_options_string` setting global `success` variable.
 
 ## 1.5.3 (2017-07-16)

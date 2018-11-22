@@ -1,0 +1,836 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Penlight Documentation</title>
+    <link rel="stylesheet" href="../ldoc_fixed.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>Penlight</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+</ul>
+
+
+<h2>Libraries</h2>
+<ul class="nowrap">
+  <li><a href="../libraries/pl.html">pl</a></li>
+  <li><a href="../libraries/pl.Set.html">pl.Set</a></li>
+  <li><a href="../libraries/pl.app.html">pl.app</a></li>
+  <li><a href="../libraries/pl.array2d.html">pl.array2d</a></li>
+  <li><a href="../libraries/pl.class.html">pl.class</a></li>
+  <li><a href="../libraries/pl.compat.html">pl.compat</a></li>
+  <li><a href="../libraries/pl.comprehension.html">pl.comprehension</a></li>
+  <li><a href="../libraries/pl.config.html">pl.config</a></li>
+  <li><a href="../libraries/pl.data.html">pl.data</a></li>
+  <li><a href="../libraries/pl.dir.html">pl.dir</a></li>
+  <li><a href="../libraries/pl.file.html">pl.file</a></li>
+  <li><a href="../libraries/pl.func.html">pl.func</a></li>
+  <li><a href="../libraries/pl.import_into.html">pl.import_into</a></li>
+  <li><a href="../libraries/pl.input.html">pl.input</a></li>
+  <li><a href="../libraries/pl.lapp.html">pl.lapp</a></li>
+  <li><a href="../libraries/pl.lexer.html">pl.lexer</a></li>
+  <li><a href="../libraries/pl.luabalanced.html">pl.luabalanced</a></li>
+  <li><a href="../libraries/pl.operator.html">pl.operator</a></li>
+  <li><a href="../libraries/pl.path.html">pl.path</a></li>
+  <li><a href="../libraries/pl.permute.html">pl.permute</a></li>
+  <li><a href="../libraries/pl.pretty.html">pl.pretty</a></li>
+  <li><a href="../libraries/pl.seq.html">pl.seq</a></li>
+  <li><a href="../libraries/pl.sip.html">pl.sip</a></li>
+  <li><a href="../libraries/pl.strict.html">pl.strict</a></li>
+  <li><a href="../libraries/pl.stringio.html">pl.stringio</a></li>
+  <li><a href="../libraries/pl.stringx.html">pl.stringx</a></li>
+  <li><a href="../libraries/pl.tablex.html">pl.tablex</a></li>
+  <li><a href="../libraries/pl.template.html">pl.template</a></li>
+  <li><a href="../libraries/pl.test.html">pl.test</a></li>
+  <li><a href="../libraries/pl.text.html">pl.text</a></li>
+  <li><a href="../libraries/pl.types.html">pl.types</a></li>
+  <li><a href="../libraries/pl.url.html">pl.url</a></li>
+  <li><a href="../libraries/pl.utils.html">pl.utils</a></li>
+  <li><strong>pl.xml</strong></li>
+</ul>
+<h2>Classes</h2>
+<ul class="nowrap">
+  <li><a href="../classes/pl.Date.html">pl.Date</a></li>
+  <li><a href="../classes/pl.List.html">pl.List</a></li>
+  <li><a href="../classes/pl.Map.html">pl.Map</a></li>
+  <li><a href="../classes/pl.MultiMap.html">pl.MultiMap</a></li>
+  <li><a href="../classes/pl.OrderedMap.html">pl.OrderedMap</a></li>
+</ul>
+<h2>Manual</h2>
+<ul class="nowrap">
+  <li><a href="../manual/01-introduction.md.html">Introduction</a></li>
+  <li><a href="../manual/02-arrays.md.html">Tables and Arrays</a></li>
+  <li><a href="../manual/03-strings.md.html">Strings. Higher-level operations on strings.</a></li>
+  <li><a href="../manual/04-paths.md.html">Paths and Directories</a></li>
+  <li><a href="../manual/05-dates.md.html">Date and Time</a></li>
+  <li><a href="../manual/06-data.md.html">Data</a></li>
+  <li><a href="../manual/07-functional.md.html">Functional Programming</a></li>
+  <li><a href="../manual/08-additional.md.html">Additional Libraries</a></li>
+  <li><a href="../manual/09-discussion.md.html">Technical Choices</a></li>
+</ul>
+<h2>Examples</h2>
+<ul class="nowrap">
+  <li><a href="../examples/seesubst.lua.html">seesubst.lua</a></li>
+  <li><a href="../examples/sipscan.lua.html">sipscan.lua</a></li>
+  <li><a href="../examples/symbols.lua.html">symbols.lua</a></li>
+  <li><a href="../examples/test-cmp.lua.html">test-cmp.lua</a></li>
+  <li><a href="../examples/test-data.lua.html">test-data.lua</a></li>
+  <li><a href="../examples/test-listcallbacks.lua.html">test-listcallbacks.lua</a></li>
+  <li><a href="../examples/test-pretty.lua.html">test-pretty.lua</a></li>
+  <li><a href="../examples/test-symbols.lua.html">test-symbols.lua</a></li>
+  <li><a href="../examples/testapp.lua.html">testapp.lua</a></li>
+  <li><a href="../examples/testclone.lua.html">testclone.lua</a></li>
+  <li><a href="../examples/testconfig.lua.html">testconfig.lua</a></li>
+  <li><a href="../examples/testglobal.lua.html">testglobal.lua</a></li>
+  <li><a href="../examples/testinputfields.lua.html">testinputfields.lua</a></li>
+  <li><a href="../examples/testinputfields2.lua.html">testinputfields2.lua</a></li>
+  <li><a href="../examples/testxml.lua.html">testxml.lua</a></li>
+  <li><a href="../examples/which.lua.html">which.lua</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>pl.xml</code></h1>
+<p>XML LOM Utilities.</p>
+<p> This implements some useful things on <a href="http://matthewwild.co.uk/projects/luaexpat/lom.html">LOM</a> documents, such as returned by <code>lxp.lom.parse</code>.
+ In particular, it can convert LOM back into XML text, with optional pretty-printing control.
+ It is s based on stanza.lua from <a href="http://hg.prosody.im/trunk/file/4621c92d2368/util/stanza.lua">Prosody</a></p>
+
+<pre>
+&gt; d = xml.parse <span class="string">"&lt;nodes&gt;&lt;node id='1'&gt;alice&lt;/node&gt;&lt;/nodes&gt;"</span>
+&gt; = d
+&lt;nodes&gt;&lt;node id=<span class="string">'1'</span>&gt;alice&lt;/node&gt;&lt;/nodes&gt;
+&gt; = xml.<span class="global">tostring</span>(d,<span class="string">''</span>,<span class="string">'  '</span>)
+&lt;nodes&gt;
+   &lt;node id=<span class="string">'1'</span>&gt;alice&lt;/node&gt;
+&lt;/nodes&gt;
+</pre>
+
+
+<p> Can be used as a lightweight one-stop-shop for simple XML processing; a simple XML parser is included
+ but the default is to use <code>lxp.lom</code> if it can be found.
+ <pre>
+ Prosody IM
+ Copyright &copy; 2008-2010 Matthew Wild
+ Copyright &copy; 2008-2010 Waqas Hussain&ndash;
+ classic Lua XML parser by Roberto Ierusalimschy.
+ modified to output LOM format.
+ http://lua-users.org/wiki/LuaXml
+ </pre>
+ See <a href="../manual/06-data.md.html#XML">the Guide</a></p>
+
+<p> Dependencies: <a href="../libraries/pl.utils.html#">pl.utils</a></p>
+
+<p> Soft Dependencies: <code>lxp.lom</code> (fallback is to use basic Lua parser)</p>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#new">new (tag, attr)</a></td>
+	<td class="summary">create a new document node.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#parse">parse (text_or_file, is_file, use_basic)</a></td>
+	<td class="summary">parse an XML document.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Doc:addtag">Doc:addtag (tag, attrs)</a></td>
+	<td class="summary">convenient function to add a document node, This updates the last inserted position.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Doc:text">Doc:text (text)</a></td>
+	<td class="summary">convenient function to add a text node.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Doc:up">Doc:up ()</a></td>
+	<td class="summary">go up one level in a document</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Doc:add_direct_child">Doc:add_direct_child (child)</a></td>
+	<td class="summary">append a child to a document directly.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Doc:add_child">Doc:add_child (child)</a></td>
+	<td class="summary">append a child to a document at the last element added</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Doc:set_attribs">Doc:set_attribs (t)</a></td>
+	<td class="summary">set attributes of a document node.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Doc:set_attrib">Doc:set_attrib (a, v)</a></td>
+	<td class="summary">set a single attribute of a document node.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Doc:get_attribs">Doc:get_attribs ()</a></td>
+	<td class="summary">access the attributes of a document node.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#elem">elem (tag, items)</a></td>
+	<td class="summary">function to create an element with a given tag name and a set of children.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#tags">tags (list)</a></td>
+	<td class="summary">given a list of names, return a number of element constructors.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Doc.subst">Doc.subst (templ, data)</a></td>
+	<td class="summary">create a substituted copy of a document,</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Doc:child_with_name">Doc:child_with_name (tag)</a></td>
+	<td class="summary">get the first child with a given tag name.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Doc:get_elements_with_name">Doc:get_elements_with_name (tag, dont_recurse)</a></td>
+	<td class="summary">get all elements in a document that have a given tag.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Doc:childtags">Doc:childtags ()</a></td>
+	<td class="summary">iterate over all child elements of a document node.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Doc:maptags">Doc:maptags (callback)</a></td>
+	<td class="summary">visit child element  of a node and call a function, possibility modifying the document.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#tostring">tostring (t, idn, indent, attr_indent, xml)</a></td>
+	<td class="summary">pretty-print an XML document</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Doc:get_text">Doc:get_text ()</a></td>
+	<td class="summary">get the full text value of an element</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#clone">clone (doc, strsubst)</a></td>
+	<td class="summary">make a copy of a document</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#compare">compare (t1, t2)</a></td>
+	<td class="summary">compare two documents.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#is_tag">is_tag (d)</a></td>
+	<td class="summary">is this value a document element?</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#walk">walk (doc, depth_first, operation)</a></td>
+	<td class="summary">call the desired function recursively over the document.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#parsehtml">parsehtml (s)</a></td>
+	<td class="summary">Parse a well-formed HTML file as a string.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#basic_parse">basic_parse (s, all_text, html)</a></td>
+	<td class="summary">Parse a simple XML document using a pure Lua parser based on Robero Ierusalimschy&rsquo;s original version.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "new"></a>
+    <strong>new (tag, attr)</strong>
+    </dt>
+    <dd>
+    create a new document node.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">tag</span>
+         the tag name
+        </li>
+        <li><span class="parameter">attr</span>
+         optional attributes (table of name-value pairs)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "parse"></a>
+    <strong>parse (text_or_file, is_file, use_basic)</strong>
+    </dt>
+    <dd>
+    parse an XML document.   By default, this uses lxp.lom.parse, but
+ falls back to basic_parse, or if use_basic is true
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">text_or_file</span>
+          file or string representation
+        </li>
+        <li><span class="parameter">is_file</span>
+         whether text_or_file is a file name or not
+        </li>
+        <li><span class="parameter">use_basic</span>
+         do a basic parse
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+        a parsed LOM document with the document metatatables set</li>
+        <li>
+        nil, error the error can either be a file error or a parse error</li>
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Doc:addtag"></a>
+    <strong>Doc:addtag (tag, attrs)</strong>
+    </dt>
+    <dd>
+    convenient function to add a document node, This updates the last inserted position.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">tag</span>
+         a tag name
+        </li>
+        <li><span class="parameter">attrs</span>
+         optional set of attributes (name-string pairs)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Doc:text"></a>
+    <strong>Doc:text (text)</strong>
+    </dt>
+    <dd>
+    convenient function to add a text node.   This updates the last inserted position.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">text</span>
+         a string
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Doc:up"></a>
+    <strong>Doc:up ()</strong>
+    </dt>
+    <dd>
+    go up one level in a document
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Doc:add_direct_child"></a>
+    <strong>Doc:add_direct_child (child)</strong>
+    </dt>
+    <dd>
+    append a child to a document directly.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">child</span>
+         a child node (either text or a document)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Doc:add_child"></a>
+    <strong>Doc:add_child (child)</strong>
+    </dt>
+    <dd>
+    append a child to a document at the last element added
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">child</span>
+         a child node (either text or a document)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Doc:set_attribs"></a>
+    <strong>Doc:set_attribs (t)</strong>
+    </dt>
+    <dd>
+    set attributes of a document node.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">t</span>
+         a table containing attribute/value pairs
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Doc:set_attrib"></a>
+    <strong>Doc:set_attrib (a, v)</strong>
+    </dt>
+    <dd>
+    set a single attribute of a document node.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">a</span>
+         attribute
+        </li>
+        <li><span class="parameter">v</span>
+         its value
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Doc:get_attribs"></a>
+    <strong>Doc:get_attribs ()</strong>
+    </dt>
+    <dd>
+    access the attributes of a document node.
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "elem"></a>
+    <strong>elem (tag, items)</strong>
+    </dt>
+    <dd>
+    function to create an element with a given tag name and a set of children.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">tag</span>
+         a tag name
+        </li>
+        <li><span class="parameter">items</span>
+         either text or a table where the hash part is the attributes and the list part is the children.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "tags"></a>
+    <strong>tags (list)</strong>
+    </dt>
+    <dd>
+    given a list of names, return a number of element constructors.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">list</span>
+          a list of names, or a comma-separated string.
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> parent,children = doc.tags <span class="string">'parent,children'</span> &lt;br&gt;
+  doc = parent {child <span class="string">'one'</span>, child <span class="string">'two'</span>}</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "Doc.subst"></a>
+    <strong>Doc.subst (templ, data)</strong>
+    </dt>
+    <dd>
+    create a substituted copy of a document,
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">templ</span>
+          may be a document or a string representation which will be parsed and cached
+        </li>
+        <li><span class="parameter">data</span>
+          a table of name-value pairs or a list of such tables
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        an XML document
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Doc:child_with_name"></a>
+    <strong>Doc:child_with_name (tag)</strong>
+    </dt>
+    <dd>
+    get the first child with a given tag name.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">tag</span>
+         the tag name
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Doc:get_elements_with_name"></a>
+    <strong>Doc:get_elements_with_name (tag, dont_recurse)</strong>
+    </dt>
+    <dd>
+    get all elements in a document that have a given tag.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">tag</span>
+         a tag name
+        </li>
+        <li><span class="parameter">dont_recurse</span>
+         optionally only return the immediate children with this tag name
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        a list of elements
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Doc:childtags"></a>
+    <strong>Doc:childtags ()</strong>
+    </dt>
+    <dd>
+    iterate over all child elements of a document node.
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Doc:maptags"></a>
+    <strong>Doc:maptags (callback)</strong>
+    </dt>
+    <dd>
+    visit child element  of a node and call a function, possibility modifying the document.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">callback</span>
+          a function passed the node (text or element). If it returns nil, that node will be removed.
+ If it returns a value, that will replace the current node.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "tostring"></a>
+    <strong>tostring (t, idn, indent, attr_indent, xml)</strong>
+    </dt>
+    <dd>
+    pretty-print an XML document
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">t</span>
+         an XML document
+        </li>
+        <li><span class="parameter">idn</span>
+         an initial indent (indents are all strings)
+        </li>
+        <li><span class="parameter">indent</span>
+         an indent for each level
+        </li>
+        <li><span class="parameter">attr_indent</span>
+         if given, indent each attribute pair and put on a separate line
+        </li>
+        <li><span class="parameter">xml</span>
+         force prefacing with default or custom &lt;?xml&hellip;>
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        a string representation
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Doc:get_text"></a>
+    <strong>Doc:get_text ()</strong>
+    </dt>
+    <dd>
+    get the full text value of an element
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "clone"></a>
+    <strong>clone (doc, strsubst)</strong>
+    </dt>
+    <dd>
+    make a copy of a document
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">doc</span>
+         the original document
+        </li>
+        <li><span class="parameter">strsubst</span>
+         an optional function for handling string copying which could do substitution, etc.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "compare"></a>
+    <strong>compare (t1, t2)</strong>
+    </dt>
+    <dd>
+    compare two documents.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">t1</span>
+         any value
+        </li>
+        <li><span class="parameter">t2</span>
+         any value
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "is_tag"></a>
+    <strong>is_tag (d)</strong>
+    </dt>
+    <dd>
+    is this value a document element?
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">d</span>
+         any value
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "walk"></a>
+    <strong>walk (doc, depth_first, operation)</strong>
+    </dt>
+    <dd>
+    call the desired function recursively over the document.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">doc</span>
+         the document
+        </li>
+        <li><span class="parameter">depth_first</span>
+          visit child notes first, then the current node
+        </li>
+        <li><span class="parameter">operation</span>
+         a function which will receive the current tag name and current node.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "parsehtml"></a>
+    <strong>parsehtml (s)</strong>
+    </dt>
+    <dd>
+    Parse a well-formed HTML file as a string.
+ Tags are case-insenstive, DOCTYPE is ignored, and empty elements can be .. empty.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">s</span>
+         the HTML
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "basic_parse"></a>
+    <strong>basic_parse (s, all_text, html)</strong>
+    </dt>
+    <dd>
+    Parse a simple XML document using a pure Lua parser based on Robero Ierusalimschy&rsquo;s original version.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">s</span>
+         the XML document to be parsed.
+        </li>
+        <li><span class="parameter">all_text</span>
+          if true, preserves all whitespace. Otherwise only text containing non-whitespace is included.
+        </li>
+        <li><span class="parameter">html</span>
+         if true, uses relaxed HTML rules for parsing
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i style="float:right;">Last updated 2018-11-23 21:07:42 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>
