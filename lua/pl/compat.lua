@@ -1,27 +1,40 @@
 ----------------
 --- Lua 5.1/5.2/5.3 compatibility.
--- Ensures that `table.pack` and `package.searchpath` are available
--- for Lua 5.1 and LuaJIT.
--- The exported function `load` is Lua 5.2 compatible.
--- `compat.setfenv` and `compat.getfenv` are available for Lua 5.2, although
--- they are not always guaranteed to work.
+-- Injects `table.pack`, `table.unpack`, and `package.searchpath` in the global
+-- environment, to make sure they are available for Lua 5.1 and LuaJIT.
+--
+-- All other functions are exported as usual in the returned module table.
+--
+-- NOTE: everything in this module is also available in `pl.utils`.
 -- @module pl.compat
-
 local compat = {}
 
+--- boolean flag this is Lua 5.1 (or LuaJIT).
+-- @field lua51
 compat.lua51 = _VERSION == 'Lua 5.1'
 
-local isJit = (tostring(assert):match('builtin') ~= nil)
-if isJit then
+--- boolean flag this is LuaJIT.
+-- @field jit
+compat.jit = (tostring(assert):match('builtin') ~= nil)
+
+--- boolean flag this is LuaJIT with 5.2 compatibility compiled in.
+-- @field jit52
+if compat.jit then
     -- 'goto' is a keyword when 52 compatibility is enabled in LuaJit
     compat.jit52 = not loadstring("local goto = 1")
 end
 
+--- the directory separator character for the current platform.
+-- @field dir_separator
 compat.dir_separator = _G.package.config:sub(1,1)
+
+--- boolean flag this is a Windows platform.
+-- @field is_windows
 compat.is_windows = compat.dir_separator == '\\'
 
---- execute a shell command.
--- This is a compatibility function that returns the same for Lua 5.1 and Lua 5.2
+--- execute a shell command, in a compatible and platform independent way.
+-- This is a compatibility function that returns the same for Lua 5.1 and
+-- Lua 5.2, on Unixes as well as Windows.
 -- @param cmd a shell command
 -- @return true if successful
 -- @return actual return code
@@ -46,7 +59,7 @@ function compat.execute (cmd)
 end
 
 ----------------
--- Load Lua code as a text or binary chunk.
+-- Load Lua code as a text or binary chunk (in a Lua 5.2 compatible way).
 -- @param ld code string or loader
 -- @param[opt] source name of chunk for errors
 -- @param[opt] mode 'b', 't' or 'bt'
@@ -54,20 +67,21 @@ end
 -- @function compat.load
 
 ---------------
--- Get environment of a function.
--- With Lua 5.2, may return nil for a function with no global references!
+-- Get environment of a function (in a Lua 5.1 compatible way).
+-- Not 100% compatible, so with Lua 5.2 it may return nil for a function with no
+-- global references!
 -- Based on code by [Sergey Rozhenko](http://lua-users.org/lists/lua-l/2010-06/msg00313.html)
 -- @param f a function or a call stack reference
 -- @function compat.getfenv
 
 ---------------
--- Set environment of a function
+-- Set environment of a function (in a Lua 5.1 compatible way).
 -- @param f a function or a call stack reference
 -- @param env a table that becomes the new environment of `f`
 -- @function compat.setfenv
 
 if compat.lua51 then -- define Lua 5.2 style load()
-    if not isJit then -- but LuaJIT's load _is_ compatible
+    if not compat.jit then -- but LuaJIT's load _is_ compatible
         local lua51_load = load
         function compat.load(str,src,mode,env)
             local chunk,err
@@ -122,7 +136,7 @@ else
     end
 end
 
---- Lua 5.2 Functions Available for 5.1
+--- Global exported functions (for Lua 5.1 & LuaJIT)
 -- @section lua52
 
 --- pack an argument list into a table.
@@ -136,16 +150,20 @@ if not table.pack then
 end
 
 --- unpack a table and return the elements.
+--
+-- NOTE: this version does NOT honor the n field, and hence it is not nil-safe.
+-- See `utils.unpack` for a version that is nil-safe.
 -- @param t table to unpack
 -- @param[opt] i index from which to start unpacking, defaults to 1
 -- @param[opt] t index of the last element to unpack, defaults to #t
--- @return multiple returns values from the table
+-- @return multiple return values from the table
+-- @function table.unpack
+-- @see utils.unpack
 if not table.unpack then
     table.unpack = unpack           -- luacheck: ignore
 end
 
-------
--- return the full path where a Lua module name would be matched.
+--- return the full path where a Lua module name would be matched.
 -- @param mod module name, possibly dotted
 -- @param path a path in the same form as package.path or package.cpath
 -- @see path.package_path

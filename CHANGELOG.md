@@ -1,5 +1,23 @@
 # Changelog
 
+## 1.6.1 (UNRELEASED)
+
+### New features
+
+
+### Changes
+
+  - Documentation updates
+  - `utils.quit`: exit message is no longer required, and closes the Lua state (on 5.2+).
+  - `utils.assert_arg` and `utils.assert_string`: now return the validated value
+  - `pl.compat`: now exports the `jit` and `jit52` flags
+
+
+### Fixes
+
+  - `utils.raise` changed the global `on_error`-level when passing in bad arguments
+  - `utils.writefile` now checks and returns errors when writing
+
 ## 1.6.0 (2018-11-23)
 
 ### New features
