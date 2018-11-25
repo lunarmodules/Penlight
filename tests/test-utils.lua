@@ -3,6 +3,15 @@ local path = require 'pl.path'
 local test = require 'pl.test'
 local asserteq, T = test.asserteq, test.tuple
 
+
+local function quote(s)
+    if utils.is_windows then
+        return '"'..s..'"'
+    else
+        return "'"..s.."'"
+    end
+end
+
 -- construct command to run external lua, we need to to be able to run some
 -- tests on the same lua engine, but also need to pass on the LuaCov flag
 -- if it was used, to make sure we report the proper coverage.
@@ -11,8 +20,8 @@ do
     local i = 0
     while arg[i-1] do
       local a = arg[i-1]
-      if a:find("package%.path") then
-        a = "'"..a.."'"
+      if a:find("package%.path") and a:sub(1,1) ~= "'" then
+        a = quote(a)
       end
       cmd = a .. " " .. cmd
       i = i - 1
@@ -22,28 +31,32 @@ end
 
 --- quitting
 do
-    local luacode = [['require("pl.utils").quit("hello world")']]
+    local luacode = quote("require([[pl.utils]]).quit([[hello world]])")
     local success, code, stdout, stderr = utils.executeex(cmd..luacode)
     asserteq(success, false)
-    asserteq(code, 255) -- TODO: odd, should have been -1 ?
+    if utils.is_windows then
+        asserteq(code, -1)
+    else
+        asserteq(code, 255)
+    end
     asserteq(stdout, "")
     asserteq(stderr, "hello world\n")
 
-    local luacode = [['require("pl.utils").quit(2, "hello world")']]
+    local luacode = quote("require([[pl.utils]]).quit(2, [[hello world]])")
     local success, code, stdout, stderr = utils.executeex(cmd..luacode)
     asserteq(success, false)
     asserteq(code, 2)
     asserteq(stdout, "")
     asserteq(stderr, "hello world\n")
 
-    local luacode = [['require("pl.utils").quit(2, "hello %s", 42)']]
+    local luacode = quote("require([[pl.utils]]).quit(2, [[hello %s]], 42)")
     local success, code, stdout, stderr = utils.executeex(cmd..luacode)
     asserteq(success, false)
     asserteq(code, 2)
     asserteq(stdout, "")
     asserteq(stderr, "hello 42\n")
 
-    local luacode = [['require("pl.utils").quit(2)']]
+    local luacode = quote("require([[pl.utils]]).quit(2)")
     local success, code, stdout, stderr = utils.executeex(cmd..luacode)
     asserteq(success, false)
     asserteq(code, 2)
@@ -215,7 +228,7 @@ asserteq(x, "5")
 
 do
     -- printf -- without template
-    local luacode = [['require("pl.utils").printf("hello world")']]
+    local luacode = quote("require([[pl.utils]]).printf([[hello world]])")
     local success, code, stdout, stderr = utils.executeex(cmd..luacode)
     asserteq(success, true)
     asserteq(code, 0)
@@ -223,7 +236,7 @@ do
     asserteq(stderr, "")
 
     -- printf -- with template
-    local luacode = [['require("pl.utils").printf("hello %s", "world")']]
+    local luacode = quote("require([[pl.utils]]).printf([[hello %s]], [[world]])")
     local success, code, stdout, stderr = utils.executeex(cmd..luacode)
     asserteq(success, true)
     asserteq(code, 0)
@@ -231,7 +244,7 @@ do
     asserteq(stderr, "")
 
     -- printf -- with bad template
-    local luacode = [['require("pl.utils").printf(42)']]
+    local luacode = quote("require([[pl.utils]]).printf(42)")
     local success, code, stdout, stderr = utils.executeex(cmd..luacode)
     asserteq(success, false)
     asserteq(code, 1)
@@ -260,17 +273,25 @@ do
 
     -- on_error, raise  -- quit
     utils.on_error("quit")
-    local luacode = [['local u=require("pl.utils") u.on_error("quit") u.raise("some error")']]
+    local luacode = quote("local u=require([[pl.utils]]) u.on_error([[quit]]) u.raise([[some error]])")
     local success, code, stdout, stderr = utils.executeex(cmd..luacode)
     asserteq(success, false)
-    asserteq(code, 255)
+    if utils.is_windows then
+        asserteq(code, -1)
+    else
+        asserteq(code, 255)
+    end
     asserteq(stdout, "")
     asserteq(stderr, "some error\n")
 
-    local luacode = [['local u=require("pl.utils") u.on_error("quit") u.on_error("bad one")']]
+    local luacode = quote("local u=require([[pl.utils]]) u.on_error([[quit]]) u.on_error([[bad one]])")
     local success, code, stdout, stderr = utils.executeex(cmd..luacode)
     asserteq(success, false)
-    asserteq(code, 255)
+    if utils.is_windows then
+        asserteq(code, -1)
+    else
+        asserteq(code, 255)
+    end
     asserteq(stdout, "")
     asserteq(stderr, "Bad argument expected string; 'default', 'quit', or 'error'. Got 'bad one'\n")
 
