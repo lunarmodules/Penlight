@@ -32,7 +32,7 @@ end
 
 local dir_sep = package.config:sub(1, 1)
 local quote = dir_sep == "/" and "'" or '"'
-local pl_src = "lua" .. dir_sep .. "?.lua;lua" .. dir_sep .. "?" .. dir_sep .. "init.lua"
+local pl_src = "lua/?.lua;lua/?/init.lua"
 lua = lua .. " -e " .. quote .. "package.path=[[" .. pl_src .. ";]]..package.path" .. quote
 
 local function run_directory(dir)
