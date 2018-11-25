@@ -62,7 +62,7 @@ function types.is_empty(o, ignore_spaces)
     elseif type(o) == "table" then
         return next(o) == nil
     elseif type(o) == "string" then
-        return o == "" or (ignore_spaces and not not o:find("^%s+$"))
+        return o == "" or (not not ignore_spaces and (not not o:find("^%s+$")))
     else
         return true
     end
@@ -103,7 +103,8 @@ local trues = { yes=true, y=true, ["true"]=true, t=true, ["1"]=true }
 local true_types = {
     boolean=function(o, true_strs, check_objs) return o end,
     string=function(o, true_strs, check_objs)
-        if trues[o:lower()] then
+        o = o:lower()
+        if trues[o] then
             return true
         end
         -- Check alternative user provided strings.
