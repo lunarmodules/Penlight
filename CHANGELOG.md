@@ -18,6 +18,8 @@
   - `utils.raise` changed the global `on_error`-level when passing in bad arguments
   - `utils.writefile` now checks and returns errors when writing
   - `compat.execute` now handles the Windows exitcode -1 properly
+  - `types.is_empty` would return true on spaces always, indepedent of the parameter
+  - `types.to_bool` will now compare case-insensitive for the extra passed strings
 
 ## 1.6.0 (2018-11-23)
 
