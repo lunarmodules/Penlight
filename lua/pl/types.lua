@@ -4,6 +4,8 @@
 -- @module pl.types
 
 local utils = require 'pl.utils'
+local math_ceil = math.ceil
+local assert_arg = utils.assert_arg
 local types = {}
 
 --- is the object either a function or a callable object?.
@@ -46,7 +48,7 @@ end
 -- @param x a number
 -- @raise error if x is not a number
 function types.is_integer (x)
-    return math.ceil(x)==x
+    return math_ceil(x)==x
 end
 
 --- Check if the object is "empty".
@@ -136,7 +138,7 @@ local true_types = {
 function types.to_bool(o, true_strs, check_objs)
     local true_func
     if true_strs then
-        utils.assert_arg(2, true_strs, "table")
+        assert_arg(2, true_strs, "table")
     end
     true_func = true_types[type(o)]
     if true_func then
