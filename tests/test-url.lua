@@ -30,3 +30,8 @@ asserteq(url.unquote('%60%7E%21%40%23%24%25%5E%26%2A%28%29'), '`~!@#$%^&*()')
 asserteq(url.unquote('%252'), '%2')
 asserteq(url.unquote('2%52%1%%'), '2R%1%%')
 asserteq(url.unquote('2R%251%25%25'), '2R%1%%')
+
+asserteq(url.quote(true), true)
+asserteq(url.quote(42), 42)
+asserteq(url.unquote(true), true)
+asserteq(url.unquote(42), 42)
