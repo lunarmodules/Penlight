@@ -25,4 +25,4 @@ test_script:
   - if "%LUA%"=="lua 5.4" (lua run.lua tests) else (lua run.lua tests --luacov)
 
 on_success:
-  #- luacov-coveralls
+  - luacov-coveralls
