@@ -4,6 +4,10 @@
 
 ### New features
 
+  - `utils.quote_arg` will now optionally take an array of arguments and escape
+    them all into a single string.
+  - `app.parse_args` now accepts a 3rd parameter with a list of valid flags and aliasses
+  - `app.script_name` returns the name of the current script (previously a private function)
 
 ### Changes
 
@@ -20,6 +24,7 @@
   - `compat.execute` now handles the Windows exitcode -1 properly
   - `types.is_empty` would return true on spaces always, indepedent of the parameter
   - `types.to_bool` will now compare case-insensitive for the extra passed strings
+  - `app.require_here` will now properly handle an absolute base path
 
 ## 1.6.0 (2018-11-23)
 

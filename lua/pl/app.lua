@@ -10,9 +10,14 @@ local path = require 'pl.path'
 
 local app = {}
 
-local function check_script_name ()
-    if _G.arg == nil then error('no command line args available\nWas this run from a main script?') end
-    return _G.arg[0]
+--- return the name of the current script running.
+-- The name will be the name as passed on the command line
+-- @return string filename
+function app.script_name()
+    if _G.arg and _G.arg[0] then
+        return _G.arg[0]
+    end
+    return utils.raise("No script name found")
 end
 
 --- add the current script's path to the Lua module path.
@@ -24,7 +29,7 @@ end
 -- @string base optional base directory.
 -- @treturn string the current script's path with a trailing slash
 function app.require_here (base)
-    local p = path.dirname(check_script_name())
+    local p = path.dirname(app.script_name())
     if not path.isabs(p) then
         p = path.join(path.currentdir(),p)
     end
@@ -32,7 +37,12 @@ function app.require_here (base)
         p = p..path.sep
     end
     if base then
-        p = p..base..path.sep
+        base = path.normcase(base)
+        if path.isabs(base) then
+            p = base .. path.sep
+        else
+            p = p..base..path.sep
+        end
     end
     local so_ext = path.is_windows and 'dll' or 'so'
     local lsep = package.path:find '^;' and '' or ';'
@@ -45,16 +55,24 @@ end
 --- return a suitable path for files private to this application.
 -- These will look like '~/.SNAME/file', with '~' as with expanduser and
 -- SNAME is the name of the script without .lua extension.
+-- If the directory does not exist, it will be created.
 -- @string file a filename (w/out path)
 -- @return a full pathname, or nil
--- @return 'cannot create' error
-function app.appfile (file)
-    local sname = path.basename(check_script_name())
+-- @return cannot create directory error
+-- @usage
+-- -- when run from a script called 'testapp' (on Windows):
+-- local app = require 'pl.app'
+-- print(app.appfile 'test.txt')
+-- -- C:\Documents and Settings\steve\.testapp\test.txt
+function app.appfile(file)
+    local sfullname, err = app.script_name()
+    if not sfullname then return utils.raise(err) end
+    local sname = path.basename(sfullname)
     local name = path.splitext(sname)
     local dir = path.join(path.expanduser('~'),'.'..name)
     if not path.isdir(dir) then
         local ret = path.mkdir(dir)
-        if not ret then return utils.raise ('cannot create '..dir) end
+        if not ret then return utils.raise('cannot create '..dir) end
     end
     return path.join(dir,file)
 end
@@ -74,38 +92,141 @@ function app.platform()
 end
 
 --- return the full command-line used to invoke this script.
--- Any extra flags occupy slots, so that `lua -lpl` gives us `{[-2]='lua',[-1]='-lpl'}`
+-- It will not include the scriptname itself, see `app.script_name`.
 -- @return command-line
 -- @return name of Lua program used
-function app.lua ()
-    local args = _G.arg or error "not in a main program"
-    local imin = 0
-    for i in pairs(args) do
-        if i < imin then imin = i end
+-- @usage
+-- -- execute:  lua -lluacov -e 'print(_VERSION)' myscript.lua
+--
+-- -- myscript.lua
+-- print(require("pl.app").lua()))  --> lua -lluacov -e 'print(_VERSION)'
+function app.lua()
+    local args = _G.arg
+    if not args then
+        return utils.raise "not in a main program"
     end
-    local cmd, append = {}, table.insert
-    for i = imin,-1 do
-        append(cmd, utils.quote_arg(args[i]))
+
+    local cmd = {}
+    local i = -1
+    while true do
+        table.insert(cmd, 1, args[i])
+        if not args[i-1] then
+            return utils.quote_arg(cmd), args[i]
+        end
+        i = i - 1
     end
-    return table.concat(cmd,' '),args[imin]
 end
 
 --- parse command-line arguments into flags and parameters.
 -- Understands GNU-style command-line flags; short (`-f`) and long (`--flag`).
--- These may be given a value with either '=' or ':' (`-k:2`,`--alpha=3.2`,`-n2`);
--- note that a number value can be given without a space.
+--
+-- These may be given a value with either '=' or ':' (`-k:2`,`--alpha=3.2`,`-n2`),
+-- a number value can be given without a space. If the flag is marked
+-- as having a value, then a space-separated value is also accepted (`-i hello`),
+-- see the `flags_with_values` argument).
+--
 -- Multiple short args can be combined like so: ( `-abcd`).
+--
+-- When specifying the `flags_valid` parameter, its contents can also contain
+-- aliasses, to convert short/long flags to the same output name. See the
+-- example below.
+--
+-- Note: if a flag is repeated, the last value wins.
 -- @tparam {string} args an array of strings (default is the global `arg`)
--- @tab flags_with_values any flags that take values, e.g. `{out=true}`
+-- @tab flags_with_values any flags that take values, either list or hash
+-- table e.g. `{ out=true }` or `{ "out" }`.
+-- @tab flags_valid (optional) flags that are valid, either list or hashtable.
+-- If not given, everything
+-- will be accepted(everything in `flags_with_values` will automatically be allowed)
 -- @return a table of flags (flag=value pairs)
 -- @return an array of parameters
 -- @raise if args is nil, then the global `args` must be available!
-function app.parse_args (args,flags_with_values)
+-- @usage
+-- -- Simple form:
+-- local flags, params = app.parse_args(nil,
+--      { "hello", "world" },  -- list of flags taking values
+--      { "l", "a", "b"})      -- list of allowed flags (value ones will be added)
+--
+-- -- More complex example using aliasses:
+-- local valid = {
+--     long = "l",           -- if 'l' is specified, it is reported as 'long'
+--     new = { "n", "old" }, -- here both 'n' and 'old' will go into 'new'
+-- }
+-- local values = {
+--     "value",   -- will automatically be added to the allowed set of flags
+--     "new",     -- will mark 'n' and 'old' as requiring a value as well
+-- }
+-- local flags, params = app.parse_args(nil, values, valid)
+--
+-- -- command:  myapp.lua -l --old:hello --value world param1 param2
+-- -- will yield:
+-- flags = {
+--     long = true,     -- input from 'l'
+--     new = "hello",   -- input from 'old'
+--     value = "world", -- allowed because it was in 'values', note: space separated!
+-- }
+-- params = {
+--     [1] = "param1"
+--     [2] = "param2"
+-- }
+function app.parse_args (args,flags_with_values, flags_valid)
     if not args then
         args = _G.arg
-        if not args then error "Not in a main program: 'arg' not found" end
+        if not args then utils.raise "Not in a main program: 'arg' not found" end
     end
-    flags_with_values = flags_with_values or {}
+
+    local with_values = {}
+    for k,v in pairs(flags_with_values or {}) do
+        if type(k) == "number" then
+            k = v
+        end
+        with_values[k] = true
+    end
+
+    local valid
+    if not flags_valid then
+        -- if no allowed flags provided, we create a table that always returns
+        -- the keyname, no matter what you look up
+        valid = setmetatable({},{ __index = function(_, key) return key end })
+    else
+        valid = {}
+        for k,aliasses in pairs(flags_valid) do
+            if type(k) == "number" then         -- array/list entry
+                k = aliasses
+            end
+            if type(aliasses) == "string" then  -- single alias
+                aliasses = { aliasses }
+            end
+            if type(aliasses) == "table" then   -- list of aliasses
+                -- it's the alternate name, so add the proper mappings
+                for i, alias in ipairs(aliasses) do
+                    valid[alias] = k
+                end
+            end
+            valid[k] = k
+        end
+        do
+            local new_with_values = {}  -- needed to prevent "invalid key to 'next'" error
+            for k,v in pairs(with_values) do
+                if not valid[k] then
+                    valid[k] = k   -- add the with_value entry as a valid one
+                    new_with_values[k] = true
+                else
+                    new_with_values[valid[k]] = true  --set, but by its alias
+                end
+            end
+            with_values = new_with_values
+        end
+    end
+
+    -- now check that all flags with values are reported as such under all
+    -- of their aliasses
+    for k, main_alias in pairs(valid) do
+        if with_values[main_alias] then
+            with_values[k] = true
+        end
+    end
+
     local _args = {}
     local flags = {}
     local i = 1
@@ -113,16 +234,20 @@ function app.parse_args (args,flags_with_values)
         local a = args[i]
         local v = a:match('^-(.+)')
         local is_long
-        if v then -- we have a flag
+        if not v then
+            -- we have a parameter
+            _args[#_args+1] = a
+        else
+            -- it's a flag
             if v:find '^-' then
                 is_long = true
                 v = v:sub(2)
             end
-            if flags_with_values[v] then
+            if with_values[v] then
                 if i == #args or args[i+1]:find '^-' then
                     return utils.raise ("no value for '"..v.."'")
                 end
-                flags[v] = args[i+1]
+                flags[valid[v]] = args[i+1]
                 i = i + 1
             else
                 -- a value can also be indicated with = or :
@@ -136,7 +261,13 @@ function app.parse_args (args,flags_with_values)
                             var = var:sub(1,1)
                         else -- multiple short flags
                             for i = 1,#var do
-                                flags[var:sub(i,i)] = true
+                                local f = var:sub(i,i)
+                                if not valid[f] then
+                                    return utils.raise("unknown flag '"..f.."'")
+                                else
+                                    f = valid[f]
+                                end
+                                flags[f] = true
                             end
                             val = nil -- prevents use of var as a flag below
                         end
@@ -145,11 +276,14 @@ function app.parse_args (args,flags_with_values)
                     end
                 end
                 if val then
+                    if not valid[var] then
+                        return utils.raise("unknown flag '"..var.."'")
+                    else
+                        var = valid[var]
+                    end
                     flags[var] = val
                 end
             end
-        else
-            _args[#_args+1] = a
         end
         i = i + 1
     end

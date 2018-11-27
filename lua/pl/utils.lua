@@ -382,12 +382,30 @@ function utils.executeex(cmd, bin)
     return success, retcode, (outcontent or ""), (errcontent or "")
 end
 
---- Quote an argument of a command.
--- Quotes a single argument of a command to be passed
+--- Quote and escape an argument of a command.
+-- Quotes a single (or list of) argument(s) of a command to be passed
 -- to `os.execute`, `pl.utils.execute` or `pl.utils.executeex`.
--- @string argument the argument.
--- @return quoted argument.
+-- @param argument (string or table/list) the argument to quote. If a list then
+-- all arguments in the list will be returned as a single string quoted.
+-- @return quoted and escaped argument.
+-- @usage
+-- local options = utils.quote_arg {
+--     "-lluacov",
+--     "-e",
+--     "utils = print(require('pl.utils')._VERSION",
+-- }
+-- -- returns: -lluacov -e 'utils = print(require('\''pl.utils'\'')._VERSION'
 function utils.quote_arg(argument)
+    if type(argument) == "table" then
+        -- encode an entire table
+        local r = {}
+        for i, arg in ipairs(argument) do
+            r[i] = utils.quote_arg(arg)
+        end
+
+        return table.concat(r, " ")
+    end
+    -- only a single argument
     if is_windows then
         if argument == "" or argument:find('[ \f\t\v]') then
             -- Need to quote the argument.
@@ -437,7 +455,7 @@ end
 --- String functions
 -- @section string-functions
 
---- escape any 'magic' characters in a string
+--- escape any Lua 'magic' characters in a string
 -- @param s The input string
 function utils.escape(s)
     utils.assert_string(1,s)
