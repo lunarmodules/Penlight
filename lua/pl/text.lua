@@ -25,6 +25,9 @@ local bind1,usplit,assert_arg = utils.bind1,utils.split,utils.assert_arg
 local is_callable = require 'pl.types'.is_callable
 local unpack = utils.unpack
 
+local text = {}
+
+
 local function makelist(l)
     return setmetatable(l, require('pl.List'))
 end
@@ -38,12 +41,6 @@ local function imap(f,t,...)
     for i = 1,#t do res[i] = f(t[i],...) end
     return res
 end
-
---[[
-module ('pl.text',utils._module)
-]]
-
-local text = {}
 
 local function _indent (s,sp)
     local sl = split(s,'\n')
@@ -78,7 +75,8 @@ end
 -- to that extent.
 -- @param s the string
 -- @param width the margin width, default 70
--- @return a list of lines
+-- @return a list of lines (List object)
+-- @see pl.List
 function text.wrap (s,width)
     assert_arg(1,s,'string')
     width = width or 70
