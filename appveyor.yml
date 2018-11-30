@@ -17,6 +17,7 @@ before_build:
   - hererocks here --%LUA% -rlatest
   - call here\bin\activate
   - luarocks install luacov-coveralls
+  - luarocks install bit32
 
 build_script:
   - luarocks make
