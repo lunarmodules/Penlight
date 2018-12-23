@@ -100,7 +100,7 @@ local function wsdump (tok)
     return yield("space",tok)
 end
 
-local function pdump (tok)
+local function pdump(tok)
     return yield('prepro',tok)
 end
 
@@ -214,8 +214,23 @@ function lexer.scan(s,matches,filter,options)
             for _,m in ipairs(matches) do
                 local pat = m[1]
                 local fun = m[2]
+                local pat_full = m[3]
                 local findres = {strfind(s,pat,idx)}
                 local i1, i2 = findres[1], findres[2]
+                if i1 and pat_full then
+                    -- a multi-line pattern
+                    findres = {strfind(s,pat_full,idx)}
+                    i1, i2 = findres[1], findres[2]
+                    while not i1 do -- read lines until we have a full pattern
+                      if not next_line then break end
+                      line_nr = line_nr + 1
+                      s = s .. next_line .. '\n'
+                      next_line = file:read()
+                      sz = #s
+                      findres = {strfind(s,pat_full,idx)}
+                      i1, i2 = findres[1], findres[2]
+                    end
+                end
                 if i1 then
                     local tok = strsub(s,i1,i2)
                     idx = i2 + 1
@@ -325,9 +340,12 @@ function lexer.lua(s,filter,options)
             {STRING1,sdump},
             {STRING2,sdump},
             {STRING3,sdump},
-            {'^%-%-%[(=*)%[.-%]%1%]',cdump},
-            {'^%-%-.-\n',cdump},
-            {'^%[(=*)%[.-%]%1%]',sdump_l},
+            {'^%-%-%[(=*)%[',cdump,'^%-%-%[(=*)%[.-%]%1%]'},
+            --{'^%-%-%[(=*)%[.-%]%1%]',cdump},
+            {'^%-%-[^%[].-\n',cdump},
+            {'^%-%-\n',cdump},
+            {'^%[(=*)%[',sdump_l, '^%[(=*)%[.-%]%1%]'},
+            --{'^%[(=*)%[.-%]%1%]',sdump_l},
             {'^==',tdump},
             {'^~=',tdump},
             {'^<=',tdump},
@@ -379,7 +397,8 @@ function lexer.cpp(s,filter,options)
             {STRING2,sdump},
             {STRING3,sdump},
             {'^//.-\n',cdump},
-            {'^/%*.-%*/',cdump},
+            {'^/%*',cdump,'^/%*.-%*/'},
+            --{'^/%*.-%*/',cdump},
             {'^==',tdump},
             {'^!=',tdump},
             {'^<=',tdump},

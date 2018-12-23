@@ -14,9 +14,9 @@ local function test_scan(str, filter, options, expected_tokens, lang)
     end
 
     asserteq(copy2(lexer[lang](str, matches, filter, options)), expected_tokens)
-    if lang == 'scan' then
+    --if lang == 'scan' then
         asserteq(copy2(lexer[lang](open(str), matches, filter, options)), expected_tokens)
-    end
+    --end
 end
 
 local s = '20 = hello'
