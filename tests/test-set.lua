@@ -48,6 +48,7 @@ asserteq(m,M{one=1,two=2})
 m:update {three=3,four=4}
 asserteq(m,M{one=1,two=2,three=3,four=4})
 
+--[[
 class.Animal()
 
 function Animal:_init(name)
@@ -93,6 +94,7 @@ assert(Dog:class_of(fido))
 assert(fido:is_a(Dog))
 
 assert(leo:is_a(Animal))
+--]]
 
 m = MultiMap()
 m:set('john',1)
