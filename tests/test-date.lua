@@ -70,7 +70,7 @@ end
 -- specified as UTC plus/minus offset
 
 function parse_utc (s)
-    local d = parse_date(s)    
+    local d = parse_date(s)
     return d:toUTC()
 end
 
@@ -122,7 +122,7 @@ asserteq(tostring(now - utc),'zero')
 
 if app.platform() ~= 'Windows' then
     print(app.lua())
-    if not utils.execute ("TZ='Europe/London' "..app.lua().." tests/test-tzone.lua") then
+    if not utils.execute ("TZ='Europe/London' "..app.lua().." tests/test-date2.lua") then
         error "buggered!"
     end
 end

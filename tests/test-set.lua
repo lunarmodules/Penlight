@@ -48,54 +48,6 @@ asserteq(m,M{one=1,two=2})
 m:update {three=3,four=4}
 asserteq(m,M{one=1,two=2,three=3,four=4})
 
---[[
-class.Animal()
-
-function Animal:_init(name)
-    self.name = name
-end
-
-function Animal:__tostring()
-  return self.name..': '..self:speak()
-end
-
-class.Dog(Animal)
-
-function Dog:speak()
-  return 'bark'
-end
-
-class.Cat(Animal)
-
-function Cat:_init(name,breed)
-    self:super(name)  -- must init base!
-    self.breed = breed
-end
-
-function Cat:speak()
-  return 'meow'
-end
-
-Lion = class(Cat)
-
-function Lion:speak()
-  return 'roar'
-end
-
-fido = Dog('Fido')
-felix = Cat('Felix','Tabby')
-leo = Lion('Leo','African')
-
-asserteq(tostring(fido),'Fido: bark')
-asserteq(tostring(felix),'Felix: meow')
-asserteq(tostring(leo),'Leo: roar')
-
-assert(Dog:class_of(fido))
-assert(fido:is_a(Dog))
-
-assert(leo:is_a(Animal))
---]]
-
 m = MultiMap()
 m:set('john',1)
 m:set('jane',3)

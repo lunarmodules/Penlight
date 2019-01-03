@@ -41,8 +41,8 @@ if not package.path:find '.[/\\]%?' then
 end
 
 asserteq(
-    package.searchpath('tests.test-fenv',package.path):gsub('\\','/'),
-    './tests/test-fenv.lua'
+    package.searchpath('tests.test-utils3',package.path):gsub('\\','/'),
+    './tests/test-utils3.lua'
 )
 
 -- testing getfenv and setfenv for both interpreters
