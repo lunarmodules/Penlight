@@ -55,7 +55,7 @@ function Map:items()
     return ls
 end
 
--- Will return the existing value, or if it doesn't exist it will set
+--- Will return the existing value, or if it doesn't exist it will set
 -- a default value and return it.
 function Map:setdefault(key, defaultval)
    return self[key] or self:set(key,defaultval) or defaultval
