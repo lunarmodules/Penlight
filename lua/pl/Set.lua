@@ -20,7 +20,7 @@
 --    [banana,apricot,apple,orange]	[banana,apple,orange]
 --
 -- Dependencies: `pl.utils`, `pl.tablex`, `pl.class`, `pl.Map`, (`pl.List` if __tostring is used)
--- @module pl.Set
+-- @classmod pl.Set
 
 local tablex = require 'pl.tablex'
 local utils = require 'pl.utils'
