@@ -55,10 +55,17 @@ function Map:items()
     return ls
 end
 
---- Will return the existing value, or if it doesn't exist it will set
--- a default value and return it.
-function Map:setdefault(key, defaultval)
-   return self[key] or self:set(key,defaultval) or defaultval
+--- set a value in the map if it doesn't exist yet.
+-- @param key the key
+-- @param default value to set
+-- @return the value stored in the map (existing value, or the new value)
+function Map:setdefault(key, default)
+    local val = self[key]
+    if val ~= nil then
+        return val
+    end
+    self:set(key,default)
+   return default
 end
 
 --- size of map.
