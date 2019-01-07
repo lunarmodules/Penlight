@@ -78,6 +78,9 @@ asserteq(
       {'gamma', 3},
     }
 )
+v = m:set("alpha", false)
+v = m:setdefault("alpha", true)   -- falsy value should not be altered
+asserteq(false, m:get("alpha"))
 
 
 
