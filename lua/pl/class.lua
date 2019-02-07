@@ -17,22 +17,21 @@ local compat
 -- this trickery is necessary to prevent the inheritance of 'super' and
 -- the resulting recursive call problems.
 local function call_ctor (c,obj,...)
-    -- nice alias for the base class ctor
-    local base = rawget(c,'_base')
-    if base then
-        local parent_ctor = rawget(base,'_init')
-        while not parent_ctor do
-            base = rawget(base,'_base')
-            if not base then break end
-            parent_ctor = rawget(base,'_init')
+    local init = rawget(c,'_init')
+    local parent_with_init = rawget(c,'_parent_with_init')
+
+    if parent_with_init then
+        if not init then -- inheriting an init
+            init = rawget(parent_with_init, '_init')
+            parent_with_init = rawget(parent_with_init, '_parent_with_init')
         end
-        if parent_ctor then
+        if parent_with_init then -- super() points to one above whereever _init came from
             rawset(obj,'super',function(obj,...)
-                call_ctor(base,obj,...)
+                call_ctor(parent_with_init,obj,...)
             end)
         end
     end
-    local res = c._init(obj,...)
+    local res = init(obj,...)
     rawset(obj,'super',nil)
     return res
 end
@@ -146,6 +145,7 @@ local function _class(base,c_arg,c)
     c.__index = c
     setmetatable(c,mt)
     if not plain then
+        if base and rawget(base,'_init') then c._parent_with_init = base end -- For super and inherited init
         c._init = nil
     end
 
@@ -160,15 +160,12 @@ local function _class(base,c_arg,c)
         if not obj then obj = {} end
         setmetatable(obj,c)
 
-        if rawget(c,'_init') then -- explicit constructor
+        if rawget(c,'_init') or rawget(c,'_parent_with_init') then -- constructor exists
             local res = call_ctor(c,obj,...)
             if res then -- _if_ a ctor returns a value, it becomes the object...
                 obj = res
                 setmetatable(obj,c)
             end
-        elseif base and rawget(base,'_init') then -- default constructor
-            -- make sure that any stuff from the base class is initialized!
-            call_ctor(base,obj,...)
         end
 
         if base and rawget(base,'_post_init') then
