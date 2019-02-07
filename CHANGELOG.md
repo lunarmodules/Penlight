@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.x.x (upcoming)
+
+## Fixes
+
+  - In `pl.class`, `_init` can now be inherited from grandparent (or older ancestor) classes. (#289)
+
 ## 1.8.0 (2020-08-05)
 
 ### New features

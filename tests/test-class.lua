@@ -47,6 +47,36 @@ c = C()
 c:foo()
 
 asserteq(c,{a=1,b=2,c=3,eee=1})
+
+-- test indirect inherit
+
+D = class(C)
+
+E = class(D)
+
+function E:_init ()
+    self:super()
+    self.e = 4
+end
+
+function E:foo ()
+    -- recommended way to call inherited version of method...
+    self.eeee = 5
+    C.foo(self)
+end
+
+F = class(E)
+
+function F:_init ()
+    self:super()
+    self.f = 6
+end
+
+f = F()
+f:foo()
+
+asserteq(f,{a=1,b=2,c=3,eee=1,e=4,eeee=5,f=6})
+
 --- class methods!
 assert(c:is_a(C))
 assert(c:is_a(B))
