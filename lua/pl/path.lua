@@ -49,7 +49,7 @@ path.currentdir = currentdir
 path.chdir = lfs.chdir
 
 
---- is this a directory?
+--- Is this a directory?
 -- @string P A file path
 function path.isdir(P)
     assert_string(1,P)
@@ -59,14 +59,14 @@ function path.isdir(P)
     return attrib(P,'mode') == 'directory'
 end
 
---- is this a file?.
+--- Is this a file?
 -- @string P A file path
 function path.isfile(P)
     assert_string(1,P)
     return attrib(P,'mode') == 'file'
 end
 
--- is this a symbolic link?
+-- Is this a symbolic link?
 -- @string P A file path
 function path.islink(P)
     assert_string(1,P)
@@ -77,16 +77,16 @@ function path.islink(P)
     end
 end
 
---- return size of a file.
+--- Return size of a file.
 -- @string P A file path
 function path.getsize(P)
     assert_string(1,P)
     return attrib(P,'size')
 end
 
---- does a path exist?.
+--- Does a path exist?
 -- @string P A file path
--- @return the file path if it exists, nil otherwise
+-- @return the file path if it exists, false otherwise
 function path.exists(P)
     assert_string(1,P)
     return attrib(P,'mode') ~= nil and P
@@ -99,7 +99,7 @@ function path.getatime(P)
     return attrib(P,'access')
 end
 
---- Return the time of last modification
+--- Return the time of last modification.
 -- @string P A file path
 function path.getmtime(P)
     return attrib(P,'modification')
@@ -160,7 +160,7 @@ function path.splitpath(P)
     end
 end
 
---- return an absolute path.
+--- Return an absolute path.
 -- @string P A file path
 -- @string[opt] pwd optional start path to use (default is current dir)
 function path.abspath(P,pwd)
@@ -178,7 +178,7 @@ function path.abspath(P,pwd)
     return path.normpath(P)
 end
 
---- given a path, return the root part and the extension part.
+--- Given a path, return the root part and the extension part.
 -- if there's no extension part, the second value will be empty
 -- @string P A file path
 -- @treturn string root part
@@ -201,7 +201,7 @@ function path.splitext(P)
     end
 end
 
---- return the directory part of a path
+--- Return the directory part of a path.
 -- @string P A file path
 function path.dirname(P)
     assert_string(1,P)
@@ -209,7 +209,7 @@ function path.dirname(P)
     return p1
 end
 
---- return the file part of a path
+--- Return the file part of a path.
 -- @string P A file path
 function path.basename(P)
     assert_string(1,P)
@@ -217,7 +217,7 @@ function path.basename(P)
     return p2
 end
 
---- get the extension part of a path.
+--- Get the extension part of a path.
 -- @string P A file path
 function path.extension(P)
     assert_string(1,P)
@@ -225,7 +225,7 @@ function path.extension(P)
     return p2
 end
 
---- is this an absolute path?.
+--- Is this an absolute path?
 -- @string P A file path
 function path.isabs(P)
     assert_string(1,P)
@@ -236,7 +236,7 @@ function path.isabs(P)
     end
 end
 
---- return the path resulting from combining the individual paths.
+--- Return the path resulting from combining the individual paths.
 -- if the second (or later) path is absolute, we return the last absolute path (joined with any non-absolute paths following).
 -- empty elements (except the last) will be ignored.
 -- @string p1 A file path
@@ -262,7 +262,7 @@ function path.join(p1,p2,...)
     return p1..p2
 end
 
---- normalize the case of a pathname. On Unix, this returns the path unchanged;
+--- Normalize the case of a pathname. On Unix, this returns the path unchanged;
 --  for Windows, it converts the path to lowercase, and it also converts forward slashes
 -- to backward slashes.
 -- @string P A file path
@@ -275,7 +275,7 @@ function path.normcase(P)
     end
 end
 
---- normalize a path name.
+--- Normalize a path name.
 --  A//B, A/./B and A/foo/../B all become A/B.
 -- @string P a file path
 function path.normpath(P)
@@ -326,7 +326,7 @@ function path.normpath(P)
     return P
 end
 
---- relative path from current directory or optional start point
+--- Relative path from current directory or optional start point.
 -- @string P a path
 -- @string[opt] start optional start point (default current directory)
 function path.relpath (P,start)
@@ -388,7 +388,7 @@ function path.tmpname ()
     return res
 end
 
---- return the largest common prefix path of two paths.
+--- Return the largest common prefix path of two paths.
 -- @string path1 a file path
 -- @string path2 a file path
 function path.common_prefix (path1,path2)
@@ -412,7 +412,7 @@ function path.common_prefix (path1,path2)
     --return ''
 end
 
---- return the full path where a particular Lua module would be found.
+--- Return the full path where a particular Lua module would be found.
 -- Both package.path and package.cpath is searched, so the result may
 -- either be a Lua file or a shared library.
 -- @string mod name of the module
