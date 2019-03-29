@@ -102,6 +102,7 @@ end
 --- Return the time of last modification
 -- @string P A file path
 function path.getmtime(P)
+    assert_string(1,P)
     return attrib(P,'modification')
 end
 
