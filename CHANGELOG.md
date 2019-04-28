@@ -25,6 +25,8 @@
   - `types.is_empty` would return true on spaces always, indepedent of the parameter
   - `types.to_bool` will now compare case-insensitive for the extra passed strings
   - `app.require_here` will now properly handle an absolute base path
+  - `stringx.split` will no longer append an empty match if the number of requested
+    elements has already been reached.
 
 ## 1.6.0 (2018-11-23)
 

@@ -190,7 +190,9 @@ function stringx.split(s,re,n)
         plain = false
     end
     local res = usplit(s,re,plain,n)
-    if re and re ~= '' and find(s,re,-#re,true) then
+    if re and re ~= '' and
+       find(s,re,-#re,true) and
+       (n or math.huge) > #res then
         res[#res+1] = ""
     end
     return makelist(res)
