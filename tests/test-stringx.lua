@@ -150,6 +150,7 @@ asserteq(split('a', 'a'), {''})
 asserteq(split(' 1  2  3 '),{'1','2','3'})
 asserteq(split('a*bb*c*ddd','*'),{'a','bb','c','ddd'})
 asserteq(split('dog:fred:bonzo:alice',':',3), {'dog','fred','bonzo:alice'})
+asserteq(split('dog:fred:bonzo:alice:',':',3), {'dog','fred','bonzo:alice:'})
 asserteq(split('///','/'),{'','','',''})
 -- capitalize
 asserteq(T(stringx.capitalize('')), T(''))
