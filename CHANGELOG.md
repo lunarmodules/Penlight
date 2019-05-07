@@ -27,6 +27,10 @@
   - `app.require_here` will now properly handle an absolute base path
   - `stringx.split` will no longer append an empty match if the number of requested
     elements has already been reached.
+  - `path.common_prefix` and `path.relpath` return the result in the original casing
+    (only impacted Windows)
+  - `dir.copyfile`, `dir.movefile`, and `dir.makepath` create the new file/path with
+    the requested casing, and no longer force lowercase (only impacted Windows)
 
 ## 1.6.0 (2018-11-23)
 

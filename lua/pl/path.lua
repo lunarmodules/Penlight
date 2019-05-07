@@ -276,7 +276,7 @@ function path.normcase(P)
 end
 
 --- normalize a path name.
---  A//B, A/./B and A/foo/../B all become A/B.
+--  `A//B`, `A/./B`, and `A/foo/../B` all become `A/B`.
 -- @string P a file path
 function path.normpath(P)
     assert_string(1,P)
@@ -332,10 +332,17 @@ end
 function path.relpath (P,start)
     assert_string(1,P)
     if start then assert_string(2,start) end
-    local split,normcase,min,append = utils.split, path.normcase, math.min, table.insert
-    P = normcase(path.abspath(P,start))
+    local split,min,append = utils.split, math.min, table.insert
+    P = path.abspath(P,start)
     start = start or currentdir()
-    start = normcase(start)
+    local compare
+    if path.is_windows then
+        P = P:gsub("/","\\")
+        start = start:gsub("/","\\")
+        compare = function(v) return v:lower() end
+    else
+        compare = function(v) return v end
+    end
     local startl, Pl = split(start,sep), split(P,sep)
     local n = min(#startl,#Pl)
     if path.is_windows and n > 0 and at(Pl[1],2) == ':' and Pl[1] ~= startl[1] then
@@ -343,7 +350,7 @@ function path.relpath (P,start)
     end
     local k = n+1 -- default value if this loop doesn't bail out!
     for i = 1,n do
-        if startl[i] ~= Pl[i] then
+        if compare(startl[i]) ~= compare(Pl[i]) then
             k = i
             break
         end
@@ -394,12 +401,18 @@ end
 function path.common_prefix (path1,path2)
     assert_string(1,path1)
     assert_string(2,path2)
-    path1, path2 = path.normcase(path1), path.normcase(path2)
     -- get them in order!
     if #path1 > #path2 then path2,path1 = path1,path2 end
+    local compare
+    if path.is_windows then
+        path1 = path1:gsub("/", "\\")
+        path2 = path2:gsub("/", "\\")
+        compare = function(v) return v:lower() end
+    else
+        compare = function(v) return v end
+    end
     for i = 1,#path1 do
-        local c1 = at(path1,i)
-        if c1 ~= at(path2,i) then
+        if compare(at(path1,i)) ~= compare(at(path2,i)) then
             local cp = path1:sub(1,i-1)
             if at(path1,i-1) ~= sep then
                 cp = path.dirname(cp)

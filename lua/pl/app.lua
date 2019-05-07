@@ -37,7 +37,9 @@ function app.require_here (base)
         p = p..path.sep
     end
     if base then
-        base = path.normcase(base)
+        if path.is_windows then
+            base = base:gsub('/','\\')
+        end
         if path.isabs(base) then
             p = base .. path.sep
         else
