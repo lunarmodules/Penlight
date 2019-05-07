@@ -80,7 +80,7 @@ local function _listfiles(dir,filemode,match)
     return makelist(res)
 end
 
---- return a list of all files in a directory which match the a shell pattern.
+--- return a list of all files in a directory which match a shell pattern.
 -- @string dir A directory. If not given, all files in current directory are returned.
 -- @string mask  A shell pattern. If not given, all files are returned.
 -- @treturn {string} list of files
@@ -196,8 +196,10 @@ local function file_op (is_copy,src,dest,flag)
         -- fallback if there's no Alien, just use DOS commands *shudder*
         -- 'rename' involves a copy and then deleting the source.
         if not CopyFile then
-            src = path.normcase(src)
-            dest = path.normcase(dest)
+            if path.is_windows then
+                src = src:gsub("/","\\")
+                dest = dest:gsub("/","\\")
+            end
             local res, err = execute_command('copy',two_arguments(src,dest))
             if not res then return false,err end
             if not is_copy then
@@ -350,7 +352,10 @@ end
 -- @raise failure to create
 function dir.makepath (p)
     assert_string(1,p)
-    return _makepath(path.normcase(path.abspath(p)))
+    if path.is_windows then
+        p = p:gsub("/", "\\")
+    end
+    return _makepath(path.abspath(p))
 end
 
 
