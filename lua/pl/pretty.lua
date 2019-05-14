@@ -255,9 +255,7 @@ function pretty.write (tbl,space,not_clever)
                end
             end
             table.sort(ordered_keys)
-            for i = 1, #ordered_keys do
-                local key = ordered_keys[i]
-                local val = t[key]
+            local function write_entry (key, val)
                 local tkey = type(key)
                 local numkey = tkey == 'number'
                 if not_clever then
@@ -276,6 +274,16 @@ function pretty.write (tbl,space,not_clever)
                         writeit(val,indent,newindent)
                     end
                 end
+            end
+            for i = 1, #ordered_keys do
+                local key = ordered_keys[i]
+                local val = t[key]
+                write_entry(key, val)
+            end
+            for key,val in pairs(t) do
+               if type(key) == 'number' then
+                  write_entry(key, val)
+               end
             end
             tables[t] = nil
             eat_last_comma()
