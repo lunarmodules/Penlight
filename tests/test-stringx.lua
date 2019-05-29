@@ -244,9 +244,12 @@ asserteq(T(stringx.partition('a', 'a')), T('', 'a', ''))
 asserteq(T(stringx.partition('abc', 'b')), T('a', 'b', 'c'))
 asserteq(T(stringx.partition('abc', '.+')), T('abc','',''))
 asserteq(T(stringx.partition('a,b,c', ',')), T('a',',','b,c'))
+asserteq(T(stringx.partition('abc', '/')), T('abc', '', ''))
 -- rpartition
 asserteq(T(stringx.rpartition('a/b/c', '/')), T('a/b', '/', 'c'))
 asserteq(T(stringx.rpartition('abc', 'b')), T('a', 'b', 'c'))
+asserteq(T(stringx.rpartition('a', 'a')), T('', 'a', ''))
+asserteq(T(stringx.rpartition('abc', '/')), T('', '', 'abc'))
 
 
 -- at (works like s:sub(idx,idx), so negative indices allowed
