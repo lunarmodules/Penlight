@@ -32,6 +32,7 @@
   - `dir.copyfile`, `dir.movefile`, and `dir.makepath` create the new file/path with
     the requested casing, and no longer force lowercase (only impacted Windows)
   - added a missing assertion on `path.getmtime` [#291](https://github.com/stevedonovan/Penlight/pull/291)
+  - `stringx.rpartition` returned bad results on a not-found [#299](https://github.com/stevedonovan/Penlight/pull/299)
 
 ## 1.6.0 (2018-11-23)
 

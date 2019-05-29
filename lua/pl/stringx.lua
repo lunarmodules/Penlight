@@ -442,7 +442,11 @@ end
 function stringx.rpartition(s,ch)
     assert_string(1,s)
     assert_nonempty_string(2,ch)
-    return _partition(s,ch,stringx.rfind)
+    local a,b,c = _partition(s,ch,stringx.rfind)
+    if a == s then -- no match found
+        return c,b,a
+    end
+    return a,b,c
 end
 
 --- return the 'character' at the index.
