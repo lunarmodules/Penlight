@@ -26,11 +26,12 @@
   - `types.to_bool` will now compare case-insensitive for the extra passed strings
   - `app.require_here` will now properly handle an absolute base path
   - `stringx.split` will no longer append an empty match if the number of requested
-    elements has already been reached.
+    elements has already been reached [#295](https://github.com/stevedonovan/Penlight/pull/295)
   - `path.common_prefix` and `path.relpath` return the result in the original casing
-    (only impacted Windows)
+    (only impacted Windows) [#297](https://github.com/stevedonovan/Penlight/pull/297)
   - `dir.copyfile`, `dir.movefile`, and `dir.makepath` create the new file/path with
     the requested casing, and no longer force lowercase (only impacted Windows)
+    [#297](https://github.com/stevedonovan/Penlight/pull/297)
   - added a missing assertion on `path.getmtime` [#291](https://github.com/stevedonovan/Penlight/pull/291)
   - `stringx.rpartition` returned bad results on a not-found [#299](https://github.com/stevedonovan/Penlight/pull/299)
 
