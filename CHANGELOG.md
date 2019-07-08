@@ -2,6 +2,10 @@
 
 ## unreleased
 
+### New features
+
+  - `pretty.debug` quickly dumps a set of values to stdout for debug purposes
+
 ### Changes
 
   - `pretty.write`: now also sorts non-string keys [#319](https://github.com/Tieske/Penlight/pull/319)
