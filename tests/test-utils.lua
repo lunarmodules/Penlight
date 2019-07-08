@@ -89,6 +89,9 @@ local split = utils.split
 asserteq(split("hello dolly"),{"hello","dolly"})
 asserteq(split("hello,dolly",","),{"hello","dolly"})
 asserteq(split("hello,dolly,",","),{"hello","dolly"})
+asserteq(split(",dolly,",","),{"","dolly"})
+asserteq(split(",,",","),{"",""})
+asserteq(split(",",","),{})
 
 local first,second = utils.splitv("hello:dolly",":")
 asserteq(T(first,second),T("hello","dolly"))
