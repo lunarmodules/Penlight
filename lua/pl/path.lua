@@ -384,7 +384,7 @@ end
 
 
 ---Return a suitable full path to a new temporary file name.
--- unlike os.tmpnam(), it always gives you a writeable path (uses TEMP environment variable on Windows)
+-- unlike os.tmpname(), it always gives you a writeable path (uses TEMP environment variable on Windows)
 function path.tmpname ()
     local res = tmpnam()
     -- On Windows if Lua is compiled using MSVC14 os.tmpname
