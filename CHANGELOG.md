@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.7.0 (UNRELEASED)
+## 1.7.0 (2019-10-14)
 
 ### New features
 
@@ -15,7 +15,7 @@
   - `utils.quit`: exit message is no longer required, and closes the Lua state (on 5.2+).
   - `utils.assert_arg` and `utils.assert_string`: now return the validated value
   - `pl.compat`: now exports the `jit` and `jit52` flags
-  - `pretty.write`: now sorts the output for easier diffs [#293](https://github.com/stevedonovan/Penlight/pull/293)
+  - `pretty.write`: now sorts the output for easier diffs [#293](https://github.com/Tieske/Penlight/pull/293)
 
 ### Fixes
 
@@ -26,14 +26,14 @@
   - `types.to_bool` will now compare case-insensitive for the extra passed strings
   - `app.require_here` will now properly handle an absolute base path
   - `stringx.split` will no longer append an empty match if the number of requested
-    elements has already been reached [#295](https://github.com/stevedonovan/Penlight/pull/295)
+    elements has already been reached [#295](https://github.com/Tieske/Penlight/pull/295)
   - `path.common_prefix` and `path.relpath` return the result in the original casing
-    (only impacted Windows) [#297](https://github.com/stevedonovan/Penlight/pull/297)
+    (only impacted Windows) [#297](https://github.com/Tieske/Penlight/pull/297)
   - `dir.copyfile`, `dir.movefile`, and `dir.makepath` create the new file/path with
     the requested casing, and no longer force lowercase (only impacted Windows)
-    [#297](https://github.com/stevedonovan/Penlight/pull/297)
-  - added a missing assertion on `path.getmtime` [#291](https://github.com/stevedonovan/Penlight/pull/291)
-  - `stringx.rpartition` returned bad results on a not-found [#299](https://github.com/stevedonovan/Penlight/pull/299)
+    [#297](https://github.com/Tieske/Penlight/pull/297)
+  - added a missing assertion on `path.getmtime` [#291](https://github.com/Tieske/Penlight/pull/291)
+  - `stringx.rpartition` returned bad results on a not-found [#299](https://github.com/Tieske/Penlight/pull/299)
 
 ## 1.6.0 (2018-11-23)
 
