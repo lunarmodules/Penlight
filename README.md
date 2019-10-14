@@ -1,8 +1,8 @@
 # Penlight Lua Libraries
 
-[![Build Status](https://travis-ci.org/stevedonovan/Penlight.svg?branch=master)](https://travis-ci.org/stevedonovan/Penlight)
-[![Coverage Status](https://coveralls.io/repos/github/stevedonovan/Penlight/badge.svg?branch=master)](https://coveralls.io/github/stevedonovan/Penlight?branch=master)
-[![AppVeyor status](https://ci.appveyor.com/api/projects/status/2ypffmsatb5rh9yw/branch/master?svg=true)](https://ci.appveyor.com/project/stevedonovan/penlight/branch/master)
+[![Build Status](https://travis-ci.org/Tieske/Penlight.svg?branch=master)](https://travis-ci.org/Tieske/Penlight)
+[![Coverage Status](https://coveralls.io/repos/github/Tieske/Penlight/badge.svg?branch=master)](https://coveralls.io/github/Tieske/Penlight?branch=master)
+[![AppVeyor status](https://ci.appveyor.com/api/projects/status/d59xoj32dbiylaq3/branch/master?svg=true)](https://ci.appveyor.com/project/Tieske/penlight/branch/master)
 
 ## Why a new set of libraries?
 
@@ -59,7 +59,7 @@ Python standard libraries.
 
 ## License
 
-Penlight is distributed under the [MIT license](https://github.com/stevedonovan/Penlight/blob/master/LICENSE.md)
+Penlight is distributed under the [MIT license](https://github.com/Tieske/Penlight/blob/master/LICENSE.md)
 
 ## Installation
 
@@ -83,7 +83,7 @@ through LuaRocks.  Then it's a simple matter of running `ldoc .` from the repo.
 
 ## Contributing
 
-Contributions are most welcome, please check the [contribution guidelines](https://github.com/stevedonovan/Penlight/blob/master/CONTRIBUTING.md).
+Contributions are most welcome, please check the [contribution guidelines](https://github.com/Tieske/Penlight/blob/master/CONTRIBUTING.md).
 
 ## Running tests
 
@@ -92,4 +92,4 @@ Execute `lua run.lua tests` to run the tests. Execute `lua run.lua examples` to 
 ## History
 
 For a complete history of the development of Penlight, please check the
-[changelog](https://github.com/stevedonovan/Penlight/blob/master/CHANGELOG.md).
+[changelog](https://github.com/Tieske/Penlight/blob/master/CHANGELOG.md).
