@@ -39,7 +39,6 @@
 <h2>Libraries</h2>
 <ul class="nowrap">
   <li><a href="../libraries/pl.html">pl</a></li>
-  <li><a href="../libraries/pl.Set.html">pl.Set</a></li>
   <li><a href="../libraries/pl.app.html">pl.app</a></li>
   <li><a href="../libraries/pl.array2d.html">pl.array2d</a></li>
   <li><a href="../libraries/pl.class.html">pl.class</a></li>
@@ -80,6 +79,7 @@
   <li><a href="../classes/pl.Map.html">pl.Map</a></li>
   <li><a href="../classes/pl.MultiMap.html">pl.MultiMap</a></li>
   <li><a href="../classes/pl.OrderedMap.html">pl.OrderedMap</a></li>
+  <li><a href="../classes/pl.Set.html">pl.Set</a></li>
 </ul>
 <h2>Manual</h2>
 <ul class="nowrap">
@@ -103,7 +103,6 @@
   <li><a href="../examples/test-listcallbacks.lua.html">test-listcallbacks.lua</a></li>
   <li><a href="../examples/test-pretty.lua.html">test-pretty.lua</a></li>
   <li><a href="../examples/test-symbols.lua.html">test-symbols.lua</a></li>
-  <li><a href="../examples/testapp.lua.html">testapp.lua</a></li>
   <li><a href="../examples/testclone.lua.html">testclone.lua</a></li>
   <li><a href="../examples/testconfig.lua.html">testconfig.lua</a></li>
   <li><a href="../examples/testglobal.lua.html">testglobal.lua</a></li>
@@ -121,13 +120,15 @@
 <p>Reading and querying simple tabular data.</p>
 <p>
 
+
+
 <pre>
 data.read <span class="string">'test.txt'</span>
 ==&gt; {{<span class="number">10</span>,<span class="number">20</span>},{<span class="number">2</span>,<span class="number">5</span>},{<span class="number">40</span>,<span class="number">50</span>},fieldnames={<span class="string">'x'</span>,<span class="string">'y'</span>},delim=<span class="string">','</span>}
 </pre>
 
-
 <p> Provides a way of creating basic SQL-like queries.</p>
+
 
 <pre>
 <span class="global">require</span> <span class="string">'pl'</span>
@@ -138,10 +139,10 @@ data.read <span class="string">'test.txt'</span>
 <span class="keyword">end</span>
 </pre>
 
-
 <p> See <a href="../manual/06-data.md.html#Reading_Columnar_Data">the Guide</a></p>
 
-<p> Dependencies: <a href="../libraries/pl.utils.html#">pl.utils</a>, <a href="../libraries/pl.array2d.html#">pl.array2d</a> (fallback methods)</p></p>
+<p> Dependencies: <a href="../libraries/pl.utils.html#">pl.utils</a>, <a href="../libraries/pl.array2d.html#">pl.array2d</a> (fallback methods)</p>
+</p>
 
 
 <h2><a href="#Functions">Functions</a></h2>
@@ -366,7 +367,7 @@ data.read <span class="string">'test.txt'</span>
         </li>
         <li><span class="parameter">fieldnames</span>
             <span class="types"><span class="type">array</span></span>
-         (i.e. don&rsquo;t read from first line)
+         (i.e. don't read from first line)
         </li>
         <li><span class="parameter">no_convert</span>
             <span class="types"><span class="type">bool</span></span>
@@ -386,7 +387,7 @@ data.read <span class="string">'test.txt'</span>
         </li>
         <li><span class="parameter">thousands_dot</span>
             <span class="types"><span class="type">int</span></span>
-         thousands separator in Excel CSV is &lsquo;.&rsquo;
+         thousands separator in Excel CSV is '.'
         </li>
         <li><span class="parameter">csv</span>
             <span class="types"><span class="type">bool</span></span>
@@ -401,7 +402,7 @@ data.read <span class="string">'test.txt'</span>
         <li>
         <a href="../libraries/pl.data.html">data</a> object, or <code>nil</code></li>
         <li>
-        error message. May be a file error, &lsquo;not a file-like object&rsquo;
+        error message. May be a file error, 'not a file-like object'
  or a conversion error</li>
     </ol>
 
@@ -456,9 +457,9 @@ data.read <span class="string">'test.txt'</span>
     <dd>
     create a new dataset from a table of rows.
  Can specify the fieldnames, else the table must have a field called
- &lsquo;fieldnames&rsquo;, which is either a string of delimiter-separated names,
+ 'fieldnames', which is either a string of delimiter-separated names,
  or a table of names. <br>
- If the table does not have a field called &lsquo;delim&rsquo;, then an attempt will be
+ If the table does not have a field called 'delim', then an attempt will be
  made to guess it from the fieldnames string, defaults otherwise to tab.
 
 
@@ -492,9 +493,9 @@ data.read <span class="string">'test.txt'</span>
     create a query iterator from a select string.
  Select string has this format: <br>
  FIELDLIST [ where LUA-CONDN [ sort by FIELD] ]<br>
- FIELDLIST is a comma-separated list of valid fields, or &lsquo;*&rsquo;. <br> <br>
- The condition can also be a table, with fields &lsquo;fields&rsquo; (comma-sep string or
- table), &lsquo;sort_by&rsquo; (string) and &lsquo;where&rsquo; (Lua expression string or function)
+ FIELDLIST is a comma-separated list of valid fields, or '*'. <br> <br>
+ The condition can also be a table, with fields 'fields' (comma-sep string or
+ table), 'sort_by' (string) and 'where' (Lua expression string or function)
 
 
     <h3>Parameters:</h3>
@@ -563,7 +564,7 @@ data.read <span class="string">'test.txt'</span>
 </div> <!-- id="main" -->
 <div id="about">
 <i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
-<i style="float:right;">Last updated 2018-11-23 21:07:42 </i>
+<i style="float:right;">Last updated 2019-10-14 15:29:36 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>

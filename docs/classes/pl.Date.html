@@ -44,11 +44,11 @@
   <li><a href="../classes/pl.Map.html">pl.Map</a></li>
   <li><a href="../classes/pl.MultiMap.html">pl.MultiMap</a></li>
   <li><a href="../classes/pl.OrderedMap.html">pl.OrderedMap</a></li>
+  <li><a href="../classes/pl.Set.html">pl.Set</a></li>
 </ul>
 <h2>Libraries</h2>
 <ul class="nowrap">
   <li><a href="../libraries/pl.html">pl</a></li>
-  <li><a href="../libraries/pl.Set.html">pl.Set</a></li>
   <li><a href="../libraries/pl.app.html">pl.app</a></li>
   <li><a href="../libraries/pl.array2d.html">pl.array2d</a></li>
   <li><a href="../libraries/pl.class.html">pl.class</a></li>
@@ -104,7 +104,6 @@
   <li><a href="../examples/test-listcallbacks.lua.html">test-listcallbacks.lua</a></li>
   <li><a href="../examples/test-pretty.lua.html">test-pretty.lua</a></li>
   <li><a href="../examples/test-symbols.lua.html">test-symbols.lua</a></li>
-  <li><a href="../examples/testapp.lua.html">testapp.lua</a></li>
   <li><a href="../examples/testclone.lua.html">testclone.lua</a></li>
   <li><a href="../examples/testconfig.lua.html">testconfig.lua</a></li>
   <li><a href="../examples/testglobal.lua.html">testglobal.lua</a></li>
@@ -249,7 +248,7 @@
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#Date.Interval:__tostring">Date.Interval:__tostring ()</a></td>
-	<td class="summary">If it&rsquo;s an interval then the format is &lsquo;2 hours 29 sec&rsquo; etc.</td>
+	<td class="summary">If it's an interval then the format is '2 hours 29 sec' etc.</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#Date.Format">Date.Format (fmt.)</a></td>
@@ -771,6 +770,8 @@
     <ul>
         <li><span class="parameter">other</span>
 
+
+
         </li>
     </ul>
 
@@ -790,6 +791,8 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">other</span>
+
+
 
         </li>
     </ul>
@@ -860,7 +863,7 @@
     <strong>Date.Interval:__tostring ()</strong>
     </dt>
     <dd>
-    If it&rsquo;s an interval then the format is &lsquo;2 hours 29 sec&rsquo; etc.
+    If it's an interval then the format is '2 hours 29 sec' etc.
 
 
 
@@ -884,26 +887,24 @@
          A string where the following fields are significant:</p>
 
 <ul>
-<li> d day (either d or dd)</li>
-<li> y year (either yy or yyy)</li>
-<li> m month (either m or mm)</li>
-<li> H hour (either H or HH)</li>
-<li> M minute (either M or MM)</li>
-<li> S second (either S or SS)</li>
+    <li>d day (either d or dd)</li>
+    <li>y year (either yy or yyy)</li>
+    <li>m month (either m or mm)</li>
+    <li>H hour (either H or HH)</li>
+    <li>M minute (either M or MM)</li>
+    <li>S second (either S or SS)</li>
 </ul>
-
 
 <p> Alternatively, if fmt is nil then this returns a flexible date parser
  that tries various date/time schemes in turn:</p>
 
 <ul>
-<li><a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a>, like <code>2010-05-10 12:35:23Z</code> or <code>2008-10-03T14:30+02</code></li>
-<li>times like 15:30 or 8.05pm  (assumed to be today&rsquo;s date)</li>
-<li>dates like 28/10/02 (European order!) or 5 Feb 2012</li>
-<li>month name like march or Mar (case-insensitive, first 3 letters); here the
-day will be 1 and the year this current year</li>
+    <li><a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a>, like <code>2010-05-10 12:35:23Z</code> or <code>2008-10-03T14:30+02</code></li>
+    <li>times like 15:30 or 8.05pm  (assumed to be today's date)</li>
+    <li>dates like 28/10/02 (European order!) or 5 Feb 2012</li>
+    <li>month name like march or Mar (case-insensitive, first 3 letters); here the
+    day will be 1 and the year this current year</li>
 </ul>
-
 
 <p> A date in format 3 can be optionally followed by a time in format 2.
  Please see test-date.lua in the tests folder for more examples.
@@ -982,6 +983,8 @@ day will be 1 and the year this current year</li>
     <ul>
         <li><span class="parameter">yesno</span>
 
+
+
         </li>
     </ul>
 
@@ -1005,16 +1008,18 @@ day will be 1 and the year this current year</li>
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">t</span>
-        <p> this can be either</p>
+
+<p> this can be either</p>
 
 <ul>
-<li> <code>nil</code> or empty - use current date and time</li>
-<li> number - seconds since epoch (as returned by <a href="https://www.lua.org/manual/5.1/manual.html#pdf-os.time">os.time</a>). Resulting time is UTC</li>
-<li> <a href="../classes/pl.Date.html">Date</a> - make a copy of this date</li>
-<li> table - table containing year, month, etc as for <a href="https://www.lua.org/manual/5.1/manual.html#pdf-os.time">os.time</a>. You may leave out year, month or day,
-in which case current values will be used.</li>
-<li> year (will be followed by month, day etc)</li>
+    <li><code>nil</code> or empty - use current date and time</li>
+    <li>number - seconds since epoch (as returned by <a href="https://www.lua.org/manual/5.1/manual.html#pdf-os.time">os.time</a>). Resulting time is UTC</li>
+    <li><a href="../classes/pl.Date.html">Date</a> - make a copy of this date</li>
+    <li>table - table containing year, month, etc as for <a href="https://www.lua.org/manual/5.1/manual.html#pdf-os.time">os.time</a>. You may leave out year, month or day,
+    in which case current values will be used.</li>
+    <li>year (will be followed by month, day etc)</li>
 </ul>
+
 
         </li>
         <li><span class="parameter">...</span>
@@ -1034,7 +1039,7 @@ in which case current values will be used.</li>
 </div> <!-- id="main" -->
 <div id="about">
 <i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
-<i style="float:right;">Last updated 2018-11-23 21:07:42 </i>
+<i style="float:right;">Last updated 2019-10-14 15:29:36 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>

@@ -57,7 +57,6 @@
 <h2>Libraries</h2>
 <ul class="nowrap">
   <li><a href="../libraries/pl.html">pl</a></li>
-  <li><a href="../libraries/pl.Set.html">pl.Set</a></li>
   <li><a href="../libraries/pl.app.html">pl.app</a></li>
   <li><a href="../libraries/pl.array2d.html">pl.array2d</a></li>
   <li><a href="../libraries/pl.class.html">pl.class</a></li>
@@ -98,6 +97,7 @@
   <li><a href="../classes/pl.Map.html">pl.Map</a></li>
   <li><a href="../classes/pl.MultiMap.html">pl.MultiMap</a></li>
   <li><a href="../classes/pl.OrderedMap.html">pl.OrderedMap</a></li>
+  <li><a href="../classes/pl.Set.html">pl.Set</a></li>
 </ul>
 <h2>Examples</h2>
 <ul class="nowrap">
@@ -109,7 +109,6 @@
   <li><a href="../examples/test-listcallbacks.lua.html">test-listcallbacks.lua</a></li>
   <li><a href="../examples/test-pretty.lua.html">test-pretty.lua</a></li>
   <li><a href="../examples/test-symbols.lua.html">test-symbols.lua</a></li>
-  <li><a href="../examples/testapp.lua.html">testapp.lua</a></li>
   <li><a href="../examples/testclone.lua.html">testclone.lua</a></li>
   <li><a href="../examples/testconfig.lua.html">testconfig.lua</a></li>
   <li><a href="../examples/testglobal.lua.html">testglobal.lua</a></li>
@@ -123,29 +122,29 @@
 
 <div id="content">
 
-    <h2>Introduction</h2>
+
+<h2>Introduction</h2>
 
 <p><a name="Purpose"></a></p>
-
 <h3>Purpose</h3>
 
 <p>It is often said of Lua that it does not include batteries. That is because the
 goal of Lua is to produce a lean expressive language that will be used on all
-sorts of machines, (some of which don&rsquo;t even have hierarchical filesystems). The
+sorts of machines, (some of which don't even have hierarchical filesystems). The
 Lua language is the equivalent of an operating system kernel; the creators of Lua
 do not see it as their responsibility to create a full software ecosystem around
 the language. That is the role of the community.</p>
 
 <p>A principle of software design is to recognize common patterns and reuse them. If
-you find yourself writing things like <code>io.write(string.format('the answer is %d
-',42))</code> more than a number of times then it becomes useful just to define a
+you find yourself writing things like `io.write(string.format('the answer is %d
+',42))` more than a number of times then it becomes useful just to define a
 function <code>printf</code>. This is good, not just because repeated code is harder to
 maintain, but because such code is easier to read, once people understand your
 libraries.</p>
 
 <p>Penlight captures many such code patterns, so that the intent of your code
 becomes clearer. For instance, a Lua idiom to copy a table is <code>{unpack(t)}</code>, but
-this will only work for &lsquo;small&rsquo; tables (for a given value of &lsquo;small&rsquo;) so it is
+this will only work for 'small' tables (for a given value of 'small') so it is
 not very robust. Also, the intent is not clear. So <a href="../libraries/pl.tablex.html#deepcopy">tablex.deepcopy</a> is provided,
 which will also copy nested tables and and associated metatables, so it can be
 used to clone complex objects.</p>
@@ -175,16 +174,15 @@ either <a href="http://alien.luaforge.net/">alien</a> or be using
 shell commands.)</p>
 
 <p><a name="To_Inject_or_not_to_Inject_"></a></p>
-
 <h3>To Inject or not to Inject?</h3>
 
 <p>It was realized a long time ago that large programs needed a way to keep names
 distinct by putting them into tables (Lua), namespaces (C++) or modules
 (Python).  It is obviously impossible to run a company where everyone is called
-&lsquo;Bruce&rsquo;, except in Monty Python skits. These &lsquo;namespace clashes&rsquo; are more of a
+'Bruce', except in Monty Python skits. These 'namespace clashes' are more of a
 problem in a simple language like Lua than in C++, because C++ does more
-complicated lookup over &lsquo;injected namespaces&rsquo;.  However, in a small group of
-friends, &lsquo;Bruce&rsquo; is usually unique, so in particular situations it&rsquo;s useful to
+complicated lookup over 'injected namespaces'.  However, in a small group of
+friends, 'Bruce' is usually unique, so in particular situations it's useful to
 drop the formality and not use last names. It depends entirely on what kind of
 program you are writing, whether it is a ten line script or a ten thousand line
 program.</p>
@@ -192,19 +190,19 @@ program.</p>
 <p>So the Penlight library provides the formal way and the informal way, without
 imposing any preference. You can do it formally like:</p>
 
+
 <pre>
 <span class="keyword">local</span> utils = <span class="global">require</span> <span class="string">'pl.utils'</span>
 utils.printf(<span class="string">"%s\n"</span>,<span class="string">"hello, world!"</span>)
 </pre>
 
-
 <p>or informally like:</p>
+
 
 <pre>
 <span class="global">require</span> <span class="string">'pl'</span>
 utils.printf(<span class="string">"%s\n"</span>,<span class="string">"That feels better"</span>)
 </pre>
-
 
 <p><code>require &apos;pl&apos;</code> makes all the separate Penlight modules available, without needing
 to require them each individually.</p>
@@ -217,17 +215,18 @@ formal need to keep the global table uncluttered and the informal need for
 convenience. <code>require&apos;pl.import_into&apos;</code> returns a function, which accepts a table
 for injecting Penlight into, or if no table is given, it passes back a new one.</p>
 
+
 <pre>
 <span class="keyword">local</span> pl = <span class="global">require</span><span class="string">'pl.import_into'</span>()
 </pre>
 
-
-<p>The table <a href="../libraries/pl.html#">pl</a> is a &lsquo;lazy table&rsquo; which loads modules as needed, so we can then
+<p>The table <a href="../libraries/pl.html#">pl</a> is a 'lazy table' which loads modules as needed, so we can then
 use <a href="../libraries/pl.utils.html#printf">pl.utils.printf</a> and so forth, without an explicit `require' or harming any
 globals.</p>
 
 <p>If you are using <code>_ENV</code> with Lua 5.2 to define modules, then here is a way to
 make Penlight available within a module:</p>
+
 
 <pre>
 <span class="keyword">local</span> _ENV,M = <span class="global">require</span> <span class="string">'pl.import_into'</span> ()
@@ -240,17 +239,16 @@ make Penlight available within a module:</p>
 <span class="keyword">return</span> M
 </pre>
 
-
-<p>The default is to put Penlight into <code>\<em>ENV</code>, which has the unintended effect of
-making it available from the module (much as <code>module(&hellip;,package.seeall)</code> does).
+<p>The default is to put Penlight into <code>\_ENV</code>, which has the unintended effect of
+making it available from the module (much as <code>module(...,package.seeall)</code> does).
 To satisfy both convenience and safety, you may pass <code>true</code> to this function, and
-then the </em>module<em> <code>M</code> is not the same as <code>\</em>ENV</code>, but only contains the exported
+then the <em>module</em> <code>M</code> is not the same as <code>\_ENV</code>, but only contains the exported
 functions.</p>
 
 <p>Otherwise, Penlight will <em>not</em> bring in functions into the global table, or
-clobber standard tables like &lsquo;io&rsquo;.  require(&lsquo;pl&rsquo;) will bring tables like
-&lsquo;utils&rsquo;,&lsquo;tablex&rsquo;,etc into the global table <em>if they are used</em>. This
-&lsquo;load-on-demand&rsquo; strategy ensures that the whole kitchen sink is not loaded up
+clobber standard tables like 'io'.  require('pl') will bring tables like
+'utils','tablex',etc into the global table <em>if they are used</em>. This
+'load-on-demand' strategy ensures that the whole kitchen sink is not loaded up
 front,  so this method is as efficient as explicitly loading required modules.</p>
 
 <p>You have an option to bring the <a href="../libraries/pl.stringx.html#">pl.stringx</a> methods into the standard string
@@ -258,21 +256,22 @@ table. All strings have a metatable that allows for automatic lookup in <a href=
 so we can say <code>s:upper()</code>. Importing <a href="../libraries/pl.stringx.html#">stringx</a> allows for its functions to also
 be called as methods: <code>s:strip()</code>,etc:</p>
 
+
 <pre>
 <span class="global">require</span> <span class="string">'pl'</span>
 stringx.import()
 </pre>
 
-
 <p>or, more explicitly:</p>
+
 
 <pre>
 <span class="global">require</span>(<span class="string">'pl.stringx'</span>).import()
 </pre>
 
-
 <p>A more delicate operation is importing tables into the local environment. This is
 convenient when the context makes the meaning of a name very clear:</p>
+
 
 <pre>
 &gt; <span class="global">require</span> <span class="string">'pl'</span>
@@ -281,7 +280,6 @@ convenient when the context makes the meaning of a name very clear:</p>
 <span class="number">0.93203908596723</span>
 </pre>
 
-
 <p><a href="../libraries/pl.utils.html#import">utils.import</a> can also be passed a module name as a string, which is first
 required and then imported. If used in a module, <code>import</code> will bring the symbols
 into the module context.</p>
@@ -289,8 +287,9 @@ into the module context.</p>
 <p>Keeping the global scope simple is very necessary with dynamic languages. Using
 global variables in a big program is always asking for trouble, especially since
 you do  not have the spell-checking provided by a compiler. The <a href="../libraries/pl.strict.html#">pl.strict</a>
-module enforces a simple rule: globals must be &lsquo;declared&rsquo;.  This means that they
+module enforces a simple rule: globals must be 'declared'.  This means that they
 must be assigned before use; assigning to <code>nil</code> is sufficient.</p>
+
 
 <pre>
 &gt; <span class="global">require</span> <span class="string">'pl.strict'</span>
@@ -301,8 +300,7 @@ stdin:<span class="number">1</span>: variable <span class="string">'x'</span> is
 <span class="keyword">nil</span>
 </pre>
 
-
-<p>The <a href="../libraries/pl.strict.html#">strict</a> module provided by Penlight is compatible with the &lsquo;load-on-demand&rsquo;
+<p>The <a href="../libraries/pl.strict.html#">strict</a> module provided by Penlight is compatible with the 'load-on-demand'
 scheme used by <code>require &apos;pl</code>.</p>
 
 <p><a href="../libraries/pl.strict.html#">strict</a> also disallows assignment to global variables, except in the main
@@ -318,6 +316,7 @@ modifies) modules so that accessing an unknown function or field causes an error
 
 <p>For example,</p>
 
+
 <pre>
 <span class="comment">-- mymod.lua
 </span><span class="keyword">local</span> strict = <span class="global">require</span> <span class="string">'pl.strict'</span>
@@ -330,32 +329,30 @@ modifies) modules so that accessing an unknown function or field causes an error
 <span class="keyword">return</span> M
 </pre>
 
-
 <p>If you were to accidently type <code>mymod.Answer()</code>, then you would get a runtime
-error: &ldquo;variable &lsquo;Answer&rsquo; is not declared in &lsquo;mymod&rsquo;&rdquo;.</p>
+error: "variable 'Answer' is not declared in 'mymod'".</p>
 
 <p>This can be applied to existing modules. You may desire to have the same level
 of checking for the Lua standard libraries:</p>
+
 
 <pre>
 strict.make_all_strict(_G)
 </pre>
 
-
 <p>Thereafter a typo such as <code>math.cosine</code> will give you an explicit error, rather
 than merely returning a <code>nil</code> that will cause problems later.</p>
 
 <p><a name="What_are_function_arguments_in_Penlight_"></a></p>
-
 <h3>What are function arguments in Penlight?</h3>
 
 <p>Many functions in Penlight themselves take function arguments, like <code>map</code> which
 applies a function to a list, element by element.  You can use existing
-functions, like <a href="https://www.lua.org/manual/5.1/manual.html#pdf-math.max">math.max</a>, anonymous functions (like <code>function(x,y) return x &gt; y
-end&lt;code&gt; ), or operations by name (e.g &amp;apos;*&amp;apos; or &amp;apos;..&amp;apos;).  The module &lt;/code&gt;pl.operator</code> exports
+functions, like <a href="https://www.lua.org/manual/5.1/manual.html#pdf-math.max">math.max</a>, anonymous functions (like `function(x,y) return x > y
+end<code> ), or operations by name (e.g &apos;*&apos; or &apos;..&apos;).  The module </code>pl.operator` exports
 all the standard Lua operations, like the Python module of the same name.
 Penlight allows these to be referred to by name, so <a href="../libraries/pl.operator.html#gt">operator.gt</a> can be more
-concisely expressed as &lsquo;>&rsquo;.</p>
+concisely expressed as '>'.</p>
 
 <p>Note that the <code>map</code> functions pass any extra arguments to the function, so we can
 have <code>ls:filter(&apos;&gt;&apos;,0)</code>, which is a shortcut for
@@ -369,31 +366,31 @@ so that an anonymous function to multiply the two arguments can be expressed as
 <a href="../libraries/pl.utils.html#function_arg">utils.function_arg</a>. <a href="../libraries/pl.func.html#">pl.func</a> registers itself with this function, so that you
 can directly use placeholder expressions with standard methods:</p>
 
+
 <pre>
 &gt; _1 = func._1
 &gt; = List{<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>}:map(_1+<span class="number">1</span>)
 {<span class="number">11</span>,<span class="number">21</span>,<span class="number">31</span>}
 </pre>
 
-
 <p>Another option for short anonymous functions is provided by
 <a href="../libraries/pl.utils.html#string_lambda">utils.string_lambda</a>; this is invoked automatically:</p>
+
 
 <pre>
 &gt; = List{<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>}:map <span class="string">'|x| x + 1'</span>
 {<span class="number">11</span>,<span class="number">21</span>,<span class="number">31</span>}
 </pre>
 
-
 <p><a name="Pros_and_Cons_of_Loopless_Programming"></a></p>
-
 <h3>Pros and Cons of Loopless Programming</h3>
 
-<p>The standard loops-and-ifs &lsquo;imperative&rsquo; style of programming is dominant, and
-often seems to be the &lsquo;natural&rsquo; way of telling a machine what to do. It is in
+<p>The standard loops-and-ifs 'imperative' style of programming is dominant, and
+often seems to be the 'natural' way of telling a machine what to do. It is in
 fact very much how the machine does things, but we need to take a step back and
 find ways of expressing solutions in a higher-level way.  For instance, applying
 a function to all elements of a list is a common operation:</p>
+
 
 <pre>
 <span class="keyword">local</span> res = {}
@@ -402,13 +399,12 @@ a function to all elements of a list is a common operation:</p>
 <span class="keyword">end</span>
 </pre>
 
-
 <p>This can be efficiently and succintly expressed as <code>ls:map(fun)</code>. Not only is
 there less typing but the intention of the code is clearer. If readers of your
 code spend too much time trying to guess your intention by analyzing your loops,
 then you have failed to express yourself clearly. Similarly, <code>ls:filter(&apos;&gt;&apos;,0)</code>
 will give you all the values in a list greater than zero. (Of course, if you
-don&rsquo;t feel like using <a href="../classes/pl.List.html#">List</a>, or have non-list-like tables, then <a href="../libraries/pl.tablex.html#">pl.tablex</a>
+don't feel like using <a href="../classes/pl.List.html#">List</a>, or have non-list-like tables, then <a href="../libraries/pl.tablex.html#">pl.tablex</a>
 offers the same facilities. In fact, the <a href="../classes/pl.List.html#">List</a> methods are implemented using
 <a href="../libraries/pl.tablex.html#">tablex</a> functions.)</p>
 
@@ -418,20 +414,19 @@ product of two lists, but an unnecessary temporary list is created.  But
 efficiency is relative to the actual situation, it may turn out to be <em>fast
 enough</em>, or may not appear in any crucial inner loops, etc.</p>
 
-<p>Writing loops is &lsquo;error-prone and tedious&rsquo;, as Stroustrup says. But any
+<p>Writing loops is 'error-prone and tedious', as Stroustrup says. But any
 half-decent editor can be taught to do much of that typing for you. The question
 should actually be: is it tedious to <em>read</em> loops?  As with natural language,
 programmers tend to read chunks at a time. A for-loop causes no surprise, and
 probably little brain activity. One argument for loopless programming is the
-loops that you <em>do</em> write stand out more, and signal &lsquo;something different
-happening here&rsquo;.  It should not be an all-or-nothing thing, since most programs
+loops that you <em>do</em> write stand out more, and signal 'something different
+happening here'.  It should not be an all-or-nothing thing, since most programs
 require a mixture of idioms that suit the problem.  Some languages (like APL) do
 nearly everything with map and reduce operations on arrays, and so solutions can
 sometimes seem forced. Wisdom is knowing when a particular idiom makes a
 particular problem easy to <em>solve</em> and the solution easy to <em>explain</em> afterwards.</p>
 
 <p><a name="Generally_useful_functions_"></a></p>
-
 <h3>Generally useful functions.</h3>
 
 <p>The function <code>printf</code> discussed earlier is included in <a href="../libraries/pl.utils.html#">pl.utils</a> because it
@@ -442,12 +437,13 @@ also takes a file object parameter, just like the C function.)</p>
 
 <p>Utility functions like <code>is_type</code> help with identifying what
 kind of animal you are dealing with.
-The Lua <a href="https://www.lua.org/manual/5.1/manual.html#pdf-type">type</a> function handles the basic types, but can&rsquo;t distinguish between
+The Lua <a href="https://www.lua.org/manual/5.1/manual.html#pdf-type">type</a> function handles the basic types, but can't distinguish between
 different kinds of objects, which are all tables. So <code>is_type</code> handles both
 cases, like <code>is_type(s,&quot;string&quot;)</code> and <code>is_type(ls,List)</code>.</p>
 
 <p>A common pattern when working with Lua varargs is capturing all the arguments in
 a table:</p>
+
 
 <pre>
 <span class="keyword">function</span> t(...)
@@ -456,11 +452,11 @@ a table:</p>
 <span class="keyword">end</span>
 </pre>
 
-
 <p>But this will bite you someday when <code>nil</code> is one of the arguments, since this
-will put a &lsquo;hole&rsquo; in your table. In particular, <code>#ls</code> will only give you the size
+will put a 'hole' in your table. In particular, <code>#ls</code> will only give you the size
 upto the <code>nil</code> value.  Hence the need for <a href="https://www.lua.org/manual/5.1/manual.html#pdf-table.pack">table.pack</a> - this is a new Lua 5.2
 function which Penlight defines also for Lua 5.1.</p>
+
 
 <pre>
 <span class="keyword">function</span> t(...)
@@ -471,13 +467,13 @@ function which Penlight defines also for Lua 5.1.</p>
 <span class="keyword">end</span>
 </pre>
 
-
-<p>The &lsquo;memoize&rsquo; pattern occurs when you have a function which is expensive to call,
+<p>The 'memoize' pattern occurs when you have a function which is expensive to call,
 but will always return the same value subsequently. <a href="../libraries/pl.utils.html#memoize">utils.memoize</a> is given a
 function, and returns another function. This calls the function the first time,
 saves the value for that argument, and thereafter for that argument returns the
 saved value.  This is a more flexible alternative to building a table of values
-upfront, since in general you won&rsquo;t know what values are needed.</p>
+upfront, since in general you won't know what values are needed.</p>
+
 
 <pre>
 sum = utils.memoize(<span class="keyword">function</span>(n)
@@ -491,43 +487,41 @@ s = sum(<span class="number">1e8</span>) <span class="comment">--takes time!
 s = sum(<span class="number">1e8</span>) <span class="comment">--returned saved value!</span>
 </pre>
 
-
 <p>Penlight is fully compatible with Lua 5.1, 5.2 and LuaJIT 2. To ensure this,
 <a href="../libraries/pl.utils.html#">utils</a> also defines the global Lua 5.2
-<a href="http://www.lua.org/work/doc/manual.html#pdf-load">load</a> function as <a href="../libraries/pl.utils.html#load">utils.load</a></p>
+<a href="http://www.lua.org/work/doc/manual.html#pdf-load">load</a> function as <code>utils.load</code></p>
 
 <ul>
-<li>the input (either a string or a function)</li>
-<li>the source name used in debug information</li>
-<li>the mode is a string that can have either or both of &lsquo;b&rsquo; or &rsquo;t', depending on
-whether the source is a binary chunk or text code (default is &lsquo;bt&rsquo;)</li>
-<li>the environment for the compiled chunk</li>
+    <li>the input (either a string or a function)</li>
+    <li>the source name used in debug information</li>
+    <li>the mode is a string that can have either or both of 'b' or 't', depending on
+    whether the source is a binary chunk or text code (default is 'bt')</li>
+    <li>the environment for the compiled chunk</li>
 </ul>
 
-
-<p>Using <a href="../libraries/pl.utils.html#load">utils.load</a> should reduce the need to call the deprecated function <a href="https://www.lua.org/manual/5.1/manual.html#pdf-setfenv">setfenv</a>,
+<p>Using <code>utils.load</code> should reduce the need to call the deprecated function <a href="https://www.lua.org/manual/5.1/manual.html#pdf-setfenv">setfenv</a>,
 and make your Lua 5.1 code 5.2-friendly.</p>
 
 <p>The <a href="../libraries/pl.utils.html#">utils</a> module exports <a href="https://www.lua.org/manual/5.1/manual.html#pdf-getfenv">getfenv</a> and <a href="https://www.lua.org/manual/5.1/manual.html#pdf-setfenv">setfenv</a> for
 Lua 5.2 as well, based on code by Sergey Rozhenko.  Note that these functions can fail
-for functions which don&rsquo;t access any globals.</p>
+for functions which don't access any globals.</p>
 
 <p><a name="Application_Support"></a></p>
-
 <h3>Application Support</h3>
 
 <p><a href="../libraries/pl.app.html#parse_args">app.parse_args</a> is a simple command-line argument parser. If called without any
 arguments, it tries to use the global <code>arg</code> array.  It returns the <em>flags</em>
-(options begining with &lsquo;-&rsquo;) as a table of name/value pairs, and the <em>arguments</em>
-as an array.  It knows about long GNU-style flag names, e.g. <code>&ndash;value</code>, and
+(options begining with '-') as a table of name/value pairs, and the <em>arguments</em>
+as an array.  It knows about long GNU-style flag names, e.g. <code>--value</code>, and
 groups of short flags are understood, so that <code>-ab</code> is short for <code>-a -b</code>. The
 flags result would then look like <code>{value=true,a=true,b=true}</code>.</p>
 
-<p>Flags may take values. The command-line <code>&ndash;value=open -n10</code> would result in
-<code>{value=&apos;open&apos;,n=&apos;10&apos;}</code>; generally you can use &lsquo;=&rsquo; or &lsquo;:&rsquo; to separate the flag
+<p>Flags may take values. The command-line <code>--value=open -n10</code> would result in
+<code>{value=&apos;open&apos;,n=&apos;10&apos;}</code>; generally you can use '=' or ':' to separate the flag
 from its value, except in the special case where a short flag is followed by an
 integer.  Or you may specify upfront that some flags have associated values, and
 then the values will follow the flag.</p>
+
 
 <pre>
 &gt; <span class="global">require</span> <span class="string">'pl'</span>
@@ -535,7 +529,6 @@ then the values will follow the flag.</p>
 &gt; pretty.dump(flags)
 {o=<span class="string">'fred'</span>,n=<span class="string">'10'</span>}
 </pre>
-
 
 <p><code>parse_args</code> is not intelligent or psychic; it will not convert any flag values
 or arguments for you, or raise errors. For that, have a look at
@@ -549,16 +542,18 @@ to ensure that it can find <a href="../examples/symbols.lua.html#">symbols.lua</
 
 <p><a href="../libraries/pl.app.html#appfile">app.appfile</a> will create a filename that your application can use to store its
 private data, based on the script name. For example, <code>app.appfile &quot;test.txt&quot;</code>
-from a script called <a href="../examples/testapp.lua.html#">testapp.lua</a> produces the following file on my Windows
+from a script called <code>testapp.lua</code> produces the following file on my Windows
 machine:</p>
 
 <pre><code>C:\Documents and Settings\SJDonova\.testapp\test.txt
 </code></pre>
 
+
 <p>and the equivalent on my Linux machine:</p>
 
 <pre><code>/home/sdonovan/.testapp/test.txt
 </code></pre>
+
 
 <p>If <code>.testapp</code> does not exist, it will be created.</p>
 
@@ -567,14 +562,14 @@ machine:</p>
 and <code>pretty.read(file.read(file))</code> to generate the table again, using the
 <a href="../libraries/pl.pretty.html#">pretty</a> module.</p>
 
-<p><a name="Simplifying_Object_Oriented_Programming_in_Lua"></a></p>
 
+<p><a name="Simplifying_Object_Oriented_Programming_in_Lua"></a></p>
 <h3>Simplifying Object-Oriented Programming in Lua</h3>
 
 <p>Lua is similar to JavaScript in that the concept of class is not directly
 supported by the language. In fact, Lua has a very general mechanism for
 extending the behaviour of tables which makes it straightforward to implement
-classes. A table&rsquo;s behaviour is controlled by its metatable. If that metatable
+classes. A table's behaviour is controlled by its metatable. If that metatable
 has a <code>\<em>\</em>index</code> function or table, this will handle looking up anything which is
 not found in the original table. A class is just a table with an <code>__index</code> key
 pointing to itself. Creating an object involves making a table and setting its
@@ -582,6 +577,7 @@ metatable to the class; then when handling <code>obj.fun</code>, Lua first looks
 the table <code>obj</code>, and if not found it looks it up in the class. <code>obj:fun(a)</code> is
 just short for <code>obj.fun(obj,a)</code>. So with the metatable mechanism and this bit of
 syntactic sugar, it is straightforward to implement classic object orientation.</p>
+
 
 <pre>
 <span class="comment">-- animal.lua
@@ -636,17 +632,16 @@ Fido: bark      Felix: meow     Leo: roar
 <span class="keyword">true</span>
 </pre>
 
-
 <p>All Animal does is define <code>\<em>\</em>tostring</code>, which Lua will use whenever a string
 representation is needed of the object. In turn, this relies on <code>speak</code>, which is
-not defined. So it&rsquo;s what C++ people would call an abstract base class; the
+not defined. So it's what C++ people would call an abstract base class; the
 specific derived classes like Dog define <code>speak</code>. Please note that <em>if</em> derived
 classes have their own constructors, they must explicitly call the base
 constructor for their base class; this is conveniently available as the <code>super</code>
 method.</p>
 
 <p>Note that (as always) there are multiple ways to implement OOP in Lua; this method
-uses the classic &lsquo;a class is the __index of its objects&rsquo; but does &lsquo;fat inheritance&rsquo;;
+uses the classic 'a class is the __index of its objects' but does 'fat inheritance';
 methods from the base class are copied into the new class. The advantage of this is
 that you are not penalized for long inheritance chains, for the price of larger classes,
 but generally objects outnumber classes! (If not, something odd is going on with your design.)</p>
@@ -663,6 +658,7 @@ by setting the <code>_name</code> field, which can be useful in identifying the 
 this type later. This session illustrates the usefulness of having named classes,
 if no <code>__tostring</code> method is explicitly defined.</p>
 
+
 <pre>
 &gt; class.Fred()
 &gt; a = Fred()
@@ -677,10 +673,9 @@ Fred: <span class="number">00459330</span>
 Alice: <span class="number">00459</span>AE8
 </pre>
 
-
 <p>So <code>Alice = class(); Alice._name = &apos;Alice&apos;</code> is exactly the same as <code>class.Alice()</code>.</p>
 
-<p>This useful notation is borrowed from Hugo Etchegoyen&rsquo;s
+<p>This useful notation is borrowed from Hugo Etchegoyen's
 <a href="http://lua-users.org/wiki/MultipleInheritanceClasses">classlib</a> which further
 extends this concept to allow for multiple inheritance. Notice that the
 more convenient form puts the class name in the <em>current environment</em>! That is,
@@ -689,6 +684,7 @@ or the new <code>_ENV</code> mechanism.</p>
 
 <p>There is always more than one way of doing things in Lua; some may prefer this
 style for creating classes:</p>
+
 
 <pre>
 <span class="keyword">local</span> class = <span class="global">require</span> <span class="string">'pl.class'</span>
@@ -708,25 +704,25 @@ b = Named <span class="string">'dog'</span>
 <span class="comment">--&gt; boo dog</span>
 </pre>
 
-
 <p>Note that you have to explicitly declare <code>self</code> and end each function definition
 with a semi-colon or comma, since this is a Lua table. To inherit from a base class,
 set the special field <code>_base</code> to the class in this table.</p>
 
 <p>Penlight provides a number of useful classes; there is <a href="../classes/pl.List.html#">List</a>, which is a Lua
-clone of the standard Python list object, and <a href="../libraries/pl.Set.html#">Set</a> which represents sets. There
+clone of the standard Python list object, and <a href="../classes/pl.Set.html#">Set</a> which represents sets. There
 are three kinds of <em>map</em> defined: <a href="../classes/pl.Map.html#">Map</a>, <a href="../classes/pl.MultiMap.html#">MultiMap</a> (where a key may have
 multiple values) and <a href="../classes/pl.OrderedMap.html#">OrderedMap</a> (where the order of insertion is remembered.).
 There is nothing special about these classes and you may inherit from them.</p>
 
 <p>A powerful thing about dynamic languages is that you can redefine existing classes
-and functions, which is often called &lsquo;monkey patching&rsquo; It&rsquo;s entertaining and convenient,
+and functions, which is often called 'monkey patching' It's entertaining and convenient,
 but ultimately anti-social; you may modify <a href="../classes/pl.List.html#">List</a> but then any other modules using
 this <em>shared</em> resource can no longer be sure about its behaviour. (This is why you
 must say <code>stringx.import()</code> explicitly if you want the extended string methods - it
 would be a bad default.)  Lua is particularly open to modification but the
 community is not as tolerant of monkey-patching as the Ruby community, say. You may
-wish to add some new methods to <a href="../classes/pl.List.html#">List</a>? Cool, but that&rsquo;s what subclassing is for.</p>
+wish to add some new methods to <a href="../classes/pl.List.html#">List</a>? Cool, but that's what subclassing is for.</p>
+
 
 <pre>
 class.Strings(List)
@@ -736,11 +732,11 @@ class.Strings(List)
 <span class="keyword">end</span>
 </pre>
 
-
-<p>It&rsquo;s definitely more useful to define exactly how your objects behave
+<p>It's definitely more useful to define exactly how your objects behave
 in <em>unknown</em> conditions. All classes have a <code>catch</code> method you can use to set
 a handler for unknown lookups; the function you pass looks exactly like the
 <code>__index</code> metamethod.</p>
+
 
 <pre>
 Strings:catch(<span class="keyword">function</span>(self,name)
@@ -748,9 +744,9 @@ Strings:catch(<span class="keyword">function</span>(self,name)
 <span class="keyword">end</span>)
 </pre>
 
-
-<p>In this case we&rsquo;re just customizing the error message, but
+<p>In this case we're just customizing the error message, but
 creative things can be done. Consider this code from <code>test-vector.lua</code>:</p>
+
 
 <pre>
 Strings:catch(List.default_map_with(<span class="global">string</span>))
@@ -760,8 +756,7 @@ asserteq(ls:upper(),{<span class="string">'ONE'</span>,<span class="string">'TWO
 asserteq(ls:sub(<span class="number">1</span>,<span class="number">2</span>),{<span class="string">'on'</span>,<span class="string">'tw'</span>,<span class="string">'th'</span>})
 </pre>
 
-
-<p>So we&rsquo;ve converted a unknown method invocation into a map using the function of
+<p>So we've converted a unknown method invocation into a map using the function of
 that name found in <a href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a>.  So for a <code>Vector</code> (which is a specialization of <a href="../classes/pl.List.html#">List</a>
 for numbers) it makes sense to make <a href="https://www.lua.org/manual/5.1/manual.html#5.6">math</a> the default map so that <code>v:sin()</code> makes
 sense.</p>
@@ -770,7 +765,8 @@ sense.</p>
 <em>covariance</em>. So <code>ls:upper()</code> itself returns a <code>Strings</code> object.</p>
 
 <p>This is not <em>always</em> what you want, but objects can always be cast to the desired type.
-(<code>cast</code> doesn&rsquo;t create a new object, but returns the object passed.)</p>
+(<code>cast</code> doesn't create a new object, but returns the object passed.)</p>
+
 
 <pre>
 <span class="keyword">local</span> sizes = ls:map <span class="string">'#'</span>
@@ -782,13 +778,15 @@ asserteq(utils.<span class="global">type</span>(sizes),<span class="string">'Vec
 asserteq(sizes+<span class="number">1</span>,{<span class="number">4</span>,<span class="number">4</span>,<span class="number">6</span>})
 </pre>
 
-
 <p>About <code>utils.type</code>: it can only return a string for a class type if that class does
 in fact have a <code>_name</code> field.</p>
 
+
 <p><em>Properties</em> are a useful object-oriented pattern. We wish to control access to a
-field, but don&rsquo;t wish to force the user of the class to say <code>obj:get_field()</code>
+field, but don't wish to force the user of the class to say <code>obj:get_field()</code>
 etc. This excerpt from <code>tests/test-class.lua</code> shows how it is done:</p>
+
+
 
 <pre>
 <span class="keyword">local</span> MyProps = class(class.properties)
@@ -818,7 +816,6 @@ asserteq(mp.b,<span class="number">2</span>)
 asserteq(setted_a <span class="keyword">and</span> got_b, <span class="keyword">true</span>)
 </pre>
 
-
 <p>The convention is that the internal field name is prefixed with an underscore;
 when reading <code>mp.a</code>, first a check for an explicit <em>getter</em> <code>get_a</code> and then only
 look for <code>_a</code>. Simularly, writing <code>mp.a</code> causes the <em>setter</em> <code>set_a</code> to be used.</p>
@@ -834,11 +831,12 @@ worth it.</p>
 to <code>mp._a</code> directly. It is possible to have this kind of control in Lua, but it
 again comes with run-time costs.</p>
 
+
 </div> <!-- id="content" -->
 </div> <!-- id="main" -->
 <div id="about">
 <i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
-<i style="float:right;">Last updated 2018-11-23 21:07:42 </i>
+<i style="float:right;">Last updated 2019-10-14 15:29:36 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>

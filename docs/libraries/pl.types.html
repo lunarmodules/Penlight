@@ -39,7 +39,6 @@
 <h2>Libraries</h2>
 <ul class="nowrap">
   <li><a href="../libraries/pl.html">pl</a></li>
-  <li><a href="../libraries/pl.Set.html">pl.Set</a></li>
   <li><a href="../libraries/pl.app.html">pl.app</a></li>
   <li><a href="../libraries/pl.array2d.html">pl.array2d</a></li>
   <li><a href="../libraries/pl.class.html">pl.class</a></li>
@@ -80,6 +79,7 @@
   <li><a href="../classes/pl.Map.html">pl.Map</a></li>
   <li><a href="../classes/pl.MultiMap.html">pl.MultiMap</a></li>
   <li><a href="../classes/pl.OrderedMap.html">pl.OrderedMap</a></li>
+  <li><a href="../classes/pl.Set.html">pl.Set</a></li>
 </ul>
 <h2>Manual</h2>
 <ul class="nowrap">
@@ -103,7 +103,6 @@
   <li><a href="../examples/test-listcallbacks.lua.html">test-listcallbacks.lua</a></li>
   <li><a href="../examples/test-pretty.lua.html">test-pretty.lua</a></li>
   <li><a href="../examples/test-symbols.lua.html">test-symbols.lua</a></li>
-  <li><a href="../examples/testapp.lua.html">testapp.lua</a></li>
   <li><a href="../examples/testclone.lua.html">testclone.lua</a></li>
   <li><a href="../examples/testconfig.lua.html">testconfig.lua</a></li>
   <li><a href="../examples/testglobal.lua.html">testglobal.lua</a></li>
@@ -119,7 +118,9 @@
 
 <h1>Module <code>pl.types</code></h1>
 <p>Dealing with Detailed Type Information</p>
-<p></p>
+<p>
+
+</p>
 
 
 <h2><a href="#Functions">Functions</a></h2>
@@ -142,11 +143,11 @@
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#is_empty">is_empty (o, ignore_spaces)</a></td>
-	<td class="summary">Check if the object is &ldquo;empty&rdquo;.</td>
+	<td class="summary">Check if the object is "empty".</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#is_indexable">is_indexable (val)</a></td>
-	<td class="summary">is an object &lsquo;array-like&rsquo;?</td>
+	<td class="summary">is an object 'array-like'?</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#is_iterable">is_iterable (val)</a></td>
@@ -195,7 +196,9 @@
     </dt>
     <dd>
     is the object of the specified type?.
- If the type is a string, then use type, otherwise compare with metatable
+ If the type is a string, then use type, otherwise compare with metatable.</p>
+
+<p> NOTE: this function is imported from <a href="../libraries/pl.utils.html#is_type">utils.is_type</a>.
 
 
     <h3>Parameters:</h3>
@@ -204,12 +207,16 @@
          An object to check
         </li>
         <li><span class="parameter">tp</span>
-         String of what type it should be
+         The expected type
         </li>
     </ul>
 
 
 
+    <h3>See also:</h3>
+    <ul>
+         <a href="../libraries/pl.utils.html#is_type">utils.is_type</a>
+    </ul>
 
 
 </dd>
@@ -219,8 +226,10 @@
     </dt>
     <dd>
     a string representation of a type.
- For tables with metatables, we assume that the metatable has a <code>_name</code>
- field. Knows about Lua file objects.
+ For tables and userdata with metatables, we assume that the metatable has a <code>_name</code>
+ field. If the field is not present it will return 'unknown table' or
+ 'unknown userdata'.
+ Lua file objects return the type 'file'.
 
 
     <h3>Parameters:</h3>
@@ -233,7 +242,7 @@
     <h3>Returns:</h3>
     <ol>
 
-        a string like &lsquo;number&rsquo;, &lsquo;table&rsquo; or &lsquo;List&rsquo;
+        a string like 'number', 'table', 'file' or 'List'
     </ol>
 
 
@@ -255,6 +264,11 @@
         </li>
     </ul>
 
+    <h3>Returns:</h3>
+    <ol>
+
+        boolean
+    </ol>
 
     <h3>Raises:</h3>
     error if x is not a number
@@ -267,9 +281,17 @@
     <strong>is_empty (o, ignore_spaces)</strong>
     </dt>
     <dd>
-    Check if the object is &ldquo;empty&rdquo;.
- An object is considered empty if it is nil, a table with out any items (key,
- value pairs or indexes), or a string with no content (&ldquo;&rdquo;).
+
+<p>Check if the object is "empty".
+ An object is considered empty if it is:</p>
+
+<ul>
+    <li><code>nil</code></li>
+    <li>a table with out any items (key-value pairs or indexes)</li>
+    <li>a string with no content ("")</li>
+    <li>not a nil/table/string</li>
+</ul>
+
 
 
     <h3>Parameters:</h3>
@@ -279,14 +301,14 @@
         </li>
         <li><span class="parameter">ignore_spaces</span>
          If the object is a string and this is true the string is
- considered empty is it only contains spaces.
+ considered empty if it only contains spaces.
         </li>
     </ul>
 
     <h3>Returns:</h3>
     <ol>
 
-        true if the object is empty, otherwise false.
+        <code>true</code> if the object is empty, otherwise a falsy value.
     </ol>
 
 
@@ -298,7 +320,15 @@
     <strong>is_indexable (val)</strong>
     </dt>
     <dd>
-    is an object &lsquo;array-like&rsquo;?
+    is an object 'array-like'?
+ An object is array like if:</p>
+
+<ul>
+    <li>it is a table, or</li>
+    <li>it has a metatable with <code>__len</code> and <code>__index</code> methods</li>
+</ul>
+
+<p> NOTE: since <code>__len</code> is 5.2+, on 5.1 is usually returns <code>false</code> for userdata
 
 
     <h3>Parameters:</h3>
@@ -308,6 +338,11 @@
         </li>
     </ul>
 
+    <h3>Returns:</h3>
+    <ol>
+
+        <code>true</code> if the object is array-like, otherwise a falsy value.
+    </ol>
 
 
 
@@ -319,6 +354,14 @@
     </dt>
     <dd>
     can an object be iterated over with <a href="https://www.lua.org/manual/5.1/manual.html#pdf-pairs">pairs</a>?
+ An object is iterable if:</p>
+
+<ul>
+    <li>it is a table, or</li>
+    <li>it has a metatable with a <code>__pairs</code> meta method</li>
+</ul>
+
+<p> NOTE: since <code>__pairs</code> is 5.2+, on 5.1 is usually returns <code>false</code> for userdata
 
 
     <h3>Parameters:</h3>
@@ -328,6 +371,11 @@
         </li>
     </ul>
 
+    <h3>Returns:</h3>
+    <ol>
+
+        <code>true</code> if the object is iterable, otherwise a falsy value.
+    </ol>
 
 
 
@@ -338,7 +386,16 @@
     <strong>is_writeable (val)</strong>
     </dt>
     <dd>
-    can an object accept new key/pair values?
+
+<p>can an object accept new key/pair values?
+ An object is iterable if:</p>
+
+<ul>
+    <li>it is a table, or</li>
+    <li>it has a metatable with a <code>__newindex</code> meta method</li>
+</ul>
+
+
 
 
     <h3>Parameters:</h3>
@@ -348,6 +405,11 @@
         </li>
     </ul>
 
+    <h3>Returns:</h3>
+    <ol>
+
+        <code>true</code> if the object is writeable, otherwise a falsy value.
+    </ol>
 
 
 
@@ -358,16 +420,18 @@
     <strong>to_bool (o[, true_strs[, check_objs]])</strong>
     </dt>
     <dd>
-    <p>Convert to a boolean value.
+
+<p>Convert to a boolean value.
  True values are:</p>
 
 <ul>
-<li>boolean: true.</li>
-<li>string: &lsquo;yes&rsquo;, &lsquo;y&rsquo;, &lsquo;true&rsquo;, &rsquo;t', &lsquo;1&rsquo; or additional strings specified by <code>true_strs</code>.</li>
-<li>number: Any non-zero value.</li>
-<li>table: Is not empty and <code>check_objs</code> is true.</li>
-<li>object: Is not <code>nil</code> and <code>check_objs</code> is true.</li>
+    <li>boolean: true.</li>
+    <li>string: 'yes', 'y', 'true', 't', '1' or additional strings specified by <code>true_strs</code>.</li>
+    <li>number: Any non-zero value.</li>
+    <li>table: Is not empty and <code>check_objs</code> is true.</li>
+    <li>everything else: Is not <code>nil</code> and <code>check_objs</code> is true.</li>
 </ul>
+
 
 
 
@@ -378,12 +442,11 @@
         </li>
         <li><span class="parameter">true_strs</span>
          optional Additional strings that when matched should evaluate to true. Comparison is case insensitive.
- This should be a List of strings. E.g. &ldquo;ja&rdquo; to support German.
+ This should be a List of strings. E.g. "ja" to support German.
          (<em>optional</em>)
         </li>
         <li><span class="parameter">check_objs</span>
-         True if objects should be evaluated. Default is to evaluate objects as true if not nil
- or if it is a table and it is not empty.
+         True if objects should be evaluated.
          (<em>optional</em>)
         </li>
     </ul>
@@ -405,7 +468,7 @@
 </div> <!-- id="main" -->
 <div id="about">
 <i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
-<i style="float:right;">Last updated 2018-11-23 21:07:42 </i>
+<i style="float:right;">Last updated 2019-10-14 15:29:36 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>
