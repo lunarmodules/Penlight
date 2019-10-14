@@ -53,7 +53,6 @@
 <h2>Libraries</h2>
 <ul class="nowrap">
   <li><a href="../libraries/pl.html">pl</a></li>
-  <li><a href="../libraries/pl.Set.html">pl.Set</a></li>
   <li><a href="../libraries/pl.app.html">pl.app</a></li>
   <li><a href="../libraries/pl.array2d.html">pl.array2d</a></li>
   <li><a href="../libraries/pl.class.html">pl.class</a></li>
@@ -94,6 +93,7 @@
   <li><a href="../classes/pl.Map.html">pl.Map</a></li>
   <li><a href="../classes/pl.MultiMap.html">pl.MultiMap</a></li>
   <li><a href="../classes/pl.OrderedMap.html">pl.OrderedMap</a></li>
+  <li><a href="../classes/pl.Set.html">pl.Set</a></li>
 </ul>
 <h2>Examples</h2>
 <ul class="nowrap">
@@ -105,7 +105,6 @@
   <li><a href="../examples/test-listcallbacks.lua.html">test-listcallbacks.lua</a></li>
   <li><a href="../examples/test-pretty.lua.html">test-pretty.lua</a></li>
   <li><a href="../examples/test-symbols.lua.html">test-symbols.lua</a></li>
-  <li><a href="../examples/testapp.lua.html">testapp.lua</a></li>
   <li><a href="../examples/testclone.lua.html">testclone.lua</a></li>
   <li><a href="../examples/testconfig.lua.html">testconfig.lua</a></li>
   <li><a href="../examples/testglobal.lua.html">testglobal.lua</a></li>
@@ -119,7 +118,8 @@
 
 <div id="content">
 
-    <h2>Additional Libraries</h2>
+
+<h2>Additional Libraries</h2>
 
 <p>Libraries in this section are no longer considered to be part of the Penlight
 core, but still provide specialized functionality when needed.</p>
@@ -127,7 +127,6 @@ core, but still provide specialized functionality when needed.</p>
 <p><a id="sip"/></p>
 
 <p><a name="Simple_Input_Patterns"></a></p>
-
 <h3>Simple Input Patterns</h3>
 
 <p>Lua string pattern matching is very powerful, and usually you will not need a
@@ -135,6 +134,7 @@ traditional regular expression library.  Even so, sometimes Lua code ends up
 looking like Perl, which happens because string patterns are not always the
 easiest things to read, especially for the casual reader.  Here is a program
 which needs to understand three distinct date formats:</p>
+
 
 <pre>
 <span class="comment">-- parsing dates using Lua string patterns
@@ -166,18 +166,18 @@ Jul=<span class="number">7</span>,Aug=<span class="number">8</span>,Sep=<span cl
 <span class="keyword">end</span>
 </pre>
 
-
-<p>These aren&rsquo;t particularly difficult patterns, but already typical issues are
-appearing, such as having to escape &lsquo;-&rsquo;. Also, <a href="https://www.lua.org/manual/5.1/manual.html#pdf-string.match">string.match</a> returns its
-captures, so that we&rsquo;re forced to use a slightly awkward nested if-statement.</p>
+<p>These aren't particularly difficult patterns, but already typical issues are
+appearing, such as having to escape '-'. Also, <a href="https://www.lua.org/manual/5.1/manual.html#pdf-string.match">string.match</a> returns its
+captures, so that we're forced to use a slightly awkward nested if-statement.</p>
 
 <p>Verification issues will further cloud the picture, since regular expression
 people try to enforce constraints (like year cannot be more than four digits)
-using regular expressions, on the usual grounds that you shouldn&rsquo;t stop using a
+using regular expressions, on the usual grounds that you shouldn't stop using a
 hammer when you are enjoying yourself.</p>
 
 <p><a href="../libraries/pl.sip.html#">pl.sip</a> provides a simple, intuitive way to detect patterns in strings and
 extract relevant parts.</p>
+
 
 <pre>
 &gt; sip = <span class="global">require</span> <span class="string">'pl.sip'</span>
@@ -195,12 +195,12 @@ extract relevant parts.</p>
 <span class="keyword">false</span>
 </pre>
 
-
 <p><a href="../libraries/pl.sip.html#compile">sip.compile</a> creates a pattern matcher function, which takes a string and a
 table as arguments. If the string matches the pattern, then <code>true</code> is returned
 and the table is populated according to the captures within the pattern.</p>
 
 <p>Here is another version of the date parser:</p>
+
 
 <pre>
 <span class="comment">-- using SIP patterns
@@ -225,9 +225,9 @@ isodate = sip.compile(<span class="string">'$d{year}-$d{month}-$d{day}'</span>)
 <span class="keyword">end</span>
 </pre>
 
-
-<p>SIP captures start with &lsquo;$&rsquo;, then a one-character type, and then an
+<p>SIP captures start with '$', then a one-character type, and then an
 optional variable name in curly braces.</p>
+
 
 <pre>
 Type      Meaning
@@ -243,8 +243,7 @@ p         a path name
 &lt;         anything inside balanced angle brackets
 </pre>
 
-
-<p>If a type is not one of the above, then it&rsquo;s assumed to be one of the standard
+<p>If a type is not one of the above, then it's assumed to be one of the standard
 Lua character classes, and will match one or more repetitions of that class.
 Any spaces you leave in your pattern will match any number of spaces, including
 zero, unless the spaces are between two identifier characters or patterns
@@ -258,6 +257,7 @@ values.</p>
 <p><a href="../libraries/pl.sip.html#match">sip.match</a> is a useful shortcut if you want to compile and match in one call,
 without saving the compiled pattern. It caches the result, so it is not much
 slower than explicitly using <a href="../libraries/pl.sip.html#compile">sip.compile</a>.</p>
+
 
 <pre>
 &gt; sip.match(<span class="string">'($q{first},$q{second})'</span>,<span class="string">'("john","smith")'</span>,res)
@@ -275,12 +275,12 @@ slower than explicitly using <a href="../libraries/pl.sip.html#compile">sip.comp
 <span class="keyword">true</span>
 </pre>
 
-
 <p>As a general rule, allow for whitespace in your patterns.</p>
 
-<p>Finally, putting a &lsquo;$&rsquo; at the end of a pattern means &lsquo;capture the rest of the
-line, starting at the first non-space&rsquo;. It is a shortcut for &lsquo;$r{rest}&rsquo;,
-or just &lsquo;$r&rsquo; if no named captures are used.</p>
+<p>Finally, putting a '$' at the end of a pattern means 'capture the rest of the
+line, starting at the first non-space'. It is a shortcut for '$r{rest}',
+or just '$r' if no named captures are used.</p>
+
 
 <pre>
 &gt; sip.match(<span class="string">'( $q , $q ) $'</span>,<span class="string">'("jan", "smit") and a string'</span>,res)
@@ -294,20 +294,18 @@ or just &lsquo;$r&rsquo; if no named captures are used.</p>
 {first=<span class="string">'jan'</span>,rest=<span class="string">'and a string'</span>,last=<span class="string">'smit'</span>}
 </pre>
 
-
 <p><a id="lapp"/></p>
 
 <p><a name="Command_line_Programs_with_Lapp"></a></p>
-
 <h3>Command-line Programs with Lapp</h3>
 
 <p><a href="../libraries/pl.lapp.html#">pl.lapp</a> is a small and focused Lua module which aims to make standard
 command-line parsing easier and intuitive. It implements the standard GNU style,
-i.e. short flags with one letter start with &lsquo;-&rsquo;, and there may be an additional
-long flag which starts with &lsquo;&ndash;&rsquo;. Generally options which take an argument expect
-to find it as the next parameter (e.g. &lsquo;gcc test.c -o test&rsquo;) but single short
-options taking a value can dispense with the space (e.g. &lsquo;head -n4
-test.c&rsquo; or <code>gcc -I/usr/include/lua/5.1 &hellip;</code>)</p>
+i.e. short flags with one letter start with '-', and there may be an additional
+long flag which starts with '--'. Generally options which take an argument expect
+to find it as the next parameter (e.g. 'gcc test.c -o test') but single short
+options taking a value can dispense with the space (e.g. 'head -n4
+test.c' or <code>gcc -I/usr/include/lua/5.1 ...</code>)</p>
 
 <p>As far as possible, Lapp will convert parameters into their equivalent Lua types,
 i.e. convert numbers and convert filenames into file objects. If any conversion
@@ -315,12 +313,13 @@ fails, or a required parameter is missing, an error will be issued and the usage
 text will be written out. So there are two necessary tasks, supplying the flag
 and option names and associating them with a type.</p>
 
-<p>For any non-trivial script, even for personal consumption, it&rsquo;s necessary to
+<p>For any non-trivial script, even for personal consumption, it's necessary to
 supply usage text. The novelty of Lapp is that it starts from that point and
 defines a loose format for usage strings which can specify the names and types of
 the parameters.</p>
 
 <p>An example will make this clearer:</p>
+
 
 <pre>
 <span class="comment">-- scale.lua
@@ -335,8 +334,8 @@ the parameters.</p>
   <span class="global">print</span>(args.offset + args.scale * args.number)
 </pre>
 
-
 <p>Here is a command-line session using this script:</p>
+
 
 <pre>
 $ lua scale.lua
@@ -356,26 +355,26 @@ scale.lua:unable to convert to number: x10
 ....(usage as before)
 </pre>
 
-
 <p>There are two kinds of lines in Lapp usage strings which are meaningful; option
 and parameter lines. An option line gives the short option, optionally followed
 by the corresponding long option. A type specifier in parentheses may follow.
-Similarly, a parameter line starts with &lsquo;<NAME>&rsquo;, followed by a type
+Similarly, a parameter line starts with '<NAME>', followed by a type
 specifier.</p>
 
-<p>Type specifiers usually start with a type name: one of &lsquo;boolean&rsquo;, &lsquo;string&rsquo;,&lsquo;number&rsquo;,&lsquo;file-in&rsquo; or
-&lsquo;file-out&rsquo;.  You may leave this out, but then <em>must</em> say &lsquo;default&rsquo; followed by a value.
+<p>Type specifiers usually start with a type name: one of 'boolean', 'string','number','file-in' or
+'file-out'.  You may leave this out, but then <em>must</em> say 'default' followed by a value.
 If a flag or parameter has a default, it is not <em>required</em> and is set to the default. The actual
 type is deduced from this value (number, string, file or boolean) if not provided directly.
-&lsquo;Deduce&rsquo; is a fancy word for &lsquo;guess&rsquo; and it can be wrong, e.g &lsquo;(default 1)&rsquo;
-will always be a number. You can say &lsquo;(string default 1)&rsquo; to override the guess.
+'Deduce' is a fancy word for 'guess' and it can be wrong, e.g '(default 1)'
+will always be a number. You can say '(string default 1)' to override the guess.
 There are file values for the predefined console streams: stdin, stdout, stderr.</p>
 
 <p>The boolean type is the default for flags. Not providing the type specifier is equivalent to
-&lsquo;(boolean default false)<code>.  If the flag is meant to be 'turned off' then either the full
-'(boolean default true)</code> or the shortcut &rsquo;(default true)&lsquo; will work.</p>
+'(boolean default false)`.  If the flag is meant to be 'turned off' then either the full
+'(boolean default true)` or the shortcut '(default true)' will work.</p>
 
 <p>An alternative to <code>default</code> is <code>optional</code>:</p>
+
 
 <pre>
 <span class="keyword">local</span> lapp = <span class="global">require</span> <span class="string">'pl.lapp'</span>
@@ -388,14 +387,14 @@ There are file values for the predefined console streams: stdin, stdout, stderr.
 <span class="keyword">end</span>
 </pre>
 
-
-<p>Here we&rsquo;re implying that <code>cmd</code> need not be specified (just as with <code>default</code>) but if not
+<p>Here we're implying that <code>cmd</code> need not be specified (just as with <code>default</code>) but if not
 present, then <code>args.cmd</code> is <code>nil</code>, which will always test false.</p>
 
 <p>The rest of the line is ignored and can be used for explanatory text.</p>
 
 <p>This script shows the relation between the specified parameter names and the
 fields in the output table.</p>
+
 
 <pre>
 <span class="comment">-- simple.lua
@@ -415,12 +414,12 @@ Various flags and option types
 <span class="keyword">end</span>
 </pre>
 
-
-<p>I&rsquo;ve just dumped out all values of the args table; note that args.quiet has
-become true, because it&rsquo;s specified; args.p defaults to false. If there is a long
+<p>I've just dumped out all values of the args table; note that args.quiet has
+become true, because it's specified; args.p defaults to false. If there is a long
 name for an option, that will be used in preference as a field name. A type or
 default specifier is not necessary for simple flags, since the default type is
 boolean.</p>
+
 
 <pre>
 $ simple -o test -q simple.lua
@@ -440,23 +439,23 @@ o       test
 input_name      simple.lua
 </pre>
 
-
 <p>The parameter input has been set to an open read-only file object - we know it
 must be a read-only file since that is the type of the default value. The field
-input_name is automatically generated, since it&rsquo;s often useful to have access to
+input_name is automatically generated, since it's often useful to have access to
 the original filename.</p>
 
 <p>Notice that any extra parameters supplied will be put in the result table with
 integer indices, i.e. args[i] where i goes from 1 to #args.</p>
 
-<p>Files don&rsquo;t really have to be closed explicitly for short scripts with a quick
+<p>Files don't really have to be closed explicitly for short scripts with a quick
 well-defined mission, since the result of garbage-collecting file objects is to
 close them.</p>
 
 <h4>Enforcing a Range and Enumerations</h4>
 
-<p>The type specifier can also be of the form &lsquo;(&rsquo; MIN &lsquo;..&rsquo; MAX &lsquo;)&rsquo; or a set of strings
-separated by &lsquo;|&rsquo;.</p>
+<p>The type specifier can also be of the form '(' MIN '..' MAX ')' or a set of strings
+separated by '|'.</p>
+
 
 <pre>
 <span class="keyword">local</span> lapp = <span class="global">require</span> <span class="string">'pl.lapp'</span>
@@ -470,15 +469,15 @@ separated by &lsquo;|&rsquo;.</p>
 <span class="global">print</span>(args.x,args.y)
 </pre>
 
-
 <p>Here the meaning of ranges is that the value is greater or equal to MIN and less or equal
 to MAX.
-An &lsquo;enum&rsquo; is a <em>string</em> that can only have values from a specified set.</p>
+An 'enum' is a <em>string</em> that can only have values from a specified set.</p>
 
 <h4>Custom Types</h4>
 
 <p>There is no builti-in way to force a parameter to be a whole number, but
 you may define a custom type that does this:</p>
+
 
 <pre>
 lapp = <span class="global">require</span> (<span class="string">'pl.lapp'</span>)
@@ -496,14 +495,14 @@ lapp.add_type(<span class="string">'integer'</span>,<span class="string">'number
 <span class="global">print</span>(args.ival)
 </pre>
 
-
 <p><a href="../libraries/pl.lapp.html#add_type">lapp.add_type</a> takes three parameters, a type name, a converter and a constraint
 function. The constraint function is expected to throw an assertion if some
 condition is not true; we use <a href="../libraries/pl.lapp.html#assert">lapp.assert</a> because it fails in the standard way
 for a command-line script. The converter argument can either be a type name known
 to Lapp, or a function which takes a string and generates a value.</p>
 
-<p>Here&rsquo;s a useful custom type that allows dates to be input as <a href="../classes/pl.Date.html#">pl.Date</a> values:</p>
+<p>Here's a useful custom type that allows dates to be input as <a href="../classes/pl.Date.html#">pl.Date</a> values:</p>
+
 
 <pre>
 <span class="keyword">local</span> df = Date.Format()
@@ -517,8 +516,8 @@ lapp.add_type(<span class="string">'date'</span>,
 )
 </pre>
 
+<h4>'varargs' Parameter Arrays</h4>
 
-<h4>&lsquo;varargs&rsquo; Parameter Arrays</h4>
 
 <pre>
 lapp = <span class="global">require</span> <span class="string">'pl.lapp'</span>
@@ -534,12 +533,12 @@ Summing numbers
 <span class="global">print</span> (<span class="string">'sum is '</span>..sum)
 </pre>
 
-
-<p>The parameter number has a trailing &lsquo;&hellip;&rsquo;, which indicates that this parameter is
-a &lsquo;varargs&rsquo; parameter. It must be the last parameter, and args.number will be an
+<p>The parameter number has a trailing '...', which indicates that this parameter is
+a 'varargs' parameter. It must be the last parameter, and args.number will be an
 array.</p>
 
 <p>Consider this implementation of the head utility from Mac OS X:</p>
+
 
 <pre>
 <span class="comment">-- implements a BSD-style head
@@ -573,7 +572,6 @@ Print the first few lines of specified files
 <span class="keyword">end</span>
 </pre>
 
-
 <p>Note how we have access to all the filenames, because the auto-generated field
 <code>files_name</code> is also an array!</p>
 
@@ -582,12 +580,13 @@ files provided, and only close them at the end of the script. See the <code>xhea
 example for another implementation.)</p>
 
 <p>Flags and options may also be declared as vararg arrays, and can occur anywhere.
-If there is both a short and long form, then the trailing &ldquo;&hellip;&rdquo; must happen after the long form,
-for example &ldquo;-x,&ndash;network&hellip; (string)&hellip;&rdquo;,</p>
+If there is both a short and long form, then the trailing "..." must happen after the long form,
+for example "-x,--network... (string)...",</p>
 
-<p>Bear in mind that short options can be combined (like &lsquo;tar -xzf&rsquo;), so it&rsquo;s
-perfectly legal to have &lsquo;-vvv&rsquo;. But normally the value of args.v is just a simple
+<p>Bear in mind that short options can be combined (like 'tar -xzf'), so it's
+perfectly legal to have '-vvv'. But normally the value of args.v is just a simple
 <code>true</code> value.</p>
+
 
 <pre>
 <span class="keyword">local</span> args = <span class="global">require</span> (<span class="string">'pl.lapp'</span>) <span class="string">[[
@@ -597,8 +596,8 @@ vlevel = <span class="keyword">not</span> args.v[<span class="number">1</span>] 
 <span class="global">print</span>(vlevel)
 </pre>
 
-
 <p>The vlevel assigment is a bit of Lua voodoo, so consider the cases:</p>
+
 
 <pre>
 * No -v flag, v is just { <span class="keyword">false</span> }
@@ -607,13 +606,13 @@ vlevel = <span class="keyword">not</span> args.v[<span class="number">1</span>] 
 * Three -v flags, v is { <span class="keyword">true</span>, <span class="keyword">true</span>, <span class="keyword">true</span> }
 </pre>
 
-
 <h4>Defining a Parameter Callback</h4>
 
 <p>If a script implements <code>lapp.callback</code>, then Lapp will call it after each
 argument is parsed. The callback is passed the parameter name, the raw unparsed
 value, and the result table. It is called immediately after assignment of the
 value, so the corresponding field is available.</p>
+
 
 <pre>
 lapp = <span class="global">require</span> (<span class="string">'pl.lapp'</span>)
@@ -639,8 +638,8 @@ Testing parameter handling
 <span class="keyword">end</span>
 </pre>
 
-
 <p>This produces the following output:</p>
+
 
 <pre>
 $ args -o name -n <span class="number">2</span> <span class="number">10</span> args.lua
@@ -660,18 +659,18 @@ o       name
 n       <span class="number">2</span>
 </pre>
 
-
 <p>Callbacks are needed when you want to take action immediately on parsing an
 argument.</p>
 
 <h4>Slack Mode</h4>
 
-<p>If you&rsquo;d like to use a multi-letter &lsquo;short&rsquo; parameter you need to set
+<p>If you'd like to use a multi-letter 'short' parameter you need to set
 the <code>lapp.slack</code> variable to <code>true</code>.</p>
 
 <p>In the following example we also see how default <code>false</code> and default <code>true</code> flags can be used
-and how to overwrite the default <code>-h</code> help flag (<code>&ndash;help</code> still works fine) - this applies
+and how to overwrite the default <code>-h</code> help flag (<code>--help</code> still works fine) - this applies
 to non-slack mode as well.</p>
+
 
 <pre>
 <span class="comment">-- Parsing the command line ----------------------------------------------------
@@ -695,8 +694,8 @@ Does some calculations
 pretty.dump(args)
 </pre>
 
-
 <p>And here we can see the output of <code>test.lua</code>:</p>
+
 
 <pre>
 $&gt; lua test.lua -v abc <span class="comment">--time 40 -h 20 -sk 15 --flag1 -f3
@@ -714,9 +713,7 @@ $&gt; lua test.lua -v abc <span class="comment">--time 40 -h 20 -sk 15 --flag1 -
 }
 </pre>
 
-
 <p><a name="Simple_Test_Framework"></a></p>
-
 <h3>Simple Test Framework</h3>
 
 <p><a href="../libraries/pl.test.html#">pl.test</a> was originally developed for the sole purpose of testing Penlight itself,
@@ -725,6 +722,7 @@ but you may find it useful for your own applications. (<a href="http://lua-users
 <p>Most of the goodness is in <a href="../libraries/pl.test.html#asserteq">test.asserteq</a>.  It uses <a href="../libraries/pl.tablex.html#deepcompare">tablex.deepcompare</a> on its two arguments,
 and by default quits the test application with a non-zero exit code, and an informative
 message printed to stderr:</p>
+
 
 <pre>
 <span class="keyword">local</span> test = <span class="global">require</span> <span class="string">'pl.test'</span>
@@ -745,8 +743,8 @@ test.asserteq({<span class="number">10</span>,<span class="number">20</span>,<sp
 </span><span class="comment">--~ these values were not equal</span>
 </pre>
 
+<p>This covers most cases but it's also useful to compare strings using <a href="https://www.lua.org/manual/5.1/manual.html#pdf-string.match">string.match</a></p>
 
-<p>This covers most cases but it&rsquo;s also useful to compare strings using <a href="https://www.lua.org/manual/5.1/manual.html#pdf-string.match">string.match</a></p>
 
 <pre>
 <span class="comment">-- must start with bonzo the dog
@@ -755,8 +753,8 @@ test.asserteq({<span class="number">10</span>,<span class="number">20</span>,<sp
 </span>test.assertmatch (<span class="string">'hello 42'</span>,<span class="string">'%d+$'</span>)
 </pre>
 
+<p>Since Lua errors are usually strings, this matching strategy is used to test 'exceptions':</p>
 
-<p>Since Lua errors are usually strings, this matching strategy is used to test &lsquo;exceptions&rsquo;:</p>
 
 <pre>
 test.assertraise(<span class="keyword">function</span>()
@@ -765,15 +763,15 @@ test.assertraise(<span class="keyword">function</span>()
 <span class="keyword">end</span>,<span class="string">'nil value'</span>)
 </pre>
 
-
 <p>(Some care is needed to match the essential part of the thrown error if you care
 for portability, since in Lua 5.2
-the exact error is &ldquo;attempt to index local &rsquo;t' (a nil value)&rdquo; and in Lua 5.3 the error
-is &ldquo;attempt to index a nil value (local &rsquo;t')&rdquo;)</p>
+the exact error is "attempt to index local 't' (a nil value)" and in Lua 5.3 the error
+is "attempt to index a nil value (local 't')")</p>
 
 <p>There is an extra optional argument to these test functions, which is helpful when writing
 test helper functions. There you want to highlight the failed line, not the actual call
 to <code>asserteq</code> or <code>assertmatch</code> - line 33 here is the call to <code>is_iden</code></p>
+
 
 <pre>
 <span class="keyword">function</span> is_iden(str)
@@ -789,9 +787,9 @@ is_iden <span class="string">'$dollars'</span>
 </span><span class="comment">--~ these strings did not match</span>
 </pre>
 
-
 <p>Useful Lua functions often return multiple values, and <a href="../libraries/pl.test.html#tuple">test.tuple</a> is a convenient way to
 capture these values, whether they contain nils or not.</p>
+
 
 <pre>
 T = test.tuple
@@ -805,11 +803,12 @@ test.asserteq(T(failing()),T(<span class="keyword">nil</span>,<span class="strin
 </pre>
 
 
+
 </div> <!-- id="content" -->
 </div> <!-- id="main" -->
 <div id="about">
 <i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
-<i style="float:right;">Last updated 2018-11-23 21:07:42 </i>
+<i style="float:right;">Last updated 2019-10-14 15:29:36 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>

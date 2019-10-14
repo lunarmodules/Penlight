@@ -39,7 +39,6 @@
 <h2>Libraries</h2>
 <ul class="nowrap">
   <li><a href="../libraries/pl.html">pl</a></li>
-  <li><a href="../libraries/pl.Set.html">pl.Set</a></li>
   <li><a href="../libraries/pl.app.html">pl.app</a></li>
   <li><a href="../libraries/pl.array2d.html">pl.array2d</a></li>
   <li><a href="../libraries/pl.class.html">pl.class</a></li>
@@ -80,6 +79,7 @@
   <li><a href="../classes/pl.Map.html">pl.Map</a></li>
   <li><a href="../classes/pl.MultiMap.html">pl.MultiMap</a></li>
   <li><a href="../classes/pl.OrderedMap.html">pl.OrderedMap</a></li>
+  <li><a href="../classes/pl.Set.html">pl.Set</a></li>
 </ul>
 <h2>Manual</h2>
 <ul class="nowrap">
@@ -103,7 +103,6 @@
   <li><a href="../examples/test-listcallbacks.lua.html">test-listcallbacks.lua</a></li>
   <li><a href="../examples/test-pretty.lua.html">test-pretty.lua</a></li>
   <li><a href="../examples/test-symbols.lua.html">test-symbols.lua</a></li>
-  <li><a href="../examples/testapp.lua.html">testapp.lua</a></li>
   <li><a href="../examples/testclone.lua.html">testclone.lua</a></li>
   <li><a href="../examples/testconfig.lua.html">testconfig.lua</a></li>
   <li><a href="../examples/testglobal.lua.html">testglobal.lua</a></li>
@@ -124,12 +123,12 @@
 <p> There are two rules:</p>
 
 <ul>
-<li>lines starting with # are Lua</li>
-<li>otherwise, <code>$(expr)</code> is the result of evaluating <code>expr</code></li>
+    <li>lines starting with # are Lua</li>
+    <li>otherwise, <code>$(expr)</code> is the result of evaluating <code>expr</code></li>
 </ul>
 
-
 <p> Example:</p>
+
 
 <pre>
 #  <span class="keyword">for</span> i = <span class="number">1</span>,<span class="number">3</span> <span class="keyword">do</span>
@@ -141,16 +140,15 @@
 <span class="number">3</span> Hello, Word!
 </pre>
 
-
 <p> Other escape characters can be used, when the defaults conflict
  with the output language.</p>
+
 
 <pre>
 &gt; <span class="keyword">for</span> _,n <span class="keyword">in</span> <span class="global">pairs</span>{<span class="string">'one'</span>,<span class="string">'two'</span>,<span class="string">'three'</span>} <span class="keyword">do</span>
 static int l_${n} (luaState *state);
 &gt; <span class="keyword">end</span>
 </pre>
-
 
 <p> See  <a href="../manual/03-strings.md.html#Another_Style_of_Template">the Guide</a>.</p>
 
@@ -185,20 +183,22 @@ static int l_${n} (luaState *state);
     <strong>substitute (str[, env])</strong>
     </dt>
     <dd>
-    <p>expand the template using the specified environment.
+
+<p>expand the template using the specified environment.
  This function will compile and render the template. For more performant
  recurring usage use the two step approach by using <a href="../libraries/pl.template.html#compile">compile</a> and <a href="../libraries/pl.template.html#ct:render">ct:render</a>.
  There are six special fields in the environment table <code>env</code></p>
 
 <ul>
-<li> <code>_parent</code>: continue looking up in this table (e.g. <code>_parent=_G</code>).</li>
-<li> <code>_brackets</code>: bracket pair that wraps inline Lua expressions,  default is &lsquo;()&rsquo;.</li>
-<li> <code>_escape</code>: character marking Lua lines, default is &lsquo;#&rsquo;</li>
-<li> <code>_inline_escape</code>: character marking inline Lua expression, default is &lsquo;$&rsquo;.</li>
-<li> <code>_chunk_name</code>: chunk name for loaded templates, used if there
- is an error in Lua code. Default is &lsquo;TMP&rsquo;.</li>
-<li> <code>_debug</code>: if truthy, the generated code will be printed upon a render error</li>
+    <li><code>_parent</code>: continue looking up in this table (e.g. <code>_parent=_G</code>).</li>
+    <li><code>_brackets</code>: bracket pair that wraps inline Lua expressions,  default is '()'.</li>
+    <li><code>_escape</code>: character marking Lua lines, default is '#'</li>
+    <li><code>_inline_escape</code>: character marking inline Lua expression, default is '$'.</li>
+    <li><code>_chunk_name</code>: chunk name for loaded templates, used if there
+     is an error in Lua code. Default is 'TMP'.</li>
+    <li><code>_debug</code>: if truthy, the generated code will be printed upon a render error</li>
 </ul>
+
 
 
 
@@ -275,20 +275,22 @@ static int l_${n} (luaState *state);
     <strong>compile (str[, opts])</strong>
     </dt>
     <dd>
-    <p>compiles the template.
+
+<p>compiles the template.
  Returns an object that can repeatedly be rendered without parsing/compiling
  the template again.
  The options passed in the <code>opts</code> table support the following options:</p>
 
 <ul>
-<li> <code>chunk_name</code>: chunk name for loaded templates, used if there
- is an error in Lua code. Default is &lsquo;TMP&rsquo;.</li>
-<li> <code>escape</code>: character marking Lua lines, default is &lsquo;#&rsquo;</li>
-<li> <code>inline_escape</code>: character marking inline Lua expression, default is &lsquo;$&rsquo;.</li>
-<li> <code>inline_brackets</code>: bracket pair that wraps inline Lua expressions, default is &lsquo;()&rsquo;.</li>
-<li> <code>newline</code>: string to replace newline characters, default is <code>nil</code> (not replacing newlines).</li>
-<li> <a href="https://www.lua.org/manual/5.1/manual.html#5.9">debug</a>: if truthy, the generated source code will be retained within the compiled template object, default is <code>nil</code>.</li>
+    <li><code>chunk_name</code>: chunk name for loaded templates, used if there
+     is an error in Lua code. Default is 'TMP'.</li>
+    <li><code>escape</code>: character marking Lua lines, default is '#'</li>
+    <li><code>inline_escape</code>: character marking inline Lua expression, default is '$'.</li>
+    <li><code>inline_brackets</code>: bracket pair that wraps inline Lua expressions, default is '()'.</li>
+    <li><code>newline</code>: string to replace newline characters, default is <code>nil</code> (not replacing newlines).</li>
+    <li><a href="https://www.lua.org/manual/5.1/manual.html#5.9">debug</a>: if truthy, the generated source code will be retained within the compiled template object, default is <code>nil</code>.</li>
 </ul>
+
 
 
 
@@ -327,7 +329,7 @@ static int l_${n} (luaState *state);
 </div> <!-- id="main" -->
 <div id="about">
 <i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
-<i style="float:right;">Last updated 2018-11-23 21:07:42 </i>
+<i style="float:right;">Last updated 2019-10-14 15:29:36 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>

@@ -54,7 +54,6 @@
 <h2>Libraries</h2>
 <ul class="nowrap">
   <li><a href="../libraries/pl.html">pl</a></li>
-  <li><a href="../libraries/pl.Set.html">pl.Set</a></li>
   <li><a href="../libraries/pl.app.html">pl.app</a></li>
   <li><a href="../libraries/pl.array2d.html">pl.array2d</a></li>
   <li><a href="../libraries/pl.class.html">pl.class</a></li>
@@ -95,6 +94,7 @@
   <li><a href="../classes/pl.Map.html">pl.Map</a></li>
   <li><a href="../classes/pl.MultiMap.html">pl.MultiMap</a></li>
   <li><a href="../classes/pl.OrderedMap.html">pl.OrderedMap</a></li>
+  <li><a href="../classes/pl.Set.html">pl.Set</a></li>
 </ul>
 <h2>Examples</h2>
 <ul class="nowrap">
@@ -106,7 +106,6 @@
   <li><a href="../examples/test-listcallbacks.lua.html">test-listcallbacks.lua</a></li>
   <li><a href="../examples/test-pretty.lua.html">test-pretty.lua</a></li>
   <li><a href="../examples/test-symbols.lua.html">test-symbols.lua</a></li>
-  <li><a href="../examples/testapp.lua.html">testapp.lua</a></li>
   <li><a href="../examples/testclone.lua.html">testclone.lua</a></li>
   <li><a href="../examples/testconfig.lua.html">testconfig.lua</a></li>
   <li><a href="../examples/testglobal.lua.html">testglobal.lua</a></li>
@@ -120,20 +119,22 @@
 
 <div id="content">
 
-    <h2>Strings. Higher-level operations on strings.</h2>
+
+<h2>Strings. Higher-level operations on strings.</h2>
 
 <p><a name="Extra_String_Methods"></a></p>
-
 <h3>Extra String Methods</h3>
+
 
 <p>These are convenient borrowings from Python, as described in 3.6.1 of the Python
 reference, but note that indices in Lua always begin at one. <a href="../libraries/pl.stringx.html#">stringx</a> defines
 functions like <a href="../libraries/pl.stringx.html#isalpha">isalpha</a> and <a href="../libraries/pl.stringx.html#isdigit">isdigit</a>, which return <code>true</code> if s is only composed
 of letters or digits respectively. <a href="../libraries/pl.stringx.html#startswith">startswith</a> and <a href="../libraries/pl.stringx.html#endswith">endswith</a> are convenient
-ways to find substrings. (<a href="../libraries/pl.stringx.html#endswith">endswith</a> works as in Python 2.5, so that <code>f:endswith
-{'.bat','.exe','.cmd'}</code> will be true for any filename which ends with these
+ways to find substrings. (<a href="../libraries/pl.stringx.html#endswith">endswith</a> works as in Python 2.5, so that `f:endswith
+{'.bat','.exe','.cmd'}` will be true for any filename which ends with these
 extensions.) There are justify methods and whitespace trimming functions like
 <a href="../libraries/pl.stringx.html#strip">strip</a>.</p>
+
 
 <pre>
 &gt; stringx.import()
@@ -157,7 +158,6 @@ two
 three
 </pre>
 
-
 <p>Most of these can be fairly easily implemented using the Lua string library,
 which is more general and powerful. But they are convenient operations to have
 easily at hand. Note that can be injected into the <a href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a> table if you use
@@ -167,12 +167,14 @@ consumption by other people, since it is bad manners to change the global state
 of the rest of the system. Magic may be used for convenience, but there is always
 a price.</p>
 
-<p><a name="String_Templates"></a></p>
 
+<p><a name="String_Templates"></a></p>
 <h3>String Templates</h3>
+
 
 <p>Another borrowing from Python, string templates allow you to substitute values
 looked up in a table:</p>
+
 
 <pre>
 <span class="keyword">local</span> Template = <span class="global">require</span> (<span class="string">'pl.text'</span>).Template
@@ -182,8 +184,7 @@ t = Template(<span class="string">'${here} is the $answer'</span>)
 Lua is the best
 </pre>
 
-
-<p>&lsquo;$ variables&rsquo; can optionally have curly braces; this form is useful if you are
+<p>'$ variables' can optionally have curly braces; this form is useful if you are
 glueing text together to make variables, e.g <code>${prefix}_name_${postfix}</code>. The
 <a href="../libraries/pl.text.html#Template:substitute">substitute</a> method will throw an error if a $ variable is not found in the
 table, and the <a href="../libraries/pl.text.html#Template:safe_substitute">safe_substitute</a> method will not.</p>
@@ -191,6 +192,7 @@ table, and the <a href="../libraries/pl.text.html#Template:safe_substitute">safe
 <p>The Lua implementation has an extra method, <a href="../libraries/pl.text.html#Template:indent_substitute">indent_substitute</a> which is very
 useful for inserting blocks of text, because it adjusts indentation. Consider
 this example:</p>
+
 
 <pre>
 <span class="comment">-- testtemplate.lua
@@ -212,8 +214,8 @@ end
 <span class="global">print</span>(t:indent_substitute {body=body,t=<span class="string">'tbl'</span>})
 </pre>
 
-
 <p>And the output is:</p>
+
 
 <pre>
 <span class="keyword">for</span> i = <span class="number">1</span>,#tbl <span class="keyword">do</span>
@@ -223,7 +225,6 @@ end
     <span class="keyword">end</span>
 <span class="keyword">end</span>
 </pre>
-
 
 <p><a href="../libraries/pl.text.html#Template:indent_substitute">indent_substitute</a> can substitute templates, and in which case they themselves
 will be substituted using the given table. So in this case, <code>$t</code> was substituted
@@ -239,41 +240,40 @@ for indenting multiline strings.</p>
 <p>New in Penlight with the 0.9 series is <code>text.format_operator</code>. Calling this
 enables Python-style string formating using the modulo operator <code>%</code>:</p>
 
+
 <pre>
 &gt; text.format_operator()
 &gt; = <span class="string">'%s[%d]'</span> % {<span class="string">'dog'</span>,<span class="number">1</span>}
 dog[<span class="number">1</span>]
 </pre>
 
-
 <p>So in its simplest form it saves the typing involved with <a href="https://www.lua.org/manual/5.1/manual.html#pdf-string.format">string.format</a>; it
 will also expand <code>$</code> variables using named fields:</p>
+
 
 <pre>
 &gt; = <span class="string">'$animal[$num]'</span> % {animal=<span class="string">'dog'</span>,num=<span class="number">1</span>}
 dog[<span class="number">1</span>]
 </pre>
 
-
 <p>As with <code>stringx.import</code> you have to do this explicitly, since all strings share the same
 metatable. But in your own scripts you can feel free to do this.</p>
 
 <p><a name="Another_Style_of_Template"></a></p>
-
 <h3>Another Style of Template</h3>
 
-<p>A new module is <a href="../libraries/pl.template.html#">template</a>, which is a version of Rici Lake&rsquo;s <a href="http://lua-users.org/wiki/SlightlyLessSimpleLuaPreprocessor">Lua
+<p>A new module is <a href="../libraries/pl.template.html#">template</a>, which is a version of Rici Lake's <a href="http://lua-users.org/wiki/SlightlyLessSimpleLuaPreprocessor">Lua
 Preprocessor</a>.  This
 allows you to mix Lua code with your templates in a straightforward way. There
 are only two rules:</p>
 
 <ul>
-<li>Lines begining with <code>#</code> are Lua</li>
-<li>Otherwise, anything inside <code>$()</code> is a Lua expression.</li>
+    <li>Lines begining with <code>#</code> are Lua</li>
+    <li>Otherwise, anything inside <code>$()</code> is a Lua expression.</li>
 </ul>
 
-
 <p>So a template generating an HTML list would look like this:</p>
+
 
 <pre>
 &lt;ul&gt;
@@ -283,8 +283,8 @@ are only two rules:</p>
 &lt;/ul&gt;
 </pre>
 
-
 <p>Assume the text is inside <code>tmpl</code>, then the template can be expanded using:</p>
+
 
 <pre>
 <span class="keyword">local</span> template = <span class="global">require</span> <span class="string">'pl.template'</span>
@@ -295,8 +295,8 @@ are only two rules:</p>
 res = template.substitute(tmpl, my_env)
 </pre>
 
-
 <p>and we get</p>
+
 
 <pre>
 &lt;ul&gt;
@@ -306,20 +306,20 @@ res = template.substitute(tmpl, my_env)
 &lt;/ul&gt;
 </pre>
 
-
 <p>There is a single function, <a href="../libraries/pl.template.html#substitute">template.substitute</a> which is passed a template
 string and an environment table.   This table may contain some special fields,
-like <code>\<em>parent</code> which can be set to a table representing a &lsquo;fallback&rsquo; environment
-in case a symbol was not found. <code>\</em>brackets</code> is usually &lsquo;()&rsquo; and <code>\_escape</code> is
-usually &lsquo;#&rsquo; but it&rsquo;s sometimes necessary to redefine these if the defaults
+like <code>\_parent</code> which can be set to a table representing a 'fallback' environment
+in case a symbol was not found. <code>\_brackets</code> is usually '()' and <code>\_escape</code> is
+usually '#' but it's sometimes necessary to redefine these if the defaults
 interfere with the target language - for instance, <code>$(V)</code> has another meaning in
 Make, and <code>#</code> means a preprocessor line in C/C++.</p>
 
 <p>Finally, if something goes wrong, passing <code>_debug</code> will cause the intermediate
-Lua code to be dumped if there&rsquo;s a problem.</p>
+Lua code to be dumped if there's a problem.</p>
 
 <p>Here is a C code generation example; something that could easily be extended to
 be a minimal Lua extension skeleton generator.</p>
+
 
 <pre>
 <span class="keyword">local</span> subst = <span class="global">require</span> <span class="string">'pl.template'</span>.substitute
@@ -359,14 +359,13 @@ int luaopen_$(mod.name) {
 }))
 </pre>
 
-
 <p><a name="File_style_I_O_on_Strings"></a></p>
-
 <h3>File-style I/O on Strings</h3>
 
 <p><a href="../libraries/pl.stringio.html#">pl.stringio</a>  provides just three functions; <a href="../libraries/pl.stringio.html#open">stringio.open</a> is passed a string,
 and returns a file-like object for reading. It supports a <code>read</code> method, which
 takes the same arguments as standard file objects:</p>
+
 
 <pre>
 &gt; f = stringio.open <span class="string">'first line\n10 20 30\n'</span>
@@ -376,21 +375,22 @@ first line
 <span class="number">10</span>    <span class="number">20</span>    <span class="number">30</span>
 </pre>
 
-
 <p><code>lines</code> and <code>seek</code> are also supported.</p>
 
 <p><code>stringio.lines</code> is a useful short-cut for iterating over all the lines in a
 string.</p>
 
 <p><a href="../libraries/pl.stringio.html#create">stringio.create</a> creates a writeable file-like object. You then use <code>write</code> to
-this stream, and finally extract the builded string using <code>value</code>.  This &lsquo;string
-builder&rsquo; pattern is useful for efficiently creating large strings.</p>
+this stream, and finally extract the builded string using <code>value</code>.  This 'string
+builder' pattern is useful for efficiently creating large strings.</p>
+
+
 
 </div> <!-- id="content" -->
 </div> <!-- id="main" -->
 <div id="about">
 <i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
-<i style="float:right;">Last updated 2018-11-23 21:07:42 </i>
+<i style="float:right;">Last updated 2019-10-14 15:29:36 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>
