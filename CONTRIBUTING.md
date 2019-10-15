@@ -48,8 +48,10 @@ before making more changes - that way we can take in each change separately.
   - update `./config.ld` with the new version number
   - create a new rockspec file for the version in `./rockspecs`
   - check the `./CHANGELOG.md` files for completeness
+  - commit the release related changes
   - render the documentation using `ldoc .`
-  - commit all the changes and create a PR
+  - commit the documentation as a separate commit
+  - push the release branch and create a PR
   - merge the PR
   - tag the release and push the tag to the github repo
   - upload the rockspec, and source rock files to LuaRocks
