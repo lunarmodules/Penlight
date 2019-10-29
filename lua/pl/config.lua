@@ -93,7 +93,7 @@ end
 -- @tab[opt] cnfg a configuration table that may contain these fields:
 --
 --  * `smart`  try to deduce what kind of config file we have (default false)
---  * `variablilize` make names into valid Lua identifiers (default true)
+--  * `variabilize` make names into valid Lua identifiers (default true)
 --  * `convert_numbers` try to convert values into numbers (default true)
 --  * `trim_space` ensure that there is no starting or trailing whitespace with values (default true)
 --  * `trim_quotes` remove quotes from strings (default false)
@@ -136,7 +136,7 @@ function config.read(file,cnfg)
     local initial_digits = '^[%d%+%-]'
     local t = {}
     local top_t = t
-    local variablilize = check_cnfg ('variabilize',true)
+    local variabilize = check_cnfg ('variabilize',true)
     local list_delim = check_cnfg('list_delim',',')
     local convert_numbers = check_cnfg('convert_numbers',true)
     local convert_boolean = check_cnfg('convert_boolean',false)
@@ -148,7 +148,7 @@ function config.read(file,cnfg)
     if list_delim == ' ' then list_delim = '%s+' end
 
     local function process_name(key)
-        if variablilize then
+        if variabilize then
             key = key:gsub('[^%w]','_')
         end
         return key
