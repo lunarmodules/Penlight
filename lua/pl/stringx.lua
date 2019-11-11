@@ -214,7 +214,7 @@ end
 --- Finding and Replacing
 -- @section find
 
-local function _find_all(s,sub,first,last)
+local function _find_all(s,sub,first,last,allow_overlap)
     first = first or 1
     last = last or #s
     if sub == '' then return last+1,last-first+1 end
@@ -225,7 +225,11 @@ local function _find_all(s,sub,first,last)
         if last and i2 > last then break end
         res = i1
         k = k + 1
-        i1,i2 = find(s,sub,i2+1,true)
+        if allow_overlap then
+            i1,i2 = find(s,sub,i1+1,true)
+        else
+            i1,i2 = find(s,sub,i2+1,true)
+        end
     end
     return res,k
 end
@@ -255,7 +259,7 @@ end
 function stringx.rfind(s,sub,first,last)
     assert_string(1,s)
     assert_string(2,sub)
-    return (_find_all(s,sub,first,last))
+    return (_find_all(s,sub,first,last,true))
 end
 
 --- replace up to n instances of old by new in the string s.
@@ -277,7 +281,7 @@ end
 -- @string sub substring
 function stringx.count(s,sub)
     assert_string(1,s)
-    local _,k = _find_all(s,sub,1)
+    local _,k = _find_all(s,sub,1,false,false)
     return k
 end
 

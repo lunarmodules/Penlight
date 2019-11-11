@@ -125,6 +125,7 @@ asserteq(T(stringx.rfind('abcbcbbc', 'bc', 3)), T(7))
 asserteq(T(stringx.rfind('abcbcbbc', 'bc', 3, 4)), T(nil))
 asserteq(T(stringx.rfind('abcbcbbc', 'bc', 3, 5)), T(4))
 asserteq(T(stringx.rfind('abcbcbbc', 'bc', nil, 5)), T(4))
+asserteq(T(stringx.rfind('banana', 'ana')), T(4))
 
 -- replace
 asserteq(T(stringx.replace('', '', '')), T(''))
