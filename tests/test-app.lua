@@ -6,7 +6,7 @@ local asserteq = require 'pl.test'.asserteq
 local quote = utils.quote_arg
 
 local _, cmd = app.lua()
-cmd = cmd .. " " .. quote({"-lluacov", "-e", "package.path=[[./lua/?.lua;./lua/?/init.lua;]]..package.path"})
+cmd = cmd .. " " .. quote({"-e", "package.path=[[./lua/?.lua;./lua/?/init.lua;]]..package.path"})
 
 local function run_script(s, fname)
     local tmpname = path.tmpname()
