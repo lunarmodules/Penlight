@@ -254,7 +254,12 @@ function pretty.write (tbl,space,not_clever)
                   ordered_keys[#ordered_keys + 1] = k
                end
             end
-            table.sort(ordered_keys)
+            table.sort(ordered_keys, function (a, b)
+                if type(a) == type(b)  and type(a) == 'string' then
+                    return a < b
+                end
+                return type(a) == 'boolean' or (type(b) ~= 'boolean' and type(a) == 'table')
+            end)
             local function write_entry (key, val)
                 local tkey = type(key)
                 local numkey = tkey == 'number'
