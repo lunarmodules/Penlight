@@ -15,14 +15,12 @@ before_install:
   - pip install hererocks
   - hererocks here -r^ --$LUA
   - source here/bin/activate
-  - luarocks install luacheck
 
 install:
   - luarocks make
   - luarocks install luacov-coveralls
 
 script:
-  - luacheck .
   - lua run.lua tests --luacov
 
 after_success:
