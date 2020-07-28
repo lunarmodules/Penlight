@@ -22,7 +22,7 @@ build_script:
   - luarocks make
 
 test_script:
-  - lua run.lua tests --luacov
+  - if "%LUA%"=="lua 5.4" (lua run.lua tests) else (lua run.lua tests --luacov)
 
 on_success:
   #- luacov-coveralls
