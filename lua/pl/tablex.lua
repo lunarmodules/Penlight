@@ -193,14 +193,16 @@ function tablex.compare_no_order (t1,t2,cmp)
     for i = 1,#t1 do
         local val = t1[i]
         local gotcha
-        for j = 1,#t2 do if not visited[j] then
-            local match
-            if cmp then match = cmp(val,t2[j]) else match = val == t2[j] end
-            if match then
-                gotcha = j
-                break
+        for j = 1,#t2 do
+            if not visited[j] then
+                local match
+                if cmp then match = cmp(val,t2[j]) else match = val == t2[j] end
+                if match then
+                    gotcha = j
+                    break
+                end
             end
-        end end
+        end
         if not gotcha then return false end
         visited[gotcha] = true
     end
