@@ -167,7 +167,14 @@ end
 -- @within Comparing
 -- @array t1 an array
 -- @array t2 an array
--- @func cmp A comparison function
+-- @func cmp A comparison function; `bool = cmp(t1_value, t2_value)`
+-- @return true or false
+-- @usage
+-- assert(tablex.compare({ 1, 2, 3 }, { 1, 2, 3 }, "=="))
+--
+-- assert(tablex.compare(
+--    {1,2,3, hello = "world"},  -- fields are not compared!
+--    {1,2,3}, function(v1, v2) return v1 == v2 end)
 function tablex.compare (t1,t2,cmp)
     assert_arg_indexable(1,t1)
     assert_arg_indexable(2,t2)
@@ -236,7 +243,7 @@ end
 -- @within Finding
 -- @array t A list-like table
 -- @param val A value
--- @param idx index to start; -1 means last element,etc (default 1)
+-- @param idx index to start; -1 means last element,etc (default `#t`)
 -- @return index of value or nil if not found
 -- @usage rfind({10,10,10},10) == 3
 function tablex.rfind(t,val,idx)
@@ -251,12 +258,38 @@ end
 
 
 --- return the index (or key) of a value in a table using a comparison function.
+--
+-- *NOTE*: the 2nd return value of this function, the value returned
+-- by the comparison function, has a limitation that it cannot be `false`.
+-- Because if it is, then it indicates the comparison failed, and the
+-- function will continue the search. See examples.
 -- @within Finding
 -- @tab t A table
 -- @func cmp A comparison function
 -- @param arg an optional second argument to the function
 -- @return index of value, or nil if not found
--- @return value returned by comparison function
+-- @return value returned by comparison function (cannot be `false`!)
+-- @usage
+-- -- using an operator
+-- local lst = { "Rudolph", true, false, 15 }
+-- local idx, cmp_result = tablex.rfind(lst, "==", "Rudolph")
+-- assert(idx == 1)
+-- assert(cmp_result == true)
+--
+-- local idx, cmp_result = tablex.rfind(lst, "==", false)
+-- assert(idx == 3)
+-- assert(cmp_result == true)       -- looking up 'false' works!
+--
+-- -- using a function returning the value looked up
+-- local cmp = function(v1, v2) return v1 == v2 and v2 end
+-- local idx, cmp_result = tablex.rfind(lst, cmp, "Rudolph")
+-- assert(idx == 1)
+-- assert(cmp_result == "Rudolph")  -- the value is returned
+--
+-- -- NOTE: this fails, since 'false' cannot be returned!
+-- local idx, cmp_result = tablex.rfind(lst, cmp, false)
+-- assert(idx == nil)               -- looking up 'false' failed!
+-- assert(cmp_result == nil)
 function tablex.find_if(t,cmp,arg)
     assert_arg_iterable(1,t)
     cmp = function_arg(2,cmp)
@@ -325,6 +358,28 @@ end
 -- @string name the method name
 -- @array t a list-like table
 -- @param ... any extra arguments to the method
+-- @return a `List` with the results of the method (1st result only)
+-- @usage
+-- local Car = {}
+-- Car.__index = Car
+-- function Car.new(car)
+--   return setmetatable(car or {}, Car)
+-- end
+-- Car.speed = 0
+-- function Car:faster(increase)
+--   self.speed = self.speed + increase
+--   return self.speed
+-- end
+--
+-- local ferrari = Car.new{ name = "Ferrari" }
+-- local lamborghini = Car.new{ name = "Lamborghini", speed = 50 }
+-- local cars = { ferrari, lamborghini }
+--
+-- assert(ferrari.speed == 0)
+-- assert(lamborghini.speed == 50)
+-- tablex.map_named_method("faster", cars, 10)
+-- assert(ferrari.speed == 10)
+-- assert(lamborghini.speed == 60)
 function tablex.map_named_method (name,t,...)
     utils.assert_string(1,name)
     assert_arg_indexable(2,t)
@@ -341,7 +396,8 @@ end
 -- Any extra arguments are passed to the function.
 -- @func fun A function that takes at least one argument
 -- @tab t a table
--- @param ... extra arguments
+-- @param ... extra arguments passed to `fun`
+-- @see tablex.foreach
 function tablex.transform (fun,t,...)
     assert_arg_iterable(1,t)
     fun = function_arg(1,fun)
@@ -434,8 +490,9 @@ end
 -- Note that the Lua 5.0 function table.foreach passed the _key_ first.
 -- @within Iterating
 -- @tab t a table
--- @func fun a function with at least one argument
--- @param ... extra arguments
+-- @func fun a function on the elements; `function(value, key, ...)`
+-- @param ... extra arguments passed to `fun`
+-- @see tablex.transform
 function tablex.foreach(t,fun,...)
     assert_arg_iterable(1,t)
     fun = function_arg(2,fun)
@@ -873,8 +930,8 @@ end
 -- @tab t the table
 -- @param value the value
 -- @array[opt] exclude any tables to avoid searching
--- @usage search(_G,math.sin,{package.path}) == 'math.sin'
 -- @return a fieldspec, e.g. 'a.b' or 'math.sin'
+-- @usage search(_G,math.sin,{package.path}) == 'math.sin'
 function tablex.search (t,value,exclude)
     assert_arg_iterable(1,t)
     local tables = {[t]=true}
@@ -922,8 +979,11 @@ end
 --- modifies a table to be read only.
 -- This only offers weak protection. Tables can still be modified with
 -- `table.insert` and `rawset`.
+--
+-- *NOTE*: for Lua 5.1 length, pairs and ipairs will not work, since the
+-- equivalent metamethods are only available in Lua 5.2 and newer.
 -- @tab t the table
--- @return the table read only.
+-- @return the table read only (a proxy).
 function tablex.readonly(t)
     local mt = {
         __index=t,
