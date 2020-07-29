@@ -1,5 +1,12 @@
 # Changelog
 
+## unreleased
+
+### Changes
+
+  - `pretty.write`: now also sorts non-string keys [#319](https://github.com/Tieske/Penlight/pull/319)
+
+
 ## 1.7.0 (2019-10-14)
 
 ### New features

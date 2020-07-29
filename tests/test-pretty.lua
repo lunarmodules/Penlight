@@ -84,6 +84,12 @@ t2 = {}
 t1[1],t1[2] = t2,t2
 asserteq( pretty.write(t1,""), [[{{},{}}]] )
 
+-- Check that write correctly print table with non number or string as keys
+
+t1 = { [true] = "boolean", a = "a", b = "b", [1] = 1, [0] = 0 }
+asserteq( pretty.write(t1,""), [[{1,["true"]="boolean",a="a",b="b",[0]=0}]] )
+
+
 -- Check number formatting
 asserteq(pretty.write({1/0, -1/0, 0/0, 1, 1/2}, ""), "{Inf,-Inf,NaN,1,0.5}")
 
