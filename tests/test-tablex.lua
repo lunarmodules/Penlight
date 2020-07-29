@@ -207,3 +207,142 @@ asserteq(tablex.reduce('-', {}, 2), 2)
 asserteq(tablex.reduce('-', {}), nil)
 asserteq(tablex.reduce('-', {1,2,3,4,5}), -13)
 asserteq(tablex.reduce('-', {1,2,3,4,5}, 1), -14)
+
+
+-- tablex.compare
+do
+  asserteq(tablex.compare({},{}, "=="), true)
+  asserteq(tablex.compare({1,2,3}, {1,2,3}, "=="), true)
+  asserteq(tablex.compare({1,"hello",3}, {1,2,3}, "=="), false)
+  asserteq(tablex.compare(
+      {1,2,3, hello = "world"},
+      {1,2,3},
+      function(v1, v2) return v1 == v2 end),
+      true)  -- only compares the list part
+end
+
+
+-- tablex.rfind
+do
+  local rfind = tablex.rfind
+  local lst = { "Rudolph", "the", "red-nose", "raindeer" }
+  asserteq(rfind(lst, "Santa"), nil)
+  asserteq(rfind(lst, "raindeer", -2), nil)
+  asserteq(rfind(lst, "raindeer"), 4)
+  asserteq(rfind(lst, "Rudolph"), 1)
+  asserteq(rfind(lst, "the", -3), 2)
+  asserteq(rfind(lst, "the", -30), nil)
+  asserteq(rfind({10,10,10},10), 3)
+end
+
+
+-- tablex.find_if
+do
+  local fi = tablex.find_if
+  local lst = { "Rudolph", true, false, 15 }
+  asserteq({fi(lst, "==", "Rudolph")}, {1, true})
+  asserteq({fi(lst, "==", true)}, {2, true})
+  asserteq({fi(lst, "==", false)}, {3, true})
+  asserteq({fi(lst, "==", 15)}, {4, true})
+
+  local cmp = function(v1, v2) return v1 == v2 and v2 end
+  asserteq({fi(lst, cmp, "Rudolph")}, {1, "Rudolph"})
+  asserteq({fi(lst, cmp, true)}, {2, true})
+  asserteq({fi(lst, cmp, false)}, {}) -- 'false' cannot be returned!
+  asserteq({fi(lst, cmp, 15)}, {4, 15})
+end
+
+
+-- tablex.map_named_method
+do
+  local Car = {}
+  Car.__index = Car
+  function Car.new(car)
+    return setmetatable(car or {}, Car)
+  end
+  Car.speed = 0
+  function Car:faster(increase)
+    self.speed = self.speed + (increase or 1)
+    return self.speed
+  end
+  function Car:slower(self, decrease)
+    self.speed = self.speed - (decrease or 1)
+    return self.speed
+  end
+
+  local ferrari = Car.new{ name = "Ferrari" }
+  local lamborghini = Car.new{ name = "Lamborghini", speed = 50 }
+  local cars = { ferrari, lamborghini }
+
+  asserteq(ferrari.speed, 0)
+  asserteq(lamborghini.speed, 50)
+  asserteq(tablex.map_named_method("faster", cars, 10), {10, 60})
+  asserteq(ferrari.speed, 10)
+  asserteq(lamborghini.speed, 60)
+
+end
+
+
+-- tablex.foreach
+do
+  local lst = { "one", "two", "three", hello = "world" }
+  tablex.foreach(lst, function(v, k, sep)
+    lst[k] = tostring(k) .. sep .. v
+  end, " = ")
+  asserteq(lst, {"1 = one", "2 = two", "3 = three", hello = "hello = world"})
+end
+
+
+-- tablex.foreachi
+do
+  local lst = { "one", "two", "three", hello = "world" }
+  tablex.foreachi(lst, function(v, k, sep)
+    lst[k] = tostring(k) .. sep .. v
+  end, " = ")
+  asserteq(lst, {"1 = one", "2 = two", "3 = three", hello = "world"})
+end
+
+
+-- tablex.new
+asserteq(tablex.new(3, "hi"), { "hi", "hi", "hi" })
+
+
+-- tablex.search
+do
+  local t = {
+    penlight = {
+      battery = {
+        type = "AA",
+        capacity = "1500mah",
+      },
+    },
+    hello = {
+      world = {
+        also = "AA"
+      }
+    }
+  }
+  asserteq(tablex.search(t, "1500mah"), "penlight.battery.capacity")
+  asserteq(tablex.search(t, "AA", {t.penlight} ), "hello.world.also")
+  asserteq(tablex.search(t, "xxx"), nil)
+end
+
+
+-- tablex.readonly
+do
+  local ro = tablex.readonly { 1,2,3, hello = "world" }
+  asserteq(pcall(function() ro.hello = "hi there" end), false)
+  asserteq(getmetatable(ro), false)
+
+  if not utils.lua51 then
+    asserteq(#ro, 3)
+
+    local r = {}
+    for k,v in pairs(ro) do r[k] = v end
+    asserteq(r, { 1,2,3, hello = "world" })
+
+    r = {}
+    for k,v in ipairs(ro) do r[k] = v end
+    asserteq(r, { 1,2,3 })
+  end
+end
