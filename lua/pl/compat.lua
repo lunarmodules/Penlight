@@ -44,7 +44,8 @@ compat.is_windows = compat.dir_separator == '\\'
 function compat.execute(cmd)
     local res1,res2,res3 = os.execute(cmd)
     if res2 == "No error" and res3 == 0 and compat.is_windows then
-      -- os.execute bug in Lua 5.2+ not reporting -1 properly on Windows
+      -- os.execute bug in Lua 5.2/5.3 not reporting -1 properly on Windows
+      -- this was fixed in 5.4
       res3 = -1
     end
     if compat.lua51 and not compat.jit52 then
