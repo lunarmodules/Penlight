@@ -39,6 +39,12 @@ asserteq(T(stringx.islower'az'), T(true))
 asserteq(T(stringx.islower'aMz'), T(false))
 asserteq(T(stringx.islower'a z'), T(true))
 
+-- isupper
+asserteq(T(stringx.isupper''), T(false))
+asserteq(T(stringx.isupper'AZ'), T(true))
+asserteq(T(stringx.isupper'AmZ'), T(false))
+asserteq(T(stringx.isupper'A Z'), T(true))
+
 -- startswith
 local startswith = stringx.startswith
 asserteq(T(startswith('', '')), T(true))
@@ -80,6 +86,9 @@ asserteq(T(endswith("ab\0c", "b\0d")), T(false)) -- \0
 asserteq(endswith('dollar.dot',{'.dot','.txt'}),true)
 asserteq(endswith('dollar.txt',{'.dot','.txt'}),true)
 asserteq(endswith('dollar.rtxt',{'.dot','.txt'}),false)
+
+-- join
+asserteq(stringx.join(' ', {1,2,3}), '1 2 3')
 
 -- splitlines
 asserteq(stringx.splitlines(''), {})
@@ -236,6 +245,9 @@ asserteq(T(trim(long)), T(long))
 -- more
 
 
+asserteq({stringx.splitv("hello dolly")}, {"hello", "dolly"})
+
+
 -- partition
 -- as per str.partition in Python, delimiter must be non-empty;
 -- interpreted as a plain string
@@ -257,6 +269,7 @@ asserteq(T(stringx.rpartition('abc', '/')), T('', '', 'abc'))
 asserteq(T(stringx.at('a', 1)), T('a'))
 asserteq(T(stringx.at('ab', 2)), T('b'))
 asserteq(T(stringx.at('abcd', -1)), T('d'))
+asserteq(T(stringx.at('abcd', 10)), T(''))  -- not found
 
 -- lines
 local function merge(it, ...)
@@ -268,6 +281,9 @@ end
 asserteq(merge(stringx.lines('')), {''})
 asserteq(merge(stringx.lines('ab')), {'ab'})
 asserteq(merge(stringx.lines('ab\ncd')), {'ab', 'cd'})
+
+asserteq(stringx.capitalize("hello world"), "Hello World")
+asserteq(stringx.title("hello world"), "Hello World")
 
 -- shorten
 -- The returned string is always equal or less to the given size.
