@@ -94,7 +94,7 @@ asserteq(types.is_empty(true), true)
 -- Functions
 asserteq(types.is_empty(print), true)
 -- Userdata
-asserteq(types.is_empty(newproxy()), true)
+--asserteq(types.is_empty(newproxy()), true)  --newproxy was removed in Lua 5.2
 
 -- a more relaxed kind of truthiness....
 asserteq(types.to_bool('yes'),true)
