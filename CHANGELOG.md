@@ -9,7 +9,13 @@
 ### Changes
 
   - `pretty.write`: now also sorts non-string keys [#319](https://github.com/Tieske/Penlight/pull/319)
+  - `stringx.count` has an extra option to allow overlapping matches
+    [#326](https://github.com/Tieske/Penlight/pull/326)
 
+### Fixes
+
+  - Fix: `stringx.rfind` now properly works with overlapping matches
+    [#314](https://github.com/Tieske/Penlight/pull/314)
 
 ## 1.7.0 (2019-10-14)
 
