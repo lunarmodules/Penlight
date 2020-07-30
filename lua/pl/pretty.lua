@@ -170,6 +170,12 @@ end
 -- extra value. Normally puts out one item per line, using
 -- the provided indent; set the second parameter to an empty string
 -- if you want output on one line.
+--
+-- *NOTE:* this is NOT a serialization function, not a full blown
+-- debug function. Checkout out respectively the
+-- [serpent](https://github.com/pkulchenko/serpent)
+-- or [inspect](https://github.com/kikito/inspect.lua)
+-- Lua modules for that if you need them.
 -- @tab tbl Table to serialize to a string.
 -- @string[opt] space The indent to use.
 -- Defaults to two spaces; pass an empty string for no indentation.

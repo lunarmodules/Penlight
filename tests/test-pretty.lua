@@ -98,3 +98,8 @@ if _VERSION == "Lua 5.3" then
 else
     asserteq(pretty.write({1.0}, ""), "{1}")
 end
+
+do  -- issue #203, item 3
+  local t = {}; t[t] = 1
+  pretty.write(t)  -- should not crash
+end
