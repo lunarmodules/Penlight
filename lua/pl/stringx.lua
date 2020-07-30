@@ -129,9 +129,10 @@ end
 -- @section lists
 
 --- concatenate the strings using this string as a delimiter.
+-- Note that the arguments are reversed from `string.concat`.
 -- @string s the string
 -- @param seq a table of strings or numbers
--- @usage (' '):join {1,2,3} == '1 2 3'
+-- @usage stringx.join(' ', {1,2,3}) == '1 2 3'
 function stringx.join(s,seq)
     assert_string(1,s)
     return concat(seq,s)
@@ -144,6 +145,7 @@ end
 -- Splitting an empty string results in an empty list.
 -- @string s the string.
 -- @bool[opt] keep_ends include line ends.
+-- @return List of lines
 function stringx.splitlines(s, keep_ends)
     assert_string(1, s)
     local res = {}
@@ -179,9 +181,10 @@ end
 -- @string s the string
 -- @string[opt] re a delimiter (defaults to whitespace)
 -- @int[opt] n maximum number of results
--- @usage #(('one two'):split()) == 2
--- @usage ('one,two,three'):split(',') == List{'one','two','three'}
--- @usage ('one,two,three'):split(',',2) == List{'one','two,three'}
+-- @return List
+-- @usage #(stringx.split('one two')) == 2
+-- @usage stringx.split('one,two,three', ',') == List{'one','two','three'}
+-- @usage stringx.split('one,two,three', ',', 2) == List{'one','two,three'}
 function stringx.split(s,re,n)
     assert_string(1,s)
     local plain = true
@@ -199,10 +202,12 @@ function stringx.split(s,re,n)
 end
 
 --- replace all tabs in s with tabsize spaces. If not specified, tabsize defaults to 8.
--- with 0.9.5 this now correctly expands to the next tab stop (if you really
--- want to just replace tabs, use :gsub('\t','  ') etc)
+-- Tab stops will be honored.
 -- @string s the string
 -- @int tabsize[opt=8] number of spaces to expand each tab
+-- @return expanded string
+-- @usage stringx.expandtabs('\tone,two,three', 4)   == '    one,two,three'
+-- @usage stringx.expandtabs('  \tone,two,three', 4) == '    one,two,three'
 function stringx.expandtabs(s,tabsize)
     assert_string(1,s)
     tabsize = tabsize or 8
@@ -239,6 +244,7 @@ end
 -- @string sub substring
 -- @int[opt] first first index
 -- @int[opt] last last index
+-- @return start index, or nil if not found
 function stringx.lfind(s,sub,first,last)
     assert_string(1,s)
     assert_string(2,sub)
@@ -256,6 +262,7 @@ end
 -- @string sub substring
 -- @int[opt] first first index
 -- @int[opt] last last index
+-- @return start index, or nil if not found
 function stringx.rfind(s,sub,first,last)
     assert_string(1,s)
     assert_string(2,sub)
@@ -263,7 +270,7 @@ function stringx.rfind(s,sub,first,last)
 end
 
 --- replace up to n instances of old by new in the string s.
--- if n is not present, replace all instances.
+-- If n is not present, replace all instances.
 -- @string s the string
 -- @string old the target substring
 -- @string new the substitution
@@ -319,6 +326,7 @@ end
 -- @string s the string
 -- @int w width of justification
 -- @string[opt=' '] ch padding character
+-- @usage stringx.ljust('hello', 10, '*') == '*****hello'
 function stringx.ljust(s,w,ch)
     assert_string(1,s)
     assert_arg(2,w,'number')
@@ -329,6 +337,7 @@ end
 -- @string s the string
 -- @int w width of justification
 -- @string[opt=' '] ch padding character
+-- @usage stringx.rjust('hello', 10, '*') == 'hello*****'
 function stringx.rjust(s,w,ch)
     assert_string(1,s)
     assert_arg(2,w,'number')
@@ -339,6 +348,7 @@ end
 -- @string s the string
 -- @int w width of justification
 -- @string[opt=' '] ch padding character
+-- @usage stringx.center('hello', 10, '*') == '**hello***'
 function stringx.center(s,w,ch)
     assert_string(1,s)
     assert_arg(2,w,'number')
@@ -412,12 +422,13 @@ end
 -- @string[opt='%s'] re a Lua string pattern (defaults to whitespace)
 -- @return the parts of the string
 -- @usage  a,b = line:splitv('=')
+-- @see utils.splitv
 function stringx.splitv(s,re)
     assert_string(1,s)
     return utils.splitv(s,re)
 end
 
--- The partition functions split a string  using a delimiter into three parts:
+-- The partition functions split a string using a delimiter into three parts:
 -- the part before, the delimiter itself, and the part afterwards
 local function _partition(p,delim,fn)
     local i1,i2 = fn(p,delim)
@@ -435,6 +446,8 @@ end
 -- @return part before ch
 -- @return ch
 -- @return part after ch
+-- @usage {stringx.partition('a,b,c', ','))} == {'a', ',', 'b,c'}
+-- @usage {stringx.partition('abc', 'x'))} == {'abc', '', ''}
 function stringx.partition(s,ch)
     assert_string(1,s)
     assert_nonempty_string(2,ch)
@@ -447,6 +460,8 @@ end
 -- @return part before ch
 -- @return ch
 -- @return part after ch
+-- @usage {stringx.rpartition('a,b,c', ','))} == {'a,b', ',', 'c'}
+-- @usage {stringx.rpartition('abc', 'x'))} == {'', '', 'abc'}
 function stringx.rpartition(s,ch)
     assert_string(1,s)
     assert_nonempty_string(2,ch)
@@ -473,16 +488,23 @@ end
 --- return an iterator over all lines in a string
 -- @string s the string
 -- @return an iterator
+-- @usage
+-- local line_no = 1
+-- for line in stringx.lines(some_text) do
+--   print(line_no, line)
+--   line_no = line_no + 1
+-- end
 function stringx.lines(s)
     assert_string(1,s)
     if not s:find '\n$' then s = s..'\n' end
     return s:gmatch('([^\n]*)\n')
 end
 
---- iniital word letters uppercase ('title case').
+--- inital word letters uppercase ('title case').
 -- Here 'words' mean chunks of non-space characters.
 -- @string s the string
 -- @return a string with each word's first letter uppercase
+-- @usage stringx.title("hello world") == "Hello World")
 function stringx.title(s)
     assert_string(1,s)
     return (s:gsub('(%S)(%S*)',function(f,r)
