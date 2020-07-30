@@ -162,6 +162,9 @@ asserteq(T(stringx.count('', '')), T(0)) --infinite loop]]
 asserteq(T(stringx.count('  ', '')), T(2)) --infinite loop]]
 asserteq(T(stringx.count('a..c', '.')), T(2)) -- pattern chars
 asserteq(T(stringx.count('a1c', '%d')), T(0)) -- pattern chars
+asserteq(T(stringx.count('Anna Anna Anna', 'Anna')), T(3)) -- no overlap
+asserteq(T(stringx.count('banana', 'ana', false)), T(1)) -- no overlap
+asserteq(T(stringx.count('banana', 'ana', true)), T(2)) -- overlap
 
 -- ljust
 asserteq(T(stringx.ljust('', 0)), T(''))

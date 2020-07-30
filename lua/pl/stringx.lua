@@ -279,9 +279,13 @@ end
 --- count all instances of substring in string.
 -- @string s the string
 -- @string sub substring
-function stringx.count(s,sub)
+-- @bool[opt] allow_overlap allow matches to overlap
+-- @usage
+-- assert(stringx.count('banana', 'ana') == 1)
+-- assert(stringx.count('banana', 'ana', true) == 2)
+function stringx.count(s,sub,allow_overlap)
     assert_string(1,s)
-    local _,k = _find_all(s,sub,1,false,false)
+    local _,k = _find_all(s,sub,1,false,allow_overlap)
     return k
 end
 
