@@ -11,6 +11,8 @@
   - `pretty.write`: now also sorts non-string keys [#319](https://github.com/Tieske/Penlight/pull/319)
   - `stringx.count` has an extra option to allow overlapping matches
     [#326](https://github.com/Tieske/Penlight/pull/326)
+  - added an extra changelog entry for `types.is_empty` on the 1.6.0 changelog, due
+    to additional fixed behaviour not called out appropriately [#313](https://github.com/Tieske/Penlight/pull/313)
 
 ### Fixes
 
@@ -39,7 +41,7 @@
   - `utils.raise` changed the global `on_error`-level when passing in bad arguments
   - `utils.writefile` now checks and returns errors when writing
   - `compat.execute` now handles the Windows exitcode -1 properly
-  - `types.is_empty` would return true on spaces always, indepedent of the parameter
+  - `types.is_empty` would return true on spaces always, independent of the parameter
   - `types.to_bool` will now compare case-insensitive for the extra passed strings
   - `app.require_here` will now properly handle an absolute base path
   - `stringx.split` will no longer append an empty match if the number of requested
@@ -71,6 +73,7 @@
   - Fixed `pl.import_into` not importing some Penlight modules (#268).
   - Fixed version number stuck at 1.5.2 (#260).
   - Fixed `types.is_empty` returning `true` on tables containing `false` key (#267).
+  - Fixed `types.is_empty` returning `false` if not a nil/table/string
   - Fixed `test.assertraise` throwing an error when passed an array with a function to call plus its arguments (#272).
   - Fixed `test.assertraise` not throwing an error when given function does not error but instead returns a string matching given error pattern.
   - Fixed placeholder expressions being evaluated with wrong precedence of binary and unary negation.

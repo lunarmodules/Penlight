@@ -85,7 +85,16 @@ asserteq(types.is_empty(""),true)
 asserteq(types.is_empty("   ",true),true)
 asserteq(types.is_empty("   "),false)
 asserteq(types.is_empty(true),true)
-asserteq(types.is_empty(42),true)
+-- Numbers
+asserteq(types.is_empty(0), true)
+asserteq(types.is_empty(20), true)
+-- Booleans
+asserteq(types.is_empty(false), true)
+asserteq(types.is_empty(true), true)
+-- Functions
+asserteq(types.is_empty(print), true)
+-- Userdata
+asserteq(types.is_empty(newproxy()), true)
 
 -- a more relaxed kind of truthiness....
 asserteq(types.to_bool('yes'),true)
