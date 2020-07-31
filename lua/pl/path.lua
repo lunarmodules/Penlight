@@ -431,16 +431,15 @@ end
 -- either be a Lua file or a shared library.
 -- @string mod name of the module
 -- @return on success: path of module, lua or binary
--- @return on error: nil,error string
+-- @return on error: nil, error string listing paths tried
 function path.package_path(mod)
     assert_string(1,mod)
-    local res
-    mod = mod:gsub('%.',sep)
-    res = package.searchpath(mod,package.path)
+    local res, err1, err2
+    res, err1 = package.searchpath(mod,package.path)
     if res then return res,true end
-    res = package.searchpath(mod,package.cpath)
+    res, err2 = package.searchpath(mod,package.cpath)
     if res then return res,false end
-    return raise 'cannot find module on path'
+    return raise ('cannot find module on path\n' .. err1 .. "\n" .. err2)
 end
 
 
