@@ -6,9 +6,12 @@ local tablex = require 'pl.tablex'
 local utils = require 'pl.utils'
 local copy = tablex.deepcopy
 local append = table.insert
-local coroutine = coroutine
-local resume = coroutine.resume
 local assert_arg = utils.assert_arg
+
+-- check on OpenResty coroutine versions, and use originals if possible
+local co_create = coroutine._create or coroutine.create
+local co_yield = coroutine._yield or coroutine.yield
+local co_resume = coroutine._resume or coroutine.resume
 
 
 local permute = {}
@@ -41,9 +44,9 @@ end
 function permute.iter (a)
     assert_arg(1,a,'table')
     local n = #a
-    local co = coroutine.create(function () permgen(a, n, coroutine.yield) end)
+    local co = co_create(function () permgen(a, n, co_yield) end)
     return function ()   -- iterator
-        local _, res = resume(co)
+        local _, res = co_resume(co)
         return res
     end
 end

@@ -22,6 +22,8 @@
     [#314](https://github.com/Tieske/Penlight/pull/314)
   - Fix: `package.searchpath` (in module `pl.compat`)
     [#328](https://github.com/Tieske/Penlight/pull/328)
+  - Fix: OpenResty coroutines, used by `dir.dirtree`, `pl.lexer`, `pl.permute`. If
+    available the original coroutine functions are now used [#329](https://github.com/Tieske/Penlight/pull/329)
 
 ## 1.7.0 (2019-10-14)
 
