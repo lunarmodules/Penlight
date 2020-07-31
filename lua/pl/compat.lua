@@ -38,6 +38,9 @@ compat.is_windows = compat.dir_separator == '\\'
 --
 -- NOTE: Windows systems can use signed 32bit integer exitcodes. Posix systems
 -- only use exitcodes 0-255, anything else is undefined.
+--
+-- NOTE2: In Lua 5.2 and 5.3 a Windows exitcode of -1 would not properly be
+-- returned, this function will return it properly for all versions.
 -- @param cmd a shell command
 -- @return true if successful
 -- @return actual return code
@@ -169,20 +172,48 @@ if not table.unpack then
     table.unpack = unpack           -- luacheck: ignore
 end
 
---- return the full path where a Lua module name would be matched.
--- @param mod module name, possibly dotted
--- @param path a path in the same form as package.path or package.cpath
+--- return the full path where a file name would be matched.
+-- This function was introduced in Lua 5.2, so this compatibility version
+-- will be injected in Lua 5.1 engines.
+-- @string name file name, possibly dotted
+-- @string path a path-template in the same form as package.path or package.cpath
+-- @string[opt] sep template separate character to be replaced by path separator. Default: "."
+-- @string[opt] rep the path separator to use, defaults to system separator. Default; "/" on Unixes, "\" on Windows.
 -- @see path.package_path
 -- @function package.searchpath
+-- @return on success: path of the file
+-- @return on failure: nil, error string listing paths tried
 if not package.searchpath then
-    local sep = package.config:sub(1,1)
-    function package.searchpath (mod,path)    -- luacheck: ignore
-        mod = mod:gsub('%.',sep)
+    function package.searchpath (name,path,sep,rep)    -- luacheck: ignore
+        if type(name) ~= "string" then
+            error(("bad argument #1 to 'searchpath' (string expected, got %s)"):format(type(path)), 2)
+        end
+        if type(path) ~= "string" then
+            error(("bad argument #2 to 'searchpath' (string expected, got %s)"):format(type(path)), 2)
+        end
+        if sep ~= nil and type(sep) ~= "string" then
+            error(("bad argument #3 to 'searchpath' (string expected, got %s)"):format(type(path)), 2)
+        end
+        if rep ~= nil and type(rep) ~= "string" then
+            error(("bad argument #4 to 'searchpath' (string expected, got %s)"):format(type(path)), 2)
+        end
+        sep = sep or "."
+        rep = rep or compat.dir_separator
+        do
+          local s, e = name:find(sep, nil, true)
+          while s do
+            name = name:sub(1, s-1) .. rep .. name:sub(e+1, -1)
+            s, e = name:find(sep, s + #rep + 1, true)
+          end
+        end
+        local tried = {}
         for m in path:gmatch('[^;]+') do
-            local nm = m:gsub('?',mod)
+            local nm = m:gsub('?', name)
+            tried[#tried+1] = nm
             local f = io.open(nm,'r')
             if f then f:close(); return nm end
         end
+        return nil, "\tno file '" .. table.concat(tried, "'\n\tno file '") .. "'"
     end
 end
 
