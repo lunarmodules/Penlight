@@ -13,11 +13,15 @@
     [#326](https://github.com/Tieske/Penlight/pull/326)
   - added an extra changelog entry for `types.is_empty` on the 1.6.0 changelog, due
     to additional fixed behaviour not called out appropriately [#313](https://github.com/Tieske/Penlight/pull/313)
+  - `path.packagepath` now returns a proper error message with names tried if
+    it fails
 
 ### Fixes
 
   - Fix: `stringx.rfind` now properly works with overlapping matches
     [#314](https://github.com/Tieske/Penlight/pull/314)
+  - Fix: `package.searchpath` (in module `pl.compat`)
+    [#328](https://github.com/Tieske/Penlight/pull/328)
 
 ## 1.7.0 (2019-10-14)
 
