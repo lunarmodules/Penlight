@@ -20,10 +20,14 @@
 -- See the Guide for further @{06-data.md.Lexical_Scanning|discussion}
 -- @module pl.lexer
 
-local yield,wrap = coroutine.yield,coroutine.wrap
 local strfind = string.find
 local strsub = string.sub
 local append = table.insert
+
+-- check on OpenResty coroutine versions, and use originals if possible
+local wrap = coroutine._wrap or coroutine.wrap
+local yield = coroutine._yield or coroutine.yield
+
 
 local function assert_arg(idx,val,tp)
     if type(val) ~= tp then
