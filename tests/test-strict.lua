@@ -42,9 +42,103 @@ end,"variable 'sine' is not declared in 'math'")
 
 
 
+-- module
+do
+  local testmodule = {
+    hello = function() return "supremacy" end
+  }
+  -- make strict and allow extra field "world"
+  strict.module("my_test", testmodule, { world = true })
+
+  test.asserteq(testmodule.hello(), "supremacy")
+  test.assertraise(function()
+    print(testmodule.not_allowed_key)
+  end, "variable 'not_allowed_key' is not declared in 'my_test'")
+
+  test.asserteq(testmodule.world, nil)
+  testmodule.world = "supremacy"
+  test.asserteq(testmodule.world, "supremacy")
 
 
+  -- table with a __newindex method
+  local mod1 = strict.module("mod1", setmetatable(
+    {
+      hello = "world",
+    }, {
+      __newindex = function(self, key, value)
+        if key == "Lua" then
+          rawset(self, key, value)
+        end
+      end,
+    }
+  ))
+  test.asserteq(mod1.hello, "world")
+  mod1.Lua = "hello world"
+  test.asserteq(mod1.Lua, "hello world")
+  test.assertraise(function()
+    print(mod1.not_allowed_key)
+  end, "variable 'not_allowed_key' is not declared in 'mod1'")
 
 
+  -- table with a __index method
+  local mod1 = strict.module("mod1", setmetatable(
+    {
+      hello = "world",
+    }, {
+      __index = function(self, key)
+        if key == "Lua" then
+          return "rocks"
+        end
+      end,
+    }
+  ))
+  test.asserteq(mod1.hello, "world")
+  test.asserteq(mod1.Lua, "rocks")
+  test.assertraise(function()
+    print(mod1.not_allowed_key)
+  end, "variable 'not_allowed_key' is not declared in 'mod1'")
 
 
+  -- table with a __index table
+  local mod1 = strict.module("mod1", setmetatable(
+    {
+      hello = "world",
+    }, {
+      __index = {
+        Lua = "rocks!"
+      }
+    }
+  ))
+  test.asserteq(mod1.hello, "world")
+  test.asserteq(mod1.Lua, "rocks!")
+  test.assertraise(function()
+    print(mod1.not_allowed_key)
+  end, "variable 'not_allowed_key' is not declared in 'mod1'")
+
+end
+
+
+do
+  -- closed_module
+  -- what does this do? this does not seem a usefull function???
+
+  local testmodule = {
+    hello = function() return "supremacy" end
+  }
+  local M = strict.closed_module(testmodule, "my_test")
+
+  -- read acces to original is granted, but not to the new one
+  test.asserteq(testmodule.hello(), "supremacy")
+  test.assertraise(function()
+    print(M.hello())
+  end, "variable 'hello' is not declared in 'my_test'")
+
+  -- write access to both is granted
+  testmodule.world = "domination"
+  M.world = "domination"
+
+  -- read acces to set field in original is granted, but not set
+  test.asserteq(testmodule.world, nil)
+  test.asserteq(M.world, "domination")
+
+end

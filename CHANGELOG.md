@@ -24,6 +24,8 @@
     [#328](https://github.com/Tieske/Penlight/pull/328)
   - Fix: OpenResty coroutines, used by `dir.dirtree`, `pl.lexer`, `pl.permute`. If
     available the original coroutine functions are now used [#329](https://github.com/Tieske/Penlight/pull/329)
+  - Fix: in `pl.strict` also predefine global `_PROMPT2`
+  - Fix: in `pl.strict` apply `tostring` to the given name, in case it is not a string.
 
 ## 1.7.0 (2019-10-14)
 
