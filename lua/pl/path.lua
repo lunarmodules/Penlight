@@ -2,6 +2,12 @@
 --
 -- This is modelled after Python's os.path library (10.1); see @{04-paths.md|the Guide}.
 --
+-- NOTE: the functions assume the paths being dealt with to originate
+-- from the OS the application is running on. Windows drive letters are not
+-- to be used when running on a Unix system for example. The one exception
+-- is Windows paths to allow both forward and backward slashes (since Lua
+-- also accepts those)
+--
 -- Dependencies: `pl.utils`, `lfs`
 -- @module pl.path
 
@@ -10,44 +16,58 @@ local _G = _G
 local sub = string.sub
 local getenv = os.getenv
 local tmpnam = os.tmpname
-local attributes, currentdir, link_attrib
 local package = package
 local append, concat, remove = table.insert, table.concat, table.remove
 local utils = require 'pl.utils'
 local assert_string,raise = utils.assert_string,utils.raise
 
-local attrib
-local path = {}
-
 local res,lfs = _G.pcall(_G.require,'lfs')
-if res then
-    attributes = lfs.attributes
-    currentdir = lfs.currentdir
-    link_attrib = lfs.symlinkattributes
-else
+if not res then
     error("pl.path requires LuaFileSystem")
 end
 
-attrib = attributes
-path.attrib = attrib
-path.link_attrib = link_attrib
+local attrib = lfs.attributes
+local currentdir = lfs.currentdir
+local link_attrib = lfs.symlinkattributes
+
+local path = {}
 
 --- Lua iterator over the entries of a given directory.
--- Behaves like `lfs.dir`
+-- Implicit link to [`luafilesystem.dir`](https://keplerproject.github.io/luafilesystem/manual.html#reference)
+-- @function dir
 path.dir = lfs.dir
 
 --- Creates a directory.
+-- Implicit link to [`luafilesystem.mkdir`](https://keplerproject.github.io/luafilesystem/manual.html#reference)
+-- @function mkdir
 path.mkdir = lfs.mkdir
 
 --- Removes a directory.
+-- Implicit link to [`luafilesystem.rmdir`](https://keplerproject.github.io/luafilesystem/manual.html#reference)
+-- @function rmdir
 path.rmdir = lfs.rmdir
 
----- Get the working directory.
+--- Gets attributes
+-- Implicit link to [`luafilesystem.attributes`](https://keplerproject.github.io/luafilesystem/manual.html#reference)
+-- @function attrib
+path.attrib = attrib
+
+--- Get the working directory.
+-- Implicit link to [`luafilesystem.currentdir`](https://keplerproject.github.io/luafilesystem/manual.html#reference)
+-- @function currentdir
 path.currentdir = currentdir
 
---- Changes the working directory.
-path.chdir = lfs.chdir
+-- Gets symlink attributes
+-- Implicit link to [`luafilesystem.symlinkattributes`](https://keplerproject.github.io/luafilesystem/manual.html#reference)
+-- @function link_attrib
+path.link_attrib = link_attrib
 
+--- Changes the working directory.
+-- On Windows, if a drive is specified, it also changes the current drive. If
+-- only specifying the drive, it will only switch drive, but not modify the path.
+-- Implicit link to [`luafilesystem.chdir`](https://keplerproject.github.io/luafilesystem/manual.html#reference)
+-- @function chdir
+path.chdir = lfs.chdir
 
 --- is this a directory?
 -- @string P A file path
@@ -86,7 +106,7 @@ end
 
 --- does a path exist?.
 -- @string P A file path
--- @return the file path if it exists, nil otherwise
+-- @return the file path if it exists (either as file, directory, socket, etc), nil otherwise
 function path.exists(P)
     assert_string(1,P)
     return attrib(P,'mode') ~= nil and P
@@ -99,14 +119,14 @@ function path.getatime(P)
     return attrib(P,'access')
 end
 
---- Return the time of last modification
+--- Return the time of last modification as the number of seconds since the epoch.
 -- @string P A file path
 function path.getmtime(P)
     assert_string(1,P)
     return attrib(P,'modification')
 end
 
----Return the system's ctime.
+---Return the system's ctime as the number of seconds since the epoch.
 -- @string P A file path
 function path.getctime(P)
     assert_string(1,P)
@@ -121,7 +141,8 @@ end
 path.is_windows = utils.is_windows
 
 local other_sep
--- !constant sep is the directory separator for this platform.
+-- constant sep is the directory separator for this platform.
+-- constant dirsep is the separator in the PATH environment variable
 if path.is_windows then
     path.sep = '\\'; other_sep = '/'
     path.dirsep = ';'
@@ -146,6 +167,20 @@ local sep = path.sep
 --- given a path, return the directory part and a file part.
 -- if there's no directory part, the first value will be empty
 -- @string P A file path
+-- @return directory part
+-- @return file part
+-- @usage
+-- local dir, file = path.splitpath("some/dir/myfile.txt")
+-- assert(dir == "some/dir")
+-- assert(file == "myfile.txt")
+--
+-- local dir, file = path.splitpath("some/dir/")
+-- assert(dir == "some/dir")
+-- assert(file == "")
+--
+-- local dir, file = path.splitpath("some_dir")
+-- assert(dir == "")
+-- assert(file == "some_dir")
 function path.splitpath(P)
     assert_string(1,P)
     local i = #P
@@ -182,8 +217,16 @@ end
 --- given a path, return the root part and the extension part.
 -- if there's no extension part, the second value will be empty
 -- @string P A file path
--- @treturn string root part
--- @treturn string extension part (maybe empty)
+-- @treturn string root part (everything upto the "."", maybe empty)
+-- @treturn string extension part (including the ".", maybe empty)
+-- @usage
+-- local file_path, ext = path.splitext("/bonzo/dog_stuff/cat.txt")
+-- assert(file_path == "/bonzo/dog_stuff/cat")
+-- assert(ext == ".txt")
+--
+-- local file_path, ext = path.splitext("")
+-- assert(file_path == "")
+-- assert(ext == "")
 function path.splitext(P)
     assert_string(1,P)
     local i = #P
@@ -204,6 +247,11 @@ end
 
 --- return the directory part of a path
 -- @string P A file path
+-- @treturn string everything before the last dir-separator
+-- @see splitpath
+-- @usage
+-- path.dirname("/some/path/file.txt")   -- "/some/path"
+-- path.basename("file.txt")             -- "" (empty string)
 function path.dirname(P)
     assert_string(1,P)
     local p1 = path.splitpath(P)
@@ -212,6 +260,11 @@ end
 
 --- return the file part of a path
 -- @string P A file path
+-- @treturn string
+-- @see splitpath
+-- @usage
+-- path.basename("/some/path/file.txt")  -- "file.txt"
+-- path.basename("/some/path/file/")     -- "" (empty string)
 function path.basename(P)
     assert_string(1,P)
     local _,p2 = path.splitpath(P)
@@ -220,6 +273,11 @@ end
 
 --- get the extension part of a path.
 -- @string P A file path
+-- @treturn string
+-- @see splitext
+-- @usage
+-- path.extension("/some/path/file.txt") -- ".txt"
+-- path.extension("/some/path/file_txt") -- "" (empty string)
 function path.extension(P)
     assert_string(1,P)
     local _,p2 = path.splitext(P)
@@ -243,6 +301,11 @@ end
 -- @string p1 A file path
 -- @string p2 A file path
 -- @string ... more file paths
+-- @treturn string the combined path
+-- @usage
+-- path.join("/first","second","third")   -- "/first/second/third"
+-- path.join("first","second/third")      -- "first/second/third"
+-- path.join("/first","/second","third")  -- "/second/third"
 function path.join(p1,p2,...)
     assert_string(1,p1)
     assert_string(2,p2)
@@ -263,21 +326,28 @@ function path.join(p1,p2,...)
     return p1..p2
 end
 
---- normalize the case of a pathname. On Unix, this returns the path unchanged;
---  for Windows, it converts the path to lowercase, and it also converts forward slashes
--- to backward slashes.
+--- normalize the case of a pathname. On Unix, this returns the path unchanged,
+-- for Windows it converts;
+--
+-- * the path to lowercase
+-- * forward slashes to backward slashes
 -- @string P A file path
+-- @usage path.normcase("/Some/Path/File.txt")
+-- -- Windows: "\some\path\file.txt"
+-- -- Others : "/Some/Path/File.txt"
 function path.normcase(P)
     assert_string(1,P)
     if path.is_windows then
-        return (P:lower():gsub('/','\\'))
+        return P:gsub('/','\\'):lower()
     else
         return P
     end
 end
 
 --- normalize a path name.
---  `A//B`, `A/./B`, and `A/foo/../B` all become `A/B`.
+-- `A//B`, `A/./B`, and `A/foo/../B` all become `A/B`.
+--
+-- An empty path results in '.'.
 -- @string P a file path
 function path.normpath(P)
     assert_string(1,P)
@@ -399,6 +469,7 @@ end
 --- return the largest common prefix path of two paths.
 -- @string path1 a file path
 -- @string path2 a file path
+-- @return the common prefix (Windows: separators will be normalized, casing will be original)
 function path.common_prefix (path1,path2)
     assert_string(1,path1)
     assert_string(2,path2)
