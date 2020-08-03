@@ -140,17 +140,19 @@ end
 
 path.is_windows = utils.is_windows
 
-local other_sep
+local sep, other_sep, seps
 -- constant sep is the directory separator for this platform.
 -- constant dirsep is the separator in the PATH environment variable
 if path.is_windows then
     path.sep = '\\'; other_sep = '/'
     path.dirsep = ';'
+    seps = { ['/'] = true, ['\\'] = true }
 else
     path.sep = '/'
     path.dirsep = ':'
+    seps = { ['/'] = true }
 end
-local sep = path.sep
+sep = path.sep
 
 --- are we running Windows?
 -- @class field
@@ -232,7 +234,7 @@ function path.splitext(P)
     local i = #P
     local ch = at(P,i)
     while i > 0 and ch ~= '.' do
-        if ch == sep or ch == other_sep then
+        if seps[ch] then
             return P,''
         end
         i = i - 1
@@ -288,11 +290,10 @@ end
 -- @string P A file path
 function path.isabs(P)
     assert_string(1,P)
-    if path.is_windows then
-        return at(P,1) == '/' or at(P,1)=='\\' or at(P,2)==':'
-    else
-        return at(P,1) == '/'
+    if path.is_windows and at(P,2) == ":" then
+        return seps[at(P,3)] ~= nil
     end
+    return seps[at(P,1)] ~= nil
 end
 
 --- return the path resulting from combining the individual paths.
@@ -357,13 +358,13 @@ function path.normpath(P)
         if P:match '^\\\\' then -- UNC
             anchor = '\\\\'
             P = P:sub(3)
-        elseif at(P, 1) == '/' or at(P, 1) == '\\' then
+        elseif seps[at(P, 1)] then
             anchor = '\\'
             P = P:sub(2)
         elseif at(P, 2) == ':' then
             anchor = P:sub(1, 2)
             P = P:sub(3)
-            if at(P, 1) == '/' or at(P, 1) == '\\' then
+            if seps[at(P, 1)] then
                 anchor = anchor..'\\'
                 P = P:sub(2)
             end
