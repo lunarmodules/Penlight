@@ -22,6 +22,7 @@
     [#314](https://github.com/Tieske/Penlight/pull/314)
   - Fix: `package.searchpath` (in module `pl.compat`)
     [#328](https://github.com/Tieske/Penlight/pull/328)
+  - Fix: `path.isabs` now reports drive + relative-path as `false`, eg. "c:some/path" (Windows only)
   - Fix: OpenResty coroutines, used by `dir.dirtree`, `pl.lexer`, `pl.permute`. If
     available the original coroutine functions are now used [#329](https://github.com/Tieske/Penlight/pull/329)
   - Fix: in `pl.strict` also predefine global `_PROMPT2`

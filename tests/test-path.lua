@@ -77,10 +77,12 @@ do -- path.isabs
   asserteq(path.isabs("./hello/path"), false)
   asserteq(path.isabs("../hello/path"), false)
   if path.is_windows then
+    asserteq(path.isabs("c:/"), true)
     asserteq(path.isabs("c:/hello/path"), true)
-    --asserteq(path.isabs("c:hello/path"), false)
-    --asserteq(path.isabs("c:./hello/path"), false)
-    --asserteq(path.isabs("c:../hello/path"), false)
+    asserteq(path.isabs("c:"), false)
+    asserteq(path.isabs("c:hello/path"), false)
+    asserteq(path.isabs("c:./hello/path"), false)
+    asserteq(path.isabs("c:../hello/path"), false)
   end
 end
 
