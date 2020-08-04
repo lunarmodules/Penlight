@@ -37,11 +37,15 @@ end
 
 local lexer = {}
 
-local NUMBER1 = '^[%+%-]?%d+%.?%d*[eE][%+%-]?%d+'
-local NUMBER2 = '^[%+%-]?%d+%.?%d*'
-local NUMBER3 = '^0x[%da-fA-F]+'
-local NUMBER4 = '^%d+%.?%d*[eE][%+%-]?%d+'
-local NUMBER5 = '^%d+%.?%d*'
+local NUMBER1  = '^[%+%-]?%d+%.?%d*[eE][%+%-]?%d+'
+local NUMBER1a = '^[%+%-]?%d*%.%d+[eE][%+%-]?%d+'
+local NUMBER2  = '^[%+%-]?%d+%.?%d*'
+local NUMBER2a = '^[%+%-]?%d*%.%d+'
+local NUMBER3  = '^0x[%da-fA-F]+'
+local NUMBER4  = '^%d+%.?%d*[eE][%+%-]?%d+'
+local NUMBER4a = '^%d*%.%d+[eE][%+%-]?%d+'
+local NUMBER5  = '^%d+%.?%d*'
+local NUMBER5a = '^%d*%.%d+'
 local IDEN = '^[%a_][%w_]*'
 local WSPACE = '^%s+'
 local STRING1 = "^(['\"])%1" -- empty string
@@ -153,7 +157,9 @@ function lexer.scan(s,matches,filter,options)
                 {NUMBER3,ndump},
                 {IDEN,plain_vdump},
                 {NUMBER1,ndump},
+                {NUMBER1a,ndump},
                 {NUMBER2,ndump},
+                {NUMBER2a,ndump},
                 {STRING1,sdump},
                 {STRING2,sdump},
                 {STRING3,sdump},
@@ -325,7 +331,9 @@ function lexer.lua(s,filter,options)
             {NUMBER3,ndump},
             {IDEN,lua_vdump},
             {NUMBER4,ndump},
+            {NUMBER4a,ndump},
             {NUMBER5,ndump},
+            {NUMBER5a,ndump},
             {STRING1,sdump},
             {STRING2,sdump},
             {STRING3,sdump},
@@ -375,7 +383,9 @@ function lexer.cpp(s,filter,options)
             {NUMBER3,ndump},
             {IDEN,cpp_vdump},
             {NUMBER4,ndump},
+            {NUMBER4a,ndump},
             {NUMBER5,ndump},
+            {NUMBER5a,ndump},
             {CHAR1,chdump},
             {CHAR2,chdump},
             {CHAR3,chdump},
