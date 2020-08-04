@@ -137,3 +137,10 @@ asserteq(lexer.lineno(iter), 3)
 iter()
 iter()
 asserteq(lexer.lineno(iter), 3)
+
+do  -- numbers without leading zero; ".123"
+  local s = 'hello = +.234'
+  test_scan(s, {space=true}, {number=true}, {
+    {'iden', 'hello'}, {'=', '='}, {'number', .234}
+  })
+end

@@ -27,6 +27,8 @@
     available the original coroutine functions are now used [#329](https://github.com/Tieske/Penlight/pull/329)
   - Fix: in `pl.strict` also predefine global `_PROMPT2`
   - Fix: in `pl.strict` apply `tostring` to the given name, in case it is not a string.
+  - Fix: the lexer would not recognize numbers without leading zero; "-.123".
+    See [#315](https://github.com/Tieske/Penlight/issues/315)
 
 ## 1.7.0 (2019-10-14)
 
