@@ -2,4 +2,3 @@ modules = {
    ["pl"] = "lua/pl/init.lua",
    ["pl.*"] = "lua"
 }
-debug = true

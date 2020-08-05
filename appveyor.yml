@@ -35,6 +35,6 @@ on_success:
   # secure coveralls token not available on PR builds, only BRANCH builds
   - "if not \"%COVERALLS_REPO_TOKEN%\"==\"\" (
        if not \"%LUA%\"==\"lua 5.4\" (
-         luacov-coveralls -v
+         luacov-coveralls
        )
     )"
