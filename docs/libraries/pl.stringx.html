@@ -201,7 +201,7 @@
 	<td class="summary">replace up to n instances of old by new in the string s.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#count">count (s, sub)</a></td>
+	<td class="name" nowrap><a href="#count">count (s, sub[, allow_overlap])</a></td>
 	<td class="summary">count all instances of substring in string.</td>
 	</tr>
 </table>
@@ -259,7 +259,7 @@
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#title">title (s)</a></td>
-	<td class="summary">iniital word letters uppercase ('title case').</td>
+	<td class="summary">inital word letters uppercase ('title case').</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#shorten">shorten (s, w, tail)</a></td>
@@ -462,6 +462,7 @@
     </dt>
     <dd>
     concatenate the strings using this string as a delimiter.
+ Note that the arguments are reversed from <code>string.concat</code>.
 
 
     <h3>Parameters:</h3>
@@ -480,7 +481,7 @@
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">(<span class="string">' '</span>):join {<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>} == <span class="string">'1 2 3'</span></pre>
+        <pre class="example">stringx.join(<span class="string">' '</span>, {<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>}) == <span class="string">'1 2 3'</span></pre>
     </ul>
 
 </dd>
@@ -509,6 +510,11 @@
         </li>
     </ul>
 
+    <h3>Returns:</h3>
+    <ol>
+
+        List of lines
+    </ol>
 
 
 
@@ -540,14 +546,19 @@
         </li>
     </ul>
 
+    <h3>Returns:</h3>
+    <ol>
+
+        List
+    </ol>
 
 
 
     <h3>Usage:</h3>
     <ul>
-        <li><pre class="example">#((<span class="string">'one two'</span>):split()) == <span class="number">2</span></pre></li>
-        <li><pre class="example">(<span class="string">'one,two,three'</span>):split(<span class="string">','</span>) == List{<span class="string">'one'</span>,<span class="string">'two'</span>,<span class="string">'three'</span>}</pre></li>
-        <li><pre class="example">(<span class="string">'one,two,three'</span>):split(<span class="string">','</span>,<span class="number">2</span>) == List{<span class="string">'one'</span>,<span class="string">'two,three'</span>}</pre></li>
+        <li><pre class="example">#(stringx.split(<span class="string">'one two'</span>)) == <span class="number">2</span></pre></li>
+        <li><pre class="example">stringx.split(<span class="string">'one,two,three'</span>, <span class="string">','</span>) == List{<span class="string">'one'</span>,<span class="string">'two'</span>,<span class="string">'three'</span>}</pre></li>
+        <li><pre class="example">stringx.split(<span class="string">'one,two,three'</span>, <span class="string">','</span>, <span class="number">2</span>) == List{<span class="string">'one'</span>,<span class="string">'two,three'</span>}</pre></li>
     </ul>
 
 </dd>
@@ -557,8 +568,7 @@
     </dt>
     <dd>
     replace all tabs in s with tabsize spaces.  If not specified, tabsize defaults to 8.
- with 0.9.5 this now correctly expands to the next tab stop (if you really
- want to just replace tabs, use :gsub('\t','  ') etc)
+ Tab stops will be honored.
 
 
     <h3>Parameters:</h3>
@@ -573,9 +583,19 @@
         </li>
     </ul>
 
+    <h3>Returns:</h3>
+    <ol>
+
+        expanded string
+    </ol>
 
 
 
+    <h3>Usage:</h3>
+    <ul>
+        <li><pre class="example">stringx.expandtabs(<span class="string">'\tone,two,three'</span>, <span class="number">4</span>)   == <span class="string">'    one,two,three'</span></pre></li>
+        <li><pre class="example">stringx.expandtabs(<span class="string">'  \tone,two,three'</span>, <span class="number">4</span>) == <span class="string">'    one,two,three'</span></pre></li>
+    </ul>
 
 </dd>
 </dl>
@@ -612,6 +632,11 @@
         </li>
     </ul>
 
+    <h3>Returns:</h3>
+    <ol>
+
+        start index, or nil if not found
+    </ol>
 
 
 
@@ -647,6 +672,11 @@
         </li>
     </ul>
 
+    <h3>Returns:</h3>
+    <ol>
+
+        start index, or nil if not found
+    </ol>
 
 
 
@@ -658,7 +688,7 @@
     </dt>
     <dd>
     replace up to n instances of old by new in the string s.
- if n is not present, replace all instances.
+ If n is not present, replace all instances.
 
 
     <h3>Parameters:</h3>
@@ -694,7 +724,7 @@
 </dd>
     <dt>
     <a name = "count"></a>
-    <strong>count (s, sub)</strong>
+    <strong>count (s, sub[, allow_overlap])</strong>
     </dt>
     <dd>
     count all instances of substring in string.
@@ -710,11 +740,21 @@
             <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
          substring
         </li>
+        <li><span class="parameter">allow_overlap</span>
+            <span class="types"><span class="type">bool</span></span>
+         allow matches to overlap
+         (<em>optional</em>)
+        </li>
     </ul>
 
 
 
 
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="global">assert</span>(stringx.count(<span class="string">'banana'</span>, <span class="string">'ana'</span>) == <span class="number">1</span>)
+<span class="global">assert</span>(stringx.count(<span class="string">'banana'</span>, <span class="string">'ana'</span>, <span class="keyword">true</span>) == <span class="number">2</span>)</pre>
+    </ul>
 
 </dd>
 </dl>
@@ -749,6 +789,10 @@
 
 
 
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">stringx.ljust(<span class="string">'hello'</span>, <span class="number">10</span>, <span class="string">'*'</span>) == <span class="string">'*****hello'</span></pre>
+    </ul>
 
 </dd>
     <dt>
@@ -779,6 +823,10 @@
 
 
 
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">stringx.rjust(<span class="string">'hello'</span>, <span class="number">10</span>, <span class="string">'*'</span>) == <span class="string">'hello*****'</span></pre>
+    </ul>
 
 </dd>
     <dt>
@@ -809,6 +857,10 @@
 
 
 
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">stringx.center(<span class="string">'hello'</span>, <span class="number">10</span>, <span class="string">'*'</span>) == <span class="string">'**hello***'</span></pre>
+    </ul>
 
 </dd>
     <dt>
@@ -924,6 +976,10 @@
     </ol>
 
 
+    <h3>See also:</h3>
+    <ul>
+         <a href="../libraries/pl.utils.html#splitv">utils.splitv</a>
+    </ul>
 
     <h3>Usage:</h3>
     <ul>
@@ -963,6 +1019,11 @@
 
 
 
+    <h3>Usage:</h3>
+    <ul>
+        <li><pre class="example">{stringx.partition(<span class="string">'a,b,c'</span>, <span class="string">','</span>))} == {<span class="string">'a'</span>, <span class="string">','</span>, <span class="string">'b,c'</span>}</pre></li>
+        <li><pre class="example">{stringx.partition(<span class="string">'abc'</span>, <span class="string">'x'</span>))} == {<span class="string">'abc'</span>, <span class="string">''</span>, <span class="string">''</span>}</pre></li>
+    </ul>
 
 </dd>
     <dt>
@@ -997,6 +1058,11 @@
 
 
 
+    <h3>Usage:</h3>
+    <ul>
+        <li><pre class="example">{stringx.rpartition(<span class="string">'a,b,c'</span>, <span class="string">','</span>))} == {<span class="string">'a,b'</span>, <span class="string">','</span>, <span class="string">'c'</span>}</pre></li>
+        <li><pre class="example">{stringx.rpartition(<span class="string">'abc'</span>, <span class="string">'x'</span>))} == {<span class="string">''</span>, <span class="string">''</span>, <span class="string">'abc'</span>}</pre></li>
+    </ul>
 
 </dd>
     <dt>
@@ -1057,6 +1123,14 @@
 
 
 
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> line_no = <span class="number">1</span>
+<span class="keyword">for</span> line <span class="keyword">in</span> stringx.lines(some_text) <span class="keyword">do</span>
+  <span class="global">print</span>(line_no, line)
+  line_no = line_no + <span class="number">1</span>
+<span class="keyword">end</span></pre>
+    </ul>
 
 </dd>
     <dt>
@@ -1064,7 +1138,7 @@
     <strong>title (s)</strong>
     </dt>
     <dd>
-    iniital word letters uppercase ('title case').
+    inital word letters uppercase ('title case').
  Here 'words' mean chunks of non-space characters.
 
 
@@ -1084,6 +1158,10 @@
 
 
 
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">stringx.title(<span class="string">"hello world"</span>) == <span class="string">"Hello World"</span>)</pre>
+    </ul>
 
 </dd>
     <dt>
@@ -1154,7 +1232,7 @@
 </div> <!-- id="main" -->
 <div id="about">
 <i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
-<i style="float:right;">Last updated 2019-10-14 15:29:36 </i>
+<i style="float:right;">Last updated 2020-08-05 10:30:11 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>
