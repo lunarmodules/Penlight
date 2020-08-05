@@ -25,7 +25,7 @@ build_script:
 
 test_script:
   # LuaCov not yet compatible with Lua 5.4
-  - "if [%LUA%]==[lua 5.4] (
+  - "if \"%LUA%\"==\"lua 5.4\" (
       lua run.lua tests
     ) else (
       lua run.lua tests --luacov
@@ -33,8 +33,8 @@ test_script:
 
 on_success:
   # secure coveralls token not available on PR builds, only BRANCH builds
-  - "if not [%COVERALLS_REPO_TOKEN%] == [] (
-       if not [%LUA%]==[lua 5.4] then (
+  - "if not \"%COVERALLS_REPO_TOKEN%\"==\"\" (
+       if not \"%LUA%\"==\"lua 5.4\" then (
          luacov-coveralls -v
        )
     )"
