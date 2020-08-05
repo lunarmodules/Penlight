@@ -433,12 +433,16 @@
          a table
         </li>
         <li><span class="parameter">...</span>
-         extra arguments
+         extra arguments passed to <code>fun</code>
         </li>
     </ul>
 
 
 
+    <h3>See also:</h3>
+    <ul>
+         <a href="../libraries/pl.tablex.html#foreach">tablex.foreach</a>
+    </ul>
 
 
 </dd>
@@ -804,7 +808,10 @@
     <dd>
     modifies a table to be read only.
  This only offers weak protection. Tables can still be modified with
- <a href="https://www.lua.org/manual/5.1/manual.html#pdf-table.insert">table.insert</a> and <a href="https://www.lua.org/manual/5.1/manual.html#pdf-rawset">rawset</a>.
+ <a href="https://www.lua.org/manual/5.1/manual.html#pdf-table.insert">table.insert</a> and <a href="https://www.lua.org/manual/5.1/manual.html#pdf-rawset">rawset</a>.</p>
+
+<p> <em>NOTE</em>: for Lua 5.1 length, pairs and ipairs will not work, since the
+ equivalent metamethods are only available in Lua 5.2 and newer.
 
 
     <h3>Parameters:</h3>
@@ -818,7 +825,7 @@
     <h3>Returns:</h3>
     <ol>
 
-        the table read only.
+        the table read only (a proxy).
     </ol>
 
 
@@ -1090,13 +1097,26 @@
         </li>
         <li><span class="parameter">cmp</span>
             <span class="types"><span class="type">func</span></span>
-         A comparison function
+         A comparison function; <code>bool = cmp(t1_value, t2_value)</code>
         </li>
     </ul>
 
+    <h3>Returns:</h3>
+    <ol>
+
+        true or false
+    </ol>
 
 
 
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="global">assert</span>(tablex.compare({ <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span> }, { <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span> }, <span class="string">"=="</span>))
+
+<span class="global">assert</span>(tablex.compare(
+   {<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>, hello = <span class="string">"world"</span>},  <span class="comment">-- fields are not compared!
+</span>   {<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>}, <span class="keyword">function</span>(v1, v2) <span class="keyword">return</span> v1 == v2 <span class="keyword">end</span>)</pre>
+    </ul>
 
 </dd>
     <dt>
@@ -1191,7 +1211,7 @@
          A value
         </li>
         <li><span class="parameter">idx</span>
-         index to start; -1 means last element,etc (default 1)
+         index to start; -1 means last element,etc (default <code>#t</code>)
         </li>
     </ul>
 
@@ -1214,7 +1234,12 @@
     <strong>find_if (t, cmp, arg)</strong>
     </dt>
     <dd>
-    return the index (or key) of a value in a table using a comparison function.
+    return the index (or key) of a value in a table using a comparison function. </p>
+
+<p> <em>NOTE</em>: the 2nd return value of this function, the value returned
+ by the comparison function, has a limitation that it cannot be <code>false</code>.
+ Because if it is, then it indicates the comparison failed, and the
+ function will continue the search. See examples.
 
 
     <h3>Parameters:</h3>
@@ -1237,11 +1262,34 @@
         <li>
         index of value, or nil if not found</li>
         <li>
-        value returned by comparison function</li>
+        value returned by comparison function (cannot be <code>false</code>!)</li>
     </ol>
 
 
 
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="comment">-- using an operator
+</span><span class="keyword">local</span> lst = { <span class="string">"Rudolph"</span>, <span class="keyword">true</span>, <span class="keyword">false</span>, <span class="number">15</span> }
+<span class="keyword">local</span> idx, cmp_result = tablex.rfind(lst, <span class="string">"=="</span>, <span class="string">"Rudolph"</span>)
+<span class="global">assert</span>(idx == <span class="number">1</span>)
+<span class="global">assert</span>(cmp_result == <span class="keyword">true</span>)
+
+<span class="keyword">local</span> idx, cmp_result = tablex.rfind(lst, <span class="string">"=="</span>, <span class="keyword">false</span>)
+<span class="global">assert</span>(idx == <span class="number">3</span>)
+<span class="global">assert</span>(cmp_result == <span class="keyword">true</span>)       <span class="comment">-- looking up 'false' works!
+</span>
+<span class="comment">-- using a function returning the value looked up
+</span><span class="keyword">local</span> cmp = <span class="keyword">function</span>(v1, v2) <span class="keyword">return</span> v1 == v2 <span class="keyword">and</span> v2 <span class="keyword">end</span>
+<span class="keyword">local</span> idx, cmp_result = tablex.rfind(lst, cmp, <span class="string">"Rudolph"</span>)
+<span class="global">assert</span>(idx == <span class="number">1</span>)
+<span class="global">assert</span>(cmp_result == <span class="string">"Rudolph"</span>)  <span class="comment">-- the value is returned
+</span>
+<span class="comment">-- NOTE: this fails, since 'false' cannot be returned!
+</span><span class="keyword">local</span> idx, cmp_result = tablex.rfind(lst, cmp, <span class="keyword">false</span>)
+<span class="global">assert</span>(idx == <span class="keyword">nil</span>)               <span class="comment">-- looking up 'false' failed!
+</span><span class="global">assert</span>(cmp_result == <span class="keyword">nil</span>)</pre>
+    </ul>
 
 </dd>
     <dt>
@@ -1382,9 +1430,37 @@
         </li>
     </ul>
 
+    <h3>Returns:</h3>
+    <ol>
+
+        a <a href="../classes/pl.List.html">List</a> with the results of the method (1st result only)
+    </ol>
 
 
 
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> Car = {}
+Car.__index = Car
+<span class="keyword">function</span> Car.new(car)
+  <span class="keyword">return</span> <span class="global">setmetatable</span>(car <span class="keyword">or</span> {}, Car)
+<span class="keyword">end</span>
+Car.speed = <span class="number">0</span>
+<span class="keyword">function</span> Car:faster(increase)
+  self.speed = self.speed + increase
+  <span class="keyword">return</span> self.speed
+<span class="keyword">end</span>
+
+<span class="keyword">local</span> ferrari = Car.new{ name = <span class="string">"Ferrari"</span> }
+<span class="keyword">local</span> lamborghini = Car.new{ name = <span class="string">"Lamborghini"</span>, speed = <span class="number">50</span> }
+<span class="keyword">local</span> cars = { ferrari, lamborghini }
+
+<span class="global">assert</span>(ferrari.speed == <span class="number">0</span>)
+<span class="global">assert</span>(lamborghini.speed == <span class="number">50</span>)
+tablex.map_named_method(<span class="string">"faster"</span>, cars, <span class="number">10</span>)
+<span class="global">assert</span>(ferrari.speed == <span class="number">10</span>)
+<span class="global">assert</span>(lamborghini.speed == <span class="number">60</span>)</pre>
+    </ul>
 
 </dd>
     <dt>
@@ -1587,15 +1663,19 @@
         </li>
         <li><span class="parameter">fun</span>
             <span class="types"><span class="type">func</span></span>
-         a function with at least one argument
+         a function on the elements; <code>function(value, key, ...)</code>
         </li>
         <li><span class="parameter">...</span>
-         extra arguments
+         extra arguments passed to <code>fun</code>
         </li>
     </ul>
 
 
 
+    <h3>See also:</h3>
+    <ul>
+         <a href="../libraries/pl.tablex.html#transform">tablex.transform</a>
+    </ul>
 
 
 </dd>
@@ -1893,7 +1973,7 @@
 </div> <!-- id="main" -->
 <div id="about">
 <i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
-<i style="float:right;">Last updated 2019-10-14 15:29:36 </i>
+<i style="float:right;">Last updated 2020-08-05 09:53:34 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>
