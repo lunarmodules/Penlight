@@ -47,7 +47,7 @@ path.mkdir = lfs.mkdir
 -- @function rmdir
 path.rmdir = lfs.rmdir
 
---- Gets attributes
+--- Gets attributes.
 -- Implicit link to [`luafilesystem.attributes`](https://keplerproject.github.io/luafilesystem/manual.html#reference)
 -- @function attrib
 path.attrib = attrib
@@ -57,7 +57,7 @@ path.attrib = attrib
 -- @function currentdir
 path.currentdir = currentdir
 
--- Gets symlink attributes
+--- Gets symlink attributes.
 -- Implicit link to [`luafilesystem.symlinkattributes`](https://keplerproject.github.io/luafilesystem/manual.html#reference)
 -- @function link_attrib
 path.link_attrib = link_attrib
@@ -79,7 +79,7 @@ function path.isdir(P)
     return attrib(P,'mode') == 'directory'
 end
 
---- is this a file?.
+--- is this a file?
 -- @string P A file path
 function path.isfile(P)
     assert_string(1,P)
@@ -104,7 +104,7 @@ function path.getsize(P)
     return attrib(P,'size')
 end
 
---- does a path exist?.
+--- does a path exist?
 -- @string P A file path
 -- @return the file path if it exists (either as file, directory, socket, etc), nil otherwise
 function path.exists(P)
@@ -253,7 +253,7 @@ end
 -- @see splitpath
 -- @usage
 -- path.dirname("/some/path/file.txt")   -- "/some/path"
--- path.basename("file.txt")             -- "" (empty string)
+-- path.dirname("file.txt")              -- "" (empty string)
 function path.dirname(P)
     assert_string(1,P)
     local p1 = path.splitpath(P)
@@ -286,8 +286,16 @@ function path.extension(P)
     return p2
 end
 
---- is this an absolute path?.
+--- is this an absolute path?
 -- @string P A file path
+-- @usage
+-- path.isabs("hello/path")    -- false
+-- path.isabs("/hello/path")   -- true
+-- -- Windows;
+-- path.isabs("hello\path")    -- false
+-- path.isabs("\hello\path")   -- true
+-- path.isabs("C:\hello\path") -- true
+-- path.isabs("C:hello\path")  -- false
 function path.isabs(P)
     assert_string(1,P)
     if path.is_windows and at(P,2) == ":" then
