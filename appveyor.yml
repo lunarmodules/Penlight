@@ -1,6 +1,8 @@
 shallow_clone: true
 
 environment:
+  COVERALLS_REPO_TOKEN:
+    secure: /0zDn4cz8xWKQuHfzvAUwyeFSQfLSP+toDR3lRApwWoIeg9O1OvJTnXurB8cssW0
   matrix:
   - LUA: "lua 5.1"
   - LUA: "lua 5.2"
@@ -22,7 +24,17 @@ build_script:
   - luarocks make
 
 test_script:
-  - if "%LUA%"=="lua 5.4" (lua run.lua tests) else (lua run.lua tests --luacov)
+  # LuaCov not yet compatible with Lua 5.4
+  - "if \"%LUA%\"==\"lua 5.4\" (
+      lua run.lua tests
+    ) else (
+      lua run.lua tests --luacov
+    )"
 
 on_success:
-  #- luacov-coveralls
+  # secure coveralls token not available on PR builds, only BRANCH builds
+  - "if not \"%COVERALLS_REPO_TOKEN%\"==\"\" (
+       if not \"%LUA%\"==\"lua 5.4\" (
+         luacov-coveralls
+       )
+    )"
