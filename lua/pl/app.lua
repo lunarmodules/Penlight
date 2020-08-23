@@ -20,13 +20,15 @@ function app.script_name()
     return utils.raise("No script name found")
 end
 
---- add the current script's path to the Lua module path.
+--- prefixes the current script's path to the Lua module path.
 -- Applies to both the source and the binary module paths. It makes it easy for
 -- the main file of a multi-file program to access its modules in the same directory.
 -- `base` allows these modules to be put in a specified subdirectory, to allow for
 -- cleaner deployment and resolve potential conflicts between a script name and its
 -- library directory.
--- @string base optional base directory.
+--
+-- Note: the path is prefixed, so it is searched first when requiring modules.
+-- @string base optional base directory (absolute, or relative path).
 -- @treturn string the current script's path with a trailing slash
 function app.require_here (base)
     local p = path.dirname(app.script_name())
@@ -101,7 +103,7 @@ end
 -- -- execute:  lua -lluacov -e 'print(_VERSION)' myscript.lua
 --
 -- -- myscript.lua
--- print(require("pl.app").lua()))  --> lua -lluacov -e 'print(_VERSION)'
+-- print(require("pl.app").lua())  --> "lua -lluacov -e 'print(_VERSION)'", "lua"
 function app.lua()
     local args = _G.arg
     if not args then
