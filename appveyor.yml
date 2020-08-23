@@ -18,23 +18,19 @@ before_build:
   - pip install hererocks
   - hererocks here --%LUA% -rlatest
   - call here\bin\activate
+  - luarocks install luacheck
+  - "if \"%LUA%\"==\"lua 5.4\" ( luarocks install bit32 )"
   - luarocks install luacov-coveralls
 
 build_script:
   - luarocks make
 
 test_script:
-  # LuaCov not yet compatible with Lua 5.4
-  - "if \"%LUA%\"==\"lua 5.4\" (
-      lua run.lua tests
-    ) else (
-      lua run.lua tests --luacov
-    )"
+  - luacheck .
+  - lua run.lua tests --luacov
 
 on_success:
   # secure coveralls token not available on PR builds, only BRANCH builds
   - "if not \"%COVERALLS_REPO_TOKEN%\"==\"\" (
-       if not \"%LUA%\"==\"lua 5.4\" (
-         luacov-coveralls
-       )
+       luacov-coveralls
     )"

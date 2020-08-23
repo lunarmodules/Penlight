@@ -15,15 +15,15 @@ before_install:
   - pip install hererocks
   - hererocks here -r^ --$LUA
   - source here/bin/activate
-  - if [[ ! "$LUA" == "lua 5.4" ]]; then luarocks install luacheck; fi
+  - luarocks install luacheck
+  - luarocks install luacov-coveralls
 
 install:
   - luarocks make
-  - luarocks install luacov-coveralls
 
 script:
-  - if [[ ! "$LUA" == "lua 5.4" ]]; then luacheck .; fi
-  - if [[ ! "$LUA" == "lua 5.4" ]]; then lua run.lua tests --luacov; else lua run.lua tests; fi
+  - luacheck .
+  - lua run.lua tests --luacov
 
 after_success:
-  - if [[ ! "$LUA" == "lua 5.4" ]]; then luacov-coveralls; fi
+  - luacov-coveralls
