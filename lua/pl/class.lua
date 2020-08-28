@@ -30,6 +30,8 @@ local function call_ctor (c,obj,...)
                 call_ctor(parent_with_init,obj,...)
             end)
         end
+    else
+        rawset(obj,'super',nil)
     end
     local res = init(obj,...)
     rawset(obj,'super',nil)
