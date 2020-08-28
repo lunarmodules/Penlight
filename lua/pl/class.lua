@@ -31,10 +31,15 @@ local function call_ctor (c,obj,...)
             end)
         end
     else
+        -- Without this, calling super() where none exists will sometimes loop and stack overflow
         rawset(obj,'super',nil)
     end
+
     local res = init(obj,...)
-    rawset(obj,'super',nil)
+    if parent_with_init then -- If this execution of call_ctor set a super, unset it
+        rawset(obj,'super',nil)
+    end
+
     return res
 end
 
