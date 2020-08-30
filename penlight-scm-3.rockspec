@@ -1,14 +1,14 @@
 package = "penlight"
-version = "scm-2"
+version = "scm-3"
 
 source = {
-  url = "git://github.com/Tieske/Penlight.git",
+  url = "git://github.com/lunarmodules/Penlight.git",
   branch = "master"
 }
 
 description = {
   summary = "Lua utility libraries loosely based on the Python standard libraries",
-  homepage = "http://tieske.github.io/Penlight",
+  homepage = "https://lunarmodules.github.io/Penlight",
   license = "MIT/X11",
   maintainer = "thijs@thijsschreijer.nl",
   detailed = [[
