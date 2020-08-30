@@ -14,7 +14,7 @@ Here's some examples of things you might want to make a pull request for:
 
 If you have a more deeply-rooted problem with how the library is built or some
 of the stylistic decisions made in the code, it's best to
-[create an issue](https://github.com/Tieske/Penlight/issues) before putting
+[create an issue](https://github.com/lunarmodules/Penlight/issues) before putting
 the effort into a pull request. The same goes for new features - it might be
 best to check the project's direction, existing pull requests, and currently open
 and closed issues first.
@@ -23,7 +23,7 @@ and closed issues first.
 
 Here's how to go about contributing to Penlight:
 
-1. [Fork the repository](https://github.com/Tieske/Penlight/fork) to
+1. [Fork the repository](https://github.com/lunarmodules/Penlight/fork) to
 your Github account.
 2. Create a *topical branch* - a branch whose name is succint but explains what
 you're doing, such as _"added-klingon-cloacking-device"_ - from `master` branch.
@@ -34,8 +34,8 @@ you're doing, such as _"added-klingon-cloacking-device"_ - from `master` branch.
 
 If you wanna be a rockstar;
 
-1. Update the [CHANGELOG.md](https://github.com/Tieske/Penlight/blob/master/CHANGELOG.md) file
-2. [Add tests](https://github.com/Tieske/Penlight/tree/master/tests) that show the defect your fix repairs, or that tests your new feature
+1. Update the [CHANGELOG.md](https://github.com/lunarmodules/Penlight/blob/master/CHANGELOG.md) file
+2. [Add tests](https://github.com/lunarmodules/Penlight/tree/master/tests) that show the defect your fix repairs, or that tests your new feature
 
 Please note - if you want to change multiple things that don't depend on each
 other, make sure you check out the `master` branch again and create a different topical branch

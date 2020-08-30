@@ -8,27 +8,27 @@
 
 ### Changes
 
-  - `pretty.write`: now also sorts non-string keys [#319](https://github.com/Tieske/Penlight/pull/319)
+  - `pretty.write`: now also sorts non-string keys [#319](https://github.com/lunarmodules/Penlight/pull/319)
   - `stringx.count` has an extra option to allow overlapping matches
-    [#326](https://github.com/Tieske/Penlight/pull/326)
+    [#326](https://github.com/lunarmodules/Penlight/pull/326)
   - added an extra changelog entry for `types.is_empty` on the 1.6.0 changelog, due
-    to additional fixed behaviour not called out appropriately [#313](https://github.com/Tieske/Penlight/pull/313)
+    to additional fixed behaviour not called out appropriately [#313](https://github.com/lunarmodules/Penlight/pull/313)
   - `path.packagepath` now returns a proper error message with names tried if
     it fails
 
 ### Fixes
 
   - Fix: `stringx.rfind` now properly works with overlapping matches
-    [#314](https://github.com/Tieske/Penlight/pull/314)
+    [#314](https://github.com/lunarmodules/Penlight/pull/314)
   - Fix: `package.searchpath` (in module `pl.compat`)
-    [#328](https://github.com/Tieske/Penlight/pull/328)
+    [#328](https://github.com/lunarmodules/Penlight/pull/328)
   - Fix: `path.isabs` now reports drive + relative-path as `false`, eg. "c:some/path" (Windows only)
   - Fix: OpenResty coroutines, used by `dir.dirtree`, `pl.lexer`, `pl.permute`. If
-    available the original coroutine functions are now used [#329](https://github.com/Tieske/Penlight/pull/329)
+    available the original coroutine functions are now used [#329](https://github.com/lunarmodules/Penlight/pull/329)
   - Fix: in `pl.strict` also predefine global `_PROMPT2`
   - Fix: in `pl.strict` apply `tostring` to the given name, in case it is not a string.
   - Fix: the lexer would not recognize numbers without leading zero; "-.123".
-    See [#315](https://github.com/Tieske/Penlight/issues/315)
+    See [#315](https://github.com/lunarmodules/Penlight/issues/315)
 
 ## 1.7.0 (2019-10-14)
 
@@ -45,7 +45,7 @@
   - `utils.quit`: exit message is no longer required, and closes the Lua state (on 5.2+).
   - `utils.assert_arg` and `utils.assert_string`: now return the validated value
   - `pl.compat`: now exports the `jit` and `jit52` flags
-  - `pretty.write`: now sorts the output for easier diffs [#293](https://github.com/Tieske/Penlight/pull/293)
+  - `pretty.write`: now sorts the output for easier diffs [#293](https://github.com/lunarmodules/Penlight/pull/293)
 
 ### Fixes
 
@@ -56,14 +56,14 @@
   - `types.to_bool` will now compare case-insensitive for the extra passed strings
   - `app.require_here` will now properly handle an absolute base path
   - `stringx.split` will no longer append an empty match if the number of requested
-    elements has already been reached [#295](https://github.com/Tieske/Penlight/pull/295)
+    elements has already been reached [#295](https://github.com/lunarmodules/Penlight/pull/295)
   - `path.common_prefix` and `path.relpath` return the result in the original casing
-    (only impacted Windows) [#297](https://github.com/Tieske/Penlight/pull/297)
+    (only impacted Windows) [#297](https://github.com/lunarmodules/Penlight/pull/297)
   - `dir.copyfile`, `dir.movefile`, and `dir.makepath` create the new file/path with
     the requested casing, and no longer force lowercase (only impacted Windows)
-    [#297](https://github.com/Tieske/Penlight/pull/297)
-  - added a missing assertion on `path.getmtime` [#291](https://github.com/Tieske/Penlight/pull/291)
-  - `stringx.rpartition` returned bad results on a not-found [#299](https://github.com/Tieske/Penlight/pull/299)
+    [#297](https://github.com/lunarmodules/Penlight/pull/297)
+  - added a missing assertion on `path.getmtime` [#291](https://github.com/lunarmodules/Penlight/pull/291)
+  - `stringx.rpartition` returned bad results on a not-found [#299](https://github.com/lunarmodules/Penlight/pull/299)
 
 ## 1.6.0 (2018-11-23)
 
