@@ -59,7 +59,7 @@ Python standard libraries.
 
 ## License
 
-Penlight is distributed under the [MIT license](https://github.com/lunarmodules/Penlight/blob/master/LICENSE.md)
+Penlight is distributed under the [MIT license](LICENSE.md).
 
 ## Installation
 
@@ -83,7 +83,7 @@ through LuaRocks.  Then it's a simple matter of running `ldoc .` from the repo.
 
 ## Contributing
 
-Contributions are most welcome, please check the [contribution guidelines](https://github.com/lunarmodules/Penlight/blob/master/CONTRIBUTING.md).
+Contributions are most welcome, please check the [contribution guidelines](CONTRIBUTING.md).
 
 ## Running tests
 
@@ -91,5 +91,4 @@ Execute `lua run.lua tests` to run the tests. Execute `lua run.lua examples` to 
 
 ## History
 
-For a complete history of the development of Penlight, please check the
-[changelog](https://github.com/lunarmodules/Penlight/blob/master/CHANGELOG.md).
+For a complete history of the development of Penlight, please check the [changelog](CHANGELOG.md).
