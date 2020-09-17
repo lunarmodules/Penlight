@@ -4,10 +4,6 @@ max_line_length = false
 
 globals = {
     "ngx",
-    "coroutine._wrap",
-    "coroutine._yield",
-    "coroutine._create",
-    "coroutine._resume",
 }
 
 not_globals = {

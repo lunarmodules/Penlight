@@ -17,9 +17,9 @@ local remove = os.remove
 local append = table.insert
 local assert_arg,assert_string,raise = utils.assert_arg,utils.assert_string,utils.raise
 
--- check on OpenResty coroutine versions, and use originals if possible
-local wrap = coroutine._wrap or coroutine.wrap
-local yield = coroutine._yield or coroutine.yield
+-- check for OpenResty coroutine versions
+local wrap = require("pl.compat").wrap
+local yield = coroutine.yield
 
 
 local dir = {}

@@ -7,11 +7,9 @@ local utils = require 'pl.utils'
 local copy = tablex.deepcopy
 local append = table.insert
 local assert_arg = utils.assert_arg
-
--- check on OpenResty coroutine versions, and use originals if possible
-local co_create = coroutine._create or coroutine.create
-local co_yield = coroutine._yield or coroutine.yield
-local co_resume = coroutine._resume or coroutine.resume
+local co_create = coroutine.create
+local co_yield = coroutine.yield
+local co_resume = coroutine.resume
 
 
 local permute = {}
