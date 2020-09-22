@@ -24,9 +24,9 @@ local strfind = string.find
 local strsub = string.sub
 local append = table.insert
 
--- check on OpenResty coroutine versions, and use originals if possible
-local wrap = coroutine._wrap or coroutine.wrap
-local yield = coroutine._yield or coroutine.yield
+-- check for OpenResty coroutine versions
+local wrap = require("pl.compat").wrap
+local yield = coroutine.yield
 
 
 local function assert_arg(idx,val,tp)

@@ -1,10 +1,16 @@
 # Changelog
 
-## 1.x.x (upcoming)
+## 1.9.0 (2020-09-22)
+
+### New features
+
+  - `compat.wrap` a `coroutine.wrap` implementation that works like plain Lua
+    on OpenResty. (#342)
 
 ## Fixes
 
-  - In `pl.class`, `_init` can now be inherited from grandparent (or older ancestor) classes. (#289)
+  - In `pl.class`, `_init` can now be inherited from grandparent (or older ancestor) classes. [#289](https://github.com/lunarmodules/Penlight/pull/289)
+  - Using `compat.wrap` it now fixes `dir.dirtree`, `pl.lexer` on OpenResty. [#342](https://github.com/lunarmodules/Penlight/pull/342)
 
 ## 1.8.0 (2020-08-05)
 
