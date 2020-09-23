@@ -24,10 +24,6 @@ local strfind = string.find
 local strsub = string.sub
 local append = table.insert
 
--- check for OpenResty coroutine versions
-local wrap = require("pl.compat").wrap
-local yield = coroutine.yield
-
 
 local function assert_arg(idx,val,tp)
     if type(val) ~= tp then
@@ -59,14 +55,14 @@ local PREPRO = '^#.-[^\\]\n'
 local plain_matches,lua_matches,cpp_matches,lua_keyword,cpp_keyword
 
 local function tdump(tok)
-    return yield(tok,tok)
+    return tok,tok
 end
 
 local function ndump(tok,options)
     if options and options.number then
         tok = tonumber(tok)
     end
-    return yield("number",tok)
+    return "number",tok
 end
 
 -- regular strings, single or double quotes; usually we want them
@@ -75,7 +71,7 @@ local function sdump(tok,options)
     if options and options.string then
         tok = tok:sub(2,-2)
     end
-    return yield("string",tok)
+    return "string",tok
 end
 
 -- long Lua strings need extra work to get rid of the quotes
@@ -90,45 +86,45 @@ local function sdump_l(tok,options,findres)
             tok = tok:sub(2)
         end
     end
-    return yield("string",tok)
+    return "string",tok
 end
 
 local function chdump(tok,options)
     if options and options.string then
         tok = tok:sub(2,-2)
     end
-    return yield("char",tok)
+    return "char",tok
 end
 
 local function cdump(tok)
-    return yield('comment',tok)
+    return "comment",tok
 end
 
 local function wsdump (tok)
-    return yield("space",tok)
+    return "space",tok
 end
 
 local function pdump (tok)
-    return yield('prepro',tok)
+    return "prepro",tok
 end
 
 local function plain_vdump(tok)
-    return yield("iden",tok)
+    return "iden",tok
 end
 
 local function lua_vdump(tok)
     if lua_keyword[tok] then
-        return yield("keyword",tok)
+        return "keyword",tok
     else
-        return yield("iden",tok)
+        return "iden",tok
     end
 end
 
 local function cpp_vdump(tok)
     if cpp_keyword[tok] then
-        return yield("keyword",tok)
+        return "keyword",tok
     else
-        return yield("iden",tok)
+        return "iden",tok
     end
 end
 
@@ -168,45 +164,60 @@ function lexer.scan(s,matches,filter,options)
         end
         matches = plain_matches
     end
-    local function lex(first_arg)
-        local line_nr = 0
-        local next_line = file and file:read()
-        local sz = file and 0 or #s
-        local idx = 1
 
-        -- res is the value used to resume the coroutine.
-        local function handle_requests(res)
-            while res do
-                local tp = type(res)
-                -- insert a token list
-                if tp == 'table' then
-                    res = yield('','')
-                    for _,t in ipairs(res) do
-                        res = yield(t[1],t[2])
-                    end
-                elseif tp == 'string' then -- or search up to some special pattern
-                    local i1,i2 = strfind(s,res,idx)
-                    if i1 then
-                        local tok = strsub(s,i1,i2)
-                        idx = i2 + 1
-                        res = yield('',tok)
-                    else
-                        res = yield('','')
-                        idx = sz + 1
-                    end
-                else
-                    res = yield(line_nr,idx)
-                end
+    local line_nr = 0
+    local next_line = file and file:read()
+    local sz = file and 0 or #s
+    local idx = 1
+
+    local tlist_i
+    local tlist
+
+    local first_hit = true
+
+    local function iter(res)
+        local tp = type(res)
+
+        if tlist then -- returning the inserted token list
+            local cur = tlist[tlist_i]
+            if cur then
+                tlist_i = tlist_i + 1
+                return cur[1], cur[2]
+            else
+                tlist = nil
             end
         end
 
-        handle_requests(first_arg)
-        if not file then line_nr = 1 end
+        if tp == 'string' then -- search up to some special pattern
+            local i1,i2 = strfind(s,res,idx)
+            if i1 then
+                local tok = strsub(s,i1,i2)
+                idx = i2 + 1
+                return '', tok
+            else
+                idx = sz + 1
+                return '', ''
+            end
 
-        while true do
+        elseif tp == 'table' then -- insert a token list
+            tlist_i = 1
+            tlist = res
+            return '', ''
+
+        elseif tp ~= 'nil' then -- return position
+            return line_nr, idx
+
+        else -- look for next token
+            if first_hit then
+                if not file then line_nr = 1 end
+                first_hit = false
+            end
+
             if idx > sz then
                 if file then
-                    if not next_line then return end
+                    if not next_line then
+                      return -- past the end of file, done
+                    end
                     s = next_line
                     line_nr = line_nr + 1
                     next_line = file:read()
@@ -215,9 +226,7 @@ function lexer.scan(s,matches,filter,options)
                     end
                     idx, sz = 1, #s
                 else
-                    while true do
-                        handle_requests(yield())
-                    end
+                    return -- past the end of input, done
                 end
             end
 
@@ -229,23 +238,27 @@ function lexer.scan(s,matches,filter,options)
                 if i1 then
                     local tok = strsub(s,i1,i2)
                     idx = i2 + 1
-                    local res
+                    local ret1, ret2
                     if not (filter and filter[fun]) then
                         lexer.finished = idx > sz
-                        res = fun(tok, options, findres)
+                        ret1, ret2 = fun(tok, options, findres)
                     end
                     if not file and tok:find("\n") then
                         -- Update line number.
                         local _, newlines = tok:gsub("\n", {})
                         line_nr = line_nr + newlines
                     end
-                    handle_requests(res)
-                    break
+                    if ret1 then
+                        return ret1, ret2 -- found a match
+                    else
+                        return iter() -- tail-call to try again
+                    end
                 end
             end
         end
     end
-    return wrap(lex)
+
+    return iter
 end
 
 local function isstring (s)
