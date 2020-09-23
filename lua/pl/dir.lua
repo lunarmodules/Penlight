@@ -17,10 +17,8 @@ local remove = os.remove
 local append = table.insert
 local assert_arg,assert_string,raise = utils.assert_arg,utils.assert_string,utils.raise
 
--- check for OpenResty coroutine versions
-local wrap = require("pl.compat").wrap
-local yield = coroutine.yield
-
+local exists, isdir = path.exists, path.isdir
+local sep = path.sep
 
 local dir = {}
 
@@ -418,36 +416,54 @@ function dir.clonetree (path1,path2,file_fun,verbose)
     return true,faildirs,failfiles
 end
 
+
+-- each entry of the stack is an array with three items:
+-- 1. the name of the directory
+-- 2. the lfs iterator function
+-- 3. the lfs iterator userdata
+local function treeiter(iterstack)
+    local diriter = iterstack[#iterstack]
+    if not diriter then
+      return -- done
+    end
+
+    local dirname = diriter[1]
+    local entry = diriter[2](diriter[3])
+    if not entry then
+      table.remove(iterstack)
+      return treeiter(iterstack) -- tail-call to try next
+    end
+
+    if entry ~= "." and entry ~= ".." then
+        entry = dirname .. sep .. entry
+        if exists(entry) then  -- Just in case a symlink is broken.
+            local is_dir = isdir(entry)
+            if is_dir then
+                table.insert(iterstack, { entry, ldir(entry) })
+            end
+            return entry, is_dir
+        end
+    end
+
+    return treeiter(iterstack) -- tail-call to try next
+end
+
+
 --- return an iterator over all entries in a directory tree
 -- @string d a directory
 -- @return an iterator giving pathname and mode (true for dir, false otherwise)
 -- @raise d must be a non-empty string
 function dir.dirtree( d )
     assert( d and d ~= "", "directory parameter is missing or empty" )
-    local exists, isdir = path.exists, path.isdir
-    local sep = path.sep
 
     local last = sub ( d, -1 )
     if last == sep or last == '/' then
         d = sub( d, 1, -2 )
     end
 
-    local function yieldtree( dir )
-        for entry in ldir( dir ) do
-            if entry ~= "." and entry ~= ".." then
-                entry = dir .. sep .. entry
-                if exists(entry) then  -- Just in case a symlink is broken.
-                    local is_dir = isdir(entry)
-                    yield( entry, is_dir )
-                    if is_dir then
-                        yieldtree( entry )
-                    end
-                end
-            end
-        end
-    end
+    local iterstack = { {d, ldir(d)} }
 
-    return wrap( function() yieldtree( d ) end )
+    return treeiter, iterstack
 end
 
 
