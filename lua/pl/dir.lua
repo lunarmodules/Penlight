@@ -68,13 +68,13 @@ function dir.filter(filenames,pattern)
     return makelist(res)
 end
 
-local function _listfiles(dir,filemode,match)
+local function _listfiles(dirname,filemode,match)
     local res = {}
     local check = utils.choose(filemode,path.isfile,path.isdir)
-    if not dir then dir = '.' end
-    for f in ldir(dir) do
+    if not dirname then dirname = '.' end
+    for f in ldir(dirname) do
         if f ~= '.' and f ~= '..' then
-            local p = path.join(dir,f)
+            local p = path.join(dirname,f)
             if check(p) and (not match or match(f)) then
                 append(res,p)
             end
@@ -84,12 +84,12 @@ local function _listfiles(dir,filemode,match)
 end
 
 --- return a list of all files in a directory which match a shell pattern.
--- @string dir A directory. If not given, all files in current directory are returned.
+-- @string dirname A directory. If not given, all files in current directory are returned.
 -- @string mask  A shell pattern. If not given, all files are returned.
 -- @treturn {string} list of files
--- @raise dir and mask must be strings
-function dir.getfiles(dir,mask)
-    assert_dir(1,dir)
+-- @raise dirname and mask must be strings
+function dir.getfiles(dirname,mask)
+    assert_dir(1,dirname)
     if mask then assert_string(2,mask) end
     local match
     if mask then
@@ -98,16 +98,16 @@ function dir.getfiles(dir,mask)
             return path.normcase(f):find(mask)
         end
     end
-    return _listfiles(dir,true,match)
+    return _listfiles(dirname,true,match)
 end
 
 --- return a list of all subdirectories of the directory.
--- @string dir A directory
+-- @string dirname A directory
 -- @treturn {string} a list of directories
 -- @raise dir must be a a valid directory
-function dir.getdirectories(dir)
-    assert_dir(1,dir)
-    return _listfiles(dir,false)
+function dir.getdirectories(dirname)
+    assert_dir(1,dirname)
+    return _listfiles(dirname,false)
 end
 
 local alien,ffi,ffi_checked,CopyFile,MoveFile,GetLastError,win32_errors,cmd_tmpfile
@@ -255,12 +255,12 @@ function dir.movefile (src,dest)
     return file_op(false,src,dest,0)
 end
 
-local function _dirfiles(dir,attrib)
+local function _dirfiles(dirname,attrib)
     local dirs = {}
     local files = {}
-    for f in ldir(dir) do
+    for f in ldir(dirname) do
         if f ~= '.' and f ~= '..' then
-            local p = path.join(dir,f)
+            local p = path.join(dirname,f)
             local mode = attrib(p,'mode')
             if mode=='directory' then
                 append(dirs,f)
