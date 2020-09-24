@@ -1,8 +1,10 @@
 # Penlight Lua Libraries
 
-[![Build Status](https://travis-ci.org/lunarmodules/Penlight.svg?branch=master)](https://travis-ci.org/lunarmodules/Penlight)
-[![Coverage Status](https://coveralls.io/repos/github/lunarmodules/Penlight/badge.svg?branch=master)](https://coveralls.io/github/lunarmodules/Penlight?branch=master)
-[![AppVeyor status](https://ci.appveyor.com/api/projects/status/d59xoj32dbiylaq3/branch/master?svg=true)](https://ci.appveyor.com/project/lunarmodules/penlight/branch/master)
+[![Travis-CI Status](https://travis-ci.org/lunarmodules/Penlight.svg?branch=master)](https://travis-ci.org/lunarmodules/Penlight)
+[![Coverage Status](https://coveralls.io/repos/github/lunarmodules/Penlight/badge.svg)](https://coveralls.io/github/lunarmodules/Penlight)
+[![AppVeyor status](https://ci.appveyor.com/api/projects/status/4jxg4ruktwi00up2/branch/master?svg=true)](https://ci.appveyor.com/project/Tieske/penlight-ta1gi/branch/master)
+
+
 
 ## Why a new set of libraries?
 
