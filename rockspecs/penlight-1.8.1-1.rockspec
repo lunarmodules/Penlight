@@ -1,14 +1,14 @@
 package = "penlight"
-version = "1.9.0-1"
+version = "1.8.1-1"
 
 source = {
-  url = "git://github.com/Tieske/Penlight.git",
-  tag = "1.9.0"
+  url = "git://github.com/lunarmodules/Penlight.git",
+  tag = "1.8.1"
 }
 
 description = {
   summary = "Lua utility libraries loosely based on the Python standard libraries",
-  homepage = "http://tieske.github.io/Penlight",
+  homepage = "https://lunarmodules.github.io/Penlight",
   license = "MIT/X11",
   maintainer = "thijs@thijsschreijer.nl",
   detailed = [[
