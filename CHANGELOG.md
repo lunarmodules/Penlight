@@ -2,6 +2,11 @@
 
 see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) for release instructions
 
+## 1.9.1 (2020-09-24)
+
+ - released to superseed the 1.9.0 version which was retagged in git after some
+   distro's already had picked it up. This version is identical to 1.8.1.
+
 ## 1.8.1 (2020-09-24) (replacing a briefly released but broken 1.9.0 version)
 
 ## Fixes
