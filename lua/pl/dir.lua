@@ -271,15 +271,6 @@ local function _dirfiles(dirname,attrib)
 end
 
 
-local function _walker(root,bottom_up,attrib)
-    local dirs,files = _dirfiles(root,attrib)
-    if not bottom_up then yield(root,dirs,files) end
-    for i,d in ipairs(dirs) do
-        _walker(root..path.sep..d,bottom_up,attrib)
-    end
-    if bottom_up then yield(root,dirs,files) end
-end
-
 --- return an iterator which walks through a directory tree starting at root.
 -- The iterator returns (root,dirs,files)
 -- Note that dirs and files are lists of names (i.e. you must say path.join(root,d)
@@ -301,7 +292,28 @@ function dir.walk(root,bottom_up,follow_links)
     else
         attrib = path.link_attrib
     end
-    return wrap(function () _walker(root,bottom_up,attrib) end)
+
+    local to_scan = { root }
+    local to_return = {}
+    local iter = function()
+        while #to_scan > 0 do
+            local current_root = table.remove(to_scan)
+            local dirs,files = _dirfiles(current_root, attrib)
+            for _, d in ipairs(dirs) do
+                table.insert(to_scan, current_root..path.sep..d)
+            end
+            if not bottom_up then
+                return current_root, dirs, files
+            else
+                table.insert(to_return, { current_root, dirs, files })
+            end
+        end
+        if #to_return > 0 then
+            return utils.unpack(table.remove(to_return))
+        end
+    end
+
+    return iter
 end
 
 --- remove a whole directory tree.
