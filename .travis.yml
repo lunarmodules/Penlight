@@ -24,6 +24,7 @@ install:
 script:
   - luacheck .
   - lua run.lua tests --luacov
+  - lua run.lua examples
 
 after_success:
   - luacov-coveralls
