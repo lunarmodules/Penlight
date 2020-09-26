@@ -271,55 +271,29 @@ local function _dirfiles(dirname,attrib)
 end
 
 
-do
-  local function _walker(root,bottom_up,attrib)
+local function _walker(root,bottom_up,attrib)
     local dirs,files = _dirfiles(root,attrib)
-    local i = 0
-    local before = bottom_up
-    local after = not bottom_up
-    local sub_iter
-
-    return function()
-      if before then
-        before = false
-        return root,dirs,files
-      end
-
-      while i <= #dirs do
-        if sub_iter then
-          local a, b, c = sub_iter()
-          if a then
-            return a, b, c
-          end
-        end
-        i = i + 1
-        local subdir = dirs[i]
-        if subdir then
-          sub_iter = _walker(root..path.sep..subdir,bottom_up,attrib)
-        end
-      end
-
-      if after then
-        after = false
-        return root,dirs,files
-      end
+    if not bottom_up then yield(root,dirs,files) end
+    for i,d in ipairs(dirs) do
+        _walker(root..path.sep..d,bottom_up,attrib)
     end
-  end
+    if bottom_up then yield(root,dirs,files) end
+end
 
-  --- return an iterator which walks through a directory tree starting at root.
-  -- The iterator returns (root,dirs,files)
-  -- Note that dirs and files are lists of names (i.e. you must say path.join(root,d)
-  -- to get the actual full path)
-  -- If bottom_up is false (or not present), then the entries at the current level are returned
-  -- before we go deeper. This means that you can modify the returned list of directories before
-  -- continuing.
-  -- This is a clone of os.walk from the Python libraries.
-  -- @string root A starting directory
-  -- @bool bottom_up False if we start listing entries immediately.
-  -- @bool follow_links follow symbolic links
-  -- @return an iterator returning root,dirs,files
-  -- @raise root must be a directory
-  function dir.walk(root,bottom_up,follow_links)
+--- return an iterator which walks through a directory tree starting at root.
+-- The iterator returns (root,dirs,files)
+-- Note that dirs and files are lists of names (i.e. you must say path.join(root,d)
+-- to get the actual full path)
+-- If bottom_up is false (or not present), then the entries at the current level are returned
+-- before we go deeper. This means that you can modify the returned list of directories before
+-- continuing.
+-- This is a clone of os.walk from the Python libraries.
+-- @string root A starting directory
+-- @bool bottom_up False if we start listing entries immediately.
+-- @bool follow_links follow symbolic links
+-- @return an iterator returning root,dirs,files
+-- @raise root must be a directory
+function dir.walk(root,bottom_up,follow_links)
     assert_dir(1,root)
     local attrib
     if path.is_windows or not follow_links then
@@ -327,11 +301,8 @@ do
     else
         attrib = path.link_attrib
     end
-
-    return _walker(root,bottom_up,attrib)
-  end
+    return wrap(function () _walker(root,bottom_up,attrib) end)
 end
-
 
 --- remove a whole directory tree.
 -- @string fullpath A directory path
