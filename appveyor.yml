@@ -28,6 +28,7 @@ build_script:
 test_script:
   - luacheck .
   - lua run.lua tests --luacov
+  - lua run.lua examples
 
 on_success:
   # secure coveralls token not available on PR builds, only BRANCH builds
