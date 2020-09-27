@@ -23,8 +23,7 @@ install:
 
 script:
   - luacheck .
-  - lua run.lua tests --luacov
-  - lua run.lua examples
+  - lua run.lua --luacov
 
 after_success:
   - luacov-coveralls
