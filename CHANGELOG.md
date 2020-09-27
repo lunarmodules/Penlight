@@ -2,7 +2,7 @@
 
 see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) for release instructions
 
-## unreleased
+## 1.9.1 (2020-09-27)
 
  - fix: dir.walk [#350](https://github.com/lunarmodules/Penlight/pull/350)
 

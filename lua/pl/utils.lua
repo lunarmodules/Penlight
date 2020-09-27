@@ -18,7 +18,7 @@ local operators
 local _function_factories = {}
 
 
-local utils = { _VERSION = "1.9.1" }
+local utils = { _VERSION = "1.9.2" }
 for k, v in pairs(compat) do utils[k] = v  end
 
 --- Some standard patterns
