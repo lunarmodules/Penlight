@@ -132,6 +132,7 @@ local function _class(base,c_arg,c)
     -- can define class by passing it a plain table of methods
     local plain = type(base) == 'table' and not getmetatable(base)
     if plain then
+        if type(c) == "table" then error("base is not a class",3) end
         c = base
         base = c._base
     else
