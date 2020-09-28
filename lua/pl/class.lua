@@ -117,9 +117,9 @@ local function _class_tostring (obj)
     return str
 end
 
-local function tupdate(td,ts,dont_override)
+local function populate(td,ts)
     for k,v in pairs(ts) do
-        if not dont_override or td[k] == nil then
+        if td[k] == nil then
             td[k] = v
         end
     end
@@ -136,13 +136,13 @@ local function _class(base,c_arg,c)
         base = c._base
     else
         c = c or {}
+        c._base = base
     end
 
     if type(base) == 'table' then
-        -- our new class is a shallow copy of the base class!
-        -- but be careful not to wipe out any methods we have been given at this point!
-        tupdate(c,base,plain)
-        c._base = base
+        -- Shallow-copy methods from the base class into our target class being
+        -- careful not to wipe out any methods explicitly passed as input
+        populate(c,base)
         -- inherit the 'not found' handler, if present
         if rawget(c,'_handler') then mt.__index = c._handler end
     elseif base ~= nil then
