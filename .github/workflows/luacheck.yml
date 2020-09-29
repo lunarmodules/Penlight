@@ -18,4 +18,6 @@ jobs:
     - name: Setup dependencies
       run: luarocks install luacheck
     - name: Run Code Linter
-      run: luacheck .
+      run: |
+        luacheck .
+        luarocks lint *.rockspec

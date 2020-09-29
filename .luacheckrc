@@ -11,6 +11,12 @@ not_globals = {
     "table.getn",
 }
 
+include_files = {
+  "**/*.lua",
+  "*.rockspec",
+  ".luacheckrc",
+  "config.lp",
+}
 
 exclude_files = {
     "tests/*.lua",
