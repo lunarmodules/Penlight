@@ -18,7 +18,6 @@ before_build:
   - pip install hererocks
   - hererocks here --%LUA% -rlatest
   - call here\bin\activate
-  - luarocks install luacheck
   - "if \"%LUA%\"==\"lua 5.4\" ( luarocks install bit32 )"
   - luarocks install luacov-coveralls
 
@@ -26,7 +25,6 @@ build_script:
   - luarocks make
 
 test_script:
-  - luacheck .
   - lua run.lua tests --luacov
   - lua run.lua examples
 
