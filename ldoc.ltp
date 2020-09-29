@@ -35,15 +35,14 @@
 <br/>
 <h1>$(ldoc.project)</h1>
 
-<p>
-  <a href="https://github.com/lunarmodules/Penlight">GitHub Project</a>
-</p>
-
-# if not ldoc.single and module then -- reference back to project index
 <ul>
-  <li><a href="../$(ldoc.output).html">Index</a></li>
-</ul>
+  <li><a href="https://github.com/lunarmodules/Penlight">GitHub Project</a></li>
+# if not ldoc.single and module then -- reference back to project index
+  <li><a href="../$(ldoc.output).html">Documentation</a></li>
+# else
+  <li><a href="$(ldoc.output).html">Documentation</a></li>
 # end
+</ul>
 
 # --------- contents of module -------------
 # if module and not ldoc.no_summary and #module.items > 0 then
