@@ -45,15 +45,15 @@ end
 
 --- initializes an __instance__ upon creation.
 -- @function class:_init
--- @param ... parameters passed to the constructor
+-- @param ... input parameters passed to the constructor
 -- @usage local Cat = class()
 -- function Cat:_init(name)
 --   --self:super(name)   -- call the ancestor initializer if needed
 --   self.name = name
 -- end
 --
--- local pussycat = Cat("pussycat")
--- print(pussycat.name)  --> pussycat
+-- local pussycat = Cat("sparkles")
+-- print(pussycat.name)  --> sparkles
 
 --- checks whether an __instance__ is derived from some class.
 -- Works the other way around as `class_of`. It has two ways of using;
@@ -126,10 +126,10 @@ local function populate(td,ts)
 end
 
 local function _class(base,c_arg,c)
-    -- the class `c` will be the metatable for all its objects,
-    -- and they will look up their methods in it.
+    -- the input table `c`, if provided, will become the the class object
     local mt = {}   -- a metatable for the class to support __call and _handler
-    -- can define class by passing it a plain table of methods
+    -- alternatively if base is not a class and no input table c is provided
+    -- then base is used as a template and converted to a class object
     local plain = type(base) == 'table' and not getmetatable(base)
     if plain then
         if type(c) == "table" then error("base is not a class",3) end
@@ -210,9 +210,9 @@ end
 -- The second form creates a variable `Name` in the current environment set
 -- to the class, and also sets `_name`.
 -- @function class
--- @param base optional base class
--- @param c_arg optional parameter to class constructor
--- @param c optional table to be used as class
+-- @param base optional base class to derive from
+-- @param c_arg optional parameter passed to class constructor
+-- @param c optional table of methods to be used populate the class
 local class
 class = setmetatable({},{
     __call = function(fun,...)
