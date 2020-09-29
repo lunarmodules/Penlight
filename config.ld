@@ -4,6 +4,7 @@ full_description = 'The documentation is available @{01-introduction.md|here}.'
 title = 'Penlight Documentation'
 dir = 'docs'
 style = '!fixed'
+template = true
 use_markdown_titles = true
 topics = 'docs_topics'
 examples = {'./examples','./tests/test-data.lua'}
