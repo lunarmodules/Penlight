@@ -154,7 +154,6 @@ local function _class(base,c_arg,c)
     setmetatable(c,mt)
     if not plain then
         if base and rawget(base,'_init') then c._parent_with_init = base end -- For super and inherited init
-        c._init = nil
     end
 
     if base and rawget(base,'_class_init') then
