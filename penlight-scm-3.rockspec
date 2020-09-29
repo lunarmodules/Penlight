@@ -12,10 +12,11 @@ description = {
   license = "MIT/X11",
   maintainer = "thijs@thijsschreijer.nl",
   detailed = [[
-Penlight is a set of pure Lua libraries for making it easier to work with common tasks like
-iterating over directories, reading configuration files and the like. Provides functional operations
-on tables and sequences.
-]]
+      Penlight is a set of pure Lua libraries focusing on input data handling
+      (such as reading configuration files), functional programming
+      (such as map, reduce, placeholder expressions,etc), and OS path management.
+      Much of the functionality is inspired by the Python standard libraries.
+    ]]
 }
 
 dependencies = {
