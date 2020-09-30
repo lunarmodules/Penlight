@@ -1,0 +1,23 @@
+name: Luacheck
+
+on: [push, pull_request]
+
+jobs:
+  luacheck:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Setup Lua
+      uses: leafo/gh-actions-lua@v6
+      with:
+        luaVersion: 5.4
+    - name: Setup Lua Rocks
+      uses: leafo/gh-actions-luarocks@v2
+    - name: Setup dependencies
+      run: luarocks install luacheck
+    - name: Run Code Linter
+      run: |
+        luacheck .
+        luarocks lint *.rockspec
