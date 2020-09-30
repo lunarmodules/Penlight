@@ -1,0 +1,6 @@
+return {
+  default = {
+    lpath = "./lua/?.lua;./lua/?/init.lua",
+  }
+}
+-- vim: ft=lua

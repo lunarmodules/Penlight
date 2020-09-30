@@ -26,6 +26,14 @@ dependencies = {
   "luafilesystem"
 }
 
+test_dependencies = {
+  "busted",
+}
+
+test = {
+  type = "busted",
+}
+
 build = {
   type = "builtin",
   modules = {
