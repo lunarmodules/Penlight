@@ -15,7 +15,6 @@ include_files = {
   "**/*.lua",
   "*.rockspec",
   ".luacheckrc",
-  "config.lp",
 }
 
 exclude_files = {
