@@ -1,6 +1,6 @@
 rockspec_format = "3.0"
 package = "penlight"
-version = "scm-3"
+version = "dev-1"
 
 source = {
   url = "git://github.com/lunarmodules/Penlight.git",
