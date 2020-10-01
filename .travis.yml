@@ -16,11 +16,13 @@ before_install:
   - hererocks here -r^ --$LUA
   - source here/bin/activate
   - luarocks install luacov-coveralls
+  - luarocks install busted
 
 install:
   - luarocks make
 
 script:
+  - busted -c -v
   - lua run.lua tests --luacov
   - lua run.lua examples
 
