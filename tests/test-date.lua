@@ -1,6 +1,5 @@
 local test = require 'pl.test'
 local app = require 'pl.app'
-local utils = require 'pl.utils'
 local asserteq, assertmatch = test.asserteq, test.assertmatch
 local dump = require 'pl.pretty'.dump
 local T = require 'pl.test'.tuple
@@ -121,8 +120,4 @@ local now,utc  = Date(), Date 'utc'
 asserteq(tostring(now - utc),'zero')
 
 if app.platform() ~= 'Windows' then
-    print(app.lua())
-    if not utils.execute (app.lua().." -e 'print(1)'") then
-        error "buggered!"
-    end
 end
