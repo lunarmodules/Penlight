@@ -260,4 +260,3 @@ do -- app.parse_args
     asserteq(s, {})
 
 end
-

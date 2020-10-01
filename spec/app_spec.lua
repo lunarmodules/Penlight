@@ -13,3 +13,15 @@ describe("pl.app.lua", function ()
   end)
 
 end)
+
+describe("pl.app.platform", function ()
+
+  -- TODO: Find a reliable alternate way to determine platform to check that
+  -- this is returning the right answer, not just any old answer.
+  it("should at least return a valid platform", function ()
+    local platforms = { Linux = true, OSX = true, Windows = true }
+    local detected = app.platform()
+    assert.is.truthy(platforms[detected])
+  end)
+
+end)
