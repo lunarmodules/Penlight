@@ -1,5 +1,6 @@
+rockspec_format = "3.0"
 package = "penlight"
-version = "scm-3"
+version = "dev-1"
 
 source = {
   url = "git://github.com/lunarmodules/Penlight.git",
@@ -8,17 +9,20 @@ source = {
 
 description = {
   summary = "Lua utility libraries loosely based on the Python standard libraries",
-  homepage = "https://lunarmodules.github.io/Penlight",
-  license = "MIT/X11",
-  maintainer = "thijs@thijsschreijer.nl",
   detailed = [[
-Penlight is a set of pure Lua libraries for making it easier to work with common tasks like
-iterating over directories, reading configuration files and the like. Provides functional operations
-on tables and sequences.
-]]
+      Penlight is a set of pure Lua libraries focusing on input data handling
+      (such as reading configuration files), functional programming
+      (such as map, reduce, placeholder expressions,etc), and OS path management.
+      Much of the functionality is inspired by the Python standard libraries.
+    ]],
+  license = "MIT/X11",
+  homepage = "https://lunarmodules.github.io/Penlight",
+  issues_url = "https://github.com/lunarmodules/Penlight/issues",
+  maintainer = "thijs@thijsschreijer.nl",
 }
 
 dependencies = {
+  "lua >= 5.1",
   "luafilesystem"
 }
 
