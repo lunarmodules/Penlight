@@ -2,6 +2,18 @@
 
 see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) for release instructions
 
+## unreleased
+
+ - deprecate: `permute.iter`, renamed to `permute.order_iter` (removal later)
+   [#360](https://github.com/lunarmodules/Penlight/pull/360)
+ - deprecate: `permute.table`, renamed to `permute.order_table` (removal later)
+   [#360](https://github.com/lunarmodules/Penlight/pull/360)
+ - feat: `permute.list_iter` to iterate over different sets of values
+   [#360](https://github.com/lunarmodules/Penlight/pull/360)
+ - feat: `permute.list_table` generate table with different sets of values
+   [#360](https://github.com/lunarmodules/Penlight/pull/360)
+
+
 ## 1.9.1 (2020-09-27)
 
  - fix: dir.walk [#350](https://github.com/lunarmodules/Penlight/pull/350)

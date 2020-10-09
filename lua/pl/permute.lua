@@ -65,10 +65,10 @@ function permute.order_iter(a)
 end
 
 
---- construct a table containing all the permutations of a list.
+--- construct a table containing all the order-permutations of a list.
 -- @param a list-like table
 -- @return a table of tables
--- @usage permute.table {1,2,3} --> {{2,3,1},{3,2,1},{3,1,2},{1,3,2},{2,1,3},{1,2,3}}
+-- @usage permute.order_table {1,2,3} --> {{2,3,1},{3,2,1},{3,1,2},{1,3,2},{2,1,3},{1,2,3}}
 function permute.order_table (a)
     assert_arg(1,a,'table')
     local res = {}
@@ -80,9 +80,90 @@ end
 
 
 
+--- an iterator over all permutations of the elements of the given lists.
+-- @param ... list-like tables, they are nil-safe if a length-field `n` is provided (see `utils.pack`)
+-- @return an iterator which provides the next permutation as return values in the same order as the provided lists, preceeded by an index
+-- @usage
+-- local strs = utils.pack("one", nil, "three")  -- adds an 'n' field for nil-safety
+-- local bools = utils.pack(true, false)
+-- local iter = permute.list_iter(strs, bools)
+--
+-- print(iter())    --> 1, three, false
+-- print(iter())    --> 2, three, true
+-- print(iter())    --> 3, nil, false
+-- print(iter())    --> 4, nil, true
+-- print(iter())    --> 5, one, false
+-- print(iter())    --> 6, one, true
+function permute.list_iter(...)
+  local elements = {...}
+  local pointers = {}
+  for i, list in ipairs(elements) do
+    assert_arg(i,list,'table')
+    pointers[i] = list.n or #list
+  end
+  local count = 0
+
+  return function()
+    if pointers[1] == 0 then return end -- we're done
+    count = count + 1
+    local r = { n = #elements }
+    local cascade_down = true
+    for i = #elements, 1, -1 do
+      r[i] = elements[i][pointers[i]]
+      if cascade_down then
+        pointers[i] = pointers[i] - 1
+        if pointers[i] > 0 then
+          -- this list is not done yet, stop cascade
+          cascade_down = false
+        else
+          -- this list is done
+          if i ~= 1 then
+            -- reset pointer
+            pointers[i] = elements[i].n or #elements[i]
+          end
+        end
+      end
+    end
+    return count, utils.unpack(r)
+  end
+end
+
+
+
+--- construct a table containing all the permutations of a set of lists.
+-- @param ... list-like tables, they are nil-safe if a length-field `n` is provided
+-- @return a list of lists, the sub-lists have an 'n' field for nil-safety
+-- @usage
+-- local strs = utils.pack("one", nil, "three")  -- adds an 'n' field for nil-safety
+-- local bools = utils.pack(true, false)
+-- local results = permute.list_table(strs, bools)
+-- -- results = {
+-- --   { "three", false, n = 2 },
+-- --   { "three, true, n = 2 },
+-- --   { nil, false, n = 2 },
+-- --   { nil, true, n = 2 },
+-- --   { "one, false, n = 2 },
+-- --   { "one, true, n = 2 }
+-- -- }
+function permute.list_table(...)
+  local iter = permute.list_iter(...)
+  local results = {}
+  local i = 1
+  while true do
+    local values = utils.pack(iter())
+    if values[1] == nil then return results end
+    for i = 1, values.n do values[i] = values[i+1] end
+    values.n = values.n - 1
+    results[i] = values
+    i = i + 1
+  end
+end
+
+
 -- backward compat, to be deprecated
 
 --- deprecated.
+-- @param ...
 -- @see permute.order_iter
 function permute.iter(...)
   --TODO: add deprecation warning here
@@ -90,6 +171,7 @@ function permute.iter(...)
 end
 
 --- deprecated.
+-- @param ...
 -- @see permute.order_iter
 function permute.table(...)
   --TODO: add deprecation warning here
