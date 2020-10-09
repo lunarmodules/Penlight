@@ -557,6 +557,7 @@ local function _string_lambda(f)
     end
 end
 
+
 --- an anonymous function as a string. This string is either of the form
 -- '|args| expression' or is a function of one argument, '_'
 -- @param lf function as a string
@@ -587,6 +588,7 @@ function utils.bind1 (fn,p)
     return function(...) return fn(p,...) end
 end
 
+
 --- bind the second argument of the function to a value.
 -- @param fn a function of at least two values (may be an operator string)
 -- @param p a value
@@ -603,6 +605,78 @@ end
 function utils.bind2 (fn,p)
     fn = utils.function_arg(1,fn)
     return function(x,...) return fn(x,p,...) end
+end
+
+
+
+
+--- Deprecation
+-- @section deprecation
+
+
+--- A deprecation warning function, to be overridden.
+-- An application can override this function to support proper output of
+-- deprecation warnings. The warnings can be generated from libraries or
+-- functions by calling `utils.raise_deprecation`. By default this function
+-- doesn't do anything.
+--
+-- Note: only applications should override this function, libraries should not.
+-- @string msg the message to display/log
+-- @string trace the traceback from where the deprecated element was invoked
+-- @usage
+-- function utils.deprecation_warning(msg, trace)
+--   io.stderr:write(msg .. "\n" .. trace .."\n")
+-- end
+function utils.deprecation_warning(msg, trace)
+  -- this does nothing by default
+end
+
+
+--- raises a deprecation warning.
+-- For options see the usage example below.
+--
+-- Note: the `opts.version_deprecated` field is the last version in which
+-- a feature or option was NOT YET deprecated! Because when writing the code it
+-- is quite often not known in what version the code will land. But the last
+-- released version is usually known.
+-- @param opts options table
+-- @see utils.deprecation_warning
+-- @usage
+-- function stringx.islower(str)
+--   deprecation_warning {
+--     source = "Penlight " .. utils._VERSION,                  -- optional
+--     message = "function 'islower' was renamed to 'is_lower'" -- required
+--     version_removed = "2.0.0",                               -- optional
+--     version_deprecated = "1.2.3",                            -- optional
+--   }
+--   return stringx.is_lower(str)
+-- end
+-- -- output: "[Penlight 1.9.2] function 'islower' was renamed to 'is_lower' (deprecated after 1.2.3, scheduled for removal in 2.0.0)"
+function utils.raise_deprecation(opts)
+  utils.assert_arg(1, opts, "table")
+  if type(opts.message) ~= "string" then
+    error("field 'message' of the options table must be a string", 2)
+  end
+  local trace = debug.traceback("", 2):match("[\n%s]*(.-)$")
+  local msg
+  if opts.version_deprecated and opts.version_removed then
+    msg = (" (deprecated after %s, scheduled for removal in %s)"):format(
+      tostring(opts.version_deprecated), tostring(opts.version_removed))
+  elseif opts.version_deprecated then
+    msg = (" (deprecated after %s)"):format(tostring(opts.version_deprecated))
+  elseif opts.version_removed then
+    msg = (" (scheduled for removal in %s)"):format(tostring(opts.version_removed))
+  else
+    msg = ""
+  end
+
+  msg = opts.message .. msg
+
+  if opts.source then
+    msg = "[" .. opts.source .."] " .. msg
+  end
+
+  utils.deprecation_warning(msg, trace)
 end
 
 return utils
