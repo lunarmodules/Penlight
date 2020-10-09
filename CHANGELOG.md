@@ -4,6 +4,9 @@ see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) fo
 
 ## unreleased
 
+ - refactor: Begin migration of test suite to Busted
+ - docs: Make documentation pages more navigable
+ - chore: Remove incrementing version from development Rockspec (`SCM-3`->`dev-1`)
  - deprecate: `permute.iter`, renamed to `permute.order_iter` (removal later)
    [#360](https://github.com/lunarmodules/Penlight/pull/360)
  - deprecate: `permute.table`, renamed to `permute.order_table` (removal later)
