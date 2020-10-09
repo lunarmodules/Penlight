@@ -3,11 +3,11 @@ local tcopy = require("pl.tablex").copy
 
 describe("pl.permute", function()
 
-  describe("iter", function()
+  describe("order_iter", function()
 
     it("returns all order combinations", function()
       local result = {}
-      for list in permute.iter({"one", "two", "three"}) do
+      for list in permute.order_iter({"one", "two", "three"}) do
         result[#result+1] = tcopy(list)
       end
       assert.same({
@@ -40,7 +40,7 @@ describe("pl.permute", function()
 
     it("returns nil on empty list", function()
       local result = {}
-      for list in permute.iter({}) do
+      for list in permute.order_iter({}) do
         result[#result+1] = tcopy(list)
       end
       assert.equal(0, #result)
@@ -50,10 +50,10 @@ describe("pl.permute", function()
 
 
 
-  describe("table", function()
+  describe("order_table", function()
 
     it("returns all order combinations", function()
-      local result = permute.table({"one", "two", "three"})
+      local result = permute.order_table({"one", "two", "three"})
       assert.same({
         [1] = {
            [1] = 'two',
@@ -83,7 +83,7 @@ describe("pl.permute", function()
 
 
     it("returns empty table on empty input list", function()
-      local result = permute.table({})
+      local result = permute.order_table({})
       assert.same({}, result)
     end)
 
