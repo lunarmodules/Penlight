@@ -14,7 +14,7 @@ see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) fo
    [#360](https://github.com/lunarmodules/Penlight/pull/360)
 
 
-## 1.9.1 (2020-09-27)
+## 1.9.2 (2020-09-27)
 
  - fix: dir.walk [#350](https://github.com/lunarmodules/Penlight/pull/350)
 
