@@ -166,7 +166,13 @@ end
 -- @param ...
 -- @see permute.order_iter
 function permute.iter(...)
-  --TODO: add deprecation warning here
+  utils.deprecation_warning {
+    source = "Penlight " .. utils._VERSION,
+    message = "function 'iter' was renamed to 'order_iter'",
+    version_removed = "2.0.0",
+    version_deprecated = "1.9.2",
+  }
+
   return permute.order_iter(...)
 end
 
@@ -174,7 +180,13 @@ end
 -- @param ...
 -- @see permute.order_iter
 function permute.table(...)
-  --TODO: add deprecation warning here
+  utils.deprecation_warning {
+    source = "Penlight " .. utils._VERSION,
+    message = "function 'table' was renamed to 'order_table'",
+    version_removed = "2.0.0",
+    version_deprecated = "1.9.2",
+  }
+
   return permute.order_table(...)
 end
 
