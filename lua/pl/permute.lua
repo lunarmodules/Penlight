@@ -12,11 +12,11 @@ local assert_arg = utils.assert_arg
 local permute = {}
 
 
---- an iterator over all permutations of the elements of a list.
+--- an iterator over all order-permutations of the elements of a list.
 -- Please note that the same list is returned each time, so do not keep references!
 -- @param a list-like table
 -- @return an iterator which provides the next permutation as a list
-function permute.iter(a)
+function permute.order_iter(a)
     assert_arg(1,a,'table')
 
     local t = #a
@@ -69,13 +69,31 @@ end
 -- @param a list-like table
 -- @return a table of tables
 -- @usage permute.table {1,2,3} --> {{2,3,1},{3,2,1},{3,1,2},{1,3,2},{2,1,3},{1,2,3}}
-function permute.table (a)
+function permute.order_table (a)
     assert_arg(1,a,'table')
     local res = {}
     for t in permute.iter(a) do
         append(res,copy(t))
     end
     return res
+end
+
+
+
+-- backward compat, to be deprecated
+
+--- deprecated.
+-- @see permute.order_iter
+function permute.iter(...)
+  --TODO: add deprecation warning here
+  return permute.order_iter(...)
+end
+
+--- deprecated.
+-- @see permute.order_iter
+function permute.table(...)
+  --TODO: add deprecation warning here
+  return permute.order_table(...)
 end
 
 return permute
