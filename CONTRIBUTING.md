@@ -46,7 +46,8 @@ before making more changes - that way we can take in each change separately.
   - create a new release branch
   - update `./lua/pl/utils.lua` (the `_VERSION` constant)
   - update `./config.ld` with the new version number
-  - create a new rockspec file for the version in `./rockspecs`
+  - copy dev rockspec file to release filename in in `./rockspecs` and match version in rockspec
+  - [until we hit 2.0.0] edit rockspec, drop `description.issue_url`, `test_dependencies`, `test`, and `rockspec_format` keys
   - check the `./CHANGELOG.md` files for completeness
   - commit the release related changes
   - render the documentation using `ldoc .`
