@@ -5,18 +5,44 @@ describe("pl.utils", function ()
   local old_fn, last_msg, last_trace
 
   before_each(function()
-    old_fn = utils.deprecation_warning
+    old_fn = function() end
     last_msg = nil
     last_trace = nil
-    utils.deprecation_warning = function(msg, trace)
+    utils.set_deprecation_func(function(msg, trace)
       last_msg = msg
       last_trace = trace
-    end
+    end)
   end)
 
 
   after_each(function()
     utils.deprecation_warning = old_fn
+  end)
+
+
+
+  describe("set_deprecation_func", function ()
+
+    it("accepts nil as callback", function()
+      assert.has.no.error(function()
+        utils.set_deprecation_func()
+      end)
+    end)
+
+
+    it("accepts function as callback", function()
+      assert.has.no.error(function()
+        utils.set_deprecation_func(function() end)
+      end)
+    end)
+
+
+    it("fails on non-functions", function()
+      assert.has.error(function()
+        utils.set_deprecation_func("not a function")
+      end, "argument 1 expected a 'function', got a 'string'")
+    end)
+
   end)
 
 
@@ -46,7 +72,7 @@ describe("pl.utils", function ()
     it("should output the deprecated version", function ()
       utils.raise_deprecation {
         message = "hello world",
-        version_deprecated = "2.0.0",
+        deprecated_after = "2.0.0",
       }
       assert.equal("hello world (deprecated after 2.0.0)", last_msg)
     end)
@@ -64,7 +90,7 @@ describe("pl.utils", function ()
     it("should output the deprecated and removal versions", function ()
       utils.raise_deprecation {
         message = "hello world",
-        version_deprecated = "2.0.0",
+        deprecated_after = "2.0.0",
         version_removed = "3.0.0",
       }
       assert.equal("hello world (deprecated after 2.0.0, scheduled for removal in 3.0.0)", last_msg)
@@ -75,7 +101,7 @@ describe("pl.utils", function ()
       utils.raise_deprecation {
         source = "MyApp 1.2.3",
         message = "hello world",
-        version_deprecated = "2.0.0",
+        deprecated_after = "2.0.0",
         version_removed = "3.0.0",
       }
       assert.equal("[MyApp 1.2.3] hello world (deprecated after 2.0.0, scheduled for removal in 3.0.0)", last_msg)
@@ -87,7 +113,7 @@ describe("pl.utils", function ()
         utils.raise_deprecation {
           source = "MyApp 1.2.3",
           message = "hello world",
-          version_deprecated = "2.0.0",
+          deprecated_after = "2.0.0",
           version_removed = "3.0.0",
         }
       end

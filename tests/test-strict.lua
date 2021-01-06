@@ -1,3 +1,4 @@
+require 'pl.compat' -- require this one before loading strict
 local strict = require 'pl.strict'
 local test = require 'pl.test'
 local app = require 'pl.app'
