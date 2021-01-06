@@ -317,7 +317,8 @@ function dir.walk(root,bottom_up,follow_links)
 end
 
 --- remove a whole directory tree.
--- @string fullpath A directory path
+-- Symlinks in the tree will be deleted without following them.
+-- @string fullpath A directory path (must be an actual directory, not a symlink)
 -- @return true or nil
 -- @return error if failed
 -- @raise fullpath must be a string
@@ -325,12 +326,25 @@ function dir.rmtree(fullpath)
     assert_dir(1,fullpath)
     if path.islink(fullpath) then return false,'will not follow symlink' end
     for root,dirs,files in dir.walk(fullpath,true) do
-        for i,f in ipairs(files) do
-            local res, err = remove(path.join(root,f))
-            if not res then return nil,err end
+        if path.islink(root) then
+            -- sub dir is a link, remove link, do not follow
+            if is_windows then
+                -- Windows requires using "rmdir". Deleting the link like a file
+                -- will instead delete all files from the target directory!!
+                local res, err = rmdir(root)
+                if not res then return nil,err .. ": " .. root end
+            else
+                local res, err = remove(root)
+                if not res then return nil,err .. ": " .. root end
+            end
+        else
+            for i,f in ipairs(files) do
+                local res, err = remove(path.join(root,f))
+                if not res then return nil,err .. ": " .. path.join(root,f) end
+            end
+            local res, err = rmdir(root)
+            if not res then return nil,err .. ": " .. root end
         end
-        local res, err = rmdir(root)
-        if not res then return nil,err end
     end
     return true
 end

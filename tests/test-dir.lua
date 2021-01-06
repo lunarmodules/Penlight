@@ -4,6 +4,7 @@ local dir = require( "pl.dir" )
 local file = require( "pl.file" )
 local path = require( "pl.path" )
 local asserteq = require( "pl.test" ).asserteq
+local lfs = require("lfs")
 
 asserteq(dir.fnmatch("foobar", "foo*bar"), true)
 asserteq(dir.fnmatch("afoobar", "foo*bar"), false)
@@ -154,6 +155,45 @@ file.delete( fileName )
 file.delete( newFileName )
 
 
+
+
+-- Test rmtree -----------------------------------------
+do
+  local dirName = path.tmpname()
+  os.remove(dirName)
+  assert(dir.makepath(dirName))
+  assert(file.write(path.normpath(dirName .. "/file_base.txt"), "hello world"))
+  assert(dir.makepath(path.normpath(dirName .. "/sub1")))
+  assert(file.write(path.normpath(dirName .. "/sub1/file_sub1.txt"), "hello world"))
+  assert(dir.makepath(path.normpath(dirName .. "/sub2")))
+  assert(file.write(path.normpath(dirName .. "/sub2/file_sub2.txt"), "hello world"))
+
+
+  local linkTarget = path.tmpname()
+  os.remove(linkTarget)
+  assert(dir.makepath(linkTarget))
+  local linkFile = path.normpath(linkTarget .. "/file.txt")
+  assert(file.write(linkFile, "hello world"))
+
+  local linkSource = path.normpath(dirName .. "/link1")
+  assert(lfs.link(linkTarget, linkSource, true))
+
+  -- test: rmtree will not follow symlinks
+  local ok, err = dir.rmtree(linkSource)
+  asserteq(ok, false)
+  asserteq(err, "will not follow symlink")
+
+  -- test: rmtree removes a tree without following symlinks in that tree
+  local ok, err = dir.rmtree(dirName)
+  asserteq(err, nil)
+  asserteq(ok, true)
+
+  asserteq(path.exists(dirName), false)  -- tree is gone, including symlink
+  assert(path.exists(linkFile), "expected linked-to file to still exist")  -- symlink target file is still there
+
+  -- cleanup
+  assert(dir.rmtree(linkTarget))
+end
 
 
 -- have NO idea why forcing the return code is necessary here (Windows 7 64-bit)

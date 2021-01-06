@@ -12,7 +12,10 @@ see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) fo
    [#360](https://github.com/lunarmodules/Penlight/pull/360)
  - feat: `permute.list_table` generate table with different sets of values
    [#360](https://github.com/lunarmodules/Penlight/pull/360)
- - feat: deprecation functionality `utils.raise_deprecation` [#361](https://github.com/lunarmodules/Penlight/pull/361)
+ - feat: deprecation functionality `utils.raise_deprecation`
+   [#361](https://github.com/lunarmodules/Penlight/pull/361)
+ - fix: `dir.rmtree` failed to remove symlinks to directories
+   [#365](https://github.com/lunarmodules/Penlight/pull/365)
 
 
 ## 1.9.2 (2020-09-27)
