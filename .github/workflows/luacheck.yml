@@ -10,11 +10,11 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
     - name: Setup Lua
-      uses: leafo/gh-actions-lua@v6
+      uses: leafo/gh-actions-lua@v8
       with:
         luaVersion: 5.4
     - name: Setup Lua Rocks
-      uses: leafo/gh-actions-luarocks@v2
+      uses: leafo/gh-actions-luarocks@v4
     - name: Setup dependencies
       run: luarocks install luacheck
     - name: Run Code Linter
