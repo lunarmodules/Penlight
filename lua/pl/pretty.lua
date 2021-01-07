@@ -225,6 +225,29 @@ function pretty.write (tbl,space,not_clever)
     end
 
 
+    -- safe versions for iterators since 5.3+ honors metamethods that can throw
+    -- errors
+    local ipairs = function(t)
+        local i = 0
+        local ok, v
+        local getter = function() return t[i] end
+        return function()
+                i = i + 1
+                ok, v = pcall(getter)
+                if v == nil or not ok then return end
+                return i, t[i]
+            end
+    end
+    local pairs = function(t)
+        local k, v, ok
+        local getter = function() return next(t, k) end
+        return function()
+                ok, k, v = pcall(getter)
+                if not ok then return end
+                return k, v
+            end
+    end
+
     local writeit
     writeit = function (t,oldindent,indent)
         local tp = type(t)

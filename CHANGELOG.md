@@ -24,6 +24,8 @@ see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) fo
    [#361](https://github.com/lunarmodules/Penlight/pull/361)
  - fix: `dir.rmtree` failed to remove symlinks to directories
    [#365](https://github.com/lunarmodules/Penlight/pull/365)
+ - fix: `pretty.write` could error out on failing metamethods (Lua 5.3+)
+   [#368](https://github.com/lunarmodules/Penlight/pull/368)
 
 
 ## 1.9.2 (2020-09-27)

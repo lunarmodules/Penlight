@@ -103,3 +103,15 @@ do  -- issue #203, item 3
   local t = {}; t[t] = 1
   pretty.write(t)  -- should not crash
 end
+
+
+-- pretty.write fails if an __index metatable raises an error #257
+-- only applies to 5.3+ where iterators respect metamethods
+do
+  local t = setmetatable({},{
+    __index = function(self, key)
+      error("oops... couldn't find " .. tostring(key))
+    end
+  })
+  asserteq(pretty.write(t), "{\n}")
+end
