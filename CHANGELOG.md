@@ -8,6 +8,8 @@ see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) fo
    [#360](https://github.com/lunarmodules/Penlight/pull/360)
  - deprecate: `permute.table`, renamed to `permute.order_table` (removal later)
    [#360](https://github.com/lunarmodules/Penlight/pull/360)
+ - deprecate: `Date` module (removal later)
+   [#367](https://github.com/lunarmodules/Penlight/pull/367)
  - feat: `permute.list_iter` to iterate over different sets of values
    [#360](https://github.com/lunarmodules/Penlight/pull/360)
  - feat: `permute.list_table` generate table with different sets of values

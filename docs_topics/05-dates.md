@@ -2,6 +2,8 @@
 
 <a id="date"></a>
 
+NOTE: the Date module is deprecated
+
 ### Creating and Displaying Dates
 
 The `Date` class provides a simplified way to work with [date and
