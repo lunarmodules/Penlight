@@ -4,6 +4,7 @@
 [![AppVeyor build status](https://img.shields.io/appveyor/build/Tieske/penlight-ta1gi/master?logo=appveyor)](https://ci.appveyor.com/project/Tieske/penlight-ta1gi/branch/master)
 [![Coveralls code coverage](https://img.shields.io/coveralls/github/lunarmodules/Penlight?logo=coveralls)](https://coveralls.io/github/lunarmodules/Penlight)
 [![Luacheck](https://github.com/lunarmodules/Penlight/workflows/Luacheck/badge.svg)](https://github.com/lunarmodules/Penlight/actions)
+[![SemVer](https://img.shields.io/github/v/tag/lunarmodules/Penlight?color=brightgreen&label=SemVer&logo=semver&sort=semver)](CHANGELOG.md)
 
 ## Why a new set of libraries?
 
@@ -57,6 +58,36 @@ Python standard libraries.
    * `func`: symbolic manipulation of expressions and lambda expressions
    * `utils`: `utils.string_lambda` converts short strings like '|x| x^2' into functions
    * `comprehension`: list comprehensions: `C'x for x=1,4'()=={1,2,3,4}`
+
+## Versioning
+
+Penlight is strictly versioned according to [Semantic Versioning](https://semver.org/).
+
+In scope of the version:
+ * functionality provided by Penlight modules/classes
+ * based on stock Lua PuC-Rio or LuaJIT
+
+Not in scope of the version:
+ * Documentation
+ * Deprecation warnings (by default to `stderr`)
+
+### Deprecating functionality
+
+Any version may deprecate functionality. So new deprecation notices may appear
+in major, minor, and patch releases. Final removal of functionality (assuming it
+is a breaking change) will only be done in a major version.
+
+It is strongly suggested to use the deprecation warning mechanism to test usage
+of deprecated functionalities when upgrading. This is done by enabling the
+warning system (in Lua 5.4, or the Penlight compatibility function for earlier
+versions):
+
+```lua
+require "pl.compat"
+warn "@on"
+```
+
+See `pl.utils.raise_deprecation` for more info.
 
 ## License
 

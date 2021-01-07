@@ -1,5 +1,9 @@
 # Changelog
 
+Versioning is strictly according to [Semantic Versioning](https://semver.org/),
+see the [README.md](README.md#versioning) for details on version scoping and
+deprecation policy.
+
 see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) for release instructions
 
 ## unreleased
