@@ -613,71 +613,95 @@ end
 --- Deprecation
 -- @section deprecation
 
+do
+  -- the default implementation
+  local deprecation_func = function(msg, trace)
+    warn(msg, "\n", trace)  -- luacheck: ignore
+  end
 
---- A deprecation warning function, to be overridden.
--- An application can override this function to support proper output of
--- deprecation warnings. The warnings can be generated from libraries or
--- functions by calling `utils.raise_deprecation`. By default this function
--- doesn't do anything.
---
--- Note: only applications should override this function, libraries should not.
--- @string msg the message to display/log
--- @string trace the traceback from where the deprecated element was invoked
--- @usage
--- function utils.deprecation_warning(msg, trace)
---   io.stderr:write(msg .. "\n" .. trace .."\n")
--- end
-function utils.deprecation_warning(msg, trace)
-  -- this does nothing by default
+  --- Sets a deprecation warning function.
+  -- An application can override this function to support proper output of
+  -- deprecation warnings. The warnings can be generated from libraries or
+  -- functions by calling `utils.raise_deprecation`. The default function
+  -- will write to the 'warn' system (introduced in Lua 5.4, or the compatibility
+  -- function from the `compat` module for earlier versions).
+  --
+  -- Note: only applications should set/change this function, libraries should not.
+  -- @function a callback with signature: `function(msg, trace)` both arguments are strings.
+  -- @see utils.raise_deprecation
+  -- @usage
+  -- -- write to the Nginx logs with OpenResty
+  -- utils.set_deprecation_func(function(msg, trace)
+  --   ngx.log(ngx.WARN, msg, " ", trace)
+  -- end)
+  --
+  -- -- disable deprecation warnings
+  -- utils.deprecation_warning()
+  function utils.set_deprecation_func(func)
+    if func == nil then
+      deprecation_func = function() end
+    else
+      utils.assert_arg(1, func, "function")
+      deprecation_func = func
+    end
+  end
+
+  --- raises a deprecation warning.
+  -- For options see the usage example below.
+  --
+  -- Note: the `opts.deprecated_after` field is the last version in which
+  -- a feature or option was NOT YET deprecated! Because when writing the code it
+  -- is quite often not known in what version the code will land. But the last
+  -- released version is usually known.
+  -- @param opts options table
+  -- @see utils.set_deprecation_func
+  -- @usage
+  -- warn("@on")   -- enable Lua warnings, they are usually off by default
+  --
+  -- function stringx.islower(str)
+  --   raise_deprecation {
+  --     source = "Penlight " .. utils._VERSION,                  -- optional
+  --     message = "function 'islower' was renamed to 'is_lower'" -- required
+  --     version_removed = "2.0.0",                               -- optional
+  --     deprecated_after = "1.2.3",                              -- optional
+  --   }
+  --   return stringx.is_lower(str)
+  -- end
+  -- -- output: "[Penlight 1.9.2] function 'islower' was renamed to 'is_lower' (deprecated after 1.2.3, scheduled for removal in 2.0.0)"
+  function utils.raise_deprecation(opts)
+    utils.assert_arg(1, opts, "table")
+    if type(opts.message) ~= "string" then
+      error("field 'message' of the options table must be a string", 2)
+    end
+    local trace = debug.traceback("", 2):match("[\n%s]*(.-)$")
+    local msg
+    if opts.deprecated_after and opts.version_removed then
+      msg = (" (deprecated after %s, scheduled for removal in %s)"):format(
+        tostring(opts.deprecated_after), tostring(opts.version_removed))
+    elseif opts.deprecated_after then
+      msg = (" (deprecated after %s)"):format(tostring(opts.deprecated_after))
+    elseif opts.version_removed then
+      msg = (" (scheduled for removal in %s)"):format(tostring(opts.version_removed))
+    else
+      msg = ""
+    end
+
+    msg = opts.message .. msg
+
+    if opts.source then
+      msg = "[" .. opts.source .."] " .. msg
+    else
+      if msg:sub(1,1) == "@" then
+        -- in Lua 5.4 "@" prefixed messages are control messages to the warn system
+        error("message cannot start with '@'", 2)
+      end
+    end
+
+    deprecation_func(msg, trace)
+  end
+
 end
 
-
---- raises a deprecation warning.
--- For options see the usage example below.
---
--- Note: the `opts.version_deprecated` field is the last version in which
--- a feature or option was NOT YET deprecated! Because when writing the code it
--- is quite often not known in what version the code will land. But the last
--- released version is usually known.
--- @param opts options table
--- @see utils.deprecation_warning
--- @usage
--- function stringx.islower(str)
---   deprecation_warning {
---     source = "Penlight " .. utils._VERSION,                  -- optional
---     message = "function 'islower' was renamed to 'is_lower'" -- required
---     version_removed = "2.0.0",                               -- optional
---     version_deprecated = "1.2.3",                            -- optional
---   }
---   return stringx.is_lower(str)
--- end
--- -- output: "[Penlight 1.9.2] function 'islower' was renamed to 'is_lower' (deprecated after 1.2.3, scheduled for removal in 2.0.0)"
-function utils.raise_deprecation(opts)
-  utils.assert_arg(1, opts, "table")
-  if type(opts.message) ~= "string" then
-    error("field 'message' of the options table must be a string", 2)
-  end
-  local trace = debug.traceback("", 2):match("[\n%s]*(.-)$")
-  local msg
-  if opts.version_deprecated and opts.version_removed then
-    msg = (" (deprecated after %s, scheduled for removal in %s)"):format(
-      tostring(opts.version_deprecated), tostring(opts.version_removed))
-  elseif opts.version_deprecated then
-    msg = (" (deprecated after %s)"):format(tostring(opts.version_deprecated))
-  elseif opts.version_removed then
-    msg = (" (scheduled for removal in %s)"):format(tostring(opts.version_removed))
-  else
-    msg = ""
-  end
-
-  msg = opts.message .. msg
-
-  if opts.source then
-    msg = "[" .. opts.source .."] " .. msg
-  end
-
-  utils.deprecation_warning(msg, trace)
-end
 
 return utils
 

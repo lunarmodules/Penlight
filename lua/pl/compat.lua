@@ -218,4 +218,33 @@ if not package.searchpath then
     end
 end
 
+--- Global exported functions (for Lua < 5.4)
+-- @section lua54
+
+--- raise a warning message.
+-- This functions mimics the `warn` function added in Lua 5.4.
+-- @function warn
+-- @param ... any arguments
+if not warn then  -- luacheck: ignore
+    local enabled = false
+    function warn(arg1, ...)  -- luacheck: ignore
+        if type(arg1) == "string" and arg1:sub(1, 1) == "@" then
+            -- control message
+            if arg1 == "@on" then
+                enabled = true
+                return
+            end
+            if arg1 == "@off" then
+                enabled = false
+                return
+            end
+            return -- ignore unknown control messages
+        end
+        if enabled then
+          io.stderr:write("Lua warning: ", arg1, ...)
+          io.stderr:write("\n")
+        end
+    end
+end
+
 return compat
