@@ -255,9 +255,10 @@ function app.parse_args (args,flags_with_values, flags_valid)
                 i = i + 1
             else
                 -- a value can also be indicated with = or :
-                local var,val =  utils.splitv (v,'[=:]')
-                var = var or v
-                val = val or true
+                local parts =  utils.split (v,'[=:]', false, 2)
+                var = parts[1] or v
+                val = parts[2] or true
+
                 if not is_long then
                     if #var > 1 then
                         if var:find '.%d+' then -- short flag, number value
