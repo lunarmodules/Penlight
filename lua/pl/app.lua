@@ -256,8 +256,8 @@ function app.parse_args (args,flags_with_values, flags_valid)
             else
                 -- a value can also be indicated with = or :
                 local parts =  utils.split (v,'[=:]', false, 2)
-                var = parts[1] or v
-                val = parts[2] or true
+                local var = parts[1] or v
+                local val = parts[2] or true
 
                 if not is_long then
                     if #var > 1 then
