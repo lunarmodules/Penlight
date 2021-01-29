@@ -6,7 +6,7 @@ deprecation policy.
 
 see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) for release instructions
 
-## unreleased
+## 1.10.0 unreleased
 
  - deprecate: `permute.iter`, renamed to `permute.order_iter` (removal later)
    [#360](https://github.com/lunarmodules/Penlight/pull/360)
@@ -30,6 +30,9 @@ see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) fo
    [#368](https://github.com/lunarmodules/Penlight/pull/368)
  - fix: `app.parse` now correctly parses values containing '=' or ':'
    [#373](https://github.com/lunarmodules/Penlight/pull/373)
+ - fix: `dir.makepath` failed to create top-level directories
+   [#372](https://github.com/lunarmodules/Penlight/pull/372)
+
 
 ## 1.9.2 (2020-09-27)
 
