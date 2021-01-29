@@ -464,11 +464,12 @@ end
 
 --- split a string into a list of strings separated by a delimiter.
 -- @param s The input string
--- @param re A Lua string pattern; defaults to '%s+'
--- @param plain don't use Lua patterns
--- @param n optional maximum number of splits
+-- @param re optional A Lua string pattern; defaults to '%s+'
+-- @param plain optional If truthy don't use Lua patterns
+-- @param n optional maximum number of elements (if there are more, the last will remian un-split)
 -- @return a list-like table
 -- @raise error if s is not a string
+-- @see splitv
 function utils.split(s,re,plain,n)
     utils.assert_string(1,s)
     local find,sub,append = string.find, string.sub, table.insert
@@ -496,13 +497,19 @@ function utils.split(s,re,plain,n)
 end
 
 --- split a string into a number of return values.
+-- Identical to `split` but returns multiple sub-strings instead of
+-- a single list of sub-strings.
 -- @param s the string
--- @param re the delimiter, default space
+-- @param re A Lua string pattern; defaults to '%s+'
+-- @param plain don't use Lua patterns
+-- @param n optional maximum number of splits
 -- @return n values
--- @usage first,next = splitv('jane:doe',':')
+-- @usage first,next = splitv('user=jane=doe','=', false, 2)
+-- assert(first == "user")
+-- assert(next == "jane=doe")
 -- @see split
-function utils.splitv (s,re)
-    return _unpack(utils.split(s,re))
+function utils.splitv (s,re, plain, n)
+    return _unpack(utils.split(s,re, plain, n))
 end
 
 

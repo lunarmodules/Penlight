@@ -92,6 +92,12 @@ asserteq(split("hello,dolly,",","),{"hello","dolly"})
 
 local first,second = utils.splitv("hello:dolly",":")
 asserteq(T(first,second),T("hello","dolly"))
+local first,second = utils.splitv("hello:dolly:parton",":", false, 2)
+asserteq(T(first,second),T("hello","dolly:parton"))
+local first,second,third = utils.splitv("hello=dolly:parton","[:=]")
+asserteq(T(first,second,third),T("hello","dolly","parton"))
+local first,second = utils.splitv("hello=dolly:parton","[:=]", false, 2)
+asserteq(T(first,second),T("hello","dolly:parton"))
 
 ----- table of values to table of strings
 asserteq(utils.array_tostring{1,2,3},{"1","2","3"})
