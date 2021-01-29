@@ -366,8 +366,10 @@ do
       end
       if not path.isdir(p) then
           local subp = p:match(dirpat)
-          local ok, err = _makepath(subp)
-          if not ok then return nil, err end
+          if subp then
+            local ok, err = _makepath(subp)
+            if not ok then return nil, err end
+          end
           return mkdir(p)
       else
           return true
