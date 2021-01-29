@@ -178,6 +178,13 @@ do -- app.parse_args
     asserteq(s, {})
 
 
+    -- flag_with_values missing value at end
+    local args = utils.split("-a -b")
+    local t,s = app.parse_args(args, { "b" })
+    asserteq(t, nil)
+    asserteq(s, "no value for 'b'")
+
+
     -- error on an unknown flag
     local args = utils.split("-a -b value -c")
     local t,s = app.parse_args(args, { b = true }, { "b", "c" })
@@ -191,6 +198,17 @@ do -- app.parse_args
     asserteq(t, {
        ["a"] = true,
        ["b"] = "value"
+    })
+    asserteq(s, {})
+
+
+    -- correctly parsed values, spaces, :, =, and multiple : or =
+    local args = utils.split("-a value -b value:one=two -c=value2:2")
+    local t,s = app.parse_args(args, { "a", "b", "c" })
+    asserteq(t, {
+       ["a"] = "value",
+       ["b"] = "value:one=two",
+       ["c"] = "value2:2",
     })
     asserteq(s, {})
 

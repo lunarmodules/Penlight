@@ -22,11 +22,14 @@ see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) fo
    [#366](https://github.com/lunarmodules/Penlight/pull/366)
  - feat: deprecation functionality `utils.raise_deprecation`
    [#361](https://github.com/lunarmodules/Penlight/pull/361)
+ - feat: `utils.splitv` now takes same args as `split`
+   [#373](https://github.com/lunarmodules/Penlight/pull/373)
  - fix: `dir.rmtree` failed to remove symlinks to directories
    [#365](https://github.com/lunarmodules/Penlight/pull/365)
  - fix: `pretty.write` could error out on failing metamethods (Lua 5.3+)
    [#368](https://github.com/lunarmodules/Penlight/pull/368)
-
+ - fix: `app.parse` now correctly parses values containing '=' or ':'
+   [#373](https://github.com/lunarmodules/Penlight/pull/373)
 
 ## 1.9.2 (2020-09-27)
 
