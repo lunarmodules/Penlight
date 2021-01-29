@@ -69,6 +69,7 @@ In scope of the version:
 
 Not in scope of the version:
  * Documentation
+ * Error messages (textual changes)
  * Deprecation warnings (by default to `stderr`)
 
 ### Deprecating functionality
