@@ -32,6 +32,13 @@ local link_attrib = lfs.symlinkattributes
 
 local path = {}
 
+local function err_func(name, param, err, code)
+  if code == nil then
+    return ("%s failed for '%s': %s"):format(tostring(name), tostring(param), tostring(err))
+  end
+  return ("%s failed for '%s': %s (code %s)"):format(tostring(name), tostring(param), tostring(err), tostring(code))
+end
+
 --- Lua iterator over the entries of a given directory.
 -- Implicit link to [`luafilesystem.dir`](https://keplerproject.github.io/luafilesystem/manual.html#reference)
 -- @function dir
@@ -40,34 +47,70 @@ path.dir = lfs.dir
 --- Creates a directory.
 -- Implicit link to [`luafilesystem.mkdir`](https://keplerproject.github.io/luafilesystem/manual.html#reference)
 -- @function mkdir
-path.mkdir = lfs.mkdir
+path.mkdir = function(d)
+  local ok, err, code = lfs.mkdir(d)
+  if not ok then
+    return ok, err_func("mkdir", d, err, code), code
+  end
+  return ok, err, code
+end
 
 --- Removes a directory.
 -- Implicit link to [`luafilesystem.rmdir`](https://keplerproject.github.io/luafilesystem/manual.html#reference)
 -- @function rmdir
-path.rmdir = lfs.rmdir
+path.rmdir = function(d)
+  local ok, err, code = lfs.rmdir(d)
+  if not ok then
+    return ok, err_func("rmdir", d, err, code), code
+  end
+  return ok, err, code
+end
 
 --- Gets attributes.
 -- Implicit link to [`luafilesystem.attributes`](https://keplerproject.github.io/luafilesystem/manual.html#reference)
 -- @function attrib
-path.attrib = attrib
+path.attrib = function(d, r)
+  local ok, err, code = attrib(d, r)
+  if not ok then
+    return ok, err_func("attrib", d, err, code), code
+  end
+  return ok, err, code
+end
 
 --- Get the working directory.
 -- Implicit link to [`luafilesystem.currentdir`](https://keplerproject.github.io/luafilesystem/manual.html#reference)
 -- @function currentdir
-path.currentdir = currentdir
+path.currentdir = function(d)
+  local ok, err, code = currentdir(d)
+  if not ok then
+    return ok, err_func("currentdir", d, err, code), code
+  end
+  return ok, err, code
+end
 
 --- Gets symlink attributes.
 -- Implicit link to [`luafilesystem.symlinkattributes`](https://keplerproject.github.io/luafilesystem/manual.html#reference)
 -- @function link_attrib
-path.link_attrib = link_attrib
+path.link_attrib = function(d, r)
+  local ok, err, code = link_attrib(d, r)
+  if not ok then
+    return ok, err_func("link_attrib", d, err, code), code
+  end
+  return ok, err, code
+end
 
 --- Changes the working directory.
 -- On Windows, if a drive is specified, it also changes the current drive. If
 -- only specifying the drive, it will only switch drive, but not modify the path.
 -- Implicit link to [`luafilesystem.chdir`](https://keplerproject.github.io/luafilesystem/manual.html#reference)
 -- @function chdir
-path.chdir = lfs.chdir
+path.chdir = function(d)
+  local ok, err, code = lfs.chdir(d)
+  if not ok then
+    return ok, err_func("chdir", d, err, code), code
+  end
+  return ok, err, code
+end
 
 --- is this a directory?
 -- @string P A file path
