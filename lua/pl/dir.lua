@@ -349,42 +349,44 @@ function dir.rmtree(fullpath)
     return true
 end
 
-local dirpat
-if path.is_windows then
-    dirpat = '(.+)\\[^\\]+$'
-else
-    dirpat = '(.+)/[^/]+$'
-end
 
-local _makepath
-function _makepath(p)
-    -- windows root drive case
-    if p:find '^%a:[\\]*$' then
-        return true
-    end
-   if not path.isdir(p) then
-    local subp = p:match(dirpat)
-    local ok, err = _makepath(subp)
-    if not ok then return nil, err end
-    return mkdir(p)
-   else
-    return true
-   end
-end
+do
+  local dirpat
+  if path.is_windows then
+      dirpat = '(.+)\\[^\\]+$'
+  else
+      dirpat = '(.+)/[^/]+$'
+  end
 
---- create a directory path.
--- This will create subdirectories as necessary!
--- @string p A directory path
--- @return true on success, nil + errormsg on failure
--- @raise failure to create
-function dir.makepath (p)
-    assert_string(1,p)
-    if path.is_windows then
-        p = p:gsub("/", "\\")
-    end
-    return _makepath(path.abspath(p))
-end
+  local _makepath
+  function _makepath(p)
+      -- windows root drive case
+      if p:find '^%a:[\\]*$' then
+          return true
+      end
+      if not path.isdir(p) then
+          local subp = p:match(dirpat)
+          local ok, err = _makepath(subp)
+          if not ok then return nil, err end
+          return mkdir(p)
+      else
+          return true
+      end
+  end
 
+  --- create a directory path.
+  -- This will create subdirectories as necessary!
+  -- @string p A directory path
+  -- @return true on success, nil + errormsg on failure
+  -- @raise failure to create
+  function dir.makepath (p)
+      assert_string(1,p)
+      if path.is_windows then
+          p = p:gsub("/", "\\")
+      end
+      return _makepath(path.abspath(p))
+  end
+end
 
 --- clone a directory tree. Will always try to create a new directory structure
 -- if necessary.
