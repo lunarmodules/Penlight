@@ -205,7 +205,7 @@ function path.abspath(P,pwd)
     assert_string(1,P)
     if pwd then assert_string(2,pwd) end
     local use_pwd = pwd ~= nil
-    if not use_pwd and not currentdir then return P end
+    if not use_pwd and not currentdir() then return P end
     P = P:gsub('[\\/]$','')
     pwd = pwd or currentdir()
     if not path.isabs(P) then
