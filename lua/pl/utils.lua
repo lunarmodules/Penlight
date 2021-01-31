@@ -634,7 +634,7 @@ do
   -- function from the `compat` module for earlier versions).
   --
   -- Note: only applications should set/change this function, libraries should not.
-  -- @function a callback with signature: `function(msg, trace)` both arguments are strings.
+  -- @param func a callback with signature: `function(msg, trace)` both arguments are strings.
   -- @see utils.raise_deprecation
   -- @usage
   -- -- write to the Nginx logs with OpenResty
@@ -643,7 +643,7 @@ do
   -- end)
   --
   -- -- disable deprecation warnings
-  -- utils.deprecation_warning()
+  -- utils.set_deprecation_func()
   function utils.set_deprecation_func(func)
     if func == nil then
       deprecation_func = function() end
