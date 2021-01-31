@@ -103,45 +103,45 @@ describe("pl.permute", function()
         result[#result+1] = {count, str, int, bool}
       end
       assert.same({
-        [1] = {1, 'three', 3, false },
-        [2] = {2, 'three', 3, true },
-        [3] = {3, 'three', 2, false },
-        [4] = {4, 'three', 2, true },
-        [5] = {5, 'three', 1, false },
-        [6] = {6, 'three', 1, true },
-        [7] = {7, 'two', 3, false },
+        [1] = {1, 'one', 1, true },
+        [2] = {2, 'two', 1, true },
+        [3] = {3, 'three', 1, true },
+        [4] = {4, 'one', 2, true },
+        [5] = {5, 'two', 2, true },
+        [6] = {6, 'three', 2, true },
+        [7] = {7, 'one', 3, true },
         [8] = {8, 'two', 3, true },
-        [9] = {9, 'two', 2, false },
-        [10] = {10, 'two', 2, true },
+        [9] = {9, 'three', 3, true },
+        [10] = {10, 'one', 1, false },
         [11] = {11, 'two', 1, false },
-        [12] = {12, 'two', 1, true },
-        [13] = {13, 'one', 3, false },
-        [14] = {14, 'one', 3, true },
-        [15] = {15, 'one', 2, false },
-        [16] = {16, 'one', 2, true },
-        [17] = {17, 'one', 1, false },
-        [18] = {18, 'one', 1, true },
+        [12] = {12, 'three', 1, false },
+        [13] = {13, 'one', 2, false },
+        [14] = {14, 'two', 2, false },
+        [15] = {15, 'three', 2, false },
+        [16] = {16, 'one', 3, false },
+        [17] = {17, 'two', 3, false },
+        [18] = {18, 'three', 3, false },
       }, result)
     end)
 
 
     it("is nil-safe, given 'n' is set", function()
       local result = {}
-      local strs = utils.pack("one", "two", nil)
       local bools = utils.pack(nil, true, false)
+      local strs = utils.pack("one", "two", nil)
       for count, bool, str in permute.list_iter(bools, strs) do
         result[#result+1] = {count, bool, str}
       end
       assert.same({
-        [1] = {1, false, nil },
-        [2] = {2, false, 'two' },
+        [1] = {1, nil, 'one' },
+        [2] = {2, true, 'one' },
         [3] = {3, false, 'one' },
-        [4] = {4, true, nil },
+        [4] = {4, nil, 'two' },
         [5] = {5, true, 'two' },
-        [6] = {6, true, 'one' },
+        [6] = {6, false, 'two' },
         [7] = {7, nil, nil },
-        [8] = {8, nil, 'two' },
-        [9] = {9, nil, 'one' },
+        [8] = {8, true, nil },
+        [9] = {9, false, nil },
       }, result)
     end)
 
@@ -165,41 +165,41 @@ describe("pl.permute", function()
       local ints = { 1,2,3 }
       local bools = { true, false }
       assert.same({
-        [1] = {'three', 3, false, n = 3 },
-        [2] = {'three', 3, true, n = 3 },
-        [3] = {'three', 2, false, n = 3 },
-        [4] = {'three', 2, true, n = 3 },
-        [5] = {'three', 1, false, n = 3 },
-        [6] = {'three', 1, true, n = 3 },
-        [7] = {'two', 3, false, n = 3 },
+        [1] = {'one', 1, true, n = 3 },
+        [2] = {'two', 1, true, n = 3 },
+        [3] = {'three', 1, true, n = 3 },
+        [4] = {'one', 2, true, n = 3 },
+        [5] = {'two', 2, true, n = 3 },
+        [6] = {'three', 2, true, n = 3 },
+        [7] = {'one', 3, true, n = 3 },
         [8] = {'two', 3, true, n = 3 },
-        [9] = {'two', 2, false, n = 3 },
-        [10] = {'two', 2, true, n = 3 },
+        [9] = {'three', 3, true, n = 3 },
+        [10] = {'one', 1, false, n = 3 },
         [11] = {'two', 1, false, n = 3 },
-        [12] = {'two', 1, true, n = 3 },
-        [13] = {'one', 3, false, n = 3 },
-        [14] = {'one', 3, true, n = 3 },
-        [15] = {'one', 2, false, n = 3 },
-        [16] = {'one', 2, true, n = 3 },
-        [17] = {'one', 1, false, n = 3 },
-        [18] = {'one', 1, true, n = 3 },
+        [12] = {'three', 1, false, n = 3 },
+        [13] = {'one', 2, false, n = 3 },
+        [14] = {'two', 2, false, n = 3 },
+        [15] = {'three', 2, false, n = 3 },
+        [16] = {'one', 3, false, n = 3 },
+        [17] = {'two', 3, false, n = 3 },
+        [18] = {'three', 3, false, n = 3 },
       }, permute.list_table(strs, ints, bools))
     end)
 
 
     it("is nil-safe, given 'n' is set", function()
-      local strs = utils.pack("one", "two", nil)
       local bools = utils.pack(nil, true, false)
+      local strs = utils.pack("one", "two", nil)
       assert.same({
-        [1] = {false, nil, n = 2 },
-        [2] = {false, 'two', n = 2 },
+        [1] = {nil, 'one', n = 2 },
+        [2] = {true, 'one', n = 2 },
         [3] = {false, 'one', n = 2 },
-        [4] = {true, nil, n = 2 },
+        [4] = {nil, 'two', n = 2 },
         [5] = {true, 'two', n = 2 },
-        [6] = {true, 'one', n = 2 },
+        [6] = {false, 'two', n = 2 },
         [7] = {nil, nil, n = 2 },
-        [8] = {nil, 'two', n = 2 },
-        [9] = {nil, 'one', n = 2 },
+        [8] = {true, nil, n = 2 },
+        [9] = {false, nil, n = 2 },
       }, permute.list_table(bools, strs))
     end)
 
