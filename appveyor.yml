@@ -18,7 +18,6 @@ before_build:
   - pip install hererocks
   - hererocks here --%LUA% -rlatest
   - call here\bin\activate
-  - "if \"%LUA%\"==\"lua 5.4\" ( luarocks install bit32 )"
   - luarocks install luacov-coveralls
   - luarocks install busted
 
