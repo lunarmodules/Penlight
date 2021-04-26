@@ -32,6 +32,26 @@ see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) fo
    [#373](https://github.com/lunarmodules/Penlight/pull/373)
  - fix: `dir.makepath` failed to create top-level directories
    [#372](https://github.com/lunarmodules/Penlight/pull/372)
+ - overhaul: `array2d` module was updated, got additional tests and several
+   documentation updates
+   [#377](https://github.com/lunarmodules/Penlight/pull/377)
+ - feat: `aray2d` now accepts negative indices
+ - feat: `array2d.row` added to align with `column`
+ - fix: bad error message in `array2d.map`
+ - fix: `array2d.flatten` now ensures to deliver a 'square' result if `nil` is
+   encountered
+ - feat: `array2d.transpose` added
+ - feat: `array2d.swap_rows` and `array2d.swap_cols` now return the array
+ - fix: `aray2d.range` correctly recognizes `R` column in spreadsheet format, was
+   mistaken for `R1C1` format.
+ - fix: `aray2d.range` correctly recognizes 2 char column in spreadsheet format
+ - feat: `array2d.default_range` added (previously private)
+ - feat: `array2d.set` if used with a function now passes `i,j` to the function
+   in line with the `new` implementation.
+ - fix: `array2d.iter` didn't properly iterate the indices
+   [#376](https://github.com/lunarmodules/Penlight/issues/376)
+ - feat: `array2d.columns` now returns a second value; the column index
+ - feat: `array2d.rows` added to be in line with `columns`
 
 
 ## 1.9.2 (2020-09-27)

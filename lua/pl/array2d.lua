@@ -1,11 +1,17 @@
 --- Operations on two-dimensional arrays.
 -- See @{02-arrays.md.Operations_on_two_dimensional_tables|The Guide}
 --
+-- The size of the arrays is determined by using the length operator `#` hence
+-- the module is not `nil` safe, and the usual precautions apply.
+--
+-- Note: all functions taking `i1,j1,i2,j2` as arguments will normalize the
+-- arguments using `default_range`.
+--
 -- Dependencies: `pl.utils`, `pl.tablex`, `pl.types`
 -- @module pl.array2d
 
-local tonumber,assert,tostring,io,ipairs,string,table =
-    _G.tonumber,_G.assert,_G.tostring,_G.io,_G.ipairs,_G.string,_G.table
+local tonumber,tostring,io,ipairs,string,table =
+    _G.tonumber,_G.tostring,_G.io,_G.ipairs,_G.string,_G.table
 local setmetatable,getmetatable = setmetatable,getmetatable
 
 local tablex = require 'pl.tablex'
@@ -33,29 +39,48 @@ local function makelist (res)
     return setmetatable(res, require('pl.List'))
 end
 
-
-local function index (t,k)
-    return t[k]
-end
-
 --- return the row and column size.
--- @array2d t a 2d array
--- @treturn int number of rows
--- @treturn int number of cols
-function array2d.size (t)
-    assert_arg(1,t,'table')
-    return #t,#t[1]
+-- Size is calculated using the Lua length operator #, so usual precautions
+-- regarding `nil` values apply.
+-- @array2d a a 2d array
+-- @treturn int number of rows (`#a`)
+-- @treturn int number of cols (`#a[1]`)
+function array2d.size (a)
+    assert_arg(1,a,'table')
+    return #a,#a[1]
 end
 
---- extract a column from the 2D array.
--- @array2d a 2d array
--- @param key an index or key
--- @return 1d array
-function array2d.column (a,key)
-    assert_arg(1,a,'table')
-    return makelist(imap(index,a,key))
+do
+    local function index (t,k)
+        return t[k]
+    end
+
+    --- extract a column from the 2D array.
+    -- @array2d a 2d array
+    -- @param j column index
+    -- @return 1d array
+    function array2d.column (a,j)
+        assert_arg(1,a,'table')
+        return makelist(imap(index,a,j))
+    end
 end
 local column = array2d.column
+
+--- extract a row from the 2D array.
+-- Added in line with `column`, for read-only purposes directly
+-- accessing a[i] is more performant.
+-- @array2d a 2d array
+-- @param i row index
+-- @return 1d array (copy of the row)
+function array2d.row(a,i)
+    assert_arg(1,a,'table')
+    local row = a[i]
+    local r = {}
+    for n,v in ipairs(row) do
+        r[n] = v
+    end
+    return makelist(r)
+end
 
 --- map a function over a 2D array
 -- @func f a function of at least one argument
@@ -63,7 +88,7 @@ local column = array2d.column
 -- @param arg an optional extra argument to be passed to the function.
 -- @return 2d array
 function array2d.map (f,a,arg)
-    assert_arg(1,a,'table')
+    assert_arg(2,a,'table')
     f = utils.function_arg(1,f)
     return obj(a,imap(function(row) return imap(f,row,arg) end, a))
 end
@@ -101,8 +126,8 @@ end
 --- map a function over two arrays.
 -- They can be both or either 2D arrays
 -- @func f function of at least two arguments
--- @int ad order of first array (1 or 2)
--- @int bd order of second array (1 or 2)
+-- @int ad order of first array (`1` if `a` is a list/array, `2` if it is a 2d array)
+-- @int bd order of second array (`1` if `b` is a list/array, `2` if it is a 2d array)
 -- @tab a 1d or 2d array
 -- @tab b 1d or 2d array
 -- @param arg optional extra argument to pass to function
@@ -138,9 +163,9 @@ function array2d.product (f,t1,t2)
     f = utils.function_arg(1,f)
     assert_arg(2,t1,'table')
     assert_arg(3,t2,'table')
-    local res, map = {}, tablex.map
+    local res = {}
     for i,v in ipairs(t2) do
-        res[i] = map(f,t1,v)
+        res[i] = tmap(f,t1,v)
     end
     return res
 end
@@ -153,19 +178,21 @@ end
 function array2d.flatten (t)
     local res = {}
     local k = 1
-    for _,a in ipairs(t) do -- for all rows
-        for i = 1,#a do
-            res[k] = a[i]
+    local rows, cols = array2d.size(t)
+    for r = 1, rows do
+        local row = t[r]
+        for c = 1, cols do
+            res[k] = row[c]
             k = k + 1
         end
     end
     return makelist(res)
 end
 
---- reshape a 2D array.
+--- reshape a 2D array. Reshape the aray by specifying a new nr of rows.
 -- @array2d t 2d array
 -- @int nrows new number of rows
--- @bool co column-order (Fortran-style) (default false)
+-- @bool co use column-order (Fortran-style) (default false)
 -- @return a new 2d array
 function array2d.reshape (t,nrows,co)
     local nr,nc = array2d.size(t)
@@ -195,30 +222,43 @@ function array2d.reshape (t,nrows,co)
     return obj(t,res)
 end
 
+--- transpose a 2D array.
+-- @array2d t 2d array
+-- @return a new 2d array
+function array2d.transpose(t)
+  assert_arg(1,t,'table')
+  local _, c = array2d.size(t)
+  return array2d.reshape(t,c,true)
+end
+
 --- swap two rows of an array.
 -- @array2d t a 2d array
 -- @int i1 a row index
 -- @int i2 a row index
+-- @return t (same, modified 2d array)
 function array2d.swap_rows (t,i1,i2)
     assert_arg(1,t,'table')
     t[i1],t[i2] = t[i2],t[i1]
+    return t
 end
 
 --- swap two columns of an array.
 -- @array2d t a 2d array
 -- @int j1 a column index
 -- @int j2 a column index
+-- @return t (same, modified 2d array)
 function array2d.swap_cols (t,j1,j2)
     assert_arg(1,t,'table')
-    for i = 1,#t do
-        local row = t[i]
+    for _, row in ipairs(t) do
         row[j1],row[j2] = row[j2],row[j1]
     end
+    return t
 end
 
 --- extract the specified rows.
 -- @array2d t 2d array
 -- @tparam {int} ridx a table of row indices
+-- @return a new 2d array with the extracted rows
 function array2d.extract_rows (t,ridx)
     return obj(t,index_by(t,ridx))
 end
@@ -226,6 +266,7 @@ end
 --- extract the specified columns.
 -- @array2d t 2d array
 -- @tparam {int} cidx a table of column indices
+-- @return a new 2d array with the extracted colums
 function array2d.extract_cols (t,cidx)
     assert_arg(1,t,'table')
     local res = {}
@@ -251,37 +292,44 @@ function array2d.remove_col (t,j)
     end
 end
 
-local function _parse (s)
-    local c,r
-    if s:sub(1,1) == 'R' then
-        r,c = s:match 'R(%d+)C(%d+)'
-        r,c = tonumber(r),tonumber(c)
-    else
-        c,r = s:match '(.)(.)'
-        c = byte(c) - byte 'A' + 1
-        r = tonumber(r)
+do
+    local function _parse (s)
+        local r, c = s:match 'R(%d+)C(%d+)'
+        if r then
+            r,c = tonumber(r),tonumber(c)
+            return r,c
+        end
+        c,r = s:match '(%a+)(%d+)'
+        if c then
+            local cv = 0
+            for i = 1, #c do
+              cv = cv * 26 + byte(c:sub(i,i)) - byte 'A' + 1
+            end
+            return tonumber(r), cv
+        end
+        error('bad cell specifier: '..s)
     end
-    assert(c ~= nil and r ~= nil,'bad cell specifier: '..s)
-    return r,c
-end
 
---- parse a spreadsheet range.
--- The range can be specified either as 'A1:B2' or 'R1C1:R2C2';
--- a special case is a single element (e.g 'A1' or 'R1C1')
--- @string s a range.
--- @treturn int start col
--- @treturn int start row
--- @treturn int end col
--- @treturn int end row
-function array2d.parse_range (s)
-    if s:find ':' then
-        local start,finish = splitv(s,':')
-        local i1,j1 = _parse(start)
-        local i2,j2 = _parse(finish)
-        return i1,j1,i2,j2
-    else -- single value
-        local i,j = _parse(s)
-        return i,j
+    --- parse a spreadsheet range.
+    -- The range can be specified either as 'A1:B2' or 'R1C1:R2C2';
+    -- a special case is a single element (e.g 'A1' or 'R1C1')
+    -- @string s a range (case insensitive).
+    -- @treturn int start row
+    -- @treturn int start col
+    -- @treturn int end row
+    -- @treturn int end col
+    function array2d.parse_range (s)
+        assert_arg(1,s,'string')
+        s = s:upper()
+        if s:find ':' then
+            local start,finish = splitv(s,':')
+            local i1,j1 = _parse(start)
+            local i2,j2 = _parse(finish)
+            return i1,j1,i2,j2
+        else -- single value
+            local i,j = _parse(s)
+            return i,j
+        end
     end
 end
 
@@ -293,21 +341,38 @@ end
 -- @see array2d.slice
 function array2d.range (t,rstr)
     assert_arg(1,t,'table')
-    local i1,j1,i2,j2 = array2d.parse_range(rstr)
-    if i2 then
-        return array2d.slice(t,i1,j1,i2,j2)
-    else -- single value
-        return t[i1][j1]
-    end
+    return array2d.slice(t,array2d.parse_range(rstr))
 end
 
-local function default_range (t,i1,j1,i2,j2)
-    local nr, nc = array2d.size(t)
-    i1,j1 = i1 or 1, j1 or 1
-    i2,j2 = i2 or nr, j2 or nc
-    if i2 < 0 then i2 = nr + i2 + 1 end
-    if j2 < 0 then j2 = nc + j2 + 1 end
-    return i1,j1,i2,j2
+local default_range do
+    local function norm_value(v, max)
+        if not v then return v end
+        if v < 0 then
+            v = max + v + 1
+        end
+        if v < 1 then v = 1 end
+        if v > max then v = max end
+        return v
+    end
+
+    --- normalizes coordinates to valid positive entries and defaults.
+    -- Negative indices will be counted from the end, too low, or too high
+    -- will be limited by the array sizes.
+    -- @array2d t a 2D array
+    -- @int i1 start row (default 1)
+    -- @int j1 start col (default 1)
+    -- @int i2 end row   (default N)
+    -- @int j2 end col   (default M)
+    -- return i1, j1, i2, j2
+    function array2d.default_range (t,i1,j1,i2,j2)
+        local nr, nc = array2d.size(t)
+        i1 = norm_value(i1 or 1, nr)
+        j1 = norm_value(j1 or 1, nc)
+        i2 = norm_value(i2 or nr, nr)
+        j2 = norm_value(j2 or nc, nc)
+        return i1,j1,i2,j2
+    end
+    default_range = array2d.default_range
 end
 
 --- get a slice of a 2D array. Note that if the specified range has
@@ -341,7 +406,7 @@ end
 
 --- set a specified range of an array to a value.
 -- @array2d t a 2D array
--- @param value the value (may be a function)
+-- @param value the value (may be a function, called as `val(i,j)`)
 -- @int i1 start row (default 1)
 -- @int j1 start col (default 1)
 -- @int i2 end row   (default N)
@@ -349,8 +414,16 @@ end
 -- @see tablex.set
 function array2d.set (t,value,i1,j1,i2,j2)
     i1,j1,i2,j2 = default_range(t,i1,j1,i2,j2)
-    for i = i1,i2 do
+    local i = i1
+    if types.is_callable(value) then
+        local old_f = value
+        value = function(j)
+            return old_f(i,j)
+        end
+    end
+    while i <= i2 do
         tset(t[i],value,j1,j2)
+        i = i + 1
     end
 end
 
@@ -379,8 +452,8 @@ end
 
 --- perform an operation for all values in a 2D array.
 -- @array2d t 2D array
--- @func row_op function to call on each value
--- @func end_row_op function to call at end of each row
+-- @func row_op function to call on each value; `row_op(row,j)`
+-- @func end_row_op function to call at end of each row; `end_row_op(i)`
 -- @int i1 start row (default 1)
 -- @int j1 start col (default 1)
 -- @int i2 end row   (default N)
@@ -429,22 +502,21 @@ end
 -- @int j1 start col (default 1)
 -- @int i2 end row   (default N)
 -- @int j2 end col   (default M)
--- @return either value or i,j,value depending on indices
-function array2d.iter (a,indices,i1,j1,i2,j2)
+-- @return either `value` or `i,j,value` depending on the value of `indices`
+function array2d.iter(a,indices,i1,j1,i2,j2)
     assert_arg(1,a,'table')
-    local norowset = not (i2 and j2)
     i1,j1,i2,j2 = default_range(a,i1,j1,i2,j2)
-    local i,j = i1-1,j1-1
-    local row,nr = nil,0
-    local onr = j2 - j1 + 1
+    local i,j = i1,j1-1
+    local row = a[i]
     return function()
         j = j + 1
-        if j > nr then
+        if j > j2 then
             j = j1
             i = i + 1
-            if i > i2 then return nil end
             row = a[i]
-            nr = norowset and #row or onr
+            if i > i2 then
+                return nil
+            end
         end
         if indices then
             return i,j,row[j]
@@ -456,16 +528,32 @@ end
 
 --- iterate over all columns.
 -- @array2d a a 2D array
--- @return each column in turn
-function array2d.columns (a)
-    assert_arg(1,a,'table')
-    local n = a[1][1]
-    local i = 0
-    return function()
-        i = i + 1
-        if i > n then return nil end
-        return column(a,i)
-    end
+-- @return column, column-index
+function array2d.columns(a)
+  assert_arg(1,a,'table')
+  local n = #a[1]
+  local i = 0
+  return function()
+      i = i + 1
+      if i > n then return nil end
+      return column(a,i), i
+  end
+end
+
+--- iterate over all rows.
+-- Returns a copy of the row, for read-only purrposes directly iterating
+-- is more performant; `ipairs(a)`
+-- @array2d a a 2D array
+-- @return row, row-index
+function array2d.rows(a)
+  assert_arg(1,a,'table')
+  local n = #a
+  local i = 0
+  return function()
+      i = i + 1
+      if i > n then return nil end
+      return array2d.row(a,i), i
+  end
 end
 
 --- new array of specified dimensions
@@ -489,5 +577,3 @@ function array2d.new(rows,cols,val)
 end
 
 return array2d
-
-
