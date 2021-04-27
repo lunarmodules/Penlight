@@ -40,6 +40,7 @@
 <li><a href="#OS_functions">OS functions </a></li>
 <li><a href="#String_functions">String functions </a></li>
 <li><a href="#Functional">Functional </a></li>
+<li><a href="#Deprecation">Deprecation </a></li>
 </ul>
 
 
@@ -241,7 +242,7 @@
 	<td class="summary">split a string into a list of strings separated by a delimiter.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#splitv">splitv (s, re)</a></td>
+	<td class="name" nowrap><a href="#splitv">splitv (s, re, plain, n)</a></td>
 	<td class="summary">split a string into a number of return values.</td>
 	</tr>
 </table>
@@ -266,6 +267,17 @@
 	<tr>
 	<td class="name" nowrap><a href="#bind2">bind2 (fn, p)</a></td>
 	<td class="summary">bind the second argument of the function to a value.</td>
+	</tr>
+</table>
+<h2><a href="#Deprecation">Deprecation </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#set_deprecation_func">set_deprecation_func (func)</a></td>
+	<td class="summary">Sets a deprecation warning function.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#raise_deprecation">raise_deprecation (opts)</a></td>
+	<td class="summary">raises a deprecation warning.</td>
 	</tr>
 </table>
 
@@ -1020,13 +1032,13 @@ utils.is_type(my_obj, my_mt)  <span class="comment">--&gt; true</span></pre>
          The input string
         </li>
         <li><span class="parameter">re</span>
-         A Lua string pattern; defaults to '%s+'
+         optional A Lua string pattern; defaults to '%s+'
         </li>
         <li><span class="parameter">plain</span>
-         don't use Lua patterns
+         optional If truthy don't use Lua patterns
         </li>
         <li><span class="parameter">n</span>
-         optional maximum number of splits
+         optional maximum number of elements (if there are more, the last will remian un-split)
         </li>
     </ul>
 
@@ -1039,15 +1051,21 @@ utils.is_type(my_obj, my_mt)  <span class="comment">--&gt; true</span></pre>
     <h3>Raises:</h3>
     error if s is not a string
 
+    <h3>See also:</h3>
+    <ul>
+         <a href="../libraries/pl.utils.html#splitv">splitv</a>
+    </ul>
 
 
 </dd>
     <dt>
     <a name = "splitv"></a>
-    <strong>splitv (s, re)</strong>
+    <strong>splitv (s, re, plain, n)</strong>
     </dt>
     <dd>
     split a string into a number of return values.
+ Identical to <a href="../libraries/pl.utils.html#split">split</a> but returns multiple sub-strings instead of
+ a single list of sub-strings.
 
 
     <h3>Parameters:</h3>
@@ -1056,7 +1074,13 @@ utils.is_type(my_obj, my_mt)  <span class="comment">--&gt; true</span></pre>
          the string
         </li>
         <li><span class="parameter">re</span>
-         the delimiter, default space
+         A Lua string pattern; defaults to '%s+'
+        </li>
+        <li><span class="parameter">plain</span>
+         don't use Lua patterns
+        </li>
+        <li><span class="parameter">n</span>
+         optional maximum number of splits
         </li>
     </ul>
 
@@ -1074,7 +1098,9 @@ utils.is_type(my_obj, my_mt)  <span class="comment">--&gt; true</span></pre>
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">first,<span class="global">next</span> = splitv(<span class="string">'jane:doe'</span>,<span class="string">':'</span>)</pre>
+        <pre class="example">first,<span class="global">next</span> = splitv(<span class="string">'user=jane=doe'</span>,<span class="string">'='</span>, <span class="keyword">false</span>, <span class="number">2</span>)
+<span class="global">assert</span>(first == <span class="string">"user"</span>)
+<span class="global">assert</span>(<span class="global">next</span> == <span class="string">"jane=doe"</span>)</pre>
     </ul>
 
 </dd>
@@ -1251,6 +1277,96 @@ string_lambda <span class="string">'_+1'</span> (<span class="number">2</span>) 
 
 <span class="global">print</span>(hello(<span class="string">"Hello"</span>, <span class="string">"!"</span>))  <span class="comment">--&gt; "Hello world !"
 </span><span class="global">print</span>(hello(<span class="string">"Bye"</span>, <span class="string">"?"</span>))    <span class="comment">--&gt; "Bye world ?"</span></pre>
+    </ul>
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Deprecation"></a>Deprecation </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "set_deprecation_func"></a>
+    <strong>set_deprecation_func (func)</strong>
+    </dt>
+    <dd>
+    Sets a deprecation warning function.
+ An application can override this function to support proper output of
+ deprecation warnings. The warnings can be generated from libraries or
+ functions by calling <a href="../libraries/pl.utils.html#raise_deprecation">utils.raise_deprecation</a>. The default function
+ will write to the 'warn' system (introduced in Lua 5.4, or the compatibility
+ function from the <a href="../libraries/pl.compat.html">compat</a> module for earlier versions).</p>
+
+<p> Note: only applications should set/change this function, libraries should not.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">func</span>
+         a callback with signature: <code>function(msg, trace)</code> both arguments are strings.
+        </li>
+    </ul>
+
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../libraries/pl.utils.html#raise_deprecation">utils.raise_deprecation</a>
+    </ul>
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="comment">-- write to the Nginx logs with OpenResty
+</span>utils.set_deprecation_func(<span class="keyword">function</span>(msg, trace)
+  ngx.log(ngx.WARN, msg, <span class="string">" "</span>, trace)
+<span class="keyword">end</span>)
+
+<span class="comment">-- disable deprecation warnings
+</span>utils.set_deprecation_func()</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "raise_deprecation"></a>
+    <strong>raise_deprecation (opts)</strong>
+    </dt>
+    <dd>
+    raises a deprecation warning.
+ For options see the usage example below.</p>
+
+<p> Note: the <code>opts.deprecated_after</code> field is the last version in which
+ a feature or option was NOT YET deprecated! Because when writing the code it
+ is quite often not known in what version the code will land. But the last
+ released version is usually known.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">opts</span>
+         options table
+        </li>
+    </ul>
+
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../libraries/pl.utils.html#set_deprecation_func">utils.set_deprecation_func</a>
+    </ul>
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">warn(<span class="string">"@on"</span>)   <span class="comment">-- enable Lua warnings, they are usually off by default
+</span>
+<span class="keyword">function</span> stringx.islower(str)
+  raise_deprecation {
+    source = <span class="string">"Penlight "</span> .. utils._VERSION,                  <span class="comment">-- optional
+</span>    message = <span class="string">"function 'islower' was renamed to 'is_lower'"</span> <span class="comment">-- required
+</span>    version_removed = <span class="string">"2.0.0"</span>,                               <span class="comment">-- optional
+</span>    deprecated_after = <span class="string">"1.2.3"</span>,                              <span class="comment">-- optional
+</span>  }
+  <span class="keyword">return</span> stringx.is_lower(str)
+<span class="keyword">end</span>
+<span class="comment">-- output: "[Penlight 1.9.2] function 'islower' was renamed to 'is_lower' (deprecated after 1.2.3, scheduled for removal in 2.0.0)"</span></pre>
     </ul>
 
 </dd>
