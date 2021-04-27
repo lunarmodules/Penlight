@@ -497,7 +497,7 @@ end
 
 --- iterate over all elements in a 2D array, with optional indices.
 -- @array2d a 2D array
--- @tparam {int} indices with indices (default false)
+-- @bool indices with indices (default false)
 -- @int i1 start row (default 1)
 -- @int j1 start col (default 1)
 -- @int i2 end row   (default N)

@@ -121,18 +121,28 @@
 <p>Operations on two-dimensional arrays.</p>
 <p> See <a href="../manual/02-arrays.md.html#Operations_on_two_dimensional_tables">The Guide</a></p>
 
+<p> The size of the arrays is determined by using the length operator <code>#</code> hence
+ the module is not <code>nil</code> safe, and the usual precautions apply.</p>
+
+<p> Note: all functions taking <code>i1,j1,i2,j2</code> as arguments will normalize the
+ arguments using <a href="../libraries/pl.array2d.html#default_range">default_range</a>.</p>
+
 <p> Dependencies: <a href="../libraries/pl.utils.html#">pl.utils</a>, <a href="../libraries/pl.tablex.html#">pl.tablex</a>, <a href="../libraries/pl.types.html#">pl.types</a></p>
 
 
 <h2><a href="#Functions">Functions</a></h2>
 <table class="function_list">
 	<tr>
-	<td class="name" nowrap><a href="#size">size (t)</a></td>
+	<td class="name" nowrap><a href="#size">size (a)</a></td>
 	<td class="summary">return the row and column size.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#column">column (a, key)</a></td>
+	<td class="name" nowrap><a href="#column">column (a, j)</a></td>
 	<td class="summary">extract a column from the 2D array.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#row">row (a, i)</a></td>
+	<td class="summary">extract a row from the 2D array.</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#map">map (f, a, arg)</a></td>
@@ -167,6 +177,10 @@
 	<td class="summary">reshape a 2D array.</td>
 	</tr>
 	<tr>
+	<td class="name" nowrap><a href="#transpose">transpose (t)</a></td>
+	<td class="summary">transpose a 2D array.</td>
+	</tr>
+	<tr>
 	<td class="name" nowrap><a href="#swap_rows">swap_rows (t, i1, i2)</a></td>
 	<td class="summary">swap two rows of an array.</td>
 	</tr>
@@ -199,6 +213,10 @@
 	<td class="summary">get a slice of a 2D array using spreadsheet range notation.</td>
 	</tr>
 	<tr>
+	<td class="name" nowrap><a href="#default_range">default_range (t, i1, j1, i2, j2)</a></td>
+	<td class="summary">normalizes coordinates to valid positive entries and defaults.</td>
+	</tr>
+	<tr>
 	<td class="name" nowrap><a href="#slice">slice (t, i1, j1, i2, j2)</a></td>
 	<td class="summary">get a slice of a 2D array.</td>
 	</tr>
@@ -227,6 +245,10 @@
 	<td class="summary">iterate over all columns.</td>
 	</tr>
 	<tr>
+	<td class="name" nowrap><a href="#rows">rows (a)</a></td>
+	<td class="summary">iterate over all rows.</td>
+	</tr>
+	<tr>
 	<td class="name" nowrap><a href="#new">new (rows, cols, val)</a></td>
 	<td class="summary">new array of specified dimensions</td>
 	</tr>
@@ -241,15 +263,17 @@
     <dl class="function">
     <dt>
     <a name = "size"></a>
-    <strong>size (t)</strong>
+    <strong>size (a)</strong>
     </dt>
     <dd>
     return the row and column size.
+ Size is calculated using the Lua length operator #, so usual precautions
+ regarding <code>nil</code> values apply.
 
 
     <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">t</span>
+        <li><span class="parameter">a</span>
             <span class="types"><span class="type">array</span></span>
          a 2d array
         </li>
@@ -259,10 +283,10 @@
     <ol>
         <li>
            <span class="types"><span class="type">int</span></span>
-        number of rows</li>
+        number of rows (<code>#a</code>)</li>
         <li>
            <span class="types"><span class="type">int</span></span>
-        number of cols</li>
+        number of cols (<code>#a[1]</code>)</li>
     </ol>
 
 
@@ -271,7 +295,7 @@
 </dd>
     <dt>
     <a name = "column"></a>
-    <strong>column (a, key)</strong>
+    <strong>column (a, j)</strong>
     </dt>
     <dd>
     extract a column from the 2D array.
@@ -283,8 +307,8 @@
             <span class="types"><span class="type">array</span></span>
          2d array
         </li>
-        <li><span class="parameter">key</span>
-         an index or key
+        <li><span class="parameter">j</span>
+         column index
         </li>
     </ul>
 
@@ -292,6 +316,37 @@
     <ol>
 
         1d array
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "row"></a>
+    <strong>row (a, i)</strong>
+    </dt>
+    <dd>
+    extract a row from the 2D array.
+ Added in line with <a href="../libraries/pl.array2d.html#column">column</a>, for read-only purposes directly
+ accessing a[i] is more performant.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">a</span>
+            <span class="types"><span class="type">array</span></span>
+         2d array
+        </li>
+        <li><span class="parameter">i</span>
+         row index
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        1d array (copy of the row)
     </ol>
 
 
@@ -444,11 +499,11 @@
         </li>
         <li><span class="parameter">ad</span>
             <span class="types"><span class="type">int</span></span>
-         order of first array (1 or 2)
+         order of first array (<code>1</code> if <code>a</code> is a list/array, <code>2</code> if it is a 2d array)
         </li>
         <li><span class="parameter">bd</span>
             <span class="types"><span class="type">int</span></span>
-         order of second array (1 or 2)
+         order of second array (<code>1</code> if <code>b</code> is a list/array, <code>2</code> if it is a 2d array)
         </li>
         <li><span class="parameter">a</span>
             <span class="types"><span class="type">tab</span></span>
@@ -547,7 +602,7 @@
     <strong>reshape (t, nrows, co)</strong>
     </dt>
     <dd>
-    reshape a 2D array.
+    reshape a 2D array.  Reshape the aray by specifying a new nr of rows.
 
 
     <h3>Parameters:</h3>
@@ -562,7 +617,33 @@
         </li>
         <li><span class="parameter">co</span>
             <span class="types"><span class="type">bool</span></span>
-         column-order (Fortran-style) (default false)
+         use column-order (Fortran-style) (default false)
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        a new 2d array
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "transpose"></a>
+    <strong>transpose (t)</strong>
+    </dt>
+    <dd>
+    transpose a 2D array.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">t</span>
+            <span class="types"><span class="type">array</span></span>
+         2d array
         </li>
     </ul>
 
@@ -600,6 +681,11 @@
         </li>
     </ul>
 
+    <h3>Returns:</h3>
+    <ol>
+
+        t (same, modified 2d array)
+    </ol>
 
 
 
@@ -629,6 +715,11 @@
         </li>
     </ul>
 
+    <h3>Returns:</h3>
+    <ol>
+
+        t (same, modified 2d array)
+    </ol>
 
 
 
@@ -654,6 +745,11 @@
         </li>
     </ul>
 
+    <h3>Returns:</h3>
+    <ol>
+
+        a new 2d array with the extracted rows
+    </ol>
 
 
 
@@ -679,6 +775,11 @@
         </li>
     </ul>
 
+    <h3>Returns:</h3>
+    <ol>
+
+        a new 2d array with the extracted colums
+    </ol>
 
 
 
@@ -748,7 +849,7 @@
     <ul>
         <li><span class="parameter">s</span>
             <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
-         a range.
+         a range (case insensitive).
         </li>
     </ul>
 
@@ -756,16 +857,16 @@
     <ol>
         <li>
            <span class="types"><span class="type">int</span></span>
-        start col</li>
-        <li>
-           <span class="types"><span class="type">int</span></span>
         start row</li>
         <li>
            <span class="types"><span class="type">int</span></span>
-        end col</li>
+        start col</li>
         <li>
            <span class="types"><span class="type">int</span></span>
         end row</li>
+        <li>
+           <span class="types"><span class="type">int</span></span>
+        end col</li>
     </ol>
 
 
@@ -804,6 +905,46 @@
          <li><a href="../libraries/pl.array2d.html#parse_range">array2d.parse_range</a></li>
          <li><a href="../libraries/pl.array2d.html#slice">array2d.slice</a></li>
     </ul>
+
+
+</dd>
+    <dt>
+    <a name = "default_range"></a>
+    <strong>default_range (t, i1, j1, i2, j2)</strong>
+    </dt>
+    <dd>
+    normalizes coordinates to valid positive entries and defaults.
+ Negative indices will be counted from the end, too low, or too high
+ will be limited by the array sizes.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">t</span>
+            <span class="types"><span class="type">array</span></span>
+         a 2D array
+        </li>
+        <li><span class="parameter">i1</span>
+            <span class="types"><span class="type">int</span></span>
+         start row (default 1)
+        </li>
+        <li><span class="parameter">j1</span>
+            <span class="types"><span class="type">int</span></span>
+         start col (default 1)
+        </li>
+        <li><span class="parameter">i2</span>
+            <span class="types"><span class="type">int</span></span>
+         end row   (default N)
+        </li>
+        <li><span class="parameter">j2</span>
+            <span class="types"><span class="type">int</span></span>
+         end col   (default M)
+ return i1, j1, i2, j2
+        </li>
+    </ul>
+
+
+
 
 
 </dd>
@@ -865,7 +1006,7 @@
          a 2D array
         </li>
         <li><span class="parameter">value</span>
-         the value (may be a function)
+         the value (may be a function, called as <code>val(i,j)</code>)
         </li>
         <li><span class="parameter">i1</span>
             <span class="types"><span class="type">int</span></span>
@@ -954,11 +1095,11 @@
         </li>
         <li><span class="parameter">row_op</span>
             <span class="types"><span class="type">func</span></span>
-         function to call on each value
+         function to call on each value; <code>row_op(row,j)</code>
         </li>
         <li><span class="parameter">end_row_op</span>
             <span class="types"><span class="type">func</span></span>
-         function to call at end of each row
+         function to call at end of each row; <code>end_row_op(i)</code>
         </li>
         <li><span class="parameter">i1</span>
             <span class="types"><span class="type">int</span></span>
@@ -1047,7 +1188,7 @@
          2D array
         </li>
         <li><span class="parameter">indices</span>
-            <span class="types"><span class="type">{int}</span></span>
+            <span class="types"><span class="type">bool</span></span>
          with indices (default false)
         </li>
         <li><span class="parameter">i1</span>
@@ -1071,7 +1212,7 @@
     <h3>Returns:</h3>
     <ol>
 
-        either value or i,j,value depending on indices
+        either <code>value</code> or <code>i,j,value</code> depending on the value of <code>indices</code>
     </ol>
 
 
@@ -1097,7 +1238,35 @@
     <h3>Returns:</h3>
     <ol>
 
-        each column in turn
+        column, column-index
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "rows"></a>
+    <strong>rows (a)</strong>
+    </dt>
+    <dd>
+    iterate over all rows.
+ Returns a copy of the row, for read-only purrposes directly iterating
+ is more performant; <code>ipairs(a)</code>
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">a</span>
+            <span class="types"><span class="type">array</span></span>
+         a 2D array
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        row, row-index
     </ol>
 
 

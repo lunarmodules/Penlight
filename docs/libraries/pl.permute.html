@@ -125,12 +125,28 @@
 <h2><a href="#Functions">Functions</a></h2>
 <table class="function_list">
 	<tr>
-	<td class="name" nowrap><a href="#iter">iter (a)</a></td>
-	<td class="summary">an iterator over all permutations of the elements of a list.</td>
+	<td class="name" nowrap><a href="#order_iter">order_iter (a)</a></td>
+	<td class="summary">an iterator over all order-permutations of the elements of a list.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#table">table (a)</a></td>
-	<td class="summary">construct a table containing all the permutations of a list.</td>
+	<td class="name" nowrap><a href="#order_table">order_table (a)</a></td>
+	<td class="summary">construct a table containing all the order-permutations of a list.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#list_iter">list_iter (...)</a></td>
+	<td class="summary">an iterator over all permutations of the elements of the given lists.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#list_table">list_table (...)</a></td>
+	<td class="summary">construct a table containing all the permutations of a set of lists.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#iter">iter (...)</a></td>
+	<td class="summary">deprecated.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#table">table (...)</a></td>
+	<td class="summary">deprecated.</td>
 	</tr>
 </table>
 
@@ -142,11 +158,11 @@
 
     <dl class="function">
     <dt>
-    <a name = "iter"></a>
-    <strong>iter (a)</strong>
+    <a name = "order_iter"></a>
+    <strong>order_iter (a)</strong>
     </dt>
     <dd>
-    an iterator over all permutations of the elements of a list.
+    an iterator over all order-permutations of the elements of a list.
  Please note that the same list is returned each time, so do not keep references!
 
 
@@ -168,11 +184,11 @@
 
 </dd>
     <dt>
-    <a name = "table"></a>
-    <strong>table (a)</strong>
+    <a name = "order_table"></a>
+    <strong>order_table (a)</strong>
     </dt>
     <dd>
-    construct a table containing all the permutations of a list.
+    construct a table containing all the order-permutations of a list.
 
 
     <h3>Parameters:</h3>
@@ -192,8 +208,137 @@
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">permute.<span class="global">table</span> {<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>} <span class="comment">--&gt; {{2,3,1},{3,2,1},{3,1,2},{1,3,2},{2,1,3},{1,2,3}}</span></pre>
+        <pre class="example">permute.order_table {<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>} <span class="comment">--&gt; {{2,3,1},{3,2,1},{3,1,2},{1,3,2},{2,1,3},{1,2,3}}</span></pre>
     </ul>
+
+</dd>
+    <dt>
+    <a name = "list_iter"></a>
+    <strong>list_iter (...)</strong>
+    </dt>
+    <dd>
+    an iterator over all permutations of the elements of the given lists.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">...</span>
+         list-like tables, they are nil-safe if a length-field <code>n</code> is provided (see <a href="../libraries/pl.utils.html#pack">utils.pack</a>)
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        an iterator which provides the next permutation as return values in the same order as the provided lists, preceeded by an index
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> strs = utils.pack(<span class="string">"one"</span>, <span class="keyword">nil</span>, <span class="string">"three"</span>)  <span class="comment">-- adds an 'n' field for nil-safety
+</span><span class="keyword">local</span> bools = utils.pack(<span class="keyword">true</span>, <span class="keyword">false</span>)
+<span class="keyword">local</span> iter = permute.list_iter(strs, bools)
+
+<span class="global">print</span>(iter())    <span class="comment">--&gt; 1, one, true
+</span><span class="global">print</span>(iter())    <span class="comment">--&gt; 2, nil, true
+</span><span class="global">print</span>(iter())    <span class="comment">--&gt; 3, three, true
+</span><span class="global">print</span>(iter())    <span class="comment">--&gt; 4, one, false
+</span><span class="global">print</span>(iter())    <span class="comment">--&gt; 5, nil, false
+</span><span class="global">print</span>(iter())    <span class="comment">--&gt; 6, three, false</span></pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "list_table"></a>
+    <strong>list_table (...)</strong>
+    </dt>
+    <dd>
+    construct a table containing all the permutations of a set of lists.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">...</span>
+         list-like tables, they are nil-safe if a length-field <code>n</code> is provided
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        a list of lists, the sub-lists have an 'n' field for nil-safety
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> strs = utils.pack(<span class="string">"one"</span>, <span class="keyword">nil</span>, <span class="string">"three"</span>)  <span class="comment">-- adds an 'n' field for nil-safety
+</span><span class="keyword">local</span> bools = utils.pack(<span class="keyword">true</span>, <span class="keyword">false</span>)
+<span class="keyword">local</span> results = permute.list_table(strs, bools)
+<span class="comment">-- results = {
+</span><span class="comment">--   { "one, true, n = 2 }
+</span><span class="comment">--   { nil, true, n = 2 },
+</span><span class="comment">--   { "three, true, n = 2 },
+</span><span class="comment">--   { "one, false, n = 2 },
+</span><span class="comment">--   { nil, false, n = 2 },
+</span><span class="comment">--   { "three", false, n = 2 },
+</span><span class="comment">-- }</span></pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "iter"></a>
+    <strong>iter (...)</strong>
+    </dt>
+    <dd>
+    deprecated.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">...</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../libraries/pl.permute.html#order_iter">permute.order_iter</a>
+    </ul>
+
+
+</dd>
+    <dt>
+    <a name = "table"></a>
+    <strong>table (...)</strong>
+    </dt>
+    <dd>
+    deprecated.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">...</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../libraries/pl.permute.html#order_iter">permute.order_iter</a>
+    </ul>
+
 
 </dd>
 </dl>

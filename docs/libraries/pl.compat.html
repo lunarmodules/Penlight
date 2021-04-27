@@ -36,6 +36,7 @@
 <li><a href="#Functions">Functions</a></li>
 <li><a href="#Fields">Fields</a></li>
 <li><a href="#Global_exported_functions__for_Lua_5_1___LuaJIT_">Global exported functions (for Lua 5.1 & LuaJIT) </a></li>
+<li><a href="#Global_exported_functions__for_Lua___5_4_">Global exported functions (for Lua < 5.4) </a></li>
 </ul>
 
 
@@ -184,6 +185,13 @@
 	<tr>
 	<td class="name" nowrap><a href="#package.searchpath">package.searchpath (name, path[, sep[, rep]])</a></td>
 	<td class="summary">return the full path where a file name would be matched.</td>
+	</tr>
+</table>
+<h2><a href="#Global_exported_functions__for_Lua___5_4_">Global exported functions (for Lua < 5.4) </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#warn">warn (...)</a></td>
+	<td class="summary">raise a warning message.</td>
 	</tr>
 </table>
 
@@ -531,6 +539,31 @@
     <ul>
          <a href="../libraries/pl.path.html#package_path">path.package_path</a>
     </ul>
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Global_exported_functions__for_Lua___5_4_"></a>Global exported functions (for Lua < 5.4) </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "warn"></a>
+    <strong>warn (...)</strong>
+    </dt>
+    <dd>
+    raise a warning message.
+ This functions mimics the <a href="../libraries/pl.compat.html#warn">warn</a> function added in Lua 5.4.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">...</span>
+         any arguments
+        </li>
+    </ul>
+
+
+
 
 
 </dd>

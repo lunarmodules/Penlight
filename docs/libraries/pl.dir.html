@@ -436,13 +436,14 @@
     </dt>
     <dd>
     remove a whole directory tree.
+ Symlinks in the tree will be deleted without following them.
 
 
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">fullpath</span>
             <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
-         A directory path
+         A directory path (must be an actual directory, not a symlink)
         </li>
     </ul>
 
