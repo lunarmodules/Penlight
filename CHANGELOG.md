@@ -6,7 +6,7 @@ deprecation policy.
 
 see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) for release instructions
 
-## 1.10.0 unreleased
+## 1.10.0 (2021-04-27)
 
  - deprecate: `permute.iter`, renamed to `permute.order_iter` (removal later)
    [#360](https://github.com/lunarmodules/Penlight/pull/360)

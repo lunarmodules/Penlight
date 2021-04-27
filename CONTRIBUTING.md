@@ -48,12 +48,12 @@ before making more changes - that way we can take in each change separately.
   - update `./config.ld` with the new version number
   - create a new rockspec file for the version in `./rockspecs`
   - check the `./CHANGELOG.md` files for completeness
-  - commit the release related changes
+  - commit the release related changes with `release x.y.z`
   - render the documentation using `ldoc .`
-  - commit the documentation as a separate commit
+  - commit the documentation as a separate commit with `release x.y.z docs`
   - push the release branch and create a PR
   - merge the PR
-  - tag the release and push the tag to the github repo
+  - tag the release as `x.y.z` and push the tag to the github repo
   - upload the rockspec, and source rock files to LuaRocks
   - test installing through LuaRocks
   - announce the release on the Lua mailing list
