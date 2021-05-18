@@ -379,7 +379,7 @@ local function _strip(s,left,right,chrs)
             local rs = reverse(s)
             local i1,i2 = find(rs, '^'..chrs..'*')
             if i2 >= i1 then
-                t = -i2
+                t = -i2-1
             end
         end
     end

@@ -313,6 +313,7 @@ asserteq(T(stringx.shorten('abcde', 0, true)), T'')
 asserteq(stringx.strip('    hello         '),'hello')
 asserteq(stringx.strip('--[hello] -- - ','-[] '),'hello')
 asserteq(stringx.rstrip('--[hello] -- - ','-[] '),'--[hello')
+asserteq(stringx.strip('hello'..((" "):rep(500))), "hello")
 
 --
 
@@ -332,7 +333,7 @@ local assert_str_round_trip = function(s)
     end
 
     if compiled ~= s then
-        print("strinx.quote_string assert Failed: String compiled but did not round trip.")
+        print("stringx.quote_string assert Failed: String compiled but did not round trip.")
         print("input string:\t\t",s, #s)
         print("compiled string:\t", compiled, #compiled)
         print("output string:\t\t",qs, #qs)
