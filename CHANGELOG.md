@@ -6,6 +6,11 @@ deprecation policy.
 
 see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) for release instructions
 
+## 1.10.x unreleased
+ - fix: `stringx.strip` behaved badly with string lengths > 200
+   [#382](https://github.com/lunarmodules/Penlight/pull/382)
+
+
 ## 1.10.0 (2021-04-27)
 
  - deprecate: `permute.iter`, renamed to `permute.order_iter` (removal later)
