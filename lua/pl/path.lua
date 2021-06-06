@@ -33,10 +33,15 @@ local link_attrib = lfs.symlinkattributes
 local path = {}
 
 local function err_func(name, param, err, code)
-  if code == nil then
-    return ("%s failed for '%s': %s"):format(tostring(name), tostring(param), tostring(err))
+  local ret = ("%s failed"):format(tostring(name))
+  if param ~= nil then
+    ret = ret .. (" for '%s'"):format(tostring(param))
   end
-  return ("%s failed for '%s': %s (code %s)"):format(tostring(name), tostring(param), tostring(err), tostring(code))
+  ret = ret .. (": %s"):format(tostring(err))
+  if code ~= nil then
+    ret = ret .. (" (code %s)"):format(tostring(code))
+  end
+  return ret
 end
 
 --- Lua iterator over the entries of a given directory.
@@ -80,10 +85,10 @@ end
 --- Get the working directory.
 -- Implicit link to [`luafilesystem.currentdir`](https://keplerproject.github.io/luafilesystem/manual.html#reference)
 -- @function currentdir
-path.currentdir = function(d)
-  local ok, err, code = currentdir(d)
+path.currentdir = function()
+  local ok, err, code = currentdir()
   if not ok then
-    return ok, err_func("currentdir", d, err, code), code
+    return ok, err_func("currentdir", nil, err, code), code
   end
   return ok, err, code
 end

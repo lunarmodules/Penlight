@@ -9,6 +9,8 @@ see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) fo
 ## 1.10.x unreleased
  - fix: `stringx.strip` behaved badly with string lengths > 200
    [#382](https://github.com/lunarmodules/Penlight/pull/382)
+ - fix: `path.currentdir` now takes no arguments and calls `lfs.currentdir` without argument
+   [#383](https://github.com/lunarmodules/Penlight/pull/383)
 
 
 ## 1.10.0 (2021-04-27)
