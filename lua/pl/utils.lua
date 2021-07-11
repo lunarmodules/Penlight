@@ -667,10 +667,10 @@ do
   --
   -- function stringx.islower(str)
   --   raise_deprecation {
-  --     source = "Penlight " .. utils._VERSION,                  -- optional
-  --     message = "function 'islower' was renamed to 'is_lower'" -- required
-  --     version_removed = "2.0.0",                               -- optional
-  --     deprecated_after = "1.2.3",                              -- optional
+  --     source = "Penlight " .. utils._VERSION,                   -- optional
+  --     message = "function 'islower' was renamed to 'is_lower'", -- required
+  --     version_removed = "2.0.0",                                -- optional
+  --     deprecated_after = "1.2.3",                               -- optional
   --   }
   --   return stringx.is_lower(str)
   -- end
