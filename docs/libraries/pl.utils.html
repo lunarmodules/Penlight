@@ -1302,7 +1302,7 @@ string_lambda <span class="string">'_+1'</span> (<span class="number">2</span>) 
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">func</span>
-         a callback with signature: <code>function(msg, trace)</code> both arguments are strings.
+         a callback with signature: <code>function(msg, trace)</code> both arguments are strings, the latter being optional.
         </li>
     </ul>
 
@@ -1317,7 +1317,7 @@ string_lambda <span class="string">'_+1'</span> (<span class="number">2</span>) 
     <ul>
         <pre class="example"><span class="comment">-- write to the Nginx logs with OpenResty
 </span>utils.set_deprecation_func(<span class="keyword">function</span>(msg, trace)
-  ngx.log(ngx.WARN, msg, <span class="string">" "</span>, trace)
+  ngx.log(ngx.WARN, msg, (trace <span class="keyword">and</span> (<span class="string">" "</span> .. trace) <span class="keyword">or</span> <span class="keyword">nil</span>))
 <span class="keyword">end</span>)
 
 <span class="comment">-- disable deprecation warnings
@@ -1359,10 +1359,11 @@ string_lambda <span class="string">'_+1'</span> (<span class="number">2</span>) 
 </span>
 <span class="keyword">function</span> stringx.islower(str)
   raise_deprecation {
-    source = <span class="string">"Penlight "</span> .. utils._VERSION,                  <span class="comment">-- optional
-</span>    message = <span class="string">"function 'islower' was renamed to 'is_lower'"</span> <span class="comment">-- required
-</span>    version_removed = <span class="string">"2.0.0"</span>,                               <span class="comment">-- optional
-</span>    deprecated_after = <span class="string">"1.2.3"</span>,                              <span class="comment">-- optional
+    source = <span class="string">"Penlight "</span> .. utils._VERSION,                   <span class="comment">-- optional
+</span>    message = <span class="string">"function 'islower' was renamed to 'is_lower'"</span>, <span class="comment">-- required
+</span>    version_removed = <span class="string">"2.0.0"</span>,                                <span class="comment">-- optional
+</span>    deprecated_after = <span class="string">"1.2.3"</span>,                               <span class="comment">-- optional
+</span>    no_trace = <span class="keyword">true</span>,                                          <span class="comment">-- optional
 </span>  }
   <span class="keyword">return</span> stringx.is_lower(str)
 <span class="keyword">end</span>
