@@ -6,7 +6,7 @@ deprecation policy.
 
 see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) for release instructions
 
-## 1.11.0 unreleased
+## 1.11.0 (2021-08-18)
 
  - fix: `stringx.strip` behaved badly with string lengths > 200
    [#382](https://github.com/lunarmodules/Penlight/pull/382)
