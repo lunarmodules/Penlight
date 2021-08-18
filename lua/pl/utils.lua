@@ -623,7 +623,11 @@ end
 do
   -- the default implementation
   local deprecation_func = function(msg, trace)
-    warn(msg, "\n", trace)  -- luacheck: ignore
+    if trace then
+      warn(msg, "\n", trace)  -- luacheck: ignore
+    else
+      warn(msg)  -- luacheck: ignore
+    end
   end
 
   --- Sets a deprecation warning function.
@@ -634,12 +638,12 @@ do
   -- function from the `compat` module for earlier versions).
   --
   -- Note: only applications should set/change this function, libraries should not.
-  -- @param func a callback with signature: `function(msg, trace)` both arguments are strings.
+  -- @param func a callback with signature: `function(msg, trace)` both arguments are strings, the latter being optional.
   -- @see utils.raise_deprecation
   -- @usage
   -- -- write to the Nginx logs with OpenResty
   -- utils.set_deprecation_func(function(msg, trace)
-  --   ngx.log(ngx.WARN, msg, " ", trace)
+  --   ngx.log(ngx.WARN, msg, (trace and (" " .. trace) or nil))
   -- end)
   --
   -- -- disable deprecation warnings
@@ -671,6 +675,7 @@ do
   --     message = "function 'islower' was renamed to 'is_lower'", -- required
   --     version_removed = "2.0.0",                                -- optional
   --     deprecated_after = "1.2.3",                               -- optional
+  --     no_trace = true,                                          -- optional
   --   }
   --   return stringx.is_lower(str)
   -- end
@@ -680,7 +685,10 @@ do
     if type(opts.message) ~= "string" then
       error("field 'message' of the options table must be a string", 2)
     end
-    local trace = debug.traceback("", 2):match("[\n%s]*(.-)$")
+    local trace
+    if not opts.no_trace then
+      trace = debug.traceback("", 2):match("[\n%s]*(.-)$")
+    end
     local msg
     if opts.deprecated_after and opts.version_removed then
       msg = (" (deprecated after %s, scheduled for removal in %s)"):format(
