@@ -6,11 +6,14 @@ deprecation policy.
 
 see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) for release instructions
 
-## 1.10.x unreleased
+## 1.11.0 unreleased
+
  - fix: `stringx.strip` behaved badly with string lengths > 200
    [#382](https://github.com/lunarmodules/Penlight/pull/382)
  - fix: `path.currentdir` now takes no arguments and calls `lfs.currentdir` without argument
    [#383](https://github.com/lunarmodules/Penlight/pull/383)
+ - feat: `utils.raise_deprecation` now has an option to NOT include a
+   stack-trace [#385](https://github.com/lunarmodules/Penlight/pull/385)
 
 
 ## 1.10.0 (2021-04-27)
