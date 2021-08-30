@@ -6,6 +6,10 @@ deprecation policy.
 
 see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) for release instructions
 
+## 1.12.0 (unreleased)
+ - feat: `utils.npairs` added. An iterator with a range that honours the `n` field
+   [#387](https://github.com/lunarmodules/Penlight/pull/387)
+
 ## 1.11.0 (2021-08-18)
 
  - fix: `stringx.strip` behaved badly with string lengths > 200
