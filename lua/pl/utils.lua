@@ -50,6 +50,8 @@ utils.stdmt = {
 -- @return a table with field `n` set to the length
 -- @function utils.pack
 -- @see compat.pack
+-- @see utils.npairs
+-- @see utils.unpack
 utils.pack = table.pack  -- added here to be symmetrical with unpack
 
 --- unpack a table and return its contents.
@@ -62,6 +64,8 @@ utils.pack = table.pack  -- added here to be symmetrical with unpack
 -- @return multiple return values from the table
 -- @function utils.unpack
 -- @see compat.unpack
+-- @see utils.pack
+-- @see utils.npairs
 -- @usage
 -- local t = table.pack(nil, nil, nil, 4)
 -- local a, b, c, d = table.unpack(t)   -- this `unpack` is NOT nil-safe, so d == nil
@@ -165,6 +169,56 @@ function utils.is_type (obj,tp)
     local mt = getmetatable(obj)
     return tp == mt
 end
+
+
+
+--- an iterator with indices, similar to `ipairs`, but with a range.
+-- This is a nil-safe index based iterator that will return `nil` when there
+-- is a hole in a list. To be safe ensure that table `t.n` contains the length.
+-- @tparam table t the table to iterate over
+-- @tparam[opt=1] integer i_start start index
+-- @tparam[opt=t.n or #t] integer i_end end index
+-- @tparam[opt=1] integer step step size
+-- @treturn integer index
+-- @treturn any value at index (which can be `nil`!)
+-- @see utils.pack
+-- @see utils.unpack
+-- @usage
+-- local t = utils.pack(nil, 123, nil)  -- adds an `n` field when packing
+--
+-- for i, v in utils.npairs(t, 2) do  -- start at index 2
+--   t[i] = tostring(t[i])
+-- end
+--
+-- -- t = { n = 3, [2] = "123", [3] = "nil" }
+function utils.npairs(t, i_start, i_end, step)
+  step = step or 1
+  if step == 0 then
+    error("iterator step-size cannot be 0", 2)
+  end
+  local i = (i_start or 1) - step
+  i_end = i_end or t.n or #t
+  if step < 0 then
+    return function()
+      i = i + step
+      if i < i_end then
+        return nil
+      end
+      return i, t[i]
+    end
+
+  else
+    return function()
+      i = i + step
+      if i > i_end then
+        return nil
+      end
+      return i, t[i]
+    end
+  end
+end
+
+
 
 --- Error handling
 -- @section Error-handling

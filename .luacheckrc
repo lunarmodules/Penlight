@@ -18,6 +18,10 @@ include_files = {
   ".luacheckrc",
 }
 
+files["spec/**/*.lua"] = {
+    std = "+busted",
+}
+
 exclude_files = {
     "tests/*.lua",
     "tests/**/*.lua",
