@@ -352,7 +352,7 @@ function lapp.process_options_string(str,args)
             end
         end
         -- look for a flag, -<short flags> or --<long flag>
-        if not end_of_flags and (match('--$S{long}',theArg,res) or match('-$S{short}',theArg,res)) then
+        if not end_of_flags and (match('--$S{long}',theArg,res) or (match('-$S{short}',theArg,res) and not string.match(theArg, "^-%d"))) then
             if res.long then -- long option
                 parm = check_parm(res.long)
             elseif #res.short == 1 or is_flag(res.short) then
