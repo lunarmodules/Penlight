@@ -147,6 +147,19 @@ check (false_flag,{'-g','-f'},{f=false,g=true})
 check (false_flag,{'-g','--'},{f=true,g=true})
 check (false_flag,{'-g','--','-a','frodo'},{f=true,g=true; '-a','frodo'})
 
+-- check that negative number arugments are accepted
+local negative_argument = [[
+    -f, --flag      short flag
+    <val> (number)  the argument
+]]
+
+check (negative_argument, {'-2'}, {val=-2, flag=false})
+check (negative_argument, {'-f', '-2'}, {val=-2, flag=true})
+check (negative_argument, {'--flag', '-2'}, {val=-2, flag=true})
+check (negative_argument, {'-29.2'}, {val=-29.2, flag=false})
+check (negative_argument, {'202.2'}, {val=202.2, flag=false})
+
+
 local addtype = [[
   -l (intlist) List of items
 ]]
@@ -199,4 +212,5 @@ test.asserteq(lapp(spec,{'-vs',200,'-sk',1}),{
   dbg = false,
   width = 256
 })
+
 
