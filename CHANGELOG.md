@@ -9,6 +9,8 @@ see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) fo
 ## 1.12.0 (unreleased)
  - feat: `utils.npairs` added. An iterator with a range that honours the `n` field
    [#387](https://github.com/lunarmodules/Penlight/pull/387)
+ - fix: `lapp.process_options_string` now treats negative numbers as arguments instead of flags
+   [#389](https://github.com/lunarmodules/Penlight/pull/389)
 
 ## 1.11.0 (2021-08-18)
 
