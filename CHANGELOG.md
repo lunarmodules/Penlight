@@ -18,6 +18,8 @@ see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) fo
    [#405](https://github.com/lunarmodules/Penlight/pull/405)
  - feat: `array2d.default_range` now also takes a spreadsheet range, which means
    also other functions now take a range. [#404](https://github.com/lunarmodules/Penlight/pull/404)
+ - fix: `lapp` enums allow [patterns magic characters](https://www.lua.org/pil/20.2.html)
+   [#393](https://github.com/lunarmodules/Penlight/pull/393)
 
 ## 1.11.0 (2021-08-18)
 

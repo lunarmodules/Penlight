@@ -118,6 +118,15 @@ check_error(extended,{'-n','x'},"unable to convert to number: x")
 
 check_error(extended,{'-n','12'},"n out of range")
 
+local with_advanced_enum = [[
+  -s  (test1|test2()|%a)
+  -c  (1-2|2-3|cool[])
+]]
+
+check(with_advanced_enum,{"-s", "test2()", "-c", "1-2"},{s='test2()',c='1-2'})
+check(with_advanced_enum,{"-s", "test2()", "-c", "2-3"},{s='test2()',c='2-3'})
+check(with_advanced_enum,{"-s", "%a", "-c", "2-3"},{s='%a',c='2-3'})
+
 local with_dashes = [[
   --first-dash  dash
   --second-dash dash also

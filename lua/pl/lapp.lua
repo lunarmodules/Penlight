@@ -277,7 +277,7 @@ function lapp.process_options_string(str,args)
                         local enump = '|' .. enums .. '|'
                         vtype = 'string'
                         constraint = function(s)
-                            lapp.assert(enump:match('|'..s..'|'),
+                            lapp.assert(enump:find('|'..s..'|', 1, true),
                               "value '"..s.."' not in "..enums
                             )
                         end
