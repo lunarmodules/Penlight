@@ -50,7 +50,7 @@ return function(env)
     if prevenvmt then
         _prev_index = prevenvmt.__index
         if prevenvmt.__newindex then
-            gmt.__index = prevenvmt.__newindex
+            gmt.__newindex = prevenvmt.__newindex
         end
     end
 

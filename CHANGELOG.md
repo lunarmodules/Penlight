@@ -28,6 +28,9 @@ see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) fo
    [#400](https://github.com/lunarmodules/Penlight/pull/400)
  - fix: `stringx.expandtabs` could error out on Lua 5.3+
    [#406](https://github.com/lunarmodules/Penlight/pull/406)
+ - fix: `pl` the module would not properly forward the `newindex` metamethod
+   on the global table.
+   [#395](https://github.com/lunarmodules/Penlight/pull/395)
 
 ## 1.11.0 (2021-08-18)
 
