@@ -69,19 +69,29 @@ end
 -- @return nil, error the error can either be a file error or a parse error
 function _M.parse(text_or_file, is_file, use_basic)
     local parser,status,lom
-    if use_basic then parser = _M.basic_parse
+    if use_basic then
+        parser = _M.basic_parse
     else
         status,lom = pcall(require,'lxp.lom')
-        if not status then parser = _M.basic_parse else parser = lom.parse end
+        if not status then
+            parser = _M.basic_parse
+        else
+            parser = lom.parse
+        end
     end
+
     if is_file then
         local f,err = io.open(text_or_file)
         if not f then return nil,err end
         text_or_file = f:read '*a'
         f:close()
     end
+
     local doc,err = parser(text_or_file)
-    if not doc then return nil,err end
+    if not doc then
+        return nil,err
+    end
+
     if lom then
         _M.walk(doc,false,function(_,d)
             setmetatable(d,Doc)
