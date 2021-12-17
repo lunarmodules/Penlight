@@ -341,6 +341,8 @@ function Doc:maptags(callback)
                 self[i] = ret;
                 i = i + 1;
             end
+        else
+            i = i + 1
         end
     end
     return self;
