@@ -9,6 +9,8 @@ see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) fo
 ## 1.12.0 (unreleased)
  - feat: `utils.npairs` added. An iterator with a range that honours the `n` field
    [#387](https://github.com/lunarmodules/Penlight/pull/387)
+ - fix: `xml.maptags` would hang if it encountered text-nodes
+   [#396](https://github.com/lunarmodules/Penlight/pull/396)
 
 ## 1.11.0 (2021-08-18)
 
