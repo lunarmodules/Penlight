@@ -7,15 +7,26 @@ local dump = require 'pl.pretty'.dump
 d = xml.new 'top' : addtag 'child' : text 'alice' : up() : addtag 'child' : text 'bob'
 
 d = xml.new 'children' :
-    addtag 'child' :
-    addtag 'name' : text 'alice' : up() : addtag 'age' : text '5' : up() : addtag('toy',{type='fluffy'}) : up() :
+  addtag 'child' :
+    addtag 'name' :
+      text 'alice' :
+      up() :
+    addtag 'age' :
+      text '5' :
+      up() :
+    addtag('toy',{type='fluffy'}) :
+      up() :
     up() :
-    addtag 'child':
-    addtag 'name' : text 'bob' : up() : addtag 'age' : text '6' : up() : addtag('toy',{type='squeaky'})
+  addtag 'child':
+    addtag 'name' :
+      text 'bob' :
+      up() :
+    addtag 'age' :
+      text '6' :
+      up() :
+    addtag('toy',{type='squeaky'})
 
-asserteq(
-xml.tostring(d,'','  '),
-[[
+asserteq(xml.tostring(d,'','  '), [[
 
 <children>
   <child>
@@ -38,7 +49,6 @@ d1 = children {
     child {name 'alice', age '5', toy {type='fluffy'}},
     child {name 'bob', age '6', toy {type='squeaky'}}
 }
-
 assert(xml.compare(d,d1))
 
 -- or we can use a template document to convert Lua data to LOM
