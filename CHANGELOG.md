@@ -33,6 +33,16 @@ see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) fo
    [#395](https://github.com/lunarmodules/Penlight/pull/395)
  - feat: `utils.enum` added to create enums and prevent magic strings
    [#408](https://github.com/lunarmodules/Penlight/pull/408)
+ - change: `xml.new` added some sanity checks on input
+ - added: `xml.xml_escape` and `xml.xml_unescape` functions (previously private)
+ - feat: `xml.tostring` now also takes numeric indents (previously only strings)
+ - fix: `xml.walk` now detects recursion (errors out)
+ - fix: `xml.clone` now detects recursion (errors out)
+ - fix: `xml.compare` now detects recursion (errors out)
+ - fix: `xml.compare` text compares now work
+ - fix: `xml.compare` attribute order compares now only compare if both inputs provide an order
+ - fix: `xml.compare` child comparisons failing now report proper error
+
 
 ## 1.11.0 (2021-08-18)
 
