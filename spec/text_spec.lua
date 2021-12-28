@@ -161,5 +161,79 @@ three
 
   end)
 
+
+
+  describe("fill()/wrap()", function()
+
+    it("word-wraps a text", function()
+      assert.equal([[
+It is often said of Lua
+that it does not include
+batteries. That is because
+the goal of Lua is to
+produce a lean expressive
+language that will be
+used on all sorts of
+machines, (some of which
+don't even have hierarchical
+filesystems). The Lua
+language is the equivalent
+of an operating system
+kernel; the creators
+of Lua do not see it
+as their responsibility
+to create a full software
+ecosystem around the
+language. That is the
+role of the community.
+]], text.fill("It is often said of Lua that it does not include batteries. That is because the goal of Lua is to produce a lean expressive language that will be used on all sorts of machines, (some of which don't even have hierarchical filesystems). The Lua language is the equivalent of an operating system kernel; the creators of Lua do not see it as their responsibility to create a full software ecosystem around the language. That is the role of the community.", 20))
+    end)
+
+    it("wraps single letters", function()
+      assert.same({"a"}, text.wrap("a"))
+    end)
+
+    it("wraps width over limit", function()
+      assert.same({
+        "abc",
+        "def"
+      }, text.wrap("abc def", 2))
+    end)
+
+    it("wraps width at limit", function()
+      assert.same({
+        "abc",
+        "def"
+      }, text.wrap("abc def", 3))
+    end)
+
+    it("doesn't split on accented characters", function()
+      assert.same({"àbcdéfghîj"}, text.wrap("àbcdéfghîj"))
+    end)
+
+    it("generic wrap test", function()
+      local t = [[
+hello "world" 'this' -is- a bb ccc dddd test... but wouldn't it pass??? final. word-that-can-be-broken
+]]
+
+      assert.same({
+        "hello",
+        '"world"',
+        "'this'",
+        "-is-",
+        "a bb",
+        "ccc",
+        "dddd",
+        "test...",
+        "but",
+        "wouldn't",
+        "it pass???",
+        "final.",
+        "word-that-can-be-broken",
+      }, text.wrap(t, 3))
+    end)
+
+  end)
+
 end)
 
