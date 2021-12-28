@@ -102,15 +102,15 @@ function text.wrap (s,width)
     s = s:gsub('\n',' ')
     local i,nxt = 1
     local lines,line = {}
-    while i < #s do
+    repeat
         nxt = i+width
-        if s:find("[%w']",nxt) then -- inside a word
-            nxt = s:find('%W',nxt+1) -- so find word boundary
+        if s:find("%S",nxt) then -- inside a word
+            nxt = s:find('%s',nxt) -- so find word boundary
         end
         line = s:sub(i,nxt)
         i = i + #line
         append(lines,strip(line))
-    end
+    until i > (#s - 1)
     return makelist(lines)
 end
 
