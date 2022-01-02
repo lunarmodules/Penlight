@@ -11,6 +11,8 @@ see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) fo
    [#387](https://github.com/lunarmodules/Penlight/pull/387)
  - fix: `xml.maptags` would hang if it encountered text-nodes
    [#396](https://github.com/lunarmodules/Penlight/pull/396)
+ - fix: `text.dedent` didn't handle declining indents nor empty lines
+   [#402](https://github.com/lunarmodules/Penlight/pull/402)
 
 ## 1.11.0 (2021-08-18)
 

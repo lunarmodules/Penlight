@@ -52,14 +52,40 @@ end
 
 --- dedent a multiline string by removing any initial indent.
 -- useful when working with [[..]] strings.
+-- Empty lines are ignored.
 -- @tparam string s the (multiline) string
 -- @return a string with initial indent zero.
+-- @usage
+-- local s = dedent [[
+--          One
+--
+--        Two
+--
+--      Three
+-- ]]
+-- assert(s == [[
+--     One
+--
+--   Two
+--
+-- Three
+-- ]])
 function text.dedent (s)
     assert_arg(1,s,'string')
-    local sl = split(s,'\n')
-    local _,i2 = (#sl>0 and sl[1] or ''):find('^%s*')
-    sl = imap(string.sub,sl,i2+1)
-    return concat(sl,'\n')..'\n'
+    local lst = split(s,'\n')
+    if #lst>0 then
+      local ind_size = math.huge
+      for i, line in ipairs(lst) do
+        local i1, i2 = lst[i]:find('^%s*[^%s]')
+        if i1 and i2 < ind_size then
+          ind_size = i2
+        end
+      end
+      for i, line in ipairs(lst) do
+        lst[i] = lst[i]:sub(ind_size, -1)
+      end
+    end
+    return concat(lst,'\n')..'\n'
 end
 
 --- format a paragraph into lines so that they fit into a line width.
