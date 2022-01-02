@@ -66,6 +66,11 @@ end
 ]], text.indent("easy\n\nenough!", 2 ,'*'))
     end)
 
+    it("indent() appends a newline if not present", function()
+      assert.equal("  hello\n  world\n", text.indent("hello\nworld", 2))
+      assert.equal("  hello\n  world\n", text.indent("hello\nworld\n", 2))
+    end)
+
 
     it("dedent() removes prefixed whitespace", function()
       assert.equal([[
@@ -77,6 +82,27 @@ three
     two
     three
 ]])
+    end)
+
+    it("dedent() removes prefixed whitespace, retains structure", function()
+      assert.equal([[
+  one
+
+ two
+
+three
+]], text.dedent [[
+      one
+
+     two
+
+    three
+]])
+    end)
+
+    it("dedent() appends a newline if not present", function()
+      assert.equal("hello\nworld\n", text.dedent("  hello\n  world"))
+      assert.equal("hello\nworld\n", text.dedent("  hello\n  world\n"))
     end)
 
 
