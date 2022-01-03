@@ -150,14 +150,15 @@ asserteq(T(stringx.replace('a.b', '.', '%d')), T('a%db'))
 -- split
 local split = stringx.split
 asserteq(split('', ''), {''})
-asserteq(split('', 'z'), {}) --FIX:intended and specified behavior?
-asserteq(split('a', ''), {'a'}) --FIX:intended and specified behavior?
-asserteq(split('a', 'a'), {''})
+asserteq(split('', 'z'), {}) --FIX:intended and specified behavior?      --> python returns original string (as 1st entry in return table)
+asserteq(split('a', ''), {'a'}) --FIX:intended and specified behavior?   --> python errors out!
+asserteq(split('a', 'a'), {''})                                          --> python returns {'', ''}
 -- stringx.split now follows the Python pattern, so it uses a substring, not a pattern.
 -- If you need to split on a pattern, use utils.split()
 -- asserteq(split('ab1cd23ef%d', '%d+'), {'ab', 'cd', 'ef%d'}) -- pattern chars
 -- note that leading space is ignored by the default
 asserteq(split(' 1  2  3 '),{'1','2','3'})
+asserteq(split(' 1   2   3 ',' '),{'','1','','','2','','','3',''})
 asserteq(split('a*bb*c*ddd','*'),{'a','bb','c','ddd'})
 asserteq(split('dog:fred:bonzo:alice',':',3), {'dog','fred','bonzo:alice'})
 asserteq(split('dog:fred:bonzo:alice:',':',3), {'dog','fred','bonzo:alice:'})
