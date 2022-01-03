@@ -50,8 +50,13 @@ end
 ]]})
     end)
 
+  end)
 
-    it("indent()", function()
+
+
+  describe("indent()", function()
+
+    it("adds an indent", function()
       local t = "a whole lot\nof love"
 
       assert.equal([[
@@ -66,13 +71,18 @@ end
 ]], text.indent("easy\n\nenough!", 2 ,'*'))
     end)
 
-    it("indent() appends a newline if not present", function()
+    it("appends a newline if not present", function()
       assert.equal("  hello\n  world\n", text.indent("hello\nworld", 2))
       assert.equal("  hello\n  world\n", text.indent("hello\nworld\n", 2))
     end)
 
+  end)
 
-    it("dedent() removes prefixed whitespace", function()
+
+
+  describe("dedent()", function()
+
+    it("removes prefixed whitespace", function()
       assert.equal([[
 one
 two
@@ -84,7 +94,7 @@ three
 ]])
     end)
 
-    it("dedent() removes prefixed whitespace, retains structure", function()
+    it("removes prefixed whitespace, retains structure", function()
       assert.equal([[
   one
 
@@ -100,36 +110,14 @@ three
 ]])
     end)
 
-    it("dedent() appends a newline if not present", function()
+    it("appends a newline if not present", function()
       assert.equal("hello\nworld\n", text.dedent("  hello\n  world"))
       assert.equal("hello\nworld\n", text.dedent("  hello\n  world\n"))
     end)
 
+  end)
 
-    it("fill()/wrap() word-wraps a text", function()
-      assert.equal([[
-It is often said of Lua
-that it does not include
-batteries. That is because
-the goal of Lua is to
-produce a lean expressive
-language that will be
-used on all sorts of machines,
-(some of which don't
-even have hierarchical
-filesystems). The Lua
-language is the equivalent
-of an operating system
-kernel; the creators of
-Lua do not see it as their
-responsibility to create
-a full software ecosystem
-around the language. That
-is the role of the community.
-]], text.fill("It is often said of Lua that it does not include batteries. That is because the goal of Lua is to produce a lean expressive language that will be used on all sorts of machines, (some of which don't even have hierarchical filesystems). The Lua language is the equivalent of an operating system kernel; the creators of Lua do not see it as their responsibility to create a full software ecosystem around the language. That is the role of the community.", 20))
-    end)
 
-end)
 
   describe("format_operator()", function()
 
