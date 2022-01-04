@@ -20,6 +20,12 @@ see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) fo
    also other functions now take a range. [#404](https://github.com/lunarmodules/Penlight/pull/404)
  - fix: `lapp` enums allow [patterns magic characters](https://www.lua.org/pil/20.2.html)
    [#393](https://github.com/lunarmodules/Penlight/pull/393)
+ - fix: `text.wrap` and `text.fill` numerous fixes for handling whitespace,
+   accented characters, honouring width, etc.
+   [#400](https://github.com/lunarmodules/Penlight/pull/400)
+ - feat: `text.wrap` and `text.fill` have a new parameter to forcefully break words
+   longer than the width given.
+   [#400](https://github.com/lunarmodules/Penlight/pull/400)
 
 ## 1.11.0 (2021-08-18)
 
