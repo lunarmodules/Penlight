@@ -10,7 +10,7 @@
 -- @module pl.text
 
 local gsub = string.gsub
-local concat,append = table.concat,table.insert
+local concat, t_remove = table.concat, table.remove
 local utils = require 'pl.utils'
 local bind1,usplit,assert_arg = utils.bind1,utils.split,utils.assert_arg
 local is_callable = require 'pl.types'.is_callable
@@ -88,39 +88,68 @@ function text.dedent (s)
     return concat(lst,'\n')..'\n'
 end
 
---- format a paragraph into lines so that they fit into a line width.
--- It will not break long words, so lines can be over the length
--- to that extent.
--- @tparam string s the string to format
--- @tparam[opt=70] integer width the margin width
--- @return a list of lines (List object), use `fill` to return a string instead of a `List`.
--- @see pl.List
--- @see fill
-function text.wrap (s,width)
-    assert_arg(1,s,'string')
-    width = width or 70
-    s = s:gsub('\n',' ')
-    local i,nxt = 1
-    local lines,line = {}
-    repeat
-        nxt = i+width
-        if s:find("%S",nxt) then -- inside a word
-            nxt = s:find('%s',nxt) -- so find word boundary
+
+do
+  local buildline = function(words, size, breaklong)
+    -- if overflow is set, a word longer than size, will overflow the size
+    -- otherwise it will be chopped in line-length pieces
+    local line = {}
+    if #words[1] > size then
+      -- word longer than line
+      if not breaklong then
+        line[1] = words[1]
+        t_remove(words, 1)
+      else
+        line[1] = words[1]:sub(1, size)
+        words[1] = words[1]:sub(size + 1, -1)
+      end
+    else
+      local len = 0
+      while words[1] and (len + #words[1] <= size) or
+            (len == 0 and #words[1] == size) do
+        if words[1] ~= "" then
+          line[#line+1] = words[1]
+          len = len + #words[1] + 1
         end
-        line = s:sub(i,nxt)
-        i = i + #line
-        append(lines,strip(line))
-    until i > (#s - 1)
-    return makelist(lines)
+        t_remove(words, 1)
+      end
+    end
+    return strip(concat(line, " ")), words
+  end
+
+  --- format a paragraph into lines so that they fit into a line width.
+  -- It will not break long words by default, so lines can be over the length
+  -- to that extent.
+  -- @tparam string s the string to format
+  -- @tparam[opt=70] integer width the margin width
+  -- @tparam[opt=false] boolean breaklong if truthy, words longer than the width given will be forced split.
+  -- @return a list of lines (List object), use `fill` to return a string instead of a `List`.
+  -- @see pl.List
+  -- @see fill
+  text.wrap = function(s, width, breaklong)
+    s = s:gsub('\n',' ') -- remove line breaks
+    s = strip(s)         -- remove leading/trailing whitespace
+    if s == "" then
+      return { "" }
+    end
+    width = width or 70
+    local out = {}
+    local words = split(s, "%s")
+    while words[1] do
+      out[#out+1], words = buildline(words, width, breaklong)
+    end
+    return makelist(out)
+  end
 end
 
 --- format a paragraph so that it fits into a line width.
 -- @tparam string s the string to format
 -- @tparam[opt=70] integer width the margin width
+-- @tparam[opt=false] boolean breaklong if truthy, words longer than the width given will be forced split.
 -- @return a string, use `wrap` to return a list of lines instead of a string.
 -- @see wrap
-function text.fill (s,width)
-    return concat(text.wrap(s,width),'\n') .. '\n'
+function text.fill (s,width,breaklong)
+    return concat(text.wrap(s,width,breaklong),'\n') .. '\n'
 end
 
 
