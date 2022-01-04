@@ -359,12 +359,15 @@ local default_range do
     -- Negative indices will be counted from the end, too low, or too high
     -- will be limited by the array sizes.
     -- @array2d t a 2D array
-    -- @int i1 start row (default 1)
+    -- @int i1 start row (default 1) or @str spreadsheet range passed to array2d.parse_range(s)
     -- @int j1 start col (default 1)
     -- @int i2 end row   (default N)
     -- @int j2 end col   (default M)
     -- return i1, j1, i2, j2
     function array2d.default_range (t,i1,j1,i2,j2)
+      if (type(i1) == 'string') and not (j1 or i2 or j2) then
+        i1, j1, i2, j2 = array2d.parse_range(i1)
+      end
         local nr, nc = array2d.size(t)
         i1 = norm_value(i1 or 1, nr)
         j1 = norm_value(j1 or 1, nc)
