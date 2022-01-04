@@ -87,6 +87,7 @@ end
 -- @treturn {string} list of files
 -- @raise dirname and mask must be strings
 function dir.getfiles(dirname,mask)
+    dirname = dirname or '.'
     assert_dir(1,dirname)
     if mask then assert_string(2,mask) end
     local match
@@ -104,6 +105,7 @@ end
 -- @treturn {string} a list of directories
 -- @raise dir must be a a valid directory
 function dir.getdirectories(dirname)
+    dirname = dirname or '.'
     assert_dir(1,dirname)
     return _listfiles(dirname,false)
 end
@@ -504,6 +506,7 @@ end
 -- @treturn List(string) containing all the files found recursively starting at _path_ and filtered by _shell_pattern_.
 -- @raise start_path must be a directory
 function dir.getallfiles( start_path, shell_pattern )
+    start_path = start_path or '.'
     assert_dir(1,start_path)
     shell_pattern = shell_pattern or "*"
 
