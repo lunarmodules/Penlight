@@ -67,7 +67,8 @@ function stringx.isalnum(s)
     return find(s,'^%w+$') == 1
 end
 
---- does s only contain spaces?
+--- does s only contain whitespace?
+-- Matches on pattern '%s' so matches space, newline, tabs, etc.
 -- @string s a string
 function stringx.isspace(s)
     assert_string(1,s)
@@ -386,29 +387,30 @@ local function _strip(s,left,right,chrs)
     return sub(s,f,t)
 end
 
---- trim any whitespace on the left of s.
+--- trim any characters on the left of s.
 -- @string s the string
 -- @string[opt='%s'] chrs default any whitespace character,
---  but can be a string of characters to be trimmed
+-- but can be a string of characters to be trimmed
 function stringx.lstrip(s,chrs)
     assert_string(1,s)
     return _strip(s,true,false,chrs)
 end
 lstrip = stringx.lstrip
 
---- trim any whitespace on the right of s.
+--- trim any characters on the right of s.
 -- @string s the string
 -- @string[opt='%s'] chrs default any whitespace character,
---  but can be a string of characters to be trimmed
+-- but can be a string of characters to be trimmed
 function stringx.rstrip(s,chrs)
     assert_string(1,s)
     return _strip(s,false,true,chrs)
 end
 
---- trim any whitespace on both left and right of s.
+--- trim any characters on both left and right of s.
 -- @string s the string
 -- @string[opt='%s'] chrs default any whitespace character,
---  but can be a string of characters to be trimmed
+-- but can be a string of characters to be trimmed
+-- @usage stringx.strip('  --== Hello ==--  ', "- =")  --> 'Hello'
 function stringx.strip(s,chrs)
     assert_string(1,s)
     return _strip(s,true,true,chrs)
@@ -442,7 +444,7 @@ end
 
 --- partition the string using first occurance of a delimiter
 -- @string s the string
--- @string ch delimiter
+-- @string ch delimiter (match as plain string, no patterns)
 -- @return part before ch
 -- @return ch
 -- @return part after ch
@@ -456,7 +458,7 @@ end
 
 --- partition the string p using last occurance of a delimiter
 -- @string s the string
--- @string ch delimiter
+-- @string ch delimiter (match as plain string, no patterns)
 -- @return part before ch
 -- @return ch
 -- @return part after ch
@@ -514,77 +516,82 @@ end
 
 stringx.capitalize = stringx.title
 
-local ellipsis = '...'
-local n_ellipsis = #ellipsis
+do
+  local ellipsis = '...'
+  local n_ellipsis = #ellipsis
 
---- Return a shortened version of a string.
--- Fits string within w characters. Removed characters are marked with ellipsis.
--- @string s the string
--- @int w the maxinum size allowed
--- @bool tail true if we want to show the end of the string (head otherwise)
--- @usage ('1234567890'):shorten(8) == '12345...'
--- @usage ('1234567890'):shorten(8, true) == '...67890'
--- @usage ('1234567890'):shorten(20) == '1234567890'
-function stringx.shorten(s,w,tail)
-    assert_string(1,s)
-    if #s > w then
-        if w < n_ellipsis then return ellipsis:sub(1,w) end
-        if tail then
-            local i = #s - w + 1 + n_ellipsis
-            return ellipsis .. s:sub(i)
-        else
-            return s:sub(1,w-n_ellipsis) .. ellipsis
-        end
-    end
-    return s
+  --- Return a shortened version of a string.
+  -- Fits string within w characters. Removed characters are marked with ellipsis.
+  -- @string s the string
+  -- @int w the maxinum size allowed
+  -- @bool tail true if we want to show the end of the string (head otherwise)
+  -- @usage ('1234567890'):shorten(8) == '12345...'
+  -- @usage ('1234567890'):shorten(8, true) == '...67890'
+  -- @usage ('1234567890'):shorten(20) == '1234567890'
+  function stringx.shorten(s,w,tail)
+      assert_string(1,s)
+      if #s > w then
+          if w < n_ellipsis then return ellipsis:sub(1,w) end
+          if tail then
+              local i = #s - w + 1 + n_ellipsis
+              return ellipsis .. s:sub(i)
+          else
+              return s:sub(1,w-n_ellipsis) .. ellipsis
+          end
+      end
+      return s
+  end
 end
 
---- Utility function that finds any patterns that match a long string's an open or close.
--- Note that having this function use the least number of equal signs that is possible is a harder algorithm to come up with.
--- Right now, it simply returns the greatest number of them found.
--- @param s The string
--- @return 'nil' if not found. If found, the maximum number of equal signs found within all matches.
-local function has_lquote(s)
-    local lstring_pat = '([%[%]])(=*)%1'
-    local equals, new_equals, _
-    local finish = 1
-    repeat
-        _, finish, _, new_equals = s:find(lstring_pat, finish)
-        if new_equals then
-            equals = max(equals or 0, #new_equals)
-        end
-    until not new_equals
 
-    return equals
-end
+do
+  -- Utility function that finds any patterns that match a long string's an open or close.
+  -- Note that having this function use the least number of equal signs that is possible is a harder algorithm to come up with.
+  -- Right now, it simply returns the greatest number of them found.
+  -- @param s The string
+  -- @return 'nil' if not found. If found, the maximum number of equal signs found within all matches.
+  local function has_lquote(s)
+      local lstring_pat = '([%[%]])(=*)%1'
+      local equals, new_equals, _
+      local finish = 1
+      repeat
+          _, finish, _, new_equals = s:find(lstring_pat, finish)
+          if new_equals then
+              equals = max(equals or 0, #new_equals)
+          end
+      until not new_equals
 
---- Quote the given string and preserve any control or escape characters, such that reloading the string in Lua returns the same result.
--- @param s The string to be quoted.
--- @return The quoted string.
-function stringx.quote_string(s)
-    assert_string(1,s)
-    -- Find out if there are any embedded long-quote sequences that may cause issues.
-    -- This is important when strings are embedded within strings, like when serializing.
-    -- Append a closing bracket to catch unfinished long-quote sequences at the end of the string.
-    local equal_signs = has_lquote(s .. "]")
+      return equals
+  end
 
-    -- Note that strings containing "\r" can't be quoted using long brackets
-    -- as Lua lexer converts all newlines to "\n" within long strings.
-    if (s:find("\n") or equal_signs) and not s:find("\r") then
-        -- If there is an embedded sequence that matches a long quote, then
-        -- find the one with the maximum number of = signs and add one to that number.
-        equal_signs = ("="):rep((equal_signs or -1) + 1)
-        -- Long strings strip out leading newline. We want to retain that, when quoting.
-        if s:find("^\n") then s = "\n" .. s end
-        local lbracket, rbracket =
-            "[" .. equal_signs .. "[",
-            "]" .. equal_signs .. "]"
-        s = lbracket .. s .. rbracket
-    else
-        -- Escape funny stuff. Lua 5.1 does not handle "\r" correctly.
-        s = ("%q"):format(s):gsub("\r", "\\r")
-    end
-    return s
+  --- Quote the given string and preserve any control or escape characters, such that reloading the string in Lua returns the same result.
+  -- @param s The string to be quoted.
+  -- @return The quoted string.
+  function stringx.quote_string(s)
+      assert_string(1,s)
+      -- Find out if there are any embedded long-quote sequences that may cause issues.
+      -- This is important when strings are embedded within strings, like when serializing.
+      -- Append a closing bracket to catch unfinished long-quote sequences at the end of the string.
+      local equal_signs = has_lquote(s .. "]")
+
+      -- Note that strings containing "\r" can't be quoted using long brackets
+      -- as Lua lexer converts all newlines to "\n" within long strings.
+      if (s:find("\n") or equal_signs) and not s:find("\r") then
+          -- If there is an embedded sequence that matches a long quote, then
+          -- find the one with the maximum number of = signs and add one to that number.
+          equal_signs = ("="):rep((equal_signs or -1) + 1)
+          -- Long strings strip out leading newline. We want to retain that, when quoting.
+          if s:find("^\n") then s = "\n" .. s end
+          local lbracket, rbracket =
+              "[" .. equal_signs .. "[",
+              "]" .. equal_signs .. "]"
+          s = lbracket .. s .. rbracket
+      else
+          -- Escape funny stuff. Lua 5.1 does not handle "\r" correctly.
+          s = ("%q"):format(s):gsub("\r", "\\r")
+      end
+      return s
+  end
 end
 
 function stringx.import()

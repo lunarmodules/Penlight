@@ -208,8 +208,8 @@ three
     end)
 
     it("word-wraps a text", function()
-      local binstring = require("luassert.formatters.binarystring")
-      assert:add_formatter(binstring)
+      -- local binstring = require("luassert.formatters.binarystring")
+      -- assert:add_formatter(binstring)
       assert.equal([[
 It is often said of
 Lua that it does not
@@ -310,4 +310,3 @@ hello "world" 'this' -is- a bb      ccc dddd test... but wouldn't it pass??? fin
   end)
 
 end)
-
