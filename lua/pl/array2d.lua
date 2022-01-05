@@ -365,9 +365,9 @@ local default_range do
     -- @int j2 end col   (default M)
     -- return i1, j1, i2, j2
     function array2d.default_range (t,i1,j1,i2,j2)
-      if (type(i1) == 'string') and not (j1 or i2 or j2) then
-        i1, j1, i2, j2 = array2d.parse_range(i1)
-      end
+        if (type(i1) == 'string') and not (j1 or i2 or j2) then
+            i1, j1, i2, j2 = array2d.parse_range(i1)
+        end
         local nr, nc = array2d.size(t)
         i1 = norm_value(i1 or 1, nr)
         j1 = norm_value(j1 or 1, nc)
