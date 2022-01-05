@@ -16,6 +16,8 @@ see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) fo
  - fix: `dir.getfiles`, `dir.getdirectories`, and `dir.getallfiles` now have the
    directory optional, as was already documented
    [#405](https://github.com/lunarmodules/Penlight/pull/405)
+ - feat: `array2d.default_range` now also takes a spreadsheet range, which means
+   also other functions now take a range. [#404](https://github.com/lunarmodules/Penlight/pull/404)
 
 ## 1.11.0 (2021-08-18)
 
