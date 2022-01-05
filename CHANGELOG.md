@@ -7,6 +7,8 @@ deprecation policy.
 see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) for release instructions
 
 ## 1.12.0 (unreleased)
+ - deprecate: module `pl.text` the contents have moved to `pl.stringx` (removal later)
+   [#407](https://github.com/lunarmodules/Penlight/pull/407)
  - feat: `utils.npairs` added. An iterator with a range that honours the `n` field
    [#387](https://github.com/lunarmodules/Penlight/pull/387)
  - fix: `xml.maptags` would hang if it encountered text-nodes
