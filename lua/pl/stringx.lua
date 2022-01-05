@@ -210,10 +210,14 @@ end
 -- @usage stringx.expandtabs('\tone,two,three', 4)   == '    one,two,three'
 -- @usage stringx.expandtabs('  \tone,two,three', 4) == '    one,two,three'
 function stringx.expandtabs(s,tabsize)
-    assert_string(1,s)
-    tabsize = tabsize or 8
-    return (s:gsub("([^\t\r\n]*)\t", function(before_tab)
+  assert_string(1,s)
+  tabsize = tabsize or 8
+  return (s:gsub("([^\t\r\n]*)\t", function(before_tab)
+      if tabsize == 0 then
+        return before_tab
+      else
         return before_tab .. (" "):rep(tabsize - #before_tab % tabsize)
+      end
     end))
 end
 

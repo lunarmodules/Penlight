@@ -139,6 +139,7 @@ describe("stringx", function()
     assert.equal((' '):rep(1+8), stringx.expandtabs(' \t '))
     assert.equal((' '):rep(3), stringx.expandtabs(' \t ',2))
     assert.equal((' '):rep(2), stringx.expandtabs(' \t ',0))
+    assert.equal('        hi      there   folks!', stringx.expandtabs('\thi\tthere\tfolks!'))
   end)
 
 
