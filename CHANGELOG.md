@@ -13,6 +13,9 @@ see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) fo
    [#396](https://github.com/lunarmodules/Penlight/pull/396)
  - fix: `text.dedent` didn't handle declining indents nor empty lines
    [#402](https://github.com/lunarmodules/Penlight/pull/402)
+ - fix: `dir.getfiles`, `dir.getdirectories`, and `dir.getallfiles` now have the
+   directory optional, as was already documented
+   [#405](https://github.com/lunarmodules/Penlight/pull/405)
 
 ## 1.11.0 (2021-08-18)
 
