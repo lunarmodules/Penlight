@@ -165,7 +165,7 @@ end
 -- See `utils.unpack` for a version that is nil-safe.
 -- @param t table to unpack
 -- @param[opt] i index from which to start unpacking, defaults to 1
--- @param[opt] t index of the last element to unpack, defaults to #t
+-- @param[opt] j index of the last element to unpack, defaults to #t
 -- @return multiple return values from the table
 -- @function table.unpack
 -- @see utils.unpack
