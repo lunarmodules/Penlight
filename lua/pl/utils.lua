@@ -60,7 +60,7 @@ utils.pack = table.pack  -- added here to be symmetrical with unpack
 -- that this one DOES honor the `n` field in the table `t`, such that it is 'nil-safe'.
 -- @param t table to unpack
 -- @param[opt] i index from which to start unpacking, defaults to 1
--- @param[opt] t index of the last element to unpack, defaults to `t.n` or `#t`
+-- @param[opt] j index of the last element to unpack, defaults to `t.n` or else `#t`
 -- @return multiple return values from the table
 -- @function utils.unpack
 -- @see compat.unpack
