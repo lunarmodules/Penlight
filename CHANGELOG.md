@@ -26,6 +26,8 @@ see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) fo
  - feat: `text.wrap` and `text.fill` have a new parameter to forcefully break words
    longer than the width given.
    [#400](https://github.com/lunarmodules/Penlight/pull/400)
+ - fix: `stringx.expandtabs` could error out on Lua 5.3+
+   [#406](https://github.com/lunarmodules/Penlight/pull/406)
 
 ## 1.11.0 (2021-08-18)
 
