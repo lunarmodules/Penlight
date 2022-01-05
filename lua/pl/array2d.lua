@@ -310,14 +310,14 @@ do
         error('bad cell specifier: '..s)
     end
 
-    --- parse a spreadsheet range.
-    -- The range can be specified either as 'A1:B2' or 'R1C1:R2C2';
-    -- a special case is a single element (e.g 'A1' or 'R1C1')
+    --- parse a spreadsheet range or cell.
+    -- The range/cell can be specified either as 'A1:B2' or 'R1C1:R2C2' or for
+    -- single cells as 'A1' or 'R1C1'.
     -- @string s a range (case insensitive).
     -- @treturn int start row
     -- @treturn int start col
-    -- @treturn int end row
-    -- @treturn int end col
+    -- @treturn int end row (or `nil` if the range was a single cell)
+    -- @treturn int end col (or `nil` if the range was a single cell)
     function array2d.parse_range (s)
         assert_arg(1,s,'string')
         s = s:upper()
@@ -333,15 +333,11 @@ do
     end
 end
 
---- get a slice of a 2D array using spreadsheet range notation. @see parse_range
--- @array2d t a 2D array
--- @string rstr range expression
--- @return a slice
--- @see array2d.parse_range
--- @see array2d.slice
-function array2d.range (t,rstr)
-    assert_arg(1,t,'table')
-    return array2d.slice(t,array2d.parse_range(rstr))
+--- get a slice of a 2D array.
+-- Same as `slice`.
+-- @see slice
+function array2d.range (...)
+    return array2d.slice(...)
 end
 
 local default_range do
@@ -359,11 +355,12 @@ local default_range do
     -- Negative indices will be counted from the end, too low, or too high
     -- will be limited by the array sizes.
     -- @array2d t a 2D array
-    -- @int i1 start row (default 1) or @str spreadsheet range passed to array2d.parse_range(s)
-    -- @int j1 start col (default 1)
-    -- @int i2 end row   (default N)
-    -- @int j2 end col   (default M)
-    -- return i1, j1, i2, j2
+    -- @tparam[opt=1] int|string i1 start row or spreadsheet range passed to `parse_range`
+    -- @tparam[opt=1] int j1 start col
+    -- @tparam[opt=N] int i2 end row
+    -- @tparam[opt=M] int j2 end col
+    -- @see parse_range
+    -- @return i1, j1, i2, j2
     function array2d.default_range (t,i1,j1,i2,j2)
         if (type(i1) == 'string') and not (j1 or i2 or j2) then
             i1, j1, i2, j2 = array2d.parse_range(i1)
@@ -381,10 +378,11 @@ end
 --- get a slice of a 2D array. Note that if the specified range has
 -- a 1D result, the rank of the result will be 1.
 -- @array2d t a 2D array
--- @int i1 start row (default 1)
--- @int j1 start col (default 1)
--- @int i2 end row   (default N)
--- @int j2 end col   (default M)
+-- @tparam[opt=1] int|string i1 start row or spreadsheet range passed to `parse_range`
+-- @tparam[opt=1] int j1 start col
+-- @tparam[opt=N] int i2 end row
+-- @tparam[opt=M] int j2 end col
+-- @see parse_range
 -- @return an array, 2D in general but 1D in special cases.
 function array2d.slice (t,i1,j1,i2,j2)
     assert_arg(1,t,'table')
@@ -410,10 +408,11 @@ end
 --- set a specified range of an array to a value.
 -- @array2d t a 2D array
 -- @param value the value (may be a function, called as `val(i,j)`)
--- @int i1 start row (default 1)
--- @int j1 start col (default 1)
--- @int i2 end row   (default N)
--- @int j2 end col   (default M)
+-- @tparam[opt=1] int|string i1 start row or spreadsheet range passed to `parse_range`
+-- @tparam[opt=1] int j1 start col
+-- @tparam[opt=N] int i2 end row
+-- @tparam[opt=M] int j2 end col
+-- @see parse_range
 -- @see tablex.set
 function array2d.set (t,value,i1,j1,i2,j2)
     i1,j1,i2,j2 = default_range(t,i1,j1,i2,j2)
@@ -434,10 +433,11 @@ end
 -- @array2d t a 2D array
 -- @param f a file object (default stdout)
 -- @string fmt a format string (default is just to use tostring)
--- @int i1 start row (default 1)
--- @int j1 start col (default 1)
--- @int i2 end row   (default N)
--- @int j2 end col   (default M)
+-- @tparam[opt=1] int|string i1 start row or spreadsheet range passed to `parse_range`
+-- @tparam[opt=1] int j1 start col
+-- @tparam[opt=N] int i2 end row
+-- @tparam[opt=M] int j2 end col
+-- @see parse_range
 function array2d.write (t,f,fmt,i1,j1,i2,j2)
     assert_arg(1,t,'table')
     f = f or stdout
@@ -457,10 +457,11 @@ end
 -- @array2d t 2D array
 -- @func row_op function to call on each value; `row_op(row,j)`
 -- @func end_row_op function to call at end of each row; `end_row_op(i)`
--- @int i1 start row (default 1)
--- @int j1 start col (default 1)
--- @int i2 end row   (default N)
--- @int j2 end col   (default M)
+-- @tparam[opt=1] int|string i1 start row or spreadsheet range passed to `parse_range`
+-- @tparam[opt=1] int j1 start col
+-- @tparam[opt=N] int i2 end row
+-- @tparam[opt=M] int j2 end col
+-- @see parse_range
 function array2d.forall (t,row_op,end_row_op,i1,j1,i2,j2)
     assert_arg(1,t,'table')
     i1,j1,i2,j2 = default_range(t,i1,j1,i2,j2)
@@ -478,10 +479,11 @@ end
 -- @int di start row in dest
 -- @int dj start col in dest
 -- @array2d src a 2D array
--- @int i1 start row (default 1)
--- @int j1 start col (default 1)
--- @int i2 end row   (default N)
--- @int j2 end col   (default M)
+-- @tparam[opt=1] int|string i1 start row or spreadsheet range passed to `parse_range`
+-- @tparam[opt=1] int j1 start col
+-- @tparam[opt=N] int i2 end row
+-- @tparam[opt=M] int j2 end col
+-- @see parse_range
 function array2d.move (dest,di,dj,src,i1,j1,i2,j2)
     assert_arg(1,dest,'table')
     assert_arg(4,src,'table')
@@ -501,10 +503,11 @@ end
 --- iterate over all elements in a 2D array, with optional indices.
 -- @array2d a 2D array
 -- @bool indices with indices (default false)
--- @int i1 start row (default 1)
--- @int j1 start col (default 1)
--- @int i2 end row   (default N)
--- @int j2 end col   (default M)
+-- @tparam[opt=1] int|string i1 start row or spreadsheet range passed to `parse_range`
+-- @tparam[opt=1] int j1 start col
+-- @tparam[opt=N] int i2 end row
+-- @tparam[opt=M] int j2 end col
+-- @see parse_range
 -- @return either `value` or `i,j,value` depending on the value of `indices`
 function array2d.iter(a,indices,i1,j1,i2,j2)
     assert_arg(1,a,'table')
@@ -544,7 +547,7 @@ function array2d.columns(a)
 end
 
 --- iterate over all rows.
--- Returns a copy of the row, for read-only purrposes directly iterating
+-- Returns a copy of the row, for read-only purposes directly iterating
 -- is more performant; `ipairs(a)`
 -- @array2d a a 2D array
 -- @return row, row-index
