@@ -9,7 +9,10 @@ local format = string.format
 local compat = require 'pl.compat'
 local stdout = io.stdout
 local append = table.insert
+local concat = table.concat
 local _unpack = table.unpack  -- always injected by 'compat'
+local find = string.find
+local sub = string.sub
 
 local is_windows = compat.is_windows
 local err_mode = 'default'
@@ -246,6 +249,68 @@ function utils.assert_arg (n,val,tp,verify,msg,lev)
     return val
 end
 
+--- creates an Enum table.
+-- This helps prevent magic strings in code by throwing errors for accessing
+-- non-existing values.
+--
+-- Calling on the object does the same, but returns a soft error; `nil + err`.
+--
+-- The values are equal to the keys. The enum object is
+-- read-only.
+-- @param ... strings that make up the enumeration.
+-- @return Enum object
+-- @usage -- accessing at runtime
+-- local obj = {}
+-- obj.MOVEMENT = utils.enum("FORWARD", "REVERSE", "LEFT", "RIGHT")
+--
+-- if current_movement == obj.MOVEMENT.FORWARD then
+--   -- do something
+--
+-- elseif current_movement == obj.MOVEMENT.REVERES then
+--   -- throws error due to typo 'REVERES', so a silent mistake becomes a hard error
+--   -- "'REVERES' is not a valid value (expected one of: 'FORWARD', 'REVERSE', 'LEFT', 'RIGHT')"
+--
+-- end
+-- @usage -- validating user-input
+-- local parameter = "...some user provided option..."
+-- local ok, err = obj.MOVEMENT(parameter) -- calling on the object
+-- if not ok then
+--   print("bad 'parameter', " .. err)
+--   os.exit(1)
+-- end
+function utils.enum(...)
+  local lst = utils.pack(...)
+  utils.assert_arg(1, lst[1], "string") -- at least 1 string
+
+  local enum = {}
+  for i, value in ipairs(lst) do
+    utils.assert_arg(i, value, "string")
+    enum[value] = value
+  end
+
+  local valid = "(expected one of: '" .. concat(lst, "', '") .. "')"
+  setmetatable(enum, {
+    __index = function(self, key)
+      error(("'%s' is not a valid value %s"):format(tostring(key), valid), 2)
+    end,
+    __newindex = function(self, key, value)
+      error("the Enum object is read-only", 2)
+    end,
+    __call = function(self, key)
+      if type(key) == "string" then
+        local v = rawget(self, key)
+        if v then
+          return v
+        end
+      end
+      return nil, ("'%s' is not a valid value %s"):format(tostring(key), valid)
+    end
+  })
+
+  return enum
+end
+
+
 --- process a function argument.
 -- This is used throughout Penlight and defines what is meant by a function:
 -- Something that is callable, or an operator string as defined by <code>pl.operator</code>,
@@ -457,7 +522,7 @@ function utils.quote_arg(argument)
             r[i] = utils.quote_arg(arg)
         end
 
-        return table.concat(r, " ")
+        return concat(r, " ")
     end
     -- only a single argument
     if is_windows then
@@ -526,7 +591,6 @@ end
 -- @see splitv
 function utils.split(s,re,plain,n)
     utils.assert_string(1,s)
-    local find,sub,append = string.find, string.sub, table.insert
     local i1,ls = 1,{}
     if not re then re = '%s+' end
     if re == '' then return {s} end

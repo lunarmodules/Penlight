@@ -31,6 +31,8 @@ see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) fo
  - fix: `pl` the module would not properly forward the `newindex` metamethod
    on the global table.
    [#395](https://github.com/lunarmodules/Penlight/pull/395)
+ - feat: `utils.enum` added to create enums and prevent magic strings
+   [#408](https://github.com/lunarmodules/Penlight/pull/408)
 
 ## 1.11.0 (2021-08-18)
 
