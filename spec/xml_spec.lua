@@ -788,6 +788,63 @@ describe("xml", function()
     end)
 
 
+    it("compares attributes", function()
+      local doc1 = xml.new("main", {
+        hello = "world",
+        goodbye = "universe"
+      })
+
+      local ok, err = xml.compare(doc1, xml.new("main", {
+        hello = "world",
+        goodbye = "universe"
+      }))
+      assert.equal(nil, err)
+      assert.is_true(ok)
+
+      local ok, err = xml.compare(doc1, xml.new("main", {
+        -- hello = "world",  -- one less attribute
+        goodbye = "universe"
+      }))
+      assert.equal("mismatch attrib", err)
+      assert.is_false(ok)
+
+      local ok, err = xml.compare(doc1, xml.new("main", {
+        hello = "world",
+        goodbye = "universe",
+        one = "more", -- one more attribute
+      }))
+      assert.equal("mismatch attrib", err)
+      assert.is_false(ok)
+    end)
+
+
+    it("compares attributes order", function()
+      local doc1 = xml.new("main", {
+        [1] = "hello",
+        [2] = "goodbye",
+        hello = "world",
+        goodbye = "universe"
+      })
+
+      local ok, err = xml.compare(doc1, xml.new("main", {
+        -- no order, this compares ok
+        hello = "world",
+        goodbye = "universe"
+      }))
+      assert.equal(nil, err)
+      assert.is_true(ok)
+
+      local ok, err = xml.compare(doc1, xml.new("main", {
+        [2] = "hello",  -- order reversed, this should fail
+        [1] = "goodbye",
+        hello = "world",
+        goodbye = "universe"
+      }))
+      assert.equal("mismatch attrib order", err)
+      assert.is_false(ok)
+    end)
+
+
     it("handles recursion", function()
       local doc1 = xml.elem("main", {
         hello = "world",
