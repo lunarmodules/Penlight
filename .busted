@@ -1,5 +1,7 @@
 return {
   default = {
+    verbose = true,
+    output = "gtest",
     lpath = "./lua/?.lua;./lua/?/init.lua",
   }
 }
