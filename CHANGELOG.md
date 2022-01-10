@@ -6,7 +6,7 @@ deprecation policy.
 
 see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) for release instructions
 
-## 1.12.0 (unreleased)
+## 1.12.0 (2022-Jan-10)
  - deprecate: module `pl.text` the contents have moved to `pl.stringx` (removal later)
    [#407](https://github.com/lunarmodules/Penlight/pull/407)
  - deprecate: module `pl.xml`, please switch to a more specialized library (removal later)
@@ -57,7 +57,7 @@ see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) fo
    [#397](https://github.com/lunarmodules/Penlight/pull/397)
 
 
-## 1.11.0 (2021-08-18)
+## 1.11.0 (2021-Aug-18)
 
  - fix: `stringx.strip` behaved badly with string lengths > 200
    [#382](https://github.com/lunarmodules/Penlight/pull/382)
@@ -67,7 +67,7 @@ see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) fo
    stack-trace [#385](https://github.com/lunarmodules/Penlight/pull/385)
 
 
-## 1.10.0 (2021-04-27)
+## 1.10.0 (2021-Apr-27)
 
  - deprecate: `permute.iter`, renamed to `permute.order_iter` (removal later)
    [#360](https://github.com/lunarmodules/Penlight/pull/360)
@@ -115,24 +115,24 @@ see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) fo
  - feat: `array2d.rows` added to be in line with `columns`
 
 
-## 1.9.2 (2020-09-27)
+## 1.9.2 (2020-Sep-27)
 
  - fix: dir.walk [#350](https://github.com/lunarmodules/Penlight/pull/350)
 
 
-## 1.9.1 (2020-09-24)
+## 1.9.1 (2020-Sep-24)
 
  - released to superseed the 1.9.0 version which was retagged in git after some
    distro's already had picked it up. This version is identical to 1.8.1.
 
-## 1.8.1 (2020-09-24) (replacing a briefly released but broken 1.9.0 version)
+## 1.8.1 (2020-Sep-24) (replacing a briefly released but broken 1.9.0 version)
 
 ## Fixes
 
   - In `pl.class`, `_init` can now be inherited from grandparent (or older ancestor) classes. [#289](https://github.com/lunarmodules/Penlight/pull/289)
   - Fixes `dir`, `lexer`, and `permute` to no longer use coroutines. [#344](https://github.com/lunarmodules/Penlight/pull/344)
 
-## 1.8.0 (2020-08-05)
+## 1.8.0 (2020-Aug-05)
 
 ### New features
 
@@ -162,7 +162,7 @@ see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) fo
   - Fix: the lexer would not recognize numbers without leading zero; "-.123".
     See [#315](https://github.com/lunarmodules/Penlight/issues/315)
 
-## 1.7.0 (2019-10-14)
+## 1.7.0 (2019-Oct-14)
 
 ### New features
 
@@ -197,7 +197,7 @@ see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) fo
   - added a missing assertion on `path.getmtime` [#291](https://github.com/lunarmodules/Penlight/pull/291)
   - `stringx.rpartition` returned bad results on a not-found [#299](https://github.com/lunarmodules/Penlight/pull/299)
 
-## 1.6.0 (2018-11-23)
+## 1.6.0 (2018-Nov-23)
 
 ### New features
 
