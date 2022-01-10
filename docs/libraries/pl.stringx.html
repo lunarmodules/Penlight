@@ -37,7 +37,9 @@
 <li><a href="#Strings_and_Lists">Strings and Lists </a></li>
 <li><a href="#Finding_and_Replacing">Finding and Replacing </a></li>
 <li><a href="#Stripping_and_Justifying">Stripping and Justifying </a></li>
-<li><a href="#Partioning_Strings">Partioning Strings </a></li>
+<li><a href="#Partitioning_Strings">Partitioning Strings </a></li>
+<li><a href="#Text_handling">Text handling </a></li>
+<li><a href="#Template">Template </a></li>
 <li><a href="#Miscelaneous">Miscelaneous </a></li>
 </ul>
 
@@ -130,7 +132,7 @@
 
 <p> See <a href="../manual/03-strings.md.html#">the Guide</a></p>
 
-<p> Dependencies: <a href="../libraries/pl.utils.html#">pl.utils</a></p>
+<p> Dependencies: <a href="../libraries/pl.utils.html#">pl.utils</a>, <a href="../libraries/pl.types.html#">pl.types</a></p>
 
 
 <h2><a href="#String_Predicates">String Predicates </a></h2>
@@ -149,7 +151,7 @@
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#isspace">isspace (s)</a></td>
-	<td class="summary">does s only contain spaces?</td>
+	<td class="summary">does s only contain whitespace?</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#islower">islower (s)</a></td>
@@ -222,18 +224,18 @@
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#lstrip">lstrip (s[, chrs='%s'])</a></td>
-	<td class="summary">trim any whitespace on the left of s.</td>
+	<td class="summary">trim any characters on the left of s.</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#rstrip">rstrip (s[, chrs='%s'])</a></td>
-	<td class="summary">trim any whitespace on the right of s.</td>
+	<td class="summary">trim any characters on the right of s.</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#strip">strip (s[, chrs='%s'])</a></td>
-	<td class="summary">trim any whitespace on both left and right of s.</td>
+	<td class="summary">trim any characters on both left and right of s.</td>
 	</tr>
 </table>
-<h2><a href="#Partioning_Strings">Partioning Strings </a></h2>
+<h2><a href="#Partitioning_Strings">Partitioning Strings </a></h2>
 <table class="function_list">
 	<tr>
 	<td class="name" nowrap><a href="#splitv">splitv (s[, re='%s'])</a></td>
@@ -250,6 +252,44 @@
 	<tr>
 	<td class="name" nowrap><a href="#at">at (s, idx)</a></td>
 	<td class="summary">return the 'character' at the index.</td>
+	</tr>
+</table>
+<h2><a href="#Text_handling">Text handling </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#indent">indent (s, n[, ch=' '])</a></td>
+	<td class="summary">indent a multiline string.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#dedent">dedent (s)</a></td>
+	<td class="summary">dedent a multiline string by removing any initial indent.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#wrap">wrap (s[, width=70[, breaklong=false]])</a></td>
+	<td class="summary">format a paragraph into lines so that they fit into a line width.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#fill">fill (s[, width=70[, breaklong=false]])</a></td>
+	<td class="summary">format a paragraph so that it fits into a line width.</td>
+	</tr>
+</table>
+<h2><a href="#Template">Template </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#Template">Template (tmpl)</a></td>
+	<td class="summary">Creates a new Template class.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Template:substitute">Template:substitute (tbl)</a></td>
+	<td class="summary">substitute values into a template, throwing an error.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Template:safe_substitute">Template:safe_substitute (tbl)</a></td>
+	<td class="summary">substitute values into a template.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Template:indent_substitute">Template:indent_substitute (tbl)</a></td>
+	<td class="summary">substitute values into a template, preserving indentation.</td>
 	</tr>
 </table>
 <h2><a href="#Miscelaneous">Miscelaneous </a></h2>
@@ -269,6 +309,14 @@
 	<tr>
 	<td class="name" nowrap><a href="#quote_string">quote_string (s)</a></td>
 	<td class="summary">Quote the given string and preserve any control or escape characters, such that reloading the string in Lua returns the same result.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#format_operator">format_operator ()</a></td>
+	<td class="summary">Python-style formatting operator.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#import">import ()</a></td>
+	<td class="summary">import the stringx functions into the global string (meta)table</td>
 	</tr>
 </table>
 
@@ -347,7 +395,8 @@
     <strong>isspace (s)</strong>
     </dt>
     <dd>
-    does s only contain spaces?
+    does s only contain whitespace?
+ Matches on pattern '%s' so matches space, newline, tabs, etc.
 
 
     <h3>Parameters:</h3>
@@ -869,7 +918,7 @@
     <strong>lstrip (s[, chrs='%s'])</strong>
     </dt>
     <dd>
-    trim any whitespace on the left of s.
+    trim any characters on the left of s.
 
 
     <h3>Parameters:</h3>
@@ -881,7 +930,7 @@
         <li><span class="parameter">chrs</span>
             <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
          default any whitespace character,
-  but can be a string of characters to be trimmed
+ but can be a string of characters to be trimmed
          (<em>default</em> '%s')
         </li>
     </ul>
@@ -896,7 +945,7 @@
     <strong>rstrip (s[, chrs='%s'])</strong>
     </dt>
     <dd>
-    trim any whitespace on the right of s.
+    trim any characters on the right of s.
 
 
     <h3>Parameters:</h3>
@@ -908,7 +957,7 @@
         <li><span class="parameter">chrs</span>
             <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
          default any whitespace character,
-  but can be a string of characters to be trimmed
+ but can be a string of characters to be trimmed
          (<em>default</em> '%s')
         </li>
     </ul>
@@ -923,7 +972,7 @@
     <strong>strip (s[, chrs='%s'])</strong>
     </dt>
     <dd>
-    trim any whitespace on both left and right of s.
+    trim any characters on both left and right of s.
 
 
     <h3>Parameters:</h3>
@@ -935,7 +984,7 @@
         <li><span class="parameter">chrs</span>
             <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
          default any whitespace character,
-  but can be a string of characters to be trimmed
+ but can be a string of characters to be trimmed
          (<em>default</em> '%s')
         </li>
     </ul>
@@ -943,10 +992,14 @@
 
 
 
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">stringx.strip(<span class="string">'  --== Hello ==--  '</span>, <span class="string">"- ="</span>)  <span class="comment">--&gt; 'Hello'</span></pre>
+    </ul>
 
 </dd>
 </dl>
-    <h2 class="section-header "><a name="Partioning_Strings"></a>Partioning Strings </h2>
+    <h2 class="section-header "><a name="Partitioning_Strings"></a>Partitioning Strings </h2>
 
     <dl class="function">
     <dt>
@@ -1004,7 +1057,7 @@
         </li>
         <li><span class="parameter">ch</span>
             <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
-         delimiter
+         delimiter (match as plain string, no patterns)
         </li>
     </ul>
 
@@ -1043,7 +1096,7 @@
         </li>
         <li><span class="parameter">ch</span>
             <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
-         delimiter
+         delimiter (match as plain string, no patterns)
         </li>
     </ul>
 
@@ -1090,6 +1143,291 @@
     <ol>
 
         a substring of length 1 if successful, empty string otherwise.
+    </ol>
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Text_handling"></a>Text handling </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "indent"></a>
+    <strong>indent (s, n[, ch=' '])</strong>
+    </dt>
+    <dd>
+    indent a multiline string.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">s</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         the (multiline) string
+        </li>
+        <li><span class="parameter">n</span>
+            <span class="types"><span class="type">integer</span></span>
+         the size of the indent
+        </li>
+        <li><span class="parameter">ch</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         the character to use when indenting
+         (<em>default</em> ' ')
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        indented string
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "dedent"></a>
+    <strong>dedent (s)</strong>
+    </dt>
+    <dd>
+    dedent a multiline string by removing any initial indent.
+ useful when working with [[..]] strings.
+ Empty lines are ignored.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">s</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         the (multiline) string
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        a string with initial indent zero.
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> s = dedent <span class="string">[[
+         One
+
+       Two
+
+     Three
+]]</span>
+<span class="global">assert</span>(s == <span class="string">[[
+    One
+
+  Two
+
+Three
+]]</span>)</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "wrap"></a>
+    <strong>wrap (s[, width=70[, breaklong=false]])</strong>
+    </dt>
+    <dd>
+    format a paragraph into lines so that they fit into a line width.
+ It will not break long words by default, so lines can be over the length
+ to that extent.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">s</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         the string to format
+        </li>
+        <li><span class="parameter">width</span>
+            <span class="types"><span class="type">integer</span></span>
+         the margin width
+         (<em>default</em> 70)
+        </li>
+        <li><span class="parameter">breaklong</span>
+            <span class="types"><span class="type">boolean</span></span>
+         if truthy, words longer than the width given will be forced split.
+         (<em>default</em> false)
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        a list of lines (List object), use <a href="../libraries/pl.stringx.html#fill">fill</a> to return a string instead of a <a href="../classes/pl.List.html">List</a>.
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul>
+         <li><a href="../classes/pl.List.html#">pl.List</a></li>
+         <li><a href="../libraries/pl.stringx.html#fill">fill</a></li>
+    </ul>
+
+
+</dd>
+    <dt>
+    <a name = "fill"></a>
+    <strong>fill (s[, width=70[, breaklong=false]])</strong>
+    </dt>
+    <dd>
+    format a paragraph so that it fits into a line width.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">s</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         the string to format
+        </li>
+        <li><span class="parameter">width</span>
+            <span class="types"><span class="type">integer</span></span>
+         the margin width
+         (<em>default</em> 70)
+        </li>
+        <li><span class="parameter">breaklong</span>
+            <span class="types"><span class="type">boolean</span></span>
+         if truthy, words longer than the width given will be forced split.
+         (<em>default</em> false)
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        a string, use <a href="../libraries/pl.stringx.html#wrap">wrap</a> to return a list of lines instead of a string.
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../libraries/pl.stringx.html#wrap">wrap</a>
+    </ul>
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Template"></a>Template </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "Template"></a>
+    <strong>Template (tmpl)</strong>
+    </dt>
+    <dd>
+    Creates a new Template class.
+ This is a shortcut to <code>Template.new(tmpl)</code>.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">tmpl</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         the template string
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="../libraries/pl.stringx.html#Template">Template</a></span>
+
+
+
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Template:substitute"></a>
+    <strong>Template:substitute (tbl)</strong>
+    </dt>
+    <dd>
+    substitute values into a template, throwing an error.
+ This will throw an error if no name is found.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">tbl</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+         a table of name-value pairs.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        string with place holders substituted
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Template:safe_substitute"></a>
+    <strong>Template:safe_substitute (tbl)</strong>
+    </dt>
+    <dd>
+    substitute values into a template.
+ This version just passes unknown names through.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">tbl</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+         a table of name-value pairs.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        string with place holders substituted
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Template:indent_substitute"></a>
+    <strong>Template:indent_substitute (tbl)</strong>
+    </dt>
+    <dd>
+    substitute values into a template, preserving indentation.  <br>
+ If the value is a multiline string <em>or</em> a template, it will insert
+ the lines at the correct indentation. <br>
+ Furthermore, if a template, then that template will be substituted
+ using the same table.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">tbl</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+         a table of name-value pairs.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        string with place holders substituted
     </ol>
 
 
@@ -1221,6 +1559,59 @@
 
         The quoted string.
     </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "format_operator"></a>
+    <strong>format_operator ()</strong>
+    </dt>
+    <dd>
+    Python-style formatting operator.
+ Calling <code>text.format_operator()</code> overloads the % operator for strings to give
+ Python/Ruby style formated output.
+ This is extended to also do template-like substitution for map-like data.</p>
+
+<p> Note this goes further than the original, and will allow these cases:</p>
+
+<ol>
+    <li>a single value</li>
+    <li>a list of values</li>
+    <li>a map of var=value pairs</li>
+    <li>a function, as in gsub</li>
+</ol>
+
+<p> For the second two cases, it uses $-variable substituion.</p>
+
+<p> When called, this function will monkey-patch the global <a href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a> metatable by
+ adding a <code>__mod</code> method.</p>
+
+<p> See <a href="http://lua-users.org/wiki/StringInterpolation">the lua-users wiki</a>
+
+
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="global">require</span> <span class="string">'pl.text'</span>.format_operator()
+<span class="keyword">local</span> out1 = <span class="string">'%s = %5.3f'</span> % {<span class="string">'PI'</span>,<span class="global">math</span>.pi}                   <span class="comment">--&gt; 'PI = 3.142'
+</span><span class="keyword">local</span> out2 = <span class="string">'$name = $value'</span> % {name=<span class="string">'dog'</span>,value=<span class="string">'Pluto'</span>}   <span class="comment">--&gt; 'dog = Pluto'</span></pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "import"></a>
+    <strong>import ()</strong>
+    </dt>
+    <dd>
+    import the stringx functions into the global string (meta)table
+
+
+
 
 
 

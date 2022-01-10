@@ -206,38 +206,38 @@
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#parse_range">parse_range (s)</a></td>
-	<td class="summary">parse a spreadsheet range.</td>
+	<td class="summary">parse a spreadsheet range or cell.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#range">range (t, rstr)</a></td>
-	<td class="summary">get a slice of a 2D array using spreadsheet range notation.</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#default_range">default_range (t, i1, j1, i2, j2)</a></td>
-	<td class="summary">normalizes coordinates to valid positive entries and defaults.</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#slice">slice (t, i1, j1, i2, j2)</a></td>
+	<td class="name" nowrap><a href="#range">range (...)</a></td>
 	<td class="summary">get a slice of a 2D array.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#set">set (t, value, i1, j1, i2, j2)</a></td>
+	<td class="name" nowrap><a href="#default_range">default_range (t[, i1=1[, j1=1[, i2=N[, j2=M]]]])</a></td>
+	<td class="summary">normalizes coordinates to valid positive entries and defaults.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#slice">slice (t[, i1=1[, j1=1[, i2=N[, j2=M]]]])</a></td>
+	<td class="summary">get a slice of a 2D array.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#set">set (t, value[, i1=1[, j1=1[, i2=N[, j2=M]]]])</a></td>
 	<td class="summary">set a specified range of an array to a value.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#write">write (t, f, fmt, i1, j1, i2, j2)</a></td>
+	<td class="name" nowrap><a href="#write">write (t, f, fmt[, i1=1[, j1=1[, i2=N[, j2=M]]]])</a></td>
 	<td class="summary">write a 2D array to a file.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#forall">forall (t, row_op, end_row_op, i1, j1, i2, j2)</a></td>
+	<td class="name" nowrap><a href="#forall">forall (t, row_op, end_row_op[, i1=1[, j1=1[, i2=N[, j2=M]]]])</a></td>
 	<td class="summary">perform an operation for all values in a 2D array.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#move">move (dest, di, dj, src, i1, j1, i2, j2)</a></td>
+	<td class="name" nowrap><a href="#move">move (dest, di, dj, src[, i1=1[, j1=1[, i2=N[, j2=M]]]])</a></td>
 	<td class="summary">move a block from the destination to the source.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#iter">iter (a, indices, i1, j1, i2, j2)</a></td>
+	<td class="name" nowrap><a href="#iter">iter (a, indices[, i1=1[, j1=1[, i2=N[, j2=M]]]])</a></td>
 	<td class="summary">iterate over all elements in a 2D array, with optional indices.</td>
 	</tr>
 	<tr>
@@ -840,9 +840,9 @@
     <strong>parse_range (s)</strong>
     </dt>
     <dd>
-    parse a spreadsheet range.
- The range can be specified either as 'A1:B2' or 'R1C1:R2C2';
- a special case is a single element (e.g 'A1' or 'R1C1')
+    parse a spreadsheet range or cell.
+ The range/cell can be specified either as 'A1:B2' or 'R1C1:R2C2' or for
+ single cells as 'A1' or 'R1C1'.
 
 
     <h3>Parameters:</h3>
@@ -863,10 +863,10 @@
         start col</li>
         <li>
            <span class="types"><span class="type">int</span></span>
-        end row</li>
+        end row (or <code>nil</code> if the range was a single cell)</li>
         <li>
            <span class="types"><span class="type">int</span></span>
-        end col</li>
+        end col (or <code>nil</code> if the range was a single cell)</li>
     </ol>
 
 
@@ -875,42 +875,34 @@
 </dd>
     <dt>
     <a name = "range"></a>
-    <strong>range (t, rstr)</strong>
+    <strong>range (...)</strong>
     </dt>
     <dd>
-    get a slice of a 2D array using spreadsheet range notation.  @see parse_range
+    get a slice of a 2D array.
+ Same as <a href="../libraries/pl.array2d.html#slice">slice</a>.
 
 
     <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">t</span>
-            <span class="types"><span class="type">array</span></span>
-         a 2D array
-        </li>
-        <li><span class="parameter">rstr</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
-         range expression
+        <li><span class="parameter">...</span>
+
+
+
         </li>
     </ul>
 
-    <h3>Returns:</h3>
-    <ol>
-
-        a slice
-    </ol>
 
 
     <h3>See also:</h3>
     <ul>
-         <li><a href="../libraries/pl.array2d.html#parse_range">array2d.parse_range</a></li>
-         <li><a href="../libraries/pl.array2d.html#slice">array2d.slice</a></li>
+         <a href="../libraries/pl.array2d.html#slice">slice</a>
     </ul>
 
 
 </dd>
     <dt>
     <a name = "default_range"></a>
-    <strong>default_range (t, i1, j1, i2, j2)</strong>
+    <strong>default_range (t[, i1=1[, j1=1[, i2=N[, j2=M]]]])</strong>
     </dt>
     <dd>
     normalizes coordinates to valid positive entries and defaults.
@@ -925,32 +917,44 @@
          a 2D array
         </li>
         <li><span class="parameter">i1</span>
-            <span class="types"><span class="type">int</span></span>
-         start row (default 1)
+            <span class="types"><span class="type">int</span> or <a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         start row or spreadsheet range passed to <a href="../libraries/pl.array2d.html#parse_range">parse_range</a>
+         (<em>default</em> 1)
         </li>
         <li><span class="parameter">j1</span>
             <span class="types"><span class="type">int</span></span>
-         start col (default 1)
+         start col
+         (<em>default</em> 1)
         </li>
         <li><span class="parameter">i2</span>
             <span class="types"><span class="type">int</span></span>
-         end row   (default N)
+         end row
+         (<em>default</em> N)
         </li>
         <li><span class="parameter">j2</span>
             <span class="types"><span class="type">int</span></span>
-         end col   (default M)
- return i1, j1, i2, j2
+         end col
+         (<em>default</em> M)
         </li>
     </ul>
 
+    <h3>Returns:</h3>
+    <ol>
+
+        i1, j1, i2, j2
+    </ol>
 
 
+    <h3>See also:</h3>
+    <ul>
+         <a href="../libraries/pl.array2d.html#parse_range">parse_range</a>
+    </ul>
 
 
 </dd>
     <dt>
     <a name = "slice"></a>
-    <strong>slice (t, i1, j1, i2, j2)</strong>
+    <strong>slice (t[, i1=1[, j1=1[, i2=N[, j2=M]]]])</strong>
     </dt>
     <dd>
     get a slice of a 2D array.  Note that if the specified range has
@@ -964,20 +968,24 @@
          a 2D array
         </li>
         <li><span class="parameter">i1</span>
-            <span class="types"><span class="type">int</span></span>
-         start row (default 1)
+            <span class="types"><span class="type">int</span> or <a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         start row or spreadsheet range passed to <a href="../libraries/pl.array2d.html#parse_range">parse_range</a>
+         (<em>default</em> 1)
         </li>
         <li><span class="parameter">j1</span>
             <span class="types"><span class="type">int</span></span>
-         start col (default 1)
+         start col
+         (<em>default</em> 1)
         </li>
         <li><span class="parameter">i2</span>
             <span class="types"><span class="type">int</span></span>
-         end row   (default N)
+         end row
+         (<em>default</em> N)
         </li>
         <li><span class="parameter">j2</span>
             <span class="types"><span class="type">int</span></span>
-         end col   (default M)
+         end col
+         (<em>default</em> M)
         </li>
     </ul>
 
@@ -988,12 +996,16 @@
     </ol>
 
 
+    <h3>See also:</h3>
+    <ul>
+         <a href="../libraries/pl.array2d.html#parse_range">parse_range</a>
+    </ul>
 
 
 </dd>
     <dt>
     <a name = "set"></a>
-    <strong>set (t, value, i1, j1, i2, j2)</strong>
+    <strong>set (t, value[, i1=1[, j1=1[, i2=N[, j2=M]]]])</strong>
     </dt>
     <dd>
     set a specified range of an array to a value.
@@ -1009,20 +1021,24 @@
          the value (may be a function, called as <code>val(i,j)</code>)
         </li>
         <li><span class="parameter">i1</span>
-            <span class="types"><span class="type">int</span></span>
-         start row (default 1)
+            <span class="types"><span class="type">int</span> or <a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         start row or spreadsheet range passed to <a href="../libraries/pl.array2d.html#parse_range">parse_range</a>
+         (<em>default</em> 1)
         </li>
         <li><span class="parameter">j1</span>
             <span class="types"><span class="type">int</span></span>
-         start col (default 1)
+         start col
+         (<em>default</em> 1)
         </li>
         <li><span class="parameter">i2</span>
             <span class="types"><span class="type">int</span></span>
-         end row   (default N)
+         end row
+         (<em>default</em> N)
         </li>
         <li><span class="parameter">j2</span>
             <span class="types"><span class="type">int</span></span>
-         end col   (default M)
+         end col
+         (<em>default</em> M)
         </li>
     </ul>
 
@@ -1030,14 +1046,15 @@
 
     <h3>See also:</h3>
     <ul>
-         <a href="../libraries/pl.tablex.html#set">tablex.set</a>
+         <li><a href="../libraries/pl.array2d.html#parse_range">parse_range</a></li>
+         <li><a href="../libraries/pl.tablex.html#set">tablex.set</a></li>
     </ul>
 
 
 </dd>
     <dt>
     <a name = "write"></a>
-    <strong>write (t, f, fmt, i1, j1, i2, j2)</strong>
+    <strong>write (t, f, fmt[, i1=1[, j1=1[, i2=N[, j2=M]]]])</strong>
     </dt>
     <dd>
     write a 2D array to a file.
@@ -1057,31 +1074,39 @@
          a format string (default is just to use tostring)
         </li>
         <li><span class="parameter">i1</span>
-            <span class="types"><span class="type">int</span></span>
-         start row (default 1)
+            <span class="types"><span class="type">int</span> or <a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         start row or spreadsheet range passed to <a href="../libraries/pl.array2d.html#parse_range">parse_range</a>
+         (<em>default</em> 1)
         </li>
         <li><span class="parameter">j1</span>
             <span class="types"><span class="type">int</span></span>
-         start col (default 1)
+         start col
+         (<em>default</em> 1)
         </li>
         <li><span class="parameter">i2</span>
             <span class="types"><span class="type">int</span></span>
-         end row   (default N)
+         end row
+         (<em>default</em> N)
         </li>
         <li><span class="parameter">j2</span>
             <span class="types"><span class="type">int</span></span>
-         end col   (default M)
+         end col
+         (<em>default</em> M)
         </li>
     </ul>
 
 
 
+    <h3>See also:</h3>
+    <ul>
+         <a href="../libraries/pl.array2d.html#parse_range">parse_range</a>
+    </ul>
 
 
 </dd>
     <dt>
     <a name = "forall"></a>
-    <strong>forall (t, row_op, end_row_op, i1, j1, i2, j2)</strong>
+    <strong>forall (t, row_op, end_row_op[, i1=1[, j1=1[, i2=N[, j2=M]]]])</strong>
     </dt>
     <dd>
     perform an operation for all values in a 2D array.
@@ -1102,31 +1127,39 @@
          function to call at end of each row; <code>end_row_op(i)</code>
         </li>
         <li><span class="parameter">i1</span>
-            <span class="types"><span class="type">int</span></span>
-         start row (default 1)
+            <span class="types"><span class="type">int</span> or <a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         start row or spreadsheet range passed to <a href="../libraries/pl.array2d.html#parse_range">parse_range</a>
+         (<em>default</em> 1)
         </li>
         <li><span class="parameter">j1</span>
             <span class="types"><span class="type">int</span></span>
-         start col (default 1)
+         start col
+         (<em>default</em> 1)
         </li>
         <li><span class="parameter">i2</span>
             <span class="types"><span class="type">int</span></span>
-         end row   (default N)
+         end row
+         (<em>default</em> N)
         </li>
         <li><span class="parameter">j2</span>
             <span class="types"><span class="type">int</span></span>
-         end col   (default M)
+         end col
+         (<em>default</em> M)
         </li>
     </ul>
 
 
 
+    <h3>See also:</h3>
+    <ul>
+         <a href="../libraries/pl.array2d.html#parse_range">parse_range</a>
+    </ul>
 
 
 </dd>
     <dt>
     <a name = "move"></a>
-    <strong>move (dest, di, dj, src, i1, j1, i2, j2)</strong>
+    <strong>move (dest, di, dj, src[, i1=1[, j1=1[, i2=N[, j2=M]]]])</strong>
     </dt>
     <dd>
     move a block from the destination to the source.
@@ -1151,31 +1184,39 @@
          a 2D array
         </li>
         <li><span class="parameter">i1</span>
-            <span class="types"><span class="type">int</span></span>
-         start row (default 1)
+            <span class="types"><span class="type">int</span> or <a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         start row or spreadsheet range passed to <a href="../libraries/pl.array2d.html#parse_range">parse_range</a>
+         (<em>default</em> 1)
         </li>
         <li><span class="parameter">j1</span>
             <span class="types"><span class="type">int</span></span>
-         start col (default 1)
+         start col
+         (<em>default</em> 1)
         </li>
         <li><span class="parameter">i2</span>
             <span class="types"><span class="type">int</span></span>
-         end row   (default N)
+         end row
+         (<em>default</em> N)
         </li>
         <li><span class="parameter">j2</span>
             <span class="types"><span class="type">int</span></span>
-         end col   (default M)
+         end col
+         (<em>default</em> M)
         </li>
     </ul>
 
 
 
+    <h3>See also:</h3>
+    <ul>
+         <a href="../libraries/pl.array2d.html#parse_range">parse_range</a>
+    </ul>
 
 
 </dd>
     <dt>
     <a name = "iter"></a>
-    <strong>iter (a, indices, i1, j1, i2, j2)</strong>
+    <strong>iter (a, indices[, i1=1[, j1=1[, i2=N[, j2=M]]]])</strong>
     </dt>
     <dd>
     iterate over all elements in a 2D array, with optional indices.
@@ -1192,20 +1233,24 @@
          with indices (default false)
         </li>
         <li><span class="parameter">i1</span>
-            <span class="types"><span class="type">int</span></span>
-         start row (default 1)
+            <span class="types"><span class="type">int</span> or <a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         start row or spreadsheet range passed to <a href="../libraries/pl.array2d.html#parse_range">parse_range</a>
+         (<em>default</em> 1)
         </li>
         <li><span class="parameter">j1</span>
             <span class="types"><span class="type">int</span></span>
-         start col (default 1)
+         start col
+         (<em>default</em> 1)
         </li>
         <li><span class="parameter">i2</span>
             <span class="types"><span class="type">int</span></span>
-         end row   (default N)
+         end row
+         (<em>default</em> N)
         </li>
         <li><span class="parameter">j2</span>
             <span class="types"><span class="type">int</span></span>
-         end col   (default M)
+         end col
+         (<em>default</em> M)
         </li>
     </ul>
 
@@ -1216,6 +1261,10 @@
     </ol>
 
 
+    <h3>See also:</h3>
+    <ul>
+         <a href="../libraries/pl.array2d.html#parse_range">parse_range</a>
+    </ul>
 
 
 </dd>
@@ -1251,7 +1300,7 @@
     </dt>
     <dd>
     iterate over all rows.
- Returns a copy of the row, for read-only purrposes directly iterating
+ Returns a copy of the row, for read-only purposes directly iterating
  is more performant; <code>ipairs(a)</code>
 
 

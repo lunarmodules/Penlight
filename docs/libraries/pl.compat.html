@@ -179,7 +179,7 @@
 	<td class="summary">pack an argument list into a table.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#table.unpack">table.unpack (t[, i[, t]])</a></td>
+	<td class="name" nowrap><a href="#table.unpack">table.unpack (t[, i[, j]])</a></td>
 	<td class="summary">unpack a table and return the elements.</td>
 	</tr>
 	<tr>
@@ -455,7 +455,7 @@
 </dd>
     <dt>
     <a name = "table.unpack"></a>
-    <strong>table.unpack (t[, i[, t]])</strong>
+    <strong>table.unpack (t[, i[, j]])</strong>
     </dt>
     <dd>
     unpack a table and return the elements. </p>
@@ -467,14 +467,13 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">t</span>
-         index of the last element to unpack, defaults to #t
-         (<em>optional</em>)
+         table to unpack
         </li>
         <li><span class="parameter">i</span>
          index from which to start unpacking, defaults to 1
          (<em>optional</em>)
         </li>
-        <li><span class="parameter">t</span>
+        <li><span class="parameter">j</span>
          index of the last element to unpack, defaults to #t
          (<em>optional</em>)
         </li>
