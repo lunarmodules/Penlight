@@ -51,6 +51,16 @@ local pcall         =         pcall
 local require       =       require
 
 
+utils.raise_deprecation {
+  source = "Penlight " .. utils._VERSION,
+  message = "the contents of module 'pl.xml' has been deprecated, please use a more specialized library instead",
+  version_removed = "2.0.0",
+  deprecated_after = "1.11.0",
+  no_trace = true,
+}
+
+
+
 local _M = {}
 local Doc = { __type = "doc" };
 Doc.__index = Doc;

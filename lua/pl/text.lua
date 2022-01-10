@@ -15,7 +15,7 @@
 
 local utils = require("pl.utils")
 
-require("pl.utils").raise_deprecation {
+utils.raise_deprecation {
   source = "Penlight " .. utils._VERSION,
   message = "the contents of module 'pl.text' has moved into 'pl.stringx'",
   version_removed = "2.0.0",
