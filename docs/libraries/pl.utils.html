@@ -139,7 +139,7 @@
 	<td class="summary">pack an argument list into a table.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#unpack">unpack (t[, i[, t]])</a></td>
+	<td class="name" nowrap><a href="#unpack">unpack (t[, i[, j]])</a></td>
 	<td class="summary">unpack a table and return its contents.</td>
 	</tr>
 	<tr>
@@ -166,6 +166,10 @@
 	<td class="name" nowrap><a href="#is_type">is_type (obj, tp)</a></td>
 	<td class="summary">is the object of the specified type?</td>
 	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#npairs">npairs (t[, i_start=1[, i_end=t.n or #t[, step=1]]])</a></td>
+	<td class="summary">an iterator with indices, similar to <a href="https://www.lua.org/manual/5.1/manual.html#pdf-ipairs">ipairs</a>, but with a range.</td>
+	</tr>
 </table>
 <h2><a href="#Tables">Tables</a></h2>
 <table class="function_list">
@@ -183,6 +187,10 @@
 	<tr>
 	<td class="name" nowrap><a href="#assert_arg">assert_arg (n, val, tp, verify, msg, lev)</a></td>
 	<td class="summary">assert that the given argument is in fact of the correct type.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#enum">enum (...)</a></td>
+	<td class="summary">creates an Enum table.</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#function_arg">function_arg (idx, f, msg)</a></td>
@@ -312,14 +320,16 @@
 
     <h3>See also:</h3>
     <ul>
-         <a href="../libraries/pl.compat.html#table.pack">compat.pack</a>
+         <li><a href="../libraries/pl.compat.html#table.pack">compat.pack</a></li>
+         <li><a href="../libraries/pl.utils.html#npairs">utils.npairs</a></li>
+         <li><a href="../libraries/pl.utils.html#unpack">utils.unpack</a></li>
     </ul>
 
 
 </dd>
     <dt>
     <a name = "unpack"></a>
-    <strong>unpack (t[, i[, t]])</strong>
+    <strong>unpack (t[, i[, j]])</strong>
     </dt>
     <dd>
     unpack a table and return its contents. </p>
@@ -331,15 +341,14 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">t</span>
-         index of the last element to unpack, defaults to <code>t.n</code> or <code>#t</code>
-         (<em>optional</em>)
+         table to unpack
         </li>
         <li><span class="parameter">i</span>
          index from which to start unpacking, defaults to 1
          (<em>optional</em>)
         </li>
-        <li><span class="parameter">t</span>
-         index of the last element to unpack, defaults to <code>t.n</code> or <code>#t</code>
+        <li><span class="parameter">j</span>
+         index of the last element to unpack, defaults to <code>t.n</code> or else <code>#t</code>
          (<em>optional</em>)
         </li>
     </ul>
@@ -353,7 +362,9 @@
 
     <h3>See also:</h3>
     <ul>
-         <a href="../libraries/pl.compat.html#table.unpack">compat.unpack</a>
+         <li><a href="../libraries/pl.compat.html#table.unpack">compat.unpack</a></li>
+         <li><a href="../libraries/pl.utils.html#pack">utils.pack</a></li>
+         <li><a href="../libraries/pl.utils.html#npairs">utils.npairs</a></li>
     </ul>
 
     <h3>Usage:</h3>
@@ -534,6 +545,68 @@ utils.is_type(my_obj, my_mt)  <span class="comment">--&gt; true</span></pre>
     </ul>
 
 </dd>
+    <dt>
+    <a name = "npairs"></a>
+    <strong>npairs (t[, i_start=1[, i_end=t.n or #t[, step=1]]])</strong>
+    </dt>
+    <dd>
+    an iterator with indices, similar to <a href="https://www.lua.org/manual/5.1/manual.html#pdf-ipairs">ipairs</a>, but with a range.
+ This is a nil-safe index based iterator that will return <code>nil</code> when there
+ is a hole in a list. To be safe ensure that table <code>t.n</code> contains the length.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">t</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+         the table to iterate over
+        </li>
+        <li><span class="parameter">i_start</span>
+            <span class="types"><span class="type">integer</span></span>
+         start index
+         (<em>default</em> 1)
+        </li>
+        <li><span class="parameter">i_end</span>
+            <span class="types"><span class="type">integer</span></span>
+         end index
+         (<em>default</em> t.n or #t)
+        </li>
+        <li><span class="parameter">step</span>
+            <span class="types"><span class="type">integer</span></span>
+         step size
+         (<em>default</em> 1)
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">integer</span></span>
+        index</li>
+        <li>
+           <span class="types"><span class="type">any</span></span>
+        value at index (which can be <code>nil</code>!)</li>
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul>
+         <li><a href="../libraries/pl.utils.html#pack">utils.pack</a></li>
+         <li><a href="../libraries/pl.utils.html#unpack">utils.unpack</a></li>
+    </ul>
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> t = utils.pack(<span class="keyword">nil</span>, <span class="number">123</span>, <span class="keyword">nil</span>)  <span class="comment">-- adds an <code>n</code> field when packing
+</span>
+<span class="keyword">for</span> i, v <span class="keyword">in</span> utils.npairs(t, <span class="number">2</span>) <span class="keyword">do</span>  <span class="comment">-- start at index 2
+</span>  t[i] = <span class="global">tostring</span>(t[i])
+<span class="keyword">end</span>
+
+<span class="comment">-- t = { n = 3, [2] = "123", [3] = "nil" }</span></pre>
+    </ul>
+
+</dd>
 </dl>
     <h2 class="section-header "><a name="Tables"></a>Tables</h2>
 
@@ -645,6 +718,60 @@ utils.is_type(my_obj, my_mt)  <span class="comment">--&gt; true</span></pre>
         <pre class="example"><span class="keyword">local</span> param1 = assert_arg(<span class="number">1</span>,<span class="string">"hello"</span>,<span class="string">'table'</span>)  <span class="comment">--&gt; error: argument 1 expected a 'table', got a 'string'
 </span><span class="keyword">local</span> param4 = assert_arg(<span class="number">4</span>,<span class="string">'!@#$%^&amp;*'</span>,<span class="string">'string'</span>,path.isdir,<span class="string">'not a directory'</span>)
      <span class="comment">--&gt; error: argument 4: '!@#$%^&amp;*' not a directory</span></pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "enum"></a>
+    <strong>enum (...)</strong>
+    </dt>
+    <dd>
+    creates an Enum table.
+ This helps prevent magic strings in code by throwing errors for accessing
+ non-existing values.</p>
+
+<p> Calling on the object does the same, but returns a soft error; <code>nil + err</code>.</p>
+
+<p> The values are equal to the keys. The enum object is
+ read-only.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">...</span>
+         strings that make up the enumeration.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        Enum object
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <li><pre class="example"><span class="comment">-- accessing at runtime
+</span><span class="keyword">local</span> obj = {}
+obj.MOVEMENT = utils.enum(<span class="string">"FORWARD"</span>, <span class="string">"REVERSE"</span>, <span class="string">"LEFT"</span>, <span class="string">"RIGHT"</span>)
+
+<span class="keyword">if</span> current_movement == obj.MOVEMENT.FORWARD <span class="keyword">then</span>
+  <span class="comment">-- do something
+</span>
+<span class="keyword">elseif</span> current_movement == obj.MOVEMENT.REVERES <span class="keyword">then</span>
+  <span class="comment">-- throws error due to typo 'REVERES', so a silent mistake becomes a hard error
+</span>  <span class="comment">-- "'REVERES' is not a valid value (expected one of: 'FORWARD', 'REVERSE', 'LEFT', 'RIGHT')"
+</span>
+<span class="keyword">end</span></pre></li>
+        <li><pre class="example"><span class="comment">-- validating user-input
+</span><span class="keyword">local</span> parameter = <span class="string">"...some user provided option..."</span>
+<span class="keyword">local</span> ok, err = obj.MOVEMENT(parameter) <span class="comment">-- calling on the object
+</span><span class="keyword">if</span> <span class="keyword">not</span> ok <span class="keyword">then</span>
+  <span class="global">print</span>(<span class="string">"bad 'parameter', "</span> .. err)
+  <span class="global">os</span>.exit(<span class="number">1</span>)
+<span class="keyword">end</span></pre></li>
     </ul>
 
 </dd>

@@ -162,7 +162,7 @@ three
 <p>Most of these can be fairly easily implemented using the Lua string library,
 which is more general and powerful. But they are convenient operations to have
 easily at hand. Note that can be injected into the <a href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a> table if you use
-<code>stringx.import</code>, but a simple alias like <code>local stringx = require &apos;pl.stringx&apos;</code>
+<a href="../libraries/pl.stringx.html#import">stringx.import</a>, but a simple alias like <code>local stringx = require &apos;pl.stringx&apos;</code>
 is preferrable. This is the recommended practice when writing modules for
 consumption by other people, since it is bad manners to change the global state
 of the rest of the system. Magic may be used for convenience, but there is always
@@ -187,10 +187,10 @@ Lua is the best
 
 <p>'$ variables' can optionally have curly braces; this form is useful if you are
 glueing text together to make variables, e.g <code>${prefix}_name_${postfix}</code>. The
-<a href="../libraries/pl.text.html#Template:substitute">substitute</a> method will throw an error if a $ variable is not found in the
-table, and the <a href="../libraries/pl.text.html#Template:safe_substitute">safe_substitute</a> method will not.</p>
+<code>substitute</code> method will throw an error if a $ variable is not found in the
+table, and the <code>safe_substitute</code> method will not.</p>
 
-<p>The Lua implementation has an extra method, <a href="../libraries/pl.text.html#Template:indent_substitute">indent_substitute</a> which is very
+<p>The Lua implementation has an extra method, <code>indent_substitute</code> which is very
 useful for inserting blocks of text, because it adjusts indentation. Consider
 this example:</p>
 
@@ -227,15 +227,15 @@ end
 <span class="keyword">end</span>
 </pre>
 
-<p><a href="../libraries/pl.text.html#Template:indent_substitute">indent_substitute</a> can substitute templates, and in which case they themselves
+<p><code>indent_substitute</code> can substitute templates, and in which case they themselves
 will be substituted using the given table. So in this case, <code>$t</code> was substituted
 twice.</p>
 
-<p><a href="../libraries/pl.text.html#">pl.text</a> also has a number of useful functions like <a href="../libraries/pl.text.html#dedent">dedent</a>, which strips all
+<p><a href="../libraries/pl.text.html#">pl.text</a> also has a number of useful functions like <code>dedent</code>, which strips all
 the initial indentation from a multiline string. As in Python, this is useful for
 preprocessing multiline strings if you like indenting them with your code. The
-function <a href="../libraries/pl.text.html#wrap">wrap</a> is passed a long string (a <em>paragraph</em>) and returns a list of
-lines that fit into a desired line width. As an extension, there is also <a href="../libraries/pl.text.html#indent">indent</a>
+function <code>wrap</code> is passed a long string (a <em>paragraph</em>) and returns a list of
+lines that fit into a desired line width. As an extension, there is also <code>indent</code>
 for indenting multiline strings.</p>
 
 <p>New in Penlight with the 0.9 series is <code>text.format_operator</code>. Calling this
@@ -257,7 +257,7 @@ will also expand <code>$</code> variables using named fields:</p>
 dog[<span class="number">1</span>]
 </pre>
 
-<p>As with <code>stringx.import</code> you have to do this explicitly, since all strings share the same
+<p>As with <a href="../libraries/pl.stringx.html#import">stringx.import</a> you have to do this explicitly, since all strings share the same
 metatable. But in your own scripts you can feel free to do this.</p>
 
 <p><a name="Another_Style_of_Template"></a></p>

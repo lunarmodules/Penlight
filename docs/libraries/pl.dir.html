@@ -135,11 +135,11 @@
 	<td class="summary">Return a list of all file names within an array which match a pattern.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#getfiles">getfiles (dirname, mask)</a></td>
+	<td class="name" nowrap><a href="#getfiles">getfiles ([dirname='.'[, mask]])</a></td>
 	<td class="summary">return a list of all files in a directory which match a shell pattern.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#getdirectories">getdirectories (dirname)</a></td>
+	<td class="name" nowrap><a href="#getdirectories">getdirectories ([dirname='.'])</a></td>
 	<td class="summary">return a list of all subdirectories of the directory.</td>
 	</tr>
 	<tr>
@@ -171,8 +171,8 @@
 	<td class="summary">return an iterator over all entries in a directory tree</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#getallfiles">getallfiles (start_path, shell_pattern)</a></td>
-	<td class="summary">Recursively returns all the file starting at <em>path</em>.</td>
+	<td class="name" nowrap><a href="#getallfiles">getallfiles ([start_path='.'[, shell_pattern='*']])</a></td>
+	<td class="summary">Recursively returns all the file starting at 'path'.</td>
 	</tr>
 </table>
 
@@ -238,7 +238,7 @@
         </li>
         <li><span class="parameter">pattern</span>
             <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
-         A shell pattern.
+         A shell pattern (see <a href="../libraries/pl.dir.html#fnmatch">fnmatch</a>).
         </li>
     </ul>
 
@@ -257,7 +257,7 @@
 </dd>
     <dt>
     <a name = "getfiles"></a>
-    <strong>getfiles (dirname, mask)</strong>
+    <strong>getfiles ([dirname='.'[, mask]])</strong>
     </dt>
     <dd>
     return a list of all files in a directory which match a shell pattern.
@@ -267,11 +267,13 @@
     <ul>
         <li><span class="parameter">dirname</span>
             <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
-         A directory. If not given, all files in current directory are returned.
+         A directory.
+         (<em>default</em> '.')
         </li>
         <li><span class="parameter">mask</span>
             <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
-          A shell pattern. If not given, all files are returned.
+         A shell pattern (see <a href="../libraries/pl.dir.html#fnmatch">fnmatch</a>). If not given, all files are returned.
+         (<em>optional</em>)
         </li>
     </ul>
 
@@ -290,7 +292,7 @@
 </dd>
     <dt>
     <a name = "getdirectories"></a>
-    <strong>getdirectories (dirname)</strong>
+    <strong>getdirectories ([dirname='.'])</strong>
     </dt>
     <dd>
     return a list of all subdirectories of the directory.
@@ -300,7 +302,8 @@
     <ul>
         <li><span class="parameter">dirname</span>
             <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
-         A directory
+         A directory.
+         (<em>default</em> '.')
         </li>
     </ul>
 
@@ -312,7 +315,7 @@
     </ol>
 
     <h3>Raises:</h3>
-    dir must be a a valid directory
+    dir must be a valid directory
 
 
 
@@ -570,22 +573,24 @@
 </dd>
     <dt>
     <a name = "getallfiles"></a>
-    <strong>getallfiles (start_path, shell_pattern)</strong>
+    <strong>getallfiles ([start_path='.'[, shell_pattern='*']])</strong>
     </dt>
     <dd>
-    Recursively returns all the file starting at <em>path</em>.  It can optionally take a shell pattern and
- only returns files that match <em>shell</em>pattern_. If a pattern is given it will do a case insensitive search.
+    Recursively returns all the file starting at 'path'.  It can optionally take a shell pattern and
+ only returns files that match 'shell_pattern'. If a pattern is given it will do a case insensitive search.
 
 
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">start_path</span>
             <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
-          A directory. If not given, all files in current directory are returned.
+          A directory.
+         (<em>default</em> '.')
         </li>
         <li><span class="parameter">shell_pattern</span>
             <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
-         A shell pattern. If not given, all files are returned.
+         A shell pattern (see <a href="../libraries/pl.dir.html#fnmatch">fnmatch</a>).
+         (<em>default</em> '*')
         </li>
     </ul>
 
@@ -593,7 +598,7 @@
     <ol>
 
            <span class="types"><a class="type" href="../classes/pl.List.html">List(string)</a></span>
-        containing all the files found recursively starting at <em>path</em> and filtered by <em>shell</em>pattern_.
+        containing all the files found recursively starting at 'path' and filtered by 'shell_pattern'.
     </ol>
 
     <h3>Raises:</h3>
