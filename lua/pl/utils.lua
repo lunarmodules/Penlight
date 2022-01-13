@@ -249,17 +249,20 @@ function utils.assert_arg (n,val,tp,verify,msg,lev)
     return val
 end
 
---- creates an Enum table.
+--- creates an Enum or constants lookup table for improved error handling.
 -- This helps prevent magic strings in code by throwing errors for accessing
--- non-existing values.
+-- non-existing values, and/or converting strings/identifiers to other values.
 --
--- Calling on the object does the same, but returns a soft error; `nil + err`.
+-- Calling on the object does the same, but returns a soft error; `nil + err`, if
+-- the call is succesful (the key exists), it will return the value.
 --
--- The values are equal to the keys. The enum object is
--- read-only.
--- @param ... strings that make up the enumeration.
--- @return Enum object
--- @usage -- accessing at runtime
+-- When calling with varargs or an array the values will be equal to the keys.
+-- The enum object is read-only.
+-- @tparam table|vararg ... the input for the Enum. If varargs or an array then the
+-- values in the Enum will be equal to the names (must be strings), if a hash-table
+-- then values remain (any type), and the keys must be strings.
+-- @return Enum object (read-only table/object)
+-- @usage -- Enum access at runtime
 -- local obj = {}
 -- obj.MOVEMENT = utils.enum("FORWARD", "REVERSE", "LEFT", "RIGHT")
 --
@@ -271,21 +274,83 @@ end
 --   -- "'REVERES' is not a valid value (expected one of: 'FORWARD', 'REVERSE', 'LEFT', 'RIGHT')"
 --
 -- end
--- @usage -- validating user-input
--- local parameter = "...some user provided option..."
--- local ok, err = obj.MOVEMENT(parameter) -- calling on the object
--- if not ok then
---   print("bad 'parameter', " .. err)
+-- @usage -- standardized error codes
+-- local obj = {
+--   ERR = utils.enum {
+--     NOT_FOUND = "the item was not found",
+--     OUT_OF_BOUNDS = "the index is outside the allowed range"
+--   },
+--
+--   some_method = function(self)
+--     return self.ERR.OUT_OF_BOUNDS
+--   end,
+-- }
+--
+-- local result, err = obj:some_method()
+-- if not result then
+--   if err == obj.ERR.NOT_FOUND then
+--     -- check on error code, not magic strings
+--
+--   else
+--     -- return the error description, contained in the constant
+--     return nil, "error: "..err  -- "error: the index is outside the allowed range"
+--   end
+-- end
+-- @usage -- validating/converting user-input
+-- local color = "purple"
+-- local ansi_colors = utils.enum {
+--   black     = 30,
+--   red       = 31,
+--   green     = 32,
+-- }
+-- local color_code, err = ansi_colors(color) -- calling on the object, returns the value from the enum
+-- if not color_code then
+--   print("bad 'color', " .. err)
+--   -- "bad 'color', 'purple' is not a valid value (expected one of: 'black', 'red', 'green')"
 --   os.exit(1)
 -- end
 function utils.enum(...)
-  local lst = utils.pack(...)
-  utils.assert_arg(1, lst[1], "string") -- at least 1 string
-
+  local first = select(1, ...)
   local enum = {}
-  for i, value in ipairs(lst) do
-    utils.assert_arg(i, value, "string")
-    enum[value] = value
+  local lst
+
+  if type(first) ~= "table" then
+    -- vararg with strings
+    lst = utils.pack(...)
+    for i, value in ipairs(lst) do
+      utils.assert_arg(i, value, "string")
+      enum[value] = value
+    end
+
+  else
+    -- table/array with values
+    utils.assert_arg(1, first, "table")
+    lst = {}
+    -- first add array part
+    for i, value in ipairs(first) do
+      if type(value) ~= "string" then
+        error(("expected 'string' but got '%s' at index %d"):format(type(value), i), 2)
+      end
+      lst[i] = value
+      enum[value] = value
+    end
+    -- add key-ed part
+    for key, value in pairs(first) do
+      if not lst[key] then
+        if type(key) ~= "string" then
+          error(("expected key to be 'string' but got '%s'"):format(type(key)), 2)
+        end
+          if enum[key] then
+          error(("duplicate entry in array and hash part: '%s'"):format(key), 2)
+        end
+        enum[key] = value
+        lst[#lst+1] = key
+      end
+    end
+  end
+
+  if not lst[1] then
+    error("expected at least 1 entry", 2)
   end
 
   local valid = "(expected one of: '" .. concat(lst, "', '") .. "')"
@@ -299,7 +364,7 @@ function utils.enum(...)
     __call = function(self, key)
       if type(key) == "string" then
         local v = rawget(self, key)
-        if v then
+        if v ~= nil then
           return v
         end
       end
