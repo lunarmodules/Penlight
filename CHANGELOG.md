@@ -12,6 +12,9 @@ see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) fo
    [#414](https://github.com/lunarmodules/Penlight/pull/414)
 =======
  - feat: `utils.enum` now accepts hash tables, to enable better error handling
+   [#413](https://github.com/lunarmodules/Penlight/pull/413)
+ - feat: `utils.kpairs` new iterator over all non-integer keys
+   [#413](https://github.com/lunarmodules/Penlight/pull/413)
 
 >>>>>>> b38c390 (feat(utils) enum to accept hash tables as well)
 
