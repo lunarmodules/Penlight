@@ -24,6 +24,10 @@ describe("pl.utils", function ()
         assert.has.error(function()
           t = enum("hello", true, "world")
         end, "argument 2 expected a 'string', got a 'boolean'")
+        -- no holes
+        assert.has.error(function()
+          t = enum("hello", nil, "world")
+        end, "argument 2 expected a 'string', got a 'nil'")
       end)
 
 
