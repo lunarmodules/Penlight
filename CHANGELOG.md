@@ -7,16 +7,13 @@ deprecation policy.
 see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) for release instructions
 
 ## 1.13.0 (unreleased)
-<<<<<<< HEAD
  - fix: `compat.warn` raised write guard warning in OpenResty
    [#414](https://github.com/lunarmodules/Penlight/pull/414)
-=======
  - feat: `utils.enum` now accepts hash tables, to enable better error handling
    [#413](https://github.com/lunarmodules/Penlight/pull/413)
  - feat: `utils.kpairs` new iterator over all non-integer keys
    [#413](https://github.com/lunarmodules/Penlight/pull/413)
 
->>>>>>> b38c390 (feat(utils) enum to accept hash tables as well)
 
 ## 1.12.0 (2022-Jan-10)
  - deprecate: module `pl.text` the contents have moved to `pl.stringx` (removal later)

@@ -360,7 +360,7 @@ function utils.enum(...)
   if type(first) ~= "table" then
     -- vararg with strings
     lst = utils.pack(...)
-    for i, value in ipairs(lst) do
+    for i, value in utils.npairs(lst) do
       utils.assert_arg(i, value, "string")
       enum[value] = value
     end
@@ -378,17 +378,15 @@ function utils.enum(...)
       enum[value] = value
     end
     -- add key-ed part
-    for key, value in pairs(first) do
-      if not lst[key] then
-        if type(key) ~= "string" then
-          error(("expected key to be 'string' but got '%s'"):format(type(key)), 2)
-        end
-          if enum[key] then
-          error(("duplicate entry in array and hash part: '%s'"):format(key), 2)
-        end
-        enum[key] = value
-        lst[#lst+1] = key
+    for key, value in utils.kpairs(first) do
+      if type(key) ~= "string" then
+        error(("expected key to be 'string' but got '%s'"):format(type(key)), 2)
       end
+      if enum[key] then
+        error(("duplicate entry in array and hash part: '%s'"):format(key), 2)
+      end
+      enum[key] = value
+      lst[#lst+1] = key
     end
   end
 
