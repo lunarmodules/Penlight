@@ -5,19 +5,118 @@ describe("pl.utils", function ()
 
     before_each(function()
       enum = require("pl.utils").enum
-      t = enum("ONE", "two", "THREE")
     end)
 
 
-    it("holds enumerated values", function()
-      assert.equal("ONE", t.ONE)
-      assert.equal("two", t.two)
-      assert.equal("THREE", t.THREE)
+    describe("creating", function()
+
+      it("accepts a vararg", function()
+        t = enum("ONE", "two", "THREE")
+        assert.same({
+          ONE = "ONE",
+          two = "two",
+          THREE = "THREE",
+        }, t)
+      end)
+
+
+      it("vararg entries must be strings", function()
+        assert.has.error(function()
+          t = enum("hello", true, "world")
+        end, "argument 2 expected a 'string', got a 'boolean'")
+      end)
+
+
+      it("vararg requires at least 1 entry", function()
+        assert.has.error(function()
+          t = enum()
+        end, "expected at least 1 entry")
+      end)
+
+
+      it("accepts an array", function()
+        t = enum { "ONE", "two", "THREE" }
+        assert.same({
+          ONE = "ONE",
+          two = "two",
+          THREE = "THREE",
+        }, t)
+      end)
+
+
+      it("array entries must be strings", function()
+        assert.has.error(function()
+          t = enum { "ONE", 999, "THREE" }
+        end, "expected 'string' but got 'number' at index 2")
+      end)
+
+
+      it("array requires at least 1 entry", function()
+        assert.has.error(function()
+          t = enum {}
+        end, "expected at least 1 entry")
+      end)
+
+
+      it("accepts a hash-table", function()
+        t = enum {
+          FILE_NOT_FOUND = "The file was not found in the filesystem",
+          FILE_READ_ONLY = "The file is read-only",
+        }
+        assert.same({
+          FILE_NOT_FOUND = "The file was not found in the filesystem",
+          FILE_READ_ONLY = "The file is read-only",
+        }, t)
+      end)
+
+
+      it("hash-table keys must be strings", function()
+        assert.has.error(function()
+          t = enum { [{}] = "ONE" }
+        end, "expected key to be 'string' but got 'table'")
+      end)
+
+
+      it("hash-table requires at least 1 entry", function()
+        assert.has.error(function()
+          t = enum {}
+        end, "expected at least 1 entry")
+      end)
+
+
+      it("accepts a combined array/hash-table", function()
+        t = enum {
+          "BAD_FD",
+          FILE_NOT_FOUND = "The file was not found in the filesystem",
+          FILE_READ_ONLY = "The file is read-only",
+        }
+        assert.same({
+          BAD_FD = "BAD_FD",
+          FILE_NOT_FOUND = "The file was not found in the filesystem",
+          FILE_READ_ONLY = "The file is read-only",
+        }, t)
+      end)
+
+
+      it("keys must be unique with combined array/has-table", function()
+        assert.has.error(function()
+          t = enum {
+            "FILE_NOT_FOUND",
+            FILE_NOT_FOUND = "The file was not found in the filesystem",
+          }
+          end, "duplicate entry in array and hash part: 'FILE_NOT_FOUND'")
+      end)
+
     end)
 
 
 
     describe("accessing", function()
+
+      before_each(function()
+        t = enum("ONE", "two", "THREE")
+      end)
+
 
       it("errors on unknown values", function()
         assert.has.error(function()
@@ -33,20 +132,6 @@ describe("pl.utils", function ()
       end)
 
 
-      it("entries must be strings", function()
-        assert.has.error(function()
-          t = enum("hello", true, "world")
-        end, "argument 2 expected a 'string', got a 'boolean'")
-      end)
-
-
-      it("requires at least 1 entry", function()
-        assert.has.error(function()
-          t = enum()
-        end, "argument 1 expected a 'string', got a 'nil'")
-      end)
-
-
       it("keys can have 'format' placeholders", function()
         t = enum("hello", "contains: %s")
         assert.has.error(function()
@@ -59,6 +144,11 @@ describe("pl.utils", function ()
 
 
     describe("calling", function()
+
+      before_each(function()
+        t = enum("ONE", "two", "THREE")
+      end)
+
 
       it("returns error on unknown values", function()
         local ok, err = t("four")
