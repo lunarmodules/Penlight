@@ -13,6 +13,8 @@ local concat = table.concat
 local _unpack = table.unpack  -- always injected by 'compat'
 local find = string.find
 local sub = string.sub
+local next = next
+local floor = math.floor
 
 local is_windows = compat.is_windows
 local err_mode = 'default'
@@ -218,6 +220,47 @@ function utils.npairs(t, i_start, i_end, step)
       end
       return i, t[i]
     end
+  end
+end
+
+
+
+--- an iterator over all non-integer keys (inverse of `ipairs`).
+-- It will skip any key that is an integer number, so negative indices or an
+-- array with holes will not return those either (so it returns slightly less than
+-- 'the inverse of `ipairs`').
+--
+-- This uses `pairs` under the hood, so any value that is iterable using `pairs`
+-- will work with this function.
+-- @tparam table t the table to iterate over
+-- @treturn key
+-- @treturn value
+-- @usage
+-- local t = {
+--   "hello",
+--   "world",
+--   hello = "hallo",
+--   world = "Welt",
+-- }
+--
+-- for k, v in utils.kpairs(t) do
+--   print("German: ", v)
+-- end
+--
+-- -- output;
+-- -- German: hallo
+-- -- German: Welt
+function utils.kpairs(t)
+  local index
+  return function()
+    local value
+    while true do
+      index, value = next(t, index)
+      if type(index) ~= "number" or floor(index) ~= index then
+        break
+      end
+    end
+    return index, value
   end
 end
 
