@@ -6,6 +6,10 @@ deprecation policy.
 
 see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) for release instructions
 
+## 1.13.0 (unreleased)
+ - fix: `compat.warn` raised write guard warning in OpenResty
+   [#414](https://github.com/lunarmodules/Penlight/pull/414)
+
 ## 1.12.0 (2022-Jan-10)
  - deprecate: module `pl.text` the contents have moved to `pl.stringx` (removal later)
    [#407](https://github.com/lunarmodules/Penlight/pull/407)
