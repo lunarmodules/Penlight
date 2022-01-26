@@ -24,6 +24,7 @@ jobs:
       run: |
         luarocks install busted
         luarocks install luacov
+        luarocks install luacov-coveralls
 
     - name: build
       run: |
@@ -43,15 +44,25 @@ jobs:
         lua run.lua examples
 
     - name: Coverage-report
+      # only for Codecov reporting
       run: |
         luacov -c .luacov
 
-    - name: Coverage-upload
+    - name: Report test coverage (codecov)
+      if: success()
+      continue-on-error: true
       uses: codecov/codecov-action@v2
-      with:
-        token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
+      #with:
+        #token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
         #files: ./coverage1.xml,./coverage2.xml # optional
         #flags: unittests # optional
         #name: codecov-umbrella # optional
         #fail_ci_if_error: true # optional (default = false)
         #verbose: true # optional (default = false)
+
+    - name: Report test coverage (coveralls)
+      if: success()
+      continue-on-error: true
+      run: luacov-coveralls
+      env:
+        COVERALLS_REPO_TOKEN: ${{ github.token }}
