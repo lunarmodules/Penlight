@@ -1,0 +1,50 @@
+name: "Unix build"
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        luaVersion: ["5.1", "5.2", "5.3", "5.4", "luajit-2.1.0-beta3", "luajit-openresty"]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - uses: leafo/gh-actions-lua@v8
+      with:
+        luaVersion: ${{ matrix.luaVersion }}
+
+    - uses: leafo/gh-actions-luarocks@v4
+
+    - name: dependencies
+      run: |
+        luarocks install busted
+        luarocks install luacov-coveralls
+
+    - name: build
+      run: |
+        luarocks remove penlight --force
+        luarocks make
+
+    - name: Busted tests
+      run: |
+        busted --coverage
+
+    - name: Old test suite
+      run: |
+        lua run.lua tests --luacov
+
+    - name: Examples
+      run: |
+        lua run.lua examples
+
+    - name: Report test coverage
+      if: success()
+      continue-on-error: true
+      run: luacov-coveralls
+      env:
+        COVERALLS_REPO_TOKEN: ${{ github.token }}
