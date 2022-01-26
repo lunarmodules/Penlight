@@ -25,7 +25,7 @@ build_script:
   - luarocks make
 
 test_script:
-  - busted -c -v
+  - busted --coverage
   - lua run.lua tests --luacov
   - lua run.lua examples
 
