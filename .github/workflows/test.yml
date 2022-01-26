@@ -12,12 +12,13 @@ jobs:
         luaVersion: ["5.1", "5.2", "5.3", "5.4", "luajit-2.1.0-beta3", "luajit-openresty"]
 
     steps:
-    - uses: actions/checkout@master
-    - uses: leafo/gh-actions-lua@master
+    - uses: actions/checkout@v2
+
+    - uses: leafo/gh-actions-lua@v8
       with:
         luaVersion: ${{ matrix.luaVersion }}
 
-    - uses: leafo/gh-actions-luarocks@master
+    - uses: leafo/gh-actions-luarocks@v4
 
     - name: dependencies
       run: |
