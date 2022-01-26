@@ -1,4 +1,4 @@
-name: "test"
+name: "Unix build"
 
 on: [push, pull_request]
 

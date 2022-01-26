@@ -1,6 +1,6 @@
 # Penlight Lua Libraries
 
-[![Travis build status](https://img.shields.io/travis/lunarmodules/Penlight/master?logo=Travis)](https://travis-ci.org/lunarmodules/Penlight)
+[![Unix build](https://github.com/lunarmodules/Penlight/workflows/unix_build/badge.svg)](https://github.com/lunarmodules/Penlight/actions)
 [![AppVeyor build status](https://img.shields.io/appveyor/build/Tieske/penlight-ta1gi/master?logo=appveyor)](https://ci.appveyor.com/project/Tieske/penlight-ta1gi/branch/master)
 [![Coveralls code coverage](https://img.shields.io/coveralls/github/lunarmodules/Penlight?logo=coveralls)](https://coveralls.io/github/lunarmodules/Penlight)
 [![Luacheck](https://github.com/lunarmodules/Penlight/workflows/Luacheck/badge.svg)](https://github.com/lunarmodules/Penlight/actions)
