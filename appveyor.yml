@@ -2,7 +2,7 @@ shallow_clone: true
 
 environment:
   COVERALLS_REPO_TOKEN:
-    secure: /0zDn4cz8xWKQuHfzvAUwyeFSQfLSP+toDR3lRApwWoIeg9O1OvJTnXurB8cssW0
+    secure: Ot23JDCk/sDpsIa8DkjX6u1ym09mVht+aFyIOmY09Ro6VFs/+VzQzqcldP0haP7r
   matrix:
   - LUA: "lua 5.1"
   - LUA: "lua 5.2"
