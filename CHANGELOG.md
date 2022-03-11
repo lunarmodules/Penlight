@@ -9,6 +9,8 @@ see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) fo
 ## 1.13.0 (unreleased)
  - fix: `xml.parse` returned nonsense when given a file name
    [#431](https://github.com/lunarmodules/Penlight/pull/431)
+ - feat: `app.require_here` now follows symlink'd main modules to their directory
+   [#423](https://github.com/lunarmodules/Penlight/pull/423)
  - fix: `compat.warn` raised write guard warning in OpenResty
    [#414](https://github.com/lunarmodules/Penlight/pull/414)
  - feat: `utils.enum` now accepts hash tables, to enable better error handling
