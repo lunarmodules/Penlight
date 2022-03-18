@@ -11,7 +11,7 @@ package = package_name
 version = package_version .. "-" .. rockspec_revision
 
 source = {
-  url = "git://github.com/"..github_account_name.."/"..github_repo_name..".git",
+  url = "git+https://github.com/"..github_account_name.."/"..github_repo_name..".git",
   branch = git_checkout
 }
 
