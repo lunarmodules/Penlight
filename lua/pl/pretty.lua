@@ -284,10 +284,11 @@ function pretty.write (tbl,space,not_clever)
                end
             end
             table.sort(ordered_keys, function (a, b)
-                if type(a) == type(b)  and type(a) == 'string' then
-                    return a < b
+                if type(a) == type(b) then
+                    return tostring(a) < tostring(b)
+                else
+                    return type(a) < type(b)
                 end
-                return type(a) == 'boolean' or (type(b) ~= 'boolean' and type(a) == 'table')
             end)
             local function write_entry (key, val)
                 local tkey = type(key)
