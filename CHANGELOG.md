@@ -13,7 +13,7 @@ see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) fo
    [#413](https://github.com/lunarmodules/Penlight/pull/413)
  - feat: `utils.kpairs` new iterator over all non-integer keys
    [#413](https://github.com/lunarmodules/Penlight/pull/413)
-- fix: `lapp` provides the file name when using the default argument
+ - fix: `lapp` provides the file name when using the default argument
    [#427](https://github.com/lunarmodules/Penlight/pull/427)
 
 ## 1.12.0 (2022-Jan-10)
