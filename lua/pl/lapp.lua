@@ -237,7 +237,8 @@ function lapp.process_options_string(str,args)
         elseif check '$<{name} $'  then -- is it <parameter_name>?
             -- so <input file...> becomes input_file ...
             optparm,rest = res.name:match '([^%.]+)(.*)'
-            optparm = optparm:gsub('%A','_')
+            -- follow lua legal variable names
+            optparm = optparm:sub(1,1):gsub('%A','_') .. optparm:sub(2):gsub('%W', '_')
             varargs = rest == '...'
             append(parmlist,optparm)
         end
