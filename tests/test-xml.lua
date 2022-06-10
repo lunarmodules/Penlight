@@ -1,6 +1,8 @@
 local xml = require 'pl.xml'
 local asserteq = require 'pl.test'.asserteq
 local dump = require 'pl.pretty'.dump
+local path = require 'pl.path'
+local utils = require 'pl.utils'
 
 -- Prosody stanza.lua style XML building
 
@@ -532,5 +534,19 @@ print(xml.tostring(doc))
 
 asserteq(xml.tostring(doc),[[
 <hello><tag my_attribute='my_value'>dolly</tag></hello>]])
+
+
+-- parsing by file name
+
+local filename = path.tmpname()
+utils.writefile(filename, '<hello><world/></hello>')
+doc = xml.parse(filename, true, true)
+os.remove(filename)
+asserteq(type(doc), 'table')
+asserteq(xml.tostring(doc, '', '  ', nil, true), [[
+<?xml version='1.0'?>
+<hello>
+  <world/>
+</hello>]])
 
 
