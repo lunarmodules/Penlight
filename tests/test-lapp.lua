@@ -157,11 +157,21 @@ check (false_flag,{'-g','--'},{f=true,g=true})
 check (false_flag,{'-g','--','-a','frodo'},{f=true,g=true; '-a','frodo'})
 
 
+
 local default_file_flag = [[
     -f (file-out default stdout)
 ]]
-
 check (default_file_flag,{},{f="<file>", f_name = "stdout"})
+
+
+
+local numbered_pos_args = [[
+    <arg1>     (string)
+    <arg2>     (string)
+    <3arg3>    (string)
+]]
+check (numbered_pos_args,{"1", "2", "3"},{arg1="1", arg2 = "2", _arg3 = "3"})
+
 
 local addtype = [[
   -l (intlist) List of items
