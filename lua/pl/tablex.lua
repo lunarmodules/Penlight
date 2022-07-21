@@ -582,7 +582,7 @@ local function keys_op(i,v) return i end
 
 --- return all the keys of a table in arbitrary order.
 -- @within Extraction
---  @tab t A table
+-- @tab t A list-like table where the values are the keys of the input table
 function tablex.keys(t)
     assert_arg_iterable(1,t)
     return makelist(tablex.pairmap(keys_op,t))
@@ -592,7 +592,7 @@ local function values_op(i,v) return v end
 
 --- return all the values of the table in arbitrary order
 -- @within Extraction
---  @tab t A table
+-- @tab t A list-like table where the values are the values of the input table
 function tablex.values(t)
     assert_arg_iterable(1,t)
     return makelist(tablex.pairmap(values_op,t))
