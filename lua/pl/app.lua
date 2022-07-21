@@ -29,7 +29,7 @@ end
 --
 -- Note: the path is prefixed, so it is searched first when requiring modules.
 -- @string base optional base directory (absolute, or relative path).
--- @bool nofollow always use the invocation's directory, even if the main file is a symlink
+-- @bool nofollow always use the invocation's directory, even if the invoked file is a symlink
 -- @treturn string the current script's path with a trailing slash
 function app.require_here (base, nofollow)
     local p = app.script_name()
