@@ -7,6 +7,8 @@ deprecation policy.
 see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) for release instructions
 
 ## 1.13.0 (unreleased)
+ - fix: `xml.parse` returned nonsense when given a file name
+   [#431](https://github.com/lunarmodules/Penlight/pull/431)
  - fix: `compat.warn` raised write guard warning in OpenResty
    [#414](https://github.com/lunarmodules/Penlight/pull/414)
  - feat: `utils.enum` now accepts hash tables, to enable better error handling

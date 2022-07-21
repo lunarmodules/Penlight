@@ -114,10 +114,11 @@ function _M.parse(text_or_filename, is_file, use_basic)
   end
 
   if is_file then
-    local text_or_filename, err = utils.readfile(text_or_filename)
-    if not text_or_filename then
+    local text, err = utils.readfile(text_or_filename)
+    if not text then
       return nil, err
     end
+    text_or_filename = text
   end
 
   local doc, err = parser(text_or_filename)
