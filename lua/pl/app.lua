@@ -29,12 +29,24 @@ end
 --
 -- Note: the path is prefixed, so it is searched first when requiring modules.
 -- @string base optional base directory (absolute, or relative path).
+-- @bool nofollow always use the invocation's directory, even if the invoked file is a symlink
 -- @treturn string the current script's path with a trailing slash
-function app.require_here (base)
-    local p = path.dirname(app.script_name())
+function app.require_here (base, nofollow)
+    local p = app.script_name()
     if not path.isabs(p) then
         p = path.join(path.currentdir(),p)
     end
+    if not nofollow then
+      local t = path.link_attrib(p)
+      if t and t.mode == 'link' then
+        t = t.target
+        if not path.isabs(t) then
+          t = path.join(path.dirname(p), t)
+        end
+        p = t
+      end
+    end
+    p = path.normpath(path.dirname(p))
     if p:sub(-1,-1) ~= path.sep then
         p = p..path.sep
     end

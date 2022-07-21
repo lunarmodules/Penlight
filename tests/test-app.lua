@@ -2,6 +2,7 @@ local app = require "pl.app"
 local utils = require "pl.utils"
 local path = require "pl.path"
 local asserteq = require 'pl.test'.asserteq
+local lfs = require("lfs")
 
 local quote = utils.quote_arg
 
@@ -116,6 +117,32 @@ do  -- app.require_here
     asserteq(stderr, "")
     stdout = path.normcase(stdout)
     asserteq(stdout, path.normcase("/fixed/?.lua;/fixed/?/init.lua;\n"))
+
+    -- symlinked script, check that we look beside the target of the link
+    -- -- step 1: find ourselves
+    local self = app.script_name()
+    if not path.isabs(self) then self = path.join(cd,self) end
+    local tadir = path.normcase(path.join(path.dirname(self),"test-app"))
+    -- -- step 2: create a link to our helper script
+    local scrl = path.tmpname()
+    local linkdir = path.normcase(path.dirname(scrl))
+    os.remove(scrl)
+    assert(lfs.link(path.join(tadir,"require_here-link-target.lua"), scrl, true))
+    -- -- step 3: check that we look next to ourselves
+    local success, code, stdout, stderr = utils.executeex(cmd.." "..scrl)
+    stdout = path.normcase(stdout)
+    assert(stdout:find(path.normcase(path.join(tadir, "?.lua;")), 1, true))
+    assert(stdout:find(path.normcase(path.join(tadir, "?/init.lua;")), 1, true))
+    assert(not stdout:find(path.normcase(path.join(linkdir, "?.lua;")), 1, true))
+    assert(not stdout:find(path.normcase(path.join(linkdir, "?/init.lua;")), 1, true))
+    -- -- step 4: ... but not if we turn on nofollow
+    local success, code, stdout, stderr = utils.executeex(cmd.." "..scrl.." x")
+    stdout = path.normcase(stdout)
+    assert(not stdout:find(path.normcase(path.join(tadir, "?.lua;")), 1, true))
+    assert(not stdout:find(path.normcase(path.join(tadir, "?/init.lua;")), 1, true))
+    assert(stdout:find(path.normcase(path.join(linkdir, "?.lua;")), 1, true))
+    assert(stdout:find(path.normcase(path.join(linkdir, "?/init.lua;")), 1, true))
+    os.remove(scrl)
 
 end
 
