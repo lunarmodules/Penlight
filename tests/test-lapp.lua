@@ -47,16 +47,16 @@ Various flags and option types
 
 check(simple,
     {'-o','in'},
-    {quiet=false,p=false,o='in',input='<file>'})
+    {quiet=false,p=false,o='in',input='<file>', input_name="stdin"})
 
 ---- value of flag may be separated by '=' or ':'
 check(simple,
     {'-o=in'},
-    {quiet=false,p=false,o='in',input='<file>'})
+    {quiet=false,p=false,o='in',input='<file>', input_name="stdin"})
 
 check(simple,
     {'-o:in'},
-    {quiet=false,p=false,o='in',input='<file>'})
+    {quiet=false,p=false,o='in',input='<file>', input_name="stdin"})
 
 -- Check lapp.callback.
 local calls = {}
@@ -155,6 +155,13 @@ check (false_flag,{'-g','-f'},{f=false,g=true})
 -- '--' indicates end of parameter parsing
 check (false_flag,{'-g','--'},{f=true,g=true})
 check (false_flag,{'-g','--','-a','frodo'},{f=true,g=true; '-a','frodo'})
+
+
+local default_file_flag = [[
+    -f (file-out default stdout)
+]]
+
+check (default_file_flag,{},{f="<file>", f_name = "stdout"})
 
 local addtype = [[
   -l (intlist) List of items

@@ -246,6 +246,7 @@ function lapp.process_options_string(str,args)
             line = res.rest
             res = {}
             local optional
+            local defval_str
             -- do we have ([optional] [<type>] [default <val>])?
             if match('$({def} $',line,res) or match('$({def}',line,res) then
                 local typespec = strip(res.def)
@@ -288,6 +289,7 @@ function lapp.process_options_string(str,args)
                 -- optional 'default value' clause. Type is inferred as
                 -- 'string' or 'number' if there's no explicit type
                 if default or match('default $r{rest}',typespec,res) then
+                    defval_str = res.rest
                     defval,vtype = process_default(res.rest,vtype)
                 end
             else -- must be a plain flag, no extra parameter required
@@ -297,6 +299,7 @@ function lapp.process_options_string(str,args)
             local ps = {
                 type = vtype,
                 defval = defval,
+                defval_str = defval_str,
                 required = defval == nil and not optional,
                 comment = res.rest or optparm,
                 constraint = constraint,
@@ -426,6 +429,9 @@ function lapp.process_options_string(str,args)
         if not ps.used then
             if ps.required then lapp.error("missing required parameter: "..parm) end
             set_result(ps,parm,ps.defval)
+            if builtin_types[ps.type] == "file" then
+                set_result(ps, parm .. "_name", ps.defval_str)
+            end
         end
     end
     return results
