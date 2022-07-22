@@ -6,6 +6,10 @@ deprecation policy.
 
 see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) for release instructions
 
+## 1.13.1 (2022-Jul-22)
+ - fix: `warn` unquoted argument
+   [#439](https://github.com/lunarmodules/Penlight/pull/439)
+
 ## 1.13.0 (2022-Jul-22)
  - fix: `xml.parse` returned nonsense when given a file name
    [#431](https://github.com/lunarmodules/Penlight/pull/431)
