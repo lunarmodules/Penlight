@@ -121,9 +121,6 @@ end
 -- @string P A file path
 function path.isdir(P)
     assert_string(1,P)
-    if P:match("\\$") then
-        P = P:sub(1,-2)
-    end
     return attrib(P,'mode') == 'directory'
 end
 

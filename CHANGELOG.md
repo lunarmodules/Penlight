@@ -23,6 +23,8 @@ see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) fo
    [#427](https://github.com/lunarmodules/Penlight/pull/427)
  - fix: `lapp` positional arguments now allow digits after the first character
    [#428](https://github.com/lunarmodules/Penlight/pull/428)
+ - fix: `path.isdir` windows root directories (including drive letter) were not considered valid
+   [#436](https://github.com/lunarmodules/Penlight/pull/436)
 
 
 ## 1.12.0 (2022-Jan-10)
