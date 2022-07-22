@@ -131,7 +131,7 @@
 	<td class="summary">return the name of the current script running.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#require_here">require_here (base)</a></td>
+	<td class="name" nowrap><a href="#require_here">require_here (base, nofollow)</a></td>
 	<td class="summary">prefixes the current script's path to the Lua module path.</td>
 	</tr>
 	<tr>
@@ -181,7 +181,7 @@
 </dd>
     <dt>
     <a name = "require_here"></a>
-    <strong>require_here (base)</strong>
+    <strong>require_here (base, nofollow)</strong>
     </dt>
     <dd>
     prefixes the current script's path to the Lua module path.
@@ -199,6 +199,10 @@
         <li><span class="parameter">base</span>
             <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
          optional base directory (absolute, or relative path).
+        </li>
+        <li><span class="parameter">nofollow</span>
+            <span class="types"><span class="type">bool</span></span>
+         always use the invocation's directory, even if the invoked file is a symlink
         </li>
     </ul>
 

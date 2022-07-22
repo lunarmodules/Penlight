@@ -170,6 +170,10 @@
 	<td class="name" nowrap><a href="#npairs">npairs (t[, i_start=1[, i_end=t.n or #t[, step=1]]])</a></td>
 	<td class="summary">an iterator with indices, similar to <a href="https://www.lua.org/manual/5.1/manual.html#pdf-ipairs">ipairs</a>, but with a range.</td>
 	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#kpairs">kpairs (t)</a></td>
+	<td class="summary">an iterator over all non-integer keys (inverse of <a href="https://www.lua.org/manual/5.1/manual.html#pdf-ipairs">ipairs</a>).</td>
+	</tr>
 </table>
 <h2><a href="#Tables">Tables</a></h2>
 <table class="function_list">
@@ -190,7 +194,7 @@
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#enum">enum (...)</a></td>
-	<td class="summary">creates an Enum table.</td>
+	<td class="summary">creates an Enum or constants lookup table for improved error handling.</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#function_arg">function_arg (idx, f, msg)</a></td>
@@ -607,6 +611,63 @@ utils.is_type(my_obj, my_mt)  <span class="comment">--&gt; true</span></pre>
     </ul>
 
 </dd>
+    <dt>
+    <a name = "kpairs"></a>
+    <strong>kpairs (t)</strong>
+    </dt>
+    <dd>
+    an iterator over all non-integer keys (inverse of <a href="https://www.lua.org/manual/5.1/manual.html#pdf-ipairs">ipairs</a>).
+ It will skip any key that is an integer number, so negative indices or an
+ array with holes will not return those either (so it returns slightly less than
+ 'the inverse of <a href="https://www.lua.org/manual/5.1/manual.html#pdf-ipairs">ipairs</a>').</p>
+
+<p> This uses <a href="https://www.lua.org/manual/5.1/manual.html#pdf-pairs">pairs</a> under the hood, so any value that is iterable using <a href="https://www.lua.org/manual/5.1/manual.html#pdf-pairs">pairs</a>
+ will work with this function.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">t</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+         the table to iterate over
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">key</span></span>
+
+
+</li>
+        <li>
+           <span class="types"><span class="type">value</span></span>
+
+
+</li>
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> t = {
+  <span class="string">"hello"</span>,
+  <span class="string">"world"</span>,
+  hello = <span class="string">"hallo"</span>,
+  world = <span class="string">"Welt"</span>,
+}
+
+<span class="keyword">for</span> k, v <span class="keyword">in</span> utils.kpairs(t) <span class="keyword">do</span>
+  <span class="global">print</span>(<span class="string">"German: "</span>, v)
+<span class="keyword">end</span>
+
+<span class="comment">-- output;
+</span><span class="comment">-- German: hallo
+</span><span class="comment">-- German: Welt</span></pre>
+    </ul>
+
+</dd>
 </dl>
     <h2 class="section-header "><a name="Tables"></a>Tables</h2>
 
@@ -726,34 +787,38 @@ utils.is_type(my_obj, my_mt)  <span class="comment">--&gt; true</span></pre>
     <strong>enum (...)</strong>
     </dt>
     <dd>
-    creates an Enum table.
+    creates an Enum or constants lookup table for improved error handling.
  This helps prevent magic strings in code by throwing errors for accessing
- non-existing values.</p>
+ non-existing values, and/or converting strings/identifiers to other values.</p>
 
-<p> Calling on the object does the same, but returns a soft error; <code>nil + err</code>.</p>
+<p> Calling on the object does the same, but returns a soft error; <code>nil + err</code>, if
+ the call is succesful (the key exists), it will return the value.</p>
 
-<p> The values are equal to the keys. The enum object is
- read-only.
+<p> When calling with varargs or an array the values will be equal to the keys.
+ The enum object is read-only.
 
 
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">...</span>
-         strings that make up the enumeration.
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a> or <span class="type">vararg</span></span>
+         the input for the Enum. If varargs or an array then the
+ values in the Enum will be equal to the names (must be strings), if a hash-table
+ then values remain (any type), and the keys must be strings.
         </li>
     </ul>
 
     <h3>Returns:</h3>
     <ol>
 
-        Enum object
+        Enum object (read-only table/object)
     </ol>
 
 
 
     <h3>Usage:</h3>
     <ul>
-        <li><pre class="example"><span class="comment">-- accessing at runtime
+        <li><pre class="example"><span class="comment">-- Enum access at runtime
 </span><span class="keyword">local</span> obj = {}
 obj.MOVEMENT = utils.enum(<span class="string">"FORWARD"</span>, <span class="string">"REVERSE"</span>, <span class="string">"LEFT"</span>, <span class="string">"RIGHT"</span>)
 
@@ -765,12 +830,40 @@ obj.MOVEMENT = utils.enum(<span class="string">"FORWARD"</span>, <span class="st
 </span>  <span class="comment">-- "'REVERES' is not a valid value (expected one of: 'FORWARD', 'REVERSE', 'LEFT', 'RIGHT')"
 </span>
 <span class="keyword">end</span></pre></li>
-        <li><pre class="example"><span class="comment">-- validating user-input
-</span><span class="keyword">local</span> parameter = <span class="string">"...some user provided option..."</span>
-<span class="keyword">local</span> ok, err = obj.MOVEMENT(parameter) <span class="comment">-- calling on the object
-</span><span class="keyword">if</span> <span class="keyword">not</span> ok <span class="keyword">then</span>
-  <span class="global">print</span>(<span class="string">"bad 'parameter', "</span> .. err)
-  <span class="global">os</span>.exit(<span class="number">1</span>)
+        <li><pre class="example"><span class="comment">-- standardized error codes
+</span><span class="keyword">local</span> obj = {
+  ERR = utils.enum {
+    NOT_FOUND = <span class="string">"the item was not found"</span>,
+    OUT_OF_BOUNDS = <span class="string">"the index is outside the allowed range"</span>
+  },
+
+  some_method = <span class="keyword">function</span>(self)
+    <span class="keyword">return</span> self.ERR.OUT_OF_BOUNDS
+  <span class="keyword">end</span>,
+}
+
+<span class="keyword">local</span> result, err = obj:some_method()
+<span class="keyword">if</span> <span class="keyword">not</span> result <span class="keyword">then</span>
+  <span class="keyword">if</span> err == obj.ERR.NOT_FOUND <span class="keyword">then</span>
+    <span class="comment">-- check on error code, not magic strings
+</span>
+  <span class="keyword">else</span>
+    <span class="comment">-- return the error description, contained in the constant
+</span>    <span class="keyword">return</span> <span class="keyword">nil</span>, <span class="string">"error: "</span>..err  <span class="comment">-- "error: the index is outside the allowed range"
+</span>  <span class="keyword">end</span>
+<span class="keyword">end</span></pre></li>
+        <li><pre class="example"><span class="comment">-- validating/converting user-input
+</span><span class="keyword">local</span> color = <span class="string">"purple"</span>
+<span class="keyword">local</span> ansi_colors = utils.enum {
+  black     = <span class="number">30</span>,
+  red       = <span class="number">31</span>,
+  green     = <span class="number">32</span>,
+}
+<span class="keyword">local</span> color_code, err = ansi_colors(color) <span class="comment">-- calling on the object, returns the value from the enum
+</span><span class="keyword">if</span> <span class="keyword">not</span> color_code <span class="keyword">then</span>
+  <span class="global">print</span>(<span class="string">"bad 'color', "</span> .. err)
+  <span class="comment">-- "bad 'color', 'purple' is not a valid value (expected one of: 'black', 'red', 'green')"
+</span>  <span class="global">os</span>.exit(<span class="number">1</span>)
 <span class="keyword">end</span></pre></li>
     </ul>
 
