@@ -6,7 +6,7 @@ deprecation policy.
 
 see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) for release instructions
 
-## 1.13.0 (unreleased)
+## 1.13.0 (2022-Jul-22)
  - fix: `xml.parse` returned nonsense when given a file name
    [#431](https://github.com/lunarmodules/Penlight/pull/431)
  - feat: `app.require_here` now follows symlink'd main modules to their directory
