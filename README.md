@@ -104,7 +104,7 @@ for Lua for Windows.
 
 ## Dependencies
 
-The file and directory functions depend on [LuaFileSystem](https://keplerproject.github.io/luafilesystem/),
+The file and directory functions depend on [LuaFileSystem](https://lunarmodules.github.io/luafilesystem/),
 which is installed automatically if you are using LuaRocks. Additionally, if you want `dir.copyfile` to work
 elegantly on Windows, then you need [Alien](http://mascarenhas.github.io/alien/). Both libraries are present
 in Lua for Windows.
