@@ -1,4 +1,4 @@
-local utils = dofile("lua/pl/utils.lua")
+local utils = require("pl.utils")
 
 describe("pl.utils", function()
 
