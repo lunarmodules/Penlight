@@ -83,6 +83,10 @@ asserteq(escape '$(bonzo)','%$%(bonzo%)')
 --- choose
 asserteq(utils.choose(true, 1, 2), 1)
 asserteq(utils.choose(false, 1, 2), 2)
+asserteq(utils.choose(true, nil, 2), nil)
+asserteq(utils.choose(false, nil, 2), 2)
+asserteq(utils.choose(true, 1, nil), 1)
+asserteq(utils.choose(false, 1, nil), nil)
 
 --- splitting strings ---
 local split = utils.split

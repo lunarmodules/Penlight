@@ -141,7 +141,11 @@ end
 -- @param value1 Value returned if cond is truthy
 -- @param value2 Value returned if cond is falsy
 function utils.choose(cond, value1, value2)
-    return cond and value1 or value2
+    if cond then
+        return value1
+    else
+        return value2
+    end
 end
 
 --- convert an array of values to strings.
