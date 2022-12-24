@@ -6,6 +6,10 @@ deprecation policy.
 
 see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) for release instructions
 
+## 1.14.0 (2022-Dec-24)
+ - enhance(func): extend compose to support N functions
+ - [#448](https://github.com/lunarmodules/Penlight/pull/448)
+
 ## 1.13.1 (2022-Jul-22)
  - fix: `warn` unquoted argument
    [#439](https://github.com/lunarmodules/Penlight/pull/439)
