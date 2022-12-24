@@ -337,22 +337,14 @@ func.bind1 = utils.bind1
 func.curry = func.bind1
 
 --- create a function which chains multiple functions.
--- a table of multiple functions can also be
--- passed instead of providing functions as
--- individual parameters.
 -- @func f a function of at least one argument
 -- @func g a function of at least one argument
 -- @param ... additional functions to compose
 -- @return a function
 -- @usage printf = compose(io.write, string.format)
--- @usage printf = compose({ io.write, string.format })
 -- @usage printf = compose(io.write, string.lower, string.format)
--- @usage printf = compose({ io.write, string.lower, string.format })
 function func.compose (...)
     local args = pack(...)
-    if type(args[1]) == "table" then
-      args = args[1]
-    end
     return tablex.reduce(function(f, g)
       return function(...)
         return f(g(...))
