@@ -6,9 +6,11 @@ deprecation policy.
 
 see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) for release instructions
 
-## 1.13.x (unreleased)
+## 1.14.0 (unreleased)
+ - feat(func): extend `compose` to support N functions
+   [#448](https://github.com/lunarmodules/Penlight/pull/448)
  - fix(utils) `nil` values in `utils.choose(cond, val1, val2)`
-   [#447](https://github.com/lunarmodules/Penlight/pull/#447)
+   [#447](https://github.com/lunarmodules/Penlight/pull/447)
 
 ## 1.13.1 (2022-Jul-22)
  - fix: `warn` unquoted argument

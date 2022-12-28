@@ -336,13 +336,20 @@ utils.add_function_factory(_PEMT,func.I)
 func.bind1 = utils.bind1
 func.curry = func.bind1
 
---- create a function which chains two functions.
+--- create a function which chains multiple functions.
 -- @func f a function of at least one argument
 -- @func g a function of at least one argument
+-- @param ... additional functions to compose
 -- @return a function
--- @usage printf = compose(io.write,string.format)
-function func.compose (f,g)
-    return function(...) return f(g(...)) end
+-- @usage printf = compose(io.write, string.format)
+-- @usage printf = compose(io.write, string.lower, string.format)
+function func.compose (...)
+    local args = pack(...)
+    return tablex.reduce(function(f, g)
+      return function(...)
+        return f(g(...))
+      end
+    end, args)
 end
 
 --- bind the arguments of a function to given values.
