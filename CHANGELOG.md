@@ -11,6 +11,8 @@ see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) fo
    [#448](https://github.com/lunarmodules/Penlight/pull/448)
  - fix(utils) `nil` values in `utils.choose(cond, val1, val2)`
    [#447](https://github.com/lunarmodules/Penlight/pull/447)
+ - fix(template) using `%` as an escape character caused the expression to not be recognized
+   [#451](https://github.com/lunarmodules/Penlight/pull/451)
 
 ## 1.13.1 (2022-Jul-22)
  - fix: `warn` unquoted argument
