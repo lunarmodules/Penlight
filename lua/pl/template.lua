@@ -54,6 +54,10 @@ local function parseDollarParen(pieces, chunk, exec_pat, newline)
 end
 
 local function parseHashLines(chunk,inline_escape,brackets,esc,newline)
+    -- Escape special characters to avoid invalid expressions
+    inline_escape = utils.escape(inline_escape)
+    esc = utils.escape(esc)
+
     local exec_pat = "()"..inline_escape.."(%b"..brackets..")()"
 
     local esc_pat = esc.."+([^\n]*\n?)"
