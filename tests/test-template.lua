@@ -46,6 +46,29 @@ asserteq(subst([[
 ]])
 
 
+--------------------------------------------------------------------------------
+-- Regression tests for issue #451 (can't use % for escapes)
+asserteq(subst([[
+% for i = 1,3 do
+    $(text[i])
+% end
+]],{_parent=_G,_escape='%',text={'foo','bar','baz'}}),[[
+    foo
+    bar
+    baz
+]])
+
+asserteq(subst([[
+? for i = 1,3 do
+    %(text[i])
+? end
+]],{_parent=_G,_escape='?',_inline_escape='%',text={'foo','bar','baz'}}),[[
+    foo
+    bar
+    baz
+]])
+--------------------------------------------------------------------------------
+
 
 -- handle templates with a lot of substitutions
 asserteq(subst(("$(x)\n"):rep(300), {x = "y"}), ("y\n"):rep(300))
