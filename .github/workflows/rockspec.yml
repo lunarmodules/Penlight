@@ -1,0 +1,15 @@
+name: Deploy
+
+on: [ push, workflow_dispatch ]
+
+jobs:
+
+  affected:
+    uses: lunarmodules/.github/.github/workflows/list_affected_rockspecs.yml@main
+
+  build:
+    needs: affected
+    if: ${{ needs.affected.outputs.rockspecs }}
+    uses: lunarmodules/.github/.github/workflows/test_build_rock.yml@main
+    with:
+      rockspecs: ${{ needs.affected.outputs.rockspecs }}

@@ -1,18 +1,16 @@
-local package_name = "penlight"
-local package_version = "dev"
-local rockspec_revision = "1"
-local github_account_name = "lunarmodules"
-local github_repo_name = package_name
-local git_checkout = package_version == "dev" and "master" or package_version
-
+package = "penlight"
+local rock_version = "dev"
+local rock_release = "1"
+local namespace = "lunarmodules"
+local repository = package
 
 rockspec_format = "3.0"
-package = package_name
-version = package_version .. "-" .. rockspec_revision
+version = ("%s-%s"):format(rock_version, rock_release)
 
 source = {
-  url = "git+https://github.com/"..github_account_name.."/"..github_repo_name..".git",
-  branch = git_checkout
+  url = ("git+https://github.com/%s/%s.git"):format(namespace, repository),
+  branch = rock_version == "dev" and "master" or nil,
+  tag = rock_version ~= "dev" and rock_version or nil,
 }
 
 description = {
@@ -24,8 +22,8 @@ description = {
       Much of the functionality is inspired by the Python standard libraries.
     ]],
   license = "MIT/X11",
-  homepage = "https://"..github_account_name..".github.io/"..github_repo_name,
-  issues_url = "https://github.com/"..github_account_name.."/"..github_repo_name.."/issues",
+  homepage = ("https://%s.github.io/%s"):format(namespace, repository),
+  issues_url = ("https://github.com/%s/%s/issues"):format(namespace, repository),
   maintainer = "thijs@thijsschreijer.nl",
 }
 
