@@ -17,6 +17,42 @@ local assert_arg = utils.assert_arg
 
 local original_tostring = tostring
 
+-- Calculate min and max integer supported by lua_Number
+-- Assumptions:
+-- 1. max_int = 2 ^ n - 1
+-- 2. min_int = -max_int
+-- 3. if n > max_int versions with integer support will have
+-- integer overflow and versions without integers will lose least significant bit
+-- Note: if lua_Integer is smaller than lua_Number mantissa string.format('%d')
+-- can throw runtime error
+local max_int, min_int
+local next_cand = 1
+while  next_cand > 0 and next_cand % 2 == 1 do
+  max_int = next_cand
+  min_int = -next_cand
+  next_cand = next_cand * 2 + 1
+end
+
+local function is_integer(value)
+  if _VERSION == "Lua 5.3" or _VERSION == "Lua 5.4" then
+    return mtype(value) == "integer"
+  end
+  if value < min_int or value > max_int then
+    return false
+  end
+  return math.floor(value) == value
+end
+
+local function is_float(value)
+  if _VERSION == "Lua 5.3" or _VERSION == "Lua 5.4" then
+    return mtype(value) == "float"
+  end
+  if value < min_int or value > max_int then
+    return true
+  end
+  return mfloor(value) == value
+end
+
 -- Patch tostring to format numbers with better precision
 -- and to produce cross-platform results for
 -- infinite values and NaN.
@@ -29,11 +65,11 @@ local function tostring(value)
         return "Inf"
     elseif value == -mhuge then
         return "-Inf"
-    elseif (_VERSION ~= "Lua 5.3" or mtype(value) == "integer") and mfloor(value) == value then
+    elseif is_integer(value) then
         return ("%d"):format(value)
     else
         local res = ("%.14g"):format(value)
-        if _VERSION == "Lua 5.3" and mtype(value) == "float" and not res:find("%.") then
+        if is_float(value) and not res:find("%.") then
             -- Number is internally a float but looks like an integer.
             -- Insert ".0" after first run of digits.
             res = res:gsub("%d+", "%0.0", 1)
