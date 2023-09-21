@@ -93,7 +93,7 @@ asserteq( pretty.write(t1,""), [[{1,["false"]="untrue",["true"]="boolean",a="a",
 -- Check number formatting
 asserteq(pretty.write({1/0, -1/0, 0/0, 1, 1/2}, ""), "{Inf,-Inf,NaN,1,0.5}")
 
-if _VERSION == "Lua 5.3" then
+if _VERSION == "Lua 5.3" or _VERSION == "Lua 5.4" then
     asserteq(pretty.write({1.0}, ""), "{1.0}")
 else
     asserteq(pretty.write({1.0}, ""), "{1}")
@@ -104,6 +104,21 @@ do  -- issue #203, item 3
   pretty.write(t)  -- should not crash
 end
 
+
+do
+  local float = 1e100
+  local max_int = 9007199254740991 -- 1 << 53 - 1
+  local min_int = -9007199254740991
+
+  asserteq(pretty.write(float), "1.0e+100")
+  if _VERSION == "Lua 5.3" or _VERSION == "Lua 5.4" then
+    --There is no way to portably format with %d before 5.3
+    asserteq(pretty.write(min_int - 3), "-9007199254740994")
+    asserteq(pretty.write(max_int + 3), "9007199254740994")
+    asserteq(pretty.write(min_int), "-9007199254740991")
+    asserteq(pretty.write(max_int), "9007199254740991")
+  end
+end
 
 -- pretty.write fails if an __index metatable raises an error #257
 -- only applies to 5.3+ where iterators respect metamethods
