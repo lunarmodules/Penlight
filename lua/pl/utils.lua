@@ -749,8 +749,8 @@ end
 -- This is useful if you have a function which is relatively expensive,
 -- but you don't know in advance what values will be required, so
 -- building a table upfront is wasteful/impossible.
--- @param func a function that takes exactly one argument
--- @return a function taking one argument, which is used as the cache key.
+-- @param func a function that takes exactly one argument (which later serves as the cache key) and returns a single value
+-- @return a function taking one argument and returning a single value either from the cache or by running the original input function
 function utils.memoize(func)
     local cache = {}
     return function(k)
