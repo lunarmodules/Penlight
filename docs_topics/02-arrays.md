@@ -129,7 +129,7 @@ there is already `pop` (remove and return last value) and `append` acts like
 `push` (add a value to the end). `push` is provided as an alias for `append`, and
 the other stack operation (size) is simply the size operator `#`.  Queues can
 also be implemented; you use `pop` to take values out of the queue, and `put` to
-insert a value at the begining.
+insert a value at the beginning.
 
 You may derive classes from `List`, and since the list-returning methods
 are covariant, the result of `slice` etc will return lists of the derived type,

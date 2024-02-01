@@ -423,7 +423,7 @@ perfectly legal to have '-vvv'. But normally the value of args.v is just a simpl
     vlevel = not args.v[1] and 0 or #args.v
     print(vlevel)
 
-The vlevel assigment is a bit of Lua voodoo, so consider the cases:
+The vlevel assignment is a bit of Lua voodoo, so consider the cases:
 
     * No -v flag, v is just { false }
     * One -v flags, v is { true }

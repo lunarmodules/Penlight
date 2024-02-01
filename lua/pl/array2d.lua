@@ -189,7 +189,7 @@ function array2d.flatten (t)
     return makelist(res)
 end
 
---- reshape a 2D array. Reshape the aray by specifying a new nr of rows.
+--- reshape a 2D array. Reshape the array by specifying a new nr of rows.
 -- @array2d t 2d array
 -- @int nrows new number of rows
 -- @bool co use column-order (Fortran-style) (default false)
@@ -266,7 +266,7 @@ end
 --- extract the specified columns.
 -- @array2d t 2d array
 -- @tparam {int} cidx a table of column indices
--- @return a new 2d array with the extracted colums
+-- @return a new 2d array with the extracted columns
 function array2d.extract_cols (t,cidx)
     assert_arg(1,t,'table')
     local res = {}

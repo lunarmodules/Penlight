@@ -50,7 +50,7 @@ local config = {}
 
 --- like `io.lines`, but allows for lines to be continued with '`\`'.
 -- @param file a file-like object (anything where read() returns the next line) or a filename.
--- Defaults to stardard input.
+-- Defaults to standard input.
 -- @return an iterator over the lines, or nil
 -- @return error 'not a file-like object' or 'file is nil'
 function config.lines(file)

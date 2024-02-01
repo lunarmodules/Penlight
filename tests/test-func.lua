@@ -80,7 +80,7 @@ asserteq (map(_1:sub(1,2),{'one','four'}),{'on','fo'})
 --~ -- or you can do this using List:map
 asserteq( List({'one','four'}):map(_1:sub(1,2)), List{'on','fo'})
 
---~ -- note that Len can't be represented generally by #, since this can only be overriden by userdata
+--~ -- note that Len can't be represented generally by #, since this can only be overridden by userdata
 asserteq( map(Len(_1),{'one','four'}),  {3,4} )
 
 --~ -- simularly, 'and' and 'or' are not really operators in Lua, so we need a function notation for them

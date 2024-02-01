@@ -25,7 +25,7 @@ Here's how to go about contributing to Penlight:
 
 1. [Fork the repository](https://github.com/lunarmodules/Penlight/fork) to
 your Github account.
-2. Create a *topical branch* - a branch whose name is succint but explains what
+2. Create a *topical branch* - a branch whose name is succinct but explains what
 you're doing, such as _"added-klingon-cloacking-device"_ - from `master` branch.
 3. Make your changes, committing at logical breaks.
 4. Push your branch to your personal account

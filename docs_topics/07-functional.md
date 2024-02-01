@@ -54,7 +54,7 @@ Sequences can be _combined_, either by 'zipping' them or by concatenating them.
     3
 
 `seq.printall` is useful for printing out single-valued sequences, and provides
-some finer control over formating, such as a delimiter, the number of fields per
+some finer control over formatting, such as a delimiter, the number of fields per
 line, and a format string to use (@see string.format)
 
     > seq.printall(seq.random(10))
@@ -82,7 +82,7 @@ original table (equivalent to `tablex.filter(ls, '>', 0)`)
 
     ls = seq.copy(seq.filter(ls, '>', 0))
 
-We're already encounted `seq.sum` when discussing `input.numbers`. This can also
+We're already encountered `seq.sum` when discussing `input.numbers`. This can also
 be expressed with `seq.reduce`:
 
     > seq.reduce(function(x,y) return x + y end, seq.list{1,2,3,4})
@@ -289,7 +289,7 @@ I'm emphasizing that a comprehension is a function which can take a list argumen
     {20,40,60}
 
 Here is a somewhat more explicit way of saying the same thing; `_1` is a
-_placeholder_ refering to the _first_ argument passed to the comprehension.
+_placeholder_ referring to the _first_ argument passed to the comprehension.
 
     > = C '2*x for _,x in pairs(_1)' {10,20,30}
     {20,40,60}
@@ -366,7 +366,7 @@ arguments where the first argument is bound to some value:
     > tablex.filter({1,-2,10,-1,2},bind1(ops.le,0))
     {1,10,2}
 
-The last example unfortunately reads backwards, because `bind1` alway binds the
+The last example unfortunately reads backwards, because `bind1` always binds the
 first argument!  Also unfortunately, in my youth I confused 'currying' with
 'partial application', so the old name for `bind1` is `curry` - this alias still exists.
 
@@ -441,7 +441,7 @@ Functions of up to 5 arguments can be generated.
     > = tablex.map2(_1+_2,{1,2,3}, {10,20,30})
     {11,22,33}
 
-These expressions can use arbitrary functions, altho they must first be
+These expressions can use arbitrary functions, although they must first be
 registered with the functional library. `func.register` brings in a single
 function, and `func.import` brings in a whole table of functions, such as `math`.
 
@@ -458,7 +458,7 @@ A common operation is calling a method of a set of objects:
     {'o','f','x'}
 
 There are some restrictions on what operators can be used in PEs. For instance,
-because the `__len` metamethod cannot be overriden by plain Lua tables, we need
+because the `__len` metamethod cannot be overridden by plain Lua tables, we need
 to define a special function to express `#_1':
 
     > = tablex.map(Len(_1), {'one','four','x'})

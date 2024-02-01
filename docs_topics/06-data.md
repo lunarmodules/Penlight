@@ -704,7 +704,7 @@ gracefully.)
 The scanners all have a second optional argument, which is a table which controls
 whether you want to exclude spaces and/or comments. The default for `lexer.lua`
 is `{space=true,comments=true}`.  There is a third optional argument which
-determines how string and number tokens are to be processsed.
+determines how string and number tokens are to be processed.
 
 The ultimate highly-structured data is of course, program source. Here is a
 snippet from 'text-lexer.lua':

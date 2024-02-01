@@ -450,7 +450,7 @@ local function _partition(p,delim,fn)
     end
 end
 
---- partition the string using first occurance of a delimiter
+--- partition the string using first occurrence of a delimiter
 -- @string s the string
 -- @string ch delimiter (match as plain string, no patterns)
 -- @return part before ch
@@ -464,7 +464,7 @@ function stringx.partition(s,ch)
     return _partition(s,ch,stringx.lfind)
 end
 
---- partition the string p using last occurance of a delimiter
+--- partition the string p using last occurrence of a delimiter
 -- @string s the string
 -- @string ch delimiter (match as plain string, no patterns)
 -- @return part before ch
@@ -736,7 +736,7 @@ end
 
 
 
---- Miscelaneous
+--- Miscellaneous
 -- @section misc
 
 --- return an iterator over all lines in a string
@@ -754,7 +754,7 @@ function stringx.lines(s)
     return s:gmatch('([^\n]*)\n')
 end
 
---- inital word letters uppercase ('title case').
+--- initial word letters uppercase ('title case').
 -- Here 'words' mean chunks of non-space characters.
 -- @string s the string
 -- @return a string with each word's first letter uppercase
@@ -775,7 +775,7 @@ do
   --- Return a shortened version of a string.
   -- Fits string within w characters. Removed characters are marked with ellipsis.
   -- @string s the string
-  -- @int w the maxinum size allowed
+  -- @int w the maximum size allowed
   -- @bool tail true if we want to show the end of the string (head otherwise)
   -- @usage ('1234567890'):shorten(8) == '12345...'
   -- @usage ('1234567890'):shorten(8, true) == '...67890'
@@ -849,7 +849,7 @@ end
 
 --- Python-style formatting operator.
 -- Calling `text.format_operator()` overloads the % operator for strings to give
--- Python/Ruby style formated output.
+-- Python/Ruby style formatted output.
 -- This is extended to also do template-like substitution for map-like data.
 --
 -- Note this goes further than the original, and will allow these cases:
@@ -859,7 +859,7 @@ end
 -- 3. a map of var=value pairs
 -- 4. a function, as in gsub
 --
--- For the second two cases, it uses $-variable substituion.
+-- For the second two cases, it uses $-variable substitution.
 --
 -- When called, this function will monkey-patch the global `string` metatable by
 -- adding a `__mod` method.
