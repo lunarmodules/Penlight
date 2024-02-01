@@ -195,7 +195,7 @@ MemFree:          220292 kB
  }
 )
 
--- altho this works, rather use pl.data.read for this kind of purpose.
+-- although this works, rather use pl.data.read for this kind of purpose.
 testconfig ([[
 # this is just a set of comma-separated values
 1000,444,222

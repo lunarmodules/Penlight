@@ -175,7 +175,7 @@ For example,
 
     return M
 
-If you were to accidently type `mymod.Answer()`, then you would get a runtime
+If you were to accidentally type `mymod.Answer()`, then you would get a runtime
 error: "variable 'Answer' is not declared in 'mymod'".
 
 This can be applied to existing modules. You may desire to have the same level
@@ -231,7 +231,7 @@ a function to all elements of a list is a common operation:
         res[i] = fun(ls[i])
     end
 
-This can be efficiently and succintly expressed as `ls:map(fun)`. Not only is
+This can be efficiently and succinctly expressed as `ls:map(fun)`. Not only is
 there less typing but the intention of the code is clearer. If readers of your
 code spend too much time trying to guess your intention by analyzing your loops,
 then you have failed to express yourself clearly. Similarly, `ls:filter('>',0)`
@@ -330,7 +330,7 @@ for functions which don't access any globals.
 
 `app.parse_args` is a simple command-line argument parser. If called without any
 arguments, it tries to use the global `arg` array.  It returns the _flags_
-(options begining with '-') as a table of name/value pairs, and the _arguments_
+(options beginning with '-') as a table of name/value pairs, and the _arguments_
 as an array.  It knows about long GNU-style flag names, e.g. `--value`, and
 groups of short flags are understood, so that `-ab` is short for `-a -b`. The
 flags result would then look like `{value=true,a=true,b=true}`.

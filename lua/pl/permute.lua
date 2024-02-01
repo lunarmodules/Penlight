@@ -82,7 +82,7 @@ end
 
 --- an iterator over all permutations of the elements of the given lists.
 -- @param ... list-like tables, they are nil-safe if a length-field `n` is provided (see `utils.pack`)
--- @return an iterator which provides the next permutation as return values in the same order as the provided lists, preceeded by an index
+-- @return an iterator which provides the next permutation as return values in the same order as the provided lists, preceded by an index
 -- @usage
 -- local strs = utils.pack("one", nil, "three")  -- adds an 'n' field for nil-safety
 -- local bools = utils.pack(true, false)

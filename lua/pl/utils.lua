@@ -301,7 +301,7 @@ end
 -- non-existing values, and/or converting strings/identifiers to other values.
 --
 -- Calling on the object does the same, but returns a soft error; `nil + err`, if
--- the call is succesful (the key exists), it will return the value.
+-- the call is successful (the key exists), it will return the value.
 --
 -- When calling with varargs or an array the values will be equal to the keys.
 -- The enum object is read-only.
@@ -695,7 +695,7 @@ end
 -- @param s The input string
 -- @param re optional A Lua string pattern; defaults to '%s+'
 -- @param plain optional If truthy don't use Lua patterns
--- @param n optional maximum number of elements (if there are more, the last will remian un-split)
+-- @param n optional maximum number of elements (if there are more, the last will remain un-split)
 -- @return a list-like table
 -- @raise error if s is not a string
 -- @see splitv

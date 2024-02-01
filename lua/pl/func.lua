@@ -252,7 +252,7 @@ function repr (e,lastpred)
 end
 func.repr = repr
 
--- collect all the non-PE values in this PE into vlist, and replace each occurence
+-- collect all the non-PE values in this PE into vlist, and replace each occurrence
 -- with a constant PH (_C1, etc). Return the maximum placeholder index found.
 local collect_values
 function collect_values (e,vlist)

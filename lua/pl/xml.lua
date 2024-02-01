@@ -256,7 +256,7 @@ function Doc:reset()
 end
 
 
---- Append a child to the currrent Node (ignoring current position).
+--- Append a child to the current Node (ignoring current position).
 -- @param child a child node (either text or a document)
 -- @return the current node (`self`)
 -- @usage
@@ -292,7 +292,7 @@ end
 
 
 --- Set attributes of a document node.
--- Will add/overwite values, but will not remove existing ones.
+-- Will add/overwrite values, but will not remove existing ones.
 -- Operates on the Node itself, will not take position into account.
 -- @tparam table t a table containing attribute/value pairs
 -- @return the current node (`self`)
@@ -428,7 +428,7 @@ do
   -- @param self document node to traverse
   -- @param tag tag-name to look for
   -- @param list array table to add the matching ones to
-  -- @param recurse if truthy, recursivly search the node
+  -- @param recurse if truthy, recursively search the node
   local function _children_with_name(self, tag, list, recurse)
     -- TODO: protect against recursion
     for _, child in ipairs(self) do
@@ -923,7 +923,7 @@ local html_empty_elements = { --lists all HTML empty (void) elements
 }
 
 --- Parse a well-formed HTML file as a string.
--- Tags are case-insenstive, DOCTYPE is ignored, and empty elements can be .. empty.
+-- Tags are case-insensitive, DOCTYPE is ignored, and empty elements can be .. empty.
 -- @param s the HTML
 function _M.parsehtml(s)
     return _M.basic_parse(s,false,true)

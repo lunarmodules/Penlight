@@ -144,7 +144,7 @@ end
 -- Multiple short args can be combined like so: ( `-abcd`).
 --
 -- When specifying the `flags_valid` parameter, its contents can also contain
--- aliasses, to convert short/long flags to the same output name. See the
+-- aliases, to convert short/long flags to the same output name. See the
 -- example below.
 --
 -- Note: if a flag is repeated, the last value wins.
@@ -163,7 +163,7 @@ end
 --      { "hello", "world" },  -- list of flags taking values
 --      { "l", "a", "b"})      -- list of allowed flags (value ones will be added)
 --
--- -- More complex example using aliasses:
+-- -- More complex example using aliases:
 -- local valid = {
 --     long = "l",           -- if 'l' is specified, it is reported as 'long'
 --     new = { "n", "old" }, -- here both 'n' and 'old' will go into 'new'
@@ -206,16 +206,16 @@ function app.parse_args (args,flags_with_values, flags_valid)
         valid = setmetatable({},{ __index = function(_, key) return key end })
     else
         valid = {}
-        for k,aliasses in pairs(flags_valid) do
+        for k,aliases in pairs(flags_valid) do
             if type(k) == "number" then         -- array/list entry
-                k = aliasses
+                k = aliases
             end
-            if type(aliasses) == "string" then  -- single alias
-                aliasses = { aliasses }
+            if type(aliases) == "string" then  -- single alias
+                aliases = { aliases }
             end
-            if type(aliasses) == "table" then   -- list of aliasses
+            if type(aliases) == "table" then   -- list of aliases
                 -- it's the alternate name, so add the proper mappings
-                for i, alias in ipairs(aliasses) do
+                for i, alias in ipairs(aliases) do
                     valid[alias] = k
                 end
             end
@@ -236,7 +236,7 @@ function app.parse_args (args,flags_with_values, flags_valid)
     end
 
     -- now check that all flags with values are reported as such under all
-    -- of their aliasses
+    -- of their aliases
     for k, main_alias in pairs(valid) do
         if with_values[main_alias] then
             with_values[k] = true

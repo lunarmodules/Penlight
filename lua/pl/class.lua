@@ -1,4 +1,4 @@
---- Provides a reuseable and convenient framework for creating classes in Lua.
+--- Provides a reusable and convenient framework for creating classes in Lua.
 -- Two possible notations:
 --
 --    B = class(A)
@@ -25,7 +25,7 @@ local function call_ctor (c,obj,...)
             init = rawget(parent_with_init, '_init')
             parent_with_init = rawget(parent_with_init, '_parent_with_init')
         end
-        if parent_with_init then -- super() points to one above whereever _init came from
+        if parent_with_init then -- super() points to one above wherever _init came from
             rawset(obj,'super',function(obj,...)
                 call_ctor(parent_with_init,obj,...)
             end)

@@ -267,7 +267,7 @@ do -- app.parse_args
       }, s)
 
 
-    -- specify valid flags and aliasses
+    -- specify valid flags and aliases
     local args = utils.split("-a -b value -e -f3")
     local t,s = app.parse_args(args,
       {
@@ -276,7 +276,7 @@ do -- app.parse_args
       }, {
         bully = "b",   -- b with value will be reported as 'bully', alias as string
         a = true,      -- hash-type value
-        c = { "d", "e" }, -- e will be reported as c, aliasses as list/table
+        c = { "d", "e" }, -- e will be reported as c, aliases as list/table
       })
     asserteq(t, {
         a = true,

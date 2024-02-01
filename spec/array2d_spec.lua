@@ -218,7 +218,7 @@ describe("pl.array2d", function()
   end)
 
   describe("extract_cols()", function()
-    it("extracts colums", function()
+    it("extracts columns", function()
       local a = {{ 1, 2, 3},
                  { 4, 5, 6},
                  { 7, 8, 9},
@@ -446,7 +446,7 @@ describe("pl.array2d", function()
   end)
 
   describe("move()", function()
-    it("moves block to destination aray", function()
+    it("moves block to destination array", function()
       local a = array2d.new(4,4,0)
       local b = array2d.new(3,3,1)
       array2d.move(a,2,2,b)

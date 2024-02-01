@@ -217,7 +217,7 @@ function data.read(file,cnfg)
 
     -- note that using dot as the thousands separator (@thousands_dot)
     -- requires a special conversion function! For CSV, _empty fields_ are
-    -- considered to default to numerial zeroes.
+    -- considered to default to numerical zeroes.
     local tonumber = tonumber
     local function try_number(x)
         if thousands_dot then x = x:gsub('%.(...)','%1') end

@@ -37,7 +37,7 @@ Most of these can be fairly easily implemented using the Lua string library,
 which is more general and powerful. But they are convenient operations to have
 easily at hand. Note that can be injected into the `string` table if you use
 `stringx.import`, but a simple alias like `local stringx = require 'pl.stringx'`
-is preferrable. This is the recommended practice when writing modules for
+is preferable. This is the recommended practice when writing modules for
 consumption by other people, since it is bad manners to change the global state
 of the rest of the system. Magic may be used for convenience, but there is always
 a price.
@@ -104,7 +104,7 @@ lines that fit into a desired line width. As an extension, there is also `indent
 for indenting multiline strings.
 
 New in Penlight with the 0.9 series is `text.format_operator`. Calling this
-enables Python-style string formating using the modulo operator `%`:
+enables Python-style string formatting using the modulo operator `%`:
 
     > text.format_operator()
     > = '%s[%d]' % {'dog',1}
@@ -126,7 +126,7 @@ Preprocessor](http://lua-users.org/wiki/SlightlyLessSimpleLuaPreprocessor).  Thi
 allows you to mix Lua code with your templates in a straightforward way. There
 are only two rules:
 
-  - Lines begining with `#` are Lua
+  - Lines beginning with `#` are Lua
   - Otherwise, anything inside `$()` is a Lua expression.
 
 So a template generating an HTML list would look like this:
@@ -223,6 +223,6 @@ takes the same arguments as standard file objects:
 string.
 
 `stringio.create` creates a writeable file-like object. You then use `write` to
-this stream, and finally extract the builded string using `value`.  This 'string
+this stream, and finally extract the built string using `value`.  This 'string
 builder' pattern is useful for efficiently creating large strings.
 

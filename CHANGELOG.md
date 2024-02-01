@@ -131,16 +131,16 @@ see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) fo
  - overhaul: `array2d` module was updated, got additional tests and several
    documentation updates
    [#377](https://github.com/lunarmodules/Penlight/pull/377)
- - feat: `aray2d` now accepts negative indices
+ - feat: `array2d` now accepts negative indices
  - feat: `array2d.row` added to align with `column`
  - fix: bad error message in `array2d.map`
  - fix: `array2d.flatten` now ensures to deliver a 'square' result if `nil` is
    encountered
  - feat: `array2d.transpose` added
  - feat: `array2d.swap_rows` and `array2d.swap_cols` now return the array
- - fix: `aray2d.range` correctly recognizes `R` column in spreadsheet format, was
+ - fix: `array2d.range` correctly recognizes `R` column in spreadsheet format, was
    mistaken for `R1C1` format.
- - fix: `aray2d.range` correctly recognizes 2 char column in spreadsheet format
+ - fix: `array2d.range` correctly recognizes 2 char column in spreadsheet format
  - feat: `array2d.default_range` added (previously private)
  - feat: `array2d.set` if used with a function now passes `i,j` to the function
    in line with the `new` implementation.
@@ -203,7 +203,7 @@ see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) fo
 
   - `utils.quote_arg` will now optionally take an array of arguments and escape
     them all into a single string.
-  - `app.parse_args` now accepts a 3rd parameter with a list of valid flags and aliasses
+  - `app.parse_args` now accepts a 3rd parameter with a list of valid flags and aliases
   - `app.script_name` returns the name of the current script (previously a private function)
 
 ### Changes
@@ -366,7 +366,7 @@ see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) fo
 
 ### Fixes
 
-  - func was broken: do NOT use ipairs to iterate if __index is overriden!
+  - func was broken: do NOT use ipairs to iterate if __index is overridden!
   - issue #133 pretty.read (naively) confused by unbalanced brackets
   - xml attribute underscore fix for simple parser
   - Fix path.normpath
@@ -491,7 +491,7 @@ particularly convenient for using from Moonscript.
 - array2d.product was broken; more sensible implementation
 - array2d.range, .slice, .write were broken
 - text optional operator % overload broken for 'fmt % fun'; new tests
-- a few occurances of non-existent function utils.error removed
+- a few occurrences of non-existent function utils.error removed
 
 
 ## 0.9.6 (2011-09-11)

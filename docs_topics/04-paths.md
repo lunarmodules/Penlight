@@ -90,7 +90,7 @@ For example, this little script converts a file into upper case:
 	text = assert(file.read(arg[1]))
     assert(file.write(arg[2],text:upper()))
 
-Copying files is suprisingly tricky. `file.copy` and `file.move` attempt to use
+Copying files is surprisingly tricky. `file.copy` and `file.move` attempt to use
 the best implementation possible. On Windows, they link to the API functions
 `CopyFile` and `MoveFile`, but only if the `alien` package is installed (this is
 true for Lua for Windows.) Otherwise, the system copy command is used. This can
@@ -109,7 +109,7 @@ table, unlike `lfs.dir` which returns an iterator.)
 
 `dir.makepath` can create a full path, creating subdirectories as necessary;
 `rmtree` is the Nuclear Option of file deleting functions, since it will
-recursively clear out and delete all directories found begining at a path (there
+recursively clear out and delete all directories found beginning at a path (there
 is a similar function with this name in the Python `shutils` module.)
 
     > = dir.makepath 't\\temp\\bonzo'

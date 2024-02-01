@@ -116,7 +116,7 @@ function List:insert(i, x)
     return self
 end
 
---- Insert an item at the begining of the list.
+--- Insert an item at the beginning of the list.
 -- @param x a data item
 -- @return the list
 function List:put (x)
@@ -526,7 +526,7 @@ function List:iter ()
     return iter(self)
 end
 
---- Create an iterator over a seqence.
+--- Create an iterator over a sequence.
 -- This captures the Python concept of 'sequence'.
 -- For tables, iterates over all values with integer indices.
 -- @param seq a sequence; a string (over characters), a table, a file object (over lines) or an iterator function
