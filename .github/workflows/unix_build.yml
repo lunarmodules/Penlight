@@ -12,9 +12,9 @@ jobs:
         luaVersion: ["5.1", "5.2", "5.3", "5.4", "luajit-2.1.0-beta3", "luajit-openresty"]
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
-    - uses: leafo/gh-actions-lua@v8
+    - uses: leafo/gh-actions-lua@v9
       with:
         luaVersion: ${{ matrix.luaVersion }}
 
