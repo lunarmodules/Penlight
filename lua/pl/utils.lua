@@ -329,7 +329,7 @@ end
 --   },
 --
 --   some_method = function(self)
---     return self.ERR.OUT_OF_BOUNDS
+--     return nil, self.ERR.OUT_OF_BOUNDS
 --   end,
 -- }
 --
