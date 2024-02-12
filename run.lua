@@ -1,3 +1,5 @@
+#!/usr/bin/env lua
+
 -- Running tests and/or examples.
 local lfs = require "lfs"
 
