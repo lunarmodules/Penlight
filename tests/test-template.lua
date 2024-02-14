@@ -184,7 +184,7 @@ local my_env = {
   ipairs = ipairs,
   T = {'one','two','three'}
 }
-local t, err = template.compile(tmpl, { debug = true, newline = "" })
+local t, err = template.compile(tmpl, { debug = true, newline = true })
 local res, err, code = t:render(my_env)
 --print(res, err, code)
 asserteq(res, [[some list: ONE,TWO,THREE]])
@@ -197,7 +197,7 @@ local tmpl = [[
 header: $("hello" * 10)
 ]]
 
-local t, err = template.compile(tmpl, { debug = true, newline = "" })
+local t, err = template.compile(tmpl, { debug = true, newline = true })
 local res, err, code = t:render()
 --print(res, err, code)
 assert(res == nil, "expected nil here because of the runtime error")
@@ -213,7 +213,7 @@ local tmpl = [[
 header: $(myParam)
 ]]
 
-local t, err = template.compile(tmpl, { debug = true, newline = "" })
+local t, err = template.compile(tmpl, { debug = true, newline = true })
 local myParam = {}
 local res, err, code = t:render( {myParam = myParam } ) -- insert a table
 --print(res, err, code)
@@ -232,7 +232,7 @@ local my_env = {
   ipairs = ipairs,
   T = {'one','two','three'}
 }
-local t, err, code = template.compile(tmpl, { debug = true, newline = "" })
+local t, err, code = template.compile(tmpl, { debug = true, newline = true })
 --print(t, err, code)
 assert(t==nil, "expected t to be nil here because of the syntax error")
 asserteq(type(err), "string")
