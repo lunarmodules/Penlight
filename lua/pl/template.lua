@@ -115,7 +115,7 @@ function template.substitute(str,env)
         escape = rawget(env,"_escape"),
         inline_escape = rawget(env,"_inline_escape"),
         inline_brackets = rawget(env,"_brackets"),
-        newline = nil,
+        newline = false,
         debug = rawget(env,"_debug")
     })
     if not t then return t, err end
@@ -159,7 +159,7 @@ end
 --   * `escape`: character marking Lua lines, default is '#'
 --   * `inline_escape`: character marking inline Lua expression, default is '$'.
 --   * `inline_brackets`: bracket pair that wraps inline Lua expressions, default is '()'.
---   * `newline`: string to replace newline characters, default is `nil` (not replacing newlines).
+--   * `newline`: if truthy, newlines will be stripped from text in the template. Default is `false`.
 --   * `debug`: if truthy, the generated source code will be retained within the compiled template object, default is `nil`.
 --
 -- @string str the template string
