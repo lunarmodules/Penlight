@@ -45,15 +45,15 @@ end
 
 --- initializes an __instance__ upon creation.
 -- @function class:_init
--- @param ... parameters passed to the constructor
+-- @param ... input parameters passed to the constructor
 -- @usage local Cat = class()
 -- function Cat:_init(name)
 --   --self:super(name)   -- call the ancestor initializer if needed
 --   self.name = name
 -- end
 --
--- local pussycat = Cat("pussycat")
--- print(pussycat.name)  --> pussycat
+-- local pussycat = Cat("sparkles")
+-- print(pussycat.name)  --> sparkles
 
 --- checks whether an __instance__ is derived from some class.
 -- Works the other way around as `class_of`. It has two ways of using;
@@ -117,32 +117,33 @@ local function _class_tostring (obj)
     return str
 end
 
-local function tupdate(td,ts,dont_override)
+local function populate(td,ts)
     for k,v in pairs(ts) do
-        if not dont_override or td[k] == nil then
+        if td[k] == nil then
             td[k] = v
         end
     end
 end
 
 local function _class(base,c_arg,c)
-    -- the class `c` will be the metatable for all its objects,
-    -- and they will look up their methods in it.
+    -- the input table `c`, if provided, will become the the class object
     local mt = {}   -- a metatable for the class to support __call and _handler
-    -- can define class by passing it a plain table of methods
+    -- alternatively if base is not a class and no input table c is provided
+    -- then base is used as a template and converted to a class object
     local plain = type(base) == 'table' and not getmetatable(base)
     if plain then
+        if type(c) == "table" then error("base is not a class",3) end
         c = base
         base = c._base
     else
         c = c or {}
+        c._base = base
     end
 
     if type(base) == 'table' then
-        -- our new class is a shallow copy of the base class!
-        -- but be careful not to wipe out any methods we have been given at this point!
-        tupdate(c,base,plain)
-        c._base = base
+        -- Shallow-copy methods from the base class into our target class being
+        -- careful not to wipe out any methods explicitly passed as input
+        populate(c,base)
         -- inherit the 'not found' handler, if present
         if rawget(c,'_handler') then mt.__index = c._handler end
     elseif base ~= nil then
@@ -153,7 +154,6 @@ local function _class(base,c_arg,c)
     setmetatable(c,mt)
     if not plain then
         if base and rawget(base,'_init') then c._parent_with_init = base end -- For super and inherited init
-        c._init = nil
     end
 
     if base and rawget(base,'_class_init') then
@@ -209,9 +209,9 @@ end
 -- The second form creates a variable `Name` in the current environment set
 -- to the class, and also sets `_name`.
 -- @function class
--- @param base optional base class
--- @param c_arg optional parameter to class constructor
--- @param c optional table to be used as class
+-- @param base optional base class to derive from
+-- @param c_arg optional parameter passed to class constructor
+-- @param c optional table of methods to be used populate the class
 local class
 class = setmetatable({},{
     __call = function(fun,...)
