@@ -262,7 +262,63 @@ asserteq(code, [[return "<ul>\
 <p>a paragraph</p>\
 <p>a paragraph</p>\
 </ul>\
-"]])
+";]])
+
+
+
+--------------------------------------------------
+-- Test template preserves line numbers, both when
+-- stripping and not stripping newlines
+local tmpl = [[
+# local function foo(x)
+  a$(x)b$(x + 1)c
+# return x + 2
+# end
+Hello
+there
+
+
+# foo(1)
+foo$(foo)bar
+# --
+]]
+local expected_num = select(2, string.gsub(tmpl, "\n", "\n"))
+
+-- Trailing newline, no newline stripping
+local t, err = template.compile(tmpl, { debug = true })
+local res, err, code = t:render(my_env)
+--print(res, err, code)
+
+assert(res, "rendering should not fail here")
+asserteq(select(2, string.gsub(code, "\n", "\n")), expected_num)
+
+-- Trailing newline, with newline stripping
+local t, err = template.compile(tmpl, { debug = true, newline = true })
+local res, err, code = t:render(my_env)
+--print(res, err, code)
+
+assert(res, "rendering should not fail here")
+asserteq(select(2, string.gsub(code, "\n", "\n")), expected_num)
+
+
+tmpl = string.sub(code, 1, -2) -- Remove the trailing newline
+-- num_expected remains unchanged because the template will append a trailing newline
+
+-- No trailing newline, no newline stripping
+local t, err = template.compile(tmpl, { debug = true })
+local res, err, code = t:render(my_env)
+--print(res, err, code)
+
+assert(res, "rendering should not fail here")
+asserteq(select(2, string.gsub(code, "\n", "\n")), expected_num)
+
+-- No trailing newline, with newline stripping
+local t, err = template.compile(tmpl, { debug = true, newline = true })
+local res, err, code = t:render(my_env)
+--print(res, err, code)
+
+assert(res, "rendering should not fail here")
+asserteq(select(2, string.gsub(code, "\n", "\n")), expected_num)
 
 
 print("template: success")
