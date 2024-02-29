@@ -13,6 +13,8 @@ see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) fo
    [#447](https://github.com/lunarmodules/Penlight/pull/447)
  - fix(template) using `%` as an escape character caused the expression to not be recognized
    [#452](https://github.com/lunarmodules/Penlight/pull/452)
+ - enhance(template): Preserve line numbers
+   [#468](https://github.com/lunarmodules/Penlight/pull/468)
 
 ## 1.13.1 (2022-Jul-22)
  - fix: `warn` unquoted argument
