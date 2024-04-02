@@ -7,6 +7,8 @@ deprecation policy.
 see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) for release instructions
 
 ## 1.14.0 (unreleased)
+ - fix(path): make `path.expanduser` more sturdy
+   [#469](https://github.com/lunarmodules/Penlight/pull/469)
  - feat(func): extend `compose` to support N functions
    [#448](https://github.com/lunarmodules/Penlight/pull/448)
  - fix(utils) `nil` values in `utils.choose(cond, val1, val2)`
