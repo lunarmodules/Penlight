@@ -493,17 +493,35 @@ end
 -- In windows, if HOME isn't set, then USERPROFILE is used in preference to
 -- HOMEDRIVE HOMEPATH. This is guaranteed to be writeable on all versions of Windows.
 -- @string P A file path
+-- @treturn[1] string The file path with the `~` prefix substituted, or the input path if it had no prefix.
+-- @treturn[2] nil
+-- @treturn[2] string Error message if the environment variables were unavailable.
 function path.expanduser(P)
     assert_string(1,P)
-    if at(P,1) == '~' then
-        local home = getenv('HOME')
-        if not home then -- has to be Windows
-            home = getenv 'USERPROFILE' or (getenv 'HOMEDRIVE' .. getenv 'HOMEPATH')
-        end
-        return home..sub(P,2)
-    else
+    if P:sub(1,1) ~= '~' then
         return P
     end
+
+    local home = getenv('HOME')
+    if (not home) and (not path.is_windows) then
+        -- no more options to try on Nix
+        return nil, "failed to expand '~' (HOME not set)"
+    end
+
+    if (not home) then
+        -- try alternatives on Windows
+        home = getenv 'USERPROFILE'
+        if not home then
+            local hd = getenv 'HOMEDRIVE'
+            local hp = getenv 'HOMEPATH'
+            if not (hd and hp) then
+              return nil, "failed to expand '~' (HOME, USERPROFILE, and HOMEDRIVE and/or HOMEPATH not set)"
+            end
+            home = hd..hp
+        end
+    end
+
+    return home..sub(P,2)
 end
 
 

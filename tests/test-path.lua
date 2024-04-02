@@ -179,8 +179,6 @@ do  --  path.relpath
 end
 
 
--- TODO: path.expanduser
-
 -- TODO: path.tmpname
 
 
