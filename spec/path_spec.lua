@@ -73,7 +73,7 @@ describe("pl.path", function()
         HOME = "\\home\\user1",
         USERPROFILE = "\\home\\user2",
         HOMEDRIVE = "C:",
-        HOMEPATH = "\\Users\\user3",
+        HOMEPATH = "\\home\\user3",
       }
       assert.equal("\\home\\user1\\file", path.expanduser("~\\file"))
     end)
@@ -84,7 +84,7 @@ describe("pl.path", function()
         --HOME = "\\home\\user1",
         USERPROFILE = "\\home\\user2",
         HOMEDRIVE = "C:",
-        HOMEPATH = "\\Users\\user3",
+        HOMEPATH = "\\home\\user3",
       }
       assert.equal("\\home\\user2\\file", path.expanduser("~\\file"))
     end)
@@ -95,7 +95,7 @@ describe("pl.path", function()
         -- HOME = "\\home\\user1",
         -- USERPROFILE = "\\home\\user2",
         HOMEDRIVE = "C:",
-        HOMEPATH = "\\Users\\user3",
+        HOMEPATH = "\\home\\user3",
       }
       assert.equal("C:\\home\\user3\\file", path.expanduser("~\\file"))
     end)
