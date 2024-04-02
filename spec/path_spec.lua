@@ -97,7 +97,7 @@ describe("pl.path", function()
         HOMEDRIVE = "C:",
         HOMEPATH = "\\Users\\user3",
       }
-      assert.equal("\\home\\user3\\file", path.expanduser("~\\file"))
+      assert.equal("C:\\home\\user3\\file", path.expanduser("~\\file"))
     end)
 
   end)
