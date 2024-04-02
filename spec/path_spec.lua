@@ -1,14 +1,14 @@
 
 -- conditional it/pending blocks per platform
 local function nix_it(desc, ...)
-  if package.path:sub(1,1) == "\\" then
+  if package.config:sub(1,1) == "\\" then
     pending("Skip test on Windows: " .. desc, ...)
   else
     it(desc, ...)
   end
 end
 local function win_it(desc, ...)
-  if package.path:sub(1,1) == "\\" then
+  if package.config:sub(1,1) == "\\" then
     it(desc, ...)
   else
     pending("Skip test on Unix: " .. desc, ...)
