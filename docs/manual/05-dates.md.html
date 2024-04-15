@@ -129,22 +129,22 @@
 
 <p>The <a href="../classes/pl.Date.html#">Date</a> class provides a simplified way to work with <a href="http://www.lua.org/pil/22.1.html">date and
 time</a> in Lua; it leans heavily on the functions
-<a href="https://www.lua.org/manual/5.1/manual.html#pdf-os.date">os.date</a> and <a href="https://www.lua.org/manual/5.1/manual.html#pdf-os.time">os.time</a>.</p>
+<a href="https://www.lua.org/manual/5.4/manual.html#pdf-os.date">os.date</a> and <a href="https://www.lua.org/manual/5.4/manual.html#pdf-os.time">os.time</a>.</p>
 
-<p>A <a href="../classes/pl.Date.html#">Date</a> object can be constructed from a table, just like with <a href="https://www.lua.org/manual/5.1/manual.html#pdf-os.time">os.time</a>.
+<p>A <a href="../classes/pl.Date.html#">Date</a> object can be constructed from a table, just like with <a href="https://www.lua.org/manual/5.4/manual.html#pdf-os.time">os.time</a>.
 Methods are provided to get and set the various parts of the date.</p>
 
 
 <pre>
-&gt; d = Date {year = <span class="number">2011</span>, month = <span class="number">3</span>, day = <span class="number">2</span> }
+&gt; d = <span class="function-name">Date</span> {year = <span class="number">2011</span>, month = <span class="number">3</span>, day = <span class="number">2</span> }
 &gt; = d
 <span class="number">2011</span>-<span class="number">03</span>-<span class="number">02</span> <span class="number">12</span>:<span class="number">00</span>:<span class="number">00</span>
-&gt; = d:month(),d:year(),d:day()
+&gt; = d:<span class="function-name">month</span>(),d:<span class="function-name">year</span>(),d:<span class="function-name">day</span>()
 <span class="number">3</span>    <span class="number">2011</span>    <span class="number">2</span>
-&gt; d:month(<span class="number">4</span>)
+&gt; d:<span class="function-name">month</span>(<span class="number">4</span>)
 &gt; = d
 <span class="number">2011</span>-<span class="number">04</span>-<span class="number">02</span> <span class="number">12</span>:<span class="number">00</span>:<span class="number">00</span>
-&gt; d:add {day=<span class="number">1</span>}
+&gt; d:<span class="function-name">add</span> {day=<span class="number">1</span>}
 &gt; = d
 <span class="number">2011</span>-<span class="number">04</span>-<span class="number">03</span> <span class="number">12</span>:<span class="number">00</span>:<span class="number">00</span>
 </pre>
@@ -153,11 +153,11 @@ Methods are provided to get and set the various parts of the date.</p>
 
 
 <pre>
-&gt; = d:weekday_name()
+&gt; = d:<span class="function-name">weekday_name</span>()
 Sun
-&gt; = d:last_day()
+&gt; = d:<span class="function-name">last_day</span>()
 <span class="number">2011</span>-<span class="number">04</span>-<span class="number">30</span> <span class="number">12</span>:<span class="number">00</span>:<span class="number">00</span>
-&gt; = d:month_name(<span class="keyword">true</span>)
+&gt; = d:<span class="function-name">month_name</span>(<span class="keyword">true</span>)
 April
 </pre>
 
@@ -166,25 +166,25 @@ you full control of the format for both parsing and displaying dates:</p>
 
 
 <pre>
-&gt; iso = Date.Format <span class="string">'yyyy-mm-dd'</span>
-&gt; d = iso:parse <span class="string">'2010-04-10'</span>
-&gt; amer = Date.Format <span class="string">'mm/dd/yyyy'</span>
+&gt; iso = Date.<span class="function-name">Format</span> <span class="string">'yyyy-mm-dd'</span>
+&gt; d = iso:<span class="function-name">parse</span> <span class="string">'2010-04-10'</span>
+&gt; amer = Date.<span class="function-name">Format</span> <span class="string">'mm/dd/yyyy'</span>
 &gt; = amer:<span class="global">tostring</span>(d)
 <span class="number">04</span>/<span class="number">10</span>/<span class="number">2010</span>
 </pre>
 
-<p>With the 0.9.7 relase, the <a href="../classes/pl.Date.html#">Date</a> constructor has become more flexible. You may
+<p>With the 0.9.7 release, the <a href="../classes/pl.Date.html#">Date</a> constructor has become more flexible. You may
 omit any of the 'year', 'month' or 'day' fields:</p>
 
 
 <pre>
-&gt; = Date { year = <span class="number">2008</span> }
+&gt; = <span class="function-name">Date</span> { year = <span class="number">2008</span> }
 <span class="number">2008</span>-<span class="number">01</span>-<span class="number">01</span> <span class="number">12</span>:<span class="number">00</span>:<span class="number">00</span>
-&gt; = Date { month = <span class="number">3</span> }
+&gt; = <span class="function-name">Date</span> { month = <span class="number">3</span> }
 <span class="number">2011</span>-<span class="number">03</span>-<span class="number">01</span> <span class="number">12</span>:<span class="number">00</span>:<span class="number">00</span>
-&gt; = Date { day = <span class="number">20</span> }
+&gt; = <span class="function-name">Date</span> { day = <span class="number">20</span> }
 <span class="number">2011</span>-<span class="number">10</span>-<span class="number">20</span> <span class="number">12</span>:<span class="number">00</span>:<span class="number">00</span>
-&gt; = Date { hour = <span class="number">14</span>, min = <span class="number">30</span> }
+&gt; = <span class="function-name">Date</span> { hour = <span class="number">14</span>, min = <span class="number">30</span> }
 <span class="number">2011</span>-<span class="number">10</span>-<span class="number">13</span> <span class="number">14</span>:<span class="number">30</span>:<span class="number">00</span>
 </pre>
 
@@ -195,8 +195,8 @@ methods return the date object and so you can 'chain' these methods.</p>
 
 
 <pre>
-&gt; d = Date { day = <span class="number">03</span> }
-&gt; = d:hour(<span class="number">18</span>):min(<span class="number">30</span>)
+&gt; d = <span class="function-name">Date</span> { day = <span class="number">03</span> }
+&gt; = d:<span class="function-name">hour</span>(<span class="number">18</span>):<span class="function-name">min</span>(<span class="number">30</span>)
 <span class="number">2011</span>-<span class="number">10</span>-<span class="number">03</span> <span class="number">18</span>:<span class="number">30</span>:<span class="number">00</span>
 </pre>
 
@@ -204,9 +204,9 @@ methods return the date object and so you can 'chain' these methods.</p>
 
 
 <pre>
-&gt; = Date(<span class="number">2011</span>,<span class="number">10</span>,<span class="number">3</span>)
+&gt; = <span class="function-name">Date</span>(<span class="number">2011</span>,<span class="number">10</span>,<span class="number">3</span>)
 <span class="number">2011</span>-<span class="number">10</span>-<span class="number">03</span> <span class="number">12</span>:<span class="number">00</span>:<span class="number">00</span>
-&gt; = Date(<span class="number">2011</span>,<span class="number">10</span>,<span class="number">3</span>,<span class="number">18</span>,<span class="number">30</span>,<span class="number">23</span>)
+&gt; = <span class="function-name">Date</span>(<span class="number">2011</span>,<span class="number">10</span>,<span class="number">3</span>,<span class="number">18</span>,<span class="number">30</span>,<span class="number">23</span>)
 <span class="number">2011</span>-<span class="number">10</span>-<span class="number">03</span> <span class="number">18</span>:<span class="number">30</span>:<span class="number">23</span>
 </pre>
 
@@ -217,24 +217,24 @@ points of users. It assumes that there will be a date, and then a date.</p>
 
 
 <pre>
-&gt; df = Date.Format()
-&gt; = df:parse <span class="string">'5.30pm'</span>
+&gt; df = Date.<span class="function-name">Format</span>()
+&gt; = df:<span class="function-name">parse</span> <span class="string">'5.30pm'</span>
 <span class="number">2011</span>-<span class="number">10</span>-<span class="number">13</span> <span class="number">17</span>:<span class="number">30</span>:<span class="number">00</span>
-&gt; = df:parse <span class="string">'1730'</span>
+&gt; = df:<span class="function-name">parse</span> <span class="string">'1730'</span>
 <span class="keyword">nil</span>     day out of range: <span class="number">1730</span> is <span class="keyword">not</span> between <span class="number">1</span> <span class="keyword">and</span> <span class="number">31</span>
-&gt; = df:parse <span class="string">'17.30'</span>
+&gt; = df:<span class="function-name">parse</span> <span class="string">'17.30'</span>
 <span class="number">2011</span>-<span class="number">10</span>-<span class="number">13</span> <span class="number">17</span>:<span class="number">30</span>:<span class="number">00</span>
-&gt; = df:parse <span class="string">'mar'</span>
+&gt; = df:<span class="function-name">parse</span> <span class="string">'mar'</span>
 <span class="number">2011</span>-<span class="number">03</span>-<span class="number">01</span> <span class="number">12</span>:<span class="number">00</span>:<span class="number">00</span>
-&gt; = df:parse <span class="string">'3 March'</span>
+&gt; = df:<span class="function-name">parse</span> <span class="string">'3 March'</span>
 <span class="number">2011</span>-<span class="number">03</span>-<span class="number">03</span> <span class="number">12</span>:<span class="number">00</span>:<span class="number">00</span>
-&gt; = df:parse <span class="string">'15 March'</span>
+&gt; = df:<span class="function-name">parse</span> <span class="string">'15 March'</span>
 <span class="number">2011</span>-<span class="number">03</span>-<span class="number">15</span> <span class="number">12</span>:<span class="number">00</span>:<span class="number">00</span>
-&gt; = df:parse <span class="string">'15 March 2008'</span>
+&gt; = df:<span class="function-name">parse</span> <span class="string">'15 March 2008'</span>
 <span class="number">2008</span>-<span class="number">03</span>-<span class="number">15</span> <span class="number">12</span>:<span class="number">00</span>:<span class="number">00</span>
-&gt; = df:parse <span class="string">'15 March 2008 1.30pm'</span>
+&gt; = df:<span class="function-name">parse</span> <span class="string">'15 March 2008 1.30pm'</span>
 <span class="number">2008</span>-<span class="number">03</span>-<span class="number">15</span> <span class="number">13</span>:<span class="number">30</span>:<span class="number">00</span>
-&gt; = df:parse <span class="string">'2008-10-03 15:30:23'</span>
+&gt; = df:<span class="function-name">parse</span> <span class="string">'2008-10-03 15:30:23'</span>
 <span class="number">2008</span>-<span class="number">10</span>-<span class="number">03</span> <span class="number">15</span>:<span class="number">30</span>:<span class="number">23</span>
 </pre>
 
@@ -243,7 +243,7 @@ different countries. Here is the default behaviour for 'short' dates:</p>
 
 
 <pre>
-&gt; = df:parse <span class="string">'24/02/12'</span>
+&gt; = df:<span class="function-name">parse</span> <span class="string">'24/02/12'</span>
 <span class="number">2012</span>-<span class="number">02</span>-<span class="number">24</span> <span class="number">12</span>:<span class="number">00</span>:<span class="number">00</span>
 </pre>
 
@@ -252,8 +252,8 @@ exactly what the expected format is, so there is an explicit flag:</p>
 
 
 <pre>
-&gt; df:US_order(<span class="keyword">true</span>)
-&gt; = df:parse <span class="string">'9/11/01'</span>
+&gt; df:<span class="function-name">US_order</span>(<span class="keyword">true</span>)
+&gt; = df:<span class="function-name">parse</span> <span class="string">'9/11/01'</span>
 <span class="number">2001</span>-<span class="number">11</span>-<span class="number">09</span> <span class="number">12</span>:<span class="number">00</span>:<span class="number">00</span>
 </pre>
 
@@ -262,7 +262,7 @@ exactly what the expected format is, so there is an explicit flag:</p>
 </div> <!-- id="content" -->
 </div> <!-- id="main" -->
 <div id="about">
-<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.5.0</a></i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>

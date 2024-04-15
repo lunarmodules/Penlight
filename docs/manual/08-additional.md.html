@@ -142,33 +142,33 @@ which needs to understand three distinct date formats:</p>
 </span>months={Jan=<span class="number">1</span>,Feb=<span class="number">2</span>,Mar=<span class="number">3</span>,Apr=<span class="number">4</span>,May=<span class="number">5</span>,Jun=<span class="number">6</span>,
 Jul=<span class="number">7</span>,Aug=<span class="number">8</span>,Sep=<span class="number">9</span>,Oct=<span class="number">10</span>,Nov=<span class="number">11</span>,Dec=<span class="number">12</span>}
 
-<span class="keyword">function</span> check_and_process(d,m,y)
+<span class="keyword">function</span> <span class="function-name">check_and_process</span>(d,m,y)
     d = <span class="global">tonumber</span>(d)
     m = <span class="global">tonumber</span>(m)
     y = <span class="global">tonumber</span>(y)
     ....
 <span class="keyword">end</span>
 
-<span class="keyword">for</span> line <span class="keyword">in</span> f:lines() <span class="keyword">do</span>
+<span class="keyword">for</span> line <span class="keyword">in</span> f:<span class="function-name">lines</span>() <span class="keyword">do</span>
     <span class="comment">-- ordinary (English) date format
-</span>    <span class="keyword">local</span> d,m,y = line:match(<span class="string">'(%d+)/(%d+)/(%d+)'</span>)
+</span>    <span class="keyword">local</span> d,m,y = line:<span class="function-name">match</span>(<span class="string">'(%d+)/(%d+)/(%d+)'</span>)
     <span class="keyword">if</span> d <span class="keyword">then</span>
-        check_and_process(d,m,y)
+        <span class="function-name">check_and_process</span>(d,m,y)
     <span class="keyword">else</span> <span class="comment">-- ISO date??
-</span>        y,m,d = line:match(<span class="string">'(%d+)%-(%d+)%-(%d+)'</span>)
+</span>        y,m,d = line:<span class="function-name">match</span>(<span class="string">'(%d+)%-(%d+)%-(%d+)'</span>)
         <span class="keyword">if</span> y <span class="keyword">then</span>
-            check_and_process(d,m,y)
+            <span class="function-name">check_and_process</span>(d,m,y)
         <span class="keyword">else</span> <span class="comment">-- &lt;day&gt; &lt;month-name&gt; &lt;year&gt;?
-</span>            d,mm,y = line:match(<span class="string">'%(d+)%s+(%a+)%s+(%d+)'</span>)
+</span>            d,mm,y = line:<span class="function-name">match</span>(<span class="string">'%(d+)%s+(%a+)%s+(%d+)'</span>)
             m = months[mm]
-            check_and_process(d,m,y)
+            <span class="function-name">check_and_process</span>(d,m,y)
         <span class="keyword">end</span>
     <span class="keyword">end</span>
 <span class="keyword">end</span>
 </pre>
 
 <p>These aren't particularly difficult patterns, but already typical issues are
-appearing, such as having to escape '-'. Also, <a href="https://www.lua.org/manual/5.1/manual.html#pdf-string.match">string.match</a> returns its
+appearing, such as having to escape '-'. Also, <a href="https://www.lua.org/manual/5.4/manual.html#pdf-string.match">string.match</a> returns its
 captures, so that we're forced to use a slightly awkward nested if-statement.</p>
 
 <p>Verification issues will further cloud the picture, since regular expression
@@ -184,15 +184,15 @@ extract relevant parts.</p>
 &gt; sip = <span class="global">require</span> <span class="string">'pl.sip'</span>
 &gt; dump = <span class="global">require</span>(<span class="string">'pl.pretty'</span>).dump
 &gt; res = {}
-&gt; c = sip.compile <span class="string">'ref=$S{file}:$d{line}'</span>
-&gt; = c(<span class="string">'ref=hello.c:10'</span>,res)
+&gt; c = sip.<span class="function-name">compile</span> <span class="string">'ref=$S{file}:$d{line}'</span>
+&gt; = <span class="function-name">c</span>(<span class="string">'ref=hello.c:10'</span>,res)
 <span class="keyword">true</span>
-&gt; dump(res)
+&gt; <span class="function-name">dump</span>(res)
 {
   line = <span class="number">10</span>,
   file = <span class="string">"hello.c"</span>
 }
-&gt; = c(<span class="string">'ref=long name, no line'</span>,res)
+&gt; = <span class="function-name">c</span>(<span class="string">'ref=long name, no line'</span>,res)
 <span class="keyword">false</span>
 </pre>
 
@@ -205,23 +205,23 @@ and the table is populated according to the captures within the pattern.</p>
 
 <pre>
 <span class="comment">-- using SIP patterns
-</span><span class="keyword">function</span> check(t)
-    check_and_process(t.day,t.month,t.year)
+</span><span class="keyword">function</span> <span class="function-name">check</span>(t)
+    <span class="function-name">check_and_process</span>(t.day,t.month,t.year)
 <span class="keyword">end</span>
 
-shortdate = sip.compile(<span class="string">'$d{day}/$d{month}/$d{year}'</span>)
-longdate = sip.compile(<span class="string">'$d{day} $v{mon} $d{year}'</span>)
-isodate = sip.compile(<span class="string">'$d{year}-$d{month}-$d{day}'</span>)
+shortdate = sip.<span class="function-name">compile</span>(<span class="string">'$d{day}/$d{month}/$d{year}'</span>)
+longdate = sip.<span class="function-name">compile</span>(<span class="string">'$d{day} $v{mon} $d{year}'</span>)
+isodate = sip.<span class="function-name">compile</span>(<span class="string">'$d{year}-$d{month}-$d{day}'</span>)
 
-<span class="keyword">for</span> line <span class="keyword">in</span> f:lines() <span class="keyword">do</span>
+<span class="keyword">for</span> line <span class="keyword">in</span> f:<span class="function-name">lines</span>() <span class="keyword">do</span>
     <span class="keyword">local</span> res = {}
-    <span class="keyword">if</span> shortdate(str,res) <span class="keyword">then</span>
-        check(res)
-    <span class="keyword">elseif</span> isodate(str,res) <span class="keyword">then</span>
-        check(res)
-    <span class="keyword">elseif</span> longdate(str,res) <span class="keyword">then</span>
+    <span class="keyword">if</span> <span class="function-name">shortdate</span>(str,res) <span class="keyword">then</span>
+        <span class="function-name">check</span>(res)
+    <span class="keyword">elseif</span> <span class="function-name">isodate</span>(str,res) <span class="keyword">then</span>
+        <span class="function-name">check</span>(res)
+    <span class="keyword">elseif</span> <span class="function-name">longdate</span>(str,res) <span class="keyword">then</span>
         res.month = months[res.mon]
-        check(res)
+        <span class="function-name">check</span>(res)
     <span class="keyword">end</span>
 <span class="keyword">end</span>
 </pre>
@@ -236,10 +236,10 @@ v         identifier
 i         possibly signed integer
 f         floating-point number
 r         rest of line
-q         quoted <span class="global">string</span> (quoted using either ' <span class="keyword">or</span> ")
-p         a path name
+q         quoted <span class="global">string</span> (quoted using <span class="function-name">either</span> ' <span class="keyword">or</span> ")
+p         a path <span class="function-name">name</span>
 (         anything inside balanced parentheses
-[         anything inside balanced brackets
+[         anything inside balanced <span class="function-name">brackets</span>
 {         anything inside balanced curly brackets
 &lt;         anything inside balanced angle brackets
 </pre>
@@ -261,18 +261,18 @@ slower than explicitly using <a href="../libraries/pl.sip.html#compile">sip.comp
 
 
 <pre>
-&gt; sip.match(<span class="string">'($q{first},$q{second})'</span>,<span class="string">'("john","smith")'</span>,res)
+&gt; sip.<span class="function-name">match</span>(<span class="string">'($q{first},$q{second})'</span>,<span class="string">'("john","smith")'</span>,res)
 <span class="keyword">true</span>
-&gt; res
+&gt; <span class="function-name">res</span>
 {second=<span class="string">'smith'</span>,first=<span class="string">'john'</span>}
 &gt; res = {}
-&gt; sip.match(<span class="string">'($q,$q)'</span>,<span class="string">'("jan","smit")'</span>,res)  <span class="comment">-- unnamed captures
+&gt; sip.<span class="function-name">match</span>(<span class="string">'($q,$q)'</span>,<span class="string">'("jan","smit")'</span>,res)  <span class="comment">-- unnamed captures
 </span><span class="keyword">true</span>
-&gt; res
+&gt; <span class="function-name">res</span>
 {<span class="string">'jan'</span>,<span class="string">'smit'</span>}
-&gt; sip.match(<span class="string">'($q,$q)'</span>,<span class="string">'("jan", "smit")'</span>,res)
+&gt; sip.<span class="function-name">match</span>(<span class="string">'($q,$q)'</span>,<span class="string">'("jan", "smit")'</span>,res)
 <span class="keyword">false</span>   <span class="comment">---&gt; oops! Can't handle extra space!
-</span>&gt; sip.match(<span class="string">'( $q , $q )'</span>,<span class="string">'("jan", "smit")'</span>,res)
+</span>&gt; sip.<span class="function-name">match</span>(<span class="string">'( $q , $q )'</span>,<span class="string">'("jan", "smit")'</span>,res)
 <span class="keyword">true</span>
 </pre>
 
@@ -284,14 +284,14 @@ or just '$r' if no named captures are used.</p>
 
 
 <pre>
-&gt; sip.match(<span class="string">'( $q , $q ) $'</span>,<span class="string">'("jan", "smit") and a string'</span>,res)
+&gt; sip.<span class="function-name">match</span>(<span class="string">'( $q , $q ) $'</span>,<span class="string">'("jan", "smit") and a string'</span>,res)
 <span class="keyword">true</span>
-&gt; res
+&gt; <span class="function-name">res</span>
 {<span class="string">'jan'</span>,<span class="string">'smit'</span>,<span class="string">'and a string'</span>}
 &gt; res = {}
-&gt; sip.match(<span class="string">'( $q{first} , $q{last} ) $'</span>,<span class="string">'("jan", "smit") and a string'</span>,res)
+&gt; sip.<span class="function-name">match</span>(<span class="string">'( $q{first} , $q{last} ) $'</span>,<span class="string">'("jan", "smit") and a string'</span>,res)
 <span class="keyword">true</span>
-&gt; res
+&gt; <span class="function-name">res</span>
 {first=<span class="string">'jan'</span>,rest=<span class="string">'and a string'</span>,last=<span class="string">'smit'</span>}
 </pre>
 
@@ -325,7 +325,7 @@ the parameters.</p>
 <pre>
 <span class="comment">-- scale.lua
 </span>  lapp = <span class="global">require</span> <span class="string">'pl.lapp'</span>
-  <span class="keyword">local</span> args = lapp <span class="string">[[
+  <span class="keyword">local</span> args = <span class="function-name">lapp</span> <span class="string">[[
   Does some calculations
     -o,--offset (default 0.0)  Offset to add to scaled number
     -s,--scale  (number)  Scaling factor
@@ -379,12 +379,12 @@ There are file values for the predefined console streams: stdin, stdout, stderr.
 
 <pre>
 <span class="keyword">local</span> lapp = <span class="global">require</span> <span class="string">'pl.lapp'</span>
-<span class="keyword">local</span> args = lapp <span class="string">[[
+<span class="keyword">local</span> args = <span class="function-name">lapp</span> <span class="string">[[
    --cmd (optional string) Command to run.
 ]]</span>
 
 <span class="keyword">if</span> args.cmd <span class="keyword">then</span>
-  <span class="global">os</span>.execute(args.cmd)
+  <span class="global">os</span>.<span class="function-name">execute</span>(args.cmd)
 <span class="keyword">end</span>
 </pre>
 
@@ -425,7 +425,7 @@ boolean.</p>
 <pre>
 $ simple -o test -q simple.lua
 p       <span class="keyword">false</span>
-input   file (<span class="number">781</span>C1BD8)
+input   <span class="function-name">file</span> (<span class="number">781</span>C1BD8)
 quiet   <span class="keyword">true</span>
 o       test
 input_name      simple.lua
@@ -435,7 +435,7 @@ D:\dev\lua\lapp&gt;simple -o test simple.lua one two three
 <span class="number">3</span>       three
 p       <span class="keyword">false</span>
 quiet   <span class="keyword">false</span>
-input   file (<span class="number">781</span>C1BD8)
+input   <span class="function-name">file</span> (<span class="number">781</span>C1BD8)
 o       test
 input_name      simple.lua
 </pre>
@@ -460,7 +460,7 @@ separated by '|'.</p>
 
 <pre>
 <span class="keyword">local</span> lapp = <span class="global">require</span> <span class="string">'pl.lapp'</span>
-<span class="keyword">local</span> args = lapp <span class="string">[[
+<span class="keyword">local</span> args = <span class="function-name">lapp</span> <span class="string">[[
     Setting ranges
     &lt;x&gt; (1..10)  A number from 1 to 10
     &lt;y&gt; (-5..1e6) Bigger range
@@ -483,13 +483,13 @@ you may define a custom type that does this:</p>
 <pre>
 lapp = <span class="global">require</span> (<span class="string">'pl.lapp'</span>)
 
-lapp.add_type(<span class="string">'integer'</span>,<span class="string">'number'</span>,
+lapp.<span class="function-name">add_type</span>(<span class="string">'integer'</span>,<span class="string">'number'</span>,
     <span class="keyword">function</span>(x)
-        lapp.<span class="global">assert</span>(<span class="global">math</span>.ceil(x) == x, <span class="string">'not an integer!'</span>)
+        lapp.<span class="global">assert</span>(<span class="global">math</span>.<span class="function-name">ceil</span>(x) == x, <span class="string">'not an integer!'</span>)
     <span class="keyword">end</span>
 )
 
-<span class="keyword">local</span> args =  lapp <span class="string">[[
+<span class="keyword">local</span> args =  <span class="function-name">lapp</span> <span class="string">[[
     &lt;ival&gt; (integer) Process PID
 ]]</span>
 
@@ -506,11 +506,11 @@ to Lapp, or a function which takes a string and generates a value.</p>
 
 
 <pre>
-<span class="keyword">local</span> df = Date.Format()
+<span class="keyword">local</span> df = Date.<span class="function-name">Format</span>()
 
-lapp.add_type(<span class="string">'date'</span>,
+lapp.<span class="function-name">add_type</span>(<span class="string">'date'</span>,
     <span class="keyword">function</span>(s)
-        <span class="keyword">local</span> d,e = df:parse(s)
+        <span class="keyword">local</span> d,e = df:<span class="function-name">parse</span>(s)
         lapp.<span class="global">assert</span>(d,e)
         <span class="keyword">return</span> d
     <span class="keyword">end</span>
@@ -522,7 +522,7 @@ lapp.add_type(<span class="string">'date'</span>,
 
 <pre>
 lapp = <span class="global">require</span> <span class="string">'pl.lapp'</span>
-<span class="keyword">local</span> args = lapp <span class="string">[[
+<span class="keyword">local</span> args = <span class="function-name">lapp</span> <span class="string">[[
 Summing numbers
     &lt;numbers...&gt; (number) A list of numbers to be summed
 ]]</span>
@@ -547,7 +547,7 @@ array.</p>
 </span>
 lapp = <span class="global">require</span> (<span class="string">'pl.lapp'</span>)
 
-<span class="keyword">local</span> args = lapp <span class="string">[[
+<span class="keyword">local</span> args = <span class="function-name">lapp</span> <span class="string">[[
 Print the first few lines of specified files
    -n         (default 10)    Number of lines to print
    &lt;files...&gt; (default stdin) Files to print
@@ -565,7 +565,7 @@ Print the first few lines of specified files
         <span class="global">print</span>(<span class="string">'==&gt; '</span>..args.files_name[i]..<span class="string">' &lt;=='</span>)
     <span class="keyword">end</span>
     <span class="keyword">local</span> n = <span class="number">0</span>
-    <span class="keyword">for</span> line <span class="keyword">in</span> file:lines() <span class="keyword">do</span>
+    <span class="keyword">for</span> line <span class="keyword">in</span> file:<span class="function-name">lines</span>() <span class="keyword">do</span>
         <span class="global">print</span>(line)
         n = n + <span class="number">1</span>
         <span class="keyword">if</span> n == nline <span class="keyword">then</span> <span class="keyword">break</span> <span class="keyword">end</span>
@@ -597,14 +597,14 @@ vlevel = <span class="keyword">not</span> args.v[<span class="number">1</span>] 
 <span class="global">print</span>(vlevel)
 </pre>
 
-<p>The vlevel assigment is a bit of Lua voodoo, so consider the cases:</p>
+<p>The vlevel assignment is a bit of Lua voodoo, so consider the cases:</p>
 
 
 <pre>
-* No -v flag, v is just { <span class="keyword">false</span> }
-* One -v flags, v is { <span class="keyword">true</span> }
-* Two -v flags, v is { <span class="keyword">true</span>, <span class="keyword">true</span> }
-* Three -v flags, v is { <span class="keyword">true</span>, <span class="keyword">true</span>, <span class="keyword">true</span> }
+* No -v flag, v is <span class="function-name">just</span> { <span class="keyword">false</span> }
+* One -v flags, v <span class="function-name">is</span> { <span class="keyword">true</span> }
+* Two -v flags, v <span class="function-name">is</span> { <span class="keyword">true</span>, <span class="keyword">true</span> }
+* Three -v flags, v <span class="function-name">is</span> { <span class="keyword">true</span>, <span class="keyword">true</span>, <span class="keyword">true</span> }
 </pre>
 
 <h4>Defining a Parameter Callback</h4>
@@ -618,11 +618,11 @@ value, so the corresponding field is available.</p>
 <pre>
 lapp = <span class="global">require</span> (<span class="string">'pl.lapp'</span>)
 
-<span class="keyword">function</span> lapp.callback(parm,arg,args)
+<span class="keyword">function</span> lapp.<span class="function-name">callback</span>(parm,arg,args)
     <span class="global">print</span>(<span class="string">'+'</span>,parm,arg)
 <span class="keyword">end</span>
 
-<span class="keyword">local</span> args = lapp <span class="string">[[
+<span class="keyword">local</span> args = <span class="function-name">lapp</span> <span class="string">[[
 Testing parameter handling
     -p               Plain flag (defaults to false)
     -q,--quiet       Plain flag with GNU-style optional long name
@@ -653,9 +653,9 @@ p       <span class="keyword">false</span>
 s       <span class="number">1</span>
 input_name      args.lua
 quiet   <span class="keyword">false</span>
-output  file (<span class="number">781</span>C1B98)
+output  <span class="function-name">file</span> (<span class="number">781</span>C1B98)
 start   <span class="number">10</span>
-input   file (<span class="number">781</span>C1BD8)
+input   <span class="function-name">file</span> (<span class="number">781</span>C1BD8)
 o       name
 n       <span class="number">2</span>
 </pre>
@@ -679,7 +679,7 @@ to non-slack mode as well.</p>
 </span><span class="keyword">local</span> lapp = <span class="global">require</span> <span class="string">'pl.lapp'</span>
 <span class="keyword">local</span> pretty = <span class="global">require</span> <span class="string">'pl.pretty'</span>
 lapp.slack = <span class="keyword">true</span>
-<span class="keyword">local</span> args = lapp <span class="string">[[
+<span class="keyword">local</span> args = <span class="function-name">lapp</span> <span class="string">[[
 Does some calculations
    -v, --video              (string)             Specify input video
    -w, --width              (default 256)        Width of the video
@@ -692,7 +692,7 @@ Does some calculations
    -f4,--flag4              (default true)       A true flag
 ]]</span>
 
-pretty.dump(args)
+pretty.<span class="function-name">dump</span>(args)
 </pre>
 
 <p>And here we can see the output of <code>test.lua</code>:</p>
@@ -728,7 +728,7 @@ message printed to stderr:</p>
 <pre>
 <span class="keyword">local</span> test = <span class="global">require</span> <span class="string">'pl.test'</span>
 
-test.asserteq({<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>},{<span class="number">10</span>,<span class="number">20</span>,<span class="number">30.1</span>})
+test.<span class="function-name">asserteq</span>({<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>},{<span class="number">10</span>,<span class="number">20</span>,<span class="number">30.1</span>})
 
 <span class="comment">--~ test-test.lua:3: assertion failed
 </span><span class="comment">--~ got:    {
@@ -744,21 +744,21 @@ test.asserteq({<span class="number">10</span>,<span class="number">20</span>,<sp
 </span><span class="comment">--~ these values were not equal</span>
 </pre>
 
-<p>This covers most cases but it's also useful to compare strings using <a href="https://www.lua.org/manual/5.1/manual.html#pdf-string.match">string.match</a></p>
+<p>This covers most cases but it's also useful to compare strings using <a href="https://www.lua.org/manual/5.4/manual.html#pdf-string.match">string.match</a></p>
 
 
 <pre>
 <span class="comment">-- must start with bonzo the dog
-</span>test.assertmatch (<span class="string">'bonzo the dog is here'</span>,<span class="string">'^bonzo the dog'</span>)
+</span>test.<span class="function-name">assertmatch</span> (<span class="string">'bonzo the dog is here'</span>,<span class="string">'^bonzo the dog'</span>)
 <span class="comment">-- must end with an integer
-</span>test.assertmatch (<span class="string">'hello 42'</span>,<span class="string">'%d+$'</span>)
+</span>test.<span class="function-name">assertmatch</span> (<span class="string">'hello 42'</span>,<span class="string">'%d+$'</span>)
 </pre>
 
 <p>Since Lua errors are usually strings, this matching strategy is used to test 'exceptions':</p>
 
 
 <pre>
-test.assertraise(<span class="keyword">function</span>()
+test.<span class="function-name">assertraise</span>(<span class="keyword">function</span>()
     <span class="keyword">local</span> t = <span class="keyword">nil</span>
     <span class="global">print</span>(t.bonzo)
 <span class="keyword">end</span>,<span class="string">'nil value'</span>)
@@ -775,12 +775,12 @@ to <code>asserteq</code> or <code>assertmatch</code> - line 33 here is the call 
 
 
 <pre>
-<span class="keyword">function</span> is_iden(str)
-    test.assertmatch(str,<span class="string">'^[%a_][%w_]*$'</span>,<span class="number">1</span>)
+<span class="keyword">function</span> <span class="function-name">is_iden</span>(str)
+    test.<span class="function-name">assertmatch</span>(str,<span class="string">'^[%a_][%w_]*$'</span>,<span class="number">1</span>)
 <span class="keyword">end</span>
 
-is_iden <span class="string">'alpha_dog'</span>
-is_iden <span class="string">'$dollars'</span>
+<span class="function-name">is_iden</span> <span class="string">'alpha_dog'</span>
+<span class="function-name">is_iden</span> <span class="string">'$dollars'</span>
 
 <span class="comment">--~ test-test.lua:33: assertion failed
 </span><span class="comment">--~ got:    "$dollars"
@@ -796,11 +796,11 @@ capture these values, whether they contain nils or not.</p>
 T = test.tuple
 
 <span class="comment">--- common error pattern
-</span><span class="keyword">function</span> failing()
+</span><span class="keyword">function</span> <span class="function-name">failing</span>()
     <span class="keyword">return</span> <span class="keyword">nil</span>,<span class="string">'failed'</span>
 <span class="keyword">end</span>
 
-test.asserteq(T(failing()),T(<span class="keyword">nil</span>,<span class="string">'failed'</span>))
+test.<span class="function-name">asserteq</span>(<span class="function-name">T</span>(<span class="function-name">failing</span>()),<span class="function-name">T</span>(<span class="keyword">nil</span>,<span class="string">'failed'</span>))
 </pre>
 
 
@@ -808,7 +808,7 @@ test.asserteq(T(failing()),T(<span class="keyword">nil</span>,<span class="strin
 </div> <!-- id="content" -->
 </div> <!-- id="main" -->
 <div id="about">
-<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.5.0</a></i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>

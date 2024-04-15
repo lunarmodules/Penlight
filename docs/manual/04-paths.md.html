@@ -139,25 +139,25 @@ since it handles the directory separator for you.</p>
 
 <pre>
 &gt; p = <span class="string">'c:\\bonzo\\DOG.txt'</span>
-&gt; = path.normcase (p)  <span class="comment">---&gt; only makes sense on Windows
+&gt; = path.<span class="function-name">normcase</span> (p)  <span class="comment">---&gt; only makes sense on Windows
 </span>c:\bonzo\dog.txt
-&gt; = path.splitext (p)
+&gt; = path.<span class="function-name">splitext</span> (p)
 c:\bonzo\DOG    .txt
-&gt; = path.extension (p)
+&gt; = path.<span class="function-name">extension</span> (p)
 .txt
-&gt; = path.basename (p)
+&gt; = path.<span class="function-name">basename</span> (p)
 DOG.txt
-&gt; = path.exists(p)
+&gt; = path.<span class="function-name">exists</span>(p)
 <span class="keyword">false</span>
-&gt; = path.join (<span class="string">'fred'</span>,<span class="string">'alice.txt'</span>)
+&gt; = path.<span class="function-name">join</span> (<span class="string">'fred'</span>,<span class="string">'alice.txt'</span>)
 fred\alice.txt
-&gt; = path.exists <span class="string">'pretty.lua'</span>
+&gt; = path.<span class="function-name">exists</span> <span class="string">'pretty.lua'</span>
 <span class="keyword">true</span>
-&gt; = path.getsize <span class="string">'pretty.lua'</span>
+&gt; = path.<span class="function-name">getsize</span> <span class="string">'pretty.lua'</span>
 <span class="number">2125</span>
-&gt; = path.isfile <span class="string">'pretty.lua'</span>
+&gt; = path.<span class="function-name">isfile</span> <span class="string">'pretty.lua'</span>
 <span class="keyword">true</span>
-&gt; = path.isdir <span class="string">'pretty.lua'</span>
+&gt; = path.<span class="function-name">isdir</span> <span class="string">'pretty.lua'</span>
 <span class="keyword">false</span>
 </pre>
 
@@ -168,22 +168,22 @@ you can create files:</p>
 
 
 <pre>
-&gt; = path.expanduser <span class="string">'~/mydata.txt'</span>
+&gt; = path.<span class="function-name">expanduser</span> <span class="string">'~/mydata.txt'</span>
 <span class="string">'C:\Documents and Settings\SJDonova/mydata.txt'</span>
 
-&gt; = path.expanduser <span class="string">'~/mydata.txt'</span>
+&gt; = path.<span class="function-name">expanduser</span> <span class="string">'~/mydata.txt'</span>
 /home/sdonovan/mydata.txt
 </pre>
 
-<p>Under Windows, <a href="https://www.lua.org/manual/5.1/manual.html#pdf-os.tmpname">os.tmpname</a> returns a path which leads to your drive root full of
+<p>Under Windows, <a href="https://www.lua.org/manual/5.4/manual.html#pdf-os.tmpname">os.tmpname</a> returns a path which leads to your drive root full of
 temporary files. (And increasingly, you do not have access to this root folder.)
 This is corrected by <a href="../libraries/pl.path.html#tmpname">path.tmpname</a>, which uses the environment variable TMP:</p>
 
 
 <pre>
-&gt; <span class="global">os</span>.tmpname()  <span class="comment">-- not a good place to put temporary files!
+&gt; <span class="global">os</span>.<span class="function-name">tmpname</span>()  <span class="comment">-- not a good place to put temporary files!
 </span><span class="string">'\s25g.'</span>
-&gt; path.tmpname()
+&gt; path.<span class="function-name">tmpname</span>()
 <span class="string">'C:\DOCUME~1\SJDonova\LOCALS~1\Temp\s25g.1'</span>
 </pre>
 
@@ -191,17 +191,17 @@ This is corrected by <a href="../libraries/pl.path.html#tmpname">path.tmpname</a
 of a particular Lua module.  So on my system, <code>package_path(&apos;pl.path&apos;)</code> returns
 'C:\Program Files\Lua\5.1\lualibs\pl\path.lua', and <code>package_path(&apos;ifs&apos;)</code> returns
 'C:\Program Files\Lua\5.1\clibs\lfs.dll'. It is implemented in terms of
-<a href="https://www.lua.org/manual/5.1/manual.html#pdf-package.searchpath">package.searchpath</a>, which is a new function in Lua 5.2 which has been
+<a href="https://www.lua.org/manual/5.4/manual.html#pdf-package.searchpath">package.searchpath</a>, which is a new function in Lua 5.2 which has been
 implemented for Lua 5.1 in Penlight.</p>
 
 <p><a name="File_Operations"></a></p>
 <h3>File Operations</h3>
 
 <p><a href="../libraries/pl.file.html#">pl.file</a> is a new module that provides more sensible names for common file
-operations. For instance, <a href="https://www.lua.org/manual/5.1/manual.html#pdf-file:read">file.read</a> and <a href="https://www.lua.org/manual/5.1/manual.html#pdf-file:write">file.write</a> are aliases for
+operations. For instance, <a href="https://www.lua.org/manual/5.4/manual.html#pdf-file:read">file.read</a> and <a href="https://www.lua.org/manual/5.4/manual.html#pdf-file:write">file.write</a> are aliases for
 <a href="../libraries/pl.utils.html#readfile">utils.readfile</a> and <a href="../libraries/pl.utils.html#writefile">utils.writefile</a>.</p>
 
-<p>Smaller files can be efficiently read and written in one operation. <a href="https://www.lua.org/manual/5.1/manual.html#pdf-file:read">file.read</a>
+<p>Smaller files can be efficiently read and written in one operation. <a href="https://www.lua.org/manual/5.4/manual.html#pdf-file:read">file.read</a>
 is passed a filename and returns the contents as a string, if successful; if not,
 then it returns <code>nil</code> and the actual error message. There is an optional boolean
 parameter if you want the file to be read in binary mode (this makes no
@@ -211,7 +211,7 @@ difference on Unix but remains important with Windows.)</p>
 the file was not specified, but this can lead to nasty bugs; use <code>io.read &apos;*a&apos;</code>
 to grab all of standard input.</p>
 
-<p>Similarly, <a href="https://www.lua.org/manual/5.1/manual.html#pdf-file:write">file.write</a> takes a filename and a string which will be written to
+<p>Similarly, <a href="https://www.lua.org/manual/5.4/manual.html#pdf-file:write">file.write</a> takes a filename and a string which will be written to
 that file.</p>
 
 <p>For example, this little script converts a file into upper case:</p>
@@ -220,11 +220,11 @@ that file.</p>
 <pre>
 <span class="global">require</span> <span class="string">'pl'</span>
 <span class="global">assert</span>(#arg == <span class="number">2</span>, <span class="string">'supply two filenames'</span>)
-text = <span class="global">assert</span>(file.read(arg[<span class="number">1</span>]))
-<span class="global">assert</span>(file.write(arg[<span class="number">2</span>],text:upper()))
+text = <span class="global">assert</span>(file.<span class="function-name">read</span>(arg[<span class="number">1</span>]))
+<span class="global">assert</span>(file.<span class="function-name">write</span>(arg[<span class="number">2</span>],text:<span class="function-name">upper</span>()))
 </pre>
 
-<p>Copying files is suprisingly tricky. <a href="../libraries/pl.file.html#copy">file.copy</a> and <a href="../libraries/pl.file.html#move">file.move</a> attempt to use
+<p>Copying files is surprisingly tricky. <a href="../libraries/pl.file.html#copy">file.copy</a> and <a href="../libraries/pl.file.html#move">file.move</a> attempt to use
 the best implementation possible. On Windows, they link to the API functions
 <code>CopyFile</code> and <code>MoveFile</code>, but only if the <code>alien</code> package is installed (this is
 true for Lua for Windows.) Otherwise, the system copy command is used. This can
@@ -240,19 +240,19 @@ in the supplied list which match the given pattern, which correspond to the
 functions in the Python <code>fnmatch</code> module. <code>getdirectories</code> will return all
 directories contained in a directory, and <code>getfiles</code> will return all files in a
 directory which match a shell pattern. These functions return the files as a
-table, unlike <a href="http://stevedonovan.github.io/lua-stdlibs/modules/lfs.html#dir">lfs.dir</a> which returns an iterator.)</p>
+table, unlike <a href="http://stevedonovan.github.io/lua-stdlibs/lfs.html#dir">lfs.dir</a> which returns an iterator.)</p>
 
 <p><a href="../libraries/pl.dir.html#makepath">dir.makepath</a> can create a full path, creating subdirectories as necessary;
 <code>rmtree</code> is the Nuclear Option of file deleting functions, since it will
-recursively clear out and delete all directories found begining at a path (there
+recursively clear out and delete all directories found beginning at a path (there
 is a similar function with this name in the Python <code>shutils</code> module.)</p>
 
 
 <pre>
-&gt; = dir.makepath <span class="string">'t\\temp\\bonzo'</span>
-&gt; = path.isdir <span class="string">'t\\temp\\bonzo'</span>
+&gt; = dir.<span class="function-name">makepath</span> <span class="string">'t\\temp\\bonzo'</span>
+&gt; = path.<span class="function-name">isdir</span> <span class="string">'t\\temp\\bonzo'</span>
 <span class="keyword">true</span>
-&gt; = dir.rmtree <span class="string">'t'</span>
+&gt; = dir.<span class="function-name">rmtree</span> <span class="string">'t'</span>
 </pre>
 
 <p><a href="../libraries/pl.dir.html#rmtree">dir.rmtree</a> depends on <a href="../libraries/pl.dir.html#walk">dir.walk</a>, which is a powerful tool for scanning a whole
@@ -262,12 +262,12 @@ directory tree. Here is the implementation of <a href="../libraries/pl.dir.html#
 <pre>
 <span class="comment">--- remove a whole directory tree.
 </span><span class="comment">-- @param path A directory path
-</span><span class="keyword">function</span> dir.rmtree(fullpath)
-    <span class="keyword">for</span> root,dirs,files <span class="keyword">in</span> dir.walk(fullpath) <span class="keyword">do</span>
+</span><span class="keyword">function</span> dir.<span class="function-name">rmtree</span>(fullpath)
+    <span class="keyword">for</span> root,dirs,files <span class="keyword">in</span> dir.<span class="function-name">walk</span>(fullpath) <span class="keyword">do</span>
         <span class="keyword">for</span> i,f <span class="keyword">in</span> <span class="global">ipairs</span>(files) <span class="keyword">do</span>
-            <span class="global">os</span>.remove(path.join(root,f))
+            <span class="global">os</span>.<span class="function-name">remove</span>(path.<span class="function-name">join</span>(root,f))
         <span class="keyword">end</span>
-        lfs.rmdir(root)
+        lfs.<span class="function-name">rmdir</span>(root)
     <span class="keyword">end</span>
 <span class="keyword">end</span>
 </pre>
@@ -284,7 +284,7 @@ function, which will be applied for all files found.</p>
 </span><span class="global">require</span> <span class="string">'pl'</span>
 p1 = <span class="string">[[d:\dev\lua\libs]]</span>
 p2 = <span class="string">[[D:\dev\lua\libs\..\tests]]</span>
-dir.clonetree(p1,p2,dir.copyfile)
+dir.<span class="function-name">clonetree</span>(p1,p2,dir.copyfile)
 </pre>
 
 <p>A more sophisticated version, which only copies files which have been modified:</p>
@@ -292,12 +292,12 @@ dir.clonetree(p1,p2,dir.copyfile)
 
 <pre>
 <span class="comment">-- p1 and p2 as before, or from arg[1] and arg[2]
-</span>dir.clonetree(p1,p2,<span class="keyword">function</span>(f1,f2)
+</span>dir.<span class="function-name">clonetree</span>(p1,p2,<span class="keyword">function</span>(f1,f2)
   <span class="keyword">local</span> res
-  <span class="keyword">local</span> t1,t2 = path.getmtime(f1),path.getmtime(f2)
+  <span class="keyword">local</span> t1,t2 = path.<span class="function-name">getmtime</span>(f1),path.<span class="function-name">getmtime</span>(f2)
   <span class="comment">-- f2 might not exist, so be careful about t2
 </span>  <span class="keyword">if</span> <span class="keyword">not</span> t2 <span class="keyword">or</span> t1 &gt; t2 <span class="keyword">then</span>
-    res = dir.copyfile(f1,f2)
+    res = dir.<span class="function-name">copyfile</span>(f1,f2)
   <span class="keyword">end</span>
   <span class="keyword">return</span> res <span class="comment">-- indicates successful operation
 </span><span class="keyword">end</span>)
@@ -313,7 +313,7 @@ do the job:</p>
 
 <pre>
 &gt; p3 = <span class="string">[[d:\dev]]</span>
-&gt; = tablex.reduce(path.common_prefix,{p1,p2,p3})
+&gt; = tablex.<span class="function-name">reduce</span>(path.common_prefix,{p1,p2,p3})
 <span class="string">'d:\dev'</span>
 </pre>
 
@@ -322,7 +322,7 @@ do the job:</p>
 </div> <!-- id="content" -->
 </div> <!-- id="main" -->
 <div id="about">
-<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.5.0</a></i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>

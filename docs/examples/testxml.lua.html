@@ -126,60 +126,60 @@
 <span class="keyword">local</span> append = <span class="global">table</span>.insert
 <span class="keyword">local</span> skipws,expecting = lexer.skipws,lexer.expecting
 
-<span class="keyword">local</span> <span class="keyword">function</span> parse_element (tok,tag)
+<span class="keyword">local</span> <span class="keyword">function</span> <span class="function-name">parse_element</span> (tok,tag)
 	<span class="keyword">local</span> tbl,t,v,attrib
 	tbl = {}
 	tbl.tag = tag  <span class="comment">-- LOM 'tag' is the element tag
-</span>	t,v = skipws(tok)
+</span>	t,v = <span class="function-name">skipws</span>(tok)
 	<span class="keyword">while</span> v ~= <span class="string">'/'</span> <span class="keyword">and</span> v ~= <span class="string">'&gt;'</span> <span class="keyword">do</span>
 		<span class="keyword">if</span> t ~= <span class="string">'iden'</span> <span class="keyword">then</span> <span class="global">error</span>(<span class="string">'expecting attribute identifier'</span>) <span class="keyword">end</span>
 		attrib = v
-		expecting(tok,<span class="string">'='</span>)
-		v = expecting(tok,<span class="string">'string'</span>)
+		<span class="function-name">expecting</span>(tok,<span class="string">'='</span>)
+		v = <span class="function-name">expecting</span>(tok,<span class="string">'string'</span>)
 		<span class="comment">-- LOM: 'attr' subtable contains attrib/value pairs and an ordered list of attribs
 </span>		<span class="keyword">if</span> <span class="keyword">not</span> tbl.attr <span class="keyword">then</span> tbl.attr = {} <span class="keyword">end</span>
 		tbl.attr[attrib] = v
-		append(tbl.attr,attrib)
-		t,v = skipws(tok)
+		<span class="function-name">append</span>(tbl.attr,attrib)
+		t,v = <span class="function-name">skipws</span>(tok)
 	<span class="keyword">end</span>
 	<span class="keyword">if</span> v == <span class="string">'/'</span> <span class="keyword">then</span>
-		expecting(tok,<span class="string">'&gt;'</span>)
+		<span class="function-name">expecting</span>(tok,<span class="string">'&gt;'</span>)
 		<span class="keyword">return</span> tbl
 	<span class="keyword">end</span>
 	<span class="comment">-- pick up element data
-</span>	t,v = tok()
+</span>	t,v = <span class="function-name">tok</span>()
 	<span class="keyword">while</span> <span class="keyword">true</span> <span class="keyword">do</span>
 		<span class="keyword">if</span> t == <span class="string">'&lt;'</span> <span class="keyword">then</span>
-			t,v = skipws(tok)
+			t,v = <span class="function-name">skipws</span>(tok)
 			<span class="keyword">if</span> t == <span class="string">'/'</span> <span class="keyword">then</span> <span class="comment">-- element end tag
-</span>				t,v = tok()
+</span>				t,v = <span class="function-name">tok</span>()
 				<span class="keyword">if</span> t == <span class="string">'&gt;'</span> <span class="keyword">then</span> <span class="keyword">return</span> tbl <span class="keyword">end</span>
 				<span class="keyword">if</span> t == <span class="string">'iden'</span> <span class="keyword">and</span> v == tag <span class="keyword">then</span>
-					<span class="keyword">if</span> tok() == <span class="string">'&gt;'</span> <span class="keyword">then</span> <span class="keyword">return</span> tbl <span class="keyword">end</span>
+					<span class="keyword">if</span> <span class="function-name">tok</span>() == <span class="string">'&gt;'</span> <span class="keyword">then</span> <span class="keyword">return</span> tbl <span class="keyword">end</span>
 				<span class="keyword">end</span>
 				<span class="global">error</span>(<span class="string">'expecting end tag '</span>..tag)
 			<span class="keyword">else</span>
-				append(tbl,parse_element(tok,v)) <span class="comment">-- LOM: child elements added to table
-</span>				t,v = skipws(tok)
+				<span class="function-name">append</span>(tbl,<span class="function-name">parse_element</span>(tok,v)) <span class="comment">-- LOM: child elements added to table
+</span>				t,v = <span class="function-name">skipws</span>(tok)
 			<span class="keyword">end</span>
 		<span class="keyword">else</span>
-			append(tbl,v) <span class="comment">-- LOM: text added to table
-</span>			t,v = skipws(tok)
+			<span class="function-name">append</span>(tbl,v) <span class="comment">-- LOM: text added to table
+</span>			t,v = <span class="function-name">skipws</span>(tok)
 		<span class="keyword">end</span>
 	<span class="keyword">end</span>
 <span class="keyword">end</span>
 
-<span class="keyword">local</span> <span class="keyword">function</span> parse_xml (tok)
-	<span class="keyword">local</span> t = skipws(tok)
+<span class="keyword">local</span> <span class="keyword">function</span> <span class="function-name">parse_xml</span> (tok)
+	<span class="keyword">local</span> t = <span class="function-name">skipws</span>(tok)
 	<span class="keyword">local</span> v
 	<span class="keyword">while</span> t == <span class="string">'&lt;'</span> <span class="keyword">do</span>
-		t,v = tok()
+		t,v = <span class="function-name">tok</span>()
 		<span class="keyword">if</span> t == <span class="string">'?'</span> <span class="keyword">or</span> t == <span class="string">'!'</span> <span class="keyword">then</span>
 			<span class="comment">-- skip meta stuff and commentary
-</span>			<span class="keyword">repeat</span> t = tok() <span class="keyword">until</span> t == <span class="string">'&gt;'</span>
-			t = expecting(tok,<span class="string">'&lt;'</span>)
+</span>			<span class="keyword">repeat</span> t = <span class="function-name">tok</span>() <span class="keyword">until</span> t == <span class="string">'&gt;'</span>
+			t = <span class="function-name">expecting</span>(tok,<span class="string">'&lt;'</span>)
 		<span class="keyword">else</span>
-			<span class="keyword">return</span> parse_element(tok,v)
+			<span class="keyword">return</span> <span class="function-name">parse_element</span>(tok,v)
 		<span class="keyword">end</span>
 	<span class="keyword">end</span>
 <span class="keyword">end</span>
@@ -194,15 +194,15 @@
 &lt;/sensor&gt;
 ]]</span>
 
-<span class="keyword">local</span> tok = lexer.scan(s,<span class="keyword">nil</span>,{space=<span class="keyword">false</span>},{<span class="global">string</span>=<span class="keyword">true</span>})
-<span class="keyword">local</span> res = parse_xml(tok)
-<span class="global">print</span>(pretty.write(res))</pre>
+<span class="keyword">local</span> tok = lexer.<span class="function-name">scan</span>(s,<span class="keyword">nil</span>,{space=<span class="keyword">false</span>},{<span class="global">string</span>=<span class="keyword">true</span>})
+<span class="keyword">local</span> res = <span class="function-name">parse_xml</span>(tok)
+<span class="global">print</span>(pretty.<span class="function-name">write</span>(res))</pre>
 
 
 </div> <!-- id="content" -->
 </div> <!-- id="main" -->
 <div id="about">
-<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.5.0</a></i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>

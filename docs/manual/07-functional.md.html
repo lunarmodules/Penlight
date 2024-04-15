@@ -131,10 +131,10 @@
 <p>A Lua iterator (in its simplest form) is a function which can be repeatedly
 called to return a set of one or more values. The <code>for in</code> statement understands
 these iterators, and loops until the function returns <code>nil</code>. There are standard
-sequence adapters for tables in Lua (<a href="https://www.lua.org/manual/5.1/manual.html#pdf-ipairs">ipairs</a> and <a href="https://www.lua.org/manual/5.1/manual.html#pdf-pairs">pairs</a>), and <a href="https://www.lua.org/manual/5.1/manual.html#pdf-io.lines">io.lines</a>
+sequence adapters for tables in Lua (<a href="https://www.lua.org/manual/5.4/manual.html#pdf-ipairs">ipairs</a> and <a href="https://www.lua.org/manual/5.4/manual.html#pdf-pairs">pairs</a>), and <a href="https://www.lua.org/manual/5.4/manual.html#pdf-io.lines">io.lines</a>
 returns an iterator over all the lines in a file. In the Penlight libraries, such
 iterators are also called <em>sequences</em>.  A sequence of single values (say from
-<a href="https://www.lua.org/manual/5.1/manual.html#pdf-io.lines">io.lines</a>) is called <em>single-valued</em>, whereas the sequence defined by <a href="https://www.lua.org/manual/5.1/manual.html#pdf-pairs">pairs</a> is
+<a href="https://www.lua.org/manual/5.4/manual.html#pdf-io.lines">io.lines</a>) is called <em>single-valued</em>, whereas the sequence defined by <a href="https://www.lua.org/manual/5.4/manual.html#pdf-pairs">pairs</a> is
 <em>double-valued</em>.</p>
 
 <p><a href="../libraries/pl.seq.html#">pl.seq</a> provides a number of useful iterators, and some functions which operate
@@ -143,7 +143,7 @@ in Lua, (with the sequence being inclusive):</p>
 
 
 <pre>
-&gt; <span class="keyword">for</span> i <span class="keyword">in</span> seq.range(<span class="number">1</span>,<span class="number">4</span>) <span class="keyword">do</span> <span class="global">print</span>(i) <span class="keyword">end</span>
+&gt; <span class="keyword">for</span> i <span class="keyword">in</span> seq.<span class="function-name">range</span>(<span class="number">1</span>,<span class="number">4</span>) <span class="keyword">do</span> <span class="global">print</span>(i) <span class="keyword">end</span>
 <span class="number">1</span>
 <span class="number">2</span>
 <span class="number">3</span>
@@ -153,11 +153,11 @@ in Lua, (with the sequence being inclusive):</p>
 <p>But <a href="../libraries/pl.seq.html#range">range</a> is actually equivalent to Python's <code>xrange</code>, since it generates a
 sequence, not a list.  To get a list, use <code>seq.copy(seq.range(1,10))</code>, which
 takes any single-value sequence and makes a table from the result. <a href="../libraries/pl.seq.html#list">seq.list</a> is
-like <a href="https://www.lua.org/manual/5.1/manual.html#pdf-ipairs">ipairs</a> except that it does not give you the index, just the value.</p>
+like <a href="https://www.lua.org/manual/5.4/manual.html#pdf-ipairs">ipairs</a> except that it does not give you the index, just the value.</p>
 
 
 <pre>
-&gt; <span class="keyword">for</span> x <span class="keyword">in</span> seq.list {<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>} <span class="keyword">do</span> <span class="global">print</span>(x) <span class="keyword">end</span>
+&gt; <span class="keyword">for</span> x <span class="keyword">in</span> seq.<span class="function-name">list</span> {<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>} <span class="keyword">do</span> <span class="global">print</span>(x) <span class="keyword">end</span>
 <span class="number">1</span>
 <span class="number">2</span>
 <span class="number">3</span>
@@ -165,22 +165,22 @@ like <a href="https://www.lua.org/manual/5.1/manual.html#pdf-ipairs">ipairs</a> 
 
 <p><a href="../libraries/pl.seq.html#enum">enum</a> takes a sequence and turns it into a double-valued sequence consisting of
 a sequence number and the value, so <code>enum(list(ls))</code> is actually equivalent to
-<a href="https://www.lua.org/manual/5.1/manual.html#pdf-ipairs">ipairs</a>. A more interesting example prints out a file with line numbers:</p>
+<a href="https://www.lua.org/manual/5.4/manual.html#pdf-ipairs">ipairs</a>. A more interesting example prints out a file with line numbers:</p>
 
 
 <pre>
-<span class="keyword">for</span> i,v <span class="keyword">in</span> seq.enum(<span class="global">io</span>.lines(fname)) <span class="keyword">do</span> <span class="global">print</span>(i..<span class="string">' '</span>..v) <span class="keyword">end</span>
+<span class="keyword">for</span> i,v <span class="keyword">in</span> seq.<span class="function-name">enum</span>(<span class="global">io</span>.<span class="function-name">lines</span>(fname)) <span class="keyword">do</span> <span class="global">print</span>(i..<span class="string">' '</span>..v) <span class="keyword">end</span>
 </pre>
 
 <p>Sequences can be <em>combined</em>, either by 'zipping' them or by concatenating them.</p>
 
 
 <pre>
-&gt; <span class="keyword">for</span> x,y <span class="keyword">in</span> seq.zip(l1,l2) <span class="keyword">do</span> <span class="global">print</span>(x,y) <span class="keyword">end</span>
+&gt; <span class="keyword">for</span> x,y <span class="keyword">in</span> seq.<span class="function-name">zip</span>(l1,l2) <span class="keyword">do</span> <span class="global">print</span>(x,y) <span class="keyword">end</span>
 <span class="number">10</span>      <span class="number">1</span>
 <span class="number">20</span>      <span class="number">2</span>
 <span class="number">30</span>      <span class="number">3</span>
-&gt; <span class="keyword">for</span> x <span class="keyword">in</span> seq.splice(l1,l2) <span class="keyword">do</span> <span class="global">print</span>(x) <span class="keyword">end</span>
+&gt; <span class="keyword">for</span> x <span class="keyword">in</span> seq.<span class="function-name">splice</span>(l1,l2) <span class="keyword">do</span> <span class="global">print</span>(x) <span class="keyword">end</span>
 <span class="number">10</span>
 <span class="number">20</span>
 <span class="number">30</span>
@@ -190,14 +190,14 @@ a sequence number and the value, so <code>enum(list(ls))</code> is actually equi
 </pre>
 
 <p><a href="../libraries/pl.seq.html#printall">seq.printall</a> is useful for printing out single-valued sequences, and provides
-some finer control over formating, such as a delimiter, the number of fields per
+some finer control over formatting, such as a delimiter, the number of fields per
 line, and a format string to use (@see string.format)</p>
 
 
 <pre>
-&gt; seq.printall(seq.random(<span class="number">10</span>))
+&gt; seq.<span class="function-name">printall</span>(seq.<span class="function-name">random</span>(<span class="number">10</span>))
 <span class="number">0.0012512588885159</span> <span class="number">0.56358531449324</span> <span class="number">0.19330423902097</span> ....
-&gt; seq.printall(seq.random(<span class="number">10</span>), <span class="string">','</span>, <span class="number">4</span>, <span class="string">'%4.2f'</span>)
+&gt; seq.<span class="function-name">printall</span>(seq.<span class="function-name">random</span>(<span class="number">10</span>), <span class="string">','</span>, <span class="number">4</span>, <span class="string">'%4.2f'</span>)
 <span class="number">0.17</span>,<span class="number">0.86</span>,<span class="number">0.71</span>,<span class="number">0.51</span>
 <span class="number">0.30</span>,<span class="number">0.01</span>,<span class="number">0.09</span>,<span class="number">0.36</span>
 <span class="number">0.15</span>,<span class="number">0.17</span>,
@@ -207,9 +207,9 @@ line, and a format string to use (@see string.format)</p>
 
 
 <pre>
-&gt; seq.printall(seq.map(<span class="global">string</span>.upper, {<span class="string">'one'</span>,<span class="string">'two'</span>}))
+&gt; seq.<span class="function-name">printall</span>(seq.<span class="function-name">map</span>(<span class="global">string</span>.upper, {<span class="string">'one'</span>,<span class="string">'two'</span>}))
 ONE TWO
-&gt; seq.printall(seq.map(<span class="string">'+'</span>, {<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>}, <span class="number">1</span>))
+&gt; seq.<span class="function-name">printall</span>(seq.<span class="function-name">map</span>(<span class="string">'+'</span>, {<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>}, <span class="number">1</span>))
 <span class="number">11</span> <span class="number">21</span> <span class="number">31</span>
 </pre>
 
@@ -219,7 +219,7 @@ composed of digits:</p>
 
 
 <pre>
-<span class="keyword">for</span> l <span class="keyword">in</span> seq.filter(<span class="global">io</span>.lines(file), stringx.isdigit) <span class="keyword">do</span> <span class="global">print</span>(l) <span class="keyword">end</span>
+<span class="keyword">for</span> l <span class="keyword">in</span> seq.<span class="function-name">filter</span>(<span class="global">io</span>.<span class="function-name">lines</span>(file), stringx.isdigit) <span class="keyword">do</span> <span class="global">print</span>(l) <span class="keyword">end</span>
 </pre>
 
 <p>The following returns a table consisting of all the positive values in the
@@ -227,15 +227,15 @@ original table (equivalent to <code>tablex.filter(ls, &apos;&gt;&apos;, 0)</code
 
 
 <pre>
-ls = seq.copy(seq.filter(ls, <span class="string">'&gt;'</span>, <span class="number">0</span>))
+ls = seq.<span class="function-name">copy</span>(seq.<span class="function-name">filter</span>(ls, <span class="string">'&gt;'</span>, <span class="number">0</span>))
 </pre>
 
-<p>We're already encounted <a href="../libraries/pl.seq.html#sum">seq.sum</a> when discussing <a href="../libraries/pl.input.html#numbers">input.numbers</a>. This can also
+<p>We're already encountered <a href="../libraries/pl.seq.html#sum">seq.sum</a> when discussing <a href="../libraries/pl.input.html#numbers">input.numbers</a>. This can also
 be expressed with <a href="../libraries/pl.seq.html#reduce">seq.reduce</a>:</p>
 
 
 <pre>
-&gt; seq.reduce(<span class="keyword">function</span>(x,y) <span class="keyword">return</span> x + y <span class="keyword">end</span>, seq.list{<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>})
+&gt; seq.<span class="function-name">reduce</span>(<span class="keyword">function</span>(x,y) <span class="keyword">return</span> x + y <span class="keyword">end</span>, seq.<span class="function-name">list</span>{<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>})
 <span class="number">10</span>
 </pre>
 
@@ -243,7 +243,7 @@ be expressed with <a href="../libraries/pl.seq.html#reduce">seq.reduce</a>:</p>
 
 
 <pre>
-reduce(op,{<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>}) =&gt; op(<span class="number">1</span>,reduce(op,{<span class="number">2</span>,<span class="number">3</span>}) =&gt; op(<span class="number">1</span>,op(<span class="number">2</span>,<span class="number">3</span>))
+<span class="function-name">reduce</span>(op,{<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>}) =&gt; <span class="function-name">op</span>(<span class="number">1</span>,<span class="function-name">reduce</span>(op,{<span class="number">2</span>,<span class="number">3</span>}) =&gt; <span class="function-name">op</span>(<span class="number">1</span>,<span class="function-name">op</span>(<span class="number">2</span>,<span class="number">3</span>))
 </pre>
 
 <p>it's now possible to easily generate other cumulative operations; the standard
@@ -253,7 +253,7 @@ operations declared in <a href="../libraries/pl.operator.html#">pl.operator</a> 
 <pre>
 &gt; ops = <span class="global">require</span> <span class="string">'pl.operator'</span>
 &gt; <span class="comment">-- can also say '*' instead of ops.mul
-</span>&gt; = seq.reduce(ops.mul,input.numbers <span class="string">'1 2 3 4'</span>)
+</span>&gt; = seq.<span class="function-name">reduce</span>(ops.mul,input.<span class="function-name">numbers</span> <span class="string">'1 2 3 4'</span>)
 <span class="number">24</span>
 </pre>
 
@@ -261,11 +261,11 @@ operations declared in <a href="../libraries/pl.operator.html#">pl.operator</a> 
 
 
 <pre>
-&gt; l1 = List {<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>}
-&gt; l2 = List {<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>}
-&gt; = seq.minmax(l1)
+&gt; l1 = <span class="function-name">List</span> {<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>}
+&gt; l2 = <span class="function-name">List</span> {<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>}
+&gt; = seq.<span class="function-name">minmax</span>(l1)
 <span class="number">10</span>      <span class="number">30</span>
-&gt; = seq.sum(l1)
+&gt; = seq.<span class="function-name">sum</span>(l1)
 <span class="number">60</span>      <span class="number">3</span>
 </pre>
 
@@ -276,18 +276,18 @@ the number of times they occurred:</p>
 
 
 <pre>
-&gt; t = seq.count_map {<span class="string">'one'</span>,<span class="string">'fred'</span>,<span class="string">'two'</span>,<span class="string">'one'</span>,<span class="string">'two'</span>,<span class="string">'two'</span>}
-&gt; = t
+&gt; t = seq.<span class="function-name">count_map</span> {<span class="string">'one'</span>,<span class="string">'fred'</span>,<span class="string">'two'</span>,<span class="string">'one'</span>,<span class="string">'two'</span>,<span class="string">'two'</span>}
+&gt; = <span class="function-name">t</span>
 {one=<span class="number">2</span>,fred=<span class="number">1</span>,two=<span class="number">3</span>}
 </pre>
 
 <p>This will also work on numerical sequences, but you cannot expect the result to
-be a proper list, i.e. having no 'holes'. Instead, you always need to use <a href="https://www.lua.org/manual/5.1/manual.html#pdf-pairs">pairs</a>
+be a proper list, i.e. having no 'holes'. Instead, you always need to use <a href="https://www.lua.org/manual/5.4/manual.html#pdf-pairs">pairs</a>
 to iterate over the result - note that there is a hole at index 5:</p>
 
 
 <pre>
-&gt; t = seq.count_map {<span class="number">1</span>,<span class="number">2</span>,<span class="number">4</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">2</span>,<span class="number">6</span>}
+&gt; t = seq.<span class="function-name">count_map</span> {<span class="number">1</span>,<span class="number">2</span>,<span class="number">4</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">2</span>,<span class="number">6</span>}
 &gt; <span class="keyword">for</span> k,v <span class="keyword">in</span> <span class="global">pairs</span>(t) <span class="keyword">do</span> <span class="global">print</span>(k,v) <span class="keyword">end</span>
 <span class="number">1</span>       <span class="number">1</span>
 <span class="number">2</span>       <span class="number">4</span>
@@ -304,7 +304,7 @@ current value and the last value:</p>
 
 
 <pre>
-&gt; <span class="keyword">for</span> current,last <span class="keyword">in</span> seq.last {<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>,<span class="number">40</span>} <span class="keyword">do</span> <span class="global">print</span> (current,last) <span class="keyword">end</span>
+&gt; <span class="keyword">for</span> current,last <span class="keyword">in</span> seq.<span class="function-name">last</span> {<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>,<span class="number">40</span>} <span class="keyword">do</span> <span class="global">print</span> (current,last) <span class="keyword">end</span>
 <span class="number">20</span>      <span class="number">10</span>
 <span class="number">30</span>      <span class="number">20</span>
 <span class="number">40</span>      <span class="number">30</span>
@@ -319,7 +319,7 @@ This code then copies the resulting code into a table.</p>
 
 <pre>
 &gt; ls = {<span class="number">10</span>,<span class="number">9</span>,<span class="number">10</span>,<span class="number">3</span>}
-&gt; = seq.copy(seq.filter(seq.last(s),<span class="string">'&lt;'</span>))
+&gt; = seq.<span class="function-name">copy</span>(seq.<span class="function-name">filter</span>(seq.<span class="function-name">last</span>(s),<span class="string">'&lt;'</span>))
 {<span class="number">9</span>,<span class="number">3</span>}
 </pre>
 
@@ -338,7 +338,7 @@ expression to be written like so:</p>
 
 
 <pre>
-seq(s):last():filter(<span class="string">'&lt;'</span>):copy()
+<span class="function-name">seq</span>(s):<span class="function-name">last</span>():<span class="function-name">filter</span>(<span class="string">'&lt;'</span>):<span class="function-name">copy</span>()
 </pre>
 
 <p>With this notation, the operation becomes a chain of method calls running from
@@ -355,19 +355,19 @@ a sequence of strings, and print them out.</p>
 
 
 <pre>
-&gt; seq{<span class="string">'one'</span>,<span class="string">'tw'</span>,<span class="string">'t'</span>} :map <span class="string">'#'</span> :printall()
+&gt; <span class="function-name">seq</span>{<span class="string">'one'</span>,<span class="string">'tw'</span>,<span class="string">'t'</span>} :<span class="function-name">map</span> <span class="string">'#'</span> :<span class="function-name">printall</span>()
 <span class="number">3</span> <span class="number">2</span> <span class="number">1</span>
 </pre>
 
 <p>As a convenience, there is a function <a href="../libraries/pl.seq.html#lines">seq.lines</a> which behaves just like
-<a href="https://www.lua.org/manual/5.1/manual.html#pdf-io.lines">io.lines</a> except it wraps the result as an explicit sequence type. This takes
+<a href="https://www.lua.org/manual/5.4/manual.html#pdf-io.lines">io.lines</a> except it wraps the result as an explicit sequence type. This takes
 the first 10 lines from standard input, makes it uppercase, turns it into a
 sequence with a count and the value, glues these together with the concatenation
 operator, and finally prints out the sequence delimited by a newline.</p>
 
 
 <pre>
-seq.lines():take(<span class="number">10</span>):upper():enum():map(<span class="string">'..'</span>):printall <span class="string">'\n'</span>
+seq.<span class="function-name">lines</span>():<span class="function-name">take</span>(<span class="number">10</span>):<span class="function-name">upper</span>():<span class="function-name">enum</span>():<span class="function-name">map</span>(<span class="string">'..'</span>):<span class="function-name">printall</span> <span class="string">'\n'</span>
 </pre>
 
 <p>Note the method <code>upper</code>, which is not a <a href="../libraries/pl.seq.html#">seq</a> function. if an unknown method is
@@ -384,18 +384,18 @@ range. The key step is to use <a href="../libraries/pl.seq.html#">seq</a> to wra
 <span class="comment">-- random.lua
 </span><span class="keyword">local</span> seq = <span class="global">require</span> <span class="string">'pl.seq'</span>
 
-<span class="keyword">function</span> dev_random()
-    <span class="keyword">local</span> f = <span class="global">io</span>.open(<span class="string">'/dev/random'</span>)
+<span class="keyword">function</span> <span class="function-name">dev_random</span>()
+    <span class="keyword">local</span> f = <span class="global">io</span>.<span class="function-name">open</span>(<span class="string">'/dev/random'</span>)
     <span class="keyword">local</span> byte = <span class="global">string</span>.byte
-    <span class="keyword">return</span> seq(<span class="keyword">function</span>()
+    <span class="keyword">return</span> <span class="function-name">seq</span>(<span class="keyword">function</span>()
         <span class="comment">-- read two bytes into a string and convert into a 16-bit number
-</span>        <span class="keyword">local</span> s = f:read(<span class="number">2</span>)
-        <span class="keyword">return</span> byte(s,<span class="number">1</span>) + <span class="number">256</span>*byte(s,<span class="number">2</span>)
+</span>        <span class="keyword">local</span> s = f:<span class="function-name">read</span>(<span class="number">2</span>)
+        <span class="keyword">return</span> <span class="function-name">byte</span>(s,<span class="number">1</span>) + <span class="number">256</span>*<span class="function-name">byte</span>(s,<span class="number">2</span>)
     <span class="keyword">end</span>)
 <span class="keyword">end</span>
 
 <span class="comment">-- print 10 random numbers from 0 to 1 !
-</span>dev_random():take(<span class="number">10</span>):map(<span class="string">'%'</span>,<span class="number">100</span>):map(<span class="string">'/'</span>,<span class="number">100</span>):printall <span class="string">','</span>
+</span><span class="function-name">dev_random</span>():<span class="function-name">take</span>(<span class="number">10</span>):<span class="function-name">map</span>(<span class="string">'%'</span>,<span class="number">100</span>):<span class="function-name">map</span>(<span class="string">'/'</span>,<span class="number">100</span>):<span class="function-name">printall</span> <span class="string">','</span>
 </pre>
 
 <p>Another Linux one-liner depends on the <code>/proc</code> filesystem and makes a list of all
@@ -403,7 +403,7 @@ the currently running processes:</p>
 
 
 <pre>
-pids = seq(lfs.dir <span class="string">'/proc'</span>):filter(stringx.isdigit):map(<span class="global">tonumber</span>):copy()
+pids = <span class="function-name">seq</span>(lfs.<span class="function-name">dir</span> <span class="string">'/proc'</span>):<span class="function-name">filter</span>(stringx.isdigit):<span class="function-name">map</span>(<span class="global">tonumber</span>):<span class="function-name">copy</span>()
 </pre>
 
 <p>This version of Penlight has an experimental feature which relies on the fact
@@ -412,8 +412,8 @@ that <em>all</em> Lua types can have metatables, including functions. This makes
 
 
 <pre>
-&gt; seq.import()
-&gt; seq.random(<span class="number">5</span>):printall(<span class="string">','</span>,<span class="number">5</span>,<span class="string">'%4.1f'</span>)
+&gt; seq.<span class="function-name">import</span>()
+&gt; seq.<span class="function-name">random</span>(<span class="number">5</span>):<span class="function-name">printall</span>(<span class="string">','</span>,<span class="number">5</span>,<span class="string">'%4.1f'</span>)
  <span class="number">0.0</span>, <span class="number">0.1</span>, <span class="number">0.4</span>, <span class="number">0.1</span>, <span class="number">0.2</span>
 </pre>
 
@@ -422,7 +422,7 @@ come from somewhere else completely:</p>
 
 
 <pre>
-&gt; (<span class="string">'one two three'</span>):gfind(<span class="string">'%a+'</span>):printall(<span class="string">','</span>)
+&gt; (<span class="string">'one two three'</span>):<span class="function-name">gfind</span>(<span class="string">'%a+'</span>):<span class="function-name">printall</span>(<span class="string">','</span>)
 one,two,three,
 </pre>
 
@@ -434,10 +434,10 @@ so that any function can be used, appropriate or not:</p>
 
 
 <pre>
-&gt; <span class="global">math</span>.sin:printall()
-..seq.lua:<span class="number">287</span>: bad argument #<span class="number">1</span> to <span class="string">'(for generator)'</span> (number expected, got <span class="keyword">nil</span>)
+&gt; <span class="global">math</span>.sin:<span class="function-name">printall</span>()
+..seq.lua:<span class="number">287</span>: bad argument #<span class="number">1</span> <span class="function-name">to</span> <span class="string">'(for generator)'</span> (number expected, got <span class="keyword">nil</span>)
 &gt; a = <span class="global">tostring</span>
-&gt; = a:find(<span class="string">' '</span>)
+&gt; = a:<span class="function-name">find</span>(<span class="string">' '</span>)
 <span class="keyword">function</span>: <span class="number">0042</span>C920
 </pre>
 
@@ -456,15 +456,15 @@ elements. In Python, you can say this:</p>
 
 
 <pre>
-ls = [x <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">5</span>)]  # == [<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>]
+ls = [x <span class="keyword">for</span> x <span class="keyword">in</span> <span class="function-name">range</span>(<span class="number">5</span>)]  # == [<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>]
 </pre>
 
 <p>In Lua, using <a href="../libraries/pl.comprehension.html#">pl.comprehension</a>:</p>
 
 
 <pre>
-&gt; C = <span class="global">require</span>(<span class="string">'pl.comprehension'</span>).new()
-&gt; = C (<span class="string">'x for x=1,10'</span>) ()
+&gt; C = <span class="global">require</span>(<span class="string">'pl.comprehension'</span>).<span class="function-name">new</span>()
+&gt; = <span class="function-name">C</span> (<span class="string">'x for x=1,10'</span>) ()
 {<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">10</span>}
 </pre>
 
@@ -474,9 +474,9 @@ function taking a string argument, so this works as well:</p>
 
 
 <pre>
-&gt; = C <span class="string">'x^2 for x=1,4'</span> ()
+&gt; = <span class="function-name">C</span> <span class="string">'x^2 for x=1,4'</span> ()
 {<span class="number">1</span>,<span class="number">4</span>,<span class="number">9</span>,<span class="number">16</span>}
-&gt; = C <span class="string">'{x,x^2} for x=1,4'</span> ()
+&gt; = <span class="function-name">C</span> <span class="string">'{x,x^2} for x=1,4'</span> ()
 {{<span class="number">1</span>,<span class="number">1</span>},{<span class="number">2</span>,<span class="number">4</span>},{<span class="number">3</span>,<span class="number">9</span>},{<span class="number">4</span>,<span class="number">16</span>}}
 </pre>
 
@@ -489,32 +489,32 @@ I'm emphasizing that a comprehension is a function which can take a list argumen
 
 
 <pre>
-&gt; = C <span class="string">'2*x for x'</span> {<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>}
+&gt; = <span class="function-name">C</span> <span class="string">'2*x for x'</span> {<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>}
 {<span class="number">2</span>,<span class="number">4</span>,<span class="number">6</span>}
-&gt; dbl = C <span class="string">'2*x for x'</span>
-&gt; = dbl {<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>}
+&gt; dbl = <span class="function-name">C</span> <span class="string">'2*x for x'</span>
+&gt; = <span class="function-name">dbl</span> {<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>}
 {<span class="number">20</span>,<span class="number">40</span>,<span class="number">60</span>}
 </pre>
 
 <p>Here is a somewhat more explicit way of saying the same thing; <code>_1</code> is a
-<em>placeholder</em> refering to the <em>first</em> argument passed to the comprehension.</p>
+<em>placeholder</em> referring to the <em>first</em> argument passed to the comprehension.</p>
 
 
 <pre>
-&gt; = C <span class="string">'2*x for _,x in pairs(_1)'</span> {<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>}
+&gt; = <span class="function-name">C</span> <span class="string">'2*x for _,x in pairs(_1)'</span> {<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>}
 {<span class="number">20</span>,<span class="number">40</span>,<span class="number">60</span>}
-&gt; = C <span class="string">'_1(x) for x'</span>(<span class="global">tostring</span>,{<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>})
+&gt; = <span class="function-name">C</span> <span class="string">'_1(x) for x'</span>(<span class="global">tostring</span>,{<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>})
 {<span class="string">'1'</span>,<span class="string">'2'</span>,<span class="string">'3'</span>,<span class="string">'4'</span>}
 </pre>
 
 <p>This extended syntax is useful when you wish to collect the result of some
-iterator, such as <a href="https://www.lua.org/manual/5.1/manual.html#pdf-io.lines">io.lines</a>. This comprehension creates a function which creates
+iterator, such as <a href="https://www.lua.org/manual/5.4/manual.html#pdf-io.lines">io.lines</a>. This comprehension creates a function which creates
 a table of all the lines in a file:</p>
 
 
 <pre>
-&gt; f = <span class="global">io</span>.open(<span class="string">'array.lua'</span>)
-&gt; lines = C <span class="string">'line for line in _1:lines()'</span> (f)
+&gt; f = <span class="global">io</span>.<span class="function-name">open</span>(<span class="string">'array.lua'</span>)
+&gt; lines = <span class="function-name">C</span> <span class="string">'line for line in _1:lines()'</span> (f)
 &gt; = #lines
 <span class="number">118</span>
 </pre>
@@ -524,11 +524,11 @@ comprehension:</p>
 
 
 <pre>
-&gt; = C <span class="string">'min(x for x)'</span> {<span class="number">1</span>,<span class="number">44</span>,<span class="number">0</span>}
+&gt; = <span class="function-name">C</span> <span class="string">'min(x for x)'</span> {<span class="number">1</span>,<span class="number">44</span>,<span class="number">0</span>}
 <span class="number">0</span>
-&gt; = C <span class="string">'max(x for x)'</span> {<span class="number">1</span>,<span class="number">44</span>,<span class="number">0</span>}
+&gt; = <span class="function-name">C</span> <span class="string">'max(x for x)'</span> {<span class="number">1</span>,<span class="number">44</span>,<span class="number">0</span>}
 <span class="number">44</span>
-&gt; = C <span class="string">'sum(x for x)'</span> {<span class="number">1</span>,<span class="number">44</span>,<span class="number">0</span>}
+&gt; = <span class="function-name">C</span> <span class="string">'sum(x for x)'</span> {<span class="number">1</span>,<span class="number">44</span>,<span class="number">0</span>}
 <span class="number">45</span>
 </pre>
 
@@ -539,7 +539,7 @@ comprehension collects the even numbers from a list:</p>
 
 
 <pre>
-&gt; = C <span class="string">'x for x if x % 2 == 0'</span> {<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>}
+&gt; = <span class="function-name">C</span> <span class="string">'x for x if x % 2 == 0'</span> {<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>}
 {<span class="number">2</span>,<span class="number">4</span>}
 </pre>
 
@@ -547,9 +547,9 @@ comprehension collects the even numbers from a list:</p>
 
 
 <pre>
-&gt; = C <span class="string">'{x,y} for x = 1,2 for y = 1,2'</span> ()
+&gt; = <span class="function-name">C</span> <span class="string">'{x,y} for x = 1,2 for y = 1,2'</span> ()
 {{<span class="number">1</span>,<span class="number">1</span>},{<span class="number">1</span>,<span class="number">2</span>},{<span class="number">2</span>,<span class="number">1</span>},{<span class="number">2</span>,<span class="number">2</span>}}
-&gt; = C <span class="string">'{x,y} for x for y'</span> ({<span class="number">1</span>,<span class="number">2</span>},{<span class="number">10</span>,<span class="number">20</span>})
+&gt; = <span class="function-name">C</span> <span class="string">'{x,y} for x for y'</span> ({<span class="number">1</span>,<span class="number">2</span>},{<span class="number">10</span>,<span class="number">20</span>})
 {{<span class="number">1</span>,<span class="number">10</span>},{<span class="number">1</span>,<span class="number">20</span>},{<span class="number">2</span>,<span class="number">10</span>},{<span class="number">2</span>,<span class="number">20</span>}}
 </pre>
 
@@ -569,8 +569,8 @@ which chains function calls (so <code>(f * g)(x)</code> is <code>f(g(x))</code>.
 
 <pre>
 &gt; func = <span class="global">require</span> <span class="string">'pl.func'</span>
-&gt; printf = func.compose(<span class="global">io</span>.write,<span class="global">string</span>.format)
-&gt; printf(<span class="string">"hello %s\n"</span>,<span class="string">'world'</span>)
+&gt; printf = func.<span class="function-name">compose</span>(<span class="global">io</span>.write,<span class="global">string</span>.format)
+&gt; <span class="function-name">printf</span>(<span class="string">"hello %s\n"</span>,<span class="string">'world'</span>)
 hello world
 <span class="keyword">true</span>
 </pre>
@@ -585,27 +585,27 @@ arguments where the first argument is bound to some value:</p>
 
 
 <pre>
-&gt; p2 = func.bind1(<span class="global">print</span>,<span class="string">'start&gt;'</span>)
-&gt; p2(<span class="string">'hello'</span>,<span class="number">2</span>)
+&gt; p2 = func.<span class="function-name">bind1</span>(<span class="global">print</span>,<span class="string">'start&gt;'</span>)
+&gt; <span class="function-name">p2</span>(<span class="string">'hello'</span>,<span class="number">2</span>)
 start&gt;  hello   <span class="number">2</span>
 &gt; ops = <span class="global">require</span> <span class="string">'pl.operator'</span>
-&gt; = tablex.filter({<span class="number">1</span>,-<span class="number">2</span>,<span class="number">10</span>,-<span class="number">1</span>,<span class="number">2</span>},bind1(ops.gt,<span class="number">0</span>))
+&gt; = tablex.<span class="function-name">filter</span>({<span class="number">1</span>,-<span class="number">2</span>,<span class="number">10</span>,-<span class="number">1</span>,<span class="number">2</span>},<span class="function-name">bind1</span>(ops.gt,<span class="number">0</span>))
 {-<span class="number">2</span>,-<span class="number">1</span>}
-&gt; tablex.filter({<span class="number">1</span>,-<span class="number">2</span>,<span class="number">10</span>,-<span class="number">1</span>,<span class="number">2</span>},bind1(ops.le,<span class="number">0</span>))
+&gt; tablex.<span class="function-name">filter</span>({<span class="number">1</span>,-<span class="number">2</span>,<span class="number">10</span>,-<span class="number">1</span>,<span class="number">2</span>},<span class="function-name">bind1</span>(ops.le,<span class="number">0</span>))
 {<span class="number">1</span>,<span class="number">10</span>,<span class="number">2</span>}
 </pre>
 
-<p>The last example unfortunately reads backwards, because <a href="../libraries/pl.func.html#bind1">bind1</a> alway binds the
+<p>The last example unfortunately reads backwards, because <a href="../libraries/pl.func.html#bind1">bind1</a> always binds the
 first argument!  Also unfortunately, in my youth I confused 'currying' with
 'partial application', so the old name for <a href="../libraries/pl.func.html#bind1">bind1</a> is <code>curry</code> - this alias still exists.</p>
 
 <p>This is a specialized form of function argument binding. Here is another way
-to say the <a href="https://www.lua.org/manual/5.1/manual.html#pdf-print">print</a> example:</p>
+to say the <a href="https://www.lua.org/manual/5.4/manual.html#pdf-print">print</a> example:</p>
 
 
 <pre>
-&gt; p2 = func.bind(<span class="global">print</span>,<span class="string">'start&gt;'</span>,func._1,func._2)
-&gt; p2(<span class="string">'hello'</span>,<span class="number">2</span>)
+&gt; p2 = func.<span class="function-name">bind</span>(<span class="global">print</span>,<span class="string">'start&gt;'</span>,func._1,func._2)
+&gt; <span class="function-name">p2</span>(<span class="string">'hello'</span>,<span class="number">2</span>)
 start&gt;  hello   <span class="number">2</span>
 </pre>
 
@@ -618,8 +618,8 @@ way around:</p>
 
 
 <pre>
-&gt; utils.import <span class="string">'pl.func'</span>
-&gt; tablex.filter({<span class="number">1</span>,-<span class="number">2</span>,<span class="number">10</span>,-<span class="number">1</span>,<span class="number">2</span>},bind(ops.gt, _1, <span class="number">0</span>))
+&gt; utils.<span class="function-name">import</span> <span class="string">'pl.func'</span>
+&gt; tablex.<span class="function-name">filter</span>({<span class="number">1</span>,-<span class="number">2</span>,<span class="number">10</span>,-<span class="number">1</span>,<span class="number">2</span>},<span class="function-name">bind</span>(ops.gt, _1, <span class="number">0</span>))
 {<span class="number">1</span>,<span class="number">10</span>,<span class="number">2</span>}
 </pre>
 
@@ -630,27 +630,27 @@ usefulness of binding the last argument of a function.</p>
 <pre>
 &gt; S1 = {john=<span class="number">27</span>, jane=<span class="number">31</span>, mary=<span class="number">24</span>}
 &gt; S2 = {jane=<span class="number">31</span>, jones=<span class="number">50</span>}
-&gt; intersection = bind(tablex.merge, _1, _2, <span class="keyword">false</span>)
-&gt; union = bind(tablex.merge, _1, _2, <span class="keyword">true</span>)
-&gt; = intersection(S1,S2)
+&gt; intersection = <span class="function-name">bind</span>(tablex.merge, _1, _2, <span class="keyword">false</span>)
+&gt; union = <span class="function-name">bind</span>(tablex.merge, _1, _2, <span class="keyword">true</span>)
+&gt; = <span class="function-name">intersection</span>(S1,S2)
 {jane=<span class="number">31</span>}
-&gt; = union(S1,S2)
+&gt; = <span class="function-name">union</span>(S1,S2)
 {mary=<span class="number">24</span>,jane=<span class="number">31</span>,john=<span class="number">27</span>,jones=<span class="number">50</span>}
 </pre>
 
-<p>When using <a href="../libraries/pl.func.html#bind">bind</a> with <a href="https://www.lua.org/manual/5.1/manual.html#pdf-print">print</a>, we got a function of precisely two arguments,
-whereas we really want our function to use varargs like <a href="https://www.lua.org/manual/5.1/manual.html#pdf-print">print</a>. This is the role
+<p>When using <a href="../libraries/pl.func.html#bind">bind</a> with <a href="https://www.lua.org/manual/5.4/manual.html#pdf-print">print</a>, we got a function of precisely two arguments,
+whereas we really want our function to use varargs like <a href="https://www.lua.org/manual/5.4/manual.html#pdf-print">print</a>. This is the role
 of <code>_0</code>:</p>
 
 
 <pre>
 &gt; _DEBUG = <span class="keyword">true</span>
-&gt; p = bind(<span class="global">print</span>,<span class="string">'start&gt;'</span>, _0)
+&gt; p = <span class="function-name">bind</span>(<span class="global">print</span>,<span class="string">'start&gt;'</span>, _0)
 <span class="keyword">return</span> <span class="keyword">function</span> (fn,_v1)
-    <span class="keyword">return</span> <span class="keyword">function</span>(...) <span class="keyword">return</span> fn(_v1,...) <span class="keyword">end</span>
+    <span class="keyword">return</span> <span class="keyword">function</span>(...) <span class="keyword">return</span> <span class="function-name">fn</span>(_v1,...) <span class="keyword">end</span>
 <span class="keyword">end</span>
 
-&gt; p(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>)
+&gt; <span class="function-name">p</span>(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>)
 start&gt;  <span class="number">1</span>       <span class="number">2</span>       <span class="number">3</span>       <span class="number">4</span>       <span class="number">5</span>
 </pre>
 
@@ -667,7 +667,7 @@ anonymous functions well, although they can be a bit tedious to type:</p>
 
 
 <pre>
-&gt; = tablex.map(<span class="keyword">function</span>(x) <span class="keyword">return</span> x*x <span class="keyword">end</span>, {<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>})
+&gt; = tablex.<span class="function-name">map</span>(<span class="keyword">function</span>(x) <span class="keyword">return</span> x*x <span class="keyword">end</span>, {<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>})
 {<span class="number">1</span>,<span class="number">4</span>,<span class="number">9</span>,<span class="number">16</span>}
 </pre>
 
@@ -679,8 +679,8 @@ Boost libraries.)</p>
 
 
 <pre>
-&gt; utils.import <span class="string">'pl.func'</span>
-&gt; = tablex.map(_1*_1, {<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>})
+&gt; utils.<span class="function-name">import</span> <span class="string">'pl.func'</span>
+&gt; = tablex.<span class="function-name">map</span>(_1*_1, {<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>})
 {<span class="number">1</span>,<span class="number">4</span>,<span class="number">9</span>,<span class="number">16</span>}
 </pre>
 
@@ -688,21 +688,21 @@ Boost libraries.)</p>
 
 
 <pre>
-&gt; = tablex.map2(_1+_2,{<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>}, {<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>})
+&gt; = tablex.<span class="function-name">map2</span>(_1+_2,{<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>}, {<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>})
 {<span class="number">11</span>,<span class="number">22</span>,<span class="number">33</span>}
 </pre>
 
-<p>These expressions can use arbitrary functions, altho they must first be
+<p>These expressions can use arbitrary functions, although they must first be
 registered with the functional library. <a href="../libraries/pl.func.html#register">func.register</a> brings in a single
-function, and <a href="../libraries/pl.func.html#import">func.import</a> brings in a whole table of functions, such as <a href="https://www.lua.org/manual/5.1/manual.html#5.6">math</a>.</p>
+function, and <a href="../libraries/pl.func.html#import">func.import</a> brings in a whole table of functions, such as <a href="https://www.lua.org/manual/5.4/manual.html#6.7">math</a>.</p>
 
 
 <pre>
-&gt; sin = register(<span class="global">math</span>.sin)
-&gt; = tablex.map(sin(_1), {<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>})
+&gt; sin = <span class="function-name">register</span>(<span class="global">math</span>.sin)
+&gt; = tablex.<span class="function-name">map</span>(<span class="function-name">sin</span>(_1), {<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>})
 {<span class="number">0.8414709848079</span>,<span class="number">0.90929742682568</span>,<span class="number">0.14112000805987</span>,-<span class="number">0.75680249530793</span>}
-&gt; import <span class="string">'math'</span>
-&gt; = tablex.map(cos(<span class="number">2</span>*_1),{<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>})
+&gt; <span class="function-name">import</span> <span class="string">'math'</span>
+&gt; = tablex.<span class="function-name">map</span>(<span class="function-name">cos</span>(<span class="number">2</span>*_1),{<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>})
 {-<span class="number">0.41614683654714</span>,-<span class="number">0.65364362086361</span>,<span class="number">0.96017028665037</span>,-<span class="number">0.14550003380861</span>}
 </pre>
 
@@ -710,17 +710,17 @@ function, and <a href="../libraries/pl.func.html#import">func.import</a> brings 
 
 
 <pre>
-&gt; = tablex.map(_1:sub(<span class="number">1</span>,<span class="number">1</span>), {<span class="string">'one'</span>,<span class="string">'four'</span>,<span class="string">'x'</span>})
+&gt; = tablex.<span class="function-name">map</span>(_1:<span class="function-name">sub</span>(<span class="number">1</span>,<span class="number">1</span>), {<span class="string">'one'</span>,<span class="string">'four'</span>,<span class="string">'x'</span>})
 {<span class="string">'o'</span>,<span class="string">'f'</span>,<span class="string">'x'</span>}
 </pre>
 
 <p>There are some restrictions on what operators can be used in PEs. For instance,
-because the <code>__len</code> metamethod cannot be overriden by plain Lua tables, we need
+because the <code>__len</code> metamethod cannot be overridden by plain Lua tables, we need
 to define a special function to express `#_1':</p>
 
 
 <pre>
-&gt; = tablex.map(Len(_1), {<span class="string">'one'</span>,<span class="string">'four'</span>,<span class="string">'x'</span>})
+&gt; = tablex.<span class="function-name">map</span>(<span class="function-name">Len</span>(_1), {<span class="string">'one'</span>,<span class="string">'four'</span>,<span class="string">'x'</span>})
 {<span class="number">3</span>,<span class="number">4</span>,<span class="number">1</span>}
 </pre>
 
@@ -729,7 +729,7 @@ types, and thus also have to be expressed as a special function:</p>
 
 
 <pre>
-&gt; = tablex.filter(Gt(_1,<span class="number">0</span>), {<span class="number">1</span>,-<span class="number">1</span>,<span class="number">2</span>,<span class="number">4</span>,-<span class="number">3</span>})
+&gt; = tablex.<span class="function-name">filter</span>(<span class="function-name">Gt</span>(_1,<span class="number">0</span>), {<span class="number">1</span>,-<span class="number">1</span>,<span class="number">2</span>,<span class="number">4</span>,-<span class="number">3</span>})
 {<span class="number">1</span>,<span class="number">2</span>,<span class="number">4</span>}
 </pre>
 
@@ -739,7 +739,7 @@ and the value, and returns the new value and the key, in that order.</p>
 
 
 <pre>
-&gt; = pairmap(Args(_2,_1:upper()),{fred=<span class="number">1</span>,alice=<span class="number">2</span>})
+&gt; = <span class="function-name">pairmap</span>(<span class="function-name">Args</span>(_2,_1:<span class="function-name">upper</span>()),{fred=<span class="number">1</span>,alice=<span class="number">2</span>})
 {ALICE=<span class="number">2</span>,FRED=<span class="number">1</span>}
 </pre>
 
@@ -754,7 +754,7 @@ function calls like <code>_1(1)</code>.  If you want to force a PE to return a f
 
 
 <pre>
-&gt; = tablex.map(_1(<span class="number">10</span>),{I(<span class="number">2</span>*_1),I(_1*_1),I(_1+<span class="number">2</span>)})
+&gt; = tablex.<span class="function-name">map</span>(<span class="function-name">_1</span>(<span class="number">10</span>),{<span class="function-name">I</span>(<span class="number">2</span>*_1),<span class="function-name">I</span>(_1*_1),<span class="function-name">I</span>(_1+<span class="number">2</span>)})
 {<span class="number">20</span>,<span class="number">100</span>,<span class="number">12</span>}
 </pre>
 
@@ -782,7 +782,7 @@ This is equivalent to using the `lines' method:</p>
 
 
 <pre>
-<span class="keyword">for</span> line <span class="keyword">in</span> I(_(f):read()) <span class="keyword">do</span> <span class="global">print</span>(line) <span class="keyword">end</span>
+<span class="keyword">for</span> line <span class="keyword">in</span> <span class="function-name">I</span>(<span class="function-name">_</span>(f):<span class="function-name">read</span>()) <span class="keyword">do</span> <span class="global">print</span>(line) <span class="keyword">end</span>
 </pre>
 
 <p>Now this will work for <em>any</em> 'file-like' object which which has a <code>read</code> method
@@ -800,7 +800,7 @@ and finally copy to a list.</p>
 
 <pre>
 &gt; str = <span class="string">'for i=1,10 do for j = 1,10 do print(i,j) end end'</span>
-&gt; = seq(lexer.lua(str)):filter(<span class="string">'=='</span>,<span class="string">'iden'</span>):map(_2):unique():copy()
+&gt; = <span class="function-name">seq</span>(lexer.<span class="function-name">lua</span>(str)):<span class="function-name">filter</span>(<span class="string">'=='</span>,<span class="string">'iden'</span>):<span class="function-name">map</span>(_2):<span class="function-name">unique</span>():<span class="function-name">copy</span>()
 {i,<span class="global">print</span>,j}
 </pre>
 
@@ -816,9 +816,9 @@ this;</p>
 
 
 <pre>
-<span class="keyword">local</span> fn = I(_1:f() + _2:g())
+<span class="keyword">local</span> fn = <span class="function-name">I</span>(_1:<span class="function-name">f</span>() + _2:<span class="function-name">g</span>())
 <span class="keyword">for</span> i = <span class="number">1</span>,n <span class="keyword">do</span>
-    res[i] = tablex.map2(fn,first[i],second[i])
+    res[i] = tablex.<span class="function-name">map2</span>(fn,first[i],second[i])
 <span class="keyword">end</span>
 </pre>
 
@@ -827,7 +827,7 @@ this;</p>
 </div> <!-- id="content" -->
 </div> <!-- id="main" -->
 <div id="about">
-<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.5.0</a></i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>

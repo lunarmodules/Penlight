@@ -127,9 +127,9 @@
 
 <pre>
 &gt; Map = <span class="global">require</span> <span class="string">'pl.Map'</span>
-&gt; m = Map{one=<span class="number">1</span>,two=<span class="number">2</span>}
-&gt; m:update {three=<span class="number">3</span>,four=<span class="number">4</span>,two=<span class="number">20</span>}
-&gt; = m == M{one=<span class="number">1</span>,two=<span class="number">20</span>,three=<span class="number">3</span>,four=<span class="number">4</span>}
+&gt; m = <span class="function-name">Map</span>{one=<span class="number">1</span>,two=<span class="number">2</span>}
+&gt; m:<span class="function-name">update</span> {three=<span class="number">3</span>,four=<span class="number">4</span>,two=<span class="number">20</span>}
+&gt; = m == <span class="function-name">M</span>{one=<span class="number">1</span>,two=<span class="number">20</span>,three=<span class="number">3</span>,four=<span class="number">4</span>}
 <span class="keyword">true</span>
 </pre>
 
@@ -140,57 +140,57 @@
 <h2><a href="#Fields">Fields</a></h2>
 <table class="function_list">
 	<tr>
-	<td class="name" nowrap><a href="#pl.Map.keys">pl.Map.keys</a></td>
+	<td class="name" nowrap><a href="#pl.map.keys">pl.map.keys</a></td>
 	<td class="summary">list of keys.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#pl.Map.values">pl.Map.values</a></td>
+	<td class="name" nowrap><a href="#pl.map.values">pl.map.values</a></td>
 	<td class="summary">list of values.</td>
 	</tr>
 </table>
 <h2><a href="#Methods">Methods</a></h2>
 <table class="function_list">
 	<tr>
-	<td class="name" nowrap><a href="#pl.Map:iter">pl.Map:iter ()</a></td>
+	<td class="name" nowrap><a href="#pl.map:iter">pl.map:iter ()</a></td>
 	<td class="summary">return an iterator over all key-value pairs.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#pl.Map:items">pl.Map:items ()</a></td>
+	<td class="name" nowrap><a href="#pl.map:items">pl.map:items ()</a></td>
 	<td class="summary">return a List of all key-value pairs, sorted by the keys.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#pl.Map:setdefault">pl.Map:setdefault (key, default)</a></td>
+	<td class="name" nowrap><a href="#pl.map:setdefault">pl.map:setdefault (key, default)</a></td>
 	<td class="summary">set a value in the map if it doesn't exist yet.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#pl.Map:len">pl.Map:len ()</a></td>
+	<td class="name" nowrap><a href="#pl.map:len">pl.map:len ()</a></td>
 	<td class="summary">size of map.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#pl.Map:set">pl.Map:set (key, val)</a></td>
+	<td class="name" nowrap><a href="#pl.map:set">pl.map:set (key, val)</a></td>
 	<td class="summary">put a value into the map.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#pl.Map:get">pl.Map:get (key)</a></td>
+	<td class="name" nowrap><a href="#pl.map:get">pl.map:get (key)</a></td>
 	<td class="summary">get a value from the map.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#pl.Map:getvalues">pl.Map:getvalues (keys)</a></td>
+	<td class="name" nowrap><a href="#pl.map:getvalues">pl.map:getvalues (keys)</a></td>
 	<td class="summary">get a list of values indexed by a list of keys.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#pl.Map:update">pl.Map:update (table)</a></td>
+	<td class="name" nowrap><a href="#pl.map:update">pl.map:update (table)</a></td>
 	<td class="summary">update the map using key/value pairs from another table.</td>
 	</tr>
 </table>
 <h2><a href="#Metamethods">Metamethods</a></h2>
 <table class="function_list">
 	<tr>
-	<td class="name" nowrap><a href="#pl.Map:__eq">pl.Map:__eq (m)</a></td>
+	<td class="name" nowrap><a href="#pl.map:__eq">pl.map:__eq (m)</a></td>
 	<td class="summary">equality between maps.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#pl.Map:__tostring">pl.Map:__tostring ()</a></td>
+	<td class="name" nowrap><a href="#pl.map:__tostring">pl.map:__tostring ()</a></td>
 	<td class="summary">string representation of a map.</td>
 	</tr>
 </table>
@@ -203,8 +203,8 @@
 
     <dl class="function">
     <dt>
-    <a name = "pl.Map.keys"></a>
-    <strong>pl.Map.keys</strong>
+    <a name = "pl.map.keys"></a>
+    <strong>pl.map.keys</strong>
     </dt>
     <dd>
     list of keys.
@@ -217,8 +217,8 @@
 
 </dd>
     <dt>
-    <a name = "pl.Map.values"></a>
-    <strong>pl.Map.values</strong>
+    <a name = "pl.map.values"></a>
+    <strong>pl.map.values</strong>
     </dt>
     <dd>
     list of values.
@@ -235,8 +235,8 @@
 
     <dl class="function">
     <dt>
-    <a name = "pl.Map:iter"></a>
-    <strong>pl.Map:iter ()</strong>
+    <a name = "pl.map:iter"></a>
+    <strong>pl.map:iter ()</strong>
     </dt>
     <dd>
     return an iterator over all key-value pairs.
@@ -249,8 +249,8 @@
 
 </dd>
     <dt>
-    <a name = "pl.Map:items"></a>
-    <strong>pl.Map:items ()</strong>
+    <a name = "pl.map:items"></a>
+    <strong>pl.map:items ()</strong>
     </dt>
     <dd>
     return a List of all key-value pairs, sorted by the keys.
@@ -263,8 +263,8 @@
 
 </dd>
     <dt>
-    <a name = "pl.Map:setdefault"></a>
-    <strong>pl.Map:setdefault (key, default)</strong>
+    <a name = "pl.map:setdefault"></a>
+    <strong>pl.map:setdefault (key, default)</strong>
     </dt>
     <dd>
     set a value in the map if it doesn't exist yet.
@@ -291,8 +291,8 @@
 
 </dd>
     <dt>
-    <a name = "pl.Map:len"></a>
-    <strong>pl.Map:len ()</strong>
+    <a name = "pl.map:len"></a>
+    <strong>pl.map:len ()</strong>
     </dt>
     <dd>
     size of map.
@@ -306,8 +306,8 @@
 
 </dd>
     <dt>
-    <a name = "pl.Map:set"></a>
-    <strong>pl.Map:set (key, val)</strong>
+    <a name = "pl.map:set"></a>
+    <strong>pl.map:set (key, val)</strong>
     </dt>
     <dd>
     put a value into the map.
@@ -330,8 +330,8 @@
 
 </dd>
     <dt>
-    <a name = "pl.Map:get"></a>
-    <strong>pl.Map:get (key)</strong>
+    <a name = "pl.map:get"></a>
+    <strong>pl.map:get (key)</strong>
     </dt>
     <dd>
     get a value from the map.
@@ -355,8 +355,8 @@
 
 </dd>
     <dt>
-    <a name = "pl.Map:getvalues"></a>
-    <strong>pl.Map:getvalues (keys)</strong>
+    <a name = "pl.map:getvalues"></a>
+    <strong>pl.map:getvalues (keys)</strong>
     </dt>
     <dd>
     get a list of values indexed by a list of keys.
@@ -380,8 +380,8 @@
 
 </dd>
     <dt>
-    <a name = "pl.Map:update"></a>
-    <strong>pl.Map:update (table)</strong>
+    <a name = "pl.map:update"></a>
+    <strong>pl.map:update (table)</strong>
     </dt>
     <dd>
     update the map using key/value pairs from another table.
@@ -390,7 +390,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">table</span>
-            <span class="types"><span class="type">tab</span></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.6">table</a></span>
 
 
 
@@ -407,8 +407,8 @@
 
     <dl class="function">
     <dt>
-    <a name = "pl.Map:__eq"></a>
-    <strong>pl.Map:__eq (m)</strong>
+    <a name = "pl.map:__eq"></a>
+    <strong>pl.map:__eq (m)</strong>
     </dt>
     <dd>
     equality between maps.
@@ -428,8 +428,8 @@
 
 </dd>
     <dt>
-    <a name = "pl.Map:__tostring"></a>
-    <strong>pl.Map:__tostring ()</strong>
+    <a name = "pl.map:__tostring"></a>
+    <strong>pl.map:__tostring ()</strong>
     </dt>
     <dd>
     string representation of a map.
@@ -447,7 +447,7 @@
 </div> <!-- id="content" -->
 </div> <!-- id="main" -->
 <div id="about">
-<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.5.0</a></i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>

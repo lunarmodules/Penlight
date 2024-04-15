@@ -142,24 +142,24 @@ it can print itself out more sensibly:</p>
 
 <pre>
 &gt; List = <span class="global">require</span> <span class="string">'pl.List'</span>  <span class="comment">--&gt; automatic with require 'pl' &lt;---
-</span>&gt; l = List()
-&gt; l:append(<span class="number">10</span>)
-&gt; l:append(<span class="number">20</span>)
-&gt; = l
+</span>&gt; l = <span class="function-name">List</span>()
+&gt; l:<span class="function-name">append</span>(<span class="number">10</span>)
+&gt; l:<span class="function-name">append</span>(<span class="number">20</span>)
+&gt; = <span class="function-name">l</span>
 {<span class="number">10</span>,<span class="number">20</span>}
-&gt; l:extend {<span class="number">30</span>,<span class="number">40</span>}
+&gt; l:<span class="function-name">extend</span> {<span class="number">30</span>,<span class="number">40</span>}
 {<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>,<span class="number">40</span>}
-&gt; l:insert(<span class="number">1</span>,<span class="number">5</span>)
+&gt; l:<span class="function-name">insert</span>(<span class="number">1</span>,<span class="number">5</span>)
 {<span class="number">5</span>,<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>,<span class="number">40</span>}
-&gt; = l:pop()
+&gt; = l:<span class="function-name">pop</span>()
 <span class="number">40</span>
-&gt; = l
+&gt; = <span class="function-name">l</span>
 {<span class="number">5</span>,<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>}
-&gt; = l:index(<span class="number">30</span>)
+&gt; = l:<span class="function-name">index</span>(<span class="number">30</span>)
 <span class="number">4</span>
-&gt; = l:contains(<span class="number">30</span>)
+&gt; = l:<span class="function-name">contains</span>(<span class="number">30</span>)
 <span class="keyword">true</span>
-&gt; = l:reverse()  <span class="comment">---&gt; note: doesn't make a copy!
+&gt; = l:<span class="function-name">reverse</span>()  <span class="comment">---&gt; note: doesn't make a copy!
 </span>{<span class="number">30</span>,<span class="number">20</span>,<span class="number">10</span>,<span class="number">5</span>}
 </pre>
 
@@ -174,22 +174,22 @@ table and <em>not</em> make a copy.</p>
 
 <p>A particular feature of Python lists is <em>slicing</em>. This is fully supported in
 this version of <a href="../classes/pl.List.html#">List</a>, except we use 1-based indexing. So <a href="../classes/pl.List.html#List:slice">List.slice</a> works
-rather like <a href="https://www.lua.org/manual/5.1/manual.html#pdf-string.sub">string.sub</a>:</p>
+rather like <a href="https://www.lua.org/manual/5.4/manual.html#pdf-string.sub">string.sub</a>:</p>
 
 
 <pre>
-&gt; l = List {<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>,<span class="number">40</span>}
-&gt; = l:slice(<span class="number">1</span>,<span class="number">1</span>)  <span class="comment">---&gt; note: creates a new list!
+&gt; l = <span class="function-name">List</span> {<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>,<span class="number">40</span>}
+&gt; = l:<span class="function-name">slice</span>(<span class="number">1</span>,<span class="number">1</span>)  <span class="comment">---&gt; note: creates a new list!
 </span>{<span class="number">10</span>}
-&gt; = l:slice(<span class="number">2</span>,<span class="number">2</span>)
+&gt; = l:<span class="function-name">slice</span>(<span class="number">2</span>,<span class="number">2</span>)
 {<span class="number">20</span>}
-&gt; = l:slice(<span class="number">2</span>,<span class="number">3</span>)
+&gt; = l:<span class="function-name">slice</span>(<span class="number">2</span>,<span class="number">3</span>)
 {<span class="number">20</span>,<span class="number">30</span>}
-&gt; = l:slice(<span class="number">2</span>,-<span class="number">2</span>)
+&gt; = l:<span class="function-name">slice</span>(<span class="number">2</span>,-<span class="number">2</span>)
 {<span class="number">20</span>,<span class="number">30</span>}
-&gt; = l:slice_assign(<span class="number">2</span>,<span class="number">2</span>,{<span class="number">21</span>,<span class="number">22</span>,<span class="number">23</span>})
+&gt; = l:<span class="function-name">slice_assign</span>(<span class="number">2</span>,<span class="number">2</span>,{<span class="number">21</span>,<span class="number">22</span>,<span class="number">23</span>})
 {<span class="number">10</span>,<span class="number">21</span>,<span class="number">22</span>,<span class="number">23</span>,<span class="number">30</span>,<span class="number">40</span>}
-&gt; = l:chop(<span class="number">1</span>,<span class="number">1</span>)
+&gt; = l:<span class="function-name">chop</span>(<span class="number">1</span>,<span class="number">1</span>)
 {<span class="number">21</span>,<span class="number">22</span>,<span class="number">23</span>,<span class="number">30</span>,<span class="number">40</span>}
 </pre>
 
@@ -204,24 +204,24 @@ all elements.</p>
 
 
 <pre>
-&gt; l1 = List {<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>}
-&gt; l2 = List {<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>}
+&gt; l1 = <span class="function-name">List</span> {<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>}
+&gt; l2 = <span class="function-name">List</span> {<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>}
 &gt; = l1 == l2
 <span class="keyword">true</span>
-&gt; = l1..l2
+&gt; = l1..<span class="function-name">l2</span>
 {<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>}
 </pre>
 
 <p>The <a href="../classes/pl.List.html#">List</a> constructor can be passed a function. If so, it's assumed that this is
 an iterator function that can be repeatedly called to generate a sequence.  One
-such function is <a href="https://www.lua.org/manual/5.1/manual.html#pdf-io.lines">io.lines</a>; the following short, intense little script counts
+such function is <a href="https://www.lua.org/manual/5.4/manual.html#pdf-io.lines">io.lines</a>; the following short, intense little script counts
 the number of lines in standard input:</p>
 
 
 <pre>
 <span class="comment">-- linecount.lua
 </span><span class="global">require</span> <span class="string">'pl'</span>
-ls = List(<span class="global">io</span>.lines())
+ls = <span class="function-name">List</span>(<span class="global">io</span>.<span class="function-name">lines</span>())
 <span class="global">print</span>(#ls)
 </pre>
 
@@ -230,7 +230,7 @@ also iterate over all 'characters' in a string:</p>
 
 
 <pre>
-&gt; <span class="keyword">for</span> ch <span class="keyword">in</span> List.iterate <span class="string">'help'</span> <span class="keyword">do</span> <span class="global">io</span>.write(ch,<span class="string">' '</span>) <span class="keyword">end</span>
+&gt; <span class="keyword">for</span> ch <span class="keyword">in</span> List.<span class="function-name">iterate</span> <span class="string">'help'</span> <span class="keyword">do</span> <span class="global">io</span>.<span class="function-name">write</span>(ch,<span class="string">' '</span>) <span class="keyword">end</span>
 h e l p &gt;
 </pre>
 
@@ -241,17 +241,17 @@ strings can be made into lists of character strings very easily.</p>
 instance, you can <em>partition</em> a list into a table of sublists using a function.
 In the simplest form, you use a predicate (a function returning a boolean value)
 to partition the list into two lists, one of elements matching and another of
-elements not matching. But you can use any function; if we use <a href="https://www.lua.org/manual/5.1/manual.html#pdf-type">type</a> then the
+elements not matching. But you can use any function; if we use <a href="https://www.lua.org/manual/5.4/manual.html#pdf-type">type</a> then the
 keys will be the standard Lua type names.</p>
 
 
 <pre>
-&gt; ls = List{<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>}
+&gt; ls = <span class="function-name">List</span>{<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>}
 &gt; ops = <span class="global">require</span> <span class="string">'pl.operator'</span>
-&gt; ls:partition(<span class="keyword">function</span>(x) <span class="keyword">return</span> x &gt; <span class="number">2</span> <span class="keyword">end</span>)
+&gt; ls:<span class="function-name">partition</span>(<span class="keyword">function</span>(x) <span class="keyword">return</span> x &gt; <span class="number">2</span> <span class="keyword">end</span>)
 {<span class="keyword">false</span>={<span class="number">1</span>,<span class="number">2</span>},<span class="keyword">true</span>={<span class="number">3</span>,<span class="number">4</span>}}
-&gt; ls = List{<span class="string">'one'</span>,<span class="global">math</span>.sin,List{<span class="number">1</span>},<span class="number">10</span>,<span class="number">20</span>,List{<span class="number">1</span>,<span class="number">2</span>}}
-&gt; ls:partition(<span class="global">type</span>)
+&gt; ls = <span class="function-name">List</span>{<span class="string">'one'</span>,<span class="global">math</span>.sin,<span class="function-name">List</span>{<span class="number">1</span>},<span class="number">10</span>,<span class="number">20</span>,<span class="function-name">List</span>{<span class="number">1</span>,<span class="number">2</span>}}
+&gt; ls:<span class="function-name">partition</span>(<span class="global">type</span>)
 {<span class="keyword">function</span>={<span class="keyword">function</span>: <span class="number">00369110</span>},<span class="global">string</span>={one},number={<span class="number">10</span>,<span class="number">20</span>},<span class="global">table</span>={{<span class="number">1</span>},{<span class="number">1</span>,<span class="number">2</span>}}}
 </pre>
 
@@ -271,7 +271,7 @@ there is already <code>pop</code> (remove and return last value) and <code>appen
 <code>push</code> (add a value to the end). <code>push</code> is provided as an alias for <code>append</code>, and
 the other stack operation (size) is simply the size operator <code>#</code>.  Queues can
 also be implemented; you use <code>pop</code> to take values out of the queue, and <code>put</code> to
-insert a value at the begining.</p>
+insert a value at the beginning.</p>
 
 <p>You may derive classes from <a href="../classes/pl.List.html#">List</a>, and since the list-returning methods
 are covariant, the result of <code>slice</code> etc will return lists of the derived type,
@@ -280,13 +280,13 @@ numbers in <code>tests/test-list.lua</code>:</p>
 
 
 <pre>
-n1 = NA{<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>}
-n2 = NA{<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>}
+n1 = <span class="function-name">NA</span>{<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>}
+n2 = <span class="function-name">NA</span>{<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>}
 ns = n1 + <span class="number">2</span>*n2
-asserteq(ns,{<span class="number">12</span>,<span class="number">24</span>,<span class="number">36</span>})
-min,max = ns:slice(<span class="number">1</span>,<span class="number">2</span>):minmax()
-asserteq(T(min,max),T(<span class="number">12</span>,<span class="number">24</span>))
-asserteq(n1:normalize():sum(),<span class="number">1</span>,<span class="number">1e-8</span>)
+<span class="function-name">asserteq</span>(ns,{<span class="number">12</span>,<span class="number">24</span>,<span class="number">36</span>})
+min,max = ns:<span class="function-name">slice</span>(<span class="number">1</span>,<span class="number">2</span>):<span class="function-name">minmax</span>()
+<span class="function-name">asserteq</span>(<span class="function-name">T</span>(min,max),<span class="function-name">T</span>(<span class="number">12</span>,<span class="number">24</span>))
+<span class="function-name">asserteq</span>(n1:<span class="function-name">normalize</span>():<span class="function-name">sum</span>(),<span class="number">1</span>,<span class="number">1e-8</span>)
 </pre>
 
 <p><a name="Map_and_Set_classes"></a></p>
@@ -304,9 +304,9 @@ overwriting existing keys:</p>
 
 <pre>
 &gt; Map = <span class="global">require</span> <span class="string">'pl.Map'</span>
-&gt; m = Map{one=<span class="number">1</span>,two=<span class="number">2</span>}
-&gt; m:update {three=<span class="number">3</span>,four=<span class="number">4</span>,two=<span class="number">20</span>}
-&gt; = m == M{one=<span class="number">1</span>,two=<span class="number">20</span>,three=<span class="number">3</span>,four=<span class="number">4</span>}
+&gt; m = <span class="function-name">Map</span>{one=<span class="number">1</span>,two=<span class="number">2</span>}
+&gt; m:<span class="function-name">update</span> {three=<span class="number">3</span>,four=<span class="number">4</span>,two=<span class="number">20</span>}
+&gt; = m == <span class="function-name">M</span>{one=<span class="number">1</span>,two=<span class="number">20</span>,three=<span class="number">3</span>,four=<span class="number">4</span>}
 <span class="keyword">true</span>
 </pre>
 
@@ -316,10 +316,10 @@ returns a list of values associated with these keys:</p>
 
 
 <pre>
-&gt; m = Map{one=<span class="number">1</span>,two=<span class="number">2</span>,three=<span class="number">3</span>}
-&gt; = m:getvalues {<span class="string">'one'</span>,<span class="string">'three'</span>}
+&gt; m = <span class="function-name">Map</span>{one=<span class="number">1</span>,two=<span class="number">2</span>,three=<span class="number">3</span>}
+&gt; = m:<span class="function-name">getvalues</span> {<span class="string">'one'</span>,<span class="string">'three'</span>}
 {<span class="number">1</span>,<span class="number">3</span>}
-&gt; = m:getvalues(m:keys()) == m:values()
+&gt; = m:<span class="function-name">getvalues</span>(m:<span class="function-name">keys</span>()) == m:<span class="function-name">values</span>()
 <span class="keyword">true</span>
 </pre>
 
@@ -327,7 +327,7 @@ returns a list of values associated with these keys:</p>
 
 
 <pre>
-&gt; <span class="global">print</span>(m:get <span class="string">'one'</span>, m:get <span class="string">'two'</span>)
+&gt; <span class="global">print</span>(m:<span class="function-name">get</span> <span class="string">'one'</span>, m:<span class="function-name">get</span> <span class="string">'two'</span>)
 <span class="number">1</span>     <span class="number">2</span>
 </pre>
 
@@ -349,23 +349,23 @@ will return a list of values.</p>
 
 <p>A <a href="../classes/pl.Set.html#">Set</a> can be seen as a special kind of <a href="../classes/pl.Map.html#">Map</a>, where all the values are <code>true</code>,
 the keys are the values, and the order is not important. So in this case
-<a href="../classes/pl.Set.html#pl.Set:values">Set.values</a> is defined to return a list of the keys.  Sets can display
+<a href="../classes/pl.Set.html#pl.set:values">Set.values</a> is defined to return a list of the keys.  Sets can display
 themselves, and the basic operations like <code>union</code> (<code>+</code>) and <code>intersection</code> (<code>*</code>)
 are defined.</p>
 
 
 <pre>
 &gt; Set = <span class="global">require</span> <span class="string">'pl.Set'</span>
-&gt; = Set{<span class="string">'one'</span>,<span class="string">'two'</span>} == Set{<span class="string">'two'</span>,<span class="string">'one'</span>}
+&gt; = <span class="function-name">Set</span>{<span class="string">'one'</span>,<span class="string">'two'</span>} == <span class="function-name">Set</span>{<span class="string">'two'</span>,<span class="string">'one'</span>}
 <span class="keyword">true</span>
-&gt; fruit = Set{<span class="string">'apple'</span>,<span class="string">'banana'</span>,<span class="string">'orange'</span>}
+&gt; fruit = <span class="function-name">Set</span>{<span class="string">'apple'</span>,<span class="string">'banana'</span>,<span class="string">'orange'</span>}
 &gt; = fruit[<span class="string">'banana'</span>]
 <span class="keyword">true</span>
 &gt; = fruit[<span class="string">'hazelnut'</span>]
 <span class="keyword">nil</span>
-&gt; = fruit:values()
+&gt; = fruit:<span class="function-name">values</span>()
 {apple,orange,banana}
-&gt; colours = Set{<span class="string">'red'</span>,<span class="string">'orange'</span>,<span class="string">'green'</span>,<span class="string">'blue'</span>}
+&gt; colours = <span class="function-name">Set</span>{<span class="string">'red'</span>,<span class="string">'orange'</span>,<span class="string">'green'</span>,<span class="string">'blue'</span>}
 &gt; = fruit,colours
 [apple,orange,banana]   [blue,green,orange,red]
 &gt; = fruit+colours
@@ -374,7 +374,7 @@ are defined.</p>
 [orange]
 </pre>
 
-<p>There are also the functions <a href="../classes/pl.Set.html#pl.Set:difference">Set.difference</a> and <code>Set.symmetric_difference</code>. The
+<p>There are also the functions <a href="../classes/pl.Set.html#pl.set:difference">Set.difference</a> and <code>Set.symmetric_difference</code>. The
 first answers the question 'what fruits are not colours?' and the second 'what
 are fruits and colours but not both?'</p>
 
@@ -407,7 +407,7 @@ implementation used; it is more accurate to say that a Lua table is an
 associative map which happens to be particularly efficient at acting like an
 array.)</p>
 
-<p>The functions provided in <a href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a> provide all the basic manipulations on Lua
+<p>The functions provided in <a href="https://www.lua.org/manual/5.4/manual.html#6.6">table</a> provide all the basic manipulations on Lua
 tables, but as we saw with the <a href="../classes/pl.List.html#">List</a> class, it is useful to build higher-level
 operations on top of those functions. For instance, to copy a table involves this
 kind of loop:</p>
@@ -431,9 +431,9 @@ It ensures that any left-over elements will be deleted:</p>
 
 
 <pre>
-asserteq(icopy({<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>},{<span class="number">20</span>,<span class="number">30</span>}),{<span class="number">20</span>,<span class="number">30</span>})   <span class="comment">-- start at 1
-</span>asserteq(icopy({<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>},{<span class="number">20</span>,<span class="number">30</span>},<span class="number">2</span>),{<span class="number">1</span>,<span class="number">20</span>,<span class="number">30</span>}) <span class="comment">-- start at 2
-</span>asserteq(icopy({<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>},{<span class="number">20</span>,<span class="number">30</span>},<span class="number">2</span>,<span class="number">2</span>),{<span class="number">1</span>,<span class="number">30</span>}) <span class="comment">-- start at 2, copy from 2</span>
+<span class="function-name">asserteq</span>(<span class="function-name">icopy</span>({<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>},{<span class="number">20</span>,<span class="number">30</span>}),{<span class="number">20</span>,<span class="number">30</span>})   <span class="comment">-- start at 1
+</span><span class="function-name">asserteq</span>(<span class="function-name">icopy</span>({<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>},{<span class="number">20</span>,<span class="number">30</span>},<span class="number">2</span>),{<span class="number">1</span>,<span class="number">20</span>,<span class="number">30</span>}) <span class="comment">-- start at 2
+</span><span class="function-name">asserteq</span>(<span class="function-name">icopy</span>({<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>},{<span class="number">20</span>,<span class="number">30</span>},<span class="number">2</span>,<span class="number">2</span>),{<span class="number">1</span>,<span class="number">30</span>}) <span class="comment">-- start at 2, copy from 2</span>
 </pre>
 
 <p>(This code from the <a href="../libraries/pl.tablex.html#">tablex</a> test module shows the use of <a href="../libraries/pl.test.html#asserteq">pl.test.asserteq</a>)</p>
@@ -442,9 +442,9 @@ asserteq(icopy({<span class="number">1</span>,<span class="number">2</span>,<spa
 
 
 <pre>
-asserteq(move({<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>},{<span class="number">20</span>,<span class="number">30</span>}),{<span class="number">20</span>,<span class="number">30</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>})
-asserteq(move({<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>},{<span class="number">20</span>,<span class="number">30</span>},<span class="number">2</span>),{<span class="number">1</span>,<span class="number">20</span>,<span class="number">30</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>})
-asserteq(move({<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>},{<span class="number">20</span>,<span class="number">30</span>},<span class="number">2</span>,<span class="number">2</span>),{<span class="number">1</span>,<span class="number">30</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>})
+<span class="function-name">asserteq</span>(<span class="function-name">move</span>({<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>},{<span class="number">20</span>,<span class="number">30</span>}),{<span class="number">20</span>,<span class="number">30</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>})
+<span class="function-name">asserteq</span>(<span class="function-name">move</span>({<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>},{<span class="number">20</span>,<span class="number">30</span>},<span class="number">2</span>),{<span class="number">1</span>,<span class="number">20</span>,<span class="number">30</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>})
+<span class="function-name">asserteq</span>(<span class="function-name">move</span>({<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>},{<span class="number">20</span>,<span class="number">30</span>},<span class="number">2</span>,<span class="number">2</span>),{<span class="number">1</span>,<span class="number">30</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>})
 </pre>
 
 <p>(The difference is somewhat like that between C's <code>strcpy</code> and <code>memmove</code>.)</p>
@@ -454,13 +454,13 @@ copy into a map-like table, use <a href="../libraries/pl.tablex.html#update">upd
 <a href="../libraries/pl.tablex.html#icopy">icopy</a>, and <a href="../libraries/pl.tablex.html#move">move</a> if you are updating a range in the destination.</p>
 
 <p>To complete this set of operations, there is <a href="../libraries/pl.tablex.html#insertvalues">insertvalues</a> which works like
-<a href="https://www.lua.org/manual/5.1/manual.html#pdf-table.insert">table.insert</a> except that one provides a table of values to be inserted, and
+<a href="https://www.lua.org/manual/5.4/manual.html#pdf-table.insert">table.insert</a> except that one provides a table of values to be inserted, and
 <a href="../libraries/pl.tablex.html#removevalues">removevalues</a> which removes a range of values.</p>
 
 
 <pre>
-asserteq(insertvalues({<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>},<span class="number">2</span>,{<span class="number">20</span>,<span class="number">30</span>}),{<span class="number">1</span>,<span class="number">20</span>,<span class="number">30</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>})
-asserteq(insertvalues({<span class="number">1</span>,<span class="number">2</span>},{<span class="number">3</span>,<span class="number">4</span>}),{<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>})
+<span class="function-name">asserteq</span>(<span class="function-name">insertvalues</span>({<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>},<span class="number">2</span>,{<span class="number">20</span>,<span class="number">30</span>}),{<span class="number">1</span>,<span class="number">20</span>,<span class="number">30</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>})
+<span class="function-name">asserteq</span>(<span class="function-name">insertvalues</span>({<span class="number">1</span>,<span class="number">2</span>},{<span class="number">3</span>,<span class="number">4</span>}),{<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>})
 </pre>
 
 <p>Another example:</p>
@@ -469,9 +469,9 @@ asserteq(insertvalues({<span class="number">1</span>,<span class="number">2</spa
 <pre>
 &gt; T = <span class="global">require</span> <span class="string">'pl.tablex'</span>
 &gt; t = {<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>,<span class="number">40</span>}
-&gt; = T.removevalues(t,<span class="number">2</span>,<span class="number">3</span>)
+&gt; = T.<span class="function-name">removevalues</span>(t,<span class="number">2</span>,<span class="number">3</span>)
 {<span class="number">10</span>,<span class="number">40</span>}
-&gt; = T.insertvalues(t,<span class="number">2</span>,{<span class="number">20</span>,<span class="number">30</span>})
+&gt; = T.<span class="function-name">insertvalues</span>(t,<span class="number">2</span>,{<span class="number">20</span>,<span class="number">30</span>})
 {<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>,<span class="number">40</span>}
 </pre>
 
@@ -481,22 +481,22 @@ true only if they have exactly the same values and structure.</p>
 
 <pre>
 &gt; t1 = {<span class="number">1</span>,{<span class="number">2</span>,<span class="number">3</span>},<span class="number">4</span>}
-&gt; t2 = deepcopy(t1)
+&gt; t2 = <span class="function-name">deepcopy</span>(t1)
 &gt; = t1 == t2
 <span class="keyword">false</span>
-&gt; = deepcompare(t1,t2)
+&gt; = <span class="function-name">deepcompare</span>(t1,t2)
 <span class="keyword">true</span>
 </pre>
 
 <p><a href="../libraries/pl.tablex.html#find">find</a> will return the index of a given value in a list-like table. Note that
-like <a href="https://www.lua.org/manual/5.1/manual.html#pdf-string.find">string.find</a> you can specify an index to start searching, so that all
+like <a href="https://www.lua.org/manual/5.4/manual.html#pdf-string.find">string.find</a> you can specify an index to start searching, so that all
 instances can be found. There is an optional fourth argument, which makes the
 search start at the end and go backwards, so we could define <a href="../libraries/pl.tablex.html#rfind">rfind</a> like so:</p>
 
 
 <pre>
-<span class="keyword">function</span> rfind(t,val,istart)
-    <span class="keyword">return</span> tablex.find(t,val,istart,<span class="keyword">true</span>)
+<span class="keyword">function</span> <span class="function-name">rfind</span>(t,val,istart)
+    <span class="keyword">return</span> tablex.<span class="function-name">find</span>(t,val,istart,<span class="keyword">true</span>)
 <span class="keyword">end</span>
 </pre>
 
@@ -509,11 +509,11 @@ representation needed for a <em>set</em>.)</p>
 
 <pre>
 &gt; t = {<span class="string">'one'</span>,<span class="string">'two'</span>,<span class="string">'three'</span>}
-&gt; = tablex.find(t,<span class="string">'two'</span>)
+&gt; = tablex.<span class="function-name">find</span>(t,<span class="string">'two'</span>)
 <span class="number">2</span>
-&gt; = tablex.find(t,<span class="string">'four'</span>)
+&gt; = tablex.<span class="function-name">find</span>(t,<span class="string">'four'</span>)
 <span class="keyword">nil</span>
-&gt; il = tablex.index_map(t)
+&gt; il = tablex.<span class="function-name">index_map</span>(t)
 &gt; = il[<span class="string">'two'</span>]
 <span class="number">2</span>
 &gt; = il.two
@@ -526,7 +526,7 @@ using <a href="../libraries/pl.tablex.html#deepcompare">deepcompare</a>:</p>
 
 
 <pre>
-&gt; = deepcompare(makeset {<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>},makeset {<span class="number">2</span>,<span class="number">1</span>,<span class="number">3</span>})
+&gt; = <span class="function-name">deepcompare</span>(<span class="function-name">makeset</span> {<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>},<span class="function-name">makeset</span> {<span class="number">2</span>,<span class="number">1</span>,<span class="number">3</span>})
 <span class="keyword">true</span>
 </pre>
 
@@ -538,7 +538,7 @@ period. Assume we have two files of employee names:</p>
 (last-month.txt)
 smith,john
 brady,maureen
-mongale,thabo
+mongale,<span class="function-name">thabo</span>
 
 (this-month.txt)
 smith,john
@@ -554,16 +554,16 @@ van der Merwe,Piet
 <pre>
 <span class="global">require</span> <span class="string">'pl'</span>
 
-<span class="keyword">function</span> read_employees(file)
-  <span class="keyword">local</span> ls = List(<span class="global">io</span>.lines(file)) <span class="comment">-- a list of employees
-</span>  <span class="keyword">return</span> tablex.makeset(ls)
+<span class="keyword">function</span> <span class="function-name">read_employees</span>(file)
+  <span class="keyword">local</span> ls = <span class="function-name">List</span>(<span class="global">io</span>.<span class="function-name">lines</span>(file)) <span class="comment">-- a list of employees
+</span>  <span class="keyword">return</span> tablex.<span class="function-name">makeset</span>(ls)
 <span class="keyword">end</span>
 
-last = read_employees <span class="string">'last-month.txt'</span>
-this = read_employees <span class="string">'this-month.txt'</span>
+last = <span class="function-name">read_employees</span> <span class="string">'last-month.txt'</span>
+this = <span class="function-name">read_employees</span> <span class="string">'this-month.txt'</span>
 
 <span class="comment">-- who is in this but not in last?
-</span>diff = tablex.difference(this,last)
+</span>diff = tablex.<span class="function-name">difference</span>(this,last)
 
 <span class="comment">-- in a set, the keys are the values...
 </span><span class="keyword">for</span> e <span class="keyword">in</span> <span class="global">pairs</span>(diff) <span class="keyword">do</span> <span class="global">print</span>(e) <span class="keyword">end</span>
@@ -596,7 +596,7 @@ comparison functions are available:</p>
 
 <pre>
 &gt; ops = <span class="global">require</span> <span class="string">'pl.operator'</span>
-&gt; = tablex.find_if({<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>,<span class="number">40</span>},ops.gt,<span class="number">20</span>)
+&gt; = tablex.<span class="function-name">find_if</span>({<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>,<span class="number">40</span>},ops.gt,<span class="number">20</span>)
 <span class="number">3</span>       <span class="keyword">true</span>
 </pre>
 
@@ -613,9 +613,9 @@ compare the two sets, as above:</p>
 
 
 <pre>
-&gt; = compare_no_order({<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>},{<span class="number">2</span>,<span class="number">1</span>,<span class="number">3</span>})
+&gt; = <span class="function-name">compare_no_order</span>({<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>},{<span class="number">2</span>,<span class="number">1</span>,<span class="number">3</span>})
 <span class="keyword">true</span>
-&gt; = compare_no_order({<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>},{<span class="number">2</span>,<span class="number">1</span>,<span class="number">3</span>},<span class="string">'=='</span>)
+&gt; = <span class="function-name">compare_no_order</span>({<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>},{<span class="number">2</span>,<span class="number">1</span>,<span class="number">3</span>},<span class="string">'=='</span>)
 <span class="keyword">true</span>
 </pre>
 
@@ -630,11 +630,11 @@ with names and ages, it is trivial to iterate over the elements:</p>
 
 <pre>
 &gt; t = {john=<span class="number">27</span>,jane=<span class="number">31</span>,mary=<span class="number">24</span>}
-&gt; <span class="keyword">for</span> name,age <span class="keyword">in</span> tablex.sort(t) <span class="keyword">do</span> <span class="global">print</span>(name,age) <span class="keyword">end</span>
+&gt; <span class="keyword">for</span> name,age <span class="keyword">in</span> tablex.<span class="function-name">sort</span>(t) <span class="keyword">do</span> <span class="global">print</span>(name,age) <span class="keyword">end</span>
 jane    <span class="number">31</span>
 john    <span class="number">27</span>
 mary    <span class="number">24</span>
-&gt; <span class="keyword">for</span> name,age <span class="keyword">in</span> tablex.sortv(t) <span class="keyword">do</span> <span class="global">print</span>(name,age) <span class="keyword">end</span>
+&gt; <span class="keyword">for</span> name,age <span class="keyword">in</span> tablex.<span class="function-name">sortv</span>(t) <span class="keyword">do</span> <span class="global">print</span>(name,age) <span class="keyword">end</span>
 mary    <span class="number">24</span>
 john    <span class="number">27</span>
 jane    <span class="number">31</span>
@@ -651,9 +651,9 @@ generalized set union and intersection operations:</p>
 <pre>
 &gt; S1 = {john=<span class="number">27</span>,jane=<span class="number">31</span>,mary=<span class="number">24</span>}
 &gt; S2 = {jane=<span class="number">31</span>,jones=<span class="number">50</span>}
-&gt; = tablex.merge(S1, S2, <span class="keyword">false</span>)
+&gt; = tablex.<span class="function-name">merge</span>(S1, S2, <span class="keyword">false</span>)
 {jane=<span class="number">31</span>}
-&gt; = tablex.merge(S1, S2, <span class="keyword">true</span>)
+&gt; = tablex.<span class="function-name">merge</span>(S1, S2, <span class="keyword">true</span>)
 {mary=<span class="number">24</span>,jane=<span class="number">31</span>,john=<span class="number">27</span>,jones=<span class="number">50</span>}
 </pre>
 
@@ -665,9 +665,9 @@ of the original:</p>
 
 
 <pre>
-&gt; = map(<span class="global">math</span>.sin, {<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>})
+&gt; = <span class="function-name">map</span>(<span class="global">math</span>.sin, {<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>})
 {  <span class="number">0.84</span>,  <span class="number">0.91</span>,  <span class="number">0.14</span>, -<span class="number">0.76</span>}
-&gt; = map(<span class="keyword">function</span>(x) <span class="keyword">return</span> x*x <span class="keyword">end</span>, {<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>})
+&gt; = <span class="function-name">map</span>(<span class="keyword">function</span>(x) <span class="keyword">return</span> x*x <span class="keyword">end</span>, {<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>})
 {<span class="number">1</span>,<span class="number">4</span>,<span class="number">9</span>,<span class="number">16</span>}
 </pre>
 
@@ -682,9 +682,9 @@ value.</p>
 
 <pre>
 &gt; t = {fred=<span class="number">10</span>,bonzo=<span class="number">20</span>,alice=<span class="number">4</span>}
-&gt; = pairmap(<span class="keyword">function</span>(k,v) <span class="keyword">return</span> v <span class="keyword">end</span>, t)
+&gt; = <span class="function-name">pairmap</span>(<span class="keyword">function</span>(k,v) <span class="keyword">return</span> v <span class="keyword">end</span>, t)
 {<span class="number">4</span>,<span class="number">10</span>,<span class="number">20</span>}
-&gt; = pairmap(<span class="keyword">function</span>(k,v) <span class="keyword">return</span> k <span class="keyword">end</span>, t)
+&gt; = <span class="function-name">pairmap</span>(<span class="keyword">function</span>(k,v) <span class="keyword">return</span> k <span class="keyword">end</span>, t)
 {<span class="string">'alice'</span>,<span class="string">'fred'</span>,<span class="string">'bonzo'</span>}
 </pre>
 
@@ -694,7 +694,7 @@ considered to be the new key:</p>
 
 
 <pre>
-&gt; = pairmap(t,<span class="keyword">function</span>(k,v) <span class="keyword">return</span> v+<span class="number">10</span>, k:upper() <span class="keyword">end</span>)
+&gt; = <span class="function-name">pairmap</span>(t,<span class="keyword">function</span>(k,v) <span class="keyword">return</span> v+<span class="number">10</span>, k:<span class="function-name">upper</span>() <span class="keyword">end</span>)
 {BONZO=<span class="number">30</span>,FRED=<span class="number">20</span>,ALICE=<span class="number">14</span>}
 </pre>
 
@@ -702,9 +702,9 @@ considered to be the new key:</p>
 
 
 <pre>
-&gt; map2(ops.add,{<span class="number">1</span>,<span class="number">2</span>},{<span class="number">10</span>,<span class="number">20</span>})
+&gt; <span class="function-name">map2</span>(ops.add,{<span class="number">1</span>,<span class="number">2</span>},{<span class="number">10</span>,<span class="number">20</span>})
 {<span class="number">11</span>,<span class="number">22</span>}
-&gt; map2(<span class="string">'*'</span>,{<span class="number">1</span>,<span class="number">2</span>},{<span class="number">10</span>,<span class="number">20</span>})
+&gt; <span class="function-name">map2</span>(<span class="string">'*'</span>,{<span class="number">1</span>,<span class="number">2</span>},{<span class="number">10</span>,<span class="number">20</span>})
 {<span class="number">10</span>,<span class="number">40</span>}
 </pre>
 
@@ -713,9 +713,9 @@ arguments over a table and returns the result as a scalar:</p>
 
 
 <pre>
-&gt; reduce (<span class="string">'+'</span>, {<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>})
+&gt; <span class="function-name">reduce</span> (<span class="string">'+'</span>, {<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>})
 <span class="number">6</span>
-&gt; reduce (<span class="string">'..'</span>, {<span class="string">'one'</span>,<span class="string">'two'</span>,<span class="string">'three'</span>})
+&gt; <span class="function-name">reduce</span> (<span class="string">'..'</span>, {<span class="string">'one'</span>,<span class="string">'two'</span>,<span class="string">'three'</span>})
 <span class="string">'onetwothree'</span>
 </pre>
 
@@ -723,7 +723,7 @@ arguments over a table and returns the result as a scalar:</p>
 
 
 <pre>
-&gt; = zip({<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>},{<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>})
+&gt; = <span class="function-name">zip</span>({<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>},{<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>})
 {{<span class="number">1</span>,<span class="number">10</span>},{<span class="number">2</span>,<span class="number">20</span>},{<span class="number">3</span>,<span class="number">30</span>}}
 </pre>
 
@@ -750,13 +750,13 @@ matrix operations, since that is the job for a specialized library, but rather
 provides generalizations of the higher-level operations provided by <a href="../libraries/pl.tablex.html#">pl.tablex</a>
 for one-dimensional arrays.</p>
 
-<p><a href="../libraries/pl.array2d.html#iter">iter</a> is a useful generalization of <a href="https://www.lua.org/manual/5.1/manual.html#pdf-ipairs">ipairs</a>. (The extra parameter determines
+<p><a href="../libraries/pl.array2d.html#iter">iter</a> is a useful generalization of <a href="https://www.lua.org/manual/5.4/manual.html#pdf-ipairs">ipairs</a>. (The extra parameter determines
 whether you want the indices as well.)</p>
 
 
 <pre>
 &gt; a = {{<span class="number">1</span>,<span class="number">2</span>},{<span class="number">3</span>,<span class="number">4</span>}}
-&gt; <span class="keyword">for</span> i,j,v <span class="keyword">in</span> array2d.iter(a,<span class="keyword">true</span>) <span class="keyword">do</span> <span class="global">print</span>(i,j,v) <span class="keyword">end</span>
+&gt; <span class="keyword">for</span> i,j,v <span class="keyword">in</span> array2d.<span class="function-name">iter</span>(a,<span class="keyword">true</span>) <span class="keyword">do</span> <span class="global">print</span>(i,j,v) <span class="keyword">end</span>
 <span class="number">1</span>       <span class="number">1</span>       <span class="number">1</span>
 <span class="number">1</span>       <span class="number">2</span>       <span class="number">2</span>
 <span class="number">2</span>       <span class="number">1</span>       <span class="number">3</span>
@@ -771,7 +771,7 @@ provided, so this operation is in effect <code>function(x) return x-1 end</code>
 
 
 <pre>
-&gt; array2d.map(<span class="string">'-'</span>,a,<span class="number">1</span>)
+&gt; array2d.<span class="function-name">map</span>(<span class="string">'-'</span>,a,<span class="number">1</span>)
 {{<span class="number">0</span>,<span class="number">1</span>},{<span class="number">2</span>,<span class="number">3</span>}}
 </pre>
 
@@ -779,7 +779,7 @@ provided, so this operation is in effect <code>function(x) return x-1 end</code>
 
 
 <pre>
-&gt; array2d.column(a,<span class="number">1</span>)
+&gt; array2d.<span class="function-name">column</span>(a,<span class="number">1</span>)
 {<span class="number">1</span>,<span class="number">3</span>}
 </pre>
 
@@ -790,12 +790,12 @@ reduces the rows, and the second reduces the result.</p>
 
 
 <pre>
-&gt; array2d.reduce_rows(<span class="string">'+'</span>,a)
+&gt; array2d.<span class="function-name">reduce_rows</span>(<span class="string">'+'</span>,a)
 {<span class="number">3</span>,<span class="number">7</span>}
-&gt; array2d.reduce_cols(<span class="string">'+'</span>,a)
+&gt; array2d.<span class="function-name">reduce_cols</span>(<span class="string">'+'</span>,a)
 {<span class="number">4</span>,<span class="number">6</span>}
 &gt; <span class="comment">-- same as tablex.reduce('*',array.reduce_rows('+',a))
-</span>&gt; array2d.reduce2(<span class="string">'*'</span>,<span class="string">'+'</span>,a)
+</span>&gt; array2d.<span class="function-name">reduce2</span>(<span class="string">'*'</span>,<span class="string">'+'</span>,a)
 <span class="number">21</span>    `
 </pre>
 
@@ -808,24 +808,24 @@ data:</p>
 <pre>
 &gt; b = {{<span class="number">10</span>,<span class="number">20</span>},{<span class="number">30</span>,<span class="number">40</span>}}
 &gt; a = {{<span class="number">1</span>,<span class="number">2</span>},{<span class="number">3</span>,<span class="number">4</span>}}
-&gt; = array2d.map2(<span class="string">'+'</span>,<span class="number">2</span>,<span class="number">2</span>,a,b)  <span class="comment">-- two 2D arrays
+&gt; = array2d.<span class="function-name">map2</span>(<span class="string">'+'</span>,<span class="number">2</span>,<span class="number">2</span>,a,b)  <span class="comment">-- two 2D arrays
 </span>{{<span class="number">11</span>,<span class="number">22</span>},{<span class="number">33</span>,<span class="number">44</span>}}
-&gt; = array2d.map2(<span class="string">'+'</span>,<span class="number">1</span>,<span class="number">2</span>,{<span class="number">10</span>,<span class="number">100</span>},a)  <span class="comment">-- 1D, 2D
+&gt; = array2d.<span class="function-name">map2</span>(<span class="string">'+'</span>,<span class="number">1</span>,<span class="number">2</span>,{<span class="number">10</span>,<span class="number">100</span>},a)  <span class="comment">-- 1D, 2D
 </span>{{<span class="number">11</span>,<span class="number">102</span>},{<span class="number">13</span>,<span class="number">104</span>}}
-&gt; = array2d.map2(<span class="string">'*'</span>,<span class="number">2</span>,<span class="number">1</span>,a,{<span class="number">1</span>,-<span class="number">1</span>})  <span class="comment">-- 2D, 1D
+&gt; = array2d.<span class="function-name">map2</span>(<span class="string">'*'</span>,<span class="number">2</span>,<span class="number">1</span>,a,{<span class="number">1</span>,-<span class="number">1</span>})  <span class="comment">-- 2D, 1D
 </span>{{<span class="number">1</span>,-<span class="number">2</span>},{<span class="number">3</span>,-<span class="number">4</span>}}
 </pre>
 
 <p>Of course, you are not limited to simple arithmetic. Say we have a 2D array of
 strings, and wish to print it out with proper right justification. The first step
-is to create all the string lengths by mapping <a href="https://www.lua.org/manual/5.1/manual.html#pdf-string.len">string.len</a> over the array, the
-second is to reduce this along the columns using <a href="https://www.lua.org/manual/5.1/manual.html#pdf-math.max">math.max</a> to get maximum column
+is to create all the string lengths by mapping <a href="https://www.lua.org/manual/5.4/manual.html#pdf-string.len">string.len</a> over the array, the
+second is to reduce this along the columns using <a href="https://www.lua.org/manual/5.4/manual.html#pdf-math.max">math.max</a> to get maximum column
 widths, and last, apply <a href="../libraries/pl.stringx.html#rjust">stringx.rjust</a> with these widths.</p>
 
 
 <pre>
-maxlens = reduce_cols(<span class="global">math</span>.max,map(<span class="string">'#'</span>,lines))
-lines = map2(stringx.rjust,<span class="number">2</span>,<span class="number">1</span>,lines,maxlens)
+maxlens = <span class="function-name">reduce_cols</span>(<span class="global">math</span>.max,<span class="function-name">map</span>(<span class="string">'#'</span>,lines))
+lines = <span class="function-name">map2</span>(stringx.rjust,<span class="number">2</span>,<span class="number">1</span>,lines,maxlens)
 </pre>
 
 <p>There is <a href="../libraries/pl.array2d.html#product">product</a> which returns  the <em>Cartesian product</em> of two 1D arrays. The
@@ -834,14 +834,14 @@ the two arrays.</p>
 
 
 <pre>
-&gt; array2d.product(<span class="string">'{}'</span>,{<span class="number">1</span>,<span class="number">2</span>},{<span class="string">'a'</span>,<span class="string">'b'</span>})
+&gt; array2d.<span class="function-name">product</span>(<span class="string">'{}'</span>,{<span class="number">1</span>,<span class="number">2</span>},{<span class="string">'a'</span>,<span class="string">'b'</span>})
 {{{<span class="number">1</span>,<span class="string">'b'</span>},{<span class="number">2</span>,<span class="string">'a'</span>}},{{<span class="number">1</span>,<span class="string">'a'</span>},{<span class="number">2</span>,<span class="string">'b'</span>}}}
 </pre>
 
 <p>There is a set of operations which work in-place on 2D arrays. You can
 <a href="../libraries/pl.array2d.html#swap_rows">swap_rows</a> and <a href="../libraries/pl.array2d.html#swap_cols">swap_cols</a>; the first really is a simple one-liner, but the idea
 here is to give the operation a name. <a href="../libraries/pl.array2d.html#remove_row">remove_row</a> and <a href="../libraries/pl.array2d.html#remove_col">remove_col</a> are
-generalizations of <a href="https://www.lua.org/manual/5.1/manual.html#pdf-table.remove">table.remove</a>. Likewise, <a href="../libraries/pl.array2d.html#extract_rows">extract_rows</a> and <a href="../libraries/pl.array2d.html#extract_cols">extract_cols</a>
+generalizations of <a href="https://www.lua.org/manual/5.4/manual.html#pdf-table.remove">table.remove</a>. Likewise, <a href="../libraries/pl.array2d.html#extract_rows">extract_rows</a> and <a href="../libraries/pl.array2d.html#extract_cols">extract_cols</a>
 are given arrays of indices and discard anything else. So, for instance,
 <code>extract_cols(A,{2,4})</code> will leave just columns 2 and 4 in the array.</p>
 
@@ -851,19 +851,19 @@ generally given a start (row,column) and a end (row,column).</p>
 
 <pre>
 &gt; A = {{<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>},{<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>},{<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>}}
-&gt; B = slice(A,<span class="number">1</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>)
-&gt; write(B)
+&gt; B = <span class="function-name">slice</span>(A,<span class="number">1</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>)
+&gt; <span class="function-name">write</span>(B)
  <span class="number">1</span> <span class="number">2</span>
  <span class="number">4</span> <span class="number">5</span>
-&gt; B = slice(A,<span class="number">2</span>,<span class="number">2</span>)
-&gt; write(B,<span class="keyword">nil</span>,<span class="string">'%4.1f'</span>)
+&gt; B = <span class="function-name">slice</span>(A,<span class="number">2</span>,<span class="number">2</span>)
+&gt; <span class="function-name">write</span>(B,<span class="keyword">nil</span>,<span class="string">'%4.1f'</span>)
  <span class="number">5.0</span> <span class="number">6.0</span>
  <span class="number">8.0</span> <span class="number">9.0</span>
 </pre>
 
 <p>Here <a href="../libraries/pl.array2d.html#write">write</a> is used to print out an array nicely; the second parameter is <code>nil</code>,
 which is the default (stdout) but can be any file object and the third parameter
-is an optional format (as used in <a href="https://www.lua.org/manual/5.1/manual.html#pdf-string.format">string.format</a>).</p>
+is an optional format (as used in <a href="https://www.lua.org/manual/5.4/manual.html#pdf-string.format">string.format</a>).</p>
 
 <p><a href="../libraries/pl.array2d.html#parse_range">parse_range</a> will take a spreadsheet range like 'A1:B2' or 'R1C1:R2C2' and
 return the range as four numbers, which can be passed to <a href="../libraries/pl.array2d.html#slice">slice</a>. The rule is
@@ -875,7 +875,7 @@ range; if a range represents a row or a column, the result is 1D, otherwise 2D.<
 
 
 <pre>
-&gt; <span class="keyword">for</span> i,j,v <span class="keyword">in</span> iter(A,<span class="keyword">true</span>,<span class="number">2</span>,<span class="number">2</span>) <span class="keyword">do</span> <span class="global">print</span>(i,j,v) <span class="keyword">end</span>
+&gt; <span class="keyword">for</span> i,j,v <span class="keyword">in</span> <span class="function-name">iter</span>(A,<span class="keyword">true</span>,<span class="number">2</span>,<span class="number">2</span>) <span class="keyword">do</span> <span class="global">print</span>(i,j,v) <span class="keyword">end</span>
 <span class="number">2</span>       <span class="number">2</span>       <span class="number">5</span>
 <span class="number">2</span>       <span class="number">3</span>       <span class="number">6</span>
 <span class="number">3</span>       <span class="number">2</span>       <span class="number">8</span>
@@ -889,8 +889,8 @@ make an <em>identity matrix</em>:</p>
 
 
 <pre>
-asserteq(
-    array.new(<span class="number">3</span>,<span class="number">3</span>,L<span class="string">'|i,j| i==j and 1 or 0'</span>),
+<span class="function-name">asserteq</span>(
+    array.<span class="function-name">new</span>(<span class="number">3</span>,<span class="number">3</span>,<span class="function-name">L</span><span class="string">'|i,j| i==j and 1 or 0'</span>),
     {{<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>},{<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>},{<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>}}
 )
 </pre>
@@ -907,7 +907,7 @@ methods.</p>
 </div> <!-- id="content" -->
 </div> <!-- id="main" -->
 <div id="about">
-<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.5.0</a></i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>

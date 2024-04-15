@@ -116,24 +116,24 @@
     <h2>symbols.lua</h2>
 <pre>
 <span class="global">require</span> <span class="string">'pl'</span>
-utils.import <span class="string">'pl.func'</span>
+utils.<span class="function-name">import</span> <span class="string">'pl.func'</span>
 <span class="keyword">local</span> ops = <span class="global">require</span> <span class="string">'pl.operator'</span>
 <span class="keyword">local</span> List = <span class="global">require</span> <span class="string">'pl.List'</span>
 <span class="keyword">local</span> append,concat = <span class="global">table</span>.insert,<span class="global">table</span>.concat
 <span class="keyword">local</span> compare,find_if,compare_no_order,imap,reduce,count_map = tablex.compare,tablex.find_if,tablex.compare_no_order,tablex.imap,tablex.reduce,tablex.count_map
-<span class="keyword">local</span> <span class="global">unpack</span> = <span class="global">table</span>.<span class="global">unpack</span>
+<span class="keyword">local</span> unpack = <span class="global">table</span>.unpack
 
-<span class="keyword">function</span> bindval (self,val)
+<span class="keyword">function</span> <span class="function-name">bindval</span> (self,val)
     <span class="global">rawset</span>(self,<span class="string">'value'</span>,val)
 <span class="keyword">end</span>
 
 <span class="keyword">local</span> optable = ops.optable
 
-<span class="keyword">function</span> sexpr (e)
-	<span class="keyword">if</span> isPE(e) <span class="keyword">then</span>
+<span class="keyword">function</span> <span class="function-name">sexpr</span> (e)
+	<span class="keyword">if</span> <span class="function-name">isPE</span>(e) <span class="keyword">then</span>
 		<span class="keyword">if</span> e.op ~= <span class="string">'X'</span> <span class="keyword">then</span>
-			<span class="keyword">local</span> args = tablex.imap(sexpr,e)
-			<span class="keyword">return</span> <span class="string">'('</span>..e.op..<span class="string">' '</span>..<span class="global">table</span>.concat(args,<span class="string">' '</span>)..<span class="string">')'</span>
+			<span class="keyword">local</span> args = tablex.<span class="function-name">imap</span>(sexpr,e)
+			<span class="keyword">return</span> <span class="string">'('</span>..e.op..<span class="string">' '</span>..<span class="global">table</span>.<span class="function-name">concat</span>(args,<span class="string">' '</span>)..<span class="string">')'</span>
 		<span class="keyword">else</span>
 			<span class="keyword">return</span> e.repr
 		<span class="keyword">end</span>
@@ -143,12 +143,12 @@ utils.import <span class="string">'pl.func'</span>
 <span class="keyword">end</span>
 
 
-psexpr = compose(<span class="global">print</span>,sexpr)
+psexpr = <span class="function-name">compose</span>(<span class="global">print</span>,sexpr)
 
 
 
-<span class="keyword">function</span> equals (e1,e2)
-    <span class="keyword">local</span> p1,p2 = isPE(e1),isPE(e2)
+<span class="keyword">function</span> <span class="function-name">equals</span> (e1,e2)
+    <span class="keyword">local</span> p1,p2 = <span class="function-name">isPE</span>(e1),<span class="function-name">isPE</span>(e2)
     <span class="keyword">if</span> p1 ~= p2 <span class="keyword">then</span> <span class="keyword">return</span> <span class="keyword">false</span> <span class="keyword">end</span>  <span class="comment">-- different kinds of animals!
 </span>    <span class="keyword">if</span> p1 <span class="keyword">and</span> p2 <span class="keyword">then</span> <span class="comment">-- both PEs
 </span>        <span class="comment">-- operators must be the same
@@ -157,10 +157,10 @@ psexpr = compose(<span class="global">print</span>,sexpr)
 </span>        <span class="keyword">if</span> e1.op == <span class="string">'X'</span> <span class="keyword">then</span> <span class="keyword">return</span> e1.repr == e2.repr
         <span class="comment">-- commutative operators
 </span>        <span class="keyword">elseif</span> e1.op == <span class="string">'+'</span> <span class="keyword">or</span> e1.op == <span class="string">'*'</span> <span class="keyword">then</span>
-            <span class="keyword">return</span> compare_no_order(e1,e2,equals)
+            <span class="keyword">return</span> <span class="function-name">compare_no_order</span>(e1,e2,equals)
         <span class="keyword">else</span>
             <span class="comment">-- arguments must be the same
-</span>            <span class="keyword">return</span> compare(e1,e2,equals)
+</span>            <span class="keyword">return</span> <span class="function-name">compare</span>(e1,e2,equals)
         <span class="keyword">end</span>
     <span class="keyword">else</span> <span class="comment">-- fall back on simple equality for non PEs
 </span>        <span class="keyword">return</span> e1 == e2
@@ -168,33 +168,33 @@ psexpr = compose(<span class="global">print</span>,sexpr)
 <span class="keyword">end</span>
 
 <span class="comment">-- run down an unbalanced operator chain (like a+b+c) and return the arguments {a,b,c}
-</span><span class="keyword">function</span> tcollect (op,e,ls)
-    <span class="keyword">if</span> isPE(e) <span class="keyword">and</span> e.op == op <span class="keyword">then</span>
+</span><span class="keyword">function</span> <span class="function-name">tcollect</span> (op,e,ls)
+    <span class="keyword">if</span> <span class="function-name">isPE</span>(e) <span class="keyword">and</span> e.op == op <span class="keyword">then</span>
         <span class="keyword">for</span> i = <span class="number">1</span>,#e <span class="keyword">do</span>
-            tcollect(op,e[i],ls)
+            <span class="function-name">tcollect</span>(op,e[i],ls)
         <span class="keyword">end</span>
     <span class="keyword">else</span>
-        ls:append(e)
+        ls:<span class="function-name">append</span>(e)
         <span class="keyword">return</span>
     <span class="keyword">end</span>
 <span class="keyword">end</span>
 
-<span class="keyword">function</span> rcollect (e)
-    <span class="keyword">local</span> res = List()
-    tcollect(e.op,e,res)
+<span class="keyword">function</span> <span class="function-name">rcollect</span> (e)
+    <span class="keyword">local</span> res = <span class="function-name">List</span>()
+    <span class="function-name">tcollect</span>(e.op,e,res)
     <span class="keyword">return</span> res
 <span class="keyword">end</span>
 
 
 <span class="comment">-- balance ensures that +/* chains are collected together, operates in-place.
 </span><span class="comment">-- thus (+(+ a b) c) or (+ a (+ b c)) becomes (+ a b c), order immaterial
-</span><span class="keyword">function</span> balance (e)
-    <span class="keyword">if</span> isPE(e) <span class="keyword">and</span> e.op ~= <span class="string">'X'</span> <span class="keyword">then</span>
+</span><span class="keyword">function</span> <span class="function-name">balance</span> (e)
+    <span class="keyword">if</span> <span class="function-name">isPE</span>(e) <span class="keyword">and</span> e.op ~= <span class="string">'X'</span> <span class="keyword">then</span>
         <span class="keyword">local</span> op,args = e.op
         <span class="keyword">if</span> op == <span class="string">'+'</span> <span class="keyword">or</span> op == <span class="string">'*'</span> <span class="keyword">then</span>
-            args = rcollect(e)
+            args = <span class="function-name">rcollect</span>(e)
         <span class="keyword">else</span>
-            args = imap(balance,e)
+            args = <span class="function-name">imap</span>(balance,e)
         <span class="keyword">end</span>
         <span class="keyword">for</span> i = <span class="number">1</span>,#args <span class="keyword">do</span>
             e[i] = args[i]
@@ -204,8 +204,8 @@ psexpr = compose(<span class="global">print</span>,sexpr)
 <span class="keyword">end</span>
 
 <span class="comment">-- fold constants in an expression
-</span><span class="keyword">function</span> fold (e)
-    <span class="keyword">if</span> isPE(e) <span class="keyword">then</span>
+</span><span class="keyword">function</span> <span class="function-name">fold</span> (e)
+    <span class="keyword">if</span> <span class="function-name">isPE</span>(e) <span class="keyword">then</span>
         <span class="keyword">if</span> e.op == <span class="string">'X'</span> <span class="keyword">then</span>
             <span class="comment">-- there could be _bound values_!
 </span>            <span class="keyword">local</span> val = <span class="global">rawget</span>(e,<span class="string">'value'</span>)
@@ -214,24 +214,24 @@ psexpr = compose(<span class="global">print</span>,sexpr)
             <span class="keyword">local</span> op = e.op
             <span class="keyword">local</span> addmul = op == <span class="string">'*'</span> <span class="keyword">or</span> op == <span class="string">'+'</span>
             <span class="comment">-- first fold all arguments
-</span>            <span class="keyword">local</span> args = imap(fold,e)
-            <span class="keyword">if</span> <span class="keyword">not</span> addmul <span class="keyword">and</span> <span class="keyword">not</span> find_if(args,isPE) <span class="keyword">then</span>
+</span>            <span class="keyword">local</span> args = <span class="function-name">imap</span>(fold,e)
+            <span class="keyword">if</span> <span class="keyword">not</span> addmul <span class="keyword">and</span> <span class="keyword">not</span> <span class="function-name">find_if</span>(args,isPE) <span class="keyword">then</span>
                 <span class="comment">-- no placeholders in these args, we can fold the expression.
 </span>                <span class="keyword">local</span> opfn = optable[op]
                 <span class="keyword">if</span> opfn <span class="keyword">then</span>
-                    <span class="keyword">return</span> opfn(<span class="global">unpack</span>(args))
+                    <span class="keyword">return</span> <span class="function-name">opfn</span>(<span class="function-name">unpack</span>(args))
                 <span class="keyword">else</span>
                     <span class="keyword">return</span> <span class="string">'?'</span>
                 <span class="keyword">end</span>
             <span class="keyword">elseif</span> addmul <span class="keyword">then</span>
                 <span class="comment">-- enforce a few rules for + and *
 </span>                <span class="comment">-- split the args into two classes, PE args and non-PE args.
-</span>                <span class="keyword">local</span> classes = List.partition(args,isPE)
+</span>                <span class="keyword">local</span> classes = List.<span class="function-name">partition</span>(args,isPE)
                 <span class="keyword">local</span> pe,npe = classes[<span class="keyword">true</span>],classes[<span class="keyword">false</span>]
                 <span class="keyword">if</span> npe <span class="keyword">then</span> <span class="comment">-- there's at least one non PE argument
 </span>                    <span class="comment">-- so fold them
 </span>                    <span class="keyword">if</span> #npe == <span class="number">1</span> <span class="keyword">then</span> npe = npe[<span class="number">1</span>]
-                    <span class="keyword">else</span> npe = npe:reduce(optable[op])
+                    <span class="keyword">else</span> npe = npe:<span class="function-name">reduce</span>(optable[op])
                     <span class="keyword">end</span>
                     <span class="comment">-- if the result is a constant, return it
 </span>                    <span class="keyword">if</span> <span class="keyword">not</span> pe <span class="keyword">then</span> <span class="keyword">return</span> npe <span class="keyword">end</span>
@@ -250,84 +250,84 @@ psexpr = compose(<span class="global">print</span>,sexpr)
                 <span class="keyword">end</span>
                 <span class="comment">-- build up the final arguments
 </span>                <span class="keyword">local</span> res = {}
-                <span class="keyword">if</span> npe <span class="keyword">then</span> append(res,npe) <span class="keyword">end</span>
-                <span class="keyword">for</span> val,count <span class="keyword">in</span> <span class="global">pairs</span>(count_map(pe,equals)) <span class="keyword">do</span>
+                <span class="keyword">if</span> npe <span class="keyword">then</span> <span class="function-name">append</span>(res,npe) <span class="keyword">end</span>
+                <span class="keyword">for</span> val,count <span class="keyword">in</span> <span class="global">pairs</span>(<span class="function-name">count_map</span>(pe,equals)) <span class="keyword">do</span>
                     <span class="keyword">if</span> count &gt; <span class="number">1</span> <span class="keyword">then</span>
                         <span class="keyword">if</span> op == <span class="string">'*'</span> <span class="keyword">then</span> val = val ^ count
                         <span class="keyword">else</span> val = val * count
                         <span class="keyword">end</span>
                     <span class="keyword">end</span>
-                    append(res,val)
+                    <span class="function-name">append</span>(res,val)
                 <span class="keyword">end</span>
                 <span class="keyword">if</span> #res == <span class="number">1</span> <span class="keyword">then</span> <span class="keyword">return</span> res[<span class="number">1</span>] <span class="keyword">end</span>
-                <span class="keyword">return</span> PE{op=op,<span class="global">unpack</span>(res)}
+                <span class="keyword">return</span> <span class="function-name">PE</span>{op=op,<span class="function-name">unpack</span>(res)}
             <span class="keyword">elseif</span> op == <span class="string">'^'</span> <span class="keyword">then</span>
                 <span class="keyword">if</span> args[<span class="number">2</span>] == <span class="number">1</span> <span class="keyword">then</span> <span class="keyword">return</span> args[<span class="number">1</span>] <span class="keyword">end</span> <span class="comment">-- identity
 </span>                <span class="keyword">if</span> args[<span class="number">2</span>] == <span class="number">0</span> <span class="keyword">then</span> <span class="keyword">return</span> <span class="number">1</span> <span class="keyword">end</span>
             <span class="keyword">end</span>
-            <span class="keyword">return</span> PE{op=op,<span class="global">unpack</span>(args)}
+            <span class="keyword">return</span> <span class="function-name">PE</span>{op=op,<span class="function-name">unpack</span>(args)}
         <span class="keyword">end</span>
     <span class="keyword">else</span>
         <span class="keyword">return</span> e
     <span class="keyword">end</span>
 <span class="keyword">end</span>
 
-<span class="keyword">function</span> expand (e)
-    <span class="keyword">if</span> isPE(e) <span class="keyword">and</span> e.op == <span class="string">'*'</span> <span class="keyword">and</span> isPE(e[<span class="number">2</span>]) <span class="keyword">and</span> e[<span class="number">2</span>].op == <span class="string">'+'</span> <span class="keyword">then</span>
+<span class="keyword">function</span> <span class="function-name">expand</span> (e)
+    <span class="keyword">if</span> <span class="function-name">isPE</span>(e) <span class="keyword">and</span> e.op == <span class="string">'*'</span> <span class="keyword">and</span> <span class="function-name">isPE</span>(e[<span class="number">2</span>]) <span class="keyword">and</span> e[<span class="number">2</span>].op == <span class="string">'+'</span> <span class="keyword">then</span>
         <span class="keyword">local</span> a,b = e[<span class="number">1</span>],e[<span class="number">2</span>]
-        <span class="keyword">return</span> expand(b[<span class="number">1</span>]*a) + expand(b[<span class="number">2</span>]*a)
+        <span class="keyword">return</span> <span class="function-name">expand</span>(b[<span class="number">1</span>]*a) + <span class="function-name">expand</span>(b[<span class="number">2</span>]*a)
     <span class="keyword">else</span>
         <span class="keyword">return</span> e
     <span class="keyword">end</span>
 <span class="keyword">end</span>
 
-<span class="keyword">function</span> isnumber (x)
+<span class="keyword">function</span> <span class="function-name">isnumber</span> (x)
     <span class="keyword">return</span> <span class="global">type</span>(x) == <span class="string">'number'</span>
 <span class="keyword">end</span>
 
 <span class="comment">-- does this PE contain a reference to x?
-</span><span class="keyword">function</span> references (e,x)
-    <span class="keyword">if</span> isPE(e) <span class="keyword">then</span>
+</span><span class="keyword">function</span> <span class="function-name">references</span> (e,x)
+    <span class="keyword">if</span> <span class="function-name">isPE</span>(e) <span class="keyword">then</span>
         <span class="keyword">if</span> e.op == <span class="string">'X'</span> <span class="keyword">then</span> <span class="keyword">return</span> x.repr == e.repr
         <span class="keyword">else</span>
-            <span class="keyword">return</span> find_if(e,references,x)
+            <span class="keyword">return</span> <span class="function-name">find_if</span>(e,references,x)
         <span class="keyword">end</span>
     <span class="keyword">else</span>
         <span class="keyword">return</span> <span class="keyword">false</span>
     <span class="keyword">end</span>
 <span class="keyword">end</span>
 
-<span class="keyword">local</span> <span class="keyword">function</span> muli (args)
-    <span class="keyword">return</span> PE{op=<span class="string">'*'</span>,<span class="global">unpack</span>(args)}
+<span class="keyword">local</span> <span class="keyword">function</span> <span class="function-name">muli</span> (args)
+    <span class="keyword">return</span> <span class="function-name">PE</span>{op=<span class="string">'*'</span>,<span class="function-name">unpack</span>(args)}
 <span class="keyword">end</span>
 
-<span class="keyword">local</span> <span class="keyword">function</span> addi (args)
-    <span class="keyword">return</span> PE{op=<span class="string">'+'</span>,<span class="global">unpack</span>(args)}
+<span class="keyword">local</span> <span class="keyword">function</span> <span class="function-name">addi</span> (args)
+    <span class="keyword">return</span> <span class="function-name">PE</span>{op=<span class="string">'+'</span>,<span class="function-name">unpack</span>(args)}
 <span class="keyword">end</span>
 
-<span class="keyword">function</span> diff (e,x)
-    <span class="keyword">if</span> isPE(e) <span class="keyword">and</span> references(e,x) <span class="keyword">then</span>
+<span class="keyword">function</span> <span class="function-name">diff</span> (e,x)
+    <span class="keyword">if</span> <span class="function-name">isPE</span>(e) <span class="keyword">and</span> <span class="function-name">references</span>(e,x) <span class="keyword">then</span>
         <span class="keyword">local</span> op = e.op
         <span class="keyword">if</span> op == <span class="string">'X'</span> <span class="keyword">then</span>
             <span class="keyword">return</span> <span class="number">1</span>
         <span class="keyword">else</span>
             <span class="keyword">local</span> a,b = e[<span class="number">1</span>],e[<span class="number">2</span>]
             <span class="keyword">if</span> op == <span class="string">'+'</span> <span class="keyword">then</span> <span class="comment">-- differentiation is linear
-</span>                <span class="keyword">local</span> args = imap(diff,e,x)
-                <span class="keyword">return</span> balance(addi(args))
+</span>                <span class="keyword">local</span> args = <span class="function-name">imap</span>(diff,e,x)
+                <span class="keyword">return</span> <span class="function-name">balance</span>(<span class="function-name">addi</span>(args))
             <span class="keyword">elseif</span> op == <span class="string">'*'</span> <span class="keyword">then</span> <span class="comment">-- product rule
 </span>                <span class="keyword">local</span> res,d,ee = {}
                 <span class="keyword">for</span> i = <span class="number">1</span>,#e <span class="keyword">do</span>
-                    d = fold(diff(e[i],x))
+                    d = <span class="function-name">fold</span>(<span class="function-name">diff</span>(e[i],x))
                     <span class="keyword">if</span> d ~= <span class="number">0</span> <span class="keyword">then</span>
-                        ee = {<span class="global">unpack</span>(e)}
+                        ee = {<span class="function-name">unpack</span>(e)}
                         ee[i] = d
-                        append(res,balance(muli(ee)))
+                        <span class="function-name">append</span>(res,<span class="function-name">balance</span>(<span class="function-name">muli</span>(ee)))
                     <span class="keyword">end</span>
                 <span class="keyword">end</span>
-                <span class="keyword">if</span> #res &gt; <span class="number">1</span> <span class="keyword">then</span> <span class="keyword">return</span> addi(res)
+                <span class="keyword">if</span> #res &gt; <span class="number">1</span> <span class="keyword">then</span> <span class="keyword">return</span> <span class="function-name">addi</span>(res)
                 <span class="keyword">else</span> <span class="keyword">return</span> res[<span class="number">1</span>] <span class="keyword">end</span>
-            <span class="keyword">elseif</span> op == <span class="string">'^'</span> <span class="keyword">and</span> isnumber(b) <span class="keyword">then</span> <span class="comment">-- power rule
+            <span class="keyword">elseif</span> op == <span class="string">'^'</span> <span class="keyword">and</span> <span class="function-name">isnumber</span>(b) <span class="keyword">then</span> <span class="comment">-- power rule
 </span>                <span class="keyword">return</span> b*x^(b-<span class="number">1</span>)
             <span class="keyword">end</span>
         <span class="keyword">end</span>
@@ -340,7 +340,7 @@ psexpr = compose(<span class="global">print</span>,sexpr)
 </div> <!-- id="content" -->
 </div> <!-- id="main" -->
 <div id="about">
-<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.5.0</a></i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>

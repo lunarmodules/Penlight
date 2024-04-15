@@ -138,22 +138,22 @@ extensions.) There are justify methods and whitespace trimming functions like
 
 
 <pre>
-&gt; stringx.import()
-&gt; (<span class="string">'bonzo.dog'</span>):endswith {<span class="string">'.dog'</span>,<span class="string">'.cat'</span>}
+&gt; stringx.<span class="function-name">import</span>()
+&gt; (<span class="string">'bonzo.dog'</span>):<span class="function-name">endswith</span> {<span class="string">'.dog'</span>,<span class="string">'.cat'</span>}
 <span class="keyword">true</span>
-&gt; (<span class="string">'bonzo.txt'</span>):endswith {<span class="string">'.dog'</span>,<span class="string">'.cat'</span>}
+&gt; (<span class="string">'bonzo.txt'</span>):<span class="function-name">endswith</span> {<span class="string">'.dog'</span>,<span class="string">'.cat'</span>}
 <span class="keyword">false</span>
-&gt; (<span class="string">'bonzo.cat'</span>):endswith {<span class="string">'.dog'</span>,<span class="string">'.cat'</span>}
+&gt; (<span class="string">'bonzo.cat'</span>):<span class="function-name">endswith</span> {<span class="string">'.dog'</span>,<span class="string">'.cat'</span>}
 <span class="keyword">true</span>
-&gt; (<span class="string">' stuff'</span>):ljust(<span class="number">20</span>,<span class="string">'+'</span>)
+&gt; (<span class="string">' stuff'</span>):<span class="function-name">ljust</span>(<span class="number">20</span>,<span class="string">'+'</span>)
 <span class="string">'++++++++++++++ stuff'</span>
-&gt; (<span class="string">'  stuff '</span>):lstrip()
+&gt; (<span class="string">'  stuff '</span>):<span class="function-name">lstrip</span>()
 <span class="string">'stuff '</span>
-&gt; (<span class="string">'  stuff '</span>):rstrip()
+&gt; (<span class="string">'  stuff '</span>):<span class="function-name">rstrip</span>()
 <span class="string">'  stuff'</span>
-&gt; (<span class="string">'  stuff '</span>):strip()
+&gt; (<span class="string">'  stuff '</span>):<span class="function-name">strip</span>()
 <span class="string">'stuff'</span>
-&gt; <span class="keyword">for</span> s <span class="keyword">in</span> (<span class="string">'one\ntwo\nthree\n'</span>):lines() <span class="keyword">do</span> <span class="global">print</span>(s) <span class="keyword">end</span>
+&gt; <span class="keyword">for</span> s <span class="keyword">in</span> (<span class="string">'one\ntwo\nthree\n'</span>):<span class="function-name">lines</span>() <span class="keyword">do</span> <span class="global">print</span>(s) <span class="keyword">end</span>
 one
 two
 three
@@ -161,9 +161,9 @@ three
 
 <p>Most of these can be fairly easily implemented using the Lua string library,
 which is more general and powerful. But they are convenient operations to have
-easily at hand. Note that can be injected into the <a href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a> table if you use
+easily at hand. Note that can be injected into the <a href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a> table if you use
 <a href="../libraries/pl.stringx.html#import">stringx.import</a>, but a simple alias like <code>local stringx = require &apos;pl.stringx&apos;</code>
-is preferrable. This is the recommended practice when writing modules for
+is preferable. This is the recommended practice when writing modules for
 consumption by other people, since it is bad manners to change the global state
 of the rest of the system. Magic may be used for convenience, but there is always
 a price.</p>
@@ -179,8 +179,8 @@ looked up in a table:</p>
 
 <pre>
 <span class="keyword">local</span> Template = <span class="global">require</span> (<span class="string">'pl.text'</span>).Template
-t = Template(<span class="string">'${here} is the $answer'</span>)
-<span class="global">print</span>(t:substitute {here = <span class="string">'Lua'</span>, answer = <span class="string">'best'</span>})
+t = <span class="function-name">Template</span>(<span class="string">'${here} is the $answer'</span>)
+<span class="global">print</span>(t:<span class="function-name">substitute</span> {here = <span class="string">'Lua'</span>, answer = <span class="string">'best'</span>})
 ==&gt;
 Lua is the best
 </pre>
@@ -199,20 +199,20 @@ this example:</p>
 <span class="comment">-- testtemplate.lua
 </span><span class="keyword">local</span> Template = <span class="global">require</span> (<span class="string">'pl.text'</span>).Template
 
-t = Template <span class="string">[[
+t = <span class="function-name">Template</span> <span class="string">[[
     for i = 1,#$t do
         $body
     end
 ]]</span>
 
-body = Template <span class="string">[[
+body = <span class="function-name">Template</span> <span class="string">[[
 local row = $t[i]
 for j = 1,#row do
     fun(row[j])
 end
 ]]</span>
 
-<span class="global">print</span>(t:indent_substitute {body=body,t=<span class="string">'tbl'</span>})
+<span class="global">print</span>(t:<span class="function-name">indent_substitute</span> {body=body,t=<span class="string">'tbl'</span>})
 </pre>
 
 <p>And the output is:</p>
@@ -222,7 +222,7 @@ end
 <span class="keyword">for</span> i = <span class="number">1</span>,#tbl <span class="keyword">do</span>
     <span class="keyword">local</span> row = tbl[i]
     <span class="keyword">for</span> j = <span class="number">1</span>,#row <span class="keyword">do</span>
-        fun(row[j])
+        <span class="function-name">fun</span>(row[j])
     <span class="keyword">end</span>
 <span class="keyword">end</span>
 </pre>
@@ -239,16 +239,16 @@ lines that fit into a desired line width. As an extension, there is also <code>i
 for indenting multiline strings.</p>
 
 <p>New in Penlight with the 0.9 series is <code>text.format_operator</code>. Calling this
-enables Python-style string formating using the modulo operator <code>%</code>:</p>
+enables Python-style string formatting using the modulo operator <code>%</code>:</p>
 
 
 <pre>
-&gt; text.format_operator()
+&gt; text.<span class="function-name">format_operator</span>()
 &gt; = <span class="string">'%s[%d]'</span> % {<span class="string">'dog'</span>,<span class="number">1</span>}
 dog[<span class="number">1</span>]
 </pre>
 
-<p>So in its simplest form it saves the typing involved with <a href="https://www.lua.org/manual/5.1/manual.html#pdf-string.format">string.format</a>; it
+<p>So in its simplest form it saves the typing involved with <a href="https://www.lua.org/manual/5.4/manual.html#pdf-string.format">string.format</a>; it
 will also expand <code>$</code> variables using named fields:</p>
 
 
@@ -269,7 +269,7 @@ allows you to mix Lua code with your templates in a straightforward way. There
 are only two rules:</p>
 
 <ul>
-    <li>Lines begining with <code>#</code> are Lua</li>
+    <li>Lines beginning with <code>#</code> are Lua</li>
     <li>Otherwise, anything inside <code>$()</code> is a Lua expression.</li>
 </ul>
 
@@ -279,7 +279,7 @@ are only two rules:</p>
 <pre>
 &lt;ul&gt;
 # <span class="keyword">for</span> i,val <span class="keyword">in</span> <span class="global">ipairs</span>(T) <span class="keyword">do</span>
-&lt;li&gt;$(i) = $(val:upper())&lt;/li&gt;
+&lt;li&gt;$(i) = $(val:<span class="function-name">upper</span>())&lt;/li&gt;
 # <span class="keyword">end</span>
 &lt;/ul&gt;
 </pre>
@@ -293,7 +293,7 @@ are only two rules:</p>
   <span class="global">ipairs</span> = <span class="global">ipairs</span>,
   T = {<span class="string">'one'</span>,<span class="string">'two'</span>,<span class="string">'three'</span>}
 }
-res = template.substitute(tmpl, my_env)
+res = template.<span class="function-name">substitute</span>(tmpl, my_env)
 </pre>
 
 <p>and we get</p>
@@ -349,7 +349,7 @@ int luaopen_$(mod.name) {
 }
 ]]</span>
 
-<span class="global">print</span>(subst(templ,{
+<span class="global">print</span>(<span class="function-name">subst</span>(templ,{
     _escape = <span class="string">'&gt;'</span>,
     <span class="global">ipairs</span> = <span class="global">ipairs</span>,
     mod = {
@@ -369,10 +369,10 @@ takes the same arguments as standard file objects:</p>
 
 
 <pre>
-&gt; f = stringio.open <span class="string">'first line\n10 20 30\n'</span>
-&gt; = f:read()
+&gt; f = stringio.<span class="function-name">open</span> <span class="string">'first line\n10 20 30\n'</span>
+&gt; = f:<span class="function-name">read</span>()
 first line
-&gt; = f:read(<span class="string">'*n'</span>,<span class="string">'*n'</span>,<span class="string">'*n'</span>)
+&gt; = f:<span class="function-name">read</span>(<span class="string">'*n'</span>,<span class="string">'*n'</span>,<span class="string">'*n'</span>)
 <span class="number">10</span>    <span class="number">20</span>    <span class="number">30</span>
 </pre>
 
@@ -382,7 +382,7 @@ first line
 string.</p>
 
 <p><a href="../libraries/pl.stringio.html#create">stringio.create</a> creates a writeable file-like object. You then use <code>write</code> to
-this stream, and finally extract the builded string using <code>value</code>.  This 'string
+this stream, and finally extract the built string using <code>value</code>.  This 'string
 builder' pattern is useful for efficiently creating large strings.</p>
 
 
@@ -390,7 +390,7 @@ builder' pattern is useful for efficiently creating large strings.</p>
 </div> <!-- id="content" -->
 </div> <!-- id="main" -->
 <div id="about">
-<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.5.0</a></i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>

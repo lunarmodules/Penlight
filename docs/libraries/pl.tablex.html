@@ -364,7 +364,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">t</span>
-            <span class="types"><span class="type">tab</span></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.6">table</a></span>
          a table
         </li>
     </ul>
@@ -390,7 +390,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">tbl</span>
-            <span class="types"><span class="type">tab</span></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.6">table</a></span>
          a table
         </li>
         <li><span class="parameter">idx</span>
@@ -409,8 +409,8 @@
 
     <h3>Usage:</h3>
     <ul>
-        <li><pre class="example">index_by({<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>,<span class="number">40</span>},{<span class="number">2</span>,<span class="number">4</span>}) == {<span class="number">20</span>,<span class="number">40</span>}</pre></li>
-        <li><pre class="example">index_by({one=<span class="number">1</span>,two=<span class="number">2</span>,three=<span class="number">3</span>},{<span class="string">'one'</span>,<span class="string">'three'</span>}) == {<span class="number">1</span>,<span class="number">3</span>}</pre></li>
+        <li><pre class="example"><span class="function-name">index_by</span>({<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>,<span class="number">40</span>},{<span class="number">2</span>,<span class="number">4</span>}) == {<span class="number">20</span>,<span class="number">40</span>}</pre></li>
+        <li><pre class="example"><span class="function-name">index_by</span>({one=<span class="number">1</span>,two=<span class="number">2</span>,three=<span class="number">3</span>},{<span class="string">'one'</span>,<span class="string">'three'</span>}) == {<span class="number">1</span>,<span class="number">3</span>}</pre></li>
     </ul>
 
 </dd>
@@ -426,11 +426,11 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">fun</span>
-            <span class="types"><span class="type">func</span></span>
+            <span class="types"><span class="type">function</span></span>
          A function that takes at least one argument
         </li>
         <li><span class="parameter">t</span>
-            <span class="types"><span class="type">tab</span></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.6">table</a></span>
          a table
         </li>
         <li><span class="parameter">...</span>
@@ -459,15 +459,15 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">start</span>
-            <span class="types"><span class="type">int</span></span>
+            <span class="types"><span class="type">integer</span></span>
           number
         </li>
         <li><span class="parameter">finish</span>
-            <span class="types"><span class="type">int</span></span>
+            <span class="types"><span class="type">integer</span></span>
          number
         </li>
         <li><span class="parameter">step</span>
-            <span class="types"><span class="type">int</span></span>
+            <span class="types"><span class="type">integer</span></span>
           make this negative for start &lt; finish
          (<em>default</em> 1)
         </li>
@@ -489,7 +489,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">fun</span>
-            <span class="types"><span class="type">func</span></span>
+            <span class="types"><span class="type">function</span></span>
          a function of two arguments
         </li>
         <li><span class="parameter">t</span>
@@ -512,7 +512,7 @@
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">reduce(<span class="string">'+'</span>,{<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>}) == <span class="number">10</span></pre>
+        <pre class="example"><span class="function-name">reduce</span>(<span class="string">'+'</span>,{<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>}) == <span class="number">10</span></pre>
     </ul>
 
 </dd>
@@ -582,11 +582,11 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">t1</span>
-            <span class="types"><span class="type">tab</span></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.6">table</a></span>
          a table
         </li>
         <li><span class="parameter">t2</span>
-            <span class="types"><span class="type">tab</span></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.6">table</a></span>
          a table
         </li>
     </ul>
@@ -619,11 +619,11 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">t1</span>
-            <span class="types"><span class="type">tab</span></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.6">table</a></span>
          a table
         </li>
         <li><span class="parameter">t2</span>
-            <span class="types"><span class="type">tab</span></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.6">table</a></span>
          a table
         </li>
     </ul>
@@ -660,7 +660,7 @@
          a list-like table
         </li>
         <li><span class="parameter">cmp</span>
-            <span class="types"><span class="type">func</span></span>
+            <span class="types"><span class="type">function</span></span>
          a function that defines equality (otherwise uses ==)
         </li>
     </ul>
@@ -698,12 +698,12 @@
          a value
         </li>
         <li><span class="parameter">i1</span>
-            <span class="types"><span class="type">int</span></span>
+            <span class="types"><span class="type">integer</span></span>
          start range
          (<em>default</em> 1)
         </li>
         <li><span class="parameter">i2</span>
-            <span class="types"><span class="type">int</span></span>
+            <span class="types"><span class="type">integer</span></span>
          end range
          (<em>default</em> #t)
         </li>
@@ -725,7 +725,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">n</span>
-            <span class="types"><span class="type">int</span></span>
+            <span class="types"><span class="type">integer</span></span>
          size
         </li>
         <li><span class="parameter">val</span>
@@ -783,11 +783,11 @@
          a list-like table
         </li>
         <li><span class="parameter">i1</span>
-            <span class="types"><span class="type">int</span></span>
+            <span class="types"><span class="type">integer</span></span>
          start index
         </li>
         <li><span class="parameter">i2</span>
-            <span class="types"><span class="type">int</span></span>
+            <span class="types"><span class="type">integer</span></span>
          end index
         </li>
     </ul>
@@ -809,7 +809,7 @@
     <dd>
     modifies a table to be read only.
  This only offers weak protection. Tables can still be modified with
- <a href="https://www.lua.org/manual/5.1/manual.html#pdf-table.insert">table.insert</a> and <a href="https://www.lua.org/manual/5.1/manual.html#pdf-rawset">rawset</a>.</p>
+ <a href="https://www.lua.org/manual/5.4/manual.html#pdf-table.insert">table.insert</a> and <a href="https://www.lua.org/manual/5.4/manual.html#pdf-rawset">rawset</a>.</p>
 
 <p> <em>NOTE</em>: for Lua 5.1 length, pairs and ipairs will not work, since the
  equivalent metamethods are only available in Lua 5.2 and newer.
@@ -818,7 +818,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">t</span>
-            <span class="types"><span class="type">tab</span></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.6">table</a></span>
          the table
         </li>
     </ul>
@@ -848,11 +848,11 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">t1</span>
-            <span class="types"><span class="type">tab</span></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.6">table</a></span>
          destination table
         </li>
         <li><span class="parameter">t2</span>
-            <span class="types"><span class="type">tab</span></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.6">table</a></span>
          source (actually any iterable object)
         </li>
     </ul>
@@ -878,7 +878,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">t</span>
-            <span class="types"><span class="type">tab</span></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.6">table</a></span>
          an iterable source
         </li>
     </ul>
@@ -906,7 +906,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">t</span>
-            <span class="types"><span class="type">tab</span></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.6">table</a></span>
          A table
         </li>
     </ul>
@@ -940,17 +940,17 @@
          a list-like table
         </li>
         <li><span class="parameter">idest</span>
-            <span class="types"><span class="type">int</span></span>
+            <span class="types"><span class="type">integer</span></span>
          where to start copying values into destination
          (<em>default</em> 1)
         </li>
         <li><span class="parameter">isrc</span>
-            <span class="types"><span class="type">int</span></span>
+            <span class="types"><span class="type">integer</span></span>
          where to start copying values from source
          (<em>default</em> 1)
         </li>
         <li><span class="parameter">nsrc</span>
-            <span class="types"><span class="type">int</span></span>
+            <span class="types"><span class="type">integer</span></span>
          number of elements to copy from source
          (<em>default</em> #src)
         </li>
@@ -980,17 +980,17 @@
          a list-like table
         </li>
         <li><span class="parameter">idest</span>
-            <span class="types"><span class="type">int</span></span>
+            <span class="types"><span class="type">integer</span></span>
          where to start copying values into destination
          (<em>default</em> 1)
         </li>
         <li><span class="parameter">isrc</span>
-            <span class="types"><span class="type">int</span></span>
+            <span class="types"><span class="type">integer</span></span>
          where to start copying values from source
          (<em>default</em> 1)
         </li>
         <li><span class="parameter">nsrc</span>
-            <span class="types"><span class="type">int</span></span>
+            <span class="types"><span class="type">integer</span></span>
          number of elements to copy from source
          (<em>default</em> #src)
         </li>
@@ -1007,7 +1007,7 @@
     </dt>
     <dd>
     insert values into a table.
- similar to <a href="https://www.lua.org/manual/5.1/manual.html#pdf-table.insert">table.insert</a> but inserts values from given table <a href="../libraries/pl.tablex.html#values">values</a>,
+ similar to <a href="https://www.lua.org/manual/5.4/manual.html#pdf-table.insert">table.insert</a> but inserts values from given table <a href="../libraries/pl.tablex.html#values">values</a>,
  not the object itself, into table <code>t</code> at position <code>pos</code>.
 
 
@@ -1018,7 +1018,7 @@
          the list
         </li>
         <li><span class="parameter">position</span>
-            <span class="types"><span class="type">int</span></span>
+            <span class="types"><span class="type">integer</span></span>
          (default is at end)
          (<em>optional</em>)
         </li>
@@ -1057,7 +1057,7 @@
          A value
         </li>
         <li><span class="parameter">ignore_mt</span>
-            <span class="types"><span class="type">bool</span></span>
+            <span class="types"><span class="type">boolean</span></span>
          if true, ignore __eq metamethod (default false)
          (<em>optional</em>)
         </li>
@@ -1097,7 +1097,7 @@
          an array
         </li>
         <li><span class="parameter">cmp</span>
-            <span class="types"><span class="type">func</span></span>
+            <span class="types"><span class="type">function</span></span>
          A comparison function; <code>bool = cmp(t1_value, t2_value)</code>
         </li>
     </ul>
@@ -1112,9 +1112,9 @@
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example"><span class="global">assert</span>(tablex.compare({ <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span> }, { <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span> }, <span class="string">"=="</span>))
+        <pre class="example"><span class="global">assert</span>(tablex.<span class="function-name">compare</span>({ <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span> }, { <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span> }, <span class="string">"=="</span>))
 
-<span class="global">assert</span>(tablex.compare(
+<span class="global">assert</span>(tablex.<span class="function-name">compare</span>(
    {<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>, hello = <span class="string">"world"</span>},  <span class="comment">-- fields are not compared!
 </span>   {<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>}, <span class="keyword">function</span>(v1, v2) <span class="keyword">return</span> v1 == v2 <span class="keyword">end</span>)</pre>
     </ul>
@@ -1172,7 +1172,7 @@
          A value
         </li>
         <li><span class="parameter">idx</span>
-            <span class="types"><span class="type">int</span></span>
+            <span class="types"><span class="type">integer</span></span>
          index to start; -1 means last element,etc (default 1)
         </li>
     </ul>
@@ -1187,8 +1187,8 @@
 
     <h3>Usage:</h3>
     <ul>
-        <li><pre class="example">find({<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>},<span class="number">20</span>) == <span class="number">2</span></pre></li>
-        <li><pre class="example">find({<span class="string">'a'</span>,<span class="string">'b'</span>,<span class="string">'a'</span>,<span class="string">'c'</span>},<span class="string">'a'</span>,<span class="number">2</span>) == <span class="number">3</span></pre></li>
+        <li><pre class="example"><span class="function-name">find</span>({<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>},<span class="number">20</span>) == <span class="number">2</span></pre></li>
+        <li><pre class="example"><span class="function-name">find</span>({<span class="string">'a'</span>,<span class="string">'b'</span>,<span class="string">'a'</span>,<span class="string">'c'</span>},<span class="string">'a'</span>,<span class="number">2</span>) == <span class="number">3</span></pre></li>
     </ul>
 
 </dd>
@@ -1226,7 +1226,7 @@
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">rfind({<span class="number">10</span>,<span class="number">10</span>,<span class="number">10</span>},<span class="number">10</span>) == <span class="number">3</span></pre>
+        <pre class="example"><span class="function-name">rfind</span>({<span class="number">10</span>,<span class="number">10</span>,<span class="number">10</span>},<span class="number">10</span>) == <span class="number">3</span></pre>
     </ul>
 
 </dd>
@@ -1246,11 +1246,11 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">t</span>
-            <span class="types"><span class="type">tab</span></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.6">table</a></span>
          A table
         </li>
         <li><span class="parameter">cmp</span>
-            <span class="types"><span class="type">func</span></span>
+            <span class="types"><span class="type">function</span></span>
          A comparison function
         </li>
         <li><span class="parameter">arg</span>
@@ -1272,22 +1272,22 @@
     <ul>
         <pre class="example"><span class="comment">-- using an operator
 </span><span class="keyword">local</span> lst = { <span class="string">"Rudolph"</span>, <span class="keyword">true</span>, <span class="keyword">false</span>, <span class="number">15</span> }
-<span class="keyword">local</span> idx, cmp_result = tablex.rfind(lst, <span class="string">"=="</span>, <span class="string">"Rudolph"</span>)
+<span class="keyword">local</span> idx, cmp_result = tablex.<span class="function-name">rfind</span>(lst, <span class="string">"=="</span>, <span class="string">"Rudolph"</span>)
 <span class="global">assert</span>(idx == <span class="number">1</span>)
 <span class="global">assert</span>(cmp_result == <span class="keyword">true</span>)
 
-<span class="keyword">local</span> idx, cmp_result = tablex.rfind(lst, <span class="string">"=="</span>, <span class="keyword">false</span>)
+<span class="keyword">local</span> idx, cmp_result = tablex.<span class="function-name">rfind</span>(lst, <span class="string">"=="</span>, <span class="keyword">false</span>)
 <span class="global">assert</span>(idx == <span class="number">3</span>)
 <span class="global">assert</span>(cmp_result == <span class="keyword">true</span>)       <span class="comment">-- looking up 'false' works!
 </span>
 <span class="comment">-- using a function returning the value looked up
 </span><span class="keyword">local</span> cmp = <span class="keyword">function</span>(v1, v2) <span class="keyword">return</span> v1 == v2 <span class="keyword">and</span> v2 <span class="keyword">end</span>
-<span class="keyword">local</span> idx, cmp_result = tablex.rfind(lst, cmp, <span class="string">"Rudolph"</span>)
+<span class="keyword">local</span> idx, cmp_result = tablex.<span class="function-name">rfind</span>(lst, cmp, <span class="string">"Rudolph"</span>)
 <span class="global">assert</span>(idx == <span class="number">1</span>)
 <span class="global">assert</span>(cmp_result == <span class="string">"Rudolph"</span>)  <span class="comment">-- the value is returned
 </span>
 <span class="comment">-- NOTE: this fails, since 'false' cannot be returned!
-</span><span class="keyword">local</span> idx, cmp_result = tablex.rfind(lst, cmp, <span class="keyword">false</span>)
+</span><span class="keyword">local</span> idx, cmp_result = tablex.<span class="function-name">rfind</span>(lst, cmp, <span class="keyword">false</span>)
 <span class="global">assert</span>(idx == <span class="keyword">nil</span>)               <span class="comment">-- looking up 'false' failed!
 </span><span class="global">assert</span>(cmp_result == <span class="keyword">nil</span>)</pre>
     </ul>
@@ -1304,7 +1304,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">t</span>
-            <span class="types"><span class="type">tab</span></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.6">table</a></span>
          the table
         </li>
         <li><span class="parameter">value</span>
@@ -1327,7 +1327,7 @@
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">search(_G,<span class="global">math</span>.sin,{<span class="global">package</span>.path}) == <span class="string">'math.sin'</span></pre>
+        <pre class="example"><span class="function-name">search</span>(_G,<span class="global">math</span>.sin,{<span class="global">package</span>.path}) == <span class="string">'math.sin'</span></pre>
     </ul>
 
 </dd>
@@ -1348,11 +1348,11 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">fun</span>
-            <span class="types"><span class="type">func</span></span>
+            <span class="types"><span class="type">function</span></span>
          A function that takes at least one argument
         </li>
         <li><span class="parameter">t</span>
-            <span class="types"><span class="type">tab</span></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.6">table</a></span>
          A table
         </li>
         <li><span class="parameter">...</span>
@@ -1365,7 +1365,7 @@
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">map(<span class="keyword">function</span>(v) <span class="keyword">return</span> v*v <span class="keyword">end</span>, {<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>,fred=<span class="number">2</span>}) is {<span class="number">100</span>,<span class="number">400</span>,<span class="number">900</span>,fred=<span class="number">4</span>}</pre>
+        <pre class="example"><span class="function-name">map</span>(<span class="keyword">function</span>(v) <span class="keyword">return</span> v*v <span class="keyword">end</span>, {<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>,fred=<span class="number">2</span>}) <span class="function-name">is</span> {<span class="number">100</span>,<span class="number">400</span>,<span class="number">900</span>,fred=<span class="number">4</span>}</pre>
     </ul>
 
 </dd>
@@ -1382,7 +1382,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">fun</span>
-            <span class="types"><span class="type">func</span></span>
+            <span class="types"><span class="type">function</span></span>
          A function that takes at least one argument
         </li>
         <li><span class="parameter">t</span>
@@ -1404,7 +1404,7 @@
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">imap(<span class="keyword">function</span>(v) <span class="keyword">return</span> v*v <span class="keyword">end</span>, {<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>,fred=<span class="number">2</span>}) is {<span class="number">100</span>,<span class="number">400</span>,<span class="number">900</span>}</pre>
+        <pre class="example"><span class="function-name">imap</span>(<span class="keyword">function</span>(v) <span class="keyword">return</span> v*v <span class="keyword">end</span>, {<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>,fred=<span class="number">2</span>}) <span class="function-name">is</span> {<span class="number">100</span>,<span class="number">400</span>,<span class="number">900</span>}</pre>
     </ul>
 
 </dd>
@@ -1419,7 +1419,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">name</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          the method name
         </li>
         <li><span class="parameter">t</span>
@@ -1443,22 +1443,22 @@
     <ul>
         <pre class="example"><span class="keyword">local</span> Car = {}
 Car.__index = Car
-<span class="keyword">function</span> Car.new(car)
+<span class="keyword">function</span> Car.<span class="function-name">new</span>(car)
   <span class="keyword">return</span> <span class="global">setmetatable</span>(car <span class="keyword">or</span> {}, Car)
 <span class="keyword">end</span>
 Car.speed = <span class="number">0</span>
-<span class="keyword">function</span> Car:faster(increase)
+<span class="keyword">function</span> Car:<span class="function-name">faster</span>(increase)
   self.speed = self.speed + increase
   <span class="keyword">return</span> self.speed
 <span class="keyword">end</span>
 
-<span class="keyword">local</span> ferrari = Car.new{ name = <span class="string">"Ferrari"</span> }
-<span class="keyword">local</span> lamborghini = Car.new{ name = <span class="string">"Lamborghini"</span>, speed = <span class="number">50</span> }
+<span class="keyword">local</span> ferrari = Car.<span class="function-name">new</span>{ name = <span class="string">"Ferrari"</span> }
+<span class="keyword">local</span> lamborghini = Car.<span class="function-name">new</span>{ name = <span class="string">"Lamborghini"</span>, speed = <span class="number">50</span> }
 <span class="keyword">local</span> cars = { ferrari, lamborghini }
 
 <span class="global">assert</span>(ferrari.speed == <span class="number">0</span>)
 <span class="global">assert</span>(lamborghini.speed == <span class="number">50</span>)
-tablex.map_named_method(<span class="string">"faster"</span>, cars, <span class="number">10</span>)
+tablex.<span class="function-name">map_named_method</span>(<span class="string">"faster"</span>, cars, <span class="number">10</span>)
 <span class="global">assert</span>(ferrari.speed == <span class="number">10</span>)
 <span class="global">assert</span>(lamborghini.speed == <span class="number">60</span>)</pre>
     </ul>
@@ -1475,15 +1475,15 @@ tablex.map_named_method(<span class="string">"faster"</span>, cars, <span class=
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">fun</span>
-            <span class="types"><span class="type">func</span></span>
+            <span class="types"><span class="type">function</span></span>
          a function of at least two arguments
         </li>
         <li><span class="parameter">t1</span>
-            <span class="types"><span class="type">tab</span></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.6">table</a></span>
          a table
         </li>
         <li><span class="parameter">t2</span>
-            <span class="types"><span class="type">tab</span></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.6">table</a></span>
          a table
         </li>
         <li><span class="parameter">...</span>
@@ -1501,7 +1501,7 @@ tablex.map_named_method(<span class="string">"faster"</span>, cars, <span class=
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">map2(<span class="string">'+'</span>,{<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,m=<span class="number">4</span>},{<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>,m=<span class="number">40</span>}) is {<span class="number">11</span>,<span class="number">22</span>,<span class="number">23</span>,m=<span class="number">44</span>}</pre>
+        <pre class="example"><span class="function-name">map2</span>(<span class="string">'+'</span>,{<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,m=<span class="number">4</span>},{<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>,m=<span class="number">40</span>}) <span class="function-name">is</span> {<span class="number">11</span>,<span class="number">22</span>,<span class="number">23</span>,m=<span class="number">44</span>}</pre>
     </ul>
 
 </dd>
@@ -1517,7 +1517,7 @@ tablex.map_named_method(<span class="string">"faster"</span>, cars, <span class=
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">fun</span>
-            <span class="types"><span class="type">func</span></span>
+            <span class="types"><span class="type">function</span></span>
          a function of at least two arguments
         </li>
         <li><span class="parameter">t1</span>
@@ -1538,7 +1538,7 @@ tablex.map_named_method(<span class="string">"faster"</span>, cars, <span class=
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">imap2(<span class="string">'+'</span>,{<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,m=<span class="number">4</span>},{<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>,m=<span class="number">40</span>}) is {<span class="number">11</span>,<span class="number">22</span>,<span class="number">23</span>}</pre>
+        <pre class="example"><span class="function-name">imap2</span>(<span class="string">'+'</span>,{<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,m=<span class="number">4</span>},{<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>,m=<span class="number">40</span>}) <span class="function-name">is</span> {<span class="number">11</span>,<span class="number">22</span>,<span class="number">23</span>}</pre>
     </ul>
 
 </dd>
@@ -1559,7 +1559,7 @@ tablex.map_named_method(<span class="string">"faster"</span>, cars, <span class=
          A function that takes as many arguments as there are tables
         </li>
         <li><span class="parameter">...</span>
-            <span class="types"><span class="type">tab</span></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.6">table</a></span>
          n tables
         </li>
         <li><span class="parameter">fun</span>
@@ -1572,8 +1572,8 @@ tablex.map_named_method(<span class="string">"faster"</span>, cars, <span class=
 
     <h3>Usage:</h3>
     <ul>
-        <li><pre class="example">mapn(<span class="keyword">function</span>(x,y,z) <span class="keyword">return</span> x+y+z <span class="keyword">end</span>, {<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>},{<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>},{<span class="number">100</span>,<span class="number">200</span>,<span class="number">300</span>}) is {<span class="number">111</span>,<span class="number">222</span>,<span class="number">333</span>}</pre></li>
-        <li><pre class="example">mapn(<span class="global">math</span>.max, {<span class="number">1</span>,<span class="number">20</span>,<span class="number">300</span>},{<span class="number">10</span>,<span class="number">2</span>,<span class="number">3</span>},{<span class="number">100</span>,<span class="number">200</span>,<span class="number">100</span>}) is    {<span class="number">100</span>,<span class="number">200</span>,<span class="number">300</span>}</pre></li>
+        <li><pre class="example"><span class="function-name">mapn</span>(<span class="keyword">function</span>(x,y,z) <span class="keyword">return</span> x+y+z <span class="keyword">end</span>, {<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>},{<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>},{<span class="number">100</span>,<span class="number">200</span>,<span class="number">300</span>}) <span class="function-name">is</span> {<span class="number">111</span>,<span class="number">222</span>,<span class="number">333</span>}</pre></li>
+        <li><pre class="example"><span class="function-name">mapn</span>(<span class="global">math</span>.max, {<span class="number">1</span>,<span class="number">20</span>,<span class="number">300</span>},{<span class="number">10</span>,<span class="number">2</span>,<span class="number">3</span>},{<span class="number">100</span>,<span class="number">200</span>,<span class="number">100</span>}) <span class="function-name">is</span>    {<span class="number">100</span>,<span class="number">200</span>,<span class="number">300</span>}</pre></li>
     </ul>
 
 </dd>
@@ -1591,11 +1591,11 @@ tablex.map_named_method(<span class="string">"faster"</span>, cars, <span class=
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">fun</span>
-            <span class="types"><span class="type">func</span></span>
+            <span class="types"><span class="type">function</span></span>
          A function which will be passed each key and value as arguments, plus any extra arguments to pairmap.
         </li>
         <li><span class="parameter">t</span>
-            <span class="types"><span class="type">tab</span></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.6">table</a></span>
          A table
         </li>
         <li><span class="parameter">...</span>
@@ -1608,8 +1608,8 @@ tablex.map_named_method(<span class="string">"faster"</span>, cars, <span class=
 
     <h3>Usage:</h3>
     <ul>
-        <li><pre class="example">pairmap(<span class="keyword">function</span>(k,v) <span class="keyword">return</span> v <span class="keyword">end</span>,{fred=<span class="number">10</span>,bonzo=<span class="number">20</span>}) is {<span class="number">10</span>,<span class="number">20</span>} _or_ {<span class="number">20</span>,<span class="number">10</span>}</pre></li>
-        <li><pre class="example">pairmap(<span class="keyword">function</span>(k,v) <span class="keyword">return</span> {k,v},k <span class="keyword">end</span>,{one=<span class="number">1</span>,two=<span class="number">2</span>}) is {one={<span class="string">'one'</span>,<span class="number">1</span>},two={<span class="string">'two'</span>,<span class="number">2</span>}}</pre></li>
+        <li><pre class="example"><span class="function-name">pairmap</span>(<span class="keyword">function</span>(k,v) <span class="keyword">return</span> v <span class="keyword">end</span>,{fred=<span class="number">10</span>,bonzo=<span class="number">20</span>}) <span class="function-name">is</span> {<span class="number">10</span>,<span class="number">20</span>} <span class="function-name">_or_</span> {<span class="number">20</span>,<span class="number">10</span>}</pre></li>
+        <li><pre class="example"><span class="function-name">pairmap</span>(<span class="keyword">function</span>(k,v) <span class="keyword">return</span> {k,v},k <span class="keyword">end</span>,{one=<span class="number">1</span>,two=<span class="number">2</span>}) <span class="function-name">is</span> {one={<span class="string">'one'</span>,<span class="number">1</span>},two={<span class="string">'two'</span>,<span class="number">2</span>}}</pre></li>
     </ul>
 
 </dd>
@@ -1628,7 +1628,7 @@ tablex.map_named_method(<span class="string">"faster"</span>, cars, <span class=
          a list-like table
         </li>
         <li><span class="parameter">pred</span>
-            <span class="types"><span class="type">func</span></span>
+            <span class="types"><span class="type">function</span></span>
          a boolean function
         </li>
         <li><span class="parameter">arg</span>
@@ -1659,11 +1659,11 @@ tablex.map_named_method(<span class="string">"faster"</span>, cars, <span class=
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">t</span>
-            <span class="types"><span class="type">tab</span></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.6">table</a></span>
          a table
         </li>
         <li><span class="parameter">fun</span>
-            <span class="types"><span class="type">func</span></span>
+            <span class="types"><span class="type">function</span></span>
          a function on the elements; <code>function(value, key, ...)</code>
         </li>
         <li><span class="parameter">...</span>
@@ -1697,7 +1697,7 @@ tablex.map_named_method(<span class="string">"faster"</span>, cars, <span class=
          a table
         </li>
         <li><span class="parameter">fun</span>
-            <span class="types"><span class="type">func</span></span>
+            <span class="types"><span class="type">function</span></span>
          a function with at least one argument
         </li>
         <li><span class="parameter">...</span>
@@ -1721,11 +1721,11 @@ tablex.map_named_method(<span class="string">"faster"</span>, cars, <span class=
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">t</span>
-            <span class="types"><span class="type">tab</span></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.6">table</a></span>
          the table
         </li>
         <li><span class="parameter">f</span>
-            <span class="types"><span class="type">func</span></span>
+            <span class="types"><span class="type">function</span></span>
          an optional comparison function (f(x,y) is true if x &lt; y)
         </li>
     </ul>
@@ -1740,7 +1740,7 @@ tablex.map_named_method(<span class="string">"faster"</span>, cars, <span class=
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example"><span class="keyword">for</span> k,v <span class="keyword">in</span> tablex.sort(t) <span class="keyword">do</span> <span class="global">print</span>(k,v) <span class="keyword">end</span></pre>
+        <pre class="example"><span class="keyword">for</span> k,v <span class="keyword">in</span> tablex.<span class="function-name">sort</span>(t) <span class="keyword">do</span> <span class="global">print</span>(k,v) <span class="keyword">end</span></pre>
     </ul>
 
 </dd>
@@ -1755,11 +1755,11 @@ tablex.map_named_method(<span class="string">"faster"</span>, cars, <span class=
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">t</span>
-            <span class="types"><span class="type">tab</span></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.6">table</a></span>
          the table
         </li>
         <li><span class="parameter">f</span>
-            <span class="types"><span class="type">func</span></span>
+            <span class="types"><span class="type">function</span></span>
          an optional comparison function (f(x,y) is true if x &lt; y)
         </li>
     </ul>
@@ -1774,7 +1774,7 @@ tablex.map_named_method(<span class="string">"faster"</span>, cars, <span class=
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example"><span class="keyword">for</span> k,v <span class="keyword">in</span> tablex.sortv(t) <span class="keyword">do</span> <span class="global">print</span>(k,v) <span class="keyword">end</span></pre>
+        <pre class="example"><span class="keyword">for</span> k,v <span class="keyword">in</span> tablex.<span class="function-name">sortv</span>(t) <span class="keyword">do</span> <span class="global">print</span>(k,v) <span class="keyword">end</span></pre>
     </ul>
 
 </dd>
@@ -1793,7 +1793,7 @@ tablex.map_named_method(<span class="string">"faster"</span>, cars, <span class=
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">t</span>
-            <span class="types"><span class="type">tab</span></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.6">table</a></span>
          A list-like table where the values are the keys of the input table
         </li>
     </ul>
@@ -1814,7 +1814,7 @@ tablex.map_named_method(<span class="string">"faster"</span>, cars, <span class=
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">t</span>
-            <span class="types"><span class="type">tab</span></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.6">table</a></span>
          A list-like table where the values are the values of the input table
         </li>
     </ul>
@@ -1842,11 +1842,11 @@ tablex.map_named_method(<span class="string">"faster"</span>, cars, <span class=
          a list-like table
         </li>
         <li><span class="parameter">first</span>
-            <span class="types"><span class="type">int</span></span>
+            <span class="types"><span class="type">integer</span></span>
          An index
         </li>
         <li><span class="parameter">last</span>
-            <span class="types"><span class="type">int</span></span>
+            <span class="types"><span class="type">integer</span></span>
          An index
         </li>
     </ul>
@@ -1878,15 +1878,15 @@ tablex.map_named_method(<span class="string">"faster"</span>, cars, <span class=
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">t1</span>
-            <span class="types"><span class="type">tab</span></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.6">table</a></span>
          a table
         </li>
         <li><span class="parameter">t2</span>
-            <span class="types"><span class="type">tab</span></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.6">table</a></span>
          a table
         </li>
         <li><span class="parameter">dup</span>
-            <span class="types"><span class="type">bool</span></span>
+            <span class="types"><span class="type">boolean</span></span>
          true for a union, false for an intersection.
         </li>
     </ul>
@@ -1900,8 +1900,8 @@ tablex.map_named_method(<span class="string">"faster"</span>, cars, <span class=
 
     <h3>Usage:</h3>
     <ul>
-        <li><pre class="example">merge({alice=<span class="number">23</span>,fred=<span class="number">34</span>},{bob=<span class="number">25</span>,fred=<span class="number">34</span>}) is {fred=<span class="number">34</span>}</pre></li>
-        <li><pre class="example">merge({alice=<span class="number">23</span>,fred=<span class="number">34</span>},{bob=<span class="number">25</span>,fred=<span class="number">34</span>},<span class="keyword">true</span>) is {bob=<span class="number">25</span>,fred=<span class="number">34</span>,alice=<span class="number">23</span>}</pre></li>
+        <li><pre class="example"><span class="function-name">merge</span>({alice=<span class="number">23</span>,fred=<span class="number">34</span>},{bob=<span class="number">25</span>,fred=<span class="number">34</span>}) <span class="function-name">is</span> {fred=<span class="number">34</span>}</pre></li>
+        <li><pre class="example"><span class="function-name">merge</span>({alice=<span class="number">23</span>,fred=<span class="number">34</span>},{bob=<span class="number">25</span>,fred=<span class="number">34</span>},<span class="keyword">true</span>) <span class="function-name">is</span> {bob=<span class="number">25</span>,fred=<span class="number">34</span>,alice=<span class="number">23</span>}</pre></li>
     </ul>
 
 </dd>
@@ -1918,15 +1918,15 @@ tablex.map_named_method(<span class="string">"faster"</span>, cars, <span class=
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">s1</span>
-            <span class="types"><span class="type">tab</span></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.6">table</a></span>
          a map-like table or set
         </li>
         <li><span class="parameter">s2</span>
-            <span class="types"><span class="type">tab</span></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.6">table</a></span>
          a map-like table or set
         </li>
         <li><span class="parameter">symm</span>
-            <span class="types"><span class="type">bool</span></span>
+            <span class="types"><span class="type">boolean</span></span>
          symmetric difference (default false)
         </li>
     </ul>
@@ -1963,7 +1963,7 @@ tablex.map_named_method(<span class="string">"faster"</span>, cars, <span class=
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">zip({<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>},{<span class="number">100</span>,<span class="number">200</span>,<span class="number">300</span>}) is {{<span class="number">10</span>,<span class="number">100</span>},{<span class="number">20</span>,<span class="number">200</span>},{<span class="number">30</span>,<span class="number">300</span>}}</pre>
+        <pre class="example"><span class="function-name">zip</span>({<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>},{<span class="number">100</span>,<span class="number">200</span>,<span class="number">300</span>}) <span class="function-name">is</span> {{<span class="number">10</span>,<span class="number">100</span>},{<span class="number">20</span>,<span class="number">200</span>},{<span class="number">30</span>,<span class="number">300</span>}}</pre>
     </ul>
 
 </dd>
@@ -1973,7 +1973,7 @@ tablex.map_named_method(<span class="string">"faster"</span>, cars, <span class=
 </div> <!-- id="content" -->
 </div> <!-- id="main" -->
 <div id="about">
-<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.5.0</a></i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>

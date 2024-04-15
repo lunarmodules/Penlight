@@ -125,7 +125,7 @@
 
 <pre>
 lapp = <span class="global">require</span> <span class="string">'pl.lapp'</span>
-<span class="keyword">local</span> args = lapp <span class="string">[[
+<span class="keyword">local</span> args = <span class="function-name">lapp</span> <span class="string">[[
 Does some calculations
   -o,--offset (default 0.0)  Offset to add to scaled number
   -s,--scale  (number)  Scaling factor
@@ -197,11 +197,11 @@ Does some calculations
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">msg</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          optional message
         </li>
         <li><span class="parameter">no_usage</span>
-            <span class="types"><span class="type">bool</span></span>
+            <span class="types"><span class="type">boolean</span></span>
          suppress 'usage' display
         </li>
     </ul>
@@ -222,11 +222,11 @@ Does some calculations
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">msg</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          a message
         </li>
         <li><span class="parameter">no_usage</span>
-            <span class="types"><span class="type">bool</span></span>
+            <span class="types"><span class="type">boolean</span></span>
          suppress 'usage' display
         </li>
     </ul>
@@ -248,12 +248,12 @@ Does some calculations
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">file</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          filename
         </li>
         <li><span class="parameter">opt</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
-         same as second parameter of <a href="https://www.lua.org/manual/5.1/manual.html#pdf-io.open">io.open</a>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
+         same as second parameter of <a href="https://www.lua.org/manual/5.4/manual.html#pdf-io.open">io.open</a>
          (<em>optional</em>)
         </li>
     </ul>
@@ -274,11 +274,11 @@ Does some calculations
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">condn</span>
-            <span class="types"><span class="type">bool</span></span>
+            <span class="types"><span class="type">boolean</span></span>
          a condition
         </li>
         <li><span class="parameter">msg</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          message text
         </li>
     </ul>
@@ -300,14 +300,14 @@ Does some calculations
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">name</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          name of type
         </li>
         <li><span class="parameter">converter</span>
          either a function to convert values, or a Lua type name.
         </li>
         <li><span class="parameter">constraint</span>
-            <span class="types"><span class="type">func</span></span>
+            <span class="types"><span class="type">function</span></span>
          optional function to verify values, should use lapp.error
  if failed.
          (<em>optional</em>)
@@ -331,11 +331,11 @@ Does some calculations
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">str</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          the options text
         </li>
         <li><span class="parameter">args</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">{string}</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">{string}</a></span>
          a table of arguments (default is <code>_G.arg</code>)
         </li>
     </ul>
@@ -375,7 +375,7 @@ Does some calculations
 </div> <!-- id="content" -->
 </div> <!-- id="main" -->
 <div id="about">
-<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.5.0</a></i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>

@@ -274,7 +274,7 @@
 <h2><a href="#Methods">Methods</a></h2>
 <table class="function_list">
 	<tr>
-	<td class="name" nowrap><a href="#pl.Date:Date">pl.Date:Date (t, ...)</a></td>
+	<td class="name" nowrap><a href="#pl.date:Date">pl.date:Date (t, ...)</a></td>
 	<td class="summary">Date constructor.</td>
 	</tr>
 </table>
@@ -297,7 +297,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">t</span>
-            <span class="types"><span class="type">int</span></span>
+            <span class="types"><span class="type">integer</span></span>
          seconds since epoch
         </li>
     </ul>
@@ -318,7 +318,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">ts</span>
-            <span class="types"><span class="type">int</span></span>
+            <span class="types"><span class="type">integer</span></span>
          seconds ahead of UTC
         </li>
     </ul>
@@ -367,7 +367,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">y</span>
-            <span class="types"><span class="type">int</span></span>
+            <span class="types"><span class="type">integer</span></span>
          Four-digit year
         </li>
     </ul>
@@ -388,7 +388,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">m</span>
-            <span class="types"><span class="type">int</span></span>
+            <span class="types"><span class="type">integer</span></span>
          month
         </li>
     </ul>
@@ -409,7 +409,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">d</span>
-            <span class="types"><span class="type">int</span></span>
+            <span class="types"><span class="type">integer</span></span>
          day
         </li>
     </ul>
@@ -430,7 +430,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">h</span>
-            <span class="types"><span class="type">int</span></span>
+            <span class="types"><span class="type">integer</span></span>
          hour
         </li>
     </ul>
@@ -451,7 +451,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">min</span>
-            <span class="types"><span class="type">int</span></span>
+            <span class="types"><span class="type">integer</span></span>
          minutes
         </li>
     </ul>
@@ -472,7 +472,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">sec</span>
-            <span class="types"><span class="type">int</span></span>
+            <span class="types"><span class="type">integer</span></span>
          seconds
         </li>
     </ul>
@@ -493,7 +493,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">yday</span>
-            <span class="types"><span class="type">int</span></span>
+            <span class="types"><span class="type">integer</span></span>
          day of year
         </li>
     </ul>
@@ -514,7 +514,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">y</span>
-            <span class="types"><span class="type">int</span></span>
+            <span class="types"><span class="type">integer</span></span>
          Four-digit year
         </li>
     </ul>
@@ -619,7 +619,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">full</span>
-            <span class="types"><span class="type">bool</span></span>
+            <span class="types"><span class="type">boolean</span></span>
          abbreviated if true, full otherwise.
         </li>
     </ul>
@@ -627,7 +627,7 @@
     <h3>Returns:</h3>
     <ol>
 
-           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
         name
     </ol>
 
@@ -646,7 +646,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">full</span>
-            <span class="types"><span class="type">int</span></span>
+            <span class="types"><span class="type">integer</span></span>
          abbreviated if true, full otherwise.
         </li>
     </ul>
@@ -654,7 +654,7 @@
     <h3>Returns:</h3>
     <ol>
 
-           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
         name
     </ol>
 
@@ -852,7 +852,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">t</span>
-            <span class="types"><span class="type">int</span></span>
+            <span class="types"><span class="type">integer</span></span>
          an interval in seconds
         </li>
     </ul>
@@ -887,7 +887,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">fmt.</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          A string where the following fields are significant:</p>
 
 <ul>
@@ -920,7 +920,7 @@
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">df = Date.Format(<span class="string">"yyyy-mm-dd HH:MM:SS"</span>)</pre>
+        <pre class="example">df = Date.<span class="function-name">Format</span>(<span class="string">"yyyy-mm-dd HH:MM:SS"</span>)</pre>
     </ul>
 
 </dd>
@@ -935,7 +935,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">str</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          a date string
         </li>
     </ul>
@@ -961,7 +961,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">d</span>
-         a date object, or a time value as returned by <a href="https://www.lua.org/manual/5.1/manual.html#pdf-os.time">os.time</a>
+         a date object, or a time value as returned by <a href="https://www.lua.org/manual/5.4/manual.html#pdf-os.time">os.time</a>
         </li>
     </ul>
 
@@ -1002,8 +1002,8 @@
 
     <dl class="function">
     <dt>
-    <a name = "pl.Date:Date"></a>
-    <strong>pl.Date:Date (t, ...)</strong>
+    <a name = "pl.date:Date"></a>
+    <strong>pl.date:Date (t, ...)</strong>
     </dt>
     <dd>
     Date constructor.
@@ -1017,9 +1017,9 @@
 
 <ul>
     <li><code>nil</code> or empty - use current date and time</li>
-    <li>number - seconds since epoch (as returned by <a href="https://www.lua.org/manual/5.1/manual.html#pdf-os.time">os.time</a>). Resulting time is UTC</li>
+    <li>number - seconds since epoch (as returned by <a href="https://www.lua.org/manual/5.4/manual.html#pdf-os.time">os.time</a>). Resulting time is UTC</li>
     <li><a href="../classes/pl.Date.html">Date</a> - make a copy of this date</li>
-    <li>table - table containing year, month, etc as for <a href="https://www.lua.org/manual/5.1/manual.html#pdf-os.time">os.time</a>. You may leave out year, month or day,
+    <li>table - table containing year, month, etc as for <a href="https://www.lua.org/manual/5.4/manual.html#pdf-os.time">os.time</a>. You may leave out year, month or day,
     in which case current values will be used.</li>
     <li>year (will be followed by month, day etc)</li>
 </ul>
@@ -1042,7 +1042,7 @@
 </div> <!-- id="content" -->
 </div> <!-- id="main" -->
 <div id="about">
-<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.5.0</a></i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>

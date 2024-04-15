@@ -168,11 +168,11 @@
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#npairs">npairs (t[, i_start=1[, i_end=t.n or #t[, step=1]]])</a></td>
-	<td class="summary">an iterator with indices, similar to <a href="https://www.lua.org/manual/5.1/manual.html#pdf-ipairs">ipairs</a>, but with a range.</td>
+	<td class="summary">an iterator with indices, similar to <a href="https://www.lua.org/manual/5.4/manual.html#pdf-ipairs">ipairs</a>, but with a range.</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#kpairs">kpairs (t)</a></td>
-	<td class="summary">an iterator over all non-integer keys (inverse of <a href="https://www.lua.org/manual/5.1/manual.html#pdf-ipairs">ipairs</a>).</td>
+	<td class="summary">an iterator over all non-integer keys (inverse of <a href="https://www.lua.org/manual/5.4/manual.html#pdf-ipairs">ipairs</a>).</td>
 	</tr>
 </table>
 <h2><a href="#Tables">Tables</a></h2>
@@ -373,10 +373,10 @@
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example"><span class="keyword">local</span> t = <span class="global">table</span>.pack(<span class="keyword">nil</span>, <span class="keyword">nil</span>, <span class="keyword">nil</span>, <span class="number">4</span>)
-<span class="keyword">local</span> a, b, c, d = <span class="global">table</span>.<span class="global">unpack</span>(t)   <span class="comment">-- this <a href="../libraries/pl.utils.html#unpack">unpack</a> is NOT nil-safe, so d == nil
+        <pre class="example"><span class="keyword">local</span> t = <span class="global">table</span>.<span class="function-name">pack</span>(<span class="keyword">nil</span>, <span class="keyword">nil</span>, <span class="keyword">nil</span>, <span class="number">4</span>)
+<span class="keyword">local</span> a, b, c, d = <span class="global">table</span>.<span class="function-name">unpack</span>(t)   <span class="comment">-- this <a href="../libraries/pl.utils.html#unpack">unpack</a> is NOT nil-safe, so d == nil
 </span>
-<span class="keyword">local</span> a, b, c, d = utils.<span class="global">unpack</span>(t)   <span class="comment">-- this is nil-safe, so d == 4</span></pre>
+<span class="keyword">local</span> a, b, c, d = utils.<span class="function-name">unpack</span>(t)   <span class="comment">-- this is nil-safe, so d == 4</span></pre>
     </ul>
 
 </dd>
@@ -392,7 +392,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">fmt</span>
-         The format (see <a href="https://www.lua.org/manual/5.1/manual.html#pdf-string.format">string.format</a>)
+         The format (see <a href="https://www.lua.org/manual/5.4/manual.html#pdf-string.format">string.format</a>)
         </li>
         <li><span class="parameter">...</span>
          Extra arguments for format
@@ -418,7 +418,7 @@
          File handle to write to.
         </li>
         <li><span class="parameter">fmt</span>
-         The format (see <a href="https://www.lua.org/manual/5.1/manual.html#pdf-string.format">string.format</a>).
+         The format (see <a href="https://www.lua.org/manual/5.4/manual.html#pdf-string.format">string.format</a>).
         </li>
         <li><span class="parameter">...</span>
          Extra arguments for format
@@ -497,7 +497,7 @@
          (<em>optional</em>)
         </li>
         <li><span class="parameter">tostr</span>
-         custom tostring function, called with (value,index). Defaults to <a href="https://www.lua.org/manual/5.1/manual.html#pdf-tostring">tostring</a>.
+         custom tostring function, called with (value,index). Defaults to <a href="https://www.lua.org/manual/5.4/manual.html#pdf-tostring">tostring</a>.
          (<em>optional</em>)
         </li>
     </ul>
@@ -541,11 +541,11 @@
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">utils.is_type(<span class="string">"hello world"</span>, <span class="string">"string"</span>)   <span class="comment">--&gt; true
+        <pre class="example">utils.<span class="function-name">is_type</span>(<span class="string">"hello world"</span>, <span class="string">"string"</span>)   <span class="comment">--&gt; true
 </span><span class="comment">-- or check metatable
 </span><span class="keyword">local</span> my_mt = {}
 <span class="keyword">local</span> my_obj = <span class="global">setmetatable</span>(my_obj, my_mt)
-utils.is_type(my_obj, my_mt)  <span class="comment">--&gt; true</span></pre>
+utils.<span class="function-name">is_type</span>(my_obj, my_mt)  <span class="comment">--&gt; true</span></pre>
     </ul>
 
 </dd>
@@ -554,7 +554,7 @@ utils.is_type(my_obj, my_mt)  <span class="comment">--&gt; true</span></pre>
     <strong>npairs (t[, i_start=1[, i_end=t.n or #t[, step=1]]])</strong>
     </dt>
     <dd>
-    an iterator with indices, similar to <a href="https://www.lua.org/manual/5.1/manual.html#pdf-ipairs">ipairs</a>, but with a range.
+    an iterator with indices, similar to <a href="https://www.lua.org/manual/5.4/manual.html#pdf-ipairs">ipairs</a>, but with a range.
  This is a nil-safe index based iterator that will return <code>nil</code> when there
  is a hole in a list. To be safe ensure that table <code>t.n</code> contains the length.
 
@@ -562,7 +562,7 @@ utils.is_type(my_obj, my_mt)  <span class="comment">--&gt; true</span></pre>
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">t</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.6">table</a></span>
          the table to iterate over
         </li>
         <li><span class="parameter">i_start</span>
@@ -601,9 +601,9 @@ utils.is_type(my_obj, my_mt)  <span class="comment">--&gt; true</span></pre>
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example"><span class="keyword">local</span> t = utils.pack(<span class="keyword">nil</span>, <span class="number">123</span>, <span class="keyword">nil</span>)  <span class="comment">-- adds an <code>n</code> field when packing
+        <pre class="example"><span class="keyword">local</span> t = utils.<span class="function-name">pack</span>(<span class="keyword">nil</span>, <span class="number">123</span>, <span class="keyword">nil</span>)  <span class="comment">-- adds an <code>n</code> field when packing
 </span>
-<span class="keyword">for</span> i, v <span class="keyword">in</span> utils.npairs(t, <span class="number">2</span>) <span class="keyword">do</span>  <span class="comment">-- start at index 2
+<span class="keyword">for</span> i, v <span class="keyword">in</span> utils.<span class="function-name">npairs</span>(t, <span class="number">2</span>) <span class="keyword">do</span>  <span class="comment">-- start at index 2
 </span>  t[i] = <span class="global">tostring</span>(t[i])
 <span class="keyword">end</span>
 
@@ -616,19 +616,19 @@ utils.is_type(my_obj, my_mt)  <span class="comment">--&gt; true</span></pre>
     <strong>kpairs (t)</strong>
     </dt>
     <dd>
-    an iterator over all non-integer keys (inverse of <a href="https://www.lua.org/manual/5.1/manual.html#pdf-ipairs">ipairs</a>).
+    an iterator over all non-integer keys (inverse of <a href="https://www.lua.org/manual/5.4/manual.html#pdf-ipairs">ipairs</a>).
  It will skip any key that is an integer number, so negative indices or an
  array with holes will not return those either (so it returns slightly less than
- 'the inverse of <a href="https://www.lua.org/manual/5.1/manual.html#pdf-ipairs">ipairs</a>').</p>
+ 'the inverse of <a href="https://www.lua.org/manual/5.4/manual.html#pdf-ipairs">ipairs</a>').</p>
 
-<p> This uses <a href="https://www.lua.org/manual/5.1/manual.html#pdf-pairs">pairs</a> under the hood, so any value that is iterable using <a href="https://www.lua.org/manual/5.1/manual.html#pdf-pairs">pairs</a>
+<p> This uses <a href="https://www.lua.org/manual/5.4/manual.html#pdf-pairs">pairs</a> under the hood, so any value that is iterable using <a href="https://www.lua.org/manual/5.4/manual.html#pdf-pairs">pairs</a>
  will work with this function.
 
 
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">t</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.6">table</a></span>
          the table to iterate over
         </li>
     </ul>
@@ -658,7 +658,7 @@ utils.is_type(my_obj, my_mt)  <span class="comment">--&gt; true</span></pre>
   world = <span class="string">"Welt"</span>,
 }
 
-<span class="keyword">for</span> k, v <span class="keyword">in</span> utils.kpairs(t) <span class="keyword">do</span>
+<span class="keyword">for</span> k, v <span class="keyword">in</span> utils.<span class="function-name">kpairs</span>(t) <span class="keyword">do</span>
   <span class="global">print</span>(<span class="string">"German: "</span>, v)
 <span class="keyword">end</span>
 
@@ -776,8 +776,8 @@ utils.is_type(my_obj, my_mt)  <span class="comment">--&gt; true</span></pre>
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example"><span class="keyword">local</span> param1 = assert_arg(<span class="number">1</span>,<span class="string">"hello"</span>,<span class="string">'table'</span>)  <span class="comment">--&gt; error: argument 1 expected a 'table', got a 'string'
-</span><span class="keyword">local</span> param4 = assert_arg(<span class="number">4</span>,<span class="string">'!@#$%^&amp;*'</span>,<span class="string">'string'</span>,path.isdir,<span class="string">'not a directory'</span>)
+        <pre class="example"><span class="keyword">local</span> param1 = <span class="function-name">assert_arg</span>(<span class="number">1</span>,<span class="string">"hello"</span>,<span class="string">'table'</span>)  <span class="comment">--&gt; error: argument 1 expected a 'table', got a 'string'
+</span><span class="keyword">local</span> param4 = <span class="function-name">assert_arg</span>(<span class="number">4</span>,<span class="string">'!@#$%^&amp;*'</span>,<span class="string">'string'</span>,path.isdir,<span class="string">'not a directory'</span>)
      <span class="comment">--&gt; error: argument 4: '!@#$%^&amp;*' not a directory</span></pre>
     </ul>
 
@@ -792,7 +792,7 @@ utils.is_type(my_obj, my_mt)  <span class="comment">--&gt; true</span></pre>
  non-existing values, and/or converting strings/identifiers to other values.</p>
 
 <p> Calling on the object does the same, but returns a soft error; <code>nil + err</code>, if
- the call is succesful (the key exists), it will return the value.</p>
+ the call is successful (the key exists), it will return the value.</p>
 
 <p> When calling with varargs or an array the values will be equal to the keys.
  The enum object is read-only.
@@ -801,7 +801,7 @@ utils.is_type(my_obj, my_mt)  <span class="comment">--&gt; true</span></pre>
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">...</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a> or <span class="type">vararg</span></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.6">table</a> or <span class="type">vararg</span></span>
          the input for the Enum. If varargs or an array then the
  values in the Enum will be equal to the names (must be strings), if a hash-table
  then values remain (any type), and the keys must be strings.
@@ -820,7 +820,7 @@ utils.is_type(my_obj, my_mt)  <span class="comment">--&gt; true</span></pre>
     <ul>
         <li><pre class="example"><span class="comment">-- Enum access at runtime
 </span><span class="keyword">local</span> obj = {}
-obj.MOVEMENT = utils.enum(<span class="string">"FORWARD"</span>, <span class="string">"REVERSE"</span>, <span class="string">"LEFT"</span>, <span class="string">"RIGHT"</span>)
+obj.MOVEMENT = utils.<span class="function-name">enum</span>(<span class="string">"FORWARD"</span>, <span class="string">"REVERSE"</span>, <span class="string">"LEFT"</span>, <span class="string">"RIGHT"</span>)
 
 <span class="keyword">if</span> current_movement == obj.MOVEMENT.FORWARD <span class="keyword">then</span>
   <span class="comment">-- do something
@@ -832,17 +832,17 @@ obj.MOVEMENT = utils.enum(<span class="string">"FORWARD"</span>, <span class="st
 <span class="keyword">end</span></pre></li>
         <li><pre class="example"><span class="comment">-- standardized error codes
 </span><span class="keyword">local</span> obj = {
-  ERR = utils.enum {
+  ERR = utils.<span class="function-name">enum</span> {
     NOT_FOUND = <span class="string">"the item was not found"</span>,
     OUT_OF_BOUNDS = <span class="string">"the index is outside the allowed range"</span>
   },
 
   some_method = <span class="keyword">function</span>(self)
-    <span class="keyword">return</span> self.ERR.OUT_OF_BOUNDS
+    <span class="keyword">return</span> <span class="keyword">nil</span>, self.ERR.OUT_OF_BOUNDS
   <span class="keyword">end</span>,
 }
 
-<span class="keyword">local</span> result, err = obj:some_method()
+<span class="keyword">local</span> result, err = obj:<span class="function-name">some_method</span>()
 <span class="keyword">if</span> <span class="keyword">not</span> result <span class="keyword">then</span>
   <span class="keyword">if</span> err == obj.ERR.NOT_FOUND <span class="keyword">then</span>
     <span class="comment">-- check on error code, not magic strings
@@ -854,16 +854,16 @@ obj.MOVEMENT = utils.enum(<span class="string">"FORWARD"</span>, <span class="st
 <span class="keyword">end</span></pre></li>
         <li><pre class="example"><span class="comment">-- validating/converting user-input
 </span><span class="keyword">local</span> color = <span class="string">"purple"</span>
-<span class="keyword">local</span> ansi_colors = utils.enum {
+<span class="keyword">local</span> ansi_colors = utils.<span class="function-name">enum</span> {
   black     = <span class="number">30</span>,
   red       = <span class="number">31</span>,
   green     = <span class="number">32</span>,
 }
-<span class="keyword">local</span> color_code, err = ansi_colors(color) <span class="comment">-- calling on the object, returns the value from the enum
+<span class="keyword">local</span> color_code, err = <span class="function-name">ansi_colors</span>(color) <span class="comment">-- calling on the object, returns the value from the enum
 </span><span class="keyword">if</span> <span class="keyword">not</span> color_code <span class="keyword">then</span>
   <span class="global">print</span>(<span class="string">"bad 'color', "</span> .. err)
   <span class="comment">-- "bad 'color', 'purple' is not a valid value (expected one of: 'black', 'red', 'green')"
-</span>  <span class="global">os</span>.exit(<span class="number">1</span>)
+</span>  <span class="global">os</span>.<span class="function-name">exit</span>(<span class="number">1</span>)
 <span class="keyword">end</span></pre></li>
     </ul>
 
@@ -936,7 +936,7 @@ obj.MOVEMENT = utils.enum(<span class="string">"FORWARD"</span>, <span class="st
     <h3>Usage:</h3>
     <ul>
         <pre class="example"><span class="keyword">local</span> val = <span class="number">42</span>
-<span class="keyword">local</span> param2 = utils.assert_string(<span class="number">2</span>, val) <span class="comment">--&gt; error: argument 2 expected a 'string', got a 'number'</span></pre>
+<span class="keyword">local</span> param2 = utils.<span class="function-name">assert_string</span>(<span class="number">2</span>, val) <span class="comment">--&gt; error: argument 2 expected a 'string', got a 'number'</span></pre>
     </ul>
 
 </dd>
@@ -1002,7 +1002,7 @@ obj.MOVEMENT = utils.enum(<span class="string">"FORWARD"</span>, <span class="st
     <h3>Usage:</h3>
     <ul>
         <pre class="example"><span class="keyword">if</span> some_condition <span class="keyword">then</span>
-  <span class="keyword">return</span> utils.raise(<span class="string">"some condition was not met"</span>)  <span class="comment">-- MUST use 'return'!
+  <span class="keyword">return</span> utils.<span class="function-name">raise</span>(<span class="string">"some condition was not met"</span>)  <span class="comment">-- MUST use 'return'!
 </span><span class="keyword">end</span></pre>
     </ul>
 
@@ -1147,7 +1147,7 @@ obj.MOVEMENT = utils.enum(<span class="string">"FORWARD"</span>, <span class="st
     <dd>
     Quote and escape an argument of a command.
  Quotes a single (or list of) argument(s) of a command to be passed
- to <a href="https://www.lua.org/manual/5.1/manual.html#pdf-os.execute">os.execute</a>, <code>pl.utils.execute</code> or <a href="../libraries/pl.utils.html#executeex">pl.utils.executeex</a>.
+ to <a href="https://www.lua.org/manual/5.4/manual.html#pdf-os.execute">os.execute</a>, <code>pl.utils.execute</code> or <a href="../libraries/pl.utils.html#executeex">pl.utils.executeex</a>.
 
 
     <h3>Parameters:</h3>
@@ -1168,7 +1168,7 @@ obj.MOVEMENT = utils.enum(<span class="string">"FORWARD"</span>, <span class="st
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example"><span class="keyword">local</span> options = utils.quote_arg {
+        <pre class="example"><span class="keyword">local</span> options = utils.<span class="function-name">quote_arg</span> {
     <span class="string">"-lluacov"</span>,
     <span class="string">"-e"</span>,
     <span class="string">"utils = print(require('pl.utils')._VERSION"</span>,
@@ -1208,9 +1208,9 @@ obj.MOVEMENT = utils.enum(<span class="string">"FORWARD"</span>, <span class="st
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">utils.quit(-<span class="number">1</span>, <span class="string">"Error '%s' happened"</span>, <span class="string">"42"</span>)
+        <pre class="example">utils.<span class="function-name">quit</span>(-<span class="number">1</span>, <span class="string">"Error '%s' happened"</span>, <span class="string">"42"</span>)
 <span class="comment">-- is equivalent to
-</span>utils.quit(<span class="string">"Error '%s' happened"</span>, <span class="string">"42"</span>)  <span class="comment">--&gt; Error '42' happened</span></pre>
+</span>utils.<span class="function-name">quit</span>(<span class="string">"Error '%s' happened"</span>, <span class="string">"42"</span>)  <span class="comment">--&gt; Error '42' happened</span></pre>
     </ul>
 
 </dd>
@@ -1258,7 +1258,7 @@ obj.MOVEMENT = utils.enum(<span class="string">"FORWARD"</span>, <span class="st
          optional If truthy don't use Lua patterns
         </li>
         <li><span class="parameter">n</span>
-         optional maximum number of elements (if there are more, the last will remian un-split)
+         optional maximum number of elements (if there are more, the last will remain un-split)
         </li>
     </ul>
 
@@ -1318,7 +1318,7 @@ obj.MOVEMENT = utils.enum(<span class="string">"FORWARD"</span>, <span class="st
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">first,<span class="global">next</span> = splitv(<span class="string">'user=jane=doe'</span>,<span class="string">'='</span>, <span class="keyword">false</span>, <span class="number">2</span>)
+        <pre class="example">first,<span class="global">next</span> = <span class="function-name">splitv</span>(<span class="string">'user=jane=doe'</span>,<span class="string">'='</span>, <span class="keyword">false</span>, <span class="number">2</span>)
 <span class="global">assert</span>(first == <span class="string">"user"</span>)
 <span class="global">assert</span>(<span class="global">next</span> == <span class="string">"jane=doe"</span>)</pre>
     </ul>
@@ -1342,14 +1342,14 @@ obj.MOVEMENT = utils.enum(<span class="string">"FORWARD"</span>, <span class="st
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">func</span>
-         a function of at least one argument
+         a function that takes exactly one argument (which later serves as the cache key) and returns a single value
         </li>
     </ul>
 
     <h3>Returns:</h3>
     <ol>
 
-        a function with at least one argument, which is used as the key.
+        a function taking one argument and returning a single value either from the cache or by running the original input function
     </ol>
 
 
@@ -1369,11 +1369,11 @@ obj.MOVEMENT = utils.enum(<span class="string">"FORWARD"</span>, <span class="st
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">mt</span>
-            <span class="types"><span class="type">tab</span></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.6">table</a></span>
          metatable
         </li>
         <li><span class="parameter">fun</span>
-            <span class="types"><span class="type">func</span></span>
+            <span class="types"><span class="type">function</span></span>
          a callable that returns a function
         </li>
     </ul>
@@ -1409,8 +1409,8 @@ obj.MOVEMENT = utils.enum(<span class="string">"FORWARD"</span>, <span class="st
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">string_lambda <span class="string">'|x|x+1'</span> (<span class="number">2</span>) == <span class="number">3</span>
-string_lambda <span class="string">'_+1'</span> (<span class="number">2</span>) == <span class="number">3</span></pre>
+        <pre class="example"><span class="function-name">string_lambda</span> <span class="string">'|x|x+1'</span> (<span class="number">2</span>) == <span class="number">3</span>
+<span class="function-name">string_lambda</span> <span class="string">'_+1'</span> (<span class="number">2</span>) == <span class="number">3</span></pre>
     </ul>
 
 </dd>
@@ -1448,14 +1448,14 @@ string_lambda <span class="string">'_+1'</span> (<span class="number">2</span>) 
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example"><span class="keyword">local</span> <span class="keyword">function</span> f(msg, name)
+        <pre class="example"><span class="keyword">local</span> <span class="keyword">function</span> <span class="function-name">f</span>(msg, name)
   <span class="global">print</span>(msg .. <span class="string">" "</span> .. name)
 <span class="keyword">end</span>
 
-<span class="keyword">local</span> hello = utils.bind1(f, <span class="string">"Hello"</span>)
+<span class="keyword">local</span> hello = utils.<span class="function-name">bind1</span>(f, <span class="string">"Hello"</span>)
 
-<span class="global">print</span>(hello(<span class="string">"world"</span>))     <span class="comment">--&gt; "Hello world"
-</span><span class="global">print</span>(hello(<span class="string">"sunshine"</span>))  <span class="comment">--&gt; "Hello sunshine"</span></pre>
+<span class="global">print</span>(<span class="function-name">hello</span>(<span class="string">"world"</span>))     <span class="comment">--&gt; "Hello world"
+</span><span class="global">print</span>(<span class="function-name">hello</span>(<span class="string">"sunshine"</span>))  <span class="comment">--&gt; "Hello sunshine"</span></pre>
     </ul>
 
 </dd>
@@ -1489,14 +1489,14 @@ string_lambda <span class="string">'_+1'</span> (<span class="number">2</span>) 
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example"><span class="keyword">local</span> <span class="keyword">function</span> f(a, b, c)
+        <pre class="example"><span class="keyword">local</span> <span class="keyword">function</span> <span class="function-name">f</span>(a, b, c)
   <span class="global">print</span>(a .. <span class="string">" "</span> .. b .. <span class="string">" "</span> .. c)
 <span class="keyword">end</span>
 
-<span class="keyword">local</span> hello = utils.bind1(f, <span class="string">"world"</span>)
+<span class="keyword">local</span> hello = utils.<span class="function-name">bind1</span>(f, <span class="string">"world"</span>)
 
-<span class="global">print</span>(hello(<span class="string">"Hello"</span>, <span class="string">"!"</span>))  <span class="comment">--&gt; "Hello world !"
-</span><span class="global">print</span>(hello(<span class="string">"Bye"</span>, <span class="string">"?"</span>))    <span class="comment">--&gt; "Bye world ?"</span></pre>
+<span class="global">print</span>(<span class="function-name">hello</span>(<span class="string">"Hello"</span>, <span class="string">"!"</span>))  <span class="comment">--&gt; "Hello world !"
+</span><span class="global">print</span>(<span class="function-name">hello</span>(<span class="string">"Bye"</span>, <span class="string">"?"</span>))    <span class="comment">--&gt; "Bye world ?"</span></pre>
     </ul>
 
 </dd>
@@ -1536,12 +1536,12 @@ string_lambda <span class="string">'_+1'</span> (<span class="number">2</span>) 
     <h3>Usage:</h3>
     <ul>
         <pre class="example"><span class="comment">-- write to the Nginx logs with OpenResty
-</span>utils.set_deprecation_func(<span class="keyword">function</span>(msg, trace)
-  ngx.log(ngx.WARN, msg, (trace <span class="keyword">and</span> (<span class="string">" "</span> .. trace) <span class="keyword">or</span> <span class="keyword">nil</span>))
+</span>utils.<span class="function-name">set_deprecation_func</span>(<span class="keyword">function</span>(msg, trace)
+  ngx.<span class="function-name">log</span>(ngx.WARN, msg, (trace <span class="keyword">and</span> (<span class="string">" "</span> .. trace) <span class="keyword">or</span> <span class="keyword">nil</span>))
 <span class="keyword">end</span>)
 
 <span class="comment">-- disable deprecation warnings
-</span>utils.set_deprecation_func()</pre>
+</span>utils.<span class="function-name">set_deprecation_func</span>()</pre>
     </ul>
 
 </dd>
@@ -1575,17 +1575,17 @@ string_lambda <span class="string">'_+1'</span> (<span class="number">2</span>) 
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">warn(<span class="string">"@on"</span>)   <span class="comment">-- enable Lua warnings, they are usually off by default
+        <pre class="example"><span class="global">warn</span>(<span class="string">"@on"</span>)   <span class="comment">-- enable Lua warnings, they are usually off by default
 </span>
-<span class="keyword">function</span> stringx.islower(str)
-  raise_deprecation {
+<span class="keyword">function</span> stringx.<span class="function-name">islower</span>(str)
+  <span class="function-name">raise_deprecation</span> {
     source = <span class="string">"Penlight "</span> .. utils._VERSION,                   <span class="comment">-- optional
 </span>    message = <span class="string">"function 'islower' was renamed to 'is_lower'"</span>, <span class="comment">-- required
 </span>    version_removed = <span class="string">"2.0.0"</span>,                                <span class="comment">-- optional
 </span>    deprecated_after = <span class="string">"1.2.3"</span>,                               <span class="comment">-- optional
 </span>    no_trace = <span class="keyword">true</span>,                                          <span class="comment">-- optional
 </span>  }
-  <span class="keyword">return</span> stringx.is_lower(str)
+  <span class="keyword">return</span> stringx.<span class="function-name">is_lower</span>(str)
 <span class="keyword">end</span>
 <span class="comment">-- output: "[Penlight 1.9.2] function 'islower' was renamed to 'is_lower' (deprecated after 1.2.3, scheduled for removal in 2.0.0)"</span></pre>
     </ul>
@@ -1597,7 +1597,7 @@ string_lambda <span class="string">'_+1'</span> (<span class="number">2</span>) 
 </div> <!-- id="content" -->
 </div> <!-- id="main" -->
 <div id="about">
-<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.5.0</a></i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>
