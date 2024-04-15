@@ -6,7 +6,7 @@ deprecation policy.
 
 see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) for release instructions
 
-## 1.14.0 (unreleased)
+## 1.14.0 (2024-Apr-15)
  - fix(path): make `path.expanduser` more sturdy
    [#469](https://github.com/lunarmodules/Penlight/pull/469)
  - feat(func): extend `compose` to support N functions
@@ -17,6 +17,8 @@ see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) fo
    [#452](https://github.com/lunarmodules/Penlight/pull/452)
  - enhance(template): Preserve line numbers
    [#468](https://github.com/lunarmodules/Penlight/pull/468)
+ - fix(pretty) integers for Lua 5.4
+   [#456](https://github.com/lunarmodules/Penlight/pull/456)
 
 ## 1.13.1 (2022-Jul-22)
  - fix: `warn` unquoted argument
