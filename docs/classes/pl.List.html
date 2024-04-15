@@ -161,7 +161,7 @@
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#List:put">List:put (x)</a></td>
-	<td class="summary">Insert an item at the begining of the list.</td>
+	<td class="summary">Insert an item at the beginning of the list.</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#List:remove">List:remove (i)</a></td>
@@ -286,7 +286,7 @@
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#List.iterate">List.iterate (seq)</a></td>
-	<td class="summary">Create an iterator over a seqence.</td>
+	<td class="summary">Create an iterator over a sequence.</td>
 	</tr>
 </table>
 <h2><a href="#metamethods">metamethods</a></h2>
@@ -346,7 +346,7 @@
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">ls = List();  ls = List {<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>}</pre>
+        <pre class="example">ls = <span class="function-name">List</span>();  ls = <span class="function-name">List</span> {<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>}</pre>
     </ul>
 
 </dd>
@@ -430,7 +430,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">i</span>
-            <span class="types"><span class="type">int</span></span>
+            <span class="types"><span class="type">integer</span></span>
          index of element before whichh to insert
         </li>
         <li><span class="parameter">x</span>
@@ -453,7 +453,7 @@
     <strong>List:put (x)</strong>
     </dt>
     <dd>
-    Insert an item at the begining of the list.
+    Insert an item at the beginning of the list.
 
 
     <h3>Parameters:</h3>
@@ -485,7 +485,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">i</span>
-            <span class="types"><span class="type">int</span></span>
+            <span class="types"><span class="type">integer</span></span>
          the index
         </li>
     </ul>
@@ -541,7 +541,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">i</span>
-            <span class="types"><span class="type">int</span></span>
+            <span class="types"><span class="type">integer</span></span>
          An index
          (<em>optional</em>)
         </li>
@@ -572,7 +572,7 @@
          A data value
         </li>
         <li><span class="parameter">idx</span>
-            <span class="types"><span class="type">int</span></span>
+            <span class="types"><span class="type">integer</span></span>
          where to start search
          (<em>default</em> 1)
         </li>
@@ -649,7 +649,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">cmp</span>
-            <span class="types"><span class="type">func</span></span>
+            <span class="types"><span class="type">function</span></span>
          an optional comparison function
          (<em>default</em> '<')
         </li>
@@ -676,7 +676,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">cmp</span>
-            <span class="types"><span class="type">func</span></span>
+            <span class="types"><span class="type">function</span></span>
          an optional comparison function
          (<em>default</em> '<')
         </li>
@@ -794,17 +794,17 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">start</span>
-            <span class="types"><span class="type">int</span></span>
+            <span class="types"><span class="type">integer</span></span>
          A number
         </li>
         <li><span class="parameter">finish</span>
-            <span class="types"><span class="type">int</span></span>
+            <span class="types"><span class="type">integer</span></span>
          A number greater than start; if absent,
  then start is 1 and finish is start
          (<em>optional</em>)
         </li>
         <li><span class="parameter">incr</span>
-            <span class="types"><span class="type">int</span></span>
+            <span class="types"><span class="type">integer</span></span>
          an increment (may be less than 1)
          (<em>default</em> 1)
         </li>
@@ -820,9 +820,9 @@
 
     <h3>Usage:</h3>
     <ul>
-        <li><pre class="example">List.range(<span class="number">0</span>,<span class="number">3</span>) == List{<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>}</pre></li>
-        <li><pre class="example">List.range(<span class="number">4</span>) = List{<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>}</pre></li>
-        <li><pre class="example">List.range(<span class="number">5</span>,<span class="number">1</span>,-<span class="number">1</span>) == List{<span class="number">5</span>,<span class="number">4</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">1</span>}</pre></li>
+        <li><pre class="example">List.<span class="function-name">range</span>(<span class="number">0</span>,<span class="number">3</span>) == <span class="function-name">List</span>{<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>}</pre></li>
+        <li><pre class="example">List.<span class="function-name">range</span>(<span class="number">4</span>) = <span class="function-name">List</span>{<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>}</pre></li>
+        <li><pre class="example">List.<span class="function-name">range</span>(<span class="number">5</span>,<span class="number">1</span>,-<span class="number">1</span>) == <span class="function-name">List</span>{<span class="number">5</span>,<span class="number">4</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">1</span>}</pre></li>
     </ul>
 
 </dd>
@@ -852,11 +852,11 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">i1</span>
-            <span class="types"><span class="type">int</span></span>
+            <span class="types"><span class="type">integer</span></span>
          start of range
         </li>
         <li><span class="parameter">i2</span>
-            <span class="types"><span class="type">int</span></span>
+            <span class="types"><span class="type">integer</span></span>
          end of range
         </li>
     </ul>
@@ -883,7 +883,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">idx</span>
-            <span class="types"><span class="type">int</span></span>
+            <span class="types"><span class="type">integer</span></span>
          index
         </li>
         <li><span class="parameter">list</span>
@@ -902,7 +902,7 @@
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">l = List{<span class="number">10</span>,<span class="number">20</span>}; l:splice(<span class="number">2</span>,{<span class="number">21</span>,<span class="number">22</span>});  <span class="global">assert</span>(l == List{<span class="number">10</span>,<span class="number">21</span>,<span class="number">22</span>,<span class="number">20</span>})</pre>
+        <pre class="example">l = <span class="function-name">List</span>{<span class="number">10</span>,<span class="number">20</span>}; l:<span class="function-name">splice</span>(<span class="number">2</span>,{<span class="number">21</span>,<span class="number">22</span>});  <span class="global">assert</span>(l == <span class="function-name">List</span>{<span class="number">10</span>,<span class="number">21</span>,<span class="number">22</span>,<span class="number">20</span>})</pre>
     </ul>
 
 </dd>
@@ -917,11 +917,11 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">i1</span>
-            <span class="types"><span class="type">int</span></span>
+            <span class="types"><span class="type">integer</span></span>
           start index
         </li>
         <li><span class="parameter">i2</span>
-            <span class="types"><span class="type">int</span></span>
+            <span class="types"><span class="type">integer</span></span>
           end index
         </li>
         <li><span class="parameter">seq</span>
@@ -952,7 +952,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">delim</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          a delimiter string, can be empty.
          (<em>default</em> '')
         </li>
@@ -974,13 +974,13 @@
     </dt>
     <dd>
     Join a list of strings.  <br>
- Uses <a href="https://www.lua.org/manual/5.1/manual.html#pdf-table.concat">table.concat</a> directly.
+ Uses <a href="https://www.lua.org/manual/5.4/manual.html#pdf-table.concat">table.concat</a> directly.
 
 
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">delim</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          a delimiter
          (<em>default</em> '')
         </li>
@@ -1007,7 +1007,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">fun</span>
-            <span class="types"><span class="type">func</span></span>
+            <span class="types"><span class="type">function</span></span>
          a function or callable object
         </li>
         <li><span class="parameter">...</span>
@@ -1031,7 +1031,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">name</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          the method name
         </li>
         <li><span class="parameter">...</span>
@@ -1055,7 +1055,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">fun</span>
-            <span class="types"><span class="type">func</span></span>
+            <span class="types"><span class="type">function</span></span>
          a boolean function
         </li>
         <li><span class="parameter">arg</span>
@@ -1085,11 +1085,11 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">s</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          the string
         </li>
         <li><span class="parameter">delim</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          the delimiter (default spaces)
          (<em>optional</em>)
         </li>
@@ -1121,7 +1121,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">fun</span>
-            <span class="types"><span class="type">func</span></span>
+            <span class="types"><span class="type">function</span></span>
          a function of at least one argument
         </li>
         <li><span class="parameter">...</span>
@@ -1143,7 +1143,7 @@
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">List{<span class="string">'one'</span>,<span class="string">'two'</span>}:map(<span class="global">string</span>.upper) == {<span class="string">'ONE'</span>,<span class="string">'TWO'</span>}</pre>
+        <pre class="example"><span class="function-name">List</span>{<span class="string">'one'</span>,<span class="string">'two'</span>}:<span class="function-name">map</span>(<span class="global">string</span>.upper) == {<span class="string">'ONE'</span>,<span class="string">'TWO'</span>}</pre>
     </ul>
 
 </dd>
@@ -1159,7 +1159,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">fun</span>
-            <span class="types"><span class="type">func</span></span>
+            <span class="types"><span class="type">function</span></span>
          A function that takes at least one argument
         </li>
         <li><span class="parameter">...</span>
@@ -1189,7 +1189,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">fun</span>
-            <span class="types"><span class="type">func</span></span>
+            <span class="types"><span class="type">function</span></span>
          a function of at least two arguments
         </li>
         <li><span class="parameter">ls</span>
@@ -1227,7 +1227,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">name</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          name of method
         </li>
         <li><span class="parameter">...</span>
@@ -1260,7 +1260,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">fun</span>
-            <span class="types"><span class="type">func</span></span>
+            <span class="types"><span class="type">function</span></span>
          a function of two arguments
         </li>
     </ul>
@@ -1291,7 +1291,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">fun</span>
-            <span class="types"><span class="type">func</span></span>
+            <span class="types"><span class="type">function</span></span>
          a function of at least one argument
         </li>
         <li><span class="parameter">...</span>
@@ -1334,7 +1334,7 @@
     <strong>List.iterate (seq)</strong>
     </dt>
     <dd>
-    Create an iterator over a seqence.
+    Create an iterator over a sequence.
  This captures the Python concept of 'sequence'.
  For tables, iterates over all values with integer indices.
 
@@ -1351,8 +1351,8 @@
 
     <h3>Usage:</h3>
     <ul>
-        <li><pre class="example"><span class="keyword">for</span> x <span class="keyword">in</span> iterate {<span class="number">1</span>,<span class="number">10</span>,<span class="number">22</span>,<span class="number">55</span>} <span class="keyword">do</span> <span class="global">io</span>.write(x,<span class="string">','</span>) <span class="keyword">end</span> ==&gt; <span class="number">1</span>,<span class="number">10</span>,<span class="number">22</span>,<span class="number">55</span></pre></li>
-        <li><pre class="example"><span class="keyword">for</span> ch <span class="keyword">in</span> iterate <span class="string">'help'</span> <span class="keyword">do</span> <span class="keyword">do</span> <span class="global">io</span>.write(ch,<span class="string">' '</span>) <span class="keyword">end</span> ==&gt; h e l p</pre></li>
+        <li><pre class="example"><span class="keyword">for</span> x <span class="keyword">in</span> <span class="function-name">iterate</span> {<span class="number">1</span>,<span class="number">10</span>,<span class="number">22</span>,<span class="number">55</span>} <span class="keyword">do</span> <span class="global">io</span>.<span class="function-name">write</span>(x,<span class="string">','</span>) <span class="keyword">end</span> ==&gt; <span class="number">1</span>,<span class="number">10</span>,<span class="number">22</span>,<span class="number">55</span></pre></li>
+        <li><pre class="example"><span class="keyword">for</span> ch <span class="keyword">in</span> <span class="function-name">iterate</span> <span class="string">'help'</span> <span class="keyword">do</span> <span class="keyword">do</span> <span class="global">io</span>.<span class="function-name">write</span>(ch,<span class="string">' '</span>) <span class="keyword">end</span> ==&gt; h e l p</pre></li>
     </ul>
 
 </dd>
@@ -1436,7 +1436,7 @@
 </div> <!-- id="content" -->
 </div> <!-- id="main" -->
 <div id="about">
-<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.5.0</a></i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>

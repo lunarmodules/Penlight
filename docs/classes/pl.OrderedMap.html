@@ -128,46 +128,46 @@
 <h2><a href="#Methods">Methods</a></h2>
 <table class="function_list">
 	<tr>
-	<td class="name" nowrap><a href="#pl.OrderedMap:_init">pl.OrderedMap:_init (t)</a></td>
+	<td class="name" nowrap><a href="#pl.orderedmap:_init">pl.orderedmap:_init (t)</a></td>
 	<td class="summary">construct an OrderedMap.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#pl.OrderedMap:update">pl.OrderedMap:update (t)</a></td>
+	<td class="name" nowrap><a href="#pl.orderedmap:update">pl.orderedmap:update (t)</a></td>
 	<td class="summary">update an OrderedMap using a table.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#pl.OrderedMap:set">pl.OrderedMap:set (key, val)</a></td>
+	<td class="name" nowrap><a href="#pl.orderedmap:set">pl.orderedmap:set (key, val)</a></td>
 	<td class="summary">set the key's value.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#pl.OrderedMap:insert">pl.OrderedMap:insert (pos, key, val)</a></td>
+	<td class="name" nowrap><a href="#pl.orderedmap:insert">pl.orderedmap:insert (pos, key, val)</a></td>
 	<td class="summary">insert a key/value pair before a given position.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#pl.OrderedMap:keys">pl.OrderedMap:keys ()</a></td>
+	<td class="name" nowrap><a href="#pl.orderedmap:keys">pl.orderedmap:keys ()</a></td>
 	<td class="summary">return the keys in order.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#pl.OrderedMap:values">pl.OrderedMap:values ()</a></td>
+	<td class="name" nowrap><a href="#pl.orderedmap:values">pl.orderedmap:values ()</a></td>
 	<td class="summary">return the values in order.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#pl.OrderedMap:sort">pl.OrderedMap:sort (cmp)</a></td>
+	<td class="name" nowrap><a href="#pl.orderedmap:sort">pl.orderedmap:sort (cmp)</a></td>
 	<td class="summary">sort the keys.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#pl.OrderedMap:iter">pl.OrderedMap:iter ()</a></td>
+	<td class="name" nowrap><a href="#pl.orderedmap:iter">pl.orderedmap:iter ()</a></td>
 	<td class="summary">iterate over key-value pairs in order.</td>
 	</tr>
 </table>
 <h2><a href="#Metamethods">Metamethods</a></h2>
 <table class="function_list">
 	<tr>
-	<td class="name" nowrap><a href="#pl.OrderedMap:__pairs">pl.OrderedMap:__pairs ()</a></td>
+	<td class="name" nowrap><a href="#pl.orderedmap:__pairs">pl.orderedmap:__pairs ()</a></td>
 	<td class="summary">iterate over an ordered map (5.2).</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#pl.OrderedMap:__tostring">pl.OrderedMap:__tostring ()</a></td>
+	<td class="name" nowrap><a href="#pl.orderedmap:__tostring">pl.orderedmap:__tostring ()</a></td>
 	<td class="summary">string representation of an ordered map.</td>
 	</tr>
 </table>
@@ -180,8 +180,8 @@
 
     <dl class="function">
     <dt>
-    <a name = "pl.OrderedMap:_init"></a>
-    <strong>pl.OrderedMap:_init (t)</strong>
+    <a name = "pl.orderedmap:_init"></a>
+    <strong>pl.orderedmap:_init (t)</strong>
     </dt>
     <dd>
     construct an OrderedMap.
@@ -191,7 +191,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">t</span>
-         optional initialization table, same as for <a href="../classes/pl.OrderedMap.html#pl.OrderedMap:update">OrderedMap:update</a>
+         optional initialization table, same as for <a href="../classes/pl.OrderedMap.html#pl.orderedmap:update">OrderedMap:update</a>
         </li>
     </ul>
 
@@ -201,8 +201,8 @@
 
 </dd>
     <dt>
-    <a name = "pl.OrderedMap:update"></a>
-    <strong>pl.OrderedMap:update (t)</strong>
+    <a name = "pl.orderedmap:update"></a>
+    <strong>pl.orderedmap:update (t)</strong>
     </dt>
     <dd>
     update an OrderedMap using a table.
@@ -215,7 +215,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">t</span>
-            <span class="types"><span class="type">tab</span></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.6">table</a></span>
          a table.
         </li>
     </ul>
@@ -233,8 +233,8 @@
 
 </dd>
     <dt>
-    <a name = "pl.OrderedMap:set"></a>
-    <strong>pl.OrderedMap:set (key, val)</strong>
+    <a name = "pl.orderedmap:set"></a>
+    <strong>pl.orderedmap:set (key, val)</strong>
     </dt>
     <dd>
     set the key's value.    This key will be appended at the end of the map.</p>
@@ -263,8 +263,8 @@
 
 </dd>
     <dt>
-    <a name = "pl.OrderedMap:insert"></a>
-    <strong>pl.OrderedMap:insert (pos, key, val)</strong>
+    <a name = "pl.orderedmap:insert"></a>
+    <strong>pl.orderedmap:insert (pos, key, val)</strong>
     </dt>
     <dd>
     insert a key/value pair before a given position.
@@ -276,7 +276,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">pos</span>
-            <span class="types"><span class="type">int</span></span>
+            <span class="types"><span class="type">integer</span></span>
          a position starting at 1
         </li>
         <li><span class="parameter">key</span>
@@ -293,8 +293,8 @@
 
 </dd>
     <dt>
-    <a name = "pl.OrderedMap:keys"></a>
-    <strong>pl.OrderedMap:keys ()</strong>
+    <a name = "pl.orderedmap:keys"></a>
+    <strong>pl.orderedmap:keys ()</strong>
     </dt>
     <dd>
     return the keys in order.
@@ -313,8 +313,8 @@
 
 </dd>
     <dt>
-    <a name = "pl.OrderedMap:values"></a>
-    <strong>pl.OrderedMap:values ()</strong>
+    <a name = "pl.orderedmap:values"></a>
+    <strong>pl.orderedmap:values ()</strong>
     </dt>
     <dd>
     return the values in order.
@@ -333,8 +333,8 @@
 
 </dd>
     <dt>
-    <a name = "pl.OrderedMap:sort"></a>
-    <strong>pl.OrderedMap:sort (cmp)</strong>
+    <a name = "pl.orderedmap:sort"></a>
+    <strong>pl.orderedmap:sort (cmp)</strong>
     </dt>
     <dd>
     sort the keys.
@@ -343,8 +343,8 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">cmp</span>
-            <span class="types"><span class="type">func</span></span>
-         a comparison function as for <a href="https://www.lua.org/manual/5.1/manual.html#pdf-table.sort">table.sort</a>
+            <span class="types"><span class="type">function</span></span>
+         a comparison function as for <a href="https://www.lua.org/manual/5.4/manual.html#pdf-table.sort">table.sort</a>
         </li>
     </ul>
 
@@ -359,8 +359,8 @@
 
 </dd>
     <dt>
-    <a name = "pl.OrderedMap:iter"></a>
-    <strong>pl.OrderedMap:iter ()</strong>
+    <a name = "pl.orderedmap:iter"></a>
+    <strong>pl.orderedmap:iter ()</strong>
     </dt>
     <dd>
     iterate over key-value pairs in order.
@@ -377,8 +377,8 @@
 
     <dl class="function">
     <dt>
-    <a name = "pl.OrderedMap:__pairs"></a>
-    <strong>pl.OrderedMap:__pairs ()</strong>
+    <a name = "pl.orderedmap:__pairs"></a>
+    <strong>pl.orderedmap:__pairs ()</strong>
     </dt>
     <dd>
     iterate over an ordered map (5.2).
@@ -391,8 +391,8 @@
 
 </dd>
     <dt>
-    <a name = "pl.OrderedMap:__tostring"></a>
-    <strong>pl.OrderedMap:__tostring ()</strong>
+    <a name = "pl.orderedmap:__tostring"></a>
+    <strong>pl.orderedmap:__tostring ()</strong>
     </dt>
     <dd>
     string representation of an ordered map.
@@ -410,7 +410,7 @@
 </div> <!-- id="content" -->
 </div> <!-- id="main" -->
 <div id="about">
-<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.5.0</a></i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>

@@ -130,7 +130,7 @@
 
 <pre>
 &gt; s = <span class="string">'for i=1,n do'</span>
-&gt; <span class="keyword">for</span> t,v <span class="keyword">in</span> lexer.lua(s)  <span class="keyword">do</span> <span class="global">print</span>(t,v) <span class="keyword">end</span>
+&gt; <span class="keyword">for</span> t,v <span class="keyword">in</span> lexer.<span class="function-name">lua</span>(s)  <span class="keyword">do</span> <span class="global">print</span>(t,v) <span class="keyword">end</span>
 keyword <span class="keyword">for</span>
 iden    i
 =       =
@@ -209,22 +209,22 @@ keyword <span class="keyword">do</span>
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">s</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a> or <span class="type">file</span></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a> or <span class="type">file</span></span>
          a string or a file-like object with <code>:read()</code> method returning lines.
         </li>
         <li><span class="parameter">matches</span>
-            <span class="types"><span class="type">tab</span></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.6">table</a></span>
          an optional match table - array of token descriptions.
  A token is described by a <code>{pattern, action}</code> pair, where <code>pattern</code> should match
  token body and <code>action</code> is a function called when a token of described type is found.
         </li>
         <li><span class="parameter">filter</span>
-            <span class="types"><span class="type">tab</span></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.6">table</a></span>
          a table of token types to exclude, by default <code>{space=true}</code>
          (<em>optional</em>)
         </li>
         <li><span class="parameter">options</span>
-            <span class="types"><span class="type">tab</span></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.6">table</a></span>
          a table of options; by default, <code>{number=true,string=true}</code>,
  which means convert numbers and strip string quotes.
          (<em>optional</em>)
@@ -254,7 +254,7 @@ keyword <span class="keyword">do</span>
  a function is assumed to be a token-like iterator (returns type &amp; value)
         </li>
         <li><span class="parameter">a2</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          a string is the value
         </li>
     </ul>
@@ -373,16 +373,16 @@ keyword <span class="keyword">do</span>
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">s</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          the string
         </li>
         <li><span class="parameter">filter</span>
-            <span class="types"><span class="type">tab</span></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.6">table</a></span>
          a table of token types to exclude, by default <code>{space=true,comments=true}</code>
          (<em>optional</em>)
         </li>
         <li><span class="parameter">options</span>
-            <span class="types"><span class="type">tab</span></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.6">table</a></span>
          a table of options; by default, <code>{number=true,string=true}</code>,
  which means convert numbers and strip string quotes.
          (<em>optional</em>)
@@ -406,16 +406,16 @@ keyword <span class="keyword">do</span>
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">s</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          the string
         </li>
         <li><span class="parameter">filter</span>
-            <span class="types"><span class="type">tab</span></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.6">table</a></span>
          a table of token types to exclude, by default <code>{space=true,comments=true}</code>
          (<em>optional</em>)
         </li>
         <li><span class="parameter">options</span>
-            <span class="types"><span class="type">tab</span></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.6">table</a></span>
          a table of options; by default, <code>{number=true,string=true}</code>,
  which means convert numbers and strip string quotes.
          (<em>optional</em>)
@@ -441,12 +441,12 @@ keyword <span class="keyword">do</span>
          the token stream
         </li>
         <li><span class="parameter">endtoken</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          end of list. Can be '\n'
          (<em>default</em> ')')
         </li>
         <li><span class="parameter">delim</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          separator
          (<em>default</em> ')
         </li>
@@ -497,11 +497,11 @@ keyword <span class="keyword">do</span>
          the token stream
         </li>
         <li><span class="parameter">expected_type</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          the token type
         </li>
         <li><span class="parameter">no_skip_ws</span>
-            <span class="types"><span class="type">bool</span></span>
+            <span class="types"><span class="type">boolean</span></span>
          whether we should skip whitespace
         </li>
     </ul>
@@ -517,7 +517,7 @@ keyword <span class="keyword">do</span>
 </div> <!-- id="content" -->
 </div> <!-- id="main" -->
 <div id="about">
-<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.5.0</a></i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>

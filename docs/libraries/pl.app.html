@@ -197,11 +197,11 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">base</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          optional base directory (absolute, or relative path).
         </li>
         <li><span class="parameter">nofollow</span>
-            <span class="types"><span class="type">bool</span></span>
+            <span class="types"><span class="type">boolean</span></span>
          always use the invocation's directory, even if the invoked file is a symlink
         </li>
     </ul>
@@ -209,7 +209,7 @@
     <h3>Returns:</h3>
     <ol>
 
-           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
         the current script's path with a trailing slash
     </ol>
 
@@ -231,7 +231,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">file</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          a filename (w/out path)
         </li>
     </ul>
@@ -250,7 +250,7 @@
     <ul>
         <pre class="example"><span class="comment">-- when run from a script called 'testapp' (on Windows):
 </span><span class="keyword">local</span> app = <span class="global">require</span> <span class="string">'pl.app'</span>
-<span class="global">print</span>(app.appfile <span class="string">'test.txt'</span>)
+<span class="global">print</span>(app.<span class="function-name">appfile</span> <span class="string">'test.txt'</span>)
 <span class="comment">-- C:\Documents and Settings\steve\.testapp\test.txt</span></pre>
     </ul>
 
@@ -299,7 +299,7 @@
         <pre class="example"><span class="comment">-- execute:  lua -lluacov -e 'print(_VERSION)' myscript.lua
 </span>
 <span class="comment">-- myscript.lua
-</span><span class="global">print</span>(<span class="global">require</span>(<span class="string">"pl.app"</span>).lua())  <span class="comment">--&gt; "lua -lluacov -e 'print(_VERSION)'", "lua"</span></pre>
+</span><span class="global">print</span>(<span class="global">require</span>(<span class="string">"pl.app"</span>).<span class="function-name">lua</span>())  <span class="comment">--&gt; "lua -lluacov -e 'print(_VERSION)'", "lua"</span></pre>
     </ul>
 
 </dd>
@@ -319,7 +319,7 @@
 <p> Multiple short args can be combined like so: ( <code>-abcd</code>).</p>
 
 <p> When specifying the <code>flags_valid</code> parameter, its contents can also contain
- aliasses, to convert short/long flags to the same output name. See the
+ aliases, to convert short/long flags to the same output name. See the
  example below.</p>
 
 <p> Note: if a flag is repeated, the last value wins.
@@ -328,16 +328,16 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">args</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">{string}</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">{string}</a></span>
          an array of strings (default is the global <code>arg</code>)
         </li>
         <li><span class="parameter">flags_with_values</span>
-            <span class="types"><span class="type">tab</span></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.6">table</a></span>
          any flags that take values, either list or hash
  table e.g. <code>{ out=true }</code> or <code>{ &quot;out&quot; }</code>.
         </li>
         <li><span class="parameter">flags_valid</span>
-            <span class="types"><span class="type">tab</span></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.6">table</a></span>
          (optional) flags that are valid, either list or hashtable.
  If not given, everything
  will be accepted(everything in <code>flags_with_values</code> will automatically be allowed)
@@ -359,11 +359,11 @@
     <h3>Usage:</h3>
     <ul>
         <pre class="example"><span class="comment">-- Simple form:
-</span><span class="keyword">local</span> flags, params = app.parse_args(<span class="keyword">nil</span>,
+</span><span class="keyword">local</span> flags, params = app.<span class="function-name">parse_args</span>(<span class="keyword">nil</span>,
      { <span class="string">"hello"</span>, <span class="string">"world"</span> },  <span class="comment">-- list of flags taking values
 </span>     { <span class="string">"l"</span>, <span class="string">"a"</span>, <span class="string">"b"</span>})      <span class="comment">-- list of allowed flags (value ones will be added)
 </span>
-<span class="comment">-- More complex example using aliasses:
+<span class="comment">-- More complex example using aliases:
 </span><span class="keyword">local</span> valid = {
     long = <span class="string">"l"</span>,           <span class="comment">-- if 'l' is specified, it is reported as 'long'
 </span>    new = { <span class="string">"n"</span>, <span class="string">"old"</span> }, <span class="comment">-- here both 'n' and 'old' will go into 'new'
@@ -372,7 +372,7 @@
     <span class="string">"value"</span>,   <span class="comment">-- will automatically be added to the allowed set of flags
 </span>    <span class="string">"new"</span>,     <span class="comment">-- will mark 'n' and 'old' as requiring a value as well
 </span>}
-<span class="keyword">local</span> flags, params = app.parse_args(<span class="keyword">nil</span>, values, valid)
+<span class="keyword">local</span> flags, params = app.<span class="function-name">parse_args</span>(<span class="keyword">nil</span>, values, valid)
 
 <span class="comment">-- command:  myapp.lua -l --old:hello --value world param1 param2
 </span><span class="comment">-- will yield:
@@ -394,7 +394,7 @@ params = {
 </div> <!-- id="content" -->
 </div> <!-- id="main" -->
 <div id="about">
-<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.5.0</a></i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>

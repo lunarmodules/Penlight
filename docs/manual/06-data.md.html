@@ -151,9 +151,9 @@ write.timeout=<span class="number">10</span>
 <pre>
 <span class="comment">-- property file parsing with Lua string patterns
 </span>props = []
-<span class="keyword">for</span> line <span class="keyword">in</span> <span class="global">io</span>.lines() <span class="keyword">do</span>
-    <span class="keyword">if</span> line:find(<span class="string">'#'</span>,<span class="number">1</span>,<span class="keyword">true</span>) ~= <span class="number">1</span> <span class="keyword">and</span> <span class="keyword">not</span> line:find(<span class="string">'^%s*$'</span>) <span class="keyword">then</span>
-        <span class="keyword">local</span> var,value = line:match(<span class="string">'([^=]+)=(.*)'</span>)
+<span class="keyword">for</span> line <span class="keyword">in</span> <span class="global">io</span>.<span class="function-name">lines</span>() <span class="keyword">do</span>
+    <span class="keyword">if</span> line:<span class="function-name">find</span>(<span class="string">'#'</span>,<span class="number">1</span>,<span class="keyword">true</span>) ~= <span class="number">1</span> <span class="keyword">and</span> <span class="keyword">not</span> line:<span class="function-name">find</span>(<span class="string">'^%s*$'</span>) <span class="keyword">then</span>
+        <span class="keyword">local</span> var,value = line:<span class="function-name">match</span>(<span class="string">'([^=]+)=(.*)'</span>)
         props[var] = value
     <span class="keyword">end</span>
 <span class="keyword">end</span>
@@ -170,11 +170,11 @@ next section, 'Reading Configuration Files')</p>
 <pre>
 <span class="comment">-- property file parsing with extended string functions
 </span><span class="global">require</span> <span class="string">'pl'</span>
-stringx.import()
+stringx.<span class="function-name">import</span>()
 props = []
-<span class="keyword">for</span> line <span class="keyword">in</span> <span class="global">io</span>.lines() <span class="keyword">do</span>
-    <span class="keyword">if</span> <span class="keyword">not</span> line:startswith(<span class="string">'#'</span>) <span class="keyword">and</span> <span class="keyword">not</span> line:isspace() <span class="keyword">then</span>
-        <span class="keyword">local</span> var,value = line:splitv(<span class="string">'='</span>)
+<span class="keyword">for</span> line <span class="keyword">in</span> <span class="global">io</span>.<span class="function-name">lines</span>() <span class="keyword">do</span>
+    <span class="keyword">if</span> <span class="keyword">not</span> line:<span class="function-name">startswith</span>(<span class="string">'#'</span>) <span class="keyword">and</span> <span class="keyword">not</span> line:<span class="function-name">isspace</span>() <span class="keyword">then</span>
+        <span class="keyword">local</span> var,value = line:<span class="function-name">splitv</span>(<span class="string">'='</span>)
         props[var] = value
     <span class="keyword">end</span>
 <span class="keyword">end</span>
@@ -199,7 +199,7 @@ using <code>import.words</code>:</p>
 <span class="comment">-- countwords.lua
 </span><span class="global">require</span> <span class="string">'pl'</span>
 <span class="keyword">local</span> k = <span class="number">1</span>
-<span class="keyword">for</span> w <span class="keyword">in</span> input.words(<span class="global">io</span>.stdin) <span class="keyword">do</span>
+<span class="keyword">for</span> w <span class="keyword">in</span> input.<span class="function-name">words</span>(<span class="global">io</span>.stdin) <span class="keyword">do</span>
     k = k + <span class="number">1</span>
 <span class="keyword">end</span>
 <span class="global">print</span>(<span class="string">'count'</span>,k)
@@ -213,7 +213,7 @@ using <code>import.words</code>:</p>
 </span><span class="global">require</span> <span class="string">'pl'</span>
 <span class="keyword">local</span> k = <span class="number">1</span>
 <span class="keyword">local</span> sum = <span class="number">0</span>
-<span class="keyword">for</span> n <span class="keyword">in</span> input.numbers(<span class="global">io</span>.stdin) <span class="keyword">do</span>
+<span class="keyword">for</span> n <span class="keyword">in</span> input.<span class="function-name">numbers</span>(<span class="global">io</span>.stdin) <span class="keyword">do</span>
     sum = sum + n
     k = k + <span class="number">1</span>
 <span class="keyword">end</span>
@@ -228,7 +228,7 @@ numbers and calculate these numbers for us:</p>
 <pre>
 <span class="comment">-- average2.lua
 </span><span class="global">require</span> <span class="string">'pl'</span>
-<span class="keyword">local</span> total,n = seq.sum(input.numbers())
+<span class="keyword">local</span> total,n = seq.<span class="function-name">sum</span>(input.<span class="function-name">numbers</span>())
 <span class="global">print</span>(<span class="string">'average'</span>,total/n)
 </pre>
 
@@ -240,7 +240,7 @@ be rewritten:</p>
 <pre>
 <span class="comment">-- countwords2.lua
 </span><span class="global">require</span> <span class="string">'pl'</span>
-<span class="global">print</span>(<span class="string">'count'</span>,seq.count(input.words()))
+<span class="global">print</span>(<span class="string">'count'</span>,seq.<span class="function-name">count</span>(input.<span class="function-name">words</span>()))
 </pre>
 
 <p>A useful feature of a sequence generator like <code>numbers</code> is that it can read from
@@ -250,8 +250,8 @@ line in a file:</p>
 
 <pre>
 <span class="comment">-- sums.lua
-</span><span class="keyword">for</span> line <span class="keyword">in</span> <span class="global">io</span>.lines() <span class="keyword">do</span>
-    <span class="global">print</span>(seq.sum(input.numbers(line))
+</span><span class="keyword">for</span> line <span class="keyword">in</span> <span class="global">io</span>.<span class="function-name">lines</span>() <span class="keyword">do</span>
+    <span class="global">print</span>(seq.<span class="function-name">sum</span>(input.<span class="function-name">numbers</span>(line))
 <span class="keyword">end</span>
 </pre>
 
@@ -278,8 +278,8 @@ all the events:</p>
 <pre>
 <span class="comment">-- avg-x.lua
 </span><span class="global">require</span> <span class="string">'pl'</span>
-<span class="global">io</span>.read() <span class="comment">-- skip the header line
-</span><span class="keyword">local</span> sum,count = seq.sum(input.fields {<span class="number">3</span>})
+<span class="global">io</span>.<span class="function-name">read</span>() <span class="comment">-- skip the header line
+</span><span class="keyword">local</span> sum,count = seq.<span class="function-name">sum</span>(input.<span class="function-name">fields</span> {<span class="number">3</span>})
 <span class="global">print</span>(sum/count)
 </pre>
 
@@ -289,7 +289,7 @@ you pass it a field count, then you get every field up to that count:</p>
 
 
 <pre>
-<span class="keyword">for</span> id,mag,locX,locY,locZ <span class="keyword">in</span> input.fields (<span class="number">5</span>) <span class="keyword">do</span>
+<span class="keyword">for</span> id,mag,locX,locY,locZ <span class="keyword">in</span> input.<span class="function-name">fields</span> (<span class="number">5</span>) <span class="keyword">do</span>
 ....
 <span class="keyword">end</span>
 </pre>
@@ -308,7 +308,7 @@ string will be split into its lines:</p>
 
 
 <pre>
-&gt; <span class="keyword">for</span> x,y <span class="keyword">in</span> input.fields(<span class="number">2</span>,<span class="string">' '</span>,<span class="string">'10 20\n30 40\n'</span>) <span class="keyword">do</span> <span class="global">print</span>(x,y) <span class="keyword">end</span>
+&gt; <span class="keyword">for</span> x,y <span class="keyword">in</span> input.<span class="function-name">fields</span>(<span class="number">2</span>,<span class="string">' '</span>,<span class="string">'10 20\n30 40\n'</span>) <span class="keyword">do</span> <span class="global">print</span>(x,y) <span class="keyword">end</span>
 <span class="number">10</span>      <span class="number">20</span>
 <span class="number">30</span>      <span class="number">40</span>
 </pre>
@@ -318,9 +318,9 @@ number:</p>
 
 
 <pre>
-&gt; <span class="keyword">for</span> x,y <span class="keyword">in</span> input.fields(<span class="number">2</span>,<span class="string">' '</span>,<span class="string">'10 20\n30 40x\n'</span>) <span class="keyword">do</span> <span class="global">print</span>(x,y) <span class="keyword">end</span>
+&gt; <span class="keyword">for</span> x,y <span class="keyword">in</span> input.<span class="function-name">fields</span>(<span class="number">2</span>,<span class="string">' '</span>,<span class="string">'10 20\n30 40x\n'</span>) <span class="keyword">do</span> <span class="global">print</span>(x,y) <span class="keyword">end</span>
 <span class="number">10</span>      <span class="number">20</span>
-line <span class="number">2</span>: cannot convert <span class="string">'40x'</span> to number
+line <span class="number">2</span>: cannot <span class="function-name">convert</span> <span class="string">'40x'</span> to number
 </pre>
 
 <p>This behaviour of <a href="../libraries/pl.input.html#fields">input.fields</a> is appropriate for a script which you want to
@@ -349,8 +349,8 @@ sublist:</p>
 
 
 <pre>
-&gt; t = data.read <span class="string">'test.txt'</span>
-&gt; pretty.dump(t)
+&gt; t = data.<span class="function-name">read</span> <span class="string">'test.txt'</span>
+&gt; pretty.<span class="function-name">dump</span>(t)
 {{<span class="number">10</span>,<span class="number">20</span>},{<span class="number">2</span>,<span class="number">5</span>},{<span class="number">40</span>,<span class="number">50</span>},fieldnames={<span class="string">'x'</span>,<span class="string">'y'</span>},delim=<span class="string">','</span>}
 </pre>
 
@@ -361,12 +361,12 @@ the method <a href="../libraries/pl.data.html#Data.column_by_name">column_by_nam
 <pre>
 <span class="comment">-- testdata.lua
 </span><span class="global">require</span> <span class="string">'pl'</span>
-d = data.read(<span class="string">'fev.txt'</span>)
+d = data.<span class="function-name">read</span>(<span class="string">'fev.txt'</span>)
 <span class="keyword">for</span> _,name <span class="keyword">in</span> <span class="global">ipairs</span>(d.fieldnames) <span class="keyword">do</span>
-    <span class="keyword">local</span> col = d:column_by_name(name)
+    <span class="keyword">local</span> col = d:<span class="function-name">column_by_name</span>(name)
     <span class="keyword">if</span> <span class="global">type</span>(col[<span class="number">1</span>]) == <span class="string">'number'</span> <span class="keyword">then</span>
-        <span class="keyword">local</span> total,n = seq.sum(col)
-        utils.printf(<span class="string">"Average for %s is %f\n"</span>,name,total/n)
+        <span class="keyword">local</span> total,n = seq.<span class="function-name">sum</span>(col)
+        utils.<span class="function-name">printf</span>(<span class="string">"Average for %s is %f\n"</span>,name,total/n)
     <span class="keyword">end</span>
 <span class="keyword">end</span>
 </pre>
@@ -386,7 +386,7 @@ thousands separator in Excel CSV is '.')</p>
 <pre>
 <span class="comment">-- queries on tabular data
 </span><span class="global">require</span> <span class="string">'pl'</span>
-<span class="keyword">local</span> d = data.read(<span class="string">'xyz.txt'</span>)
+<span class="keyword">local</span> d = data.<span class="function-name">read</span>(<span class="string">'xyz.txt'</span>)
 <span class="keyword">local</span> q = d:<span class="global">select</span>(<span class="string">'x,y,z where x &gt; 3 and z &lt; 2 sort by y'</span>)
 <span class="keyword">for</span> x,y,z <span class="keyword">in</span> q <span class="keyword">do</span>
     <span class="global">print</span>(x,y,z)
@@ -438,14 +438,14 @@ fields; this is necessary if we are dealing with a lot of columns!</p>
 <pre>
 names = {[<span class="number">1501</span>]=<span class="string">'don'</span>,[<span class="number">1433</span>]=<span class="string">'dilbert'</span>}
 keepcols = {<span class="string">'Employee_ID'</span>,<span class="string">'Hours_Booked'</span>}
-t:write_row (outf,{<span class="string">'Employee'</span>,<span class="string">'Hours_Booked'</span>})
-q = t:select_row {
+t:<span class="function-name">write_row</span> (outf,{<span class="string">'Employee'</span>,<span class="string">'Hours_Booked'</span>})
+q = t:<span class="function-name">select_row</span> {
     fields=keepcols,
     where=<span class="keyword">function</span>(row) <span class="keyword">return</span> row[<span class="number">1</span>]==<span class="string">'engineering'</span> <span class="keyword">end</span>
 }
 <span class="keyword">for</span> row <span class="keyword">in</span> q <span class="keyword">do</span>
     row[<span class="number">1</span>] = names[row[<span class="number">1</span>]]
-    t:write_row(outf,row)
+    t:<span class="function-name">write_row</span>(outf,row)
 <span class="keyword">end</span>
 </pre>
 
@@ -477,11 +477,11 @@ convert the string to a number first.)</p>
 <pre>
 Date = <span class="global">require</span> <span class="string">'pl.Date'</span>
 
-<span class="keyword">function</span> date_convert (ds)
-    <span class="keyword">return</span> Date(<span class="global">tonumber</span>(ds))
+<span class="keyword">function</span> <span class="function-name">date_convert</span> (ds)
+    <span class="keyword">return</span> <span class="function-name">Date</span>(<span class="global">tonumber</span>(ds))
 <span class="keyword">end</span>
 
-d = data.read(f,{convert={[<span class="number">1</span>]=date_convert},last_field_collect=<span class="keyword">true</span>})
+d = data.<span class="function-name">read</span>(f,{convert={[<span class="number">1</span>]=date_convert},last_field_collect=<span class="keyword">true</span>})
 </pre>
 
 <p>This gives us a two-column dataset, where the first column contains <a href="../classes/pl.Date.html#">Date</a> objects
@@ -502,11 +502,11 @@ non-identifier characters like '%' get converted into underscores:</p>
 
 <pre>
 <span class="global">require</span> <span class="string">'pl'</span>
-f = <span class="global">io</span>.popen <span class="string">'ps aux'</span>
-s = data.read (f,{last_field_collect=<span class="keyword">true</span>})
-f:close()
+f = <span class="global">io</span>.<span class="function-name">popen</span> <span class="string">'ps aux'</span>
+s = data.<span class="function-name">read</span> (f,{last_field_collect=<span class="keyword">true</span>})
+f:<span class="function-name">close</span>()
 <span class="global">print</span>(s.fieldnames)
-<span class="global">print</span>(s:column_by_name <span class="string">'USER'</span>)
+<span class="global">print</span>(s:<span class="function-name">column_by_name</span> <span class="string">'USER'</span>)
 qs = <span class="string">'COMMAND,_MEM where _MEM &gt; 5 and USER=="steve"'</span>
 <span class="keyword">for</span> name,mem <span class="keyword">in</span> s:<span class="global">select</span>(qs) <span class="keyword">do</span>
     <span class="global">print</span>(mem,name)
@@ -520,7 +520,7 @@ can get Lua programs which are just as compact:</p>
 <pre>
 <span class="comment">-- printxy.lua
 </span><span class="global">require</span> <span class="string">'pl'</span>
-data.filter <span class="string">'x,y where x &gt; 3'</span>
+data.<span class="function-name">filter</span> <span class="string">'x,y where x &gt; 3'</span>
 </pre>
 
 <p>It is common enough to have data files without headers of field names.
@@ -532,7 +532,7 @@ my system called <code>lf</code> which looks like this:</p>
 
 <pre>
 #!/usr/bin/env lua
-<span class="global">require</span> <span class="string">'pl.data'</span>.filter(arg[<span class="number">1</span>])
+<span class="global">require</span> <span class="string">'pl.data'</span>.<span class="function-name">filter</span>(arg[<span class="number">1</span>])
 </pre>
 
 <p>And it can be used generally as a filter command to extract columns from data.
@@ -540,7 +540,7 @@ my system called <code>lf</code> which looks like this:</p>
 
 
 <pre>
-$ lf <span class="string">'$1,$5/10'</span> &lt; test.dat
+$ <span class="function-name">lf</span> <span class="string">'$1,$5/10'</span> &lt; test.dat
 </pre>
 
 <p>(As with AWK, please note the single-quotes used in this command; this prevents
@@ -560,7 +560,7 @@ this data. In fact, these functions are available as methods; e.g.
 
 
 <pre>
-v = data.read(<span class="string">'dat.txt'</span>):flatten()
+v = data.<span class="function-name">read</span>(<span class="string">'dat.txt'</span>):<span class="function-name">flatten</span>()
 </pre>
 
 <p>The data is also in exactly the right shape to be treated as matrices by
@@ -569,7 +569,7 @@ v = data.read(<span class="string">'dat.txt'</span>):flatten()
 
 <pre>
 &gt; matrix = <span class="global">require</span> <span class="string">'matrix'</span>
-&gt; m = matrix(data.read <span class="string">'mat.txt'</span>)
+&gt; m = <span class="function-name">matrix</span>(data.<span class="function-name">read</span> <span class="string">'mat.txt'</span>)
 &gt; = m
 <span class="number">1</span>       <span class="number">0.2</span>     <span class="number">0.3</span>
 <span class="number">0.2</span>     <span class="number">1</span>       <span class="number">0.1</span>
@@ -589,7 +589,7 @@ arbitrary queries.</p>
 
 
 <pre>
-&gt; lua -lpl -e <span class="string">"_DEBUG=true"</span> -e <span class="string">"data.filter 'x,y where x &gt; 4 sort by x'"</span> &lt; test.txt
+&gt; lua -lpl -<span class="function-name">e</span> <span class="string">"_DEBUG=true"</span> -<span class="function-name">e</span> <span class="string">"data.filter 'x,y where x &gt; 4 sort by x'"</span> &lt; test.txt
 <span class="keyword">return</span> <span class="keyword">function</span> (t)
         <span class="keyword">local</span> i = <span class="number">0</span>
         <span class="keyword">local</span> v
@@ -599,7 +599,7 @@ arbitrary queries.</p>
                     ls[#ls+<span class="number">1</span>] = v
             <span class="keyword">end</span>
         <span class="keyword">end</span>
-        <span class="global">table</span>.sort(ls,<span class="keyword">function</span>(v1,v2)
+        <span class="global">table</span>.<span class="function-name">sort</span>(ls,<span class="keyword">function</span>(v1,v2)
             <span class="keyword">return</span> v1[<span class="number">1</span>] &lt; v2[<span class="number">1</span>]
         <span class="keyword">end</span>)
         <span class="keyword">local</span> n = #ls
@@ -643,8 +643,8 @@ ports = <span class="number">1002</span>,<span class="number">1003</span>,<span 
 </span><span class="keyword">local</span> config = <span class="global">require</span> <span class="string">'pl.config'</span>
 <span class="keyword">local</span> pretty= <span class="global">require</span> <span class="string">'pl.pretty'</span>
 
-<span class="keyword">local</span> t = config.read(arg[<span class="number">1</span>])
-<span class="global">print</span>(pretty.write(t))
+<span class="keyword">local</span> t = config.<span class="function-name">read</span>(arg[<span class="number">1</span>])
+<span class="global">print</span>(pretty.<span class="function-name">write</span>(t))
 </pre>
 
 <p>and the output of <code>lua readconfig.lua test.config</code> is:</p>
@@ -772,7 +772,7 @@ split a value up into a list (it may be a Lua string pattern such as '%s+'.)</p>
 
 
 <pre>
-t = config.read(<span class="string">'/etc/passwd'</span>,{list_delim=<span class="string">':'</span>})
+t = config.<span class="function-name">read</span>(<span class="string">'/etc/passwd'</span>,{list_delim=<span class="string">':'</span>})
 </pre>
 
 <p>This produces the following output on my system (only last two lines shown):</p>
@@ -807,7 +807,7 @@ with this (the <a href="../libraries/pl.tablex.html#pairmap">tablex.pairmap</a> 
 
 
 <pre>
-t = tablex.pairmap(<span class="keyword">function</span>(k,v) <span class="keyword">return</span> v,v[<span class="number">1</span>] <span class="keyword">end</span>,t)
+t = tablex.<span class="function-name">pairmap</span>(<span class="keyword">function</span>(k,v) <span class="keyword">return</span> v,v[<span class="number">1</span>] <span class="keyword">end</span>,t)
 </pre>
 
 <p>and you get:</p>
@@ -838,20 +838,20 @@ files such as <code>/etc/ssh/ssh_config</code>; the options <code>{keysep=&apos;
 
 
 <pre>
-&gt; t = config.read(<span class="string">'/proc/meminfo'</span>,{keysep=<span class="string">':'</span>})
+&gt; t = config.<span class="function-name">read</span>(<span class="string">'/proc/meminfo'</span>,{keysep=<span class="string">':'</span>})
 &gt; = t.MemFree
 <span class="number">220140</span> kB
 </pre>
 
-<p>That result is a string, since <a href="https://www.lua.org/manual/5.1/manual.html#pdf-tonumber">tonumber</a> doesn't like it, but defining the
+<p>That result is a string, since <a href="https://www.lua.org/manual/5.4/manual.html#pdf-tonumber">tonumber</a> doesn't like it, but defining the
 <code>convert_numbers</code> option as `function(s) return tonumber((s:gsub(' kB$','')))
 end` will get the memory figures as actual numbers in the result. (The extra
-parentheses are necessary so that <a href="https://www.lua.org/manual/5.1/manual.html#pdf-tonumber">tonumber</a> only gets the first result from
+parentheses are necessary so that <a href="https://www.lua.org/manual/5.4/manual.html#pdf-tonumber">tonumber</a> only gets the first result from
 <code>gsub</code>). From `tests/test-config.lua':</p>
 
 
 <pre>
-testconfig(<span class="string">[[
+<span class="function-name">testconfig</span>(<span class="string">[[
 MemTotal:        1024748 kB
 MemFree:          220292 kB
 ]]</span>,
@@ -859,7 +859,7 @@ MemFree:          220292 kB
 {
  keysep = <span class="string">':'</span>,
  convert_numbers = <span class="keyword">function</span>(s)
-    s = s:gsub(<span class="string">' kB$'</span>,<span class="string">''</span>)
+    s = s:<span class="function-name">gsub</span>(<span class="string">' kB$'</span>,<span class="string">''</span>)
     <span class="keyword">return</span> <span class="global">tonumber</span>(s)
   <span class="keyword">end</span>
  }
@@ -888,21 +888,21 @@ which <em>tokenize</em> a string, classifying tokens into numbers, strings, etc.
 
 <pre>
 &gt; lua -lpl
-Lua <span class="number">5.1</span>.<span class="number">4</span>  Copyright (C) <span class="number">1994</span>-<span class="number">2008</span> Lua.org, PUC-Rio
-&gt; tok = lexer.scan <span class="string">'alpha = sin(1.5)'</span>
-&gt; = tok()
+Lua <span class="number">5.1</span>.<span class="number">4</span>  <span class="function-name">Copyright</span> (C) <span class="number">1994</span>-<span class="number">2008</span> Lua.org, PUC-Rio
+&gt; tok = lexer.<span class="function-name">scan</span> <span class="string">'alpha = sin(1.5)'</span>
+&gt; = <span class="function-name">tok</span>()
 iden    alpha
-&gt; = tok()
+&gt; = <span class="function-name">tok</span>()
 =       =
-&gt; = tok()
+&gt; = <span class="function-name">tok</span>()
 iden    sin
-&gt; = tok()
+&gt; = <span class="function-name">tok</span>()
 (       (
-&gt; = tok()
+&gt; = <span class="function-name">tok</span>()
 number  <span class="number">1.5</span>
-&gt; = tok()
+&gt; = <span class="function-name">tok</span>()
 )       )
-&gt; = tok()
+&gt; = <span class="function-name">tok</span>()
 (<span class="keyword">nil</span>)
 </pre>
 
@@ -918,7 +918,7 @@ strings.</p>
 
 
 <pre>
-&gt; <span class="keyword">for</span> t,v <span class="keyword">in</span> lexer.lua <span class="string">'for i=1,n do'</span> <span class="keyword">do</span> <span class="global">print</span>(t,v) <span class="keyword">end</span>
+&gt; <span class="keyword">for</span> t,v <span class="keyword">in</span> lexer.<span class="function-name">lua</span> <span class="string">'for i=1,n do'</span> <span class="keyword">do</span> <span class="global">print</span>(t,v) <span class="keyword">end</span>
 keyword <span class="keyword">for</span>
 iden    i
 =       =
@@ -934,7 +934,7 @@ format which it was my task to maintain:</p>
 
 
 <pre>
-points
+<span class="function-name">points</span>
     (<span class="number">818344.1</span>,-<span class="number">20389.7</span>,-<span class="number">0.1</span>),(<span class="number">818337.9</span>,-<span class="number">20389.3</span>,-<span class="number">0.1</span>),(<span class="number">818332.5</span>,-<span class="number">20387.8</span>,-<span class="number">0.1</span>)
     ,(<span class="number">818327.4</span>,-<span class="number">20388</span>,-<span class="number">0.1</span>),(<span class="number">818322</span>,-<span class="number">20387.7</span>,-<span class="number">0.1</span>),(<span class="number">818316.3</span>,-<span class="number">20388.6</span>,-<span class="number">0.1</span>)
     ,(<span class="number">818309.7</span>,-<span class="number">20389.4</span>,-<span class="number">0.1</span>),(<span class="number">818303.5</span>,-<span class="number">20390.6</span>,-<span class="number">0.1</span>),(<span class="number">818295.8</span>,-<span class="number">20388.3</span>,-<span class="number">0.1</span>)
@@ -951,34 +951,34 @@ points
 <span class="keyword">local</span> expecting = lexer.expecting
 <span class="keyword">local</span> append = <span class="global">table</span>.insert
 
-<span class="keyword">local</span> tok = lexer.scan(s)
+<span class="keyword">local</span> tok = lexer.<span class="function-name">scan</span>(s)
 
 <span class="keyword">local</span> points = {}
-<span class="keyword">local</span> t,v = tok() <span class="comment">-- should be 'iden','points'
+<span class="keyword">local</span> t,v = <span class="function-name">tok</span>() <span class="comment">-- should be 'iden','points'
 </span>
 <span class="keyword">while</span> t ~= <span class="string">';'</span> <span class="keyword">do</span>
     c = {}
-    expecting(tok,<span class="string">'('</span>)
-    c.x = expecting(tok,<span class="string">'number'</span>)
-    expecting(tok,<span class="string">','</span>)
-    c.y = expecting(tok,<span class="string">'number'</span>)
-    expecting(tok,<span class="string">','</span>)
-    c.z = expecting(tok,<span class="string">'number'</span>)
-    expecting(tok,<span class="string">')'</span>)
-    t,v = tok()  <span class="comment">-- either ',' or ';'
-</span>    append(points,c)
+    <span class="function-name">expecting</span>(tok,<span class="string">'('</span>)
+    c.x = <span class="function-name">expecting</span>(tok,<span class="string">'number'</span>)
+    <span class="function-name">expecting</span>(tok,<span class="string">','</span>)
+    c.y = <span class="function-name">expecting</span>(tok,<span class="string">'number'</span>)
+    <span class="function-name">expecting</span>(tok,<span class="string">','</span>)
+    c.z = <span class="function-name">expecting</span>(tok,<span class="string">'number'</span>)
+    <span class="function-name">expecting</span>(tok,<span class="string">')'</span>)
+    t,v = <span class="function-name">tok</span>()  <span class="comment">-- either ',' or ';'
+</span>    <span class="function-name">append</span>(points,c)
 <span class="keyword">end</span>
 </pre>
 
 <p>The <code>expecting</code> function grabs the next token and if the type doesn't match, it
 throws an error. (<a href="../libraries/pl.lexer.html#">pl.lexer</a>, unlike other PL libraries, raises errors if
-something goes wrong, so you should wrap your code in <a href="https://www.lua.org/manual/5.1/manual.html#pdf-pcall">pcall</a> to catch the error
+something goes wrong, so you should wrap your code in <a href="https://www.lua.org/manual/5.4/manual.html#pdf-pcall">pcall</a> to catch the error
 gracefully.)</p>
 
 <p>The scanners all have a second optional argument, which is a table which controls
 whether you want to exclude spaces and/or comments. The default for <a href="../libraries/pl.lexer.html#lua">lexer.lua</a>
 is <code>{space=true,comments=true}</code>.  There is a third optional argument which
-determines how string and number tokens are to be processsed.</p>
+determines how string and number tokens are to be processed.</p>
 
 <p>The ultimate highly-structured data is of course, program source. Here is a
 snippet from 'text-lexer.lua':</p>
@@ -997,12 +997,12 @@ for k,v in pairs(t) do
 end
 ]]</span>
 
-ls = List()
-<span class="keyword">for</span> tp,val <span class="keyword">in</span> lexer.lua(lines,{space=<span class="keyword">true</span>,comments=<span class="keyword">true</span>}) <span class="keyword">do</span>
+ls = <span class="function-name">List</span>()
+<span class="keyword">for</span> tp,val <span class="keyword">in</span> lexer.<span class="function-name">lua</span>(lines,{space=<span class="keyword">true</span>,comments=<span class="keyword">true</span>}) <span class="keyword">do</span>
     <span class="global">assert</span>(tp ~= <span class="string">'space'</span> <span class="keyword">and</span> tp ~= <span class="string">'comment'</span>)
-    <span class="keyword">if</span> tp == <span class="string">'keyword'</span> <span class="keyword">then</span> ls:append(val) <span class="keyword">end</span>
+    <span class="keyword">if</span> tp == <span class="string">'keyword'</span> <span class="keyword">then</span> ls:<span class="function-name">append</span>(val) <span class="keyword">end</span>
 <span class="keyword">end</span>
-test.asserteq(ls,List{<span class="string">'for'</span>,<span class="string">'in'</span>,<span class="string">'do'</span>,<span class="string">'if'</span>,<span class="string">'then'</span>,<span class="string">'else'</span>,<span class="string">'end'</span>,<span class="string">'end'</span>})
+test.<span class="function-name">asserteq</span>(ls,<span class="function-name">List</span>{<span class="string">'for'</span>,<span class="string">'in'</span>,<span class="string">'do'</span>,<span class="string">'if'</span>,<span class="string">'then'</span>,<span class="string">'else'</span>,<span class="string">'end'</span>,<span class="string">'end'</span>})
 </pre>
 
 <p>Here is a useful little utility that identifies all common global variables found
@@ -1013,16 +1013,16 @@ in a lua module (ignoring those declared locally for the moment):</p>
 <span class="comment">-- testglobal.lua
 </span><span class="global">require</span> <span class="string">'pl'</span>
 
-<span class="keyword">local</span> txt,err = utils.readfile(arg[<span class="number">1</span>])
+<span class="keyword">local</span> txt,err = utils.<span class="function-name">readfile</span>(arg[<span class="number">1</span>])
 <span class="keyword">if</span> <span class="keyword">not</span> txt <span class="keyword">then</span> <span class="keyword">return</span> <span class="global">print</span>(err) <span class="keyword">end</span>
 
-<span class="keyword">local</span> globals = List()
-<span class="keyword">for</span> t,v <span class="keyword">in</span> lexer.lua(txt) <span class="keyword">do</span>
+<span class="keyword">local</span> globals = <span class="function-name">List</span>()
+<span class="keyword">for</span> t,v <span class="keyword">in</span> lexer.<span class="function-name">lua</span>(txt) <span class="keyword">do</span>
     <span class="keyword">if</span> t == <span class="string">'iden'</span> <span class="keyword">and</span> _G[v] <span class="keyword">then</span>
-        globals:append(v)
+        globals:<span class="function-name">append</span>(v)
     <span class="keyword">end</span>
 <span class="keyword">end</span>
-pretty.dump(seq.count_map(globals))
+pretty.<span class="function-name">dump</span>(seq.<span class="function-name">count_map</span>(globals))
 </pre>
 
 <p>Rather then dumping the whole list, with its duplicates, we pass it through
@@ -1072,10 +1072,10 @@ useful for debugging:</p>
 
 
 <pre>
-&gt; d = xml.parse <span class="string">"&lt;nodes&gt;&lt;node id='1'&gt;alice&lt;/node&gt;&lt;/nodes&gt;"</span>
+&gt; d = xml.<span class="function-name">parse</span> <span class="string">"&lt;nodes&gt;&lt;node id='1'&gt;alice&lt;/node&gt;&lt;/nodes&gt;"</span>
 &gt; = d
 &lt;nodes&gt;&lt;node id=<span class="string">'1'</span>&gt;alice&lt;/node&gt;&lt;/nodes&gt;
-&gt; pretty.dump (d)
+&gt; pretty.<span class="function-name">dump</span> (d)
 {
   {
     <span class="string">"alice"</span>,
@@ -1128,7 +1128,7 @@ the initial indent and the per-element indent:</p>
 
 
 <pre>
-&gt; a = xml.parse <span class="string">"&lt;frodo name='baggins' age='50' type='hobbit'/&gt;"</span>
+&gt; a = xml.<span class="function-name">parse</span> <span class="string">"&lt;frodo name='baggins' age='50' type='hobbit'/&gt;"</span>
 &gt; = xml.<span class="global">tostring</span>(a,<span class="string">''</span>,<span class="string">'  '</span>,<span class="string">'  '</span>)
 
 &lt;frodo
@@ -1155,14 +1155,14 @@ data and extract the data in the form you want:</p>
     &lt;name&gt;bozo&lt;/name&gt;
 &lt;/config&gt;
 ]]</span>
-<span class="keyword">local</span> d,err = xml.parse(config)
+<span class="keyword">local</span> d,err = xml.<span class="function-name">parse</span>(config)
 
 <span class="keyword">local</span> t = {}
-<span class="keyword">for</span> item <span class="keyword">in</span> d:childtags() <span class="keyword">do</span>
+<span class="keyword">for</span> item <span class="keyword">in</span> d:<span class="function-name">childtags</span>() <span class="keyword">do</span>
     t[item.tag] = item[<span class="number">1</span>]
 <span class="keyword">end</span>
 
-pretty.dump(t)
+pretty.<span class="function-name">dump</span>(t)
 <span class="comment">---&gt;
 </span>{
   beta = <span class="string">"10"</span>,
@@ -1180,7 +1180,7 @@ on Debian/Ubuntu Linux systems.</p>
 
 
 <pre>
-d = xml.parse <span class="string">[[
+d = xml.<span class="function-name">parse</span> <span class="string">[[
 &lt;serviceproviders format="2.0"&gt;
 ...
 &lt;country code="za"&gt;
@@ -1240,15 +1240,15 @@ d = xml.parse <span class="string">[[
 
 <pre>
 <span class="keyword">local</span> t = {}
-<span class="keyword">for</span> country <span class="keyword">in</span> d:childtags() <span class="keyword">do</span>
+<span class="keyword">for</span> country <span class="keyword">in</span> d:<span class="function-name">childtags</span>() <span class="keyword">do</span>
     <span class="keyword">local</span> providers = {}
     t[country.attr.code] = providers
-    <span class="keyword">for</span> provider <span class="keyword">in</span> country:childtags() <span class="keyword">do</span>
-        <span class="global">table</span>.insert(providers,provider:child_with_name(<span class="string">'name'</span>):get_text())
+    <span class="keyword">for</span> provider <span class="keyword">in</span> country:<span class="function-name">childtags</span>() <span class="keyword">do</span>
+        <span class="global">table</span>.<span class="function-name">insert</span>(providers,provider:<span class="function-name">child_with_name</span>(<span class="string">'name'</span>):<span class="function-name">get_text</span>())
     <span class="keyword">end</span>
 <span class="keyword">end</span>
 
-pretty.dump(t)
+pretty.<span class="function-name">dump</span>(t)
 <span class="comment">--&gt;
 </span>{
   za = {
@@ -1270,10 +1270,10 @@ set of <em>constructors</em> for elements of the given tag names.</p>
 
 
 <pre>
-&gt; nodes, node = xml.tags <span class="string">'nodes, node'</span>
-&gt; = node <span class="string">'alice'</span>
+&gt; nodes, node = xml.<span class="function-name">tags</span> <span class="string">'nodes, node'</span>
+&gt; = <span class="function-name">node</span> <span class="string">'alice'</span>
 &lt;node&gt;alice&lt;/node&gt;
-&gt; = nodes { node {id=<span class="string">'1'</span>,<span class="string">'alice'</span>}}
+&gt; = <span class="function-name">nodes</span> { <span class="function-name">node</span> {id=<span class="string">'1'</span>,<span class="string">'alice'</span>}}
 &lt;nodes&gt;&lt;node id=<span class="string">'1'</span>&gt;alice&lt;/node&gt;&lt;/nodes&gt;
 </pre>
 
@@ -1290,8 +1290,8 @@ variables. Note how the parent tag name is specified:</p>
 
 
 <pre>
-&gt; templ = xml.parse <span class="string">"&lt;node id='$id'&gt;$name&lt;/node&gt;"</span>
-&gt; = templ:subst {tag=<span class="string">'nodes'</span>, {id=<span class="number">1</span>,name=<span class="string">'alice'</span>},{id=<span class="number">2</span>,name=<span class="string">'john'</span>}}
+&gt; templ = xml.<span class="function-name">parse</span> <span class="string">"&lt;node id='$id'&gt;$name&lt;/node&gt;"</span>
+&gt; = templ:<span class="function-name">subst</span> {tag=<span class="string">'nodes'</span>, {id=<span class="number">1</span>,name=<span class="string">'alice'</span>},{id=<span class="number">2</span>,name=<span class="string">'john'</span>}}
 &lt;nodes&gt;&lt;node id=<span class="string">'1'</span>&gt;alice&lt;/node&gt;&lt;node id=<span class="string">'2'</span>&gt;john&lt;/node&gt;&lt;/nodes&gt;
 </pre>
 
@@ -1319,8 +1319,8 @@ although it makes handling the data more irritating.</p>
 
 
 <pre>
-<span class="keyword">local</span> <span class="keyword">function</span> parse (str)
-    <span class="keyword">return</span> xml.parse(str,<span class="keyword">false</span>,<span class="keyword">true</span>)
+<span class="keyword">local</span> <span class="keyword">function</span> <span class="function-name">parse</span> (str)
+    <span class="keyword">return</span> xml.<span class="function-name">parse</span>(str,<span class="keyword">false</span>,<span class="keyword">true</span>)
 <span class="keyword">end</span>
 </pre>
 
@@ -1336,9 +1336,9 @@ element or a attribute name:</p>
 
 
 <pre>
-d = parse (T)
-c = d:filter(<span class="keyword">function</span>(s,kind,parent)
-    <span class="global">print</span>(stringx.strip(s),kind,parent <span class="keyword">and</span> parent.tag <span class="keyword">or</span> <span class="string">'?'</span>)
+d = <span class="function-name">parse</span> (T)
+c = d:<span class="function-name">filter</span>(<span class="keyword">function</span>(s,kind,parent)
+    <span class="global">print</span>(stringx.<span class="function-name">strip</span>(s),kind,parent <span class="keyword">and</span> parent.tag <span class="keyword">or</span> <span class="string">'?'</span>)
     <span class="keyword">if</span> kind == <span class="string">'*TEXT'</span> <span class="keyword">and</span> #parent &gt; <span class="number">1</span> <span class="keyword">then</span> <span class="keyword">return</span> <span class="keyword">nil</span> <span class="keyword">end</span>
     <span class="keyword">return</span> s
 <span class="keyword">end</span>)
@@ -1423,8 +1423,8 @@ t = <span class="string">[[
   &lt;/weather&gt;
 ]]</span>
 
-<span class="keyword">local</span> res, ret = google:match(t)
-pretty.dump(res)
+<span class="keyword">local</span> res, ret = google:<span class="function-name">match</span>(t)
+pretty.<span class="function-name">dump</span>(res)
 </pre>
 
 <p>And the output is:</p>
@@ -1600,14 +1600,14 @@ a feature which makes parsing it easier.  For instance, from the tests:</p>
 
 
 <pre>
-doc = xml.parsehtml <span class="string">[[
+doc = xml.<span class="function-name">parsehtml</span> <span class="string">[[
 &lt;BODY&gt;
 Hello dolly&lt;br&gt;
 HTML is &lt;b&gt;slack&lt;/b&gt;&lt;br&gt;
 &lt;/BODY&gt;
 ]]</span>
 
-asserteq(xml.<span class="global">tostring</span>(doc),<span class="string">[[
+<span class="function-name">asserteq</span>(xml.<span class="global">tostring</span>(doc),<span class="string">[[
 &lt;body&gt;
 Hello dolly&lt;br/&gt;
 HTML is &lt;b&gt;slack&lt;/b&gt;&lt;br/&gt;&lt;/body&gt;]]</span>)
@@ -1626,7 +1626,7 @@ this is not the tool for you!</p>
 </div> <!-- id="content" -->
 </div> <!-- id="main" -->
 <div id="about">
-<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.5.0</a></i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>

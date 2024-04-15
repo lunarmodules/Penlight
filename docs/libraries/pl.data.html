@@ -124,7 +124,7 @@
 
 
 <pre>
-data.read <span class="string">'test.txt'</span>
+data.<span class="function-name">read</span> <span class="string">'test.txt'</span>
 ==&gt; {{<span class="number">10</span>,<span class="number">20</span>},{<span class="number">2</span>,<span class="number">5</span>},{<span class="number">40</span>,<span class="number">50</span>},fieldnames={<span class="string">'x'</span>,<span class="string">'y'</span>},delim=<span class="string">','</span>}
 </pre>
 
@@ -133,7 +133,7 @@ data.read <span class="string">'test.txt'</span>
 
 <pre>
 <span class="global">require</span> <span class="string">'pl'</span>
-<span class="keyword">local</span> d = data.read(<span class="string">'xyz.txt'</span>)
+<span class="keyword">local</span> d = data.<span class="function-name">read</span>(<span class="string">'xyz.txt'</span>)
 <span class="keyword">local</span> q = d:<span class="global">select</span>(<span class="string">'x,y,z where x &gt; 3 and z &lt; 2 sort by y'</span>)
 <span class="keyword">for</span> x,y,z <span class="keyword">in</span> q <span class="keyword">do</span>
     <span class="global">print</span>(x,y,z)
@@ -236,7 +236,7 @@ data.read <span class="string">'test.txt'</span>
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">condn</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          the query expression
         </li>
     </ul>
@@ -261,7 +261,7 @@ data.read <span class="string">'test.txt'</span>
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">condn</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          the query expression
         </li>
     </ul>
@@ -282,7 +282,7 @@ data.read <span class="string">'test.txt'</span>
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">condn</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          the query expression
         </li>
     </ul>
@@ -363,7 +363,7 @@ data.read <span class="string">'test.txt'</span>
         <li><span class="parameter">cnfg</span> parsing options
         <ul>
         <li><span class="parameter">delim</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          a string pattern to split fields
         </li>
         <li><span class="parameter">fieldnames</span>
@@ -371,27 +371,27 @@ data.read <span class="string">'test.txt'</span>
          (i.e. don't read from first line)
         </li>
         <li><span class="parameter">no_convert</span>
-            <span class="types"><span class="type">bool</span></span>
+            <span class="types"><span class="type">boolean</span></span>
          (default is to try conversion on first data line)
         </li>
         <li><span class="parameter">convert</span>
-            <span class="types"><span class="type">tab</span></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.6">table</a></span>
          table of custom conversion functions with column keys
         </li>
         <li><span class="parameter">numfields</span>
-            <span class="types"><span class="type">int</span></span>
+            <span class="types"><span class="type">integer</span></span>
          indices of columns known to be numbers
         </li>
         <li><span class="parameter">last_field_collect</span>
-            <span class="types"><span class="type">bool</span></span>
+            <span class="types"><span class="type">boolean</span></span>
          only split as many fields as fieldnames.
         </li>
         <li><span class="parameter">thousands_dot</span>
-            <span class="types"><span class="type">int</span></span>
+            <span class="types"><span class="type">integer</span></span>
          thousands separator in Excel CSV is '.'
         </li>
         <li><span class="parameter">csv</span>
-            <span class="types"><span class="type">bool</span></span>
+            <span class="types"><span class="type">boolean</span></span>
          fields may be double-quoted and contain commas;
  Also, empty fields are considered to be equivalent to zero.
         </li>
@@ -430,12 +430,12 @@ data.read <span class="string">'test.txt'</span>
          filename or file-like object
         </li>
         <li><span class="parameter">fieldnames</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">{string}</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">{string}</a></span>
          list of fields (optional)
          (<em>optional</em>)
         </li>
         <li><span class="parameter">delim</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          delimiter (default tab)
          (<em>default</em> '\t')
         </li>
@@ -470,7 +470,7 @@ data.read <span class="string">'test.txt'</span>
          the table.
         </li>
         <li><span class="parameter">fieldnames</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">{string}</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">{string}</a></span>
          optional fieldnames
          (<em>optional</em>)
         </li>
@@ -538,7 +538,7 @@ data.read <span class="string">'test.txt'</span>
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">Q</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          a query string
         </li>
         <li><span class="parameter">infile</span>
@@ -548,7 +548,7 @@ data.read <span class="string">'test.txt'</span>
          filename or file-like object
         </li>
         <li><span class="parameter">dont_fail</span>
-            <span class="types"><span class="type">bool</span></span>
+            <span class="types"><span class="type">boolean</span></span>
          true if you want to return an error, not just fail
         </li>
     </ul>
@@ -564,7 +564,7 @@ data.read <span class="string">'test.txt'</span>
 </div> <!-- id="content" -->
 </div> <!-- id="main" -->
 <div id="about">
-<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.5.0</a></i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>

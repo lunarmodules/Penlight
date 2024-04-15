@@ -121,7 +121,7 @@
 <p>Manipulating iterators as sequences.</p>
 <p> See <a href="../manual/07-functional.md.html#Sequences">The Guide</a></p>
 
-<p> Dependencies: <a href="../libraries/pl.utils.html#">pl.utils</a>, <a href="../libraries/pl.types.html#">pl.types</a>, <a href="https://www.lua.org/manual/5.1/manual.html#5.9">debug</a></p>
+<p> Dependencies: <a href="../libraries/pl.utils.html#">pl.utils</a>, <a href="../libraries/pl.types.html#">pl.types</a>, <a href="https://www.lua.org/manual/5.4/manual.html#6.10">debug</a></p>
 
 
 <h2><a href="#Functions">Functions</a></h2>
@@ -273,8 +273,8 @@
 
     <h3>Usage:</h3>
     <ul>
-        <li><pre class="example">sum(list(t)) is the sum of all elements of t</pre></li>
-        <li><pre class="example"><span class="keyword">for</span> x <span class="keyword">in</span> list(t) <span class="keyword">do</span>...<span class="keyword">end</span></pre></li>
+        <li><pre class="example"><span class="function-name">sum</span>(<span class="function-name">list</span>(t)) is the sum of all elements of t</pre></li>
+        <li><pre class="example"><span class="keyword">for</span> x <span class="keyword">in</span> <span class="function-name">list</span>(t) <span class="keyword">do</span>...<span class="keyword">end</span></pre></li>
     </ul>
 
 </dd>
@@ -401,8 +401,8 @@
 
     <h3>Usage:</h3>
     <ul>
-        <li><pre class="example">copy(list(ls)) is equal to ls</pre></li>
-        <li><pre class="example">copy(list {<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>}) == List{<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>}</pre></li>
+        <li><pre class="example"><span class="function-name">copy</span>(<span class="function-name">list</span>(ls)) is equal to ls</pre></li>
+        <li><pre class="example"><span class="function-name">copy</span>(<span class="function-name">list</span> {<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>}) == <span class="function-name">List</span>{<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>}</pre></li>
     </ul>
 
 </dd>
@@ -437,7 +437,7 @@
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">copy2(<span class="global">ipairs</span>{<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>}) == {{<span class="number">1</span>,<span class="number">10</span>},{<span class="number">2</span>,<span class="number">20</span>},{<span class="number">3</span>,<span class="number">30</span>}}</pre>
+        <pre class="example"><span class="function-name">copy2</span>(<span class="global">ipairs</span>{<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>}) == {{<span class="number">1</span>,<span class="number">10</span>},{<span class="number">2</span>,<span class="number">20</span>},{<span class="number">3</span>,<span class="number">30</span>}}</pre>
     </ul>
 
 </dd>
@@ -544,7 +544,7 @@
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example"><span class="keyword">for</span> x,y <span class="keyword">in</span> seq.zip(ls1,ls2) <span class="keyword">do</span>....<span class="keyword">end</span></pre>
+        <pre class="example"><span class="keyword">for</span> x,y <span class="keyword">in</span> seq.<span class="function-name">zip</span>(ls1,ls2) <span class="keyword">do</span>....<span class="keyword">end</span></pre>
     </ul>
 
 </dd>
@@ -676,7 +676,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">fn</span>
-            <span class="types"><span class="type">func</span></span>
+            <span class="types"><span class="type">function</span></span>
          a function of two arguments
         </li>
         <li><span class="parameter">iter</span>
@@ -692,8 +692,8 @@
 
     <h3>Usage:</h3>
     <ul>
-        <li><pre class="example">seq.reduce(operator.add,seq.list{<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>}) == <span class="number">10</span></pre></li>
-        <li><pre class="example">seq.reduce(<span class="string">'-'</span>,{<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>}) == -<span class="number">13</span></pre></li>
+        <li><pre class="example">seq.<span class="function-name">reduce</span>(operator.add,seq.<span class="function-name">list</span>{<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>}) == <span class="number">10</span></pre></li>
+        <li><pre class="example">seq.<span class="function-name">reduce</span>(<span class="string">'-'</span>,{<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>}) == -<span class="number">13</span></pre></li>
     </ul>
 
 </dd>
@@ -861,7 +861,7 @@
          either a filename, file-like object, or 'STDIN' (for standard input)
         </li>
         <li><span class="parameter">...</span>
-         for Lua 5.2 only, optional format specifiers, as in <a href="https://www.lua.org/manual/5.1/manual.html#pdf-io.read">io.read</a>.
+         for Lua 5.2 only, optional format specifiers, as in <a href="https://www.lua.org/manual/5.4/manual.html#pdf-io.read">io.read</a>.
         </li>
     </ul>
 
@@ -881,7 +881,7 @@
 </div> <!-- id="content" -->
 </div> <!-- id="main" -->
 <div id="about">
-<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.5.0</a></i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>

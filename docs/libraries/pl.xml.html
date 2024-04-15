@@ -125,7 +125,7 @@
 
 
 <pre>
-&gt; d = xml.parse <span class="string">"&lt;nodes&gt;&lt;node id='1'&gt;alice&lt;/node&gt;&lt;/nodes&gt;"</span>
+&gt; d = xml.<span class="function-name">parse</span> <span class="string">"&lt;nodes&gt;&lt;node id='1'&gt;alice&lt;/node&gt;&lt;/nodes&gt;"</span>
 &gt; = d
 &lt;nodes&gt;&lt;node id=<span class="string">'1'</span>&gt;alice&lt;/node&gt;&lt;/nodes&gt;
 &gt; = xml.<span class="global">tostring</span>(d,<span class="string">''</span>,<span class="string">'  '</span>)
@@ -187,7 +187,7 @@
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#Doc:add_direct_child">Doc:add_direct_child (child)</a></td>
-	<td class="summary">Append a child to the currrent Node (ignoring current position).</td>
+	<td class="summary">Append a child to the current Node (ignoring current position).</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#Doc:add_child">Doc:add_child (child)</a></td>
@@ -309,11 +309,11 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">tag</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          the tag name
         </li>
         <li><span class="parameter">attr</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.6">table</a></span>
          attributes (table of name-value pairs)
          (<em>default</em> {})
         </li>
@@ -333,7 +333,7 @@
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example"><span class="keyword">local</span> doc = xml.new(<span class="string">"main"</span>, { hello = <span class="string">"world"</span>, answer = <span class="string">"42"</span> })
+        <pre class="example"><span class="keyword">local</span> doc = xml.<span class="function-name">new</span>(<span class="string">"main"</span>, { hello = <span class="string">"world"</span>, answer = <span class="string">"42"</span> })
 <span class="global">print</span>(doc)  <span class="comment">--&gt;  &lt;main hello='world' answer='42'/&gt;</span></pre>
     </ul>
 
@@ -383,11 +383,11 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">tag</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          a tag name
         </li>
         <li><span class="parameter">items</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a> or <a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.6">table</a> or <a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          either a single child (text or Node), or a table where the hash
  part is the attributes and the list part is the children (text or Nodes).
         </li>
@@ -408,16 +408,16 @@
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example"><span class="keyword">local</span> doc = xml.elem(<span class="string">"top"</span>, <span class="string">"hello world"</span>)                <span class="comment">-- &lt;top&gt;hello world&lt;/top&gt;
-</span><span class="keyword">local</span> doc = xml.elem(<span class="string">"main"</span>, xml.new(<span class="string">"child"</span>))            <span class="comment">-- &lt;main&gt;&lt;child/&gt;&lt;/main&gt;
-</span><span class="keyword">local</span> doc = xml.elem(<span class="string">"main"</span>, { <span class="string">"this "</span>, <span class="string">"is "</span>, <span class="string">"nice"</span> })  <span class="comment">-- &lt;main&gt;this is nice&lt;/main&gt;
-</span><span class="keyword">local</span> doc = xml.elem(<span class="string">"main"</span>, { xml.new <span class="string">"this"</span>,
-                               xml.new <span class="string">"is"</span>,
-                               xml.new <span class="string">"nice"</span> })          <span class="comment">-- &lt;main&gt;&lt;this/&gt;&lt;is/&gt;&lt;nice/&gt;&lt;/main&gt;
-</span><span class="keyword">local</span> doc = xml.elem(<span class="string">"main"</span>, { hello = <span class="string">"world"</span> })         <span class="comment">-- &lt;main hello='world'/&gt;
-</span><span class="keyword">local</span> doc = xml.elem(<span class="string">"main"</span>, {
+        <pre class="example"><span class="keyword">local</span> doc = xml.<span class="function-name">elem</span>(<span class="string">"top"</span>, <span class="string">"hello world"</span>)                <span class="comment">-- &lt;top&gt;hello world&lt;/top&gt;
+</span><span class="keyword">local</span> doc = xml.<span class="function-name">elem</span>(<span class="string">"main"</span>, xml.<span class="function-name">new</span>(<span class="string">"child"</span>))            <span class="comment">-- &lt;main&gt;&lt;child/&gt;&lt;/main&gt;
+</span><span class="keyword">local</span> doc = xml.<span class="function-name">elem</span>(<span class="string">"main"</span>, { <span class="string">"this "</span>, <span class="string">"is "</span>, <span class="string">"nice"</span> })  <span class="comment">-- &lt;main&gt;this is nice&lt;/main&gt;
+</span><span class="keyword">local</span> doc = xml.<span class="function-name">elem</span>(<span class="string">"main"</span>, { xml.<span class="function-name">new</span> <span class="string">"this"</span>,
+                               xml.<span class="function-name">new</span> <span class="string">"is"</span>,
+                               xml.<span class="function-name">new</span> <span class="string">"nice"</span> })          <span class="comment">-- &lt;main&gt;&lt;this/&gt;&lt;is/&gt;&lt;nice/&gt;&lt;/main&gt;
+</span><span class="keyword">local</span> doc = xml.<span class="function-name">elem</span>(<span class="string">"main"</span>, { hello = <span class="string">"world"</span> })         <span class="comment">-- &lt;main hello='world'/&gt;
+</span><span class="keyword">local</span> doc = xml.<span class="function-name">elem</span>(<span class="string">"main"</span>, {
   <span class="string">"prefix"</span>,
-  xml.elem(<span class="string">"child"</span>, { <span class="string">"this "</span>, <span class="string">"is "</span>, <span class="string">"nice"</span>}),
+  xml.<span class="function-name">elem</span>(<span class="string">"child"</span>, { <span class="string">"this "</span>, <span class="string">"is "</span>, <span class="string">"nice"</span>}),
   <span class="string">"postfix"</span>,
   attrib = <span class="string">"value"</span>
 })   <span class="comment">-- &lt;main attrib='value'&gt;prefix&lt;child&gt;this is nice&lt;/child&gt;postfix&lt;/main&gt;"</span></pre>
@@ -440,7 +440,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">list</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a> or <a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a> or <a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.6">table</a></span>
          a list of names, or a comma-separated string.
         </li>
     </ul>
@@ -460,8 +460,8 @@
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example"><span class="keyword">local</span> new_parent, new_child = xml.tags <span class="string">'mom, kid'</span>
-doc = new_parent {new_child <span class="string">'Bob'</span>, new_child <span class="string">'Annie'</span>}
+        <pre class="example"><span class="keyword">local</span> new_parent, new_child = xml.<span class="function-name">tags</span> <span class="string">'mom, kid'</span>
+doc = <span class="function-name">new_parent</span> {<span class="function-name">new_child</span> <span class="string">'Bob'</span>, <span class="function-name">new_child</span> <span class="string">'Annie'</span>}
 <span class="comment">-- &lt;mom&gt;&lt;kid&gt;Bob&lt;/kid&gt;&lt;kid&gt;Annie&lt;/kid&gt;&lt;/mom&gt;</span></pre>
     </ul>
 
@@ -478,11 +478,11 @@ doc = new_parent {new_child <span class="string">'Bob'</span>, new_child <span c
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">tag</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          the tag name
         </li>
         <li><span class="parameter">attrs</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.6">table</a></span>
          attributes (table of name-value pairs)
          (<em>default</em> {})
         </li>
@@ -498,9 +498,9 @@ doc = new_parent {new_child <span class="string">'Bob'</span>, new_child <span c
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example"><span class="keyword">local</span> doc = xml.new(<span class="string">"main"</span>)
-doc:addtag(<span class="string">"penlight"</span>, { hello = <span class="string">"world"</span>})
-doc:addtag(<span class="string">"expat"</span>)  <span class="comment">-- added to 'penlight' since position moved
+        <pre class="example"><span class="keyword">local</span> doc = xml.<span class="function-name">new</span>(<span class="string">"main"</span>)
+doc:<span class="function-name">addtag</span>(<span class="string">"penlight"</span>, { hello = <span class="string">"world"</span>})
+doc:<span class="function-name">addtag</span>(<span class="string">"expat"</span>)  <span class="comment">-- added to 'penlight' since position moved
 </span><span class="global">print</span>(doc)  <span class="comment">--&gt;  &lt;main&gt;&lt;penlight hello='world'&gt;&lt;expat/&gt;&lt;/penlight&gt;&lt;/main&gt;</span></pre>
     </ul>
 
@@ -516,7 +516,7 @@ doc:addtag(<span class="string">"expat"</span>)  <span class="comment">-- added 
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">text</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          a string
         </li>
     </ul>
@@ -531,9 +531,9 @@ doc:addtag(<span class="string">"expat"</span>)  <span class="comment">-- added 
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example"><span class="keyword">local</span> doc = xml.new(<span class="string">"main"</span>)
-doc:text(<span class="string">"penlight"</span>)
-doc:text(<span class="string">"expat"</span>)
+        <pre class="example"><span class="keyword">local</span> doc = xml.<span class="function-name">new</span>(<span class="string">"main"</span>)
+doc:<span class="function-name">text</span>(<span class="string">"penlight"</span>)
+doc:<span class="function-name">text</span>(<span class="string">"expat"</span>)
 <span class="global">print</span>(doc)  <span class="comment">--&gt;  &lt;main&gt;&lt;penlightexpat&lt;/main&gt;</span></pre>
     </ul>
 
@@ -582,7 +582,7 @@ doc:text(<span class="string">"expat"</span>)
     <strong>Doc:add_direct_child (child)</strong>
     </dt>
     <dd>
-    Append a child to the currrent Node (ignoring current position).
+    Append a child to the current Node (ignoring current position).
 
 
     <h3>Parameters:</h3>
@@ -602,10 +602,10 @@ doc:text(<span class="string">"expat"</span>)
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example"><span class="keyword">local</span> doc = xml.new(<span class="string">"main"</span>)
-doc:add_direct_child(<span class="string">"dog"</span>)
-doc:add_direct_child(xml.new(<span class="string">"child"</span>))
-doc:add_direct_child(<span class="string">"cat"</span>)
+        <pre class="example"><span class="keyword">local</span> doc = xml.<span class="function-name">new</span>(<span class="string">"main"</span>)
+doc:<span class="function-name">add_direct_child</span>(<span class="string">"dog"</span>)
+doc:<span class="function-name">add_direct_child</span>(xml.<span class="function-name">new</span>(<span class="string">"child"</span>))
+doc:<span class="function-name">add_direct_child</span>(<span class="string">"cat"</span>)
 <span class="global">print</span>(doc)  <span class="comment">--&gt;  &lt;main&gt;dog&lt;child/&gt;cat&lt;/main&gt;</span></pre>
     </ul>
 
@@ -635,11 +635,11 @@ doc:add_direct_child(<span class="string">"cat"</span>)
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example"><span class="keyword">local</span> doc = xml.new(<span class="string">"main"</span>)
-doc:addtag(<span class="string">"one"</span>)
-doc:add_child(xml.new(<span class="string">"item1"</span>))
-doc:add_child(xml.new(<span class="string">"item2"</span>))
-doc:add_child(xml.new(<span class="string">"item3"</span>))
+        <pre class="example"><span class="keyword">local</span> doc = xml.<span class="function-name">new</span>(<span class="string">"main"</span>)
+doc:<span class="function-name">addtag</span>(<span class="string">"one"</span>)
+doc:<span class="function-name">add_child</span>(xml.<span class="function-name">new</span>(<span class="string">"item1"</span>))
+doc:<span class="function-name">add_child</span>(xml.<span class="function-name">new</span>(<span class="string">"item2"</span>))
+doc:<span class="function-name">add_child</span>(xml.<span class="function-name">new</span>(<span class="string">"item3"</span>))
 <span class="global">print</span>(doc)  <span class="comment">--&gt;  &lt;main&gt;&lt;one&gt;&lt;item1/&gt;&lt;item2/&gt;&lt;item3/&gt;&lt;/one&gt;&lt;/main&gt;</span></pre>
     </ul>
 
@@ -650,14 +650,14 @@ doc:add_child(xml.new(<span class="string">"item3"</span>))
     </dt>
     <dd>
     Set attributes of a document node.
- Will add/overwite values, but will not remove existing ones.
+ Will add/overwrite values, but will not remove existing ones.
  Operates on the Node itself, will not take position into account.
 
 
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">t</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.6">table</a></span>
          a table containing attribute/value pairs
         </li>
     </ul>
@@ -785,7 +785,7 @@ doc:add_child(xml.new(<span class="string">"item3"</span>))
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">tag</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          a tag name
         </li>
         <li><span class="parameter">dont_recurse</span>
@@ -856,12 +856,12 @@ doc:add_child(xml.new(<span class="string">"item3"</span>))
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">tag</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          tag names to return. Returns all tags if not provided.
          (<em>default</em> nil)
         </li>
         <li><span class="parameter">xmlns</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          the namespace value ('xmlns' attribute) to return. If not
  provided will match all namespaces.
          (<em>default</em> nil)
@@ -934,7 +934,7 @@ doc:add_child(xml.new(<span class="string">"item3"</span>))
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">str</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          string value to escape
         </li>
     </ul>
@@ -949,7 +949,7 @@ doc:add_child(xml.new(<span class="string">"item3"</span>))
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example"><span class="keyword">local</span> esc = xml.xml_escape(<span class="string">[["'&lt;&gt;&amp;]]</span>)  <span class="comment">--&gt; "&amp;quot;&amp;apos;&amp;lt;&amp;gt;&amp;amp;"</span></pre>
+        <pre class="example"><span class="keyword">local</span> esc = xml.<span class="function-name">xml_escape</span>(<span class="string">[["'&lt;&gt;&amp;]]</span>)  <span class="comment">--&gt; "&amp;quot;&amp;apos;&amp;lt;&amp;gt;&amp;amp;"</span></pre>
     </ul>
 
 </dd>
@@ -965,7 +965,7 @@ doc:add_child(xml.new(<span class="string">"item3"</span>))
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">str</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          string value to unescape
         </li>
     </ul>
@@ -980,7 +980,7 @@ doc:add_child(xml.new(<span class="string">"item3"</span>))
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example"><span class="keyword">local</span> unesc = xml.xml_escape(<span class="string">"&amp;quot;&amp;apos;&amp;lt;&amp;gt;&amp;amp;"</span>)  <span class="comment">--&gt; [["'&lt;&gt;&amp;]]</span></pre>
+        <pre class="example"><span class="keyword">local</span> unesc = xml.<span class="function-name">xml_escape</span>(<span class="string">"&amp;quot;&amp;apos;&amp;lt;&amp;gt;&amp;amp;"</span>)  <span class="comment">--&gt; [["'&lt;&gt;&amp;]]</span></pre>
     </ul>
 
 </dd>
@@ -998,22 +998,22 @@ doc:add_child(xml.new(<span class="string">"item3"</span>))
          an XML document
         </li>
         <li><span class="parameter">b_ind</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a> or <span class="type">int</span></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a> or <span class="type">int</span></span>
          an initial block-indent (required when <code>t_ind</code> is set)
          (<em>optional</em>)
         </li>
         <li><span class="parameter">t_ind</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a> or <span class="type">int</span></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a> or <span class="type">int</span></span>
          an tag-indent for each level (required when <code>a_ind</code> is set)
          (<em>optional</em>)
         </li>
         <li><span class="parameter">a_ind</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a> or <span class="type">int</span></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a> or <span class="type">int</span></span>
          if given, indent each attribute pair and put on a separate line
          (<em>optional</em>)
         </li>
         <li><span class="parameter">xml_preface</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a> or <span class="type">bool</span></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a> or <span class="type">bool</span></span>
          force prefacing with default or custom <?xml...>, if truthy then <code>&amp;lt;?xml version=&apos;1.0&apos;?&amp;gt;</code> will be used as default.
          (<em>optional</em>)
         </li>
@@ -1045,22 +1045,22 @@ doc:add_child(xml.new(<span class="string">"item3"</span>))
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">b_ind</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a> or <span class="type">int</span></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a> or <span class="type">int</span></span>
          an initial indent (required when <code>t_ind</code> is set)
          (<em>optional</em>)
         </li>
         <li><span class="parameter">t_ind</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a> or <span class="type">int</span></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a> or <span class="type">int</span></span>
          an indent for each level (required when <code>a_ind</code> is set)
          (<em>optional</em>)
         </li>
         <li><span class="parameter">a_ind</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a> or <span class="type">int</span></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a> or <span class="type">int</span></span>
          if given, indent each attribute pair and put on a separate line
          (<em>optional</em>)
         </li>
         <li><span class="parameter">xml_preface</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          force prefacing with default or custom <?xml...>
          (<em>default</em> "&lt;?xml version='1.0'?&gt;")
         </li>
@@ -1099,12 +1099,12 @@ doc:add_child(xml.new(<span class="string">"item3"</span>))
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example"><span class="keyword">local</span> doc = xml.new(<span class="string">"main"</span>)
-doc:text(<span class="string">"one"</span>)
-doc:add_child(xml.elem <span class="string">"two"</span>)
-doc:text(<span class="string">"three"</span>)
+        <pre class="example"><span class="keyword">local</span> doc = xml.<span class="function-name">new</span>(<span class="string">"main"</span>)
+doc:<span class="function-name">text</span>(<span class="string">"one"</span>)
+doc:<span class="function-name">add_child</span>(xml.<span class="function-name">elem</span> <span class="string">"two"</span>)
+doc:<span class="function-name">text</span>(<span class="string">"three"</span>)
 
-<span class="keyword">local</span> t = doc:get_text()    <span class="comment">--&gt;  "onethree"</span></pre>
+<span class="keyword">local</span> t = doc:<span class="function-name">get_text</span>()    <span class="comment">--&gt;  "onethree"</span></pre>
     </ul>
 
 </dd>
@@ -1132,7 +1132,7 @@ doc:text(<span class="string">"three"</span>)
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">doc</span>
-            <span class="types"><span class="type">Node</span> or <a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><span class="type">Node</span> or <a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          a Node object or string (text node)
         </li>
         <li><span class="parameter">strsubst</span>
@@ -1197,11 +1197,11 @@ doc:text(<span class="string">"three"</span>)
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">t1</span>
-            <span class="types"><span class="type">Node</span> or <a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><span class="type">Node</span> or <a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          a Node object or string (text node)
         </li>
         <li><span class="parameter">t2</span>
-            <span class="types"><span class="type">Node</span> or <a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><span class="type">Node</span> or <a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          a Node object or string (text node)
         </li>
     </ul>
@@ -1236,7 +1236,7 @@ doc:text(<span class="string">"three"</span>)
     <ol>
 
            <span class="types"><span class="type">boolean</span></span>
-        <code>true</code> if it is a <a href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a> with property <code>tag</code> being a string value.
+        <code>true</code> if it is a <a href="https://www.lua.org/manual/5.4/manual.html#6.6">table</a> with property <code>tag</code> being a string value.
     </ol>
 
 
@@ -1256,7 +1256,7 @@ doc:text(<span class="string">"three"</span>)
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">doc</span>
-            <span class="types"><span class="type">Node</span> or <a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><span class="type">Node</span> or <a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          a Node object or string (text node)
         </li>
         <li><span class="parameter">depth_first</span>
@@ -1280,7 +1280,7 @@ doc:text(<span class="string">"three"</span>)
     </dt>
     <dd>
     Parse a well-formed HTML file as a string.
- Tags are case-insenstive, DOCTYPE is ignored, and empty elements can be .. empty.
+ Tags are case-insensitive, DOCTYPE is ignored, and empty elements can be .. empty.
 
 
     <h3>Parameters:</h3>
@@ -1349,7 +1349,7 @@ doc:text(<span class="string">"three"</span>)
 </div> <!-- id="content" -->
 </div> <!-- id="main" -->
 <div id="about">
-<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.5.0</a></i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>

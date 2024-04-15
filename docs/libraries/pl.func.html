@@ -124,9 +124,9 @@
 
 
 <pre>
-&gt; utils.import <span class="string">'pl.func'</span>
-&gt; ls = List{<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>}
-&gt; = ls:map(_1+<span class="number">1</span>)
+&gt; utils.<span class="function-name">import</span> <span class="string">'pl.func'</span>
+&gt; ls = <span class="function-name">List</span>{<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>}
+&gt; = ls:<span class="function-name">map</span>(_1+<span class="number">1</span>)
 {<span class="number">11</span>,<span class="number">21</span>,<span class="number">31</span>}
 </pre>
 
@@ -134,8 +134,8 @@
 
 
 <pre>
-&gt; p = bind(<span class="global">print</span>,<span class="string">'start&gt;'</span>,_0)
-&gt; p(<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>)
+&gt; p = <span class="function-name">bind</span>(<span class="global">print</span>,<span class="string">'start&gt;'</span>,_0)
+&gt; <span class="function-name">p</span>(<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>)
 &gt; start&gt;   <span class="number">10</span>   <span class="number">20</span>  <span class="number">30</span>
 </pre>
 
@@ -175,8 +175,8 @@
 	<td class="summary">bind the first parameter of the function to a value.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#compose">compose (f, g)</a></td>
-	<td class="summary">create a function which chains two functions.</td>
+	<td class="name" nowrap><a href="#compose">compose (f, g, ...)</a></td>
+	<td class="summary">create a function which chains multiple functions.</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#bind">bind (fn, ...)</a></td>
@@ -203,11 +203,11 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">tname</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          a table name
         </li>
         <li><span class="parameter">context</span>
-            <span class="types"><span class="type">tab</span></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.6">table</a></span>
          context to put results, defaults to environment of caller
         </li>
     </ul>
@@ -228,11 +228,11 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">fun</span>
-            <span class="types"><span class="type">func</span></span>
+            <span class="types"><span class="type">function</span></span>
          a function
         </li>
         <li><span class="parameter">name</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          an optional name
          (<em>optional</em>)
         </li>
@@ -259,7 +259,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">ls</span>
-            <span class="types"><span class="type">tab</span></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.6">table</a></span>
          a list-like table.
         </li>
     </ul>
@@ -356,7 +356,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">fn</span>
-            <span class="types"><span class="type">func</span></span>
+            <span class="types"><span class="type">function</span></span>
          a function of one or more arguments
         </li>
         <li><span class="parameter">p</span>
@@ -374,27 +374,30 @@
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">(bind1(<span class="global">math</span>.max,<span class="number">10</span>))(<span class="number">20</span>) == <span class="global">math</span>.max(<span class="number">10</span>,<span class="number">20</span>)</pre>
+        <pre class="example">(<span class="function-name">bind1</span>(<span class="global">math</span>.max,<span class="number">10</span>))(<span class="number">20</span>) == <span class="global">math</span>.<span class="function-name">max</span>(<span class="number">10</span>,<span class="number">20</span>)</pre>
     </ul>
 
 </dd>
     <dt>
     <a name = "compose"></a>
-    <strong>compose (f, g)</strong>
+    <strong>compose (f, g, ...)</strong>
     </dt>
     <dd>
-    create a function which chains two functions.
+    create a function which chains multiple functions.
 
 
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">f</span>
-            <span class="types"><span class="type">func</span></span>
+            <span class="types"><span class="type">function</span></span>
          a function of at least one argument
         </li>
         <li><span class="parameter">g</span>
-            <span class="types"><span class="type">func</span></span>
+            <span class="types"><span class="type">function</span></span>
          a function of at least one argument
+        </li>
+        <li><span class="parameter">...</span>
+         additional functions to compose
         </li>
     </ul>
 
@@ -408,7 +411,8 @@
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">printf = compose(<span class="global">io</span>.write,<span class="global">string</span>.format)</pre>
+        <li><pre class="example">printf = <span class="function-name">compose</span>(<span class="global">io</span>.write, <span class="global">string</span>.format)</pre></li>
+        <li><pre class="example">printf = <span class="function-name">compose</span>(<span class="global">io</span>.write, <span class="global">string</span>.lower, <span class="global">string</span>.format)</pre></li>
     </ul>
 
 </dd>
@@ -424,7 +428,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">fn</span>
-            <span class="types"><span class="type">func</span></span>
+            <span class="types"><span class="type">function</span></span>
          a function of at least one argument
         </li>
         <li><span class="parameter">...</span>
@@ -442,8 +446,8 @@
 
     <h3>Usage:</h3>
     <ul>
-        <li><pre class="example">(bind(f,_1,a))(b) == f(a,b)</pre></li>
-        <li><pre class="example">(bind(f,_2,_1))(a,b) == f(b,a)</pre></li>
+        <li><pre class="example">(<span class="function-name">bind</span>(f,_1,a))(b) == <span class="function-name">f</span>(a,b)</pre></li>
+        <li><pre class="example">(<span class="function-name">bind</span>(f,_2,_1))(a,b) == <span class="function-name">f</span>(b,a)</pre></li>
     </ul>
 
 </dd>
@@ -453,7 +457,7 @@
 </div> <!-- id="content" -->
 </div> <!-- id="main" -->
 <div id="about">
-<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.5.0</a></i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>

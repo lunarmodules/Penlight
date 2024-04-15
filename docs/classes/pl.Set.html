@@ -126,14 +126,14 @@
 
 <pre>
 &gt; Set = <span class="global">require</span> <span class="string">'pl.Set'</span>
-&gt; = Set{<span class="string">'one'</span>,<span class="string">'two'</span>} == Set{<span class="string">'two'</span>,<span class="string">'one'</span>}
+&gt; = <span class="function-name">Set</span>{<span class="string">'one'</span>,<span class="string">'two'</span>} == <span class="function-name">Set</span>{<span class="string">'two'</span>,<span class="string">'one'</span>}
 <span class="keyword">true</span>
-&gt; fruit = Set{<span class="string">'apple'</span>,<span class="string">'banana'</span>,<span class="string">'orange'</span>}
+&gt; fruit = <span class="function-name">Set</span>{<span class="string">'apple'</span>,<span class="string">'banana'</span>,<span class="string">'orange'</span>}
 &gt; = fruit[<span class="string">'banana'</span>]
 <span class="keyword">true</span>
 &gt; = fruit[<span class="string">'hazelnut'</span>]
 <span class="keyword">nil</span>
-&gt; colours = Set{<span class="string">'red'</span>,<span class="string">'orange'</span>,<span class="string">'green'</span>,<span class="string">'blue'</span>}
+&gt; colours = <span class="function-name">Set</span>{<span class="string">'red'</span>,<span class="string">'orange'</span>,<span class="string">'green'</span>,<span class="string">'blue'</span>}
 &gt; = fruit,colours
 [apple,orange,banana]   [blue,green,orange,red]
 &gt; = fruit+colours
@@ -152,78 +152,78 @@ banana,apricot,apple,orange]    [banana,apple,orange]
 <h2><a href="#Methods">Methods</a></h2>
 <table class="function_list">
 	<tr>
-	<td class="name" nowrap><a href="#pl.Set:Set">pl.Set:Set (t)</a></td>
+	<td class="name" nowrap><a href="#pl.set:Set">pl.set:Set (t)</a></td>
 	<td class="summary">create a set.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#pl.Set:values">pl.Set:values (self)</a></td>
+	<td class="name" nowrap><a href="#pl.set:values">pl.set:values (self)</a></td>
 	<td class="summary">get a list of the values in a set.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#pl.Set:map">pl.Set:map (self, fn, ...)</a></td>
+	<td class="name" nowrap><a href="#pl.set:map">pl.set:map (self, fn, ...)</a></td>
 	<td class="summary">map a function over the values of a set.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#pl.Set:union">pl.Set:union (self, set)</a></td>
+	<td class="name" nowrap><a href="#pl.set:union">pl.set:union (self, set)</a></td>
 	<td class="summary">union of two sets (also +).</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#pl.Set:intersection">pl.Set:intersection (self, set)</a></td>
+	<td class="name" nowrap><a href="#pl.set:intersection">pl.set:intersection (self, set)</a></td>
 	<td class="summary">intersection of two sets (also *).</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#pl.Set:difference">pl.Set:difference (self, set)</a></td>
+	<td class="name" nowrap><a href="#pl.set:difference">pl.set:difference (self, set)</a></td>
 	<td class="summary">new set with elements in the set that are not in the other (also -).</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#pl.Set:issubset">pl.Set:issubset (self, set)</a></td>
+	<td class="name" nowrap><a href="#pl.set:issubset">pl.set:issubset (self, set)</a></td>
 	<td class="summary">is the first set a subset of the second (also &lt;)?.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#pl.Set:isempty">pl.Set:isempty (self)</a></td>
+	<td class="name" nowrap><a href="#pl.set:isempty">pl.set:isempty (self)</a></td>
 	<td class="summary">is the set empty?.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#pl.Set:isdisjoint">pl.Set:isdisjoint (s1, s2)</a></td>
+	<td class="name" nowrap><a href="#pl.set:isdisjoint">pl.set:isdisjoint (s1, s2)</a></td>
 	<td class="summary">are the sets disjoint?</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#pl.Set:len">pl.Set:len (s)</a></td>
+	<td class="name" nowrap><a href="#pl.set:len">pl.set:len (s)</a></td>
 	<td class="summary">size of this set (also # for 5.2).</td>
 	</tr>
 </table>
 <h2><a href="#Metamethods">Metamethods</a></h2>
 <table class="function_list">
 	<tr>
-	<td class="name" nowrap><a href="#pl.Set:__tostring">pl.Set:__tostring ()</a></td>
+	<td class="name" nowrap><a href="#pl.set:__tostring">pl.set:__tostring ()</a></td>
 	<td class="summary">string representation of a set.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#pl.Set:__add">pl.Set:__add ()</a></td>
+	<td class="name" nowrap><a href="#pl.set:__add">pl.set:__add ()</a></td>
 	<td class="summary">union of sets.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#pl.Set:__mul">pl.Set:__mul ()</a></td>
+	<td class="name" nowrap><a href="#pl.set:__mul">pl.set:__mul ()</a></td>
 	<td class="summary">intersection of sets.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#pl.Set:__sub">pl.Set:__sub ()</a></td>
+	<td class="name" nowrap><a href="#pl.set:__sub">pl.set:__sub ()</a></td>
 	<td class="summary">difference of sets.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#pl.Set:__pow">pl.Set:__pow ()</a></td>
+	<td class="name" nowrap><a href="#pl.set:__pow">pl.set:__pow ()</a></td>
 	<td class="summary">symmetric difference of sets.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#pl.Set:__lt">pl.Set:__lt ()</a></td>
+	<td class="name" nowrap><a href="#pl.set:__lt">pl.set:__lt ()</a></td>
 	<td class="summary">first set subset of second?</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#pl.Set:__len">pl.Set:__len ()</a></td>
+	<td class="name" nowrap><a href="#pl.set:__len">pl.set:__len ()</a></td>
 	<td class="summary">cardinality of set (5.2).</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#pl.Set:__eq">pl.Set:__eq (s1, s2)</a></td>
+	<td class="name" nowrap><a href="#pl.set:__eq">pl.set:__eq (s1, s2)</a></td>
 	<td class="summary">equality between sets.</td>
 	</tr>
 </table>
@@ -236,8 +236,8 @@ banana,apricot,apple,orange]    [banana,apple,orange]
 
     <dl class="function">
     <dt>
-    <a name = "pl.Set:Set"></a>
-    <strong>pl.Set:Set (t)</strong>
+    <a name = "pl.set:Set"></a>
+    <strong>pl.set:Set (t)</strong>
     </dt>
     <dd>
     create a set.  <br>
@@ -256,8 +256,8 @@ banana,apricot,apple,orange]    [banana,apple,orange]
 
 </dd>
     <dt>
-    <a name = "pl.Set:values"></a>
-    <strong>pl.Set:values (self)</strong>
+    <a name = "pl.set:values"></a>
+    <strong>pl.set:values (self)</strong>
     </dt>
     <dd>
     get a list of the values in a set.
@@ -281,8 +281,8 @@ banana,apricot,apple,orange]    [banana,apple,orange]
 
 </dd>
     <dt>
-    <a name = "pl.Set:map"></a>
-    <strong>pl.Set:map (self, fn, ...)</strong>
+    <a name = "pl.set:map"></a>
+    <strong>pl.set:map (self, fn, ...)</strong>
     </dt>
     <dd>
     map a function over the values of a set.
@@ -312,8 +312,8 @@ banana,apricot,apple,orange]    [banana,apple,orange]
 
 </dd>
     <dt>
-    <a name = "pl.Set:union"></a>
-    <strong>pl.Set:union (self, set)</strong>
+    <a name = "pl.set:union"></a>
+    <strong>pl.set:union (self, set)</strong>
     </dt>
     <dd>
     union of two sets (also +).
@@ -340,8 +340,8 @@ banana,apricot,apple,orange]    [banana,apple,orange]
 
 </dd>
     <dt>
-    <a name = "pl.Set:intersection"></a>
-    <strong>pl.Set:intersection (self, set)</strong>
+    <a name = "pl.set:intersection"></a>
+    <strong>pl.set:intersection (self, set)</strong>
     </dt>
     <dd>
     intersection of two sets (also *).
@@ -367,11 +367,11 @@ banana,apricot,apple,orange]    [banana,apple,orange]
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">&gt; s = Set{<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>}
-&gt; t = Set{<span class="number">20</span>,<span class="number">30</span>,<span class="number">40</span>}
+        <pre class="example">&gt; s = <span class="function-name">Set</span>{<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>}
+&gt; t = <span class="function-name">Set</span>{<span class="number">20</span>,<span class="number">30</span>,<span class="number">40</span>}
 &gt; = t
 [<span class="number">20</span>,<span class="number">30</span>,<span class="number">40</span>]
-&gt; = Set.intersection(s,t)
+&gt; = Set.<span class="function-name">intersection</span>(s,t)
 [<span class="number">30</span>,<span class="number">20</span>]
 &gt; = s*t
 [<span class="number">30</span>,<span class="number">20</span>]</pre>
@@ -379,8 +379,8 @@ banana,apricot,apple,orange]    [banana,apple,orange]
 
 </dd>
     <dt>
-    <a name = "pl.Set:difference"></a>
-    <strong>pl.Set:difference (self, set)</strong>
+    <a name = "pl.set:difference"></a>
+    <strong>pl.set:difference (self, set)</strong>
     </dt>
     <dd>
     new set with elements in the set that are not in the other (also -).
@@ -407,8 +407,8 @@ banana,apricot,apple,orange]    [banana,apple,orange]
 
 </dd>
     <dt>
-    <a name = "pl.Set:issubset"></a>
-    <strong>pl.Set:issubset (self, set)</strong>
+    <a name = "pl.set:issubset"></a>
+    <strong>pl.set:issubset (self, set)</strong>
     </dt>
     <dd>
     is the first set a subset of the second (also &lt;)?.
@@ -435,8 +435,8 @@ banana,apricot,apple,orange]    [banana,apple,orange]
 
 </dd>
     <dt>
-    <a name = "pl.Set:isempty"></a>
-    <strong>pl.Set:isempty (self)</strong>
+    <a name = "pl.set:isempty"></a>
+    <strong>pl.set:isempty (self)</strong>
     </dt>
     <dd>
     is the set empty?.
@@ -460,8 +460,8 @@ banana,apricot,apple,orange]    [banana,apple,orange]
 
 </dd>
     <dt>
-    <a name = "pl.Set:isdisjoint"></a>
-    <strong>pl.Set:isdisjoint (s1, s2)</strong>
+    <a name = "pl.set:isdisjoint"></a>
+    <strong>pl.set:isdisjoint (s1, s2)</strong>
     </dt>
     <dd>
     are the sets disjoint?  (no elements in common).
@@ -489,8 +489,8 @@ banana,apricot,apple,orange]    [banana,apple,orange]
 
 </dd>
     <dt>
-    <a name = "pl.Set:len"></a>
-    <strong>pl.Set:len (s)</strong>
+    <a name = "pl.set:len"></a>
+    <strong>pl.set:len (s)</strong>
     </dt>
     <dd>
     size of this set (also # for 5.2).
@@ -518,8 +518,8 @@ banana,apricot,apple,orange]    [banana,apple,orange]
 
     <dl class="function">
     <dt>
-    <a name = "pl.Set:__tostring"></a>
-    <strong>pl.Set:__tostring ()</strong>
+    <a name = "pl.set:__tostring"></a>
+    <strong>pl.set:__tostring ()</strong>
     </dt>
     <dd>
     string representation of a set.
@@ -532,8 +532,8 @@ banana,apricot,apple,orange]    [banana,apple,orange]
 
 </dd>
     <dt>
-    <a name = "pl.Set:__add"></a>
-    <strong>pl.Set:__add ()</strong>
+    <a name = "pl.set:__add"></a>
+    <strong>pl.set:__add ()</strong>
     </dt>
     <dd>
     union of sets.
@@ -546,8 +546,8 @@ banana,apricot,apple,orange]    [banana,apple,orange]
 
 </dd>
     <dt>
-    <a name = "pl.Set:__mul"></a>
-    <strong>pl.Set:__mul ()</strong>
+    <a name = "pl.set:__mul"></a>
+    <strong>pl.set:__mul ()</strong>
     </dt>
     <dd>
     intersection of sets.
@@ -560,8 +560,8 @@ banana,apricot,apple,orange]    [banana,apple,orange]
 
 </dd>
     <dt>
-    <a name = "pl.Set:__sub"></a>
-    <strong>pl.Set:__sub ()</strong>
+    <a name = "pl.set:__sub"></a>
+    <strong>pl.set:__sub ()</strong>
     </dt>
     <dd>
     difference of sets.
@@ -574,8 +574,8 @@ banana,apricot,apple,orange]    [banana,apple,orange]
 
 </dd>
     <dt>
-    <a name = "pl.Set:__pow"></a>
-    <strong>pl.Set:__pow ()</strong>
+    <a name = "pl.set:__pow"></a>
+    <strong>pl.set:__pow ()</strong>
     </dt>
     <dd>
     symmetric difference of sets.
@@ -588,8 +588,8 @@ banana,apricot,apple,orange]    [banana,apple,orange]
 
 </dd>
     <dt>
-    <a name = "pl.Set:__lt"></a>
-    <strong>pl.Set:__lt ()</strong>
+    <a name = "pl.set:__lt"></a>
+    <strong>pl.set:__lt ()</strong>
     </dt>
     <dd>
     first set subset of second?
@@ -602,8 +602,8 @@ banana,apricot,apple,orange]    [banana,apple,orange]
 
 </dd>
     <dt>
-    <a name = "pl.Set:__len"></a>
-    <strong>pl.Set:__len ()</strong>
+    <a name = "pl.set:__len"></a>
+    <strong>pl.set:__len ()</strong>
     </dt>
     <dd>
     cardinality of set (5.2).
@@ -616,8 +616,8 @@ banana,apricot,apple,orange]    [banana,apple,orange]
 
 </dd>
     <dt>
-    <a name = "pl.Set:__eq"></a>
-    <strong>pl.Set:__eq (s1, s2)</strong>
+    <a name = "pl.set:__eq"></a>
+    <strong>pl.set:__eq (s1, s2)</strong>
     </dt>
     <dd>
     equality between sets.
@@ -648,7 +648,7 @@ banana,apricot,apple,orange]    [banana,apple,orange]
 </div> <!-- id="content" -->
 </div> <!-- id="main" -->
 <div id="about">
-<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.5.0</a></i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>

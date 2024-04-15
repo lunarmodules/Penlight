@@ -128,7 +128,7 @@
  is Windows paths to allow both forward and backward slashes (since Lua
  also accepts those)</p>
 
-<p> Dependencies: <a href="../libraries/pl.utils.html#">pl.utils</a>, <a href="http://stevedonovan.github.io/lua-stdlibs/modules/lfs.html">lfs</a></p>
+<p> Dependencies: <a href="../libraries/pl.utils.html#">pl.utils</a>, <a href="http://stevedonovan.github.io/lua-stdlibs/lfs.html">lfs</a></p>
 
 
 <h2><a href="#Functions">Functions</a></h2>
@@ -391,7 +391,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">P</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          A file path
         </li>
     </ul>
@@ -412,7 +412,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">P</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          A file path
         </li>
     </ul>
@@ -433,7 +433,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">P</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          A file path
         </li>
     </ul>
@@ -454,7 +454,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">P</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          A file path
         </li>
     </ul>
@@ -480,7 +480,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">P</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          A file path
         </li>
     </ul>
@@ -501,7 +501,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">P</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          A file path
         </li>
     </ul>
@@ -522,7 +522,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">P</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          A file path
         </li>
     </ul>
@@ -544,7 +544,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">P</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          A file path
         </li>
     </ul>
@@ -561,15 +561,15 @@
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example"><span class="keyword">local</span> dir, file = path.splitpath(<span class="string">"some/dir/myfile.txt"</span>)
+        <pre class="example"><span class="keyword">local</span> dir, file = path.<span class="function-name">splitpath</span>(<span class="string">"some/dir/myfile.txt"</span>)
 <span class="global">assert</span>(dir == <span class="string">"some/dir"</span>)
 <span class="global">assert</span>(file == <span class="string">"myfile.txt"</span>)
 
-<span class="keyword">local</span> dir, file = path.splitpath(<span class="string">"some/dir/"</span>)
+<span class="keyword">local</span> dir, file = path.<span class="function-name">splitpath</span>(<span class="string">"some/dir/"</span>)
 <span class="global">assert</span>(dir == <span class="string">"some/dir"</span>)
 <span class="global">assert</span>(file == <span class="string">""</span>)
 
-<span class="keyword">local</span> dir, file = path.splitpath(<span class="string">"some_dir"</span>)
+<span class="keyword">local</span> dir, file = path.<span class="function-name">splitpath</span>(<span class="string">"some_dir"</span>)
 <span class="global">assert</span>(dir == <span class="string">""</span>)
 <span class="global">assert</span>(file == <span class="string">"some_dir"</span>)</pre>
     </ul>
@@ -586,11 +586,11 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">P</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          A file path
         </li>
         <li><span class="parameter">pwd</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          optional start path to use (default is current dir)
          (<em>optional</em>)
         </li>
@@ -613,7 +613,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">P</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          A file path
         </li>
     </ul>
@@ -621,10 +621,10 @@
     <h3>Returns:</h3>
     <ol>
         <li>
-           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
         root part (everything upto the "."", maybe empty)</li>
         <li>
-           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
         extension part (including the ".", maybe empty)</li>
     </ol>
 
@@ -632,11 +632,11 @@
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example"><span class="keyword">local</span> file_path, ext = path.splitext(<span class="string">"/bonzo/dog_stuff/cat.txt"</span>)
+        <pre class="example"><span class="keyword">local</span> file_path, ext = path.<span class="function-name">splitext</span>(<span class="string">"/bonzo/dog_stuff/cat.txt"</span>)
 <span class="global">assert</span>(file_path == <span class="string">"/bonzo/dog_stuff/cat"</span>)
 <span class="global">assert</span>(ext == <span class="string">".txt"</span>)
 
-<span class="keyword">local</span> file_path, ext = path.splitext(<span class="string">""</span>)
+<span class="keyword">local</span> file_path, ext = path.<span class="function-name">splitext</span>(<span class="string">""</span>)
 <span class="global">assert</span>(file_path == <span class="string">""</span>)
 <span class="global">assert</span>(ext == <span class="string">""</span>)</pre>
     </ul>
@@ -653,7 +653,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">P</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          A file path
         </li>
     </ul>
@@ -661,7 +661,7 @@
     <h3>Returns:</h3>
     <ol>
 
-           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
         everything before the last dir-separator
     </ol>
 
@@ -673,8 +673,8 @@
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">path.dirname(<span class="string">"/some/path/file.txt"</span>)   <span class="comment">-- "/some/path"
-</span>path.dirname(<span class="string">"file.txt"</span>)              <span class="comment">-- "" (empty string)</span></pre>
+        <pre class="example">path.<span class="function-name">dirname</span>(<span class="string">"/some/path/file.txt"</span>)   <span class="comment">-- "/some/path"
+</span>path.<span class="function-name">dirname</span>(<span class="string">"file.txt"</span>)              <span class="comment">-- "" (empty string)</span></pre>
     </ul>
 
 </dd>
@@ -689,7 +689,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">P</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          A file path
         </li>
     </ul>
@@ -697,7 +697,7 @@
     <h3>Returns:</h3>
     <ol>
 
-           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
 
 
 
@@ -711,8 +711,8 @@
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">path.basename(<span class="string">"/some/path/file.txt"</span>)  <span class="comment">-- "file.txt"
-</span>path.basename(<span class="string">"/some/path/file/"</span>)     <span class="comment">-- "" (empty string)</span></pre>
+        <pre class="example">path.<span class="function-name">basename</span>(<span class="string">"/some/path/file.txt"</span>)  <span class="comment">-- "file.txt"
+</span>path.<span class="function-name">basename</span>(<span class="string">"/some/path/file/"</span>)     <span class="comment">-- "" (empty string)</span></pre>
     </ul>
 
 </dd>
@@ -727,7 +727,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">P</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          A file path
         </li>
     </ul>
@@ -735,7 +735,7 @@
     <h3>Returns:</h3>
     <ol>
 
-           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
 
 
 
@@ -749,8 +749,8 @@
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">path.extension(<span class="string">"/some/path/file.txt"</span>) <span class="comment">-- ".txt"
-</span>path.extension(<span class="string">"/some/path/file_txt"</span>) <span class="comment">-- "" (empty string)</span></pre>
+        <pre class="example">path.<span class="function-name">extension</span>(<span class="string">"/some/path/file.txt"</span>) <span class="comment">-- ".txt"
+</span>path.<span class="function-name">extension</span>(<span class="string">"/some/path/file_txt"</span>) <span class="comment">-- "" (empty string)</span></pre>
     </ul>
 
 </dd>
@@ -765,7 +765,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">P</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          A file path
         </li>
     </ul>
@@ -775,13 +775,13 @@
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">path.isabs(<span class="string">"hello/path"</span>)    <span class="comment">-- false
-</span>path.isabs(<span class="string">"/hello/path"</span>)   <span class="comment">-- true
+        <pre class="example">path.<span class="function-name">isabs</span>(<span class="string">"hello/path"</span>)    <span class="comment">-- false
+</span>path.<span class="function-name">isabs</span>(<span class="string">"/hello/path"</span>)   <span class="comment">-- true
 </span><span class="comment">-- Windows;
-</span>path.isabs(<span class="string">"hello\path"</span>)    <span class="comment">-- false
-</span>path.isabs(<span class="string">"\hello\path"</span>)   <span class="comment">-- true
-</span>path.isabs(<span class="string">"C:\hello\path"</span>) <span class="comment">-- true
-</span>path.isabs(<span class="string">"C:hello\path"</span>)  <span class="comment">-- false</span></pre>
+</span>path.<span class="function-name">isabs</span>(<span class="string">"hello\path"</span>)    <span class="comment">-- false
+</span>path.<span class="function-name">isabs</span>(<span class="string">"\hello\path"</span>)   <span class="comment">-- true
+</span>path.<span class="function-name">isabs</span>(<span class="string">"C:\hello\path"</span>) <span class="comment">-- true
+</span>path.<span class="function-name">isabs</span>(<span class="string">"C:hello\path"</span>)  <span class="comment">-- false</span></pre>
     </ul>
 
 </dd>
@@ -798,15 +798,15 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">p1</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          A file path
         </li>
         <li><span class="parameter">p2</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          A file path
         </li>
         <li><span class="parameter">...</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          more file paths
         </li>
     </ul>
@@ -814,7 +814,7 @@
     <h3>Returns:</h3>
     <ol>
 
-           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
         the combined path
     </ol>
 
@@ -822,9 +822,9 @@
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">path.join(<span class="string">"/first"</span>,<span class="string">"second"</span>,<span class="string">"third"</span>)   <span class="comment">-- "/first/second/third"
-</span>path.join(<span class="string">"first"</span>,<span class="string">"second/third"</span>)      <span class="comment">-- "first/second/third"
-</span>path.join(<span class="string">"/first"</span>,<span class="string">"/second"</span>,<span class="string">"third"</span>)  <span class="comment">-- "/second/third"</span></pre>
+        <pre class="example">path.<span class="function-name">join</span>(<span class="string">"/first"</span>,<span class="string">"second"</span>,<span class="string">"third"</span>)   <span class="comment">-- "/first/second/third"
+</span>path.<span class="function-name">join</span>(<span class="string">"first"</span>,<span class="string">"second/third"</span>)      <span class="comment">-- "first/second/third"
+</span>path.<span class="function-name">join</span>(<span class="string">"/first"</span>,<span class="string">"/second"</span>,<span class="string">"third"</span>)  <span class="comment">-- "/second/third"</span></pre>
     </ul>
 
 </dd>
@@ -847,7 +847,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">P</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          A file path
         </li>
     </ul>
@@ -857,7 +857,7 @@
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">path.normcase(<span class="string">"/Some/Path/File.txt"</span>)
+        <pre class="example">path.<span class="function-name">normcase</span>(<span class="string">"/Some/Path/File.txt"</span>)
 <span class="comment">-- Windows: "\some\path\file.txt"
 </span><span class="comment">-- Others : "/Some/Path/File.txt"</span></pre>
     </ul>
@@ -877,7 +877,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">P</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          a file path
         </li>
     </ul>
@@ -898,11 +898,11 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">P</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          a path
         </li>
         <li><span class="parameter">start</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          optional start point (default current directory)
          (<em>optional</em>)
         </li>
@@ -926,11 +926,28 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">P</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          A file path
         </li>
     </ul>
 
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
+        The file path with the <code>~</code> prefix substituted, or the input path if it had no prefix.
+    </ol>
+     <h3>Or</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">nil</span></span>
+
+
+</li>
+        <li>
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
+        Error message if the environment variables were unavailable.</li>
+    </ol>
 
 
 
@@ -962,11 +979,11 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">path1</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          a file path
         </li>
         <li><span class="parameter">path2</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          a file path
         </li>
     </ul>
@@ -994,7 +1011,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">mod</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
          name of the module
         </li>
     </ul>
@@ -1063,7 +1080,7 @@
 </div> <!-- id="content" -->
 </div> <!-- id="main" -->
 <div id="about">
-<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.5.0</a></i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>
