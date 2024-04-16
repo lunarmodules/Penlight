@@ -32,7 +32,7 @@ jobs:
 
     - name: Busted tests
       run: |
-        busted --coverage
+        busted --coverage --Xoutput "--color"
 
     - name: Old test suite
       run: |
