@@ -19,23 +19,25 @@ end
 
 describe("pl.path", function()
 
-  local path
+  local pl_path
+  local pl_utils
   local mock_envs
   local old_get_env
 
   before_each(function()
+    pl_utils = require "pl.utils"
     mock_envs = {}
-    old_get_env = os.getenv
-    os.getenv = function(name)      -- luacheck: ignore
+    old_get_env = pl_utils.getenv
+    pl_utils.getenv = function(name)      -- luacheck: ignore
       return mock_envs[name]
     end
     package.loaded["pl.path"] = nil
-    path = require "pl.path"
+    pl_path = require "pl.path"
   end)
 
   after_each(function()
     package.loaded["pl.path"] = nil
-    os.getenv = old_get_env         -- luacheck: ignore
+    pl_utils.getenv = old_get_env         -- luacheck: ignore
   end)
 
 
@@ -46,7 +48,7 @@ describe("pl.path", function()
       mock_envs = {
         HOME = "/home/user",
       }
-      assert.equal("/home/user/file", path.expanduser("~/file"))
+      assert.equal("/home/user/file", pl_path.expanduser("~/file"))
     end)
 
 
@@ -54,7 +56,7 @@ describe("pl.path", function()
       mock_envs = {}
       assert.same(
         { nil, "failed to expand '~' (HOME not set)" },
-        { path.expanduser("~/file")}
+        { pl_path.expanduser("~/file")}
       )
     end)
 
@@ -63,7 +65,7 @@ describe("pl.path", function()
       mock_envs = {}
       assert.same(
         { nil, "failed to expand '~' (HOME, USERPROFILE, and HOMEDRIVE and/or HOMEPATH not set)" },
-        { path.expanduser("~/file")}
+        { pl_path.expanduser("~/file")}
       )
     end)
 
@@ -75,7 +77,7 @@ describe("pl.path", function()
         HOMEDRIVE = "C:",
         HOMEPATH = "\\home\\user3",
       }
-      assert.equal("\\home\\user1\\file", path.expanduser("~\\file"))
+      assert.equal("\\home\\user1\\file", pl_path.expanduser("~\\file"))
     end)
 
 
@@ -86,7 +88,7 @@ describe("pl.path", function()
         HOMEDRIVE = "C:",
         HOMEPATH = "\\home\\user3",
       }
-      assert.equal("\\home\\user2\\file", path.expanduser("~\\file"))
+      assert.equal("\\home\\user2\\file", pl_path.expanduser("~\\file"))
     end)
 
 
@@ -97,7 +99,7 @@ describe("pl.path", function()
         HOMEDRIVE = "C:",
         HOMEPATH = "\\home\\user3",
       }
-      assert.equal("C:\\home\\user3\\file", path.expanduser("~\\file"))
+      assert.equal("C:\\home\\user3\\file", pl_path.expanduser("~\\file"))
     end)
 
   end)
