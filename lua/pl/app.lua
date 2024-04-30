@@ -10,6 +10,18 @@ local path = require 'pl.path'
 
 local app = {}
 
+
+--- Sets/clears an environment variable default, to use with `utils.getenv`.
+-- This links to `utils.setenv_default`.
+-- @function setenv_default
+-- @usage -- override the global with this implementation to control
+-- -- environment variables with defaults on application level.
+-- os.getenv = require("pl.utils").getenv
+--
+-- utils.setenv_default("MY_APP_CONFIG", "~/.my_app")
+app.setenv_default = utils.setenv_default
+
+
 --- return the name of the current script running.
 -- The name will be the name as passed on the command line
 -- @return string filename
@@ -69,8 +81,8 @@ function app.require_here (base, nofollow)
 end
 
 --- return a suitable path for files private to this application.
--- These will look like '~/.SNAME/file', with '~' as with expanduser and
--- SNAME is the name of the script without .lua extension.
+-- These will look like `'~/.SNAME/file'`, with '~' expanded through `path.expanduser` and
+-- `SNAME` is the filename of the script without `'.lua'` extension (see `script_name`).
 -- If the directory does not exist, it will be created.
 -- @string file a filename (w/out path)
 -- @return a full pathname, or nil
@@ -78,8 +90,8 @@ end
 -- @usage
 -- -- when run from a script called 'testapp' (on Windows):
 -- local app = require 'pl.app'
--- print(app.appfile 'test.txt')
--- -- C:\Documents and Settings\steve\.testapp\test.txt
+-- print(app.appfile 'some\test.txt')
+-- -- C:\Documents and Settings\steve\.testapp\some\test.txt
 function app.appfile(file)
     local sfullname, err = app.script_name()
     if not sfullname then return utils.raise(err) end
@@ -94,7 +106,9 @@ function app.appfile(file)
 end
 
 --- return string indicating operating system.
--- @return 'Windows','OSX' or whatever uname returns (e.g. 'Linux')
+-- @treturn[1] string 'Windows' on Windows platforms
+-- @treturn[2] string 'OSX' on Apple platforms
+-- @treturn[3] string whatever `uname` returns on other platforms (e.g. 'Linux')
 function app.platform()
     if path.is_windows then
         return 'Windows'

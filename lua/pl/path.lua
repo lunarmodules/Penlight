@@ -14,11 +14,11 @@
 -- imports and locals
 local _G = _G
 local sub = string.sub
-local getenv = os.getenv
 local tmpnam = os.tmpname
 local package = package
 local append, concat, remove = table.insert, table.concat, table.remove
 local utils = require 'pl.utils'
+local getenv = utils.getenv
 local assert_string,raise = utils.assert_string,utils.raise
 
 local res,lfs = _G.pcall(_G.require,'lfs')

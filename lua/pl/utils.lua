@@ -585,6 +585,49 @@ end
 --- OS functions
 -- @section OS-functions
 
+do
+  local env_defaults = {} -- table to track defaults for env variables
+  local original_getenv = os.getenv -- in case the global function gets patched with this implementation
+
+
+  --- Gets an environment variable, whilst falling back to defaults. The defaults can
+  -- be set using `utils.setenv`. All Penlight modules will use this method to retrieve
+  -- environment variables.
+  -- The name is case-sensitive, except on Windows.
+  -- @tparam string name the environment variable to lookup.
+  -- @treturn[1] string the value retrieved
+  -- @treturn[2] nil if the variables wasn't found, and didn't have a default set
+  -- @see utils.setenv_default
+  -- @see app.setenv_default
+  function utils.getenv(name)
+    utils.assert_string(1, name)
+    name = is_windows and name:lower() or name
+    return original_getenv(name) or env_defaults[name]
+  end
+
+
+
+  --- Sets/clears an environment variable default, to use with `utils.getenv`.
+  -- The name is case-sensitive, except on Windows.
+  -- @tparam string name the environment variable name to set a default for.
+  -- @tparam[opt] string value the value to assign as a default, if `nil` the default will be cleared.
+  -- @return nothing
+  -- @see utils.getenv
+  -- @see app.setenv_default
+  function utils.setenv_default(name, value)
+    utils.assert_string(1, name)
+    name = is_windows and name:lower() or name
+    if value == nil then
+      env_defaults[name] = nil
+    else
+      utils.assert_string(1, value)
+      env_defaults[name] = value
+    end
+  end
+end
+
+
+
 --- execute a shell command and return the output.
 -- This function redirects the output to tempfiles and returns the content of those files.
 -- @param cmd a shell command
@@ -598,8 +641,8 @@ function utils.executeex(cmd, bin)
     local errfile = os.tmpname()
 
     if is_windows and not outfile:find(':') then
-        outfile = os.getenv('TEMP')..outfile
-        errfile = os.getenv('TEMP')..errfile
+        outfile = utils.getenv('TEMP')..outfile
+        errfile = utils.getenv('TEMP')..errfile
     end
     cmd = cmd .. " > " .. utils.quote_arg(outfile) .. " 2> " .. utils.quote_arg(errfile)
 
