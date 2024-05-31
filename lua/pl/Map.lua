@@ -37,10 +37,14 @@ local function makelist(t)
     return setmetatable(t, require('pl.List'))
 end
 
---- list of keys.
+--- return a List of all keys.
+-- @class function
+-- @name Map:keys
 Map.keys = tablex.keys
 
---- list of values.
+--- return a List of all values.
+-- @class function
+-- @name Map:keys
 Map.values = tablex.values
 
 --- return an iterator over all key-value pairs.
@@ -48,7 +52,7 @@ function Map:iter ()
     return pairs(self)
 end
 
---- return a List of all key-value pairs, sorted by the keys.
+--- return a List of all key-value pairs, sorted by the keys in ascending order.
 function Map:items()
     local ls = makelist(tablex.pairmap (function (k,v) return makelist {k,v} end, self))
     ls:sort(function(t1,t2) return t1[1] < t2[1] end)
