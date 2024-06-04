@@ -45,12 +45,12 @@ local function err_func(name, param, err, code)
 end
 
 --- Lua iterator over the entries of a given directory.
--- Implicit link to [`luafilesystem.dir`](https://keplerproject.github.io/luafilesystem/manual.html#reference)
+-- Implicit link to [`luafilesystem.dir`](https://lunarmodules.github.io/luafilesystem/manual.html#dir)
 -- @function dir
 path.dir = lfs.dir
 
 --- Creates a directory.
--- Implicit link to [`luafilesystem.mkdir`](https://keplerproject.github.io/luafilesystem/manual.html#reference)
+-- Implicit link to [`luafilesystem.mkdir`](https://lunarmodules.github.io/luafilesystem/manual.html#mkdir)
 -- @function mkdir
 path.mkdir = function(d)
   local ok, err, code = lfs.mkdir(d)
@@ -61,7 +61,7 @@ path.mkdir = function(d)
 end
 
 --- Removes a directory.
--- Implicit link to [`luafilesystem.rmdir`](https://keplerproject.github.io/luafilesystem/manual.html#reference)
+-- Implicit link to [`luafilesystem.rmdir`](https://lunarmodules.github.io/luafilesystem/manual.html#rmdir)
 -- @function rmdir
 path.rmdir = function(d)
   local ok, err, code = lfs.rmdir(d)
@@ -72,7 +72,7 @@ path.rmdir = function(d)
 end
 
 --- Gets attributes.
--- Implicit link to [`luafilesystem.attributes`](https://keplerproject.github.io/luafilesystem/manual.html#reference)
+-- Implicit link to [`luafilesystem.attributes`](https://lunarmodules.github.io/luafilesystem/manual.html#attributes)
 -- @function attrib
 path.attrib = function(d, r)
   local ok, err, code = attrib(d, r)
@@ -83,7 +83,7 @@ path.attrib = function(d, r)
 end
 
 --- Get the working directory.
--- Implicit link to [`luafilesystem.currentdir`](https://keplerproject.github.io/luafilesystem/manual.html#reference)
+-- Implicit link to [`luafilesystem.currentdir`](https://lunarmodules.github.io/luafilesystem/manual.html#currentdir)
 -- @function currentdir
 path.currentdir = function()
   local ok, err, code = currentdir()
@@ -94,7 +94,7 @@ path.currentdir = function()
 end
 
 --- Gets symlink attributes.
--- Implicit link to [`luafilesystem.symlinkattributes`](https://keplerproject.github.io/luafilesystem/manual.html#reference)
+-- Implicit link to [`luafilesystem.symlinkattributes`](https://lunarmodules.github.io/luafilesystem/manual.html#symlinkattributes)
 -- @function link_attrib
 path.link_attrib = function(d, r)
   local ok, err, code = link_attrib(d, r)
@@ -107,7 +107,7 @@ end
 --- Changes the working directory.
 -- On Windows, if a drive is specified, it also changes the current drive. If
 -- only specifying the drive, it will only switch drive, but not modify the path.
--- Implicit link to [`luafilesystem.chdir`](https://keplerproject.github.io/luafilesystem/manual.html#reference)
+-- Implicit link to [`luafilesystem.chdir`](https://lunarmodules.github.io/luafilesystem/manual.html#chdir)
 -- @function chdir
 path.chdir = function(d)
   local ok, err, code = lfs.chdir(d)

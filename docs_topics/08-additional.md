@@ -373,7 +373,7 @@ array.
 Consider this implementation of the head utility from Mac OS X:
 
         -- implements a BSD-style head
-        -- (see http://www.manpagez.com/man/1/head/osx-10.3.php)
+        -- (see https://www.manpagez.com/man/1/head/osx-10.3.php)
 
         lapp = require ('pl.lapp')
 
@@ -528,7 +528,7 @@ And here we can see the output of `test.lua`:
 ### Simple Test Framework
 
 `pl.test` was originally developed for the sole purpose of testing Penlight itself,
-but you may find it useful for your own applications. ([There are many other options](http://lua-users.org/wiki/UnitTesting).)
+but you may find it useful for your own applications. ([There are many other options](https://lua-users.org/wiki/UnitTesting).)
 
 Most of the goodness is in `test.asserteq`.  It uses `tablex.deepcompare` on its two arguments,
 and by default quits the test application with a non-zero exit code, and an informative

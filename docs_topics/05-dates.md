@@ -7,7 +7,7 @@ NOTE: the Date module is deprecated
 ### Creating and Displaying Dates
 
 The `Date` class provides a simplified way to work with [date and
-time](http://www.lua.org/pil/22.1.html) in Lua; it leans heavily on the functions
+time](https://www.lua.org/pil/22.1.html) in Lua; it leans heavily on the functions
 `os.date` and `os.time`.
 
 A `Date` object can be constructed from a table, just like with `os.time`.
