@@ -44,7 +44,7 @@ Map.keys = tablex.keys
 
 --- return a List of all values.
 -- @class function
--- @name Map:keys
+-- @name Map:values
 Map.values = tablex.values
 
 --- return an iterator over all key-value pairs.
