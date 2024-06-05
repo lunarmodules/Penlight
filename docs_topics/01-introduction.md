@@ -41,10 +41,10 @@ the order, so that the function is passed the value and then the key. Although
 perverse, this matches the intended use better.
 
 The only important external dependence of Penlight is
-[LuaFileSystem](http://keplerproject.github.com/luafilesystem/manual.html)
+[LuaFileSystem](https://lunarmodules.github.io/luafilesystem/manual.html)
 (`lfs`), and if you want `dir.copyfile` to work cleanly on Windows, you will need
-either [alien](http://alien.luaforge.net/) or be using
-[LuaJIT](http://luajit.org) as well. (The fallback is to call the equivalent
+either [alien](https://github.com/mascarenhas/alien) or be using
+[LuaJIT](https://luajit.org) as well. (The fallback is to call the equivalent
 shell commands.)
 
 ### To Inject or not to Inject?
@@ -311,7 +311,7 @@ upfront, since in general you won't know what values are needed.
 
 Penlight is fully compatible with Lua 5.1, 5.2 and LuaJIT 2. To ensure this,
 `utils` also defines the global Lua 5.2
-[load](http://www.lua.org/work/doc/manual.html#pdf-load) function as `utils.load`
+[load](https://www.lua.org/work/doc/manual.html#pdf-load) function as `utils.load`
 
  * the input (either a string or a function)
  * the source name used in debug information
@@ -483,7 +483,7 @@ if no `__tostring` method is explicitly defined.
 So `Alice = class(); Alice._name = 'Alice'` is exactly the same as `class.Alice()`.
 
 This useful notation is borrowed from Hugo Etchegoyen's
-[classlib](http://lua-users.org/wiki/MultipleInheritanceClasses) which further
+[classlib](https://lua-users.org/wiki/MultipleInheritanceClasses) which further
 extends this concept to allow for multiple inheritance. Notice that the
 more convenient form puts the class name in the _current environment_! That is,
 you may use it safely within modules using the old-fashioned `module()`

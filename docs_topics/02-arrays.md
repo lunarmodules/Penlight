@@ -520,7 +520,7 @@ compulsory way to use Penlight table operations.
 Two-dimensional tables are of course easy to represent in Lua, for instance
 `{{1,2},{3,4}}` where we store rows as subtables and index like so `A[col][row]`.
 This is the common representation used by matrix libraries like
-[LuaMatrix](http://lua-users.org/wiki/LuaMatrix). `pl.array2d` does not provide
+[LuaMatrix](https://lua-users.org/wiki/LuaMatrix). `pl.array2d` does not provide
 matrix operations, since that is the job for a specialized library, but rather
 provides generalizations of the higher-level operations provided by `pl.tablex`
 for one-dimensional arrays.

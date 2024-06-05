@@ -122,7 +122,7 @@ metatable. But in your own scripts you can feel free to do this.
 ### Another Style of Template
 
 A new module is `template`, which is a version of Rici Lake's [Lua
-Preprocessor](http://lua-users.org/wiki/SlightlyLessSimpleLuaPreprocessor).  This
+Preprocessor](https://lua-users.org/wiki/SlightlyLessSimpleLuaPreprocessor).  This
 allows you to mix Lua code with your templates in a straightforward way. There
 are only two rules:
 

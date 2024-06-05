@@ -353,7 +353,7 @@ this data. In fact, these functions are available as methods; e.g.
     v = data.read('dat.txt'):flatten()
 
 The data is also in exactly the right shape to be treated as matrices by
-[LuaMatrix](http://lua-users.org/wiki/LuaMatrix):
+[LuaMatrix](https://lua-users.org/wiki/LuaMatrix):
 
     > matrix = require 'matrix'
     > m = matrix(data.read 'mat.txt')
@@ -775,7 +775,7 @@ specialized library.
 
 #### Parsing and Pretty-Printing
 
-The semi-standard XML parser in the Lua universe is [lua-expat](http://matthewwild.co.uk/projects/luaexpat/).
+The semi-standard XML parser in the Lua universe is [lua-expat](https://lunarmodules.github.io/luaexpat/).
 In particular,
 it has a function called `lxp.lom.parse` which will parse XML into the Lua Object
 Model (LOM) format. However, it does not provide a way to convert this data back
@@ -846,7 +846,7 @@ There is a fourth argument which is the _attribute indent_:
 #### Parsing and Working with Configuration Files
 
 It's common to find configurations expressed with XML these days. It's
-straightforward to 'walk' the [LOM](http://matthewwild.co.uk/projects/luaexpat/lom.html)
+straightforward to 'walk' the [LOM](https://lunarmodules.github.io/luaexpat/lom.html)
 data and extract the data in the form you want:
 
     require 'pl'
@@ -960,7 +960,7 @@ Getting the names of the providers per-country is straightforward:
 #### Generating XML with 'xmlification'
 
 This feature is inspired by the `htmlify` function used by
-[Orbit](http://keplerproject.github.com/orbit/) to simplify HTML generation,
+[Orbit](https://keplerproject.github.io/orbit/) to simplify HTML generation,
 except that no function environment magic is used; the `tags` function returns a
 set of _constructors_ for elements of the given tag names.
 
@@ -1047,9 +1047,9 @@ extract values from it using a pattern.
 
 A common use of this is parsing the XML result of API queries.  The
 [(undocumented and subsequently discontinued) Google Weather
-API](http://blog.programmableweb.com/2010/02/08/googles-secret-weather-api/) is a
+API](https://blog.programmableweb.com/2010/02/08/googles-secret-weather-api/) is a
 good example. Grabbing the result of
-`http://www.google.com/ig/api?weather=Johannesburg,ZA" we get something like
+`https://www.google.com/ig/api?weather=Johannesburg,ZA" we get something like
 this, after pretty-printing:
 
     <xml_api_reply version='1'>
