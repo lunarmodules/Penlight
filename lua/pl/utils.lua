@@ -24,6 +24,7 @@ local _function_factories = {}
 
 
 local utils = { _VERSION = "1.14.0" }
+
 for k, v in pairs(compat) do utils[k] = v  end
 
 --- Some standard patterns
@@ -584,6 +585,11 @@ end
 
 --- OS functions
 -- @section OS-functions
+
+--- Execute a shell command.
+-- This function is a copy of `compat.execute`.
+-- @class function
+-- @name utils.execute
 
 --- execute a shell command and return the output.
 -- This function redirects the output to tempfiles and returns the content of those files.
