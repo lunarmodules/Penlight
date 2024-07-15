@@ -154,7 +154,7 @@ end
 -- @return the file path if it exists (either as file, directory, socket, etc), nil otherwise
 function path.exists(P)
     assert_string(1,P)
-    return attrib(P,'mode') ~= nil and P
+    return attrib(P,'mode') ~= nil and P or nil
 end
 
 --- Return the time of last access as the number of seconds since the epoch.
