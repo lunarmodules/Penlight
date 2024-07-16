@@ -151,7 +151,7 @@ end
 
 --- does a path exist?
 -- @string P A file path
--- @return the file path if it exists (either as file, directory, socket, etc), nil otherwise
+-- @return the file path if it exists (either as file, directory, socket, etc), false otherwise
 function path.exists(P)
     assert_string(1,P)
     return attrib(P,'mode') ~= nil and P
