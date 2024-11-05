@@ -6,6 +6,10 @@ deprecation policy.
 
 see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) for release instructions
 
+## unreleased
+ - fix(types): callable would return false positive if `__call` was nested
+   [#489](https://github.com/lunarmodules/Penlight/pull/489)
+
 ## 1.14.0 (2024-Apr-15)
  - fix(path): make `path.expanduser` more sturdy
    [#469](https://github.com/lunarmodules/Penlight/pull/469)

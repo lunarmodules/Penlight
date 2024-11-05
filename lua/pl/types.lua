@@ -8,10 +8,22 @@ local math_ceil = math.ceil
 local assert_arg = utils.assert_arg
 local types = {}
 
---- is the object either a function or a callable object?.
--- @param obj Object to check.
-function types.is_callable (obj)
-    return type(obj) == 'function' or getmetatable(obj) and getmetatable(obj).__call and true
+do
+    -- we prefer debug.getmetatable, but only if available
+    local gmt = (debug or {}).getmetatable or getmetatable
+
+    --- is the object either a function or a callable object?.
+    -- @param obj Object to check.
+    function types.is_callable (obj)
+        if type(obj) == 'function' then
+            return true
+        end
+        local mt = gmt(obj)
+        if not mt then
+            return false
+        end
+        return type(rawget(mt, "__call")) == "function"
+    end
 end
 
 --- is the object of the specified type?.

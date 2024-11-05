@@ -32,6 +32,16 @@ asserteq(types.is_integer(-10.1),false)
 
 asserteq(types.is_callable(asserteq),true)
 asserteq(types.is_callable(List),true)
+do
+    local mt = setmetatable({}, {
+        __index = {
+            __call = function() end
+        }
+    })
+    asserteq(type(mt.__call), "function") -- __call is looked-up through another metatable
+    local nc = setmetatable({}, mt)
+    asserteq(types.is_callable(nc), false) -- NOT callable, since __call is fetched using RAWget by Lua
+end
 
 asserteq(types.is_indexable(array),true)
 asserteq(types.is_indexable('hello'),nil)
