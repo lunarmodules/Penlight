@@ -32,6 +32,21 @@ asserteq(types.is_integer(-10.1),false)
 
 asserteq(types.is_callable(asserteq),true)
 asserteq(types.is_callable(List),true)
+do
+    local mt = setmetatable({}, {
+        __index = {
+            __call = function() return "ok" end
+        }
+    })
+    asserteq(type(mt.__call), "function") -- __call is looked-up through another metatable
+    local nc = setmetatable({}, mt)
+    -- proof-of-pudding, let's call it. To verify Lua behaves the same on all engines
+    local success, result = pcall(function() return nc() end)
+    assert(result ~= "ok", "expected result to not be 'ok'")
+    asserteq(success, false)
+    -- real test now
+    asserteq(types.is_callable(nc), false) -- NOT callable, since __call is fetched using RAWget by Lua
+end
 
 asserteq(types.is_indexable(array),true)
 asserteq(types.is_indexable('hello'),nil)
