@@ -227,7 +227,9 @@ class = setmetatable({},{
         return function(...)
             local c = _class(...)
             c._name = key
-            rawset(env,key,c)
+            if env then
+                rawset(env,key,c)
+            end
             return c
         end
     end
