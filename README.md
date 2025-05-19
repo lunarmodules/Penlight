@@ -96,7 +96,7 @@ Penlight is distributed under the [MIT license](LICENSE.md).
 
 ## Installation
 
-Using [LuaRocks](https://luarocks.org): simply run `luarocks install penlight`.
+Using [LuaRocks](https://luarocks.org/modules/tieske/penlight): simply run `luarocks install penlight`.
 
 Manually: copy `lua/pl` directory into your Lua module path. It's typically
 `/usr/local/share/lua/5.x` on a Linux system and `C:\Program Files\Lua\5.x\lua`
