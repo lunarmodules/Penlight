@@ -428,7 +428,7 @@ function dir.clonetree (path1,path2,file_fun,verbose)
         if path1:sub(2,2) == ':' then idx = 3 end
     end
     for root,dirs,files in dir.walk(path1) do
-        local rel_dest_root = root:sub(idx + 1):gsub("^/", "")  -- TODO test
+        local rel_dest_root = root:sub(idx + 1):gsub("^/", "")
         local dest_root = join(path2, rel_dest_root)
         if verbose then verbose('Destination root:', dest_root) end
         for _, d in ipairs(dirs) do
