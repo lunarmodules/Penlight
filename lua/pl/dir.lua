@@ -395,7 +395,10 @@ end
 --- clone a directory tree. Will always try to create a new directory structure
 -- if necessary.
 -- @string path1 the base path of the source tree
--- @string path2 the new base path for the destination
+-- @string path2 the new parent for the destination. Note that the contents of
+--  the source folder will be copied directly under the destination. If the
+--  source folder name is to be retained, this path must end with the same
+--  folder name as the source.
 -- @func file_fun an optional function to apply on all files
 -- @bool verbose an optional boolean to control the verbosity of the output.
 --  It can also be a logging function that behaves like print()
@@ -420,27 +423,31 @@ function dir.clonetree (path1,path2,file_fun,verbose)
     if i2 == #path1 and path2:sub(i2+1,i2+1) == path.sep then
         return raise 'destination is a subdirectory of the source'
     end
-    local cp = path.common_prefix (path1,path2)
-    local idx = #cp
+    local idx = #path1
     if idx == 0 then -- no common path, but watch out for Windows paths!
         if path1:sub(2,2) == ':' then idx = 3 end
     end
     for root,dirs,files in dir.walk(path1) do
-        local opath = path2..root:sub(idx)
-        if verbose then verbose('paths:',opath,root) end
-        if not isdir(opath) then
-            local ret = dir.makepath(opath)
-            if not ret then append(faildirs,opath) end
-            if verbose then verbose('creating:',opath,ret) end
+        local rel_dest_root = root:sub(idx + 1):gsub("^/", "")  -- TODO test
+        local dest_root = join(path2, rel_dest_root)
+        if verbose then verbose('Destination root:', dest_root) end
+        for _, d in ipairs(dirs) do
+            local dest_dir = join(dest_root, d)
+            if verbose then verbose("Destination dir: ", dest_dir) end
+            if not isdir(dest_dir) then
+                local ret = dir.makepath(dest_dir)
+                if not ret then append(faildirs,dest_dir) end
+                if verbose then verbose('creating:',dest_dir,ret) end
+            end
         end
         if file_fun then
-            for i,f in ipairs(files) do
-                local p1 = join(root,f)
-                local p2 = join(opath,f)
-                local ret = file_fun(p1,p2)
-                if not ret then append(failfiles,p2) end
+            for _,f in ipairs(files) do
+                local src_file = join(root,f)
+                local dest_file = join(dest_root, f)
+                local ret = file_fun(src_file, dest_file)
+                if not ret then append(failfiles,dest_file) end
                 if verbose then
-                    verbose('files:',p1,p2,ret)
+                    verbose('files:',src_file, dest_file,ret)
                 end
             end
         end
