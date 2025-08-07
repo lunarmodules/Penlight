@@ -16,6 +16,7 @@ function answer ()
         ["2"] = "attempt to call global 'print'",
         ["3"] = "attempt to call a nil value",
         ["4"] = "a nil value",
+        ["5"] = "a nil value"
     }
     local expected = versioned_errors[LUA_VERSION:match("Lua 5.(%d)")]
     test.assertraise(function()

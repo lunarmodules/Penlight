@@ -193,10 +193,11 @@ function app.parse_args (args,flags_with_values, flags_valid)
 
     local with_values = {}
     for k,v in pairs(flags_with_values or {}) do
-        if type(k) == "number" then
-            k = v
+        local key = k
+        if type(key) == "number" then
+            key = v
         end
-        with_values[k] = true
+        with_values[key] = true
     end
 
     local valid
@@ -207,8 +208,9 @@ function app.parse_args (args,flags_with_values, flags_valid)
     else
         valid = {}
         for k,aliases in pairs(flags_valid) do
+            local key = k
             if type(k) == "number" then         -- array/list entry
-                k = aliases
+                key = aliases
             end
             if type(aliases) == "string" then  -- single alias
                 aliases = { aliases }
@@ -216,10 +218,10 @@ function app.parse_args (args,flags_with_values, flags_valid)
             if type(aliases) == "table" then   -- list of aliases
                 -- it's the alternate name, so add the proper mappings
                 for i, alias in ipairs(aliases) do
-                    valid[alias] = k
+                    valid[alias] = key
                 end
             end
-            valid[k] = k
+            valid[key] = key
         end
         do
             local new_with_values = {}  -- needed to prevent "invalid key to 'next'" error

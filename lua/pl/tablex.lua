@@ -103,9 +103,7 @@ local function cycle_aware_copy(t, cache)
     cache[t] = res
     local mt = getmetatable(t)
     for k,v in pairs(t) do
-        k = cycle_aware_copy(k, cache)
-        v = cycle_aware_copy(v, cache)
-        res[k] = v
+        res[cycle_aware_copy(k, cache)] = cycle_aware_copy(v, cache)
     end
     setmetatable(res,mt)
     return res

@@ -33,7 +33,7 @@ local mod = sip.compile '$v.$v'
 local fun = sip.compile '$v.$v.$v'
 
 for line in stringx.lines(s) do
-    line = gsub(line,'@see $p',function(see,path)
+    local newline = gsub(line,'@see $p',function(see,path)
         if fun(path,res) or mod(path,res) then
             local ret = ('[see %s](%s.%s.html'):format(path,res[1],res[2])
             if res[3] then
@@ -43,7 +43,7 @@ for line in stringx.lines(s) do
             end
         end
     end)
-    print(line)
+    print(newline)
 end
 
 

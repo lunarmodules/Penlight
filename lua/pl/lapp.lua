@@ -215,7 +215,8 @@ function lapp.process_options_string(str,args)
     end
 
 
-    for line in lines(str) do
+    for l in lines(str) do
+        local line = l
         local res = {}
         local optparm,defval,vtype,constraint,rest
         line = lstrip(line)

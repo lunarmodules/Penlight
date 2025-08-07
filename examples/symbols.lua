@@ -135,12 +135,13 @@ function fold (e)
                 local res = {}
                 if npe then append(res,npe) end
                 for val,count in pairs(count_map(pe,equals)) do
+                    local nval = val
                     if count > 1 then
-                        if op == '*' then val = val ^ count
-                        else val = val * count
+                        if op == '*' then nval = nval ^ count
+                        else nval = nval * count
                         end
                     end
-                    append(res,val)
+                    append(res,nval)
                 end
                 if #res == 1 then return res[1] end
                 return PE{op=op,unpack(res)}
