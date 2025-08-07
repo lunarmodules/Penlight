@@ -193,10 +193,11 @@ function app.parse_args (args,flags_with_values, flags_valid)
 
     local with_values = {}
     for k,v in pairs(flags_with_values or {}) do
-        if type(k) == "number" then
-            k = v
+        local key = k
+        if type(key) == "number" then
+            key = v
         end
-        with_values[k] = true
+        with_values[key] = true
     end
 
     local valid
