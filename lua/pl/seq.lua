@@ -125,8 +125,8 @@ end
 -- @return maximum value
 function seq.minmax(iter)
   local vmin,vmax = 1e70,-1e70
-  for v in default_iter(iter) do
-    v = tonumber(v)
+  for val in default_iter(iter) do
+    local v = tonumber(val)
     if v < vmin then vmin = v end
     if v > vmax then vmax = v end
   end
@@ -139,8 +139,13 @@ end
 function seq.sum(iter,fn)
   local s = 0
   local i = 0
-  for v in default_iter(iter) do
-    if fn then v = fn(v) end
+  for val in default_iter(iter) do
+    local v
+    if fn then
+      v = fn(val)
+    else
+      v = val
+    end
     s = s + v
     i = i + 1
   end
@@ -290,13 +295,14 @@ function seq.printall(iter,sep,nfields,fmt)
   end
   local k = 1
   for v in default_iter(iter) do
-     if fmt then v = fmt(v) end
-     if k < nfields then
-       write(v,sep)
-       k = k + 1
+    local value = v
+    if fmt then value = fmt(v) end
+    if k < nfields then
+      write(value,sep)
+      k = k + 1
     else
-       write(v,'\n')
-       k = 1
+      write(value,'\n')
+      k = 1
     end
   end
   write '\n'
