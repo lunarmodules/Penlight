@@ -47,6 +47,12 @@ local function assert_arg_iterable (idx,val)
     end
 end
 
+local function assert_arg_indexable_or_iterable (idx,val)
+    if not types.is_indexable(val) or not types.is_iterable(val) then
+        complain(idx,"indexable/iterable")
+    end
+end
+
 local function assert_arg_writeable (idx,val)
     if not types.is_writeable(val) then
         complain(idx,"writeable")
@@ -985,6 +991,7 @@ end
 -- @tab t the table
 -- @return the table read only (a proxy).
 function tablex.readonly(t)
+    assert_arg_indexable_or_iterable(1,t)
     local mt = {
         __index=t,
         __newindex=function(t, k, v) error("Attempt to modify read-only table", 2) end,
