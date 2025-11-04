@@ -430,6 +430,9 @@ function dir.clonetree (path1,path2,file_fun,verbose)
     for root,dirs,files in dir.walk(path1) do
         local rel_dest_root = root:sub(idx + 1):gsub("^"..path.sep, "")
         local dest_root = join(path2, rel_dest_root)
+        if not dir.makepath(dest_root) then
+            return nil, "Error creating destination folder."
+        end
         if verbose then verbose('Destination root:', dest_root) end
         for _, d in ipairs(dirs) do
             local dest_dir = join(dest_root, d)
