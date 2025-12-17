@@ -1,7 +1,7 @@
 local package_name = "penlight"
 local package_version = "dev"
 local rockspec_revision = "1"
-local github_account_name = "scossu"
+local github_account_name = "lunarmodules"
 local github_repo_name = package_name
 local git_checkout = package_version == "dev" and "master" or package_version
 
@@ -16,7 +16,7 @@ source = {
 }
 
 description = {
-  summary = "Temporary fork of Penlight that addresses some file operation bugs.",
+  summary = "Lua utility libraries loosely based on the Python standard libraries",
   detailed = [[
       Penlight is a set of pure Lua libraries focusing on input data handling
       (such as reading configuration files), functional programming
@@ -26,7 +26,7 @@ description = {
   license = "MIT/X11",
   homepage = "https://"..github_account_name..".github.io/"..github_repo_name,
   issues_url = "https://github.com/"..github_account_name.."/"..github_repo_name.."/issues",
-  maintainer = "scossu@knowledgetx.com",
+  maintainer = "thijs@thijsschreijer.nl",
 }
 
 dependencies = {
