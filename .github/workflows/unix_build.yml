@@ -9,7 +9,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        luaVersion: ["5.1", "5.2", "5.3", "5.4", "luajit-2.1.0-beta3", "luajit-openresty"]
+        luaVersion: ["5.1", "5.2", "5.3", "5.4", "5.5", "luajit-2.1.0-beta3", "luajit-openresty"]
 
     steps:
     - uses: actions/checkout@v4
@@ -20,7 +20,7 @@ jobs:
 
     - uses: hishamhm/gh-actions-luarocks@master
       with:
-        luaRocksVersion: "3.12.0"
+        luaRocksVersion: "3.13.0"
 
     - name: dependencies
       run: |
