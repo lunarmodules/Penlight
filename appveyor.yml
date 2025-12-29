@@ -22,7 +22,8 @@ before_build:
   - hererocks here --%LUA% -rlatest
   - call here\bin\activate
   - luarocks install luacov-coveralls
-  - luarocks install busted
+  - luarocks install busted --deps-only
+  - luarocks install busted --dev
 
 build_script:
   - luarocks remove penlight --force
