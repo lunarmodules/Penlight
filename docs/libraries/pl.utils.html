@@ -231,6 +231,10 @@
 <h2><a href="#OS_functions">OS functions </a></h2>
 <table class="function_list">
 	<tr>
+	<td class="name" nowrap><a href="#execute">execute ()</a></td>
+	<td class="summary">Execute a shell command.</td>
+	</tr>
+	<tr>
 	<td class="name" nowrap><a href="#executeex">executeex (cmd, bin)</a></td>
 	<td class="summary">execute a shell command and return the output.</td>
 	</tr>
@@ -1106,6 +1110,21 @@ obj.MOVEMENT = utils.<span class="function-name">enum</span>(<span class="string
 
     <dl class="function">
     <dt>
+    <a name = "execute"></a>
+    <strong>execute ()</strong>
+    </dt>
+    <dd>
+    Execute a shell command.
+ This function is a copy of <a href="../libraries/pl.compat.html#execute">compat.execute</a>.
+
+
+
+
+
+
+
+</dd>
+    <dt>
     <a name = "executeex"></a>
     <strong>executeex (cmd, bin)</strong>
     </dt>
@@ -1147,7 +1166,7 @@ obj.MOVEMENT = utils.<span class="function-name">enum</span>(<span class="string
     <dd>
     Quote and escape an argument of a command.
  Quotes a single (or list of) argument(s) of a command to be passed
- to <a href="https://www.lua.org/manual/5.4/manual.html#pdf-os.execute">os.execute</a>, <code>pl.utils.execute</code> or <a href="../libraries/pl.utils.html#executeex">pl.utils.executeex</a>.
+ to <a href="https://www.lua.org/manual/5.4/manual.html#pdf-os.execute">os.execute</a>, <a href="../libraries/pl.utils.html#execute">pl.utils.execute</a> or <a href="../libraries/pl.utils.html#executeex">pl.utils.executeex</a>.
 
 
     <h3>Parameters:</h3>

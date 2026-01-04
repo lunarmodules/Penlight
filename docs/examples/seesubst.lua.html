@@ -150,7 +150,7 @@ remember about @see pl.bonzo
 <span class="keyword">local</span> fun = sip.<span class="function-name">compile</span> <span class="string">'$v.$v.$v'</span>
 
 <span class="keyword">for</span> line <span class="keyword">in</span> stringx.<span class="function-name">lines</span>(s) <span class="keyword">do</span>
-    line = <span class="function-name">gsub</span>(line,<span class="string">'@see $p'</span>,<span class="keyword">function</span>(see,path)
+    <span class="keyword">local</span> newline = <span class="function-name">gsub</span>(line,<span class="string">'@see $p'</span>,<span class="keyword">function</span>(see,path)
         <span class="keyword">if</span> <span class="function-name">fun</span>(path,res) <span class="keyword">or</span> <span class="function-name">mod</span>(path,res) <span class="keyword">then</span>
             <span class="keyword">local</span> ret = (<span class="string">'[see %s](%s.%s.html'</span>):<span class="function-name">format</span>(path,res[<span class="number">1</span>],res[<span class="number">2</span>])
             <span class="keyword">if</span> res[<span class="number">3</span>] <span class="keyword">then</span>
@@ -160,7 +160,7 @@ remember about @see pl.bonzo
             <span class="keyword">end</span>
         <span class="keyword">end</span>
     <span class="keyword">end</span>)
-    <span class="global">print</span>(line)
+    <span class="global">print</span>(newline)
 <span class="keyword">end</span></pre>
 
 

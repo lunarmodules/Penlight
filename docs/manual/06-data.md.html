@@ -564,7 +564,7 @@ v = data.<span class="function-name">read</span>(<span class="string">'dat.txt'<
 </pre>
 
 <p>The data is also in exactly the right shape to be treated as matrices by
-<a href="http://lua-users.org/wiki/LuaMatrix">LuaMatrix</a>:</p>
+<a href="https://lua-users.org/wiki/LuaMatrix">LuaMatrix</a>:</p>
 
 
 <pre>
@@ -1059,7 +1059,7 @@ specialized library.</p>
 
 <h4>Parsing and Pretty-Printing</h4>
 
-<p>The semi-standard XML parser in the Lua universe is <a href="http://matthewwild.co.uk/projects/luaexpat/">lua-expat</a>.
+<p>The semi-standard XML parser in the Lua universe is <a href="https://lunarmodules.github.io/luaexpat/">lua-expat</a>.
 In particular,
 it has a function called <code>lxp.lom.parse</code> which will parse XML into the Lua Object
 Model (LOM) format. However, it does not provide a way to convert this data back
@@ -1141,7 +1141,7 @@ the initial indent and the per-element indent:</p>
 <h4>Parsing and Working with Configuration Files</h4>
 
 <p>It's common to find configurations expressed with XML these days. It's
-straightforward to 'walk' the <a href="http://matthewwild.co.uk/projects/luaexpat/lom.html">LOM</a>
+straightforward to 'walk' the <a href="https://lunarmodules.github.io/luaexpat/lom.html">LOM</a>
 data and extract the data in the form you want:</p>
 
 
@@ -1264,7 +1264,7 @@ pretty.<span class="function-name">dump</span>(t)
 <h4>Generating XML with 'xmlification'</h4>
 
 <p>This feature is inspired by the <code>htmlify</code> function used by
-<a href="http://keplerproject.github.com/orbit/">Orbit</a> to simplify HTML generation,
+<a href="https://keplerproject.github.io/orbit/">Orbit</a> to simplify HTML generation,
 except that no function environment magic is used; the <code>tags</code> function returns a
 set of <em>constructors</em> for elements of the given tag names.</p>
 
@@ -1365,10 +1365,10 @@ the single child of an element.</p>
 extract values from it using a pattern.</p>
 
 <p>A common use of this is parsing the XML result of API queries.  The
-<a href="http://blog.programmableweb.com/2010/02/08/googles-secret-weather-api/">(undocumented and subsequently discontinued) Google Weather
+<a href="https://blog.programmableweb.com/2010/02/08/googles-secret-weather-api/">(undocumented and subsequently discontinued) Google Weather
 API</a> is a
 good example. Grabbing the result of
-`http://www.google.com/ig/api?weather=Johannesburg,ZA" we get something like
+`https://www.google.com/ig/api?weather=Johannesburg,ZA" we get something like
 this, after pretty-printing:</p>
 
 

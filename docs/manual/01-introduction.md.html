@@ -168,10 +168,10 @@ the order, so that the function is passed the value and then the key. Although
 perverse, this matches the intended use better.</p>
 
 <p>The only important external dependence of Penlight is
-<a href="http://lunarmodules.github.io/luafilesystem/manual.html">LuaFileSystem</a>
+<a href="https://lunarmodules.github.io/luafilesystem/manual.html">LuaFileSystem</a>
 (<a href="http://stevedonovan.github.io/lua-stdlibs/lfs.html">lfs</a>), and if you want <a href="../libraries/pl.dir.html#copyfile">dir.copyfile</a> to work cleanly on Windows, you will need
-either <a href="http://alien.luaforge.net/">alien</a> or be using
-<a href="http://luajit.org">LuaJIT</a> as well. (The fallback is to call the equivalent
+either <a href="https://github.com/mascarenhas/alien">alien</a> or be using
+<a href="https://luajit.org">LuaJIT</a> as well. (The fallback is to call the equivalent
 shell commands.)</p>
 
 <p><a name="To_Inject_or_not_to_Inject_"></a></p>
@@ -490,7 +490,7 @@ s = <span class="function-name">sum</span>(<span class="number">1e8</span>) <spa
 
 <p>Penlight is fully compatible with Lua 5.1, 5.2 and LuaJIT 2. To ensure this,
 <a href="../libraries/pl.utils.html#">utils</a> also defines the global Lua 5.2
-<a href="http://www.lua.org/work/doc/manual.html#pdf-load">load</a> function as <code>utils.load</code></p>
+<a href="https://www.lua.org/work/doc/manual.html#pdf-load">load</a> function as <code>utils.load</code></p>
 
 <ul>
     <li>the input (either a string or a function)</li>
@@ -677,7 +677,7 @@ Alice: <span class="number">00459</span>AE8
 <p>So <code>Alice = class(); Alice._name = &apos;Alice&apos;</code> is exactly the same as <code>class.Alice()</code>.</p>
 
 <p>This useful notation is borrowed from Hugo Etchegoyen's
-<a href="http://lua-users.org/wiki/MultipleInheritanceClasses">classlib</a> which further
+<a href="https://lua-users.org/wiki/MultipleInheritanceClasses">classlib</a> which further
 extends this concept to allow for multiple inheritance. Notice that the
 more convenient form puts the class name in the <em>current environment</em>! That is,
 you may use it safely within modules using the old-fashioned <code>module()</code>
