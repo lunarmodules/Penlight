@@ -6,11 +6,14 @@ deprecation policy.
 
 see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) for release instructions
 
-## unreleased
+## 1.15.0 (2026-Jan-4)
+ - docs: many (small) documentation updates and fixes
  - feat: added support for Lua 5.5
    [#498](https://github.com/lunarmodules/Penlight/pull/498)
  - fix(types): callable would return false positive if `__call` was nested
    [#489](https://github.com/lunarmodules/Penlight/pull/489)
+ - fix(abspath): validate path
+   [#485](https://github.com/lunarmodules/Penlight/pull/485)
 
 ## 1.14.0 (2024-Apr-15)
  - fix(path): make `path.expanduser` more sturdy

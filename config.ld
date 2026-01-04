@@ -1,5 +1,5 @@
 project = 'Penlight'
-description = 'Penlight Lua Libraries 1.14.0'
+description = 'Penlight Lua Libraries 1.15.0'
 full_description = 'Penlight is a set of pure Lua libraries for making it easier to work with common tasks like iterating over directories, reading configuration files and the like. Provides functional operations on tables and sequences. Visit the <a href="https://github.com/lunarmodules/Penlight">GitHub project</a> to review the code or file issues. Skip to the @{01-introduction.md|introduction}.'
 title = 'Penlight Documentation'
 dir = 'docs'
