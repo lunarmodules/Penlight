@@ -252,12 +252,13 @@ psexpr = <span class="function-name">compose</span>(<span class="global">print</
 </span>                <span class="keyword">local</span> res = {}
                 <span class="keyword">if</span> npe <span class="keyword">then</span> <span class="function-name">append</span>(res,npe) <span class="keyword">end</span>
                 <span class="keyword">for</span> val,count <span class="keyword">in</span> <span class="global">pairs</span>(<span class="function-name">count_map</span>(pe,equals)) <span class="keyword">do</span>
+                    <span class="keyword">local</span> nval = val
                     <span class="keyword">if</span> count &gt; <span class="number">1</span> <span class="keyword">then</span>
-                        <span class="keyword">if</span> op == <span class="string">'*'</span> <span class="keyword">then</span> val = val ^ count
-                        <span class="keyword">else</span> val = val * count
+                        <span class="keyword">if</span> op == <span class="string">'*'</span> <span class="keyword">then</span> nval = nval ^ count
+                        <span class="keyword">else</span> nval = nval * count
                         <span class="keyword">end</span>
                     <span class="keyword">end</span>
-                    <span class="function-name">append</span>(res,val)
+                    <span class="function-name">append</span>(res,nval)
                 <span class="keyword">end</span>
                 <span class="keyword">if</span> #res == <span class="number">1</span> <span class="keyword">then</span> <span class="keyword">return</span> res[<span class="number">1</span>] <span class="keyword">end</span>
                 <span class="keyword">return</span> <span class="function-name">PE</span>{op=op,<span class="function-name">unpack</span>(res)}

@@ -33,7 +33,6 @@
 
 <h2>Contents</h2>
 <ul>
-<li><a href="#Fields">Fields</a></li>
 <li><a href="#Methods">Methods</a></li>
 <li><a href="#Metamethods">Metamethods</a></li>
 </ul>
@@ -137,26 +136,23 @@
 </p>
 
 
-<h2><a href="#Fields">Fields</a></h2>
-<table class="function_list">
-	<tr>
-	<td class="name" nowrap><a href="#pl.map.keys">pl.map.keys</a></td>
-	<td class="summary">list of keys.</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#pl.map.values">pl.map.values</a></td>
-	<td class="summary">list of values.</td>
-	</tr>
-</table>
 <h2><a href="#Methods">Methods</a></h2>
 <table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#pl.map:keys">pl.map:keys ()</a></td>
+	<td class="summary">return a List of all keys.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#pl.map:values">pl.map:values ()</a></td>
+	<td class="summary">return a List of all values.</td>
+	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#pl.map:iter">pl.map:iter ()</a></td>
 	<td class="summary">return an iterator over all key-value pairs.</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#pl.map:items">pl.map:items ()</a></td>
-	<td class="summary">return a List of all key-value pairs, sorted by the keys.</td>
+	<td class="summary">return a List of all key-value pairs, sorted by the keys in ascending order.</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#pl.map:setdefault">pl.map:setdefault (key, default)</a></td>
@@ -199,41 +195,37 @@
 <br/>
 
 
-    <h2 class="section-header "><a name="Fields"></a>Fields</h2>
-
-    <dl class="function">
-    <dt>
-    <a name = "pl.map.keys"></a>
-    <strong>pl.map.keys</strong>
-    </dt>
-    <dd>
-    list of keys.
-
-
-
-
-
-
-
-</dd>
-    <dt>
-    <a name = "pl.map.values"></a>
-    <strong>pl.map.values</strong>
-    </dt>
-    <dd>
-    list of values.
-
-
-
-
-
-
-
-</dd>
-</dl>
     <h2 class="section-header "><a name="Methods"></a>Methods</h2>
 
     <dl class="function">
+    <dt>
+    <a name = "pl.map:keys"></a>
+    <strong>pl.map:keys ()</strong>
+    </dt>
+    <dd>
+    return a List of all keys.
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "pl.map:values"></a>
+    <strong>pl.map:values ()</strong>
+    </dt>
+    <dd>
+    return a List of all values.
+
+
+
+
+
+
+
+</dd>
     <dt>
     <a name = "pl.map:iter"></a>
     <strong>pl.map:iter ()</strong>
@@ -253,7 +245,7 @@
     <strong>pl.map:items ()</strong>
     </dt>
     <dd>
-    return a List of all key-value pairs, sorted by the keys.
+    return a List of all key-value pairs, sorted by the keys in ascending order.
 
 
 
