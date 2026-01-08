@@ -1,52 +1,102 @@
 name: "Unix build"
 
-on: [push, pull_request]
+concurrency:
+  # for PR's cancel the running task, if another commit is pushed
+  group: ${{ github.workflow }} ${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+on:
+  # build on PR and push-to-main. This works for short-lived branches, and saves
+  # CPU cycles on duplicated tests.
+  # For long-lived branches that diverge, you'll want to run on all pushes, not
+  # just on push-to-main.
+  pull_request: {}
+  push:
+    branches:
+      - master
 
 jobs:
   test:
-    runs-on: ubuntu-latest
-
     strategy:
       fail-fast: false
       matrix:
-        luaVersion: ["5.1", "5.2", "5.3", "5.4", "5.5", "luajit-2.1.0-beta3", "luajit-openresty"]
+        os:
+          - "ubuntu-24.04"
+          - "macos-latest"
+        luaVersion:
+          - "5.1"
+          - "5.2"
+          - "5.3"
+          - "5.4"
+          - "5.5"
+          - "luajit"
+          - "luajit-openresty"
+        include:
+          # On Windows builds:
+          # 'hishamhm/gh-actions-lua' will build the PuC Rio Lua versions using
+          # MSVC, and the LuaJIT version using MinGW/gcc. By running against
+          # both below, we test both toolchains.
+          - os: "windows-latest"
+            toolchain: "msvc"
+            luaVersion: "5.1"
+          - os: "windows-latest"
+            toolchain: "msvc"
+            luaVersion: "5.2"
+          - os: "windows-latest"
+            toolchain: "msvc"
+            luaVersion: "5.3"
+          - os: "windows-latest"
+            toolchain: "msvc"
+            luaVersion: "5.4"
+          - os: "windows-latest"
+            toolchain: "mingw"  # unused, other than for display in the UI
+            luaVersion: "luajit"
+
+    runs-on: ${{ matrix.os }}
 
     steps:
-    - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@master
 
-    - uses: hishamhm/gh-actions-lua@master
-      with:
-        luaVersion: ${{ matrix.luaVersion }}
+      - name: Setup MSVC
+        # the 'hishamhm/gh-actions-lua' step requires msvc to build PuC Rio Lua
+        # versions on Windows (LuaJIT will be build using MinGW/gcc).
+        if: ${{ matrix.toolchain == 'msvc' }}
+        uses: ilammy/msvc-dev-cmd@v1
 
-    - uses: hishamhm/gh-actions-luarocks@master
-      with:
-        luaRocksVersion: "3.13.0"
+      - uses: hishamhm/gh-actions-lua@master
+        with:
+          luaVersion: ${{ matrix.luaVersion }}
 
-    - name: dependencies
-      run: |
-        luarocks install busted
-        luarocks install luacov-coveralls
+      - uses: hishamhm/gh-actions-luarocks@master
+        with:
+          luaRocksVersion: "3.13.0"
 
-    - name: build
-      run: |
-        luarocks remove penlight --force
-        luarocks make
+      - name: dependencies
+        run: |
+          luarocks install busted
+          luarocks install luacov-coveralls
+          luarocks remove penlight --force
 
-    - name: Busted tests
-      run: |
-        busted --coverage --Xoutput "--color"
+      - name: build
+        run: |
+          luarocks make
 
-    - name: Old test suite
-      run: |
-        lua run.lua tests --luacov
+      - name: Busted tests
+        run: |
+          busted --coverage --Xoutput "--color"
 
-    - name: Examples
-      run: |
-        lua run.lua examples
+      - name: Old test suite
+        run: |
+          lua run.lua tests --luacov
 
-    - name: Report test coverage
-      if: success()
-      continue-on-error: true
-      run: luacov-coveralls
-      env:
-        COVERALLS_REPO_TOKEN: ${{ github.token }}
+      - name: Examples
+        run: |
+          lua run.lua examples
+
+      - name: Report test coverage
+        if: success()
+        continue-on-error: true
+        run: luacov-coveralls
+        env:
+          COVERALLS_REPO_TOKEN: ${{ github.token }}
