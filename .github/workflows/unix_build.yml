@@ -49,6 +49,9 @@ jobs:
             toolchain: "msvc"
             luaVersion: "5.4"
           - os: "windows-latest"
+            toolchain: "msvc"
+            luaVersion: "5.5"
+          - os: "windows-latest"
             toolchain: "mingw"  # unused, other than for display in the UI
             luaVersion: "luajit"
 
