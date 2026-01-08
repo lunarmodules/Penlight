@@ -24,8 +24,7 @@ jobs:
 
     - name: dependencies
       run: |
-        luarocks install busted --deps-only
-        luarocks install busted --dev
+        luarocks install busted
         luarocks install luacov-coveralls
 
     - name: build
