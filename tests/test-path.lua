@@ -66,7 +66,32 @@ do  -- path.splitpath & path.splitext
 end
 
 
--- TODO: path.abspath
+do -- path.abspath
+  local cp = path.currentdir()
+
+  -- Relative paths should become absolute and point to the same location
+  local rel = path.abspath("docs")
+  asserteq(path.isabs(rel), true)
+  asserteq(slash(rel):sub(-#"/docs"), "/docs")
+
+  -- Absolute paths should remain unchanged or normalized
+  local abs = path.abspath(cp)
+  asserteq(slash(abs), slash(cp))
+
+  -- "." should resolve to the current directory
+  local dot = path.abspath(".")
+  asserteq(slash(dot), slash(cp))
+
+  -- ".." should resolve to an absolute parent path
+  local parent = path.abspath("..")
+  asserteq(path.isabs(parent), true)
+
+  -- Explicit pwd parameter should be honored
+  local with_pwd = path.abspath("test.txt", cp)
+  asserteq(path.isabs(with_pwd), true)
+  asserteq(slash(with_pwd), slash(path.join(cp, "test.txt")))
+end
+
 
 -- TODO: path.dirname
 
