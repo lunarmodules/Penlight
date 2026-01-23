@@ -207,8 +207,9 @@ function app.parse_args (args,flags_with_values, flags_valid)
         valid = setmetatable({},{ __index = function(_, key) return key end })
     else
         valid = {}
-        for k,aliases in pairs(flags_valid) do
+        for k,a in pairs(flags_valid) do
             local key = k
+            local aliases = a
             if type(k) == "number" then         -- array/list entry
                 key = aliases
             end
