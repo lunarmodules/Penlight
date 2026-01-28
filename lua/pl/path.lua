@@ -23,12 +23,7 @@ local assert_string,raise = utils.assert_string,utils.raise
 
 local ok, lfs = _G.pcall(_G.require,'lfs')
 if not ok then
-    local err = lfs
-    if err:match("module 'lfs' not found") then
-        error("pl.path requires LuaFileSystem")
-    else
-        error(err)
-    end
+    error("pl.path requires LuaFileSystem, but failed loading it: " .. tostring(lfs))
 end
 
 local attrib = lfs.attributes
