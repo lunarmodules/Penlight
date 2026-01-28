@@ -549,6 +549,82 @@ describe("xml", function()
       assert.same("&quot;&apos;&lt;&gt;&amp;", esc)
     end)
 
+
+    it("escapes non-printable characters as \\xHH", function()
+      -- Test null byte
+      local esc = xml.xml_escape("hello\x00world")
+      assert.same("hello\\x00world", esc)
+      
+      -- Test control characters
+      local esc2 = xml.xml_escape("\x01\x02\x03")
+      assert.same("\\x01\\x02\\x03", esc2)
+      
+      -- Test DEL character
+      local esc3 = xml.xml_escape("test\x7Fend")
+      assert.same("test\\x7Fend", esc3)
+    end)
+
+
+    it("preserves tab, newline, carriage return", function()
+      local esc = xml.xml_escape("hello\tworld\n")
+      assert.same("hello\tworld\n", esc)
+      
+      local esc2 = xml.xml_escape("line1\r\nline2")
+      assert.same("line1\r\nline2", esc2)
+    end)
+
+
+    it("escapes high ASCII characters (127-255)", function()
+      -- Only DEL (127) should be escaped, high bytes (128-255) are preserved for UTF-8
+      local esc = xml.xml_escape("test\x7F")
+      assert.same("test\\x7F", esc)
+      
+      -- High bytes preserved
+      local esc2 = xml.xml_escape("test\x80\xFF")
+      assert.same("test\x80\xFF", esc2)
+    end)
+
+
+    it("handles mixed content with both special and non-printable chars", function()
+      local esc = xml.xml_escape("hello\x00<tag>&\x01world")
+      assert.same("hello\\x00&lt;tag&gt;&amp;\\x01world", esc)
+    end)
+
+
+    it("handles UTF-8 text correctly", function()
+      -- UTF-8 multi-byte characters should be preserved (not escaped)
+      local esc = xml.xml_escape("你好世界")
+      assert.same("你好世界", esc)
+      
+      local esc2 = xml.xml_escape("hello 世界 <tag>")
+      assert.same("hello 世界 &lt;tag&gt;", esc2)
+    end)
+
+
+    it("handles empty string", function()
+      local esc = xml.xml_escape("")
+      assert.same("", esc)
+    end)
+
+
+    it("handles string with only printable characters", function()
+      local esc = xml.xml_escape("Hello World 123!")
+      assert.same("Hello World 123!", esc)
+    end)
+
+
+    it("escapes binary data in text nodes", function()
+      local doc = xml.new("data")
+      doc:text("\x00\x01\x02\x7F")
+      assert.same("<data>\\x00\\x01\\x02\\x7F</data>", doc:tostring())
+    end)
+
+
+    it("escapes binary data in attributes", function()
+      local doc = xml.new("data", { content = "hello\x00world" })
+      assert.same("<data content='hello\\x00world'/>", doc:tostring())
+    end)
+
   end)
 
 

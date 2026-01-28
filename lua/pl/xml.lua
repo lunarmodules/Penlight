@@ -557,7 +557,7 @@ end
 
 
 do
-  local escape_table = {
+  local xml_escape_table = {
     ["'"] = "&apos;",
     ['"'] = "&quot;",
     ["<"] = "&lt;",
@@ -567,12 +567,24 @@ do
 
   --- Escapes a string for safe use in xml.
   -- Handles quotes(single+double), less-than, greater-than, and ampersand.
+  -- Non-printable control characters (ASCII 0-31 except tab/LF/CR, and DEL 127) are escaped as \xHH.
+  -- High bytes (128-255) are preserved to support UTF-8 encoding.
   -- @tparam string str string value to escape
   -- @return escaped string
   -- @usage
   -- local esc = xml.xml_escape([["'<>&]])  --> "&quot;&apos;&lt;&gt;&amp;"
+  -- local esc = xml.xml_escape("hello\x00world")  --> "hello\\x00world"
   function _M.xml_escape(str)
-    return (s_gsub(str, "['&<>\"]", escape_table))
+    -- First, escape non-printable control characters to \xHH format
+    -- Pattern: [\x00-\x08\x0B\x0C\x0E-\x1F\x7F]
+    -- Excludes: tab(0x09), newline(0x0A), carriage return(0x0D)
+    -- Preserves: high bytes (128-255) for UTF-8 support
+    str = s_gsub(str, "[\0-\8\11\12\14-\31\127]", function(c)
+      return ("\\x%02X"):format(c:byte())
+    end)
+    
+    -- Then, escape XML special characters
+    return (s_gsub(str, "['&<>\"]", xml_escape_table))
   end
 end
 local xml_escape = _M.xml_escape
