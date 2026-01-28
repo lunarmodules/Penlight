@@ -582,7 +582,7 @@ do
     str = s_gsub(str, "[\0-\8\11\12\14-\31\127]", function(c)
       return ("\\x%02X"):format(c:byte())
     end)
-    
+
     -- Then, escape XML special characters
     return (s_gsub(str, "['&<>\"]", xml_escape_table))
   end

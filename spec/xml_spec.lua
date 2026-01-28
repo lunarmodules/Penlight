@@ -554,11 +554,11 @@ describe("xml", function()
       -- Test null byte
       local esc = xml.xml_escape("hello\x00world")
       assert.same("hello\\x00world", esc)
-      
+
       -- Test control characters
       local esc2 = xml.xml_escape("\x01\x02\x03")
       assert.same("\\x01\\x02\\x03", esc2)
-      
+
       -- Test DEL character
       local esc3 = xml.xml_escape("test\x7Fend")
       assert.same("test\\x7Fend", esc3)
@@ -568,7 +568,7 @@ describe("xml", function()
     it("preserves tab, newline, carriage return", function()
       local esc = xml.xml_escape("hello\tworld\n")
       assert.same("hello\tworld\n", esc)
-      
+
       local esc2 = xml.xml_escape("line1\r\nline2")
       assert.same("line1\r\nline2", esc2)
     end)
@@ -578,7 +578,7 @@ describe("xml", function()
       -- Only DEL (127) should be escaped, high bytes (128-255) are preserved for UTF-8
       local esc = xml.xml_escape("test\x7F")
       assert.same("test\\x7F", esc)
-      
+
       -- High bytes preserved
       local esc2 = xml.xml_escape("test\x80\xFF")
       assert.same("test\x80\xFF", esc2)
@@ -595,7 +595,7 @@ describe("xml", function()
       -- UTF-8 multi-byte characters should be preserved (not escaped)
       local esc = xml.xml_escape("你好世界")
       assert.same("你好世界", esc)
-      
+
       local esc2 = xml.xml_escape("hello 世界 <tag>")
       assert.same("hello 世界 &lt;tag&gt;", esc2)
     end)
@@ -623,6 +623,57 @@ describe("xml", function()
     it("escapes binary data in attributes", function()
       local doc = xml.new("data", { content = "hello\x00world" })
       assert.same("<data content='hello\\x00world'/>", doc:tostring())
+    end)
+
+
+    it("handles real binary data from file operations", function()
+      -- Simulate reading binary file data (PNG header signature)
+      local png_header = string.char(0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A)
+      local esc = xml.xml_escape(png_header)
+      -- 0x0D (CR) and 0x0A (LF) are preserved, others escaped
+      assert.same("\x89PNG\\x0D\n\\x1A\n", esc)
+    end)
+
+
+    it("handles binary integers as bytes", function()
+      -- Pack 32-bit integer (little-endian)
+      local binary = string.char(0xEF, 0xBE, 0xAD, 0xDE)  -- 0xDEADBEEF
+      local esc = xml.xml_escape(binary)
+      assert.same("\\xEF\\xBE\\xAD\\xDE", esc)
+    end)
+
+
+    it("handles null-terminated C strings", function()
+      local cstring = "Hello\x00World\x00"
+      local esc = xml.xml_escape(cstring)
+      assert.same("Hello\\x00World\\x00", esc)
+    end)
+
+
+    it("handles raw byte sequences", function()
+      -- Create a string with all control characters
+      local controls = ""
+      for i = 0, 31 do
+        if i ~= 9 and i ~= 10 and i ~= 13 then  -- except tab, LF, CR
+          controls = controls .. string.char(i)
+        end
+      end
+      local esc = xml.xml_escape(controls)
+      -- Should contain \x00, \x01, ..., \x08, \x0B, \x0C, \x0E, ..., \x1F
+      assert.is_true(esc:match("\\x00") ~= nil)
+      assert.is_true(esc:match("\\x01") ~= nil)
+      assert.is_true(esc:match("\\x1F") ~= nil)
+      -- Should not contain literal control chars
+      assert.is_false(esc:match("\x00") ~= nil)
+    end)
+
+
+    it("handles mixed binary and text content", function()
+      -- Simulate a data structure with magic number + text
+      local magic = string.char(0xCA, 0xFE, 0xBA, 0xBE)  -- Java class file magic
+      local data = magic .. "MyClass"
+      local esc = xml.xml_escape(data)
+      assert.same("\\xCA\\xFE\\xBA\\xBEMyClass", esc)
     end)
 
   end)
