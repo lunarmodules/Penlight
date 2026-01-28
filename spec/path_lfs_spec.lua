@@ -13,7 +13,7 @@ describe("pl.path lfs requirement", function()
         package.loaded["pl.path"] = original_path_loaded
     end)
 
-    it("throws friendly error when lfs module is genuinely missing", function()
+    it("shows descriptive error when lfs fails to load", function()
         _G.require = function(mod)
             if mod == "lfs" then
                 error("module 'lfs' not found:\n\tno field package.preload['lfs']\n\tno file ...")
@@ -21,12 +21,13 @@ describe("pl.path lfs requirement", function()
             return original_require(mod)
         end
 
-        assert.has.error(function()
-            require("pl.path")
-        end, "pl.path requires LuaFileSystem")
+        local ok, err = pcall(require, "pl.path")
+        assert.is_false(ok)
+        assert.match("pl.path requires LuaFileSystem, but failed loading it:", err)
+        assert.match("module 'lfs' not found", err)
     end)
 
-    it("rethrows original error when lfs fails to load for other reasons", function()
+    it("includes loader error in message", function()
         _G.require = function(mod)
             if mod == "lfs" then
                 error("error loading module 'lfs' from file '...': undefined symbol: lua_gettop")
@@ -36,6 +37,7 @@ describe("pl.path lfs requirement", function()
 
         local ok, err = pcall(require, "pl.path")
         assert.is_false(ok)
+        assert.match("pl.path requires LuaFileSystem, but failed loading it:", err)
         assert.match("undefined symbol: lua_gettop", err)
     end)
 end)
