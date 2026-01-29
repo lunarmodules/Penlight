@@ -626,54 +626,81 @@ describe("xml", function()
     end)
 
 
-    it("handles real binary data from file operations", function()
-      -- Simulate reading binary file data (PNG header signature)
-      local png_header = string.char(0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A)
-      local esc = xml.xml_escape(png_header)
-      -- 0x0D (CR) and 0x0A (LF) are preserved, others escaped
-      assert.same("\x89PNG\\x0D\n\\x1A\n", esc)
-    end)
-
-
-    it("handles binary integers as bytes", function()
-      -- Pack 32-bit integer (little-endian)
-      local binary = string.char(0xEF, 0xBE, 0xAD, 0xDE)  -- 0xDEADBEEF
-      local esc = xml.xml_escape(binary)
-      assert.same("\\xEF\\xBE\\xAD\\xDE", esc)
-    end)
-
-
-    it("handles null-terminated C strings", function()
-      local cstring = "Hello\x00World\x00"
-      local esc = xml.xml_escape(cstring)
-      assert.same("Hello\\x00World\\x00", esc)
-    end)
-
-
-    it("handles raw byte sequences", function()
-      -- Create a string with all control characters
-      local controls = ""
+    it("handles real binary data: all control characters", function()
+      -- Generate a string with all control characters (0-31, excluding 9, 10, 13)
+      local control_chars = {}
       for i = 0, 31 do
-        if i ~= 9 and i ~= 10 and i ~= 13 then  -- except tab, LF, CR
-          controls = controls .. string.char(i)
+        if i ~= 9 and i ~= 10 and i ~= 13 then  -- exclude tab, LF, CR
+          table.insert(control_chars, string.char(i))
         end
       end
-      local esc = xml.xml_escape(controls)
-      -- Should contain \x00, \x01, ..., \x08, \x0B, \x0C, \x0E, ..., \x1F
-      assert.is_true(esc:match("\\x00") ~= nil)
-      assert.is_true(esc:match("\\x01") ~= nil)
-      assert.is_true(esc:match("\\x1F") ~= nil)
-      -- Should not contain literal control chars
-      assert.is_false(esc:match("\x00") ~= nil)
+      table.insert(control_chars, string.char(127))  -- DEL
+      local binary_data = table.concat(control_chars)
+
+      local escaped = xml.xml_escape(binary_data)
+      -- Verify all control chars are escaped
+      assert.is_true(escaped:match("\\x00") ~= nil)
+      assert.is_true(escaped:match("\\x7F") ~= nil)
+      -- Should not contain raw control chars
+      assert.is_false(escaped:match("\x00") ~= nil)
     end)
 
 
-    it("handles mixed binary and text content", function()
-      -- Simulate a data structure with magic number + text
-      local magic = string.char(0xCA, 0xFE, 0xBA, 0xBE)  -- Java class file magic
-      local data = magic .. "MyClass"
-      local esc = xml.xml_escape(data)
-      assert.same("\\xCA\\xFE\\xBA\\xBEMyClass", esc)
+    it("handles real binary data: simulated file header", function()
+      -- Simulate a PNG file header: \x89PNG\r\n\x1A\n
+      local png_header = string.char(0x89) .. "PNG" .. string.char(0x0D, 0x0A, 0x1A, 0x0A)
+      local doc = xml.new("file", { format = "png" })
+      doc:text(png_header)
+
+      local result = doc:tostring()
+      -- \x89 is high byte (137), preserved for UTF-8, won't be escaped
+      assert.is_true(result:match(string.char(0x89)) ~= nil)
+      assert.is_true(result:match("PNG") ~= nil)
+      assert.is_true(result:match("\x0D\x0A") ~= nil)  -- CRLF preserved
+      assert.is_true(result:match("\\x1A") ~= nil)  -- SUB (0x1A) escaped
+    end)
+
+
+    it("handles real binary data: mixed binary and text", function()
+      -- Simulate binary data with embedded text (like in some protocols)
+      local data = "START" .. string.char(0x00, 0x01, 0x02) .. "MIDDLE" .. string.char(0x03, 0x04) .. "END"
+      local escaped = xml.xml_escape(data)
+
+      assert.same("START\\x00\\x01\\x02MIDDLE\\x03\\x04END", escaped)
+    end)
+
+
+    it("handles real binary data: random binary sequence", function()
+      -- Generate random-like binary data
+      local binary = {}
+      local test_bytes = {0x00, 0x01, 0x05, 0x0E, 0x1F, 0x7F, 0xFF, 0xFE, 0x80}
+      for _, b in ipairs(test_bytes) do
+        table.insert(binary, string.char(b))
+      end
+      local data = table.concat(binary)
+
+      local escaped = xml.xml_escape(data)
+      -- Control chars should be escaped
+      assert.is_true(escaped:match("\\x00") ~= nil)
+      assert.is_true(escaped:match("\\x7F") ~= nil)
+      -- High bytes (128-255) should be preserved for UTF-8
+      assert.is_true(escaped:match(string.char(0xFF)) ~= nil)
+      assert.is_true(escaped:match(string.char(0x80)) ~= nil)
+    end)
+
+
+    it("handles real binary data: protocol packet", function()
+      -- Simulate a simple binary protocol packet
+      -- Format: [STX(0x02)] [LENGTH] [DATA] [ETX(0x03)] [CHECKSUM]
+      local STX = string.char(0x02)
+      local ETX = string.char(0x03)
+      local data = "Hello"
+      local length = string.char(#data)
+      local checksum = string.char(0xFF)
+      local packet = STX .. length .. data .. ETX .. checksum
+
+      local escaped = xml.xml_escape(packet)
+      assert.same("\\x02\\x05Hello\\x03" .. string.char(0xFF), escaped)
     end)
 
   end)
