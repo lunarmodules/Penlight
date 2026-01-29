@@ -552,15 +552,15 @@ describe("xml", function()
 
     it("escapes non-printable characters as \\xHH", function()
       -- Test null byte
-      local esc = xml.xml_escape("hello\x00world")
+      local esc = xml.xml_escape("hello\000world")
       assert.same("hello\\x00world", esc)
 
       -- Test control characters
-      local esc2 = xml.xml_escape("\x01\x02\x03")
+      local esc2 = xml.xml_escape("\001\002\003")
       assert.same("\\x01\\x02\\x03", esc2)
 
       -- Test DEL character
-      local esc3 = xml.xml_escape("test\x7Fend")
+      local esc3 = xml.xml_escape("test\127end")
       assert.same("test\\x7Fend", esc3)
     end)
 
