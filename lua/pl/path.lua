@@ -21,9 +21,9 @@ local append, concat, remove = table.insert, table.concat, table.remove
 local utils = require 'pl.utils'
 local assert_string,raise = utils.assert_string,utils.raise
 
-local res,lfs = _G.pcall(_G.require,'lfs')
-if not res then
-    error("pl.path requires LuaFileSystem")
+local ok, lfs = _G.pcall(_G.require,'lfs')
+if not ok then
+    error("pl.path requires LuaFileSystem, but failed loading it: " .. tostring(lfs))
 end
 
 local attrib = lfs.attributes
