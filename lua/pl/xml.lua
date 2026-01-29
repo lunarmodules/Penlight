@@ -579,7 +579,7 @@ do
     -- Pattern: [\x00-\x08\x0B\x0C\x0E-\x1F\x7F]
     -- Excludes: tab(0x09), newline(0x0A), carriage return(0x0D)
     -- Preserves: high bytes (128-255) for UTF-8 support
-    str = s_gsub(str, "[\0-\8\11\12\14-\31\127]", function(c)
+    str = s_gsub(str, "[%z\1-\8\11\12\14-\31\127]", function(c)
       return ("\\x%02X"):format(c:byte())
     end)
 
