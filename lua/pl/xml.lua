@@ -600,11 +600,19 @@ do
 
   --- Unescapes a string from xml.
   -- Handles quotes(single+double), less-than, greater-than, and ampersand.
+  -- Also handles \xHH escape sequences for control characters.
   -- @tparam string str string value to unescape
   -- @return unescaped string
   -- @usage
-  -- local unesc = xml.xml_escape("&quot;&apos;&lt;&gt;&amp;")  --> [["'<>&]]
+  -- local unesc = xml.xml_unescape("&quot;&apos;&lt;&gt;&amp;")  --> [["'<>&]]
+  -- local unesc = xml.xml_unescape("hello\\x00world")  --> "hello\x00world"
   function _M.xml_unescape(str)
+    -- First, unescape \xHH sequences
+    str = str:gsub("\\x(%x%x)", function(hex)
+      return string.char(tonumber(hex, 16))
+    end)
+
+    -- Then, unescape XML entities
     return (str:gsub( "&(%a+);", escape_table))
   end
 end

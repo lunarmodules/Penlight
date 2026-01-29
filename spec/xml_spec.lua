@@ -709,9 +709,79 @@ describe("xml", function()
 
   describe("xml_unescape()", function()
 
-    it("escapes reserved characters", function()
+    it("unescapes reserved characters", function()
       local unesc = xml.xml_unescape("&quot;&apos;&lt;&gt;&amp;")
       assert.same([["'<>&]], unesc)
+    end)
+
+
+    it("unescapes \\xHH control character sequences", function()
+      local unesc = xml.xml_unescape("hello\\x00world")
+      assert.same("hello\x00world", unesc)
+
+      local unesc2 = xml.xml_unescape("\\x01\\x02\\x03")
+      assert.same("\x01\x02\x03", unesc2)
+    end)
+
+
+    it("unescapes mixed XML entities and \\xHH sequences", function()
+      local unesc = xml.xml_unescape("hello\\x00&lt;tag&gt;&amp;\\x01world")
+      assert.same("hello\x00<tag>&\x01world", unesc)
+    end)
+
+  end)
+
+
+
+  describe("xml escape/unescape roundtrip", function()
+
+    it("roundtrips mixed content", function()
+      local original = "hello\x00<tag>&\x01world"
+      local escaped = xml.xml_escape(original)
+      assert.same("hello\\x00&lt;tag&gt;&amp;\\x01world", escaped)
+      local unescaped = xml.xml_unescape(escaped)
+      assert.same(original, unescaped)
+    end)
+
+
+    it("roundtrips binary protocol packet", function()
+      local STX = string.char(0x02)
+      local ETX = string.char(0x03)
+      local original = STX .. string.char(0x05) .. "Hello" .. ETX .. string.char(0xFF)
+
+      local escaped = xml.xml_escape(original)
+      local unescaped = xml.xml_unescape(escaped)
+      assert.same(original, unescaped)
+    end)
+
+
+    it("roundtrips all control characters", function()
+      -- Generate all control characters (excluding tab, LF, CR)
+      local control_chars = {}
+      for i = 0, 31 do
+        if i ~= 9 and i ~= 10 and i ~= 13 then
+          table.insert(control_chars, string.char(i))
+        end
+      end
+      table.insert(control_chars, string.char(127))  -- DEL
+      local original = table.concat(control_chars)
+
+      local escaped = xml.xml_escape(original)
+      local unescaped = xml.xml_unescape(escaped)
+      assert.same(original, unescaped)
+    end)
+
+
+    it("roundtrips in XML document context", function()
+      -- escape -> serialize -> parse -> unescape
+      local original_text = "data\x00with\x01binary<>&"
+      local doc = xml.new("test")
+      doc:text(original_text)
+
+      local xml_string = doc:tostring()
+      local escaped_text = xml_string:match("<test>(.-)</test>")
+      local recovered_text = xml.xml_unescape(escaped_text)
+      assert.same(original_text, recovered_text)
     end)
 
   end)
