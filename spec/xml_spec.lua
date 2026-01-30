@@ -576,6 +576,8 @@ describe("xml", function()
 
     it("escapes high ASCII characters (127-255)", function()
       -- Only DEL (127) should be escaped, high bytes (128-255) are preserved for UTF-8
+      -- Note: Using decimal escape sequences (\ddd) for Lua 5.1 compatibility
+      -- Lua 5.1 doesn't support \xHH hex escapes
       local esc = xml.xml_escape("test\127")
       assert.same("test\\x7F", esc)
 
@@ -586,6 +588,7 @@ describe("xml", function()
 
 
     it("handles mixed content with both special and non-printable chars", function()
+      -- \0 = null byte, \1 = SOH (using decimal escapes for Lua 5.1)
       local esc = xml.xml_escape("hello\0<tag>&\1world")
       assert.same("hello\\x00&lt;tag&gt;&amp;\\x01world", esc)
     end)
@@ -615,12 +618,14 @@ describe("xml", function()
 
     it("escapes binary data in text nodes", function()
       local doc = xml.new("data")
+      -- \0=NUL, \1=SOH, \2=STX, \127=DEL (decimal escapes for Lua 5.1)
       doc:text("\0\1\2\127")
       assert.same("<data>\\x00\\x01\\x02\\x7F</data>", doc:tostring())
     end)
 
 
     it("escapes binary data in attributes", function()
+      -- \0 = null byte (decimal escape for Lua 5.1)
       local doc = xml.new("data", { content = "hello\0world" })
       assert.same("<data content='hello\\x00world'/>", doc:tostring())
     end)
@@ -641,7 +646,7 @@ describe("xml", function()
       -- Verify all control chars are escaped
       assert.is_true(escaped:match("\\x00") ~= nil)
       assert.is_true(escaped:match("\\x7F") ~= nil)
-      -- Should not contain raw control chars
+      -- Should not contain raw control chars (\0 is decimal escape for Lua 5.1)
       assert.is_false(escaped:match("\0") ~= nil)
     end)
 
@@ -653,7 +658,8 @@ describe("xml", function()
       doc:text(png_header)
 
       local result = doc:tostring()
-      -- \x89 is high byte (137), preserved for UTF-8, won't be escaped
+      -- \137 is high byte (0x89), preserved for UTF-8, won't be escaped
+      -- Using decimal escapes: \137=0x89, \13=CR, \10=LF (Lua 5.1 compatible)
       assert.is_true(result:match("\137") ~= nil)
       assert.is_true(result:match("PNG") ~= nil)
       assert.is_true(result:match("\13\10") ~= nil)  -- CRLF preserved
@@ -716,6 +722,7 @@ describe("xml", function()
 
 
     it("unescapes \\xHH control character sequences", function()
+      -- Using decimal escapes in expected values for Lua 5.1: \0=NUL, \1=SOH, etc.
       local unesc = xml.xml_unescape("hello\\x00world")
       assert.same("hello\0world", unesc)
 
@@ -725,6 +732,7 @@ describe("xml", function()
 
 
     it("unescapes mixed XML entities and \\xHH sequences", function()
+      -- Expected string uses decimal escapes: \0=NUL, \1=SOH (Lua 5.1 compatible)
       local unesc = xml.xml_unescape("hello\\x00&lt;tag&gt;&amp;\\x01world")
       assert.same("hello\0<tag>&\1world", unesc)
     end)
@@ -736,6 +744,7 @@ describe("xml", function()
   describe("xml escape/unescape roundtrip", function()
 
     it("roundtrips mixed content", function()
+      -- Original string uses decimal escapes: \0=NUL, \1=SOH (Lua 5.1 compatible)
       local original = "hello\0<tag>&\1world"
       local escaped = xml.xml_escape(original)
       assert.same("hello\\x00&lt;tag&gt;&amp;\\x01world", escaped)
