@@ -646,8 +646,9 @@ describe("xml", function()
       -- Verify all control chars are escaped
       assert.is_true(escaped:match("\\x00") ~= nil)
       assert.is_true(escaped:match("\\x7F") ~= nil)
-      -- Should not contain raw control chars (\0 is decimal escape for Lua 5.1)
-      assert.is_false(escaped:match("\0") ~= nil)
+      -- Should not contain raw control chars
+      -- Use string.find with plain text search instead of pattern match (Lua 5.1 compatible)
+      assert.is_false(string.find(escaped, string.char(0), 1, true) ~= nil)
     end)
 
 
