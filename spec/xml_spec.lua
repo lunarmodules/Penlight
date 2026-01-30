@@ -576,17 +576,17 @@ describe("xml", function()
 
     it("escapes high ASCII characters (127-255)", function()
       -- Only DEL (127) should be escaped, high bytes (128-255) are preserved for UTF-8
-      local esc = xml.xml_escape("test\x7F")
+      local esc = xml.xml_escape("test\127")
       assert.same("test\\x7F", esc)
 
       -- High bytes preserved
-      local esc2 = xml.xml_escape("test\x80\xFF")
-      assert.same("test\x80\xFF", esc2)
+      local esc2 = xml.xml_escape("test\128\255")
+      assert.same("test\128\255", esc2)
     end)
 
 
     it("handles mixed content with both special and non-printable chars", function()
-      local esc = xml.xml_escape("hello\x00<tag>&\x01world")
+      local esc = xml.xml_escape("hello\0<tag>&\1world")
       assert.same("hello\\x00&lt;tag&gt;&amp;\\x01world", esc)
     end)
 
@@ -615,13 +615,13 @@ describe("xml", function()
 
     it("escapes binary data in text nodes", function()
       local doc = xml.new("data")
-      doc:text("\x00\x01\x02\x7F")
+      doc:text("\0\1\2\127")
       assert.same("<data>\\x00\\x01\\x02\\x7F</data>", doc:tostring())
     end)
 
 
     it("escapes binary data in attributes", function()
-      local doc = xml.new("data", { content = "hello\x00world" })
+      local doc = xml.new("data", { content = "hello\0world" })
       assert.same("<data content='hello\\x00world'/>", doc:tostring())
     end)
 
@@ -642,7 +642,7 @@ describe("xml", function()
       assert.is_true(escaped:match("\\x00") ~= nil)
       assert.is_true(escaped:match("\\x7F") ~= nil)
       -- Should not contain raw control chars
-      assert.is_false(escaped:match("\x00") ~= nil)
+      assert.is_false(escaped:match("\0") ~= nil)
     end)
 
 
@@ -654,9 +654,9 @@ describe("xml", function()
 
       local result = doc:tostring()
       -- \x89 is high byte (137), preserved for UTF-8, won't be escaped
-      assert.is_true(result:match(string.char(0x89)) ~= nil)
+      assert.is_true(result:match("\137") ~= nil)
       assert.is_true(result:match("PNG") ~= nil)
-      assert.is_true(result:match("\x0D\x0A") ~= nil)  -- CRLF preserved
+      assert.is_true(result:match("\13\10") ~= nil)  -- CRLF preserved
       assert.is_true(result:match("\\x1A") ~= nil)  -- SUB (0x1A) escaped
     end)
 
@@ -717,16 +717,16 @@ describe("xml", function()
 
     it("unescapes \\xHH control character sequences", function()
       local unesc = xml.xml_unescape("hello\\x00world")
-      assert.same("hello\x00world", unesc)
+      assert.same("hello\0world", unesc)
 
       local unesc2 = xml.xml_unescape("\\x01\\x02\\x03")
-      assert.same("\x01\x02\x03", unesc2)
+      assert.same("\1\2\3", unesc2)
     end)
 
 
     it("unescapes mixed XML entities and \\xHH sequences", function()
       local unesc = xml.xml_unescape("hello\\x00&lt;tag&gt;&amp;\\x01world")
-      assert.same("hello\x00<tag>&\x01world", unesc)
+      assert.same("hello\0<tag>&\1world", unesc)
     end)
 
   end)
@@ -736,7 +736,7 @@ describe("xml", function()
   describe("xml escape/unescape roundtrip", function()
 
     it("roundtrips mixed content", function()
-      local original = "hello\x00<tag>&\x01world"
+      local original = "hello\0<tag>&\1world"
       local escaped = xml.xml_escape(original)
       assert.same("hello\\x00&lt;tag&gt;&amp;\\x01world", escaped)
       local unescaped = xml.xml_unescape(escaped)
