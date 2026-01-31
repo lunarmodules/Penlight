@@ -549,15 +549,249 @@ describe("xml", function()
       assert.same("&quot;&apos;&lt;&gt;&amp;", esc)
     end)
 
+
+    it("escapes non-printable characters as \\xHH", function()
+      -- Test null byte
+      local esc = xml.xml_escape("hello\000world")
+      assert.same("hello\\x00world", esc)
+
+      -- Test control characters
+      local esc2 = xml.xml_escape("\001\002\003")
+      assert.same("\\x01\\x02\\x03", esc2)
+
+      -- Test DEL character
+      local esc3 = xml.xml_escape("test\127end")
+      assert.same("test\\x7Fend", esc3)
+    end)
+
+
+    it("preserves tab, newline, carriage return", function()
+      local esc = xml.xml_escape("hello\tworld\n")
+      assert.same("hello\tworld\n", esc)
+
+      local esc2 = xml.xml_escape("line1\r\nline2")
+      assert.same("line1\r\nline2", esc2)
+    end)
+
+
+    it("escapes high ASCII characters (127-255)", function()
+      -- Only DEL (127) should be escaped, high bytes (128-255) are preserved for UTF-8
+      -- Note: Using decimal escape sequences (\ddd) for Lua 5.1 compatibility
+      -- Lua 5.1 doesn't support \xHH hex escapes
+      local esc = xml.xml_escape("test\127")
+      assert.same("test\\x7F", esc)
+
+      -- High bytes preserved
+      local esc2 = xml.xml_escape("test\128\255")
+      assert.same("test\128\255", esc2)
+    end)
+
+
+    it("handles mixed content with both special and non-printable chars", function()
+      -- \0 = null byte, \1 = SOH (using decimal escapes for Lua 5.1)
+      local esc = xml.xml_escape("hello\0<tag>&\1world")
+      assert.same("hello\\x00&lt;tag&gt;&amp;\\x01world", esc)
+    end)
+
+
+    it("handles UTF-8 text correctly", function()
+      -- UTF-8 multi-byte characters should be preserved (not escaped)
+      local esc = xml.xml_escape("你好世界")
+      assert.same("你好世界", esc)
+
+      local esc2 = xml.xml_escape("hello 世界 <tag>")
+      assert.same("hello 世界 &lt;tag&gt;", esc2)
+    end)
+
+
+    it("handles empty string", function()
+      local esc = xml.xml_escape("")
+      assert.same("", esc)
+    end)
+
+
+    it("handles string with only printable characters", function()
+      local esc = xml.xml_escape("Hello World 123!")
+      assert.same("Hello World 123!", esc)
+    end)
+
+
+    it("escapes binary data in text nodes", function()
+      local doc = xml.new("data")
+      -- \0=NUL, \1=SOH, \2=STX, \127=DEL (decimal escapes for Lua 5.1)
+      doc:text("\0\1\2\127")
+      assert.same("<data>\\x00\\x01\\x02\\x7F</data>", doc:tostring())
+    end)
+
+
+    it("escapes binary data in attributes", function()
+      -- \0 = null byte (decimal escape for Lua 5.1)
+      local doc = xml.new("data", { content = "hello\0world" })
+      assert.same("<data content='hello\\x00world'/>", doc:tostring())
+    end)
+
+
+    it("handles real binary data: all control characters", function()
+      -- Generate a string with all control characters (0-31, excluding 9, 10, 13)
+      local control_chars = {}
+      for i = 0, 31 do
+        if i ~= 9 and i ~= 10 and i ~= 13 then  -- exclude tab, LF, CR
+          table.insert(control_chars, string.char(i))
+        end
+      end
+      table.insert(control_chars, string.char(127))  -- DEL
+      local binary_data = table.concat(control_chars)
+
+      local escaped = xml.xml_escape(binary_data)
+      -- Verify all control chars are escaped
+      assert.is_true(escaped:match("\\x00") ~= nil)
+      assert.is_true(escaped:match("\\x7F") ~= nil)
+      -- Should not contain raw control chars
+      -- Use string.find with plain text search instead of pattern match (Lua 5.1 compatible)
+      assert.is_false(string.find(escaped, string.char(0), 1, true) ~= nil)
+    end)
+
+
+    it("handles real binary data: simulated file header", function()
+      -- Simulate a PNG file header: \x89PNG\r\n\x1A\n
+      local png_header = string.char(0x89) .. "PNG" .. string.char(0x0D, 0x0A, 0x1A, 0x0A)
+      local doc = xml.new("file", { format = "png" })
+      doc:text(png_header)
+
+      local result = doc:tostring()
+      -- \137 is high byte (0x89), preserved for UTF-8, won't be escaped
+      -- Using decimal escapes: \137=0x89, \13=CR, \10=LF (Lua 5.1 compatible)
+      assert.is_true(result:match("\137") ~= nil)
+      assert.is_true(result:match("PNG") ~= nil)
+      assert.is_true(result:match("\13\10") ~= nil)  -- CRLF preserved
+      assert.is_true(result:match("\\x1A") ~= nil)  -- SUB (0x1A) escaped
+    end)
+
+
+    it("handles real binary data: mixed binary and text", function()
+      -- Simulate binary data with embedded text (like in some protocols)
+      local data = "START" .. string.char(0x00, 0x01, 0x02) .. "MIDDLE" .. string.char(0x03, 0x04) .. "END"
+      local escaped = xml.xml_escape(data)
+
+      assert.same("START\\x00\\x01\\x02MIDDLE\\x03\\x04END", escaped)
+    end)
+
+
+    it("handles real binary data: random binary sequence", function()
+      -- Generate random-like binary data
+      local binary = {}
+      local test_bytes = {0x00, 0x01, 0x05, 0x0E, 0x1F, 0x7F, 0xFF, 0xFE, 0x80}
+      for _, b in ipairs(test_bytes) do
+        table.insert(binary, string.char(b))
+      end
+      local data = table.concat(binary)
+
+      local escaped = xml.xml_escape(data)
+      -- Control chars should be escaped
+      assert.is_true(escaped:match("\\x00") ~= nil)
+      assert.is_true(escaped:match("\\x7F") ~= nil)
+      -- High bytes (128-255) should be preserved for UTF-8
+      assert.is_true(escaped:match(string.char(0xFF)) ~= nil)
+      assert.is_true(escaped:match(string.char(0x80)) ~= nil)
+    end)
+
+
+    it("handles real binary data: protocol packet", function()
+      -- Simulate a simple binary protocol packet
+      -- Format: [STX(0x02)] [LENGTH] [DATA] [ETX(0x03)] [CHECKSUM]
+      local STX = string.char(0x02)
+      local ETX = string.char(0x03)
+      local data = "Hello"
+      local length = string.char(#data)
+      local checksum = string.char(0xFF)
+      local packet = STX .. length .. data .. ETX .. checksum
+
+      local escaped = xml.xml_escape(packet)
+      assert.same("\\x02\\x05Hello\\x03" .. string.char(0xFF), escaped)
+    end)
+
   end)
 
 
 
   describe("xml_unescape()", function()
 
-    it("escapes reserved characters", function()
+    it("unescapes reserved characters", function()
       local unesc = xml.xml_unescape("&quot;&apos;&lt;&gt;&amp;")
       assert.same([["'<>&]], unesc)
+    end)
+
+
+    it("unescapes \\xHH control character sequences", function()
+      -- Using decimal escapes in expected values for Lua 5.1: \0=NUL, \1=SOH, etc.
+      local unesc = xml.xml_unescape("hello\\x00world")
+      assert.same("hello\0world", unesc)
+
+      local unesc2 = xml.xml_unescape("\\x01\\x02\\x03")
+      assert.same("\1\2\3", unesc2)
+    end)
+
+
+    it("unescapes mixed XML entities and \\xHH sequences", function()
+      -- Expected string uses decimal escapes: \0=NUL, \1=SOH (Lua 5.1 compatible)
+      local unesc = xml.xml_unescape("hello\\x00&lt;tag&gt;&amp;\\x01world")
+      assert.same("hello\0<tag>&\1world", unesc)
+    end)
+
+  end)
+
+
+
+  describe("xml escape/unescape roundtrip", function()
+
+    it("roundtrips mixed content", function()
+      -- Original string uses decimal escapes: \0=NUL, \1=SOH (Lua 5.1 compatible)
+      local original = "hello\0<tag>&\1world"
+      local escaped = xml.xml_escape(original)
+      assert.same("hello\\x00&lt;tag&gt;&amp;\\x01world", escaped)
+      local unescaped = xml.xml_unescape(escaped)
+      assert.same(original, unescaped)
+    end)
+
+
+    it("roundtrips binary protocol packet", function()
+      local STX = string.char(0x02)
+      local ETX = string.char(0x03)
+      local original = STX .. string.char(0x05) .. "Hello" .. ETX .. string.char(0xFF)
+
+      local escaped = xml.xml_escape(original)
+      local unescaped = xml.xml_unescape(escaped)
+      assert.same(original, unescaped)
+    end)
+
+
+    it("roundtrips all control characters", function()
+      -- Generate all control characters (excluding tab, LF, CR)
+      local control_chars = {}
+      for i = 0, 31 do
+        if i ~= 9 and i ~= 10 and i ~= 13 then
+          table.insert(control_chars, string.char(i))
+        end
+      end
+      table.insert(control_chars, string.char(127))  -- DEL
+      local original = table.concat(control_chars)
+
+      local escaped = xml.xml_escape(original)
+      local unescaped = xml.xml_unescape(escaped)
+      assert.same(original, unescaped)
+    end)
+
+
+    it("roundtrips in XML document context", function()
+      -- escape -> serialize -> parse -> unescape
+      local original_text = "data\x00with\x01binary<>&"
+      local doc = xml.new("test")
+      doc:text(original_text)
+
+      local xml_string = doc:tostring()
+      local escaped_text = xml_string:match("<test>(.-)</test>")
+      local recovered_text = xml.xml_unescape(escaped_text)
+      assert.same(original_text, recovered_text)
     end)
 
   end)
