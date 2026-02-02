@@ -43,6 +43,25 @@ local function call_ctor (c,obj,...)
     return res
 end
 
+--- create an __instance__, usually, simply using `_init` is sufficient
+-- @function class:_create
+-- @param ... parameters passed to the constructor
+-- @usage local Cat = class()
+-- function Cat:_create(name)
+--   --self:super(name)   -- Unlike _init, there is no “super” to call here.
+--   print("Cat._create")
+--   return { sex = "male" }
+-- function Cat:_init(name)
+--   --self:super(name)   -- call the ancestor initializer if needed
+--   print("Cat._init")
+--   self.name = name
+-- end
+--
+-- local pussycat = Cat("pussycat")  --> Cat._create
+--                                   --> Cat._init
+-- print(pussycat.name)  --> pussycat
+-- print(pussycat.sex)   --> male
+
 --- initializes an __instance__ upon creation.
 -- @function class:_init
 -- @param ... parameters passed to the constructor
