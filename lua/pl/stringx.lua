@@ -208,7 +208,7 @@ end
 
 --- replace all tabs in s with tabsize spaces. If not specified, tabsize defaults to 8.
 -- Tab stops will be honored.
--- @string s the string
+-- @string s the string (multi-line strings are supported)
 -- @int tabsize[opt=8] number of spaces to expand each tab
 -- @return expanded string
 -- @usage stringx.expandtabs('\tone,two,three', 4)   == '    one,two,three'

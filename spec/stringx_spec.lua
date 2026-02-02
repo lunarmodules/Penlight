@@ -140,6 +140,8 @@ describe("stringx", function()
     assert.equal((' '):rep(3), stringx.expandtabs(' \t ',2))
     assert.equal((' '):rep(2), stringx.expandtabs(' \t ',0))
     assert.equal('        hi      there   folks!', stringx.expandtabs('\thi\tthere\tfolks!'))
+    -- multi line string
+    assert.equal('        hi\n        there   folks!', stringx.expandtabs('\thi\n\tthere\tfolks!'))
   end)
 
 
