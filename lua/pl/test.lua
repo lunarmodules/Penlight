@@ -91,7 +91,7 @@ function test.assertraise(fn,e,where)
     else
         ok, err = pcall(fn)
     end
-    if ok or err:match(e)==nil then
+    if ok or (e and err:match(e)==nil) then
         complain (err,e,"these errors did not match",where)
     end
 end
