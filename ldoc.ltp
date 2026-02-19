@@ -293,11 +293,11 @@
 
 # for kind, mods in ldoc.kinds() do
 <h2>$(kind)</h2>
-# kind = kind:lower()
+# local lowerkind = kind:lower()
 <table class="module_list">
 # for m in mods() do
 	<tr>
-		<td class="name"  $(nowrap)><a href="$(no_spaces(kind))/$(m.name).html">$(m.name)</a></td>
+		<td class="name"  $(nowrap)><a href="$(no_spaces(lowerkind))/$(m.name).html">$(m.name)</a></td>
 		<td class="summary">$(M(ldoc.strip_header(m.summary),m))</td>
 	</tr>
 #  end -- for modules
