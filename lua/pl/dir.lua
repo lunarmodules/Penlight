@@ -17,7 +17,7 @@ local remove = os.remove
 local append = table.insert
 local assert_arg,assert_string,raise = utils.assert_arg,utils.assert_string,utils.raise
 
-local exists, isdir = path.exists, path.isdir
+local exists, isdir, basename = path.exists, path.isdir, path.basename
 local sep = path.sep
 
 local dir = {}
@@ -47,7 +47,7 @@ end
 function dir.fnmatch(filename,pattern)
     assert_string(1,filename)
     assert_string(2,pattern)
-    return path.normcase(filename):find(filemask(pattern)) ~= nil
+    return path.normcase(basename(filename)):find(filemask(pattern)) ~= nil
 end
 
 --- Return a list of all file names within an array which match a pattern.
@@ -61,7 +61,7 @@ function dir.filter(filenames,pattern)
     local res = {}
     local mask = filemask(pattern)
     for i,f in ipairs(filenames) do
-        if path.normcase(f):find(mask) then append(res,f) end
+        if path.normcase(basename(f)):find(mask) then append(res,f) end
     end
     return makelist(res)
 end
@@ -94,7 +94,7 @@ function dir.getfiles(dirname,mask)
     if mask then
         mask = filemask(mask)
         match = function(f)
-            return path.normcase(f):find(mask)
+            return path.normcase(basename(f)):find(mask)
         end
     end
     return _listfiles(dirname,true,match)
@@ -515,7 +515,7 @@ function dir.getallfiles( start_path, shell_pattern )
     for filename, mode in dir.dirtree( start_path ) do
         if not mode then
             local mask = filemask( shell_pattern )
-            if normcase(filename):find( mask ) then
+            if normcase(basename(filename)):find( mask ) then
                 files[#files + 1] = filename
             end
         end
