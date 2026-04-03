@@ -281,7 +281,7 @@ end
 -- @param iter a sequence
 -- @param sep the separator (default space)
 -- @param nfields maximum number of values per line (default 7)
--- @param fmt optional format function for each value
+-- @param fmt optional format string or function for each value
 function seq.printall(iter,sep,nfields,fmt)
   local write = io.write
   if not sep then sep = ' ' end
@@ -289,7 +289,7 @@ function seq.printall(iter,sep,nfields,fmt)
       if sep == '\n' then nfields = 1e30
       else nfields = 7 end
   end
-  if fmt then
+  if type(fmt) == 'string' then
     local fstr = fmt
     fmt = function(v) return format(fstr,v) end
   end
