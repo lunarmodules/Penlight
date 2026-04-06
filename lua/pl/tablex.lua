@@ -528,6 +528,7 @@ function tablex.mapn(fun,...)
     fun = function_arg(1,fun)
     local res = {}
     local lists = {...}
+    if #lists == 0 then return res end
     local minn = 1e40
     for i = 1,#lists do
         minn = min(minn,#(lists[i]))
