@@ -1,5 +1,5 @@
 --- A template preprocessor.
--- Originally by [Ricki Lake](http://lua-users.org/wiki/SlightlyLessSimpleLuaPreprocessor)
+-- Originally by [Rici Lake](http://lua-users.org/wiki/SlightlyLessSimpleLuaPreprocessor)
 --
 -- There are two rules:
 --
