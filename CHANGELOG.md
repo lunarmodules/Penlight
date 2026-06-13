@@ -7,6 +7,8 @@ deprecation policy.
 see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) for release instructions
 
 ## x.x.x (unreleased)
+ - fix(dir): `walk` followed symlinks even when `follow_links=false`, causing
+   `rmtree` to delete subdirectories inside symlink targets
  - fix: tablex.mapn could take a long time if no args provided
    [#521](https://github.com/lunarmodules/Penlight/pull/521)
 
