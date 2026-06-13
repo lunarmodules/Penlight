@@ -196,6 +196,37 @@ do
 end
 
 
+-- test: rmtree does not delete subdirectories inside a symlink target
+do
+  local dirName = path.tmpname()
+  os.remove(dirName)
+  assert(dir.makepath(dirName))
+
+  local linkTarget = path.tmpname()
+  os.remove(linkTarget)
+  assert(dir.makepath(linkTarget))
+  local targetFile = path.normpath(linkTarget .. "/top_file.txt")
+  assert(file.write(targetFile, "hello world"))
+  local targetSubDir = path.normpath(linkTarget .. "/subdir")
+  assert(dir.makepath(targetSubDir))
+  local targetSubFile = path.normpath(targetSubDir .. "/sub_file.txt")
+  assert(file.write(targetSubFile, "hello world"))
+
+  local linkSource = path.normpath(dirName .. "/link1")
+  assert(lfs.link(linkTarget, linkSource, true))
+
+  local ok, err = dir.rmtree(dirName)
+  asserteq(ok, true)
+  asserteq(err, nil)
+
+  assert(path.exists(targetFile), "expected linked-to top file to still exist")
+  assert(path.exists(targetSubDir), "expected linked-to subdir to still exist")
+  assert(path.exists(targetSubFile), "expected linked-to subdir file to still exist")
+
+  assert(dir.rmtree(linkTarget))
+end
+
+
 -- have NO idea why forcing the return code is necessary here (Windows 7 64-bit)
 os.exit(0)
 
