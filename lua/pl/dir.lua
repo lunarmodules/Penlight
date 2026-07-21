@@ -341,8 +341,16 @@ function dir.rmtree(fullpath)
             end
         else
             for i,f in ipairs(files) do
-                local res, err = remove(path.join(root,f))
-                if not res then return nil,err .. ": " .. path.join(root,f) end
+                local p = path.join(root,f)
+                if is_windows and path.islink(p) and path.isdir(p) then
+                    -- Windows requires using "rmdir" for directory symlinks/junctions.
+                    -- Deleting them like a file fails with "permission denied".
+                    local res, err = rmdir(p)
+                    if not res then return nil,err .. ": " .. p end
+                else
+                    local res, err = remove(p)
+                    if not res then return nil,err .. ": " .. p end
+                end
             end
             local res, err = rmdir(root)
             if not res then return nil,err .. ": " .. root end
