@@ -289,7 +289,7 @@ end
 function dir.walk(root,bottom_up,follow_links)
     assert_dir(1,root)
     local attrib
-    if path.is_windows or follow_links then
+    if follow_links then
         attrib = path.attrib
     else
         attrib = path.link_attrib
