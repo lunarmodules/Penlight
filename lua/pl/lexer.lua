@@ -51,6 +51,9 @@ local CHAR1 = "^''"
 local CHAR2 = [[^'(\*)%1']]
 local CHAR3 = [[^'.-[^\](\*)%1']]
 local PREPRO = '^#.-[^\\]\n'
+-- A preprocessor directive on the final line may have no trailing newline;
+-- match it up to the end of the input so it is still recognized (issue #450).
+local PREPRO_EOF = '^#.-[^\\]$'
 
 local plain_matches,lua_matches,cpp_matches,lua_keyword,cpp_keyword
 
@@ -393,6 +396,7 @@ function lexer.cpp(s,filter,options)
         cpp_matches = {
             {WSPACE,wsdump},
             {PREPRO,pdump},
+            {PREPRO_EOF,pdump},
             {NUMBER3,ndump},
             {IDEN,cpp_vdump},
             {NUMBER4,ndump},
