@@ -67,7 +67,7 @@ jobs:
         if: ${{ matrix.toolchain == 'msvc' }}
         uses: ilammy/msvc-dev-cmd@0b201ec74fa43914dc39ae48a89fd1d8cb592756 # v1
 
-      - uses: hishamhm/gh-actions-lua@fc6f8de246f8c01f6e1a56a1b851143e23370ff3 # master
+      - uses: hishamhm/gh-actions-lua@85e2287697275df96334743ac654241a8fd34ab3 # master
         with:
           luaVersion: ${{ matrix.luaVersion }}
 
