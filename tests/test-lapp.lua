@@ -24,6 +24,28 @@ function check_error(spec,args,msg)
     test.assertmatch(err,msg)
 end
 
+local required = [[
+    -v           Optional flag
+    <first>  (string)  First argument
+    <second> (string)  Second argument
+]]
+check_error(required,{},"missing required parameter: first")
+check_error(required,{'one'},"missing required parameter: second")
+check(required,{'one','two'},{v=false,first='one',second='two'})
+
+local reversed = [[
+    <second> (string)  First argument
+    <first>  (string)  Second argument
+]]
+check_error(reversed,{},"missing required parameter: second")
+
+local required_options = [[
+    -f,--first  (string)  First option
+    -s,--second (string)  Second option
+]]
+check_error(required_options,{},"missing required parameter: first")
+check_error(required_options,{'-f','one'},"missing required parameter: second")
+
 local parmtest = [[
 Testing 'array' parameter handling
     -o,--output... (string)
