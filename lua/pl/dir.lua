@@ -18,9 +18,6 @@ local append = table.insert
 local assert_arg,assert_string,raise = utils.assert_arg,utils.assert_string,utils.raise
 
 local exists, isdir, islink = path.exists, path.isdir, path.islink
-local abspath, common_prefix = path.abspath, path.common_prefix
-local parentdir = path.dirname
-local link_target = require 'lfs'.symlinkattributes
 local sep = path.sep
 
 local dir = {}
@@ -460,19 +457,27 @@ function dir.clonetree (path1,path2,file_fun,verbose)
 end
 
 
--- a directory symlink whose target contains the link itself iterates forever.
--- Windows reports the target through GetFinalPathNameByHandle, which expands 8.3
--- names, so it need not compare equal to the path walked in with. There is no
--- portable way to canonicalize the other side, so a link that cannot be ruled out
--- is not descended into
+-- Returns true if the directory symlink `entry` points at the directory
+-- holding it or one of its ancestors, so descending into it would loop forever.
+-- On Windows the target comes from GetFinalPathNameByHandle, which expands 8.3
+-- names, so it cannot be reliably compared with the path being walked. There a
+-- link is assumed to loop and is not descended into.
 local function links_to_ancestor(entry)
-    if not islink(entry) then return false end
-    if is_windows then return true end
-    local target = link_target(entry, 'target')
-    if not target then return true end
-    target = abspath(target, parentdir(entry))
-    local here = abspath(entry)
-    return here == target or common_prefix(here, target) == target
+    if is_windows then
+        return true
+    end
+
+    local target = path.link_attrib(entry, 'target')
+    if not target then
+        return true
+    end
+
+    target = path.abspath(target, path.dirname(entry))
+    local here = path.abspath(entry)
+    if here == target then
+        return true
+    end
+    return path.common_prefix(here, target) == target
 end
 
 
@@ -497,7 +502,7 @@ local function treeiter(iterstack)
         entry = dirname .. sep .. entry
         if exists(entry) then  -- Just in case a symlink is broken.
             local is_dir = isdir(entry)
-            if is_dir and not links_to_ancestor(entry) then
+            if is_dir and not (islink(entry) and links_to_ancestor(entry)) then
                 table.insert(iterstack, { entry, ldir(entry) })
             end
             return entry, is_dir
