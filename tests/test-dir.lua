@@ -252,12 +252,9 @@ do
   assert(seen[path.normpath(dirName .. "/sub/loop")], "the ancestor symlink should still be listed")
   assert(not seen[path.normpath(dirName .. "/sub/loop/sub")], "dirtree descended into the cycle")
 
-  -- a symlink that is not an ancestor is still traversed, where the platform
-  -- lets us tell the two apart
-  if not path.is_windows then
-    assert(seen[path.normpath(dirName .. "/elsewhere/inside.txt")],
-      "dirtree stopped descending into a symlink that points outside the tree")
-  end
+  -- a symlink that is not an ancestor is still traversed
+  assert(seen[path.normpath(dirName .. "/elsewhere/inside.txt")],
+    "dirtree stopped descending into a symlink that points outside the tree")
 
   assert(dir.rmtree(dirName))
   assert(dir.rmtree(other))

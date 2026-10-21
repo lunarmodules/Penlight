@@ -459,25 +459,26 @@ end
 
 -- Returns true if the directory symlink `entry` points at the directory
 -- holding it or one of its ancestors, so descending into it would loop forever.
--- On Windows the target comes from GetFinalPathNameByHandle, which expands 8.3
--- names, so it cannot be reliably compared with the path being walked. There a
--- link is assumed to loop and is not descended into.
+-- Link targets are not read, since Windows does not report them reliably.
+-- Instead, a link to an ancestor shows up again below itself at the same
+-- relative path: "a/sub/loop" -> "a" also gives "a/sub/loop/sub/loop".
 local function links_to_ancestor(entry)
-    if is_windows then
-        return true
+    local dir, rel = path.dirname(entry), path.basename(entry)
+    while true do
+        if islink(path.join(entry, rel)) then
+            return true
+        end
+        local parent = path.dirname(dir)
+        if dir == '' or parent == dir then
+            return false
+        end
+        rel = path.join(path.basename(dir), rel)
+        if path.isabs(rel) then
+            -- reached a drive or root; join would drop `entry`
+            return false
+        end
+        dir = parent
     end
-
-    local target = path.link_attrib(entry, 'target')
-    if not target then
-        return true
-    end
-
-    target = path.abspath(target, path.dirname(entry))
-    local here = path.abspath(entry)
-    if here == target then
-        return true
-    end
-    return path.common_prefix(here, target) == target
 end
 
 
