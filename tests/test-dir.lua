@@ -261,6 +261,35 @@ do
 end
 
 
+-- a link to a directory holding a link of the same name is not a cycle,
+-- and a link to an ancestor of the current directory is one, also for a relative root
+do
+  local base = path.tmpname()
+  os.remove(base)
+  local target, leaf = path.normpath(base .. "/target"), path.normpath(base .. "/leaf")
+  local tree = path.normpath(base .. "/work/tree")
+  assert(dir.makepath(target))
+  assert(dir.makepath(leaf))
+  assert(dir.makepath(path.normpath(tree .. "/sub")))
+  assert(file.write(path.normpath(leaf .. "/leaf.txt"), "hello world"))
+  assert(file.write(path.normpath(base .. "/outside.txt"), "hello world"))
+  assert(lfs.link(target, path.normpath(tree .. "/alias"), true))
+  assert(lfs.link(leaf, path.normpath(target .. "/alias"), true))
+  assert(lfs.link(base, path.normpath(tree .. "/sub/back"), true))
+
+  local old_cwd = lfs.currentdir()
+  assert(lfs.chdir(path.normpath(base .. "/work")))
+  local files = {}
+  for _, f in ipairs(dir.getallfiles("tree")) do files[f] = true end
+  assert(lfs.chdir(old_cwd))
+
+  assert(files[path.normpath("tree/alias/alias/leaf.txt")], "a link was taken for a cycle")
+  assert(not files[path.normpath("tree/sub/back/outside.txt")], "dirtree descended into an ancestor")
+
+  assert(dir.rmtree(base))
+end
+
+
 -- have NO idea why forcing the return code is necessary here (Windows 7 64-bit)
 os.exit(0)
 

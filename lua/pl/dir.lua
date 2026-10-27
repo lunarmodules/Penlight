@@ -462,10 +462,15 @@ end
 -- Link targets are not read, since Windows does not report them reliably.
 -- Instead, a link to an ancestor shows up again below itself at the same
 -- relative path: "a/sub/loop" -> "a" also gives "a/sub/loop/sub/loop".
+-- Two repeats are required, so a link to a directory that merely holds a link
+-- of the same name is not taken for a cycle. The path is made absolute so
+-- links to ancestors of the current directory are found too.
 local function links_to_ancestor(entry)
+    entry = path.abspath(entry)
     local dir, rel = path.dirname(entry), path.basename(entry)
     while true do
-        if islink(path.join(entry, rel)) then
+        local again = path.join(entry, rel)
+        if islink(again) and islink(path.join(again, rel)) then
             return true
         end
         local parent = path.dirname(dir)
