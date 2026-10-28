@@ -17,7 +17,7 @@ local remove = os.remove
 local append = table.insert
 local assert_arg,assert_string,raise = utils.assert_arg,utils.assert_string,utils.raise
 
-local exists, isdir = path.exists, path.isdir
+local exists, isdir, islink = path.exists, path.isdir, path.islink
 local sep = path.sep
 
 local dir = {}
@@ -457,6 +457,36 @@ function dir.clonetree (path1,path2,file_fun,verbose)
 end
 
 
+-- Returns true if the directory symlink `entry` points at the directory
+-- holding it or one of its ancestors, so descending into it would loop forever.
+-- Link targets are not read, since Windows does not report them reliably.
+-- Instead, a link to an ancestor shows up again below itself at the same
+-- relative path: "a/sub/loop" -> "a" also gives "a/sub/loop/sub/loop".
+-- Two repeats are required, so a link to a directory that merely holds a link
+-- of the same name is not taken for a cycle. The path is made absolute so
+-- links to ancestors of the current directory are found too.
+local function links_to_ancestor(entry)
+    entry = path.abspath(entry)
+    local dir, rel = path.dirname(entry), path.basename(entry)
+    while true do
+        local again = path.join(entry, rel)
+        if islink(again) and islink(path.join(again, rel)) then
+            return true
+        end
+        local parent = path.dirname(dir)
+        if dir == '' or parent == dir then
+            return false
+        end
+        rel = path.join(path.basename(dir), rel)
+        if path.isabs(rel) then
+            -- reached a drive or root; join would drop `entry`
+            return false
+        end
+        dir = parent
+    end
+end
+
+
 -- each entry of the stack is an array with three items:
 -- 1. the name of the directory
 -- 2. the lfs iterator function
@@ -478,7 +508,7 @@ local function treeiter(iterstack)
         entry = dirname .. sep .. entry
         if exists(entry) then  -- Just in case a symlink is broken.
             local is_dir = isdir(entry)
-            if is_dir then
+            if is_dir and not (islink(entry) and links_to_ancestor(entry)) then
                 table.insert(iterstack, { entry, ldir(entry) })
             end
             return entry, is_dir

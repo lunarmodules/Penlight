@@ -227,6 +227,69 @@ do
 end
 
 
+-- dirtree must not loop on a symlink pointing at an ancestor,
+-- but must still descend into symlinks that point elsewhere
+do
+  local dirName = path.tmpname()
+  os.remove(dirName)
+  local other = path.tmpname()
+  os.remove(other)
+  assert(dir.makepath(path.normpath(dirName .. "/sub")))
+  assert(dir.makepath(other))
+  assert(file.write(path.normpath(dirName .. "/top.txt"), "hello world"))
+  assert(file.write(path.normpath(other .. "/inside.txt"), "hello world"))
+  assert(lfs.link(dirName, path.normpath(dirName .. "/sub/loop"), true))
+  assert(lfs.link(other, path.normpath(dirName .. "/elsewhere"), true))
+
+  local seen, count = {}, 0
+  for entry in dir.dirtree(dirName) do
+    count = count + 1
+    assert(count <= 20, "dir.dirtree did not terminate; it followed a symlink cycle")
+    seen[entry] = true
+  end
+
+  -- the cycle is cut: the ancestor link is reported but not descended into
+  assert(seen[path.normpath(dirName .. "/sub/loop")], "the ancestor symlink should still be listed")
+  assert(not seen[path.normpath(dirName .. "/sub/loop/sub")], "dirtree descended into the cycle")
+
+  -- a symlink that is not an ancestor is still traversed
+  assert(seen[path.normpath(dirName .. "/elsewhere/inside.txt")],
+    "dirtree stopped descending into a symlink that points outside the tree")
+
+  assert(dir.rmtree(dirName))
+  assert(dir.rmtree(other))
+end
+
+
+-- a link to a directory holding a link of the same name is not a cycle,
+-- and a link to an ancestor of the current directory is one, also for a relative root
+do
+  local base = path.tmpname()
+  os.remove(base)
+  local target, leaf = path.normpath(base .. "/target"), path.normpath(base .. "/leaf")
+  local tree = path.normpath(base .. "/work/tree")
+  assert(dir.makepath(target))
+  assert(dir.makepath(leaf))
+  assert(dir.makepath(path.normpath(tree .. "/sub")))
+  assert(file.write(path.normpath(leaf .. "/leaf.txt"), "hello world"))
+  assert(file.write(path.normpath(base .. "/outside.txt"), "hello world"))
+  assert(lfs.link(target, path.normpath(tree .. "/alias"), true))
+  assert(lfs.link(leaf, path.normpath(target .. "/alias"), true))
+  assert(lfs.link(base, path.normpath(tree .. "/sub/back"), true))
+
+  local old_cwd = lfs.currentdir()
+  assert(lfs.chdir(path.normpath(base .. "/work")))
+  local files = {}
+  for _, f in ipairs(dir.getallfiles("tree")) do files[f] = true end
+  assert(lfs.chdir(old_cwd))
+
+  assert(files[path.normpath("tree/alias/alias/leaf.txt")], "a link was taken for a cycle")
+  assert(not files[path.normpath("tree/sub/back/outside.txt")], "dirtree descended into an ancestor")
+
+  assert(dir.rmtree(base))
+end
+
+
 -- have NO idea why forcing the return code is necessary here (Windows 7 64-bit)
 os.exit(0)
 
