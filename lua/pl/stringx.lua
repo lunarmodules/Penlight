@@ -20,7 +20,6 @@ local sub = string.sub
 local reverse = string.reverse
 local concat = table.concat
 local append = table.insert
-local remove = table.remove
 local escape = utils.escape
 local ceil, max = math.ceil, math.max
 local assert_arg,usplit = utils.assert_arg,utils.split
@@ -555,31 +554,31 @@ end
 
 
 do
-  local buildline = function(words, size, breaklong)
+  local buildline = function(words, i, size, breaklong)
     -- if overflow is set, a word longer than size, will overflow the size
     -- otherwise it will be chopped in line-length pieces
     local line = {}
-    if #words[1] > size then
+    if #words[i] > size then
       -- word longer than line
       if not breaklong then
-        line[1] = words[1]
-        remove(words, 1)
+        line[1] = words[i]
+        i = i + 1
       else
-        line[1] = words[1]:sub(1, size)
-        words[1] = words[1]:sub(size + 1, -1)
+        line[1] = words[i]:sub(1, size)
+        words[i] = words[i]:sub(size + 1, -1)
       end
     else
       local len = 0
-      while words[1] and (len + #words[1] <= size) or
-            (len == 0 and #words[1] == size) do
-        if words[1] ~= "" then
-          line[#line+1] = words[1]
-          len = len + #words[1] + 1
+      while words[i] and (len + #words[i] <= size) or
+            (len == 0 and #words[i] == size) do
+        if words[i] ~= "" then
+          line[#line+1] = words[i]
+          len = len + #words[i] + 1
         end
-        remove(words, 1)
+        i = i + 1
       end
     end
-    return stringx.strip(concat(line, " ")), words
+    return stringx.strip(concat(line, " ")), i
   end
 
   --- format a paragraph into lines so that they fit into a line width.
@@ -600,8 +599,9 @@ do
     width = width or 70
     local out = {}
     local words = usplit(s, "%s")
-    while words[1] do
-      out[#out+1], words = buildline(words, width, breaklong)
+    local i = 1
+    while words[i] do
+      out[#out+1], i = buildline(words, i, width, breaklong)
     end
     return makelist(out)
   end
