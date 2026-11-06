@@ -7,6 +7,9 @@ deprecation policy.
 see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) for release instructions
 
 ## x.x.x (unreleased)
+ - docs(Set): document that sets have no methods (`myset:values()` does not
+   work), since elements are stored as keys and would shadow them
+   [#524](https://github.com/lunarmodules/Penlight/issues/524)
  - fix(stringx): `wrap` and `fill` took quadratic time in the number of words,
    so long texts were slow
    [#533](https://github.com/lunarmodules/Penlight/issues/533)
