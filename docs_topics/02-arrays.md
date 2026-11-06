@@ -207,7 +207,7 @@ are defined.
     true
     > = fruit['hazelnut']
     nil
-    > = fruit:values()
+    > = Set.values(fruit)
     {apple,orange,banana}
     > colours = Set{'red','orange','green','blue'}
     > = fruit,colours

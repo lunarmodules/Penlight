@@ -19,6 +19,11 @@
 --    > =  more_fruits, fruit
 --    [banana,apricot,apple,orange]	[banana,apple,orange]
 --
+-- Note: a Set has _no_ methods, so `myset:values()` or `myset:map()` will not
+-- work. Set elements are stored as keys in the set itself, so an element named
+-- `"map"` would shadow the method of that name, and `__index` would never be
+-- invoked. Use the functions instead, eg. `Set.values(myset)`.
+--
 -- Dependencies: `pl.utils`, `pl.tablex`, `pl.class`, `pl.Map`, (`pl.List` if __tostring is used)
 -- @classmod pl.Set
 
