@@ -7,6 +7,9 @@ deprecation policy.
 see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) for release instructions
 
 ## x.x.x (unreleased)
+ - fix(dir): `dirtree` and `getallfiles` skip directories that cannot be opened
+   instead of aborting traversal, including an unreadable starting directory
+   [#494](https://github.com/lunarmodules/Penlight/issues/494)
  - fix(dir): `dirtree` and `getallfiles` descended into symlinked directories,
    so a link pointing at an ancestor made them loop forever
  - fix(dir): `walk` followed symlinks even when `follow_links=false`, and on
