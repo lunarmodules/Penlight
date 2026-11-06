@@ -491,6 +491,14 @@ end
 -- 1. the name of the directory
 -- 2. the lfs iterator function
 -- 3. the lfs iterator userdata
+local function pushdir(iterstack, dirname)
+    -- lfs.dir raises when a directory cannot be opened (e.g. permissions).
+    local ok, iter, state = pcall(ldir, dirname)
+    if ok then
+        table.insert(iterstack, { dirname, iter, state })
+    end
+end
+
 local function treeiter(iterstack)
     local diriter = iterstack[#iterstack]
     if not diriter then
@@ -509,7 +517,7 @@ local function treeiter(iterstack)
         if exists(entry) then  -- Just in case a symlink is broken.
             local is_dir = isdir(entry)
             if is_dir and not (islink(entry) and links_to_ancestor(entry)) then
-                table.insert(iterstack, { entry, ldir(entry) })
+                pushdir(iterstack, entry)
             end
             return entry, is_dir
         end
@@ -520,6 +528,8 @@ end
 
 
 --- return an iterator over all entries in a directory tree
+-- Directories that cannot be opened are not traversed, but are still reported
+-- as directories when encountered in their parent. An unreadable root yields no entries.
 -- @string d a directory
 -- @return an iterator giving pathname and mode (true for dir, false otherwise)
 -- @raise d must be a non-empty string
@@ -531,7 +541,8 @@ function dir.dirtree( d )
         d = sub( d, 1, -2 )
     end
 
-    local iterstack = { {d, ldir(d)} }
+    local iterstack = {}
+    pushdir(iterstack, d)
 
     return treeiter, iterstack
 end
@@ -539,6 +550,7 @@ end
 
 --- Recursively returns all the file starting at 'path'. It can optionally take a shell pattern and
 -- only returns files that match 'shell_pattern'. If a pattern is given it will do a case insensitive search.
+-- Directories that cannot be opened are skipped; an unreadable start_path yields an empty list.
 -- @string[opt='.'] start_path  A directory.
 -- @string[opt='*'] shell_pattern A shell pattern (see `fnmatch`).
 -- @treturn List(string) containing all the files found recursively starting at 'path' and filtered by 'shell_pattern'.
