@@ -369,9 +369,20 @@ function pretty.write (tbl,space,not_clever)
 end
 
 --- Dump a Lua table out to a file or stdout.
+-- **Caution:** If a function call supplies the arguments, its second return
+-- value becomes the filename and an existing file at that path is overwritten.
+-- For example, Lua 5.4's [require](https://www.lua.org/manual/5.4/manual.html#pdf-require)
+-- also returns loader data (often a filename) when it first loads a module.
+-- A cached module has only one return value.
 -- @tab t The table to write to a file or stdout.
--- @string[opt] filename File name to write too. Defaults to writing
--- to stdout.
+-- @string[opt] filename Destination file. Omit to print to stdout.
+-- @usage
+-- local t = get_values()          -- keep only the first return value
+-- pretty.dump(t)
+-- pretty.dump((get_values()))     -- parentheses also keep just the first
+-- pretty.debug(get_values())      -- print all return values
+-- pretty(get_values())            -- shorthand for pretty.debug
+-- pretty.dump(t, "output.txt")    -- explicitly write to a file
 function pretty.dump (t, filename)
     if not filename then
         print(pretty.write(t))
