@@ -181,6 +181,7 @@ end
 -- @return a table with parameter-value pairs
 function lapp.process_options_string(str,args)
     local results = {}
+    local parm_order = {}
     local varargs
     local arg = args or _G.arg
     open_files = {}
@@ -319,6 +320,7 @@ function lapp.process_options_string(str,args)
             elseif not builtin_types[vtype] and vtype then
                 lapp.error(vtype.." is unknown type")
             end
+            if not parms[optparm] then append(parm_order,optparm) end
             parms[optparm] = ps
         end
     end
@@ -426,10 +428,14 @@ function lapp.process_options_string(str,args)
         i = i + 1
         val = nil
     end
-    -- check unused parms, set defaults and check if any required parameters were missed
+    -- report missing required parameters in their declaration order
+    for _,parm in ipairs(parm_order) do
+        local ps = parms[parm]
+        if not ps.used and ps.required then lapp.error("missing required parameter: "..parm) end
+    end
+    -- set defaults for unused parameters
     for parm,ps in pairs(parms) do
         if not ps.used then
-            if ps.required then lapp.error("missing required parameter: "..parm) end
             set_result(ps,parm,ps.defval)
             if builtin_types[ps.type] == "file" then
                 set_result(ps, parm .. "_name", ps.defval_str)
