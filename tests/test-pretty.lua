@@ -130,3 +130,36 @@ do
   })
   asserteq(pretty.write(t), "{\n}")
 end
+
+-- Exercise the documented output forms without opening any files.
+do
+  local original_print, original_writefile = print, utils.writefile
+  local printed, writes = {}, {}
+  local t = { answer = 42 }
+  local function get_values()
+    return t, "second value"
+  end
+  local ok, err = pcall(function()
+    _G.print = function(s) printed[#printed + 1] = s end
+    utils.writefile = function(name, s)
+      writes[#writes + 1] = { name, s }
+      return true
+    end
+
+    local first = get_values()
+    pretty.dump(first)
+    pretty.dump((get_values()))
+    pretty.debug(get_values())
+    pretty(get_values())
+    local all = pretty.write({ ["arg 1"] = t, ["arg 2"] = "second value" })
+    assert(#printed == 4 and printed[1] == pretty.write(t) and printed[2] == printed[1])
+    assert(printed[3] == all and printed[4] == all)
+    assert(#writes == 0)
+
+    pretty.dump(t, "output.txt")
+    assert(#writes == 1 and writes[1][1] == "output.txt" and writes[1][2] == printed[1])
+    assert(#printed == 4)
+  end)
+  _G.print, utils.writefile = original_print, original_writefile
+  assert(ok, err)
+end
