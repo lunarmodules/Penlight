@@ -28,6 +28,7 @@ local match = sip.match_at_start
 local append,tinsert = table.insert,table.insert
 
 sip.custom_pattern('X','(%a[%w_%-]*)')
+sip.custom_pattern('R','(.*)')
 
 local function lines(s) return s:gmatch('([^\n]*)\n') end
 local function lstrip(str)  return str:gsub('^%s+','')  end
@@ -225,10 +226,9 @@ function lapp.process_options_string(str,args)
         end
 
         -- flags: either '-<short>', '-<short>,--<long>' or '--<long>'
-        if check '-$v{short}, --$o{long} $' or check '-$v{short} $' or check '--$o{long} $' then
+        if check '-$v{short}, --$o{long} $R{rest}' or check '-$v{short} $R{rest}' or check '--$o{long} $R{rest}' then
             if res.long then
                 optparm = res.long:gsub('[^%w%-]','_')  -- I'm not sure the $o pattern will let anything else through?
-                if #res.rest == 1 then optparm = optparm .. res.rest end
                 if res.short then aliases[res.short] = optparm  end
             else
                 optparm = res.short
