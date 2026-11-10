@@ -134,6 +134,18 @@ local with_dashes = [[
 
 check(with_dashes,{'--first-dash'},{first_dash=true,second_dash=false})
 
+-- flags don't need a description, and a one character description
+-- is not part of the flag name
+local undescribed = [[
+    -p
+    -q,--quiet
+    --verbose
+    --all a
+]]
+
+check(undescribed,{},{p=false,quiet=false,verbose=false,all=false})
+check(undescribed,{'-p','-q','--verbose','--all'},{p=true,quiet=true,verbose=true,all=true})
+
 -- optional parameters don't have to be set
 local optional = [[
   -p (optional string)
