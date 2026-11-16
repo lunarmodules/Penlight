@@ -226,3 +226,69 @@ test.asserteq(lapp(spec,{'-vs',200,'-sk',1}),{
   width = 256
 })
 
+-- Required parameters are reported in declaration order (#247).
+do
+    local lapp = require 'pl.lapp'
+    local saved_arg = arg
+    local saved_mode, saved_callback, saved_slack = lapp.show_usage_error, lapp.callback, lapp.slack
+    local ok, err = pcall(function()
+        lapp.show_usage_error, lapp.callback, lapp.slack = 'throw', nil, false
+        local function missing(options, args, name)
+            local success, message = pcall(lapp, options, args)
+            local ending = 'missing required parameter: '..name
+            assert(not success, 'expected missing parameter '..name)
+            assert(type(message) == 'string' and message:sub(-#ending) == ending, tostring(message))
+            assert(arg == saved_arg, 'explicit arguments changed global arg')
+        end
+
+        local positionals = [[
+            <first> (string)
+            <second> (string)
+        ]]
+        missing(positionals, {}, 'first')
+        missing(positionals, {'one'}, 'second')
+        missing('<second> (string)\n<first> (string)\n', {}, 'second')
+        local three = '<zeta> (string)\n<alpha> (string)\n<middle> (string)\n'
+        missing(three, {}, 'zeta')
+        missing(three, {'one'}, 'alpha')
+        missing(three, {'one', 'two'}, 'middle')
+
+        local named = [[
+            --optional (default fallback)
+            -z,--zulu (string)
+            <first> (string)
+            -a,--alpha (string)
+        ]]
+        missing(named, {}, 'zulu')
+        missing(named, {'-z', 'Z'}, 'first')
+        missing(named, {'-z', 'Z', 'P'}, 'alpha')
+        missing(named, {'--alpha', 'A'}, 'zulu')
+        local calls = {}
+        lapp.callback = function(parameter, value)
+            calls[#calls + 1] = {parameter, value}
+        end
+        local values = lapp(named, {'-a', 'A', '--zulu', 'Z', 'P'})
+        assert(values.optional == 'fallback' and values.zulu == 'Z' and values.first == 'P' and values.alpha == 'A')
+        assert(values.z == nil and values.a == nil and #calls == 3)
+        assert(calls[1][1] == 'alpha' and calls[1][2] == 'A')
+        assert(calls[2][1] == 'zulu' and calls[2][2] == 'Z')
+        assert(calls[3][1] == 'first' and calls[3][2] == 'P')
+        lapp.callback = nil
+
+        local variadic = '<head> (string)\n<tail...> (optional string)\n--mode (default safe)\n'
+        missing(variadic, {}, 'head')
+        values = lapp(variadic, {'H', 'T1', 'T2'})
+        assert(values.head == 'H' and values.mode == 'safe' and #values.tail == 2)
+        assert(values.tail[1] == 'T1' and values.tail[2] == 'T2')
+        values = lapp('--open (default stdin)\n', {})
+        assert(values.open == io.stdin and values.open_name == 'stdin')
+
+        for _ = 1, 3 do
+            missing(three, {}, 'zeta')
+            missing(positionals, {'one'}, 'second')
+        end
+    end)
+    arg, lapp.show_usage_error, lapp.callback, lapp.slack = saved_arg, saved_mode, saved_callback, saved_slack
+    assert(ok, err)
+end
+
