@@ -7,6 +7,9 @@ deprecation policy.
 see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) for release instructions
 
 ## x.x.x (unreleased)
+ - fix(lapp): flags without a description were not always recognized, and a
+   one character description was appended to the flag name
+   [#241](https://github.com/lunarmodules/Penlight/issues/241)
  - docs(Set): document that sets have no methods (`myset:values()` does not
    work), since elements are stored as keys and would shadow them
    [#524](https://github.com/lunarmodules/Penlight/issues/524)
