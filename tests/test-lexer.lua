@@ -126,6 +126,12 @@ test_scan([['' "" " \\" '\'' "'"]], nil, nil, {
 test_scan("#define ASDF", {}, nil, {
     {'prepro', '#define ASDF'}
 }, 'cpp')
+test_scan("#define X \\", {}, nil, {
+    {'prepro', '#define X \\'}
+}, 'cpp')
+test_scan("#", {}, nil, {
+    {'prepro', '#'}
+}, 'cpp')
 
 local iter = lexer.lua([[
 foo
