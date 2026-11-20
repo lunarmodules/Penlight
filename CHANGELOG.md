@@ -7,6 +7,9 @@ deprecation policy.
 see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) for release instructions
 
 ## x.x.x (unreleased)
+ - docs(types): clarify that `types.is_type` checks exact metatable equality
+   without inheritance and point to `Class:class_of` and `obj:is_a`
+   [#167](https://github.com/lunarmodules/Penlight/issues/167)
  - fix(lapp): flags without a description were not always recognized, and a
    one character description was appended to the flag name
    [#241](https://github.com/lunarmodules/Penlight/issues/241)

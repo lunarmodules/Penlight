@@ -27,13 +27,21 @@ do
 end
 
 --- is the object of the specified type?.
--- If the type is a string, then use type, otherwise compare with metatable.
+-- Checks `type(obj) == tp` if `tp` is a string, otherwise checks exact
+-- metatable equality (`tp == getmetatable(obj)`).
+--
+-- Because it only compares metatables directly, it does not detect inheritance
+-- or subtyping (e.g. `types.is_type(OrderedMap(), Map)` returns `false`). For
+-- Penlight class inheritance checks, use `Class:class_of(obj)` or
+-- `obj:is_a(Class)` from `pl.class`.
 --
 -- NOTE: this function is imported from `utils.is_type`.
 -- @param obj An object to check
--- @param tp The expected type
+-- @param tp The expected type name (string) or metatable
+-- @return boolean
 -- @function is_type
 -- @see utils.is_type
+-- @see pl.class
 types.is_type = utils.is_type
 
 local fileMT = getmetatable(io.stdout)
