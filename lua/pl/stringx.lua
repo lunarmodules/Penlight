@@ -444,7 +444,7 @@ local function _partition(p,delim,fn)
     if not i1 or i1 == -1 then
         return p,'',''
     else
-        if not i2 then i2 = i1 end
+        if not i2 then i2 = i1 + #delim - 1 end
         return sub(p,1,i1-1),sub(p,i1,i2),sub(p,i2+1)
     end
 end
