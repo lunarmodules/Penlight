@@ -10,6 +10,8 @@ see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) fo
  - docs(types): clarify that `types.is_type` checks exact metatable equality
    without inheritance and point to `Class:class_of` and `obj:is_a`
    [#167](https://github.com/lunarmodules/Penlight/issues/167)
+ - fix(stringx): `partition` and `rpartition` returned only the first character
+   of a multi-character delimiter, and put the rest into the last part
  - fix(lapp): flags without a description were not always recognized, and a
    one character description was appended to the flag name
    [#241](https://github.com/lunarmodules/Penlight/issues/241)
