@@ -291,6 +291,8 @@ describe("stringx", function()
     assert.same({'ab','.','c'}, {stringx.partition('ab.c', '.')})
     assert.same({'a',',','b,c'}, {stringx.partition('a,b,c', ',')})
     assert.same({'abc', '', ''}, {stringx.partition('abc', '/')})
+    assert.same({'key', '=>', 'value'}, {stringx.partition('key=>value', '=>')})
+    assert.same({'a', '::', 'b::c'}, {stringx.partition('a::b::c', '::')})
   end)
 
 
@@ -302,6 +304,8 @@ describe("stringx", function()
     assert.same({'a', 'b', 'c'}, {stringx.rpartition('abc', 'b')})
     assert.same({'', 'a', ''}, {stringx.rpartition('a', 'a')})
     assert.same({'', '', 'abc'}, {stringx.rpartition('abc', '/')})
+    assert.same({'a::b', '::', 'c'}, {stringx.rpartition('a::b::c', '::')})
+    assert.same({'', 'ab', ''}, {stringx.rpartition('ab', 'ab')})
   end)
 
 

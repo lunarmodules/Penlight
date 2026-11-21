@@ -444,18 +444,19 @@ local function _partition(p,delim,fn)
     if not i1 or i1 == -1 then
         return p,'',''
     else
-        if not i2 then i2 = i1 end
+        if not i2 then i2 = i1 + #delim - 1 end
         return sub(p,1,i1-1),sub(p,i1,i2),sub(p,i2+1)
     end
 end
 
 --- partition the string using first occurrence of a delimiter
 -- @string s the string
--- @string ch delimiter (match as plain string, no patterns)
+-- @string ch delimiter, one or more characters (match as plain string, no patterns)
 -- @return part before ch
 -- @return ch
 -- @return part after ch
 -- @usage {stringx.partition('a,b,c', ','))} == {'a', ',', 'b,c'}
+-- @usage {stringx.partition('a::b::c', '::'))} == {'a', '::', 'b::c'}
 -- @usage {stringx.partition('abc', 'x'))} == {'abc', '', ''}
 function stringx.partition(s,ch)
     assert_string(1,s)
@@ -465,11 +466,12 @@ end
 
 --- partition the string p using last occurrence of a delimiter
 -- @string s the string
--- @string ch delimiter (match as plain string, no patterns)
+-- @string ch delimiter, one or more characters (match as plain string, no patterns)
 -- @return part before ch
 -- @return ch
 -- @return part after ch
 -- @usage {stringx.rpartition('a,b,c', ','))} == {'a,b', ',', 'c'}
+-- @usage {stringx.rpartition('a::b::c', '::'))} == {'a::b', '::', 'c'}
 -- @usage {stringx.rpartition('abc', 'x'))} == {'', '', 'abc'}
 function stringx.rpartition(s,ch)
     assert_string(1,s)
