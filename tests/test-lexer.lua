@@ -121,6 +121,18 @@ test_scan([['' "" " \\" '\'' "'"]], nil, nil, {
     {'string', "'"}
 }, 'cpp')
 
+-- A preprocessor directive on the final line without a trailing newline must
+-- still be recognized as a single 'prepro' token (issue #450).
+test_scan("#define ASDF", {}, nil, {
+    {'prepro', '#define ASDF'}
+}, 'cpp')
+test_scan("#define X \\", {}, nil, {
+    {'prepro', '#define X \\'}
+}, 'cpp')
+test_scan("#", {}, nil, {
+    {'prepro', '#'}
+}, 'cpp')
+
 local iter = lexer.lua([[
 foo
 bar
