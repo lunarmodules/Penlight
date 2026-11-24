@@ -201,6 +201,8 @@ do  --  path.relpath
   try('/a/four.lua','../../four.lua')
   try('one.lua','one.lua')
   try('../two.lua','../two.lua')
+  try('/a/B/c','.')
+  try('.','.')
 end
 
 

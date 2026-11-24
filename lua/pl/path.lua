@@ -485,6 +485,7 @@ function path.relpath (P,start)
     if k <= #Pl then
         for i = k,#Pl do append(rell,Pl[i]) end
     end
+    if #rell == 0 then return '.' end
     return table.concat(rell,sep)
 end
 
