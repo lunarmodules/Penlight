@@ -34,6 +34,8 @@ see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) fo
  - fix: tablex.mapn could take a long time if no args provided
    [#521](https://github.com/lunarmodules/Penlight/pull/521)
  - fix(path): `path.abspath` turned the root directory into an empty string
+ - fix(path): `path.relpath` returned an incorrect number of `..` when a root
+   directory is involved
 
 ## 1.15.0 (2026-Jan-4)
  - docs: many (small) documentation updates and fixes

@@ -456,9 +456,9 @@ end
 function path.relpath (P,start)
     assert_string(1,P)
     if start then assert_string(2,start) end
-    local split,min,append = utils.split, math.min, table.insert
+    local min,append = math.min, table.insert
     P = path.abspath(P,start)
-    start = start or currentdir()
+    start = start and path.normpath(start) or currentdir()
     local compare
     if path.is_windows then
         P = P:gsub("/","\\")
@@ -467,7 +467,12 @@ function path.relpath (P,start)
     else
         compare = function(v) return v end
     end
-    local startl, Pl = split(start,sep), split(P,sep)
+    local function split(input)
+        if input == sep then return {""} end
+        if input == "." then return {} end
+        return utils.split(input,sep,true)
+    end
+    local startl, Pl = split(start), split(P)
     local n = min(#startl,#Pl)
     if path.is_windows and n > 0 and at(Pl[1],2) == ':' and Pl[1] ~= startl[1] then
         return P
