@@ -33,6 +33,7 @@ see [CONTRIBUTING.md](CONTRIBUTING.md#release-instructions-for-a-new-version) fo
    "permission denied" error
  - fix: tablex.mapn could take a long time if no args provided
    [#521](https://github.com/lunarmodules/Penlight/pull/521)
+ - fix(path): `path.abspath` turned the root directory into an empty string
 
 ## 1.15.0 (2026-Jan-4)
  - docs: many (small) documentation updates and fixes

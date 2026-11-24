@@ -78,6 +78,12 @@ do -- path.abspath
   local abs = path.abspath(cp)
   asserteq(slash(abs), slash(cp))
 
+  if path.is_windows then
+    asserteq(path.abspath("C:\\", "D:\\work"), "C:\\")
+  else
+    asserteq(path.abspath("/", "/work"), "/")
+  end
+
   -- "." should resolve to the current directory
   local dot = path.abspath(".")
   asserteq(slash(dot), slash(cp))
